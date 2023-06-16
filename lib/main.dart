@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
+import 'package:internal_sakumi/firebase_options.dart';
+import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/screens/add_class_screen.dart';
+import 'package:internal_sakumi/screens/add_student_screen.dart';
+import 'package:internal_sakumi/screens/admin_screen.dart';
+import 'package:internal_sakumi/screens/detail_class_screen.dart';
+import 'package:internal_sakumi/screens/detail_student_screen.dart';
+import 'package:internal_sakumi/screens/login_screen.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -12,7 +26,44 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const HomeScreen(),
+      theme: ThemeData(
+        primarySwatch: primaryColor,
+      ),
+      debugShowCheckedModeBanner: false,
+      home: LogInScreen(),
+      routes: {
+        //Routes.splash: (context) => const SplashScreen(),
+//admin
+        Routes.admin: (context) => const AdminScreen(),
+        //
+        Routes.home: (context) => const HomeScreen(),
+        Routes.login: (context) => LogInScreen(),
+
+        Routes.detailClass: (context) {
+          Map map = ModalRoute.of(context)!.settings.arguments as Map;
+          return DetailClassScreen(classModel: map['classModel']);
+        },
+        Routes.detailStudent: (context) {
+          Map map = ModalRoute.of(context)!.settings.arguments as Map;
+          return DetailStudentScreen(studentModel: map['studentModel']);
+        },
+        Routes.addClass: (context) {
+          Map map = ModalRoute.of(context)!.settings.arguments as Map;
+          return AddClassScreen(classModel: map['classModel']);
+        },
+        Routes.addStudent: (context) {
+          Map map = ModalRoute.of(context)!.settings.arguments as Map;
+          return AddStudentScreen(studentModel: map['studentModel']);
+        },
+
+        // Routes.classes: (context) => ListClassView(),
+        //profile
+        // Routes.profile: (context) => ProfileScreen(),
+        // Routes.changePassword: (context) {
+        //   Map map = ModalRoute.of(context)!.settings.arguments as Map;
+        //   return ChangePasswordScreen(email: map['email']);
+        // },
+      },
     );
   }
 }
