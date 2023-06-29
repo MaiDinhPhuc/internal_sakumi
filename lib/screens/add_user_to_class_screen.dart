@@ -34,7 +34,7 @@ class AddUserToClassScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ReusableTextField(AppText.titleUserId.text, Icons.key, false,
+                TextFieldWidget(AppText.titleUserId.text, Icons.key, false,
                     controller: controller, iconColor: primaryColor),
                 SizedBox(
                   height: Resizable.size(context, 30),

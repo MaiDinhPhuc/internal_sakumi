@@ -46,6 +46,7 @@ enum AppText {
   titleMaster,
   titleManageStudent,
   titleManageClass,
+  titleManageTag,
   titleRole,
   titleUserId,
   btnSignUp,
@@ -74,6 +75,14 @@ enum AppText {
   titleDashboard,
   titleAddStudentToClass,
   titleAddTeacherToClass,
+  txtNoStudent,
+  txtNoClass,
+  txtNoTag,
+  txtNoTeacher,
+  titleTagName,
+  titleChooseBackground,
+  titleChooseTextColor,
+  btnAddTag,
 }
 
 Map<AppText, String> texts = {
@@ -123,6 +132,7 @@ Map<AppText, String> texts = {
   AppText.titleMaster: 'Master',
   AppText.titleManageStudent: 'Quản lý học viên',
   AppText.titleManageClass: 'Quản lý lớp học',
+  AppText.titleManageTag: 'Quản lý tag',
   AppText.titleRole: 'Vai trò',
   AppText.titleUserId: 'Mã người dùng',
   AppText.btnSignUp: 'Đăng ký',
@@ -149,7 +159,14 @@ Map<AppText, String> texts = {
   AppText.btnEdit: 'Sửa',
   AppText.titleDashboard: 'Thống kê',
   AppText.titleAddStudentToClass: 'Thêm học viên vào lớp',
-  AppText.titleAddTeacherToClass: 'Thêm giáo viên vào lớp'
+  AppText.titleAddTeacherToClass: 'Thêm giáo viên vào lớp',
+  AppText.txtNoStudent: 'Không có học viên',
+  AppText.txtNoTeacher: 'Không có giáo viên',
+  AppText.txtNoClass: 'Không có lớp học',
+  AppText.txtNoTag: 'Không có thẻ',
+  AppText.titleTagName: 'Tên thẻ',
+  AppText.titleChooseBackground: 'Chọn màu nền',
+  AppText.titleChooseTextColor: 'Chọn màu chữ'
 };
 
 extension AppTexts on AppText {

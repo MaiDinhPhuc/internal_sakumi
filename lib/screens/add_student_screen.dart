@@ -39,7 +39,7 @@ class AddStudentScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                ReusableTextField(
+                                TextFieldWidget(
                                   AppText.textEmail.text,
                                   Icons.mail,
                                   false,
@@ -47,20 +47,20 @@ class AddStudentScreen extends StatelessWidget {
                                   cursorColor: Colors.red,
                                   iconColor: primaryColor,
                                 ),
-                                ReusableTextField(
+                                TextFieldWidget(
                                     AppText.txtName.text, Icons.person, false,
                                     controller: controller[1],
                                     iconColor: primaryColor),
-                                ReusableTextField(
+                                TextFieldWidget(
                                     AppText.txtPhone.text, Icons.phone, false,
                                     controller: controller[2],
                                     isNumber: true,
                                     iconColor: primaryColor),
-                                ReusableTextField(
+                                TextFieldWidget(
                                     AppText.txtNote.text, Icons.edit, false,
                                     controller: controller[3],
                                     iconColor: primaryColor),
-                                ReusableTextField(
+                                TextFieldWidget(
                                     AppText.titleUserId.text, Icons.key, false,
                                     controller: controller[4],
                                     iconColor: primaryColor),
@@ -186,7 +186,7 @@ class AddStudentScreen extends StatelessWidget {
                                         itemHeight: Resizable.size(context, 50),
                                       ),
                                     )),
-                                ReusableTextField(AppText.txtStudentCode.text,
+                                TextFieldWidget(AppText.txtStudentCode.text,
                                     Icons.code, false,
                                     controller: controller[5],
                                     iconColor: primaryColor),
@@ -232,7 +232,7 @@ class AddStudentScreen extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      ReusableTextField(
+                                      TextFieldWidget(
                                         AppText.textEmail.text,
                                         Icons.mail,
                                         false,
@@ -240,7 +240,7 @@ class AddStudentScreen extends StatelessWidget {
                                         cursorColor: Colors.red,
                                         iconColor: primaryColor,
                                       ),
-                                      ReusableTextField(
+                                      TextFieldWidget(
                                           AppText.txtName.text,
                                           isUpdate: true,
                                           Icons.person,
@@ -248,7 +248,7 @@ class AddStudentScreen extends StatelessWidget {
                                           controller: controller[1],
                                           hintText: studentModel!.name,
                                           iconColor: primaryColor),
-                                      ReusableTextField(
+                                      TextFieldWidget(
                                           AppText.txtPhone.text,
                                           isUpdate: true,
                                           Icons.phone,
@@ -257,7 +257,7 @@ class AddStudentScreen extends StatelessWidget {
                                           hintText: studentModel!.phone,
                                           isNumber: true,
                                           iconColor: primaryColor),
-                                      ReusableTextField(
+                                      TextFieldWidget(
                                           AppText.txtNote.text,
                                           isUpdate: true,
                                           Icons.edit,
@@ -265,10 +265,8 @@ class AddStudentScreen extends StatelessWidget {
                                           controller: controller[3],
                                           hintText: studentModel!.note,
                                           iconColor: primaryColor),
-                                      ReusableTextField(
-                                          AppText.titleUserId.text,
-                                          Icons.key,
-                                          false,
+                                      TextFieldWidget(AppText.titleUserId.text,
+                                          Icons.key, false,
                                           controller: controller[4],
                                           iconColor: primaryColor),
                                       Padding(
@@ -337,7 +335,7 @@ class AddStudentScreen extends StatelessWidget {
                                                   Resizable.size(context, 50),
                                             ),
                                           )),
-                                      ReusableTextField(
+                                      TextFieldWidget(
                                           AppText.txtStudentCode.text,
                                           Icons.code,
                                           false,

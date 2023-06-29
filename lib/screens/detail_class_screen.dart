@@ -68,17 +68,31 @@ class DetailClassScreen extends StatelessWidget {
                       children: [
                         Expanded(
                             child: BlocBuilder<StudentsInClassCubit,
-                                    List<StudentModel>>(
+                                    List<StudentModel>?>(
                                 bloc: studentsInClassCubit,
-                                builder: (c, list) {
-                                  if (list.isEmpty) {
-                                    return const Text('No student');
-                                  }
-                                  return Column(
-                                    children:
-                                        list.map((e) => Text(e.name)).toList(),
-                                  );
-                                })),
+                                builder: (c, list) => list == null
+                                    ? const Center(
+                                        child: CircularProgressIndicator(),
+                                      )
+                                    : list.isEmpty
+                                        ? const Center(
+                                            child: Text('No student'),
+                                          )
+                                        : Column(
+                                            children: list
+                                                .map((e) => Text(e.name))
+                                                .toList(),
+                                          )
+                                // {
+                                //   if (list.isEmpty) {
+                                //     return const Text('No student');
+                                //   }
+                                //   return Column(
+                                //     children:
+                                //         list.map((e) => Text(e.name)).toList(),
+                                //   );
+                                // }
+                                )),
                         Expanded(
                             child: BlocBuilder<TeachersInClassCubit,
                                     List<TeacherModel>>(
@@ -163,9 +177,9 @@ class DetailClassScreen extends StatelessWidget {
   }
 }
 
-class StudentsInClassCubit extends Cubit<List<StudentModel>> {
+class StudentsInClassCubit extends Cubit<List<StudentModel>?> {
   final ClassModel classModel;
-  StudentsInClassCubit(this.classModel) : super([]) {
+  StudentsInClassCubit(this.classModel) : super(null) {
     load();
   }
 

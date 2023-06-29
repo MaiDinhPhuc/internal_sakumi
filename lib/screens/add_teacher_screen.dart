@@ -26,7 +26,7 @@ class AddTeacherScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ReusableTextField(
+                TextFieldWidget(
                   AppText.textEmail.text,
                   Icons.mail,
                   false,
@@ -34,18 +34,17 @@ class AddTeacherScreen extends StatelessWidget {
                   cursorColor: Colors.red,
                   iconColor: primaryColor,
                 ),
-                ReusableTextField(AppText.txtName.text, Icons.person, false,
+                TextFieldWidget(AppText.txtName.text, Icons.person, false,
                     controller: controller[1], iconColor: primaryColor),
-                ReusableTextField(AppText.txtPhone.text, Icons.phone, false,
+                TextFieldWidget(AppText.txtPhone.text, Icons.phone, false,
                     controller: controller[2],
                     isNumber: true,
                     iconColor: primaryColor),
-                ReusableTextField(AppText.txtNote.text, Icons.edit, false,
+                TextFieldWidget(AppText.txtNote.text, Icons.edit, false,
                     controller: controller[3], iconColor: primaryColor),
-                ReusableTextField(AppText.titleUserId.text, Icons.key, false,
+                TextFieldWidget(AppText.titleUserId.text, Icons.key, false,
                     controller: controller[5], iconColor: primaryColor),
-                ReusableTextField(
-                    AppText.txtTeacherCode.text, Icons.code, false,
+                TextFieldWidget(AppText.txtTeacherCode.text, Icons.code, false,
                     controller: controller[4], iconColor: primaryColor),
                 SizedBox(
                   height: Resizable.size(context, 30),

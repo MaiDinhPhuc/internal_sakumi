@@ -31,13 +31,13 @@ class LogInScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                ReusableTextField(
+                TextFieldWidget(
                     AppText.textEmail.text, Icons.person_outline, false,
                     controller: emailTextController),
                 const SizedBox(
                   height: 20,
                 ),
-                ReusableTextField(
+                TextFieldWidget(
                     AppText.textPassword.text, Icons.lock_outline, true,
                     controller: passwordTextController),
                 const SizedBox(

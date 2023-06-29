@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
-class ReusableTextField extends StatelessWidget {
+class TextFieldWidget extends StatelessWidget {
   final String text, hintText;
   final IconData icon;
   final bool isPasswordType;
@@ -12,7 +12,7 @@ class ReusableTextField extends StatelessWidget {
   final Color iconColor;
   final bool isNumber, isUpdate;
 
-  const ReusableTextField(this.text, this.icon, this.isPasswordType,
+  const TextFieldWidget(this.text, this.icon, this.isPasswordType,
       {required this.controller,
       this.enableEditing = true,
       this.cursorColor = Colors.white,

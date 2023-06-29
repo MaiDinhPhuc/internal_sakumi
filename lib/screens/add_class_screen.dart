@@ -34,12 +34,11 @@ class AddClassScreen extends StatelessWidget {
                     SizedBox(
                       height: Resizable.size(context, 20),
                     ),
-                    ReusableTextField(
-                        AppText.txtClassId.text, Icons.code, false,
+                    TextFieldWidget(AppText.txtClassId.text, Icons.code, false,
                         controller: controller[0],
                         iconColor: primaryColor,
                         isNumber: true),
-                    ReusableTextField(
+                    TextFieldWidget(
                       AppText.txtCourseId.text,
                       Icons.code,
                       false,
@@ -47,19 +46,18 @@ class AddClassScreen extends StatelessWidget {
                       iconColor: primaryColor,
                       isNumber: true,
                     ),
-                    ReusableTextField(
+                    TextFieldWidget(
                         AppText.txtClassCode.text, Icons.code, false,
                         controller: controller[2], iconColor: primaryColor),
-                    ReusableTextField(
+                    TextFieldWidget(
                         AppText.txtDescription.text, Icons.code, false,
                         controller: controller[3], iconColor: primaryColor),
-                    ReusableTextField(
+                    TextFieldWidget(
                         AppText.txtStartTime.text, Icons.code, false,
                         controller: controller[4], iconColor: primaryColor),
-                    ReusableTextField(
-                        AppText.txtEndTime.text, Icons.code, false,
+                    TextFieldWidget(AppText.txtEndTime.text, Icons.code, false,
                         controller: controller[5], iconColor: primaryColor),
-                    ReusableTextField(AppText.txtNote.text, Icons.code, false,
+                    TextFieldWidget(AppText.txtNote.text, Icons.code, false,
                         controller: controller[6], iconColor: primaryColor),
                     SizedBox(
                       height: Resizable.size(context, 30),
@@ -105,7 +103,7 @@ class AddClassScreen extends StatelessWidget {
                           SizedBox(
                             height: Resizable.size(context, 20),
                           ),
-                          ReusableTextField(
+                          TextFieldWidget(
                             AppText.txtClassId.text,
                             Icons.code,
                             false,
@@ -114,7 +112,7 @@ class AddClassScreen extends StatelessWidget {
                             isNumber: true,
                             hintText: classModel!.classId.toString(),
                           ),
-                          ReusableTextField(
+                          TextFieldWidget(
                             AppText.txtCourseId.text,
                             Icons.code,
                             false,
@@ -123,31 +121,31 @@ class AddClassScreen extends StatelessWidget {
                             isNumber: true,
                             hintText: classModel!.courseId.toString(),
                           ),
-                          ReusableTextField(
+                          TextFieldWidget(
                               AppText.txtClassCode.text, Icons.code, false,
                               controller: controller[2],
                               iconColor: primaryColor,
                               isUpdate: true,
                               hintText: classModel!.classCode),
-                          ReusableTextField(
+                          TextFieldWidget(
                               AppText.txtDescription.text, Icons.code, false,
                               controller: controller[3],
                               iconColor: primaryColor,
                               isUpdate: true,
                               hintText: classModel!.description),
-                          ReusableTextField(
+                          TextFieldWidget(
                               AppText.txtStartTime.text, Icons.code, false,
                               controller: controller[4],
                               iconColor: primaryColor,
                               isUpdate: true,
                               hintText: classModel!.startTime),
-                          ReusableTextField(
+                          TextFieldWidget(
                               AppText.txtEndTime.text, Icons.code, false,
                               controller: controller[5],
                               iconColor: primaryColor,
                               isUpdate: true,
                               hintText: classModel!.endTime),
-                          ReusableTextField(
+                          TextFieldWidget(
                               AppText.txtNote.text, Icons.code, false,
                               controller: controller[6],
                               iconColor: primaryColor,

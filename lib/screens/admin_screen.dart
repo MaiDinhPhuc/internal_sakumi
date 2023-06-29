@@ -4,6 +4,7 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/dashboard_view.dart';
 import 'package:internal_sakumi/features/list_class_view.dart';
 import 'package:internal_sakumi/features/list_student_view.dart';
+import 'package:internal_sakumi/features/list_tag_view.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
@@ -13,7 +14,7 @@ class AdminScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 3,
+        length: 4,
         child: Scaffold(
           appBar: AppBar(
             title: Text(AppText.titleAdmin.text),
@@ -27,42 +28,37 @@ class AdminScreen extends StatelessWidget {
             children: [
               SizedBox(height: Resizable.size(context, 20)),
               TabBar(
-                splashBorderRadius:
-                    BorderRadius.circular(Resizable.padding(context, 5)),
-                isScrollable: false,
-                indicator: BoxDecoration(
-                  borderRadius:
+                  splashBorderRadius:
                       BorderRadius.circular(Resizable.padding(context, 5)),
-                  color: primaryColor,
-                ),
-                padding: EdgeInsets.symmetric(
-                    horizontal: Resizable.padding(context, 150)),
-                labelColor: Colors.white,
-                unselectedLabelColor: Colors.grey,
-                indicatorColor: primaryColor,
-                tabs: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: Resizable.padding(context, 10)),
-                    child: Text(AppText.titleManageStudent.text),
+                  isScrollable: false,
+                  indicator: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.circular(Resizable.padding(context, 5)),
+                    color: primaryColor,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: Resizable.padding(context, 10)),
-                    child: Text(AppText.titleManageClass.text),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: Resizable.padding(context, 10)),
-                    child: Text(AppText.titleDashboard.text),
-                  )
-                ],
-              ),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: Resizable.padding(context, 150)),
+                  labelColor: Colors.white,
+                  unselectedLabelColor: Colors.grey,
+                  indicatorColor: primaryColor,
+                  tabs: [
+                    AppText.titleManageStudent.text,
+                    AppText.titleManageClass.text,
+                    AppText.titleDashboard.text,
+                    AppText.titleManageTag.text
+                  ]
+                      .map((e) => Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: Resizable.padding(context, 10)),
+                            child: Text(e),
+                          ))
+                      .toList()),
               Expanded(
                   child: TabBarView(children: [
                 ListStudentView(),
                 ListClassView(),
-                const DashboardView()
+                const DashboardView(),
+                ListTagView(),
               ]))
             ],
           ),

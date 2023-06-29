@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
+import 'package:internal_sakumi/model/tag_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 
@@ -79,5 +80,12 @@ class AdminRepository {
     final result =
         snapshot.docs.map((e) => StudentModel.fromSnapshot(e)).single;
     return result;
+  }
+
+  static Future<List<TagModel>> getTags() async {
+    final db = FirebaseFirestore.instance;
+    final snapshot = await db.collection("tags").get();
+    final tags = snapshot.docs.map((e) => TagModel.fromSnapshot(e)).toList();
+    return tags;
   }
 }
