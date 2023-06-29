@@ -43,6 +43,7 @@ enum AppText {
   textCancel,
 
   titleAdmin,
+  titleMaster,
   titleManageStudent,
   titleManageClass,
   titleRole,
@@ -66,10 +67,13 @@ enum AppText {
   titleListClass,
   btnAddClass,
   btnAddStudent,
+  btnAddTeacher,
   btnUpdate,
   btnRemove,
   btnEdit,
   titleDashboard,
+  titleAddStudentToClass,
+  titleAddTeacherToClass,
 }
 
 Map<AppText, String> texts = {
@@ -116,6 +120,7 @@ Map<AppText, String> texts = {
   AppText.textOpenGallery: 'Chọn ảnh từ thư viện',
   AppText.textCancel: 'Thoát',
   AppText.titleAdmin: 'Admin',
+  AppText.titleMaster: 'Master',
   AppText.titleManageStudent: 'Quản lý học viên',
   AppText.titleManageClass: 'Quản lý lớp học',
   AppText.titleRole: 'Vai trò',
@@ -138,10 +143,13 @@ Map<AppText, String> texts = {
   AppText.titleListClass: 'Danh sách lớp học',
   AppText.btnAddClass: 'Thêm lớp học',
   AppText.btnAddStudent: 'Thêm học viên',
+  AppText.btnAddTeacher: 'Thêm giáo viên',
   AppText.btnUpdate: 'Cập nhật',
   AppText.btnRemove: 'Xoá',
   AppText.btnEdit: 'Sửa',
-  AppText.titleDashboard: 'Thống kê'
+  AppText.titleDashboard: 'Thống kê',
+  AppText.titleAddStudentToClass: 'Thêm học viên vào lớp',
+  AppText.titleAddTeacherToClass: 'Thêm giáo viên vào lớp'
 };
 
 extension AppTexts on AppText {

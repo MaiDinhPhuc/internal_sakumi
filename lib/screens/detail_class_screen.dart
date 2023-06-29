@@ -1,10 +1,14 @@
+import 'dart:collection';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/class_model.dart';
+import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
+import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/routes.dart';
@@ -20,6 +24,7 @@ class DetailClassScreen extends StatelessWidget {
         super(key: key);
 
   var list = [AppText.btnRemove.text, AppText.btnEdit.text];
+  var roles = [AppText.selectorStudent.text, AppText.selectorTeacher.text];
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +71,9 @@ class DetailClassScreen extends StatelessWidget {
                                     List<StudentModel>>(
                                 bloc: studentsInClassCubit,
                                 builder: (c, list) {
-                                  if (list.isEmpty)
+                                  if (list.isEmpty) {
                                     return const Text('No student');
+                                  }
                                   return Column(
                                     children:
                                         list.map((e) => Text(e.name)).toList(),
@@ -78,8 +84,9 @@ class DetailClassScreen extends StatelessWidget {
                                     List<TeacherModel>>(
                                 bloc: teachersInClassCubit,
                                 builder: (c, list) {
-                                  if (list.isEmpty)
+                                  if (list.isEmpty) {
                                     return const Text('No teacher');
+                                  }
                                   return Column(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children:
@@ -117,15 +124,37 @@ class DetailClassScreen extends StatelessWidget {
                         color: Colors.white,
                       )),
                   Positioned.fill(
-                      child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(1000),
-                      // onTap: () => Navigator.pushNamed(
-                      //     context, Routes.addStudent,
-                      //     arguments: {'studentModel': null}),
-                    ),
-                  ))
+                      child: PopupMenuButton(
+                          // shape: RoundedRectangleBorder(
+                          //     borderRadius: BorderRadius.circular(1000)),
+                          child: Container(),
+                          onSelected: (value) async {
+                            // Navigator.pushNamed(context, Routes.addUserToClass,
+                            //     arguments: {
+                            //       'isStudent': value == 0 ? true : false,
+                            //       'classId': classModel.classId
+                            //     });
+                            if (value == 0) {
+                              Navigator.pushNamed(
+                                  context, Routes.addUserToClass, arguments: {
+                                'isStudent': true,
+                                'classId': classModel.classId
+                              });
+                            }
+                            if (value == 1 && context.mounted) {
+                              Navigator.pushNamed(
+                                  context, Routes.addUserToClass, arguments: {
+                                'isStudent': false,
+                                'classId': classModel.classId
+                              });
+                            }
+                          },
+                          itemBuilder: (BuildContext c) {
+                            return roles
+                                .map((e) => PopupMenuItem(
+                                    value: roles.indexOf(e), child: Text(e)))
+                                .toList();
+                          }))
                 ],
               ),
             ),
@@ -141,11 +170,21 @@ class StudentsInClassCubit extends Cubit<List<StudentModel>> {
   }
 
   load() async {
-    List<StudentModel> lists = await AdminRepository.getListStudent()
-      ..where((element) => element.status == 'progress');
+    List<int> list = [];
     List<StudentModel> listStudent = [];
-    for (var i in classModel.listStudent) {
-      listStudent.add(lists.where((e) => e.userId == i).single);
+    List<StudentModel> listAllStudent = await AdminRepository.getAllStudent();
+    List<StudentClassModel> listStudentClass =
+        await AdminRepository.getStudentClassByClassId(classModel.classId);
+
+    for (var i in listStudentClass) {
+      list.add(i.userId);
+    }
+
+    list = LinkedHashSet<int>.from(list.map((e) => e)).toList();
+
+    for (var i in list) {
+      listStudent
+          .add(listAllStudent.where((element) => element.userId == i).single);
     }
     emit(listStudent);
   }
@@ -158,12 +197,22 @@ class TeachersInClassCubit extends Cubit<List<TeacherModel>> {
   }
 
   load() async {
-    List<TeacherModel> lists = await AdminRepository.getListTeacher()
-      ..where((element) => element.status == 'progress');
+    List<int> list = [];
     List<TeacherModel> listTeacher = [];
-    for (var i in classModel.listTeacher) {
-      listTeacher.add(lists.where((e) => e.userId == i).single);
+    List<TeacherModel> listAllTeacher = await AdminRepository.getAllTeacher();
+    List<TeacherClassModel> listTeacherClass =
+        await AdminRepository.getTeacherClassByClassId(classModel.classId);
+    for (var i in listTeacherClass) {
+      list.add(i.userId);
     }
+
+    list = LinkedHashSet<int>.from(list.map((e) => e)).toList();
+
+    for (var i in list) {
+      listTeacher
+          .add(listAllTeacher.where((element) => element.userId == i).single);
+    }
+
     emit(listTeacher);
   }
 }

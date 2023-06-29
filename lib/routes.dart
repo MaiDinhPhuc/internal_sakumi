@@ -10,6 +10,12 @@ class Routes {
   static const addClass = "/addClass";
   static const addStudent = "/addStudent";
   static const detailStudent = "/detailStudent";
+  static const addUserToClass = "/addUserToClass";
+
+  static const master = "/master";
+  static const addTeacher = "/addTeacher";
+
+  static const teacher = "/teacher";
 
   static const profile = "/profile";
   static const changePassword = "/changePassword";

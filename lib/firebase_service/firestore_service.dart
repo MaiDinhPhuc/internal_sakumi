@@ -24,6 +24,7 @@ class FirestoreServices {
       'note': note,
       'phone': phone,
       'teacher_code': teacherCode,
+      'status': 'InProgress',
       'url': url,
       'user_id': uid,
     });

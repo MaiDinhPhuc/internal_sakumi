@@ -133,7 +133,7 @@ class LoadListStudentCubit extends Cubit<List<StudentModel>> {
   }
 
   load() async {
-    List<StudentModel> list = await AdminRepository.getListStudent();
+    List<StudentModel> list = await AdminRepository.getAllStudent();
     emit(list.where((element) => element.status == 'progress').toList());
   }
 }

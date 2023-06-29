@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/firebase_service/auth_service.dart';
+import 'package:internal_sakumi/model/user_model.dart';
+import 'package:internal_sakumi/repository/user_repository.dart';
 import 'package:internal_sakumi/widget/textfield_widget.dart';
 
 class LogInScreen extends StatelessWidget {
@@ -46,7 +48,7 @@ class LogInScreen extends StatelessWidget {
                         backgroundColor:
                             MaterialStateProperty.all(Colors.white)),
                     onPressed: () {
-                      AuthServices.signInUser(emailTextController.text,
+                      AuthServices.logInUser(emailTextController.text,
                           passwordTextController.text, context);
                     },
                     child: Text(AppText.btnLogin.text))

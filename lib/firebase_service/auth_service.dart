@@ -48,23 +48,26 @@ class AuthServices {
     }
   }
 
-  static signInUser(String email, String password, context) async {
+  static logInUser(String email, String password, context) async {
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       UserModel user = await UserRepository.getUser(email);
       //UserRepository.saveLogin(user, password);
 
-      if (user.role == "admin") {
-        // user.role == "admin"
-        //     ?
-        Navigator.of(context, rootNavigator: true)
-            .pushReplacementNamed(Routes.admin);
-        //     :
-        // Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
-        //     Routes.home, (Route<dynamic> route) => false);
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('You are Logged in ${user.role}')));
+      if (user.role == "admin" ||
+          user.role == "master" ||
+          user.role == "teacher") {
+        debugPrint("======== ${user.role} ==========");
+        Navigator.pushReplacementNamed(
+            context,
+            user.role == "admin"
+                ? Routes.admin
+                : user.role == "teacher"
+                    ? Routes.teacher
+                    : Routes.master);
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     SnackBar(content: Text('You are Logged in ${user.role}')));
       } else {
         FirebaseAuth.instance.signOut().then((value) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

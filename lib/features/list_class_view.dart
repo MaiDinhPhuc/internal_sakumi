@@ -135,7 +135,7 @@ class LoadListClassCubit extends Cubit<List<ClassModel>> {
     debugPrint("=====> =========>");
     List<ClassModel> list = await AdminRepository.getListClass();
     debugPrint("=====> =========> 111 ${list.length}");
-    emit(list.where((element) => element.status == 'progress').toList());
+    emit(list);
     debugPrint("=====> =========> 3333 ${list.length} === ${state.length}");
   }
 }
