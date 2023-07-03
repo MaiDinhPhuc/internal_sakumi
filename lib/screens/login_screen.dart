@@ -19,42 +19,51 @@ class LogInScreen extends StatelessWidget {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [secondaryColor, primaryColor, secondaryColor.shade900],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter)),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(
-                20, MediaQuery.of(context).size.height * 0.2, 20, 0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                TextFieldWidget(
-                    AppText.textEmail.text, Icons.person_outline, false,
-                    controller: emailTextController),
-                const SizedBox(
-                  height: 20,
+        // decoration: BoxDecoration(
+        //     gradient: LinearGradient(
+        //         colors: [secondaryColor, primaryColor, secondaryColor.shade900],
+        //         begin: Alignment.topCenter,
+        //         end: Alignment.bottomCenter)),
+        child: Row(
+          children: [
+            Expanded(
+                child: Container(
+              color: primaryColor,
+            )),
+            Expanded(
+                child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(
+                    20, MediaQuery.of(context).size.height * 0.2, 20, 0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    TextFieldWidget(
+                        AppText.textEmail.text, Icons.person_outline, false,
+                        controller: emailTextController),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFieldWidget(
+                        AppText.textPassword.text, Icons.lock_outline, true,
+                        controller: passwordTextController),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    TextButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white)),
+                        onPressed: () {
+                          AuthServices.logInUser(emailTextController.text,
+                              passwordTextController.text, context);
+                        },
+                        child: Text(AppText.btnLogin.text))
+                  ],
                 ),
-                TextFieldWidget(
-                    AppText.textPassword.text, Icons.lock_outline, true,
-                    controller: passwordTextController),
-                const SizedBox(
-                  height: 5,
-                ),
-                TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.white)),
-                    onPressed: () {
-                      AuthServices.logInUser(emailTextController.text,
-                          passwordTextController.text, context);
-                    },
-                    child: Text(AppText.btnLogin.text))
-              ],
-            ),
-          ),
+              ),
+            ))
+          ],
         ),
       ),
     );

@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/firebase_service/firestore_service.dart';
+import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
+import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/repository/user_repository.dart';
 import 'package:internal_sakumi/routes.dart';
 
@@ -29,7 +31,6 @@ class AuthServices {
           : await FirestoreServices.addSensei(name, note, phone, uid, code, "");
 
       if (context.mounted) {
-        //Navigator.popUntil(context, ModalRoute.withName(Routes.admin));
         userCredential;
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Registration Successful')));
@@ -54,20 +55,27 @@ class AuthServices {
           .signInWithEmailAndPassword(email: email, password: password);
       UserModel user = await UserRepository.getUser(email);
       //UserRepository.saveLogin(user, password);
+      TeacherModel teacherModel =
+          await TeacherRepository.getTeacherById(user.id);
+      debugPrint(
+          "============== TeacherModel teacher ${teacherModel.teacherCode}");
 
       if (user.role == "admin" ||
           user.role == "master" ||
           user.role == "teacher") {
         debugPrint("======== ${user.role} ==========");
+        // Routes.router.navigateTo(
+        //     context, "${Routes.teacher}?name=${teacherModel.teacherCode}");
+
         Navigator.pushReplacementNamed(
             context,
             user.role == "admin"
                 ? Routes.admin
                 : user.role == "teacher"
-                    ? Routes.teacher
+                    ? "${Routes.teacher}?name=${teacherModel.teacherCode.trim()}"
                     : Routes.master);
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //     SnackBar(content: Text('You are Logged in ${user.role}')));
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('You are Logged in ${user.role}')));
       } else {
         FirebaseAuth.instance.signOut().then((value) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

@@ -1,32 +1,42 @@
 import 'package:flutter/material.dart';
 
-const int _primaryValue = 0xfffe67a4;
-const MaterialColor primaryColor = MaterialColor(_primaryValue, <int, Color>{
-  50: Color(0xffF8F7F7),
-  100: Color(0xffFFE5F0),
-  200: Color(0xFFFFB3D2),
-  300: Color(0xffFE9FC5),
-  400: Color(0xffFF86B7),
-  500: Color(_primaryValue),
-  600: Color(0xFFFE5F9C),
-  700: Color(0xFFFE5492),
-  800: Color(0xFFFE4A89),
-  900: Color(0xFFFD3978),
+const MaterialColor primaryColor = MaterialColor(0xffe33f64, <int, Color>{
+  50: Color(0xFFFCE4EC),
+  100: Color(0xFFF8BBD0),
+  200: Color(0xFFF48FB1),
+  300: Color(0xFFF06292),
+  400: Color(0xFFEC407A),
+  500: Color(0xffe33f64),
+  600: Color(0xFFD81B60),
+  700: Color(0xFFC2185B),
+  800: Color(0xFFAD1457),
+  900: Color(0xFF880E4F),
 });
 
-const int _secondaryValue = 0xff5D60EF;
-const MaterialColor secondaryColor =
-    MaterialColor(_secondaryValue, <int, Color>{
-  50: Color(0xFFECECFD),
-  100: Color(0xFFCECFFA),
-  200: Color(0xFFAEB0F7),
-  300: Color(0xFF8E90F4),
-  400: Color(0xFF7578F1),
-  500: Color(_secondaryValue),
-  600: Color(0xFF5558ED),
-  700: Color(0xFF4B4EEB),
-  800: Color(0xFF4144E8),
-  900: Color(0xFF3033E4),
+const MaterialColor secondaryColor = MaterialColor(0xff5D60EF, <int, Color>{
+  50: Color(0xFFE8EAF6),
+  100: Color(0xFFC5CAE9),
+  200: Color(0xFF9FA8DA),
+  300: Color(0xFF7986CB),
+  400: Color(0xFF5C6BC0),
+  500: Color(0xff5D60EF),
+  600: Color(0xFF3949AB),
+  700: Color(0xFF303F9F),
+  800: Color(0xFF283593),
+  900: Color(0xFF1A237E),
+});
+
+const MaterialColor greyColor = MaterialColor(0xff5D60EF, <int, Color>{
+  50: Color(0xFFF5F5F5),
+  100: Color(0xFFD9D9D9),
+  200: Color(0xFFC8C8C8),
+  300: Color(0xFFD9D9D9),
+  400: Color(0xFFBDBDBD),
+  500: Color(0xff727272),
+  600: Color(0xFF717171),
+  700: Color(0xFF676767),
+  800: Color(0xFF505050),
+  900: Color(0xFF392D2F),
 });
 
 const int _greenValue = 0xffa5f1aa;

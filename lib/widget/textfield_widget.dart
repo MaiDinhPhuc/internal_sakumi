@@ -34,8 +34,18 @@ class TextFieldWidget extends StatelessWidget {
         enableSuggestions: !isPasswordType,
         autocorrect: !isPasswordType,
         cursorColor: cursorColor,
-        style: TextStyle(color: iconColor.withOpacity(0.9)),
+        //style: TextStyle(color: iconColor.withOpacity(0.9)),
         decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                width: Resizable.size(context, 1), color: Colors.black38),
+            borderRadius: BorderRadius.circular(Resizable.padding(context, 8)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                width: Resizable.size(context, 1), color: Colors.black38),
+            borderRadius: BorderRadius.circular(Resizable.padding(context, 8)),
+          ),
           hintText: hintText,
           prefixIcon: Icon(
             icon,

@@ -83,6 +83,8 @@ enum AppText {
   titleChooseBackground,
   titleChooseTextColor,
   btnAddTag,
+  txtHello,
+  txtSensei,
 }
 
 Map<AppText, String> texts = {
@@ -166,7 +168,9 @@ Map<AppText, String> texts = {
   AppText.txtNoTag: 'Không có thẻ',
   AppText.titleTagName: 'Tên thẻ',
   AppText.titleChooseBackground: 'Chọn màu nền',
-  AppText.titleChooseTextColor: 'Chọn màu chữ'
+  AppText.titleChooseTextColor: 'Chọn màu chữ',
+  AppText.txtHello: 'Xin chào',
+  AppText.txtSensei: 'sensei!',
 };
 
 extension AppTexts on AppText {
