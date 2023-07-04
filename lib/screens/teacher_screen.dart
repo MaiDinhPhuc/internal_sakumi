@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
+import 'package:internal_sakumi/configs/lacal_data_config.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/configs/user_configs.dart';
+import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
+import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:internal_sakumi/utils/text_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TeacherScreen extends StatelessWidget {
   final String name;
@@ -71,18 +75,75 @@ class TeacherScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              Container(
+                margin: EdgeInsets.symmetric(
+                    vertical: Resizable.padding(context, 20)),
+                child: Text(AppText.titleListClass.text,
+                    style: TextStyle(
+                        fontSize: Resizable.font(context, 30),
+                        fontWeight: FontWeight.w800)),
+              ),
               BlocBuilder<TeacherCubit, int>(
-                  builder: (_, __) => cubit.listClass.isEmpty
-                      ? const CircularProgressIndicator()
-                      : Column(
-                          children: [
-                            ...cubit.listClass
-                                .map((e) => Container(
-                                      child: Text(e.date),
-                                    ))
-                                .toList()
-                          ],
-                        ))
+                  builder: (_, __) => cubit.listClass == null
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : cubit.listClass!.isEmpty
+                          ? Center(
+                              child: Text(AppText.txtNoClass.text),
+                            )
+                          : Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: Resizable.padding(context, 200)),
+                              child: Column(
+                                children: [
+                                  ...cubit.listClass!
+                                      .map((e) => Stack(
+                                            children: [
+                                              Container(
+                                                alignment: Alignment.centerLeft,
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal:
+                                                        Resizable.padding(
+                                                            context, 20),
+                                                    vertical: Resizable.padding(
+                                                        context, 8)),
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                          color: Colors.black12,
+                                                          offset: Offset(
+                                                              0,
+                                                              Resizable.size(
+                                                                  context, 2)),
+                                                          blurRadius:
+                                                              Resizable.size(
+                                                                  context, 1))
+                                                    ],
+                                                    border: Border.all(
+                                                        color: Colors.black),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            1000)),
+                                                child: Text(e.classCode),
+                                              ),
+                                              Positioned.fill(
+                                                  child: Material(
+                                                color: Colors.transparent,
+                                                child: InkWell(
+                                                  onTap: () {},
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          1000),
+                                                ),
+                                              ))
+                                            ],
+                                          ))
+                                      .toList()
+                                ],
+                              ),
+                            ))
             ],
           ),
         )),
@@ -95,24 +156,37 @@ class TeacherCubit extends Cubit<int> {
   TeacherCubit() : super(0);
 
   TeacherModel? teacherProfile;
-  List<TeacherClassModel> listClass = [];
+  List<ClassModel>? listClass;
 
-  void init() async {
+  void init() {
     loadProfileTeacher();
     loadListClassOfTeacher();
   }
 
   void loadProfileTeacher() async {
-    teacherProfile = await TeacherRepository.getTeacher(UserConfigs.code);
+    teacherProfile = await TeacherRepository.getTeacher(TextUtils.getName());
     emit(state + 1);
   }
 
   void loadListClassOfTeacher() async {
-    debugPrint("===========>======= listClass init${listClass.length}");
-    listClass = listClass
-      ..addAll(await TeacherRepository.getTeacherClassById(
-          'user_id', UserConfigs.userId));
-    debugPrint("===========>======= listClass ${listClass.length}");
+    List<TeacherClassModel> listTeacherClass = [];
+    List<ClassModel> listAllClass = [];
+    SharedPreferences localData = await SharedPreferences.getInstance();
+
+    listTeacherClass = await TeacherRepository.getTeacherClassById(
+        'user_id', localData.getInt(LocalDataConfigs.userId)!);
+
+    listAllClass = await AdminRepository.getListClass();
+
+    listClass = [];
+    for (var i in listTeacherClass) {
+      for (var j in listAllClass) {
+        if (i.classId == j.classId) {
+          listClass!.add(j);
+          break;
+        }
+      }
+    }
 
     emit(state + 1);
   }

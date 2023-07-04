@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:internal_sakumi/configs/lacal_data_config.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/configs/user_configs.dart';
 import 'package:internal_sakumi/firebase_service/firestore_service.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
@@ -10,6 +10,7 @@ import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/repository/user_repository.dart';
 import 'package:internal_sakumi/routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthServices {
   static signupUser(
@@ -65,16 +66,25 @@ class AuthServices {
 
         if (user.role == "admin") {
           AdminModel adminModel = await AdminRepository.getAdminById(user.id);
-          UserConfigs.code = adminModel.adminCode;
-          UserConfigs.userId = adminModel.userId;
+          SharedPreferences sharedPreferences =
+              await SharedPreferences.getInstance();
+          sharedPreferences.setString(
+              LocalDataConfigs.code, adminModel.adminCode);
+          sharedPreferences.setInt(LocalDataConfigs.userId, adminModel.userId);
+          //sharedPreferences.setString(LocalDataConfigs.name, adminModel.name);
           Navigator.pushReplacementNamed(
               context, "${Routes.admin}?name=${adminModel.adminCode.trim()}");
         }
         if (user.role == "teacher") {
           TeacherModel teacherModel =
               await TeacherRepository.getTeacherById(user.id);
-          UserConfigs.code = teacherModel.teacherCode;
-          UserConfigs.userId = teacherModel.userId;
+          SharedPreferences sharedPreferences =
+              await SharedPreferences.getInstance();
+          sharedPreferences.setString(
+              LocalDataConfigs.code, teacherModel.teacherCode);
+          sharedPreferences.setInt(
+              LocalDataConfigs.userId, teacherModel.userId);
+          //sharedPreferences.setString(LocalDataConfigs.name, teacherModel.name);
           Navigator.pushReplacementNamed(context,
               "${Routes.teacher}?name=${teacherModel.teacherCode.trim()}");
         }

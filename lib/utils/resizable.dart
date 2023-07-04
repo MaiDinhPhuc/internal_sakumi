@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 
 class Resizable {
   static double font(BuildContext context, double size) {
-    debugPrint("==============> ${MediaQuery.of(context).size.width}");
-    debugPrint("==============> ${MediaQuery.of(context).size.height}");
+    // debugPrint("==============> ${MediaQuery.of(context).size.width}");
+    // debugPrint("==============> ${MediaQuery.of(context).size.height}");
     return fontScaleRatioForTablet(context) *
         width(context) *
         size /
