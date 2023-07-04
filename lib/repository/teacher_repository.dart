@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/model/class_model.dart';
+import 'package:internal_sakumi/model/lesson_model.dart';
+import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 
@@ -36,5 +39,48 @@ class TeacherRepository {
     final listTeacher =
         snapshot.docs.map((e) => TeacherClassModel.fromSnapshot(e)).toList();
     return listTeacher;
+  }
+
+  static Future<LessonModel> getLessonByLessonId(int id) async {
+    final db = FirebaseFirestore.instance;
+    final snapshot =
+        await db.collection("lessons").where('lesson_id', isEqualTo: id).get();
+    final lesson = snapshot.docs.map((e) => LessonModel.fromSnapshot(e)).single;
+    debugPrint("===========>pppp ${lesson.title} ");
+    return lesson;
+  }
+
+  static Future<ClassModel> getClassById(int id) async {
+    final db = FirebaseFirestore.instance;
+    final snapshot =
+        await db.collection("class").where('class_id', isEqualTo: id).get();
+    final result = snapshot.docs.map((e) => ClassModel.fromSnapshot(e)).single;
+    return result;
+  }
+
+  static Future<List<LessonResultModel>> getLessonResultByClassId(
+      int id) async {
+    final db = FirebaseFirestore.instance;
+
+    final snapshot = await db
+        .collection('lesson_result')
+        .where('class_id', isEqualTo: id)
+        .get();
+
+    final list =
+        snapshot.docs.map((e) => LessonResultModel.fromSnapshot(e)).toList();
+
+    return list;
+  }
+
+  static Future<LessonResultModel> getLessonResultByLessonId(int id) async {
+    final db = FirebaseFirestore.instance;
+    final snapshot = await db
+        .collection("lesson_result")
+        .where('lesson_id', isEqualTo: id)
+        .get();
+    final lesson =
+        snapshot.docs.map((e) => LessonResultModel.fromSnapshot(e)).single;
+    return lesson;
   }
 }

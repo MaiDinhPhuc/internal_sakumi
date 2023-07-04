@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
-import 'package:internal_sakumi/configs/lacal_data_config.dart';
+import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/class_model.dart';
+import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/repository/teacher_repository.dart';
+import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -101,6 +103,9 @@ class TeacherScreen extends StatelessWidget {
                                       .map((e) => Stack(
                                             children: [
                                               Container(
+                                                constraints: BoxConstraints(
+                                                    maxHeight: Resizable.size(
+                                                        context, 35)),
                                                 alignment: Alignment.centerLeft,
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal:
@@ -132,7 +137,11 @@ class TeacherScreen extends StatelessWidget {
                                                   child: Material(
                                                 color: Colors.transparent,
                                                 child: InkWell(
-                                                  onTap: () {},
+                                                  onTap: () async {
+                                                    await Navigator.pushNamed(
+                                                        context,
+                                                        "${Routes.teacher}?name=${TextUtils.getName().trim()}/class?id=${e.classId}");
+                                                  },
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           1000),
@@ -140,7 +149,7 @@ class TeacherScreen extends StatelessWidget {
                                               ))
                                             ],
                                           ))
-                                      .toList()
+                                      .toList(),
                                 ],
                               ),
                             ))
@@ -157,14 +166,18 @@ class TeacherCubit extends Cubit<int> {
 
   TeacherModel? teacherProfile;
   List<ClassModel>? listClass;
+  List<LessonResultModel>? list;
 
   void init() {
     loadProfileTeacher();
     loadListClassOfTeacher();
+    //load();
   }
 
   void loadProfileTeacher() async {
-    teacherProfile = await TeacherRepository.getTeacher(TextUtils.getName());
+    SharedPreferences localData = await SharedPreferences.getInstance();
+    teacherProfile = await TeacherRepository.getTeacher(
+        localData.getString(PrefKeyConfigs.code)!);
     emit(state + 1);
   }
 
@@ -174,7 +187,7 @@ class TeacherCubit extends Cubit<int> {
     SharedPreferences localData = await SharedPreferences.getInstance();
 
     listTeacherClass = await TeacherRepository.getTeacherClassById(
-        'user_id', localData.getInt(LocalDataConfigs.userId)!);
+        'user_id', localData.getInt(PrefKeyConfigs.userId)!);
 
     listAllClass = await AdminRepository.getListClass();
 
@@ -190,4 +203,9 @@ class TeacherCubit extends Cubit<int> {
 
     emit(state + 1);
   }
+
+  // load() async {
+  //   list = await TeacherRepository.getLessonResultByClassId(0);
+  //   emit(state + 1);
+  // }
 }

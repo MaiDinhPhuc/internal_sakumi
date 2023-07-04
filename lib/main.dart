@@ -43,12 +43,12 @@ class MyApp extends StatelessWidget {
         ],
         child: MultiBlocProvider(
             providers: [
-              BlocProvider(create: (context) => TeacherCubit()..init())
+              BlocProvider(create: (context) => TeacherCubit()..init()),
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
               home: LogInScreen(),
-              title: 'Internal Sakumi',
+              title: 'Nội Bộ Sakumi',
               theme: ThemeData(
                 primarySwatch: primaryColor,
               ),

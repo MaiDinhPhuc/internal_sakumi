@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/screens/add_teacher_screen.dart';
 import 'package:internal_sakumi/screens/admin_screen.dart';
+import 'package:internal_sakumi/screens/detail_lesson_screen.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
+import 'package:internal_sakumi/screens/list_lesson_screen.dart';
 import 'package:internal_sakumi/screens/master_screen.dart';
 import 'package:internal_sakumi/screens/teacher_screen.dart';
 
@@ -15,26 +17,22 @@ class Routes {
   static const login = "/login";
   static const home = "/home";
 
-  static const admin = "/admin";
   static const classes = "/classes";
   static const detailClass = "/detailClass";
   static const addClass = "/addClass";
   static const addStudent = "/addStudent";
   static const detailStudent = "/detailStudent";
   static const addUserToClass = "/addUserToClass";
+  static const profile = "/profile";
+  static const changePassword = "/changePassword";
 
   static const master = "/master";
+  static const admin = "/admin";
   static const addTeacher = "/addTeacher";
 
   static const teacher = "/teacher";
 
-  static const profile = "/profile";
-  static const changePassword = "/changePassword";
-
-  static const lesson = '/lesson';
   static const empty = '/empty';
-
-  static const demoSimple = "/demo";
 
   static void configureRoutes(FluroRouter router) {
     router.notFoundHandler = Handler(
@@ -50,6 +48,10 @@ class Routes {
         handler: masterHandler, transitionType: TransitionType.fadeIn);
     router.define(addTeacher,
         handler: addTeacherHandler, transitionType: TransitionType.fadeIn);
+    router.define('/:name/:classId',
+        handler: lessonsHandler, transitionType: TransitionType.fadeIn);
+    router.define('/:name/:classId/:lessonId',
+        handler: detailLessonHandler, transitionType: TransitionType.fadeIn);
   }
 }
 
@@ -76,4 +78,15 @@ var masterHandler =
 var addTeacherHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return AddTeacherScreen();
+});
+
+var lessonsHandler =
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return ListLessonScreen(params['name'][0], params['classId'][0]);
+});
+
+var detailLessonHandler =
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return DetailLessonScreen(
+      params['name'][0], params['classId'][0], params['lessonId'][0]);
 });

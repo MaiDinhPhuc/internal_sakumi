@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:internal_sakumi/configs/lacal_data_config.dart';
+import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/firebase_service/firestore_service.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
@@ -69,9 +69,9 @@ class AuthServices {
           SharedPreferences sharedPreferences =
               await SharedPreferences.getInstance();
           sharedPreferences.setString(
-              LocalDataConfigs.code, adminModel.adminCode);
-          sharedPreferences.setInt(LocalDataConfigs.userId, adminModel.userId);
-          //sharedPreferences.setString(LocalDataConfigs.name, adminModel.name);
+              PrefKeyConfigs.code, adminModel.adminCode);
+          sharedPreferences.setInt(PrefKeyConfigs.userId, adminModel.userId);
+          sharedPreferences.setString(PrefKeyConfigs.name, adminModel.name);
           Navigator.pushReplacementNamed(
               context, "${Routes.admin}?name=${adminModel.adminCode.trim()}");
         }
@@ -81,10 +81,9 @@ class AuthServices {
           SharedPreferences sharedPreferences =
               await SharedPreferences.getInstance();
           sharedPreferences.setString(
-              LocalDataConfigs.code, teacherModel.teacherCode);
-          sharedPreferences.setInt(
-              LocalDataConfigs.userId, teacherModel.userId);
-          //sharedPreferences.setString(LocalDataConfigs.name, teacherModel.name);
+              PrefKeyConfigs.code, teacherModel.teacherCode);
+          sharedPreferences.setInt(PrefKeyConfigs.userId, teacherModel.userId);
+          sharedPreferences.setString(PrefKeyConfigs.name, teacherModel.name);
           Navigator.pushReplacementNamed(context,
               "${Routes.teacher}?name=${teacherModel.teacherCode.trim()}");
         }
