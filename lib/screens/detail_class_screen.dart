@@ -11,6 +11,7 @@ import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/repository/admin_repository.dart';
+import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
@@ -215,7 +216,8 @@ class TeachersInClassCubit extends Cubit<List<TeacherModel>> {
     List<TeacherModel> listTeacher = [];
     List<TeacherModel> listAllTeacher = await AdminRepository.getAllTeacher();
     List<TeacherClassModel> listTeacherClass =
-        await AdminRepository.getTeacherClassByClassId(classModel.classId);
+        await TeacherRepository.getTeacherClassById(
+            'class_id', classModel.classId);
     for (var i in listTeacherClass) {
       list.add(i.userId);
     }

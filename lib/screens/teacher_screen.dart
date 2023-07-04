@@ -2,25 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/configs/user_configs.dart';
+import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:internal_sakumi/utils/text_utils.dart';
 
 class TeacherScreen extends StatelessWidget {
   final String name;
-  final LoadProfileTeacher cubit;
-  TeacherScreen(this.name, {Key? key})
-      : cubit = LoadProfileTeacher(),
-        super(key: key);
+  const TeacherScreen(this.name, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var cubit = BlocProvider.of<TeacherCubit>(context);
     return Scaffold(
         body: Column(
       children: [
         Container(),
-        SingleChildScrollView(
+        Expanded(
+            child: SingleChildScrollView(
           child: Column(
             children: [
               Padding(
@@ -35,13 +35,12 @@ class TeacherScreen extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         CircleAvatar(
-                          radius: Resizable.size(context, 30),
+                          radius: Resizable.size(context, 25),
                           backgroundColor: greyColor.shade300,
                         ),
                         SizedBox(width: Resizable.size(context, 10)),
-                        BlocBuilder<LoadProfileTeacher, TeacherModel?>(
-                            bloc: cubit,
-                            builder: (c, s) => s == null
+                        BlocBuilder<TeacherCubit, int>(
+                            builder: (_, __) => cubit.state == 0
                                 ? const CircularProgressIndicator()
                                 : Column(
                                     crossAxisAlignment:
@@ -55,7 +54,7 @@ class TeacherScreen extends StatelessWidget {
                                                 Resizable.font(context, 24)),
                                       ),
                                       Text(
-                                          '${s.name} ${AppText.txtSensei.text}',
+                                          '${cubit.teacherProfile?.name} ${AppText.txtSensei.text}',
                                           style: TextStyle(
                                               fontWeight: FontWeight.w800,
                                               fontSize:
@@ -66,25 +65,55 @@ class TeacherScreen extends StatelessWidget {
                     ),
                     Icon(
                       Icons.menu,
-                      size: 30,
+                      size: Resizable.size(context, 30),
                       color: Colors.black,
                     )
                   ],
                 ),
               ),
+              BlocBuilder<TeacherCubit, int>(
+                  builder: (_, __) => cubit.listClass.isEmpty
+                      ? const CircularProgressIndicator()
+                      : Column(
+                          children: [
+                            ...cubit.listClass
+                                .map((e) => Container(
+                                      child: Text(e.date),
+                                    ))
+                                .toList()
+                          ],
+                        ))
             ],
           ),
-        ),
+        )),
       ],
     ));
   }
 }
 
-class LoadProfileTeacher extends Cubit<TeacherModel?> {
-  LoadProfileTeacher() : super(null) {
-    load();
+class TeacherCubit extends Cubit<int> {
+  TeacherCubit() : super(0);
+
+  TeacherModel? teacherProfile;
+  List<TeacherClassModel> listClass = [];
+
+  void init() async {
+    loadProfileTeacher();
+    loadListClassOfTeacher();
   }
-  load() async {
-    emit(await TeacherRepository.getTeacher(TextUtils.getName()));
+
+  void loadProfileTeacher() async {
+    teacherProfile = await TeacherRepository.getTeacher(UserConfigs.code);
+    emit(state + 1);
+  }
+
+  void loadListClassOfTeacher() async {
+    debugPrint("===========>======= listClass init${listClass.length}");
+    listClass = listClass
+      ..addAll(await TeacherRepository.getTeacherClassById(
+          'user_id', UserConfigs.userId));
+    debugPrint("===========>======= listClass ${listClass.length}");
+
+    emit(state + 1);
   }
 }

@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/features/list_student_view.dart';
 import 'package:internal_sakumi/firebase_options.dart';
+import 'package:internal_sakumi/repository/admin_repository.dart';
+import 'package:internal_sakumi/repository/teacher_repository.dart';
+import 'package:internal_sakumi/repository/user_repository.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/screens/add_class_screen.dart';
 import 'package:internal_sakumi/screens/add_student_screen.dart';
@@ -32,15 +35,25 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LogInScreen(),
-      title: 'Internal Sakumi',
-      theme: ThemeData(
-        primarySwatch: primaryColor,
-      ),
-      onGenerateRoute: Routes.router.generator,
-    );
+    return MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider(create: (context) => AdminRepository()),
+          RepositoryProvider(create: (context) => TeacherRepository()),
+          RepositoryProvider(create: (context) => UserRepository())
+        ],
+        child: MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => TeacherCubit()..init())
+            ],
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              home: LogInScreen(),
+              title: 'Internal Sakumi',
+              theme: ThemeData(
+                primarySwatch: primaryColor,
+              ),
+              onGenerateRoute: Routes.router.generator,
+            )));
     // return MaterialApp(
     //   theme: ThemeData(
     //     primarySwatch: primaryColor,

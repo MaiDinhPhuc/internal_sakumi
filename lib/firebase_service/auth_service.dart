@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/configs/user_configs.dart';
 import 'package:internal_sakumi/firebase_service/firestore_service.dart';
+import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
+import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/repository/user_repository.dart';
 import 'package:internal_sakumi/routes.dart';
@@ -54,26 +57,31 @@ class AuthServices {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       UserModel user = await UserRepository.getUser(email);
-      //UserRepository.saveLogin(user, password);
-      TeacherModel teacherModel =
-          await TeacherRepository.getTeacherById(user.id);
-      debugPrint(
-          "============== TeacherModel teacher ${teacherModel.teacherCode}");
 
       if (user.role == "admin" ||
           user.role == "master" ||
           user.role == "teacher") {
         debugPrint("======== ${user.role} ==========");
-        // Routes.router.navigateTo(
-        //     context, "${Routes.teacher}?name=${teacherModel.teacherCode}");
 
-        Navigator.pushReplacementNamed(
-            context,
-            user.role == "admin"
-                ? Routes.admin
-                : user.role == "teacher"
-                    ? "${Routes.teacher}?name=${teacherModel.teacherCode.trim()}"
-                    : Routes.master);
+        if (user.role == "admin") {
+          AdminModel adminModel = await AdminRepository.getAdminById(user.id);
+          UserConfigs.code = adminModel.adminCode;
+          UserConfigs.userId = adminModel.userId;
+          Navigator.pushReplacementNamed(
+              context, "${Routes.admin}?name=${adminModel.adminCode.trim()}");
+        }
+        if (user.role == "teacher") {
+          TeacherModel teacherModel =
+              await TeacherRepository.getTeacherById(user.id);
+          UserConfigs.code = teacherModel.teacherCode;
+          UserConfigs.userId = teacherModel.userId;
+          Navigator.pushReplacementNamed(context,
+              "${Routes.teacher}?name=${teacherModel.teacherCode.trim()}");
+        }
+        if (user.role == "master") {
+          Navigator.pushReplacementNamed(context, Routes.master);
+        }
+
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('You are Logged in ${user.role}')));
       } else {

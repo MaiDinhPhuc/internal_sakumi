@@ -9,7 +9,8 @@ import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class AdminScreen extends StatelessWidget {
-  const AdminScreen({Key? key}) : super(key: key);
+  final String name;
+  const AdminScreen(this.name, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

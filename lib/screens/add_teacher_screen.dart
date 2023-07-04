@@ -50,16 +50,20 @@ class AddTeacherScreen extends StatelessWidget {
                   height: Resizable.size(context, 30),
                 ),
                 ElevatedButton(
-                  onPressed: () => AuthServices.signupUser(
-                      controller[1].text,
-                      controller[3].text,
-                      controller[2].text,
-                      controller[4].text,
-                      false,
-                      'teacher',
-                      controller[0].text,
-                      int.parse(controller[5].text),
-                      context),
+                  onPressed: () {
+                    debugPrint(
+                        "============>${controller[1].text}\n${controller[3].text}\n${controller[2].text}\n${controller[4].text}\n${controller[0].text}\n${controller[5].text}");
+                    AuthServices.signupUser(
+                        controller[1].text,
+                        controller[3].text,
+                        controller[2].text,
+                        controller[4].text,
+                        false,
+                        controller[0].text,
+                        'teacher',
+                        int.parse(controller[5].text),
+                        context);
+                  },
                   style: ButtonStyle(
                       padding: MaterialStateProperty.all(EdgeInsets.symmetric(
                           horizontal: Resizable.padding(context, 30)))),

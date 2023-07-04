@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
@@ -33,18 +34,6 @@ class AdminRepository {
     final listStudent =
         snapshot.docs.map((e) => StudentClassModel.fromSnapshot(e)).toList();
     return listStudent;
-  }
-
-  static Future<List<TeacherClassModel>> getTeacherClassByClassId(
-      int classId) async {
-    final db = FirebaseFirestore.instance;
-    final snapshot = await db
-        .collection("teacher_class")
-        .where('class_id', isEqualTo: classId)
-        .get();
-    final listTeacher =
-        snapshot.docs.map((e) => TeacherClassModel.fromSnapshot(e)).toList();
-    return listTeacher;
   }
 
   static Future<List<TeacherClassModel>> getAllTeacherInClass() async {
@@ -87,5 +76,13 @@ class AdminRepository {
     final snapshot = await db.collection("tags").get();
     final tags = snapshot.docs.map((e) => TagModel.fromSnapshot(e)).toList();
     return tags;
+  }
+
+  static Future<AdminModel> getAdminById(int id) async {
+    final db = FirebaseFirestore.instance;
+    final snapshot =
+        await db.collection("admin").where("user_id", isEqualTo: id).get();
+    final admin = snapshot.docs.map((e) => AdminModel.fromSnapshot(e)).single;
+    return admin;
   }
 }
