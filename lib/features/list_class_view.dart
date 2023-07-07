@@ -132,10 +132,7 @@ class LoadListClassCubit extends Cubit<List<ClassModel>> {
   }
 
   load() async {
-    debugPrint("=====> =========>");
     List<ClassModel> list = await AdminRepository.getListClass();
-    debugPrint("=====> =========> 111 ${list.length}");
     emit(list);
-    debugPrint("=====> =========> 3333 ${list.length} === ${state.length}");
   }
 }

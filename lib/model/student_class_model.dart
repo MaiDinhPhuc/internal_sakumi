@@ -23,7 +23,7 @@ class StudentClassModel {
         learningStatus: data['learning_status'],
         moveTo: data['move_to'],
         userId: data['user_id'],
-        classStatus: data['class_status'],
-        date: data['date']);
+        classStatus: data['class_status'] ?? '',
+        date: data['date'] ?? '');
   }
 }

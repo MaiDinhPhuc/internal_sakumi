@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/firebase_service/firestore_service.dart';
@@ -10,6 +11,7 @@ import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/repository/user_repository.dart';
 import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthServices {
@@ -100,13 +102,24 @@ class AuthServices {
         });
       }
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('No user Found with this Email')));
-      } else if (e.code == 'wrong-password') {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Password did not match')));
-      }
+      // if (e.message == 'auth/user-not-found') {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //       const SnackBar(content: Text('No user Found with this Email')));
+      // } else if (e.message == 'wrong-password') {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //       const SnackBar(content: Text('Password did not match')));
+      // }
+
+      Fluttertoast.showToast(
+          msg: TextUtils.getErrorAuth(e.message.toString()),
+          backgroundColor: Colors.red,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 10,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${e.message}\n${e.code}\n${e.tenantId}')));
     }
   }
 }

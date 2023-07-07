@@ -7,4 +7,10 @@ class TextUtils {
     print("============> getName() $temp");
     return temp.trim();
   }
+
+  static String getErrorAuth(String data) {
+    int start = data.indexOf('(') + 1;
+    int end = data.indexOf(')');
+    return data.substring(start, end);
+  }
 }

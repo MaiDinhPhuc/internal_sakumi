@@ -107,7 +107,7 @@ class ListLessonScreen extends StatelessWidget {
                                       child: InkWell(
                                         onTap: () {
                                           Navigator.pushNamed(context,
-                                              "teacher?name=$name/class?id=${e.classId}/lesson?id=${e.lessonId}");
+                                              "/teacher?name=$name/class?id=${e.classId}/lesson?id=${e.lessonId}");
                                         },
                                         borderRadius:
                                             BorderRadius.circular(1000),

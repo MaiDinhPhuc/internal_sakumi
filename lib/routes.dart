@@ -1,8 +1,11 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
+import 'package:internal_sakumi/screens/add_student_screen.dart';
 import 'package:internal_sakumi/screens/add_teacher_screen.dart';
+import 'package:internal_sakumi/screens/add_user_to_class_screen.dart';
 import 'package:internal_sakumi/screens/admin_screen.dart';
+import 'package:internal_sakumi/screens/detail_class_screen.dart';
 import 'package:internal_sakumi/screens/detail_lesson_screen.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
 import 'package:internal_sakumi/screens/list_lesson_screen.dart';
@@ -52,6 +55,10 @@ class Routes {
         handler: lessonsHandler, transitionType: TransitionType.fadeIn);
     router.define('/:name/:classId/:lessonId',
         handler: detailLessonHandler, transitionType: TransitionType.fadeIn);
+    router.define('$admin/:classId',
+        handler: detailClassHandler, transitionType: TransitionType.fadeIn);
+    router.define(addUserToClass,
+        handler: addUserToClassHandler, transitionType: TransitionType.fadeIn);
   }
 }
 
@@ -67,7 +74,12 @@ var teacherHandler =
 
 var adminHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return AdminScreen(params['name']?.first);
+  return AdminScreen();
+});
+
+var addUserToClassHandler =
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return AddUserToClassScreen(params['classId']?.first);
 });
 
 var masterHandler =
@@ -83,6 +95,11 @@ var addTeacherHandler =
 var lessonsHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return ListLessonScreen(params['name'][0], params['classId'][0]);
+});
+
+var detailClassHandler =
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return DetailClassScreen(params['classId'][0]);
 });
 
 var detailLessonHandler =

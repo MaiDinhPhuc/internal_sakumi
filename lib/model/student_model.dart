@@ -19,13 +19,13 @@ class StudentModel {
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
     return StudentModel(
-        name: data["name"],
-        note: data["note"],
-        userId: data['user_id'],
-        phone: data["phone"],
-        studentCode: data["student_code"],
-        url: data['url'],
-        inJapan: data['in_jp'],
-        status: data['status']);
+        name: data["name"] ?? '',
+        note: data["note"] ?? '',
+        userId: data['user_id'] ?? 0,
+        phone: data["phone"] ?? '',
+        studentCode: data["student_code"] ?? '',
+        url: data['url'] ?? '',
+        inJapan: data['in_jp'] ?? false,
+        status: data['status'] ?? '');
   }
 }

@@ -11,20 +11,25 @@ import 'package:internal_sakumi/utils/text_utils.dart';
 
 class DetailLessonScreen extends StatelessWidget {
   final String name, classId, lessonId;
-  final DetailLessonCubit cubit;
+  final DetailLessonCubit cubit = DetailLessonCubit();
   DetailLessonScreen(this.name, this.classId, this.lessonId, {Key? key})
-      : cubit = DetailLessonCubit(),
-        super(key: key);
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => DetailLessonCubit(),
+        create: (context) => DetailLessonCubit()..load(),
         child: Scaffold(
           body: Column(
             children: [
               HeaderTeacher(),
-              BlocBuilder<DetailLessonCubit, LessonResultModel?>(
+              BlocConsumer<DetailLessonCubit, LessonResultModel?>(
+                  listener: (c, s) {
+                    cubit.load();
+                    debugPrint(
+                        '============> ===========> ${s!.status.toString()}');
+                  },
+                  bloc: cubit..load(),
                   builder: (c, lesson) => lesson == null
                       ? const CircularProgressIndicator()
                       : Expanded(
@@ -93,7 +98,8 @@ class DetailLessonScreen extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                              )
+                              ),
+                              if (lesson.status == 'Teaching') Text('Teaching')
                             ],
                           ),
                         )))
@@ -113,9 +119,8 @@ class DetailLessonScreen extends StatelessWidget {
 }
 
 class DetailLessonCubit extends Cubit<LessonResultModel?> {
-  DetailLessonCubit() : super(null) {
-    load();
-  }
+  DetailLessonCubit() : super(null);
+
   load() async {
     emit(await TeacherRepository.getLessonResultByLessonId(
         int.parse(TextUtils.getName())));

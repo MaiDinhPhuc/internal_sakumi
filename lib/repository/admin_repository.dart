@@ -49,6 +49,7 @@ class AdminRepository {
     final snapshot = await db.collection("students").get();
     final lists =
         snapshot.docs.map((e) => StudentModel.fromSnapshot(e)).toList();
+    print("============> sflsdkflsdklf");
     return lists;
   }
 
