@@ -49,6 +49,7 @@ dependencies:
   fluro: ^2.0.5
   shared_preferences: ^2.2.0
   fluttertoast: ^8.2.1
+  d_chart: ^2.3.0
 
 
 dev_dependencies:

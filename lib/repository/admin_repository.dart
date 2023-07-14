@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
@@ -8,7 +10,10 @@ import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 
 class AdminRepository {
-  static Future<List<ClassModel>> getListClass() async {
+  static AdminRepository fromContext(BuildContext context) =>
+      RepositoryProvider.of<AdminRepository>(context);
+
+  Future<List<ClassModel>> getListClass() async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db.collection("class").get();
     final listClass =
@@ -16,8 +21,7 @@ class AdminRepository {
     return listClass;
   }
 
-  static Future<List<StudentClassModel>> getStudentClassByClassId(
-      int classId) async {
+  Future<List<StudentClassModel>> getStudentClassByClassId(int classId) async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db
         .collection("student_class")
@@ -28,7 +32,7 @@ class AdminRepository {
     return listStudent;
   }
 
-  static Future<List<StudentClassModel>> getAllStudentInClass() async {
+  Future<List<StudentClassModel>> getAllStudentInClass() async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db.collection("student_class").get();
     final listStudent =
@@ -36,7 +40,7 @@ class AdminRepository {
     return listStudent;
   }
 
-  static Future<List<TeacherClassModel>> getAllTeacherInClass() async {
+  Future<List<TeacherClassModel>> getAllTeacherInClass() async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db.collection("teacher_class").get();
     final listTeacher =
@@ -44,7 +48,7 @@ class AdminRepository {
     return listTeacher;
   }
 
-  static Future<List<StudentModel>> getAllStudent() async {
+  Future<List<StudentModel>> getAllStudent() async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db.collection("students").get();
     final lists =
@@ -53,7 +57,7 @@ class AdminRepository {
     return lists;
   }
 
-  static Future<List<TeacherModel>> getAllTeacher() async {
+  Future<List<TeacherModel>> getAllTeacher() async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db.collection("teacher").get();
     final lists =
@@ -61,7 +65,7 @@ class AdminRepository {
     return lists;
   }
 
-  static Future<StudentModel> getStudentByUserId(int userId) async {
+  Future<StudentModel> getStudentByUserId(int userId) async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db
         .collection('students')
@@ -72,14 +76,14 @@ class AdminRepository {
     return result;
   }
 
-  static Future<List<TagModel>> getTags() async {
+  Future<List<TagModel>> getTags() async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db.collection("tags").get();
     final tags = snapshot.docs.map((e) => TagModel.fromSnapshot(e)).toList();
     return tags;
   }
 
-  static Future<AdminModel> getAdminById(int id) async {
+  Future<AdminModel> getAdminById(int id) async {
     final db = FirebaseFirestore.instance;
     final snapshot =
         await db.collection("admin").where("user_id", isEqualTo: id).get();

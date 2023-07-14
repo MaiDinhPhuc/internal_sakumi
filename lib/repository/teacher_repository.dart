@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/class_model.dart';
+import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
+import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 
@@ -82,5 +84,27 @@ class TeacherRepository {
     final lesson =
         snapshot.docs.map((e) => LessonResultModel.fromSnapshot(e)).single;
     return lesson;
+  }
+
+  static Future<List<CourseModel>> getAllCourse() async {
+    final db = FirebaseFirestore.instance;
+    final snapshot = await db.collection("courses").get();
+    final courses =
+        snapshot.docs.map((e) => CourseModel.fromSnapshot(e)).toList();
+    return courses;
+  }
+
+  static Future<StudentLessonModel> getStudentLesson(
+      int id, int lessonId) async {
+    final db = FirebaseFirestore.instance;
+    final snapshot = await db
+        .collection("student_lesson")
+        .where('lesson_id', isEqualTo: lessonId)
+        .where('student_id', isEqualTo: id)
+        .get();
+    final result =
+        snapshot.docs.map((e) => StudentLessonModel.fromSnapshot(e)).single;
+
+    return result;
   }
 }

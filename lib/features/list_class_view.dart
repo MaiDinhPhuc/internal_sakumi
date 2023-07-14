@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
-import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class ListClassView extends StatelessWidget {
-  ListClassView({Key? key}) : super(key: key);
+  const ListClassView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("--------- ========= ---------- ========= 0000");
     return BlocProvider(
-      create: (context) => LoadListClassCubit()..load(),
+      create: (context) => LoadListClassCubit()..load(context),
       child: BlocBuilder<LoadListClassCubit, List<ClassModel>>(
           key: Key("${LoadListClassCubit().state.length}"),
           builder: (c, list) {
@@ -127,12 +125,11 @@ class ListClassView extends StatelessWidget {
 }
 
 class LoadListClassCubit extends Cubit<List<ClassModel>> {
-  LoadListClassCubit() : super([]) {
-    load();
-  }
+  LoadListClassCubit() : super([]);
 
-  load() async {
-    List<ClassModel> list = await AdminRepository.getListClass();
+  load(context) async {
+    AdminRepository adminRepository = AdminRepository.fromContext(context);
+    List<ClassModel> list = await adminRepository.getListClass();
     emit(list);
   }
 }

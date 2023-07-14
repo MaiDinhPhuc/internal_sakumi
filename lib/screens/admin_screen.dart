@@ -60,7 +60,7 @@ class AdminScreen extends StatelessWidget {
                 ListStudentView(),
                 //ListClassView(),
                 BlocProvider(
-                  create: (context) => LoadListClassCubit()..load(),
+                  create: (context) => LoadListClassCubit()..load(context),
                   child: BlocBuilder<LoadListClassCubit, List<ClassModel>>(
                       key: Key("${LoadListClassCubit().state.length}"),
                       builder: (c, list) {
@@ -201,27 +201,6 @@ class AdminScreen extends StatelessWidget {
               ]))
             ],
           ),
-          // body: SafeArea(
-          //     child: Center(
-          //   child: Column(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     crossAxisAlignment: CrossAxisAlignment.center,
-          //     children: [
-          //       TextButton(
-          //           onPressed: () {
-          //             Navigator.pushNamed(context, Routes.adding,
-          //                 arguments: {'title': AppText.titleManageStudent.text});
-          //           },
-          //           child: Text(AppText.titleManageStudent.text)),
-          //       TextButton(
-          //           onPressed: () {
-          //             Navigator.pushNamed(context, Routes.classes,
-          //                 arguments: {'title': AppText.titleManageClass.text});
-          //           },
-          //           child: Text(AppText.titleManageClass.text)),
-          //     ],
-          //   ),
-          // ))
         ));
   }
 }

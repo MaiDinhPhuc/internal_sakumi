@@ -42,10 +42,12 @@ class AddUserToClassScreen extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    List<TeacherClassModel> listTeacherClass =
-                        await AdminRepository.getAllTeacherInClass();
+                    AdminRepository adminRepository =
+                        AdminRepository.fromContext(context);
+                    // List<TeacherClassModel> listTeacherClass =
+                    //     await adminRepository.getAllTeacherInClass();
                     List<StudentClassModel> listStudentClass =
-                        await AdminRepository.getAllStudentInClass();
+                        await adminRepository.getAllStudentInClass();
                     await FirebaseFirestore.instance
                         .collection('student_class')
                         .doc("student_${controller.text}_class_$classId")

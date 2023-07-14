@@ -66,8 +66,10 @@ class AuthServices {
           user.role == "teacher") {
         debugPrint("======== ${user.role} ==========");
 
+        AdminRepository adminRepository = AdminRepository.fromContext(context);
+
         if (user.role == "admin") {
-          AdminModel adminModel = await AdminRepository.getAdminById(user.id);
+          AdminModel adminModel = await adminRepository.getAdminById(user.id);
           SharedPreferences sharedPreferences =
               await SharedPreferences.getInstance();
           sharedPreferences.setString(

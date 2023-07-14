@@ -1,9 +1,19 @@
 import 'dart:html';
 
 class TextUtils {
-  static String getName() {
+  static String getName({int? position}) {
     dynamic uri = Uri.dataFromString(window.location.href).toString();
-    String temp = Uri.decodeFull(uri).split("=").last;
+
+    String temp = '';
+
+    if (position == null) {
+      temp = Uri.decodeFull(uri).split('=').last;
+    } else {
+      temp = Uri.decodeFull(uri)
+          .split('=')[position]
+          .replaceAll(RegExp(r'[^0-9]'), '');
+    }
+
     print("============> getName() $temp");
     return temp.trim();
   }

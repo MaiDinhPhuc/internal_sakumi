@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/features/list_student_view.dart';
+import 'package:internal_sakumi/features/teacher/teacher_cubit.dart';
 import 'package:internal_sakumi/firebase_options.dart';
 import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/repository/teacher_repository.dart';
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
         ],
         child: MultiBlocProvider(
             providers: [
-              BlocProvider(create: (context) => TeacherCubit()..init()),
+              BlocProvider(create: (context) => TeacherCubit()..init(context)),
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,

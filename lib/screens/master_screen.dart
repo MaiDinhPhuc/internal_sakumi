@@ -17,7 +17,7 @@ class MasterScreen extends StatelessWidget {
         title: Text(AppText.titleMaster.text),
       ),
       body: BlocProvider<LoadListTeacherCubit>(
-        create: (context) => LoadListTeacherCubit(),
+        create: (context) => LoadListTeacherCubit()..load(context),
         child: BlocBuilder<LoadListTeacherCubit, List<TeacherModel>>(
           builder: (c, list) {
             return Stack(
@@ -68,12 +68,11 @@ class MasterScreen extends StatelessWidget {
 }
 
 class LoadListTeacherCubit extends Cubit<List<TeacherModel>> {
-  LoadListTeacherCubit() : super([]) {
-    load();
-  }
+  LoadListTeacherCubit() : super([]);
 
-  load() async {
-    List<TeacherModel> list = await AdminRepository.getAllTeacher();
+  load(context) async {
+    AdminRepository adminRepository = AdminRepository.fromContext(context);
+    List<TeacherModel> list = await adminRepository.getAllTeacher();
     emit(list);
   }
 }

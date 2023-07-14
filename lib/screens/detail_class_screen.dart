@@ -192,27 +192,23 @@ class StudentsInClassCubit extends Cubit<List<StudentModel>?> {
   StudentsInClassCubit(
       //this.classId
       )
-      : super(null) {
-    load();
-  }
+      : super(null);
 
-  load() async {
-    debugPrint("============>loadload");
+  load(context) async {
+    AdminRepository adminRepository = AdminRepository.fromContext(context);
     List<int> list = [];
     List<StudentModel> listStudent = [];
-    List<StudentModel> listAllStudent = await AdminRepository.getAllStudent();
-    debugPrint("============>loadload1");
-    List<StudentClassModel> listStudentClass =
-        await AdminRepository.getStudentClassByClassId(
-            int.parse(TextUtils.getName()));
-    debugPrint("============>loadload2");
+    List<StudentModel> listAllStudent = await adminRepository.getAllStudent();
+
+    List<StudentClassModel> listStudentClass = await adminRepository
+        .getStudentClassByClassId(int.parse(TextUtils.getName()));
+
     for (var i in listStudentClass) {
       list.add(i.userId);
     }
 
     list = LinkedHashSet<int>.from(list.map((e) => e)).toList();
-    debugPrint(
-        "============>loadload3 ${listAllStudent.length} ${list.length}");
+
     for (var i in list) {
       for (var j in listAllStudent) {
         if (j.userId == i) {
@@ -223,7 +219,7 @@ class StudentsInClassCubit extends Cubit<List<StudentModel>?> {
       // listStudent
       //     .add(listAllStudent.where((element) => element.userId == i).single);
     }
-    debugPrint("============>loadload4");
+
     emit(listStudent);
   }
 }
@@ -233,14 +229,13 @@ class TeachersInClassCubit extends Cubit<List<TeacherModel>> {
   TeachersInClassCubit(
       //this.classId
       )
-      : super([]) {
-    load();
-  }
+      : super([]);
 
-  load() async {
+  load(context) async {
+    AdminRepository adminRepository = AdminRepository.fromContext(context);
     List<int> list = [];
     List<TeacherModel> listTeacher = [];
-    List<TeacherModel> listAllTeacher = await AdminRepository.getAllTeacher();
+    List<TeacherModel> listAllTeacher = await adminRepository.getAllTeacher();
     List<TeacherClassModel> listTeacherClass =
         await TeacherRepository.getTeacherClassById(
             'class_id', int.parse(TextUtils.getName()));

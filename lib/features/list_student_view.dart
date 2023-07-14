@@ -14,7 +14,7 @@ class ListStudentView extends StatelessWidget {
   Widget build(BuildContext context) {
     debugPrint("--------- ========= ---------- ========= 0000");
     return BlocProvider(
-      create: (context) => LoadListStudentCubit()..load(),
+      create: (context) => LoadListStudentCubit()..load(context),
       child: BlocBuilder<LoadListStudentCubit, List<StudentModel>>(
           key: Key("${LoadListStudentCubit().state.length}"),
           builder: (c, list) {
@@ -128,12 +128,11 @@ class ListStudentView extends StatelessWidget {
 }
 
 class LoadListStudentCubit extends Cubit<List<StudentModel>> {
-  LoadListStudentCubit() : super([]) {
-    load();
-  }
+  LoadListStudentCubit() : super([]);
 
-  load() async {
-    List<StudentModel> list = await AdminRepository.getAllStudent();
+  load(context) async {
+    AdminRepository adminRepository = AdminRepository.fromContext(context);
+    List<StudentModel> list = await adminRepository.getAllStudent();
     emit(list.where((element) => element.status == 'progress').toList());
   }
 }

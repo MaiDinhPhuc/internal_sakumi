@@ -190,11 +190,10 @@ class ChooseTextColorCubit extends Cubit<bool> {
 }
 
 class LoadListTagCubit extends Cubit<List<TagModel>?> {
-  LoadListTagCubit() : super(null) {
-    load();
-  }
+  LoadListTagCubit() : super(null);
 
-  load() async {
-    emit(await AdminRepository.getTags());
+  load(context) async {
+    AdminRepository adminRepository = AdminRepository.fromContext(context);
+    emit(await adminRepository.getTags());
   }
 }
