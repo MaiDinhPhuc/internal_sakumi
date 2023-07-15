@@ -72,7 +72,7 @@ enum AppText {
   btnUpdate,
   btnRemove,
   btnEdit,
-  titleDashboard,
+  titleStatistics,
   titleAddStudentToClass,
   titleAddTeacherToClass,
   txtNoStudent,
@@ -99,6 +99,9 @@ enum AppText {
   txtAbsent,
   txtPermitted,
   txtNotTimeKeeping,
+  txtTest,
+  txtAveragePoint,
+  txtDoHomeworks,
 }
 
 Map<AppText, String> texts = {
@@ -173,7 +176,7 @@ Map<AppText, String> texts = {
   AppText.btnUpdate: 'Cập nhật',
   AppText.btnRemove: 'Xoá',
   AppText.btnEdit: 'Sửa',
-  AppText.titleDashboard: 'Thống kê',
+  AppText.titleStatistics: 'Thống kê',
   AppText.titleAddStudentToClass: 'Thêm học viên vào lớp',
   AppText.titleAddTeacherToClass: 'Thêm giáo viên vào lớp',
   AppText.txtNoStudent: 'Không có học viên',
@@ -198,7 +201,10 @@ Map<AppText, String> texts = {
   AppText.txtInLate: 'Vào trễ',
   AppText.txtAbsent: 'Nghỉ không phép',
   AppText.txtPermitted: 'Nghỉ có phép',
-  AppText.txtNotTimeKeeping: 'Chưa điểm danh'
+  AppText.txtNotTimeKeeping: 'Chưa điểm danh',
+  AppText.txtTest: 'Bài kiểm tra',
+  AppText.txtAveragePoint: '(Điểm trung bình)',
+  AppText.txtDoHomeworks: 'Làm BTVN'
 };
 
 extension AppTexts on AppText {

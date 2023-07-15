@@ -46,7 +46,7 @@ class AdminScreen extends StatelessWidget {
                   tabs: [
                     AppText.titleManageStudent.text,
                     AppText.titleManageClass.text,
-                    AppText.titleDashboard.text,
+                    AppText.titleStatistics.text,
                     AppText.titleManageTag.text
                   ]
                       .map((e) => Padding(

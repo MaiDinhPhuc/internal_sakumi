@@ -1,10 +1,7 @@
-import 'dart:collection';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
-import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/repository/admin_repository.dart';
@@ -33,6 +30,8 @@ class TeacherCubit extends Cubit<int> {
 
   void loadListClassOfTeacher(context) async {
     AdminRepository adminRepository = AdminRepository.fromContext(context);
+    TeacherRepository teacherRepository =
+        TeacherRepository.fromContext(context);
     List<TeacherClassModel> listTeacherClass = [];
     List<ClassModel> listAllClass = [];
     List<CourseModel> listAllCourse = [];
@@ -58,7 +57,7 @@ class TeacherCubit extends Cubit<int> {
     courses = [];
     listStatus = [];
     for (var i in listClass!) {
-      var temp = await TeacherRepository.getLessonResultByClassId(i.classId);
+      var temp = await teacherRepository.getLessonResultByClassId(i.classId);
       listStatus!
           .add(temp.where((e) => e.status == 'Complete').toList().length);
       for (var j in listAllCourse) {

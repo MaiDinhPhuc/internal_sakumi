@@ -43,16 +43,17 @@ class TeacherRepository {
     return listTeacher;
   }
 
-  static Future<LessonModel> getLessonByLessonId(int id) async {
+  Future<List<LessonModel>> getLessonsByCourseId(int id) async {
     final db = FirebaseFirestore.instance;
     final snapshot =
-        await db.collection("lessons").where('lesson_id', isEqualTo: id).get();
-    final lesson = snapshot.docs.map((e) => LessonModel.fromSnapshot(e)).single;
-    debugPrint("===========>pppp ${lesson.title} ");
-    return lesson;
+        await db.collection("lessons").where('course_id', isEqualTo: id).get();
+    final lessons =
+        snapshot.docs.map((e) => LessonModel.fromSnapshot(e)).toList();
+    lessons.sort((a, b) => a.lessonId.compareTo(b.lessonId));
+    return lessons;
   }
 
-  static Future<ClassModel> getClassById(int id) async {
+  Future<ClassModel> getClassById(int id) async {
     final db = FirebaseFirestore.instance;
     final snapshot =
         await db.collection("class").where('class_id', isEqualTo: id).get();
@@ -60,8 +61,7 @@ class TeacherRepository {
     return result;
   }
 
-  static Future<List<LessonResultModel>> getLessonResultByClassId(
-      int id) async {
+  Future<List<LessonResultModel>> getLessonResultByClassId(int id) async {
     final db = FirebaseFirestore.instance;
 
     final snapshot = await db
@@ -71,6 +71,8 @@ class TeacherRepository {
 
     final list =
         snapshot.docs.map((e) => LessonResultModel.fromSnapshot(e)).toList();
+
+    list.sort((a, b) => a.lessonId.compareTo(b.lessonId));
 
     return list;
   }
@@ -106,5 +108,21 @@ class TeacherRepository {
         snapshot.docs.map((e) => StudentLessonModel.fromSnapshot(e)).single;
 
     return result;
+  }
+
+  Future<List<StudentLessonModel>> getStudentLessonsByLessonId(int id) async {
+    final db = FirebaseFirestore.instance;
+
+    final snapshot = await db
+        .collection('student_lesson')
+        .where('lesson_id', isEqualTo: id)
+        .get();
+
+    final list =
+        snapshot.docs.map((e) => StudentLessonModel.fromSnapshot(e)).toList();
+
+    list.sort((a, b) => a.studentId.compareTo(b.studentId));
+
+    return list;
   }
 }

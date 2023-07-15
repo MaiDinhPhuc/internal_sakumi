@@ -31,8 +31,6 @@ class ClassItem extends StatelessWidget {
                 alignment: Alignment.center,
                 children: [
                   Container(
-                      constraints: BoxConstraints(
-                          maxHeight: Resizable.size(context, 40)),
                       alignment: Alignment.centerLeft,
                       padding: EdgeInsets.symmetric(
                           horizontal: Resizable.padding(context, 20),
@@ -43,7 +41,11 @@ class ClassItem extends StatelessWidget {
                               color: greyColor.shade100),
                           borderRadius: BorderRadius.circular(
                               Resizable.size(context, 5))),
-                      child: ClassOverView(value1: value1, value2: value2, classModel: classModel, courseName: courseName)),
+                      child: ClassOverView(
+                          value1: value1,
+                          value2: value2,
+                          classModel: classModel,
+                          courseName: courseName)),
                   Positioned.fill(
                       child: Material(
                     color: Colors.transparent,
@@ -70,11 +72,8 @@ class ClassItem extends StatelessWidget {
                 ],
               ),
               secondChild: Stack(
-                //alignment: Alignment.center,
                 children: [
                   Container(
-                    // constraints:
-                    //     BoxConstraints(maxHeight: Resizable.size(context, 40)),
                     alignment: Alignment.centerLeft,
                     padding: EdgeInsets.symmetric(
                         horizontal: Resizable.padding(context, 20),
@@ -87,7 +86,11 @@ class ClassItem extends StatelessWidget {
                             BorderRadius.circular(Resizable.size(context, 5))),
                     child: Column(
                       children: [
-                        ClassOverView(value1: value1, value2: value2, classModel: classModel, courseName: courseName),
+                        ClassOverView(
+                            value1: value1,
+                            value2: value2,
+                            classModel: classModel,
+                            courseName: courseName),
                         ChartView(classModel.classId)
                       ],
                     ),
@@ -106,11 +109,11 @@ class ClassItem extends StatelessWidget {
                   )),
                   Container(
                     margin: EdgeInsets.only(
-                        right: Resizable.padding(context, 70),
-                        top: Resizable.padding(context, 6)),
-                    // padding: EdgeInsets.symmetric(
-                    //     vertical: Resizable.padding(context, 5)),
-                    alignment: Alignment.centerRight,
+                      right: Resizable.padding(context, 70),
+                    ),
+                    padding: EdgeInsets.symmetric(
+                        vertical: Resizable.padding(context, 5)),
+                    alignment: Alignment.topRight,
                     child: IconButton(
                         onPressed: () =>
                             BlocProvider.of<DropdownCubit>(c).update(),
@@ -118,7 +121,7 @@ class ClassItem extends StatelessWidget {
                         icon: const Icon(
                           Icons.keyboard_arrow_down,
                         )),
-                  )
+                  ),
                 ],
               ),
               crossFadeState: state % 2 == 1
