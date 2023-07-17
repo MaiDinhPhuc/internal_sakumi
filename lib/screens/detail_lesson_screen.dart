@@ -23,7 +23,7 @@ class DetailLessonScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => DetailLessonCubit()..load(),
+        create: (context) => DetailLessonCubit()..load(context),
         child: Scaffold(
           body: Column(
             children: [
@@ -34,7 +34,7 @@ class DetailLessonScreen extends StatelessWidget {
                     debugPrint(
                         '============> ===========> ${s!.status.toString()}');
                   },
-                  bloc: cubit..load(),
+                  bloc: cubit..load(context),
                   builder: (c, lesson) => lesson == null
                       ? const CircularProgressIndicator()
                       : Expanded(
@@ -262,8 +262,10 @@ class DetailLessonScreen extends StatelessWidget {
 class DetailLessonCubit extends Cubit<LessonResultModel?> {
   DetailLessonCubit() : super(null);
 
-  load() async {
-    emit(await TeacherRepository.getLessonResultByLessonId(
+  load(context) async {
+    TeacherRepository teacherRepository =
+    TeacherRepository.fromContext(context);
+    emit(await teacherRepository.getLessonResultByLessonId(
         int.parse(TextUtils.getName())));
   }
 }

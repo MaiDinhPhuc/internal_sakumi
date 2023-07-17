@@ -80,8 +80,10 @@ class AuthServices {
               context, "${Routes.admin}?name=${adminModel.adminCode.trim()}");
         }
         if (user.role == "teacher") {
+          TeacherRepository teacherRepository =
+          TeacherRepository.fromContext(context);
           TeacherModel teacherModel =
-              await TeacherRepository.getTeacherById(user.id);
+              await teacherRepository.getTeacherById(user.id);
           SharedPreferences sharedPreferences =
               await SharedPreferences.getInstance();
           sharedPreferences.setString(

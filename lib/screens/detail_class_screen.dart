@@ -233,11 +233,13 @@ class TeachersInClassCubit extends Cubit<List<TeacherModel>> {
 
   load(context) async {
     AdminRepository adminRepository = AdminRepository.fromContext(context);
+    TeacherRepository teacherRepository =
+    TeacherRepository.fromContext(context);
     List<int> list = [];
     List<TeacherModel> listTeacher = [];
     List<TeacherModel> listAllTeacher = await adminRepository.getAllTeacher();
     List<TeacherClassModel> listTeacherClass =
-        await TeacherRepository.getTeacherClassById(
+        await teacherRepository.getTeacherClassById(
             'class_id', int.parse(TextUtils.getName()));
     for (var i in listTeacherClass) {
       list.add(i.userId);

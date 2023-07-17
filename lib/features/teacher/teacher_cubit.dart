@@ -17,13 +17,15 @@ class TeacherCubit extends Cubit<int> {
   List<int>? listStatus;
 
   void init(context) {
-    loadProfileTeacher();
+    loadProfileTeacher(context);
     loadListClassOfTeacher(context);
   }
 
-  void loadProfileTeacher() async {
+  void loadProfileTeacher(context) async {
     SharedPreferences localData = await SharedPreferences.getInstance();
-    teacherProfile = await TeacherRepository.getTeacher(
+    TeacherRepository teacherRepository =
+    TeacherRepository.fromContext(context);
+    teacherProfile = await teacherRepository.getTeacher(
         localData.getString(PrefKeyConfigs.code)!);
     emit(state + 1);
   }
@@ -37,10 +39,10 @@ class TeacherCubit extends Cubit<int> {
     List<CourseModel> listAllCourse = [];
     SharedPreferences localData = await SharedPreferences.getInstance();
 
-    listTeacherClass = await TeacherRepository.getTeacherClassById(
+    listTeacherClass = await teacherRepository.getTeacherClassById(
         'user_id', localData.getInt(PrefKeyConfigs.userId)!);
 
-    listAllCourse = await TeacherRepository.getAllCourse();
+    listAllCourse = await teacherRepository.getAllCourse();
 
     listAllClass = await adminRepository.getListClass();
 

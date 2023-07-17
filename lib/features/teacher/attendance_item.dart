@@ -113,8 +113,10 @@ class AttendanceItem extends StatelessWidget {
 class DropdownAttendanceCubit extends Cubit<int> {
   DropdownAttendanceCubit() : super(0);
 
-  load(int id) async {
-    await TeacherRepository.getStudentLesson(
+  load(int id, context) async {
+    TeacherRepository teacherRepository =
+    TeacherRepository.fromContext(context);
+    await teacherRepository.getStudentLesson(
         id, int.parse(TextUtils.getName()));
   }
 

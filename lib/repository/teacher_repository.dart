@@ -13,7 +13,7 @@ class TeacherRepository {
   static TeacherRepository fromContext(BuildContext context) =>
       RepositoryProvider.of<TeacherRepository>(context);
 
-  static Future<TeacherModel> getTeacher(String teacherCode) async {
+  Future<TeacherModel> getTeacher(String teacherCode) async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db
         .collection("teacher")
@@ -24,7 +24,7 @@ class TeacherRepository {
     return classByClassId;
   }
 
-  static Future<TeacherModel> getTeacherById(int id) async {
+  Future<TeacherModel> getTeacherById(int id) async {
     final db = FirebaseFirestore.instance;
     final snapshot =
         await db.collection("teacher").where("user_id", isEqualTo: id).get();
@@ -33,7 +33,7 @@ class TeacherRepository {
     return classByClassId;
   }
 
-  static Future<List<TeacherClassModel>> getTeacherClassById(
+  Future<List<TeacherClassModel>> getTeacherClassById(
       String string, int id) async {
     final db = FirebaseFirestore.instance;
     final snapshot =
@@ -77,7 +77,7 @@ class TeacherRepository {
     return list;
   }
 
-  static Future<LessonResultModel> getLessonResultByLessonId(int id) async {
+  Future<LessonResultModel> getLessonResultByLessonId(int id) async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db
         .collection("lesson_result")
@@ -88,7 +88,7 @@ class TeacherRepository {
     return lesson;
   }
 
-  static Future<List<CourseModel>> getAllCourse() async {
+  Future<List<CourseModel>> getAllCourse() async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db.collection("courses").get();
     final courses =
@@ -96,7 +96,7 @@ class TeacherRepository {
     return courses;
   }
 
-  static Future<StudentLessonModel> getStudentLesson(
+  Future<StudentLessonModel> getStudentLesson(
       int id, int lessonId) async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db
