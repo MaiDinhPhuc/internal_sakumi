@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/features/teacher/chart_cubit.dart';
 import 'package:internal_sakumi/features/teacher/chart_view.dart';
 import 'package:internal_sakumi/features/teacher/class_overview.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/routes.dart';
-import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
+import 'package:internal_sakumi/widget/card_item.dart';
 
 class ClassItem extends StatelessWidget {
   final double value1, value2;
@@ -27,103 +26,33 @@ class ClassItem extends StatelessWidget {
         create: (context) => DropdownCubit(),
         child: BlocBuilder<DropdownCubit, int>(
           builder: (c, state) => AnimatedCrossFade(
-              firstChild: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Container(
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: Resizable.padding(context, 20),
-                          vertical: Resizable.padding(context, 8)),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              width: Resizable.size(context, 1.5),
-                              color: greyColor.shade100),
-                          borderRadius: BorderRadius.circular(
-                              Resizable.size(context, 5))),
-                      child: ClassOverView(
+              firstChild: CardItem(
+                  widget: ClassOverView(
+                      value1: value1,
+                      value2: value2,
+                      classModel: classModel,
+                      courseName: courseName),
+                  onTap: () async {
+                    await Navigator.pushNamed(context,
+                        "${Routes.teacher}?name=${TextUtils.getName().trim()}/class?id=${classModel.classId}");
+                  },
+                  onPressed: () => BlocProvider.of<DropdownCubit>(c).update()),
+              secondChild: CardItem(
+                  widget: Column(
+                    children: [
+                      ClassOverView(
                           value1: value1,
                           value2: value2,
                           classModel: classModel,
-                          courseName: courseName)),
-                  Positioned.fill(
-                      child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () async {
-                        await Navigator.pushNamed(context,
-                            "${Routes.teacher}?name=${TextUtils.getName().trim()}/class?id=${classModel.classId}");
-                      },
-                      borderRadius:
-                          BorderRadius.circular(Resizable.size(context, 5)),
-                    ),
-                  )),
-                  Container(
-                    margin: EdgeInsets.only(right: Resizable.size(context, 70)),
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                        onPressed: () =>
-                            BlocProvider.of<DropdownCubit>(c).update(),
-                        splashRadius: Resizable.size(context, 15),
-                        icon: const Icon(
-                          Icons.keyboard_arrow_down,
-                        )),
-                  )
-                ],
-              ),
-              secondChild: Stack(
-                children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: Resizable.padding(context, 20),
-                        vertical: Resizable.padding(context, 8)),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            width: Resizable.size(context, 1.5),
-                            color: greyColor.shade100),
-                        borderRadius:
-                            BorderRadius.circular(Resizable.size(context, 5))),
-                    child: Column(
-                      children: [
-                        ClassOverView(
-                            value1: value1,
-                            value2: value2,
-                            classModel: classModel,
-                            courseName: courseName),
-                        ChartView(classModel.classId)
-                      ],
-                    ),
+                          courseName: courseName),
+                      ChartView(classModel.classId)
+                    ],
                   ),
-                  Positioned.fill(
-                      child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () async {
-                        await Navigator.pushNamed(context,
-                            "${Routes.teacher}?name=${TextUtils.getName().trim()}/class?id=${classModel.classId}");
-                      },
-                      borderRadius:
-                          BorderRadius.circular(Resizable.size(context, 5)),
-                    ),
-                  )),
-                  Container(
-                    margin: EdgeInsets.only(
-                      right: Resizable.padding(context, 70),
-                    ),
-                    padding: EdgeInsets.symmetric(
-                        vertical: Resizable.padding(context, 5)),
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                        onPressed: () =>
-                            BlocProvider.of<DropdownCubit>(c).update(),
-                        splashRadius: Resizable.size(context, 15),
-                        icon: const Icon(
-                          Icons.keyboard_arrow_down,
-                        )),
-                  ),
-                ],
-              ),
+                  onTap: () async {
+                    await Navigator.pushNamed(context,
+                        "${Routes.teacher}?name=${TextUtils.getName().trim()}/class?id=${classModel.classId}");
+                  },
+                  onPressed: () => BlocProvider.of<DropdownCubit>(c).update()),
               crossFadeState: state % 2 == 1
                   ? CrossFadeState.showSecond
                   : CrossFadeState.showFirst,
