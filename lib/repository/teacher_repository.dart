@@ -96,8 +96,7 @@ class TeacherRepository {
     return courses;
   }
 
-  Future<StudentLessonModel> getStudentLesson(
-      int id, int lessonId) async {
+  Future<StudentLessonModel> getStudentLesson(int id, int lessonId) async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db
         .collection("student_lesson")

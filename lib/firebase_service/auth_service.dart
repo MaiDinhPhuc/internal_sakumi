@@ -81,7 +81,7 @@ class AuthServices {
         }
         if (user.role == "teacher") {
           TeacherRepository teacherRepository =
-          TeacherRepository.fromContext(context);
+              TeacherRepository.fromContext(context);
           TeacherModel teacherModel =
               await teacherRepository.getTeacherById(user.id);
           SharedPreferences sharedPreferences =

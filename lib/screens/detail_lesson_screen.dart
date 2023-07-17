@@ -264,9 +264,9 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
 
   load(context) async {
     TeacherRepository teacherRepository =
-    TeacherRepository.fromContext(context);
-    emit(await teacherRepository.getLessonResultByLessonId(
-        int.parse(TextUtils.getName())));
+        TeacherRepository.fromContext(context);
+    emit(await teacherRepository
+        .getLessonResultByLessonId(int.parse(TextUtils.getName())));
   }
 }
 
@@ -286,9 +286,8 @@ class AttendanceCubit extends Cubit<int> {
     List<int> list = [];
     List<StudentModel> listAllStudent = await adminRepository.getAllStudent();
     debugPrint("============> listStudentClass");
-    List<StudentClassModel> listStudentClass =
-        await adminRepository.getStudentClassByClassId(
-            int.parse(TextUtils.getName(position: 2)));
+    List<StudentClassModel> listStudentClass = await adminRepository
+        .getStudentClassByClassId(int.parse(TextUtils.getName(position: 2)));
     debugPrint("============> listStudentClass111");
     for (var i in listStudentClass) {
       list.add(i.userId);

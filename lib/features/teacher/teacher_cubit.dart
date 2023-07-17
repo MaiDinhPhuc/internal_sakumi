@@ -24,9 +24,9 @@ class TeacherCubit extends Cubit<int> {
   void loadProfileTeacher(context) async {
     SharedPreferences localData = await SharedPreferences.getInstance();
     TeacherRepository teacherRepository =
-    TeacherRepository.fromContext(context);
-    teacherProfile = await teacherRepository.getTeacher(
-        localData.getString(PrefKeyConfigs.code)!);
+        TeacherRepository.fromContext(context);
+    teacherProfile = await teacherRepository
+        .getTeacher(localData.getString(PrefKeyConfigs.code)!);
     emit(state + 1);
   }
 

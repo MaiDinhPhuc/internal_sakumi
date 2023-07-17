@@ -115,7 +115,7 @@ class DropdownAttendanceCubit extends Cubit<int> {
 
   load(int id, context) async {
     TeacherRepository teacherRepository =
-    TeacherRepository.fromContext(context);
+        TeacherRepository.fromContext(context);
     await teacherRepository.getStudentLesson(
         id, int.parse(TextUtils.getName()));
   }
