@@ -39,12 +39,8 @@ const MaterialColor greyColor = MaterialColor(0xff5D60EF, <int, Color>{
   900: Color(0xFF392D2F),
 });
 
-const int _greenValue = 0xffa5f1aa;
-const MaterialColor greenColor = MaterialColor(_greenValue, <int, Color>{
-  100: Color(0xffddfddf),
-  500: Color(_greenValue),
-  900: Color(0xff1EB640)
-});
+const MaterialColor greenColor =
+    MaterialColor(0xff33691E, <int, Color>{900: Color(0xff33691E)});
 
 const int _orangeValue = 0xfff1c390;
 const MaterialColor orangeColor = MaterialColor(_orangeValue, <int, Color>{
@@ -67,6 +63,5 @@ const MaterialColor blueColor = MaterialColor(_blueValue, <int, Color>{
   900: Color(0xff4B9ADF),
 });
 
-const int _redValue = 0xffD30B0B;
 const MaterialColor redColor =
-    MaterialColor(_redValue, <int, Color>{900: Color(_redValue)});
+    MaterialColor(0xffB71C1C, <int, Color>{900: Color(0xffB71C1C)});

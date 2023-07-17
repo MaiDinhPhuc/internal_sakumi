@@ -16,7 +16,7 @@ class CardItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      alignment: Alignment.center,
+      //alignment: Alignment.center,
       children: [
         Container(
             alignment: Alignment.centerLeft,
@@ -39,7 +39,9 @@ class CardItem extends StatelessWidget {
           ),
         )),
         Container(
-          margin: EdgeInsets.only(right: Resizable.size(context, 70)),
+          margin: EdgeInsets.only(
+              right: Resizable.padding(context, 70),
+              top: Resizable.padding(context, 4)),
           alignment: Alignment.centerRight,
           child: IconButton(
               onPressed: onPressed,

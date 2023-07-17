@@ -102,6 +102,8 @@ enum AppText {
   txtTest,
   txtAveragePoint,
   txtDoHomeworks,
+  txtNotMark,
+  txtMarked
 }
 
 Map<AppText, String> texts = {
@@ -204,7 +206,9 @@ Map<AppText, String> texts = {
   AppText.txtNotTimeKeeping: 'Chưa điểm danh',
   AppText.txtTest: 'Bài kiểm tra',
   AppText.txtAveragePoint: '(Điểm trung bình)',
-  AppText.txtDoHomeworks: 'Làm BTVN'
+  AppText.txtDoHomeworks: 'Làm BTVN',
+  AppText.txtNotMark: 'Chưa chấm bài tập về nhà',
+  AppText.txtMarked: 'Đã chấm bài tập về nhà'
 };
 
 extension AppTexts on AppText {

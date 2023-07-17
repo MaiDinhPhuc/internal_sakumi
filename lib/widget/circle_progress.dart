@@ -24,6 +24,7 @@ class CircleProgress extends StatelessWidget {
         animationDuration: 2500,
         percent: percent,
         center: Card(
+          margin: EdgeInsets.zero,
           elevation: Resizable.size(context, 10),
           shadowColor: Colors.transparent,
           color: Colors.transparent,
@@ -45,6 +46,6 @@ class CircleProgress extends StatelessWidget {
           primaryColor.withOpacity(0.9),
           primaryColor,
         ]),
-        backgroundColor: Colors.transparent);
+        backgroundColor: greyColor.shade100);
   }
 }

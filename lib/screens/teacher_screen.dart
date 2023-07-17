@@ -4,9 +4,7 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/class_item.dart';
 import 'package:internal_sakumi/features/teacher/teacher_cubit.dart';
-import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:internal_sakumi/utils/text_utils.dart';
 
 class TeacherScreen extends StatelessWidget {
   final String name;

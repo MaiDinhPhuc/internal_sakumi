@@ -72,7 +72,7 @@ class TeacherRepository {
     final list =
         snapshot.docs.map((e) => LessonResultModel.fromSnapshot(e)).toList();
 
-    list.sort((a, b) => a.lessonId.compareTo(b.lessonId));
+    //list.sort((a, b) => a.lessonId.compareTo(b.lessonId));
 
     return list;
   }
@@ -109,18 +109,15 @@ class TeacherRepository {
     return result;
   }
 
-  Future<List<StudentLessonModel>> getStudentLessonsByLessonId(int id) async {
+  Future<List<StudentLessonModel>> getAllStudentLessons() async {
     final db = FirebaseFirestore.instance;
 
-    final snapshot = await db
-        .collection('student_lesson')
-        .where('lesson_id', isEqualTo: id)
-        .get();
+    final snapshot = await db.collection('student_lesson').get();
 
     final list =
         snapshot.docs.map((e) => StudentLessonModel.fromSnapshot(e)).toList();
 
-    list.sort((a, b) => a.studentId.compareTo(b.studentId));
+    //list.sort((a, b) => a.studentId.compareTo(b.studentId));
 
     return list;
   }
