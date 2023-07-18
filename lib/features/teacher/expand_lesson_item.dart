@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/list_lesson_cubit.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
@@ -91,25 +92,42 @@ class ExpandLessonItem extends StatelessWidget {
                                       flex: 1,
                                       child: Align(
                                         alignment: Alignment.center,
-                                        child: Text(cubit
-                                            .listStudentLessons![
-                                                cubit.listLessonResult!.indexOf(
-                                                    lessonResultModel)]![
-                                                cubit.listStudent!.indexOf(e)]
-                                            .timekeeping
-                                            .toString()),
+                                        child: cubit
+                                                        .listStudentLessons![
+                                                            cubit
+                                                                .listLessonResult!
+                                                                .indexOf(lessonResultModel)]![
+                                                            cubit.listStudent!
+                                                                .indexOf(e)]
+                                                        .timekeeping >
+                                                    0 &&
+                                                cubit
+                                                        .listStudentLessons![cubit
+                                                            .listLessonResult!
+                                                            .indexOf(
+                                                                lessonResultModel)]![cubit.listStudent!.indexOf(e)]
+                                                        .timekeeping <
+                                                    5
+                                            ? const Icon(Icons.check, color: greenColor)
+                                            : const Icon(Icons.close, color: redColor),
                                       )),
                                   Expanded(
                                     flex: 1,
                                     child: Align(
                                       alignment: Alignment.center,
-                                      child: Text(cubit
-                                          .listStudentLessons![cubit
-                                                  .listLessonResult!
-                                                  .indexOf(lessonResultModel)]![
-                                              cubit.listStudent!.indexOf(e)]
-                                          .hw
-                                          .toString()),
+                                      child: cubit
+                                                  .listStudentLessons![cubit
+                                                          .listLessonResult!
+                                                          .indexOf(
+                                                              lessonResultModel)]![
+                                                      cubit.listStudent!
+                                                          .indexOf(e)]
+                                                  .hw >
+                                              -2
+                                          ? const Icon(Icons.check,
+                                              color: greenColor)
+                                          : const Icon(Icons.close,
+                                              color: redColor),
                                     ),
                                   ),
                                   Expanded(
