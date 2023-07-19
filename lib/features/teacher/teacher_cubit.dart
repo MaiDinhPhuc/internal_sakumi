@@ -18,6 +18,7 @@ class TeacherCubit extends Cubit<int> {
   List<CourseModel>? courses;
   List<int>? listStatus;
   List<StudentLessonModel>? listStudentLesson;
+  List<int>? listSubmit, listAttendance;
 
   void init(context) {
     loadProfileTeacher(context);
@@ -81,6 +82,8 @@ class TeacherCubit extends Cubit<int> {
         TeacherRepository.fromContext(context);
     var listAllStudentLessons = await teacherRepository.getAllStudentLessons();
 
+    listSubmit = [];
+    listAttendance = [];
     for (var i in listClass!) {
       for (var j in listAllStudentLessons) {}
     }
