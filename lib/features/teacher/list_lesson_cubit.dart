@@ -63,8 +63,8 @@ class ListLessonCubit extends Cubit<int> {
     TeacherRepository teacherRepository =
         TeacherRepository.fromContext(context);
 
-    List<StudentLessonModel>? listAllStudentLesson =
-        await teacherRepository.getAllStudentLessons();
+    List<StudentLessonModel>? listAllStudentLesson = await teacherRepository
+        .getAllStudentLessonsInClass(int.parse(TextUtils.getName()));
 
     AdminRepository adminRepository = AdminRepository.fromContext(context);
 
@@ -107,8 +107,7 @@ class ListLessonCubit extends Cubit<int> {
       listNotMarked!.add(notMarked.length);
       listAttendance!.add(attendance.length);
     }
-    // print(
-    //     "==============> test test ${listStudentLessons!.first.timekeeping} --- ${listStudentLessons!.first.studentId}---${listStudentLessons!.first.teacherNote}");
+
     emit(state + 1);
   }
 

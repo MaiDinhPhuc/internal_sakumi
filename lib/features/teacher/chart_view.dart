@@ -3,78 +3,68 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/teacher/chart_cubit.dart';
+import 'package:internal_sakumi/features/teacher/teacher_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class ChartView extends StatelessWidget {
-  final int classId;
-  const ChartView(this.classId, {Key? key}) : super(key: key);
+  final int index;
+  const ChartView(this.index, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ChartCubit(classId)..init(context),
-      child: BlocBuilder<ChartCubit, int>(
-        builder: (c, s) {
-          var cubit = BlocProvider.of<ChartCubit>(c);
-          return s <= 0
-              ? const CircularProgressIndicator()
-              : Container(
-                  margin: EdgeInsets.only(top: Resizable.size(context, 10)),
-                  height: Resizable.size(context, 110),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                            vertical: Resizable.size(context, 10)),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              AppText.txtQuantity.text,
-                              style: TextStyle(
-                                  fontSize: Resizable.font(context, 17),
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  top: Resizable.padding(context, 15)),
-                              child: cubit.listStudentClass == null
-                                  ? const CircularProgressIndicator()
-                                  : Text(
-                                      cubit.listStudentClass!.length.toString(),
-                                      style: TextStyle(
-                                          color: primaryColor,
-                                          fontSize: Resizable.font(context, 70),
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                            ),
-                            Text(
-                              AppText.txtStudent.text,
-                              style: TextStyle(
-                                  fontSize: Resizable.font(context, 14),
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const LineChart(),
-                      const AveragePointView(),
-                      const ColumnChart()
-                    ],
+    var cubit = BlocProvider.of<TeacherCubit>(context);
+    return Container(
+      margin: EdgeInsets.only(top: Resizable.size(context, 10)),
+      height: Resizable.size(context, 110),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(vertical: Resizable.size(context, 10)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  AppText.txtQuantity.text,
+                  style: TextStyle(
+                      fontSize: Resizable.font(context, 17),
+                      fontWeight: FontWeight.w700),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: Resizable.padding(context, 15)),
+                  child: Text(
+                    '${cubit.listStudentInClass![index]}',
+                    style: TextStyle(
+                        color: primaryColor,
+                        fontSize: Resizable.font(context, 70),
+                        fontWeight: FontWeight.w600),
                   ),
-                );
-        },
+                ),
+                Text(
+                  AppText.txtStudent.text,
+                  style: TextStyle(
+                      fontSize: Resizable.font(context, 14),
+                      fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+          ),
+          LineChart(
+            attendances: cubit.listAttendance![index],
+            hws: cubit.listSubmit![index],
+          ),
+          AveragePointView(point: cubit.listPoint![index]),
+          const ColumnChart()
+        ],
       ),
     );
   }
 }
 
 class AveragePointView extends StatelessWidget {
-  const AveragePointView({Key? key}) : super(key: key);
+  final double point;
+  const AveragePointView({required this.point, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -90,9 +80,9 @@ class AveragePointView extends StatelessWidget {
                 fontWeight: FontWeight.w700),
           ),
           CircleProgress(
-            title: '7.5',
+            title: point.toString(),
             lineWidth: Resizable.size(context, 6),
-            percent: 3 / 4,
+            percent: point / 10,
             radius: Resizable.size(context, 24),
             fontSize: Resizable.font(context, 24),
           ),
@@ -109,7 +99,9 @@ class AveragePointView extends StatelessWidget {
 }
 
 class LineChart extends StatelessWidget {
-  const LineChart({Key? key}) : super(key: key);
+  final List<int>? attendances, hws;
+  const LineChart({required this.attendances, required this.hws, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -118,58 +110,35 @@ class LineChart extends StatelessWidget {
         SizedBox(
           width: Resizable.size(context, 180),
           child: DChartLine(
-            data: const [
-              //TODO ADD ALGORITHM
+            data: [
               {
                 'id': 'Attendances',
                 'data': [
-                  {'domain': 0, 'measure': 5},
-                  {'domain': 1, 'measure': 4},
-                  {'domain': 2, 'measure': 6},
-                  {'domain': 3, 'measure': 4},
-                  {'domain': 4, 'measure': 4},
-                  {'domain': 5, 'measure': 2},
-                  {'domain': 6, 'measure': 5},
-                  {'domain': 7, 'measure': 4},
-                  {'domain': 8, 'measure': 6},
-                  {'domain': 9, 'measure': 4},
-                  {'domain': 10, 'measure': 4},
-                  {'domain': 11, 'measure': 10},
-                  {'domain': 12, 'measure': 5},
-                  {'domain': 13, 'measure': 4},
-                  {'domain': 14, 'measure': 6},
-                  {'domain': 15, 'measure': 4},
-                  {'domain': 16, 'measure': 4},
-                  {'domain': 17, 'measure': 2},
+                  const {'domain': 0, 'measure': 0},
+                  ...List.generate(
+                      attendances!.length,
+                      (index) => {
+                            'domain': index + 1,
+                            'measure': attendances![index]
+                          }).toList()
                 ],
               },
               {
                 'id': 'Homeworks',
                 'data': [
-                  {'domain': 0, 'measure': 2},
-                  {'domain': 1, 'measure': 5},
-                  {'domain': 2, 'measure': 4},
-                  {'domain': 3, 'measure': 1},
-                  {'domain': 4, 'measure': 3},
-                  {'domain': 5, 'measure': 2},
-                  {'domain': 6, 'measure': 1},
-                  {'domain': 7, 'measure': 4},
-                  {'domain': 8, 'measure': 2},
-                  {'domain': 9, 'measure': 10},
-                  {'domain': 10, 'measure': 1},
-                  {'domain': 11, 'measure': 2},
-                  {'domain': 12, 'measure': 4},
-                  {'domain': 13, 'measure': 2},
-                  {'domain': 14, 'measure': 6},
-                  {'domain': 15, 'measure': 6},
-                  {'domain': 16, 'measure': 2},
-                  {'domain': 17, 'measure': 5},
+                  const {'domain': 0, 'measure': 0},
+                  ...List.generate(
+                      hws!.length,
+                      (index) => {
+                            'domain': index + 1,
+                            'measure': hws![index]
+                          }).toList()
                 ],
               },
             ],
             includePoints: true,
             lineColor: (lineData, index, id) {
-              if (id == 'Homeworks') {
+              if (id == 'Attendances') {
                 return primaryColor;
               } else {
                 return secondaryColor;

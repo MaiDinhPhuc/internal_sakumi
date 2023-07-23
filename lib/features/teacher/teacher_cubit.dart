@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
-import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/repository/admin_repository.dart';
@@ -16,9 +14,9 @@ class TeacherCubit extends Cubit<int> {
   TeacherModel? teacherProfile;
   List<ClassModel>? listClass;
   List<CourseModel>? courses;
-  List<int>? listStatus;
-  List<StudentLessonModel>? listStudentLesson;
-  List<int>? listSubmit, listAttendance;
+  List<int>? listStatus, listStudentInClass;
+  List<List<int>?>? listSubmit, listAttendance;
+  List<double>? listPoint;
 
   void init(context) {
     loadProfileTeacher(context);
@@ -73,21 +71,49 @@ class TeacherCubit extends Cubit<int> {
         }
       }
     }
-
     emit(state + 1);
   }
 
   loadStatisticClass(context) async {
     TeacherRepository teacherRepository =
         TeacherRepository.fromContext(context);
+    AdminRepository adminRepository = AdminRepository.fromContext(context);
     var listAllStudentLessons = await teacherRepository.getAllStudentLessons();
 
     listSubmit = [];
     listAttendance = [];
+    listStudentInClass = [];
+    listPoint = [];
     for (var i in listClass!) {
-      for (var j in listAllStudentLessons) {}
-    }
+      var sc = await adminRepository.getStudentClassByClassId(i.classId);
+      listStudentInClass!.add(sc.length);
+      List<int> attends = [];
+      List<int> homeworks = [];
+      for (var j = 1; j <= courses!.first.lessonCount; j++) {
+        var attendance = listAllStudentLessons
+            .where((sl) => sl.lessonId == j)
+            .fold(
+                0,
+                (pre, e) =>
+                    pre + ((e.timekeeping > 0 && e.timekeeping < 5) ? 1 : 0));
 
+        var hw = listAllStudentLessons
+            .where((sl) => sl.lessonId == j)
+            .fold(0, (pre, e) => pre + ((e.hw > -2) ? 1 : 0));
+
+        var point = listAllStudentLessons
+            .where((sl) => sl.lessonId == j)
+            .fold(0, (pre, e) => pre + ((e.hw > -1) ? e.hw : 0));
+
+        attends.add(attendance);
+        homeworks.add(hw);
+
+        listPoint!.add(point / listStudentInClass!.length / 10);
+      }
+      listAttendance!.add(attends);
+      listSubmit!.add(homeworks);
+    }
+    print('==========><========== $listAttendance === $listSubmit');
     emit(state + 1);
   }
 }

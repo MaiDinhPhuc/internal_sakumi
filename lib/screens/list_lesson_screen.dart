@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/header_teacher.dart';
-import 'package:internal_sakumi/features/teacher/chart_cubit.dart';
+
 import 'package:internal_sakumi/features/teacher/collapse_lesson_item.dart';
+import 'package:internal_sakumi/features/teacher/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/features/teacher/expand_lesson_item.dart';
 import 'package:internal_sakumi/features/teacher/list_lesson_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';

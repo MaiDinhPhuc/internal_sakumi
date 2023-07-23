@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/model/class_model.dart';
+import 'package:internal_sakumi/features/teacher/teacher_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class ClassOverView extends StatelessWidget {
-  final double value1, value2;
-  final String courseName;
-  final ClassModel classModel;
-  const ClassOverView(
-      {required this.value1,
-      required this.value2,
-      required this.classModel,
-      required this.courseName,
+  final int index;
+  const ClassOverView(this.index,
+      {
       Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var cubit = BlocProvider.of<TeacherCubit>(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -26,14 +23,15 @@ class ClassOverView extends StatelessWidget {
             flex: 4,
             child: Row(
               children: [
-                Text(classModel.classCode.toUpperCase(),
+                Text(cubit.listClass![index].classCode.toUpperCase(),
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: Resizable.font(context, 20))),
                 SizedBox(
                   width: Resizable.size(context, 10),
                 ),
-                Text(courseName,
+                Text(
+                    '${cubit.courses![index].name} ${cubit.courses![index].level} ${cubit.courses![index].termName}',
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: Resizable.font(context, 16))),
@@ -52,14 +50,18 @@ class ClassOverView extends StatelessWidget {
                   animation: true,
                   lineHeight: Resizable.size(context, 8),
                   animationDuration: 2000,
-                  percent: value1 <= 0 ? 0 : value1 / value2,
+                  percent: cubit.listStatus![index] <= 0
+                      ? 0
+                      : cubit.listStatus![index].toDouble() /
+                          cubit.courses![index].lessonCount,
                   center: const SizedBox(),
                   barRadius: const Radius.circular(10000),
                   backgroundColor: greyColor.shade100,
                   progressColor: primaryColor,
                 ),
                 SizedBox(width: Resizable.size(context, 10)),
-                Text('$value1/$value2 ${AppText.txtLesson.text.toLowerCase()}',
+                Text(
+                    '${cubit.listStatus![index]}/${cubit.courses![index].lessonCount} ${AppText.txtLesson.text.toLowerCase()}',
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: Resizable.font(context, 16)))

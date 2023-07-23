@@ -93,18 +93,8 @@ class TeacherScreen extends StatelessWidget {
                                 children: [
                                   ...cubit.listClass!
                                       .map((e) => ClassItem(
-                                            value1: cubit.listStatus![
-                                                    cubit.listClass!.indexOf(e)]
-                                                .toDouble(),
-                                            value2: cubit
-                                                .courses![
-                                                    cubit.listClass!.indexOf(e)]
-                                                .lessonCount
-                                                .toDouble(),
-                                            classModel: e,
-                                            courseName:
-                                                '${cubit.courses![cubit.listClass!.indexOf(e)].name} ${cubit.courses![cubit.listClass!.indexOf(e)].level} ${cubit.courses![cubit.listClass!.indexOf(e)].termName}',
-                                          ))
+                                          cubit.listClass!.indexOf(e),
+                                          e.classId))
                                       .toList(),
                                 ],
                               ),

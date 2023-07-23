@@ -1,24 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/features/teacher/chart_cubit.dart';
+
 import 'package:internal_sakumi/features/teacher/chart_view.dart';
 import 'package:internal_sakumi/features/teacher/class_overview.dart';
-import 'package:internal_sakumi/model/class_model.dart';
+import 'package:internal_sakumi/features/teacher/detail_lesson_cubit.dart';
+import 'package:internal_sakumi/features/teacher/teacher_cubit.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:internal_sakumi/widget/card_item.dart';
 
 class ClassItem extends StatelessWidget {
-  final double value1, value2;
-  final String courseName;
-  final ClassModel classModel;
-  const ClassItem(
-      {required this.value1,
-      required this.value2,
-      required this.classModel,
-      required this.courseName,
-      Key? key})
-      : super(key: key);
+  final int index, classId;
+  const ClassItem(this.index, this.classId, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,30 +20,30 @@ class ClassItem extends StatelessWidget {
         child: BlocBuilder<DropdownCubit, int>(
           builder: (c, state) => AnimatedCrossFade(
               firstChild: CardItem(
-                  widget: ClassOverView(
-                      value1: value1,
-                      value2: value2,
-                      classModel: classModel,
-                      courseName: courseName),
+                  widget: ClassOverView(index),
                   onTap: () async {
                     await Navigator.pushNamed(context,
-                        "${Routes.teacher}?name=${TextUtils.getName().trim()}/class?id=${classModel.classId}");
+                        "${Routes.teacher}?name=${TextUtils.getName().trim()}/class?id=$classId");
                   },
-                  onPressed: () => BlocProvider.of<DropdownCubit>(c).update()),
+                  onPressed: () {
+                    BlocProvider.of<DropdownCubit>(c).update();
+                    if (BlocProvider.of<TeacherCubit>(c).listPoint == null) {
+                      BlocProvider.of<TeacherCubit>(c).loadStatisticClass(c);
+                    }
+                  }),
               secondChild: CardItem(
                   widget: Column(
                     children: [
-                      ClassOverView(
-                          value1: value1,
-                          value2: value2,
-                          classModel: classModel,
-                          courseName: courseName),
-                      ChartView(classModel.classId)
+                      ClassOverView(index),
+                      (BlocProvider.of<TeacherCubit>(c).listStudentInClass ==
+                              null)
+                          ? const CircularProgressIndicator()
+                          : ChartView(index)
                     ],
                   ),
                   onTap: () async {
                     await Navigator.pushNamed(context,
-                        "${Routes.teacher}?name=${TextUtils.getName().trim()}/class?id=${classModel.classId}");
+                        "${Routes.teacher}?name=${TextUtils.getName().trim()}/class?id=$classId");
                   },
                   onPressed: () => BlocProvider.of<DropdownCubit>(c).update()),
               crossFadeState: state % 2 == 1

@@ -90,6 +90,8 @@ enum AppText {
   txtNoteFromSupport,
   txtNoteFromAnotherTeacher,
   txtStartLesson,
+  txtCompleteLesson,
+  txtFinishLesson,
   txtQuantity,
   txtStudent,
   titleTimekeeping,
@@ -103,7 +105,20 @@ enum AppText {
   txtAveragePoint,
   txtDoHomeworks,
   txtNotMark,
-  txtMarked
+  txtMarked,
+  txtNoNoteForStudent,
+  txtNoNoteForSupport,
+  txtNoNoteForTeacher,
+  txtHintNoteForStudent,
+  txtHintNoteForSupport,
+  txtHintNoteForTeacher,
+  titleNoteForSenseiAfterTeach,
+  txtNoteForSenseiAfterTeach,
+  txtQuestionForSenseiAfterTeach,
+  txtBack,
+  txtOK,
+  txtActiveStatus,
+  txtLearningStatus,
 }
 
 Map<AppText, String> texts = {
@@ -195,6 +210,8 @@ Map<AppText, String> texts = {
   AppText.txtNoteFromSupport: 'Ghi chú từ team support',
   AppText.txtNoteFromAnotherTeacher: 'Ghi chú từ giáo viên trước',
   AppText.txtStartLesson: 'Bắt đầu buổi học',
+  AppText.txtCompleteLesson: 'Hoàn thành buổi học',
+  AppText.txtFinishLesson: 'Kết thúc buổi học',
   AppText.txtQuantity: 'Sỉ số',
   AppText.txtStudent: 'Học viên',
   AppText.titleTimekeeping: 'Điểm danh',
@@ -208,7 +225,22 @@ Map<AppText, String> texts = {
   AppText.txtAveragePoint: '(Điểm trung bình)',
   AppText.txtDoHomeworks: 'Làm BTVN',
   AppText.txtNotMark: 'Chưa chấm bài tập về nhà',
-  AppText.txtMarked: 'Đã chấm bài tập về nhà'
+  AppText.txtMarked: 'Đã chấm bài tập về nhà',
+  AppText.txtNoNoteForStudent: 'Không có dặn dò dành cho học viên',
+  AppText.txtNoNoteForSupport: 'Không có dặn dò dành cho Team Support',
+  AppText.txtNoNoteForTeacher: 'Không có dặn dò dành cho Sensei',
+  AppText.txtHintNoteForStudent: 'Điền ghi chú của Sensei dành cho học viên...',
+  AppText.txtHintNoteForSupport: 'Điền ghi chú dành cho Team Support...',
+  AppText.txtHintNoteForTeacher: 'Điền ghi chú dành cho Sensei tiếp theo...',
+  AppText.titleNoteForSenseiAfterTeach: 'Dặn dò dành cho Sensei cuối buổi học',
+  AppText.txtNoteForSenseiAfterTeach:
+      'Sensei vui lòng tắt record Google Meet trước khi bấm đồng ý kết thúc buổi học',
+  AppText.txtQuestionForSenseiAfterTeach:
+      'Sensei có muốn kết thúc buổi học không?',
+  AppText.txtOK: 'Đồng ý',
+  AppText.txtBack: 'Quay lại',
+  AppText.txtActiveStatus: 'Tương tác',
+  AppText.txtLearningStatus: 'Học lực'
 };
 
 extension AppTexts on AppText {
