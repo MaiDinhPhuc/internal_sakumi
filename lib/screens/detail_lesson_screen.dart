@@ -24,7 +24,7 @@ class DetailLessonScreen extends StatelessWidget {
         child: Scaffold(
           body: Column(
             children: [
-              HeaderTeacher(),
+              HeaderTeacher(index: 1, classId: TextUtils.getName(position: 2), name: name,),
               Container(
                 margin: EdgeInsets.symmetric(
                     vertical: Resizable.padding(context, 20)),

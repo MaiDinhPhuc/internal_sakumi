@@ -5,9 +5,12 @@ import 'package:internal_sakumi/screens/add_student_screen.dart';
 import 'package:internal_sakumi/screens/add_teacher_screen.dart';
 import 'package:internal_sakumi/screens/add_user_to_class_screen.dart';
 import 'package:internal_sakumi/screens/admin_screen.dart';
+import 'package:internal_sakumi/screens/class_overview_screen.dart';
+import 'package:internal_sakumi/screens/class_test_screen.dart';
 import 'package:internal_sakumi/screens/detail_class_screen.dart';
 import 'package:internal_sakumi/screens/detail_lesson_screen.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
+import 'package:internal_sakumi/screens/grading_screen.dart';
 import 'package:internal_sakumi/screens/list_lesson_screen.dart';
 import 'package:internal_sakumi/screens/master_screen.dart';
 import 'package:internal_sakumi/screens/teacher_screen.dart';
@@ -51,9 +54,15 @@ class Routes {
         handler: masterHandler, transitionType: TransitionType.fadeIn);
     router.define(addTeacher,
         handler: addTeacherHandler, transitionType: TransitionType.fadeIn);
-    router.define('/:name/:classId',
+    router.define('/:name/overview/:classId',
+        handler: overViewHandler, transitionType: TransitionType.fadeIn);
+    router.define('/:name/lesson/:classId',
         handler: lessonsHandler, transitionType: TransitionType.fadeIn);
-    router.define('/:name/:classId/:lessonId',
+    router.define('/:name/test/:classId',
+        handler: testHandler, transitionType: TransitionType.fadeIn);
+    router.define('/:name/grading/:classId',
+        handler: gradingHandler, transitionType: TransitionType.fadeIn);
+    router.define('/:name/lesson/:classId/:lessonId',
         handler: detailLessonHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/:classId',
         handler: detailClassHandler, transitionType: TransitionType.fadeIn);
@@ -74,7 +83,7 @@ var teacherHandler =
 
 var adminHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return AdminScreen();
+  return const AdminScreen();
 });
 
 var addUserToClassHandler =
@@ -96,7 +105,18 @@ var lessonsHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return ListLessonScreen(params['name'][0], params['classId'][0]);
 });
-
+var overViewHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return  ClassOverViewScreen(params['name'][0]);
+});
+var gradingHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return ClassGradingScreen(params['name'][0]);
+});
+var testHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return ClassTestScreen(params['name'][0]);
+});
 var detailClassHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return DetailClassScreen(params['classId'][0]);

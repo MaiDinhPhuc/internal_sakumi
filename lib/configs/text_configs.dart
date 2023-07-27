@@ -119,9 +119,15 @@ enum AppText {
   txtOK,
   txtActiveStatus,
   txtLearningStatus,
+  titleOverView,
+  titleLesson,
+  titleGrading
 }
 
 Map<AppText, String> texts = {
+  AppText.titleOverView: 'Tổng quan',
+  AppText.titleLesson: 'Bài học',
+  AppText.titleGrading: 'Chấm điểm',
   AppText.titleMultiChoice: 'Kiểm tra',
   AppText.btnReplay: 'Làm lại',
   AppText.btnSubmit: 'Nộp bài',
