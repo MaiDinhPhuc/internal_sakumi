@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/teacher/detail_lesson_cubit.dart';
+import 'package:internal_sakumi/features/teacher/lecture/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
@@ -57,7 +57,7 @@ class LessonPendingView extends StatelessWidget {
           width: double.maxFinite,
           padding: EdgeInsets.all(Resizable.padding(context, 20)),
           margin:
-              EdgeInsets.symmetric(horizontal: Resizable.padding(context, 200)),
+              EdgeInsets.symmetric(horizontal: Resizable.padding(context, 150)),
           constraints: BoxConstraints(minHeight: Resizable.size(context, 50)),
           decoration: BoxDecoration(
               color: Colors.white,
@@ -95,7 +95,7 @@ class LessonPendingView extends StatelessWidget {
           width: double.maxFinite,
           padding: EdgeInsets.all(Resizable.padding(context, 20)),
           margin:
-              EdgeInsets.symmetric(horizontal: Resizable.padding(context, 200)),
+              EdgeInsets.symmetric(horizontal: Resizable.padding(context, 150)),
           constraints: BoxConstraints(minHeight: Resizable.size(context, 50)),
           decoration: BoxDecoration(
               color: Colors.white,

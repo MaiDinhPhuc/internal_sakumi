@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/header_teacher.dart';
-import 'package:internal_sakumi/features/teacher/detail_lesson_cubit.dart';
-import 'package:internal_sakumi/features/teacher/lesson_complete_view.dart';
-import 'package:internal_sakumi/features/teacher/lesson_pending_view.dart';
-import 'package:internal_sakumi/features/teacher/lesson_teaching_view.dart';
+import 'package:internal_sakumi/features/teacher/lecture/detail_lesson_cubit.dart';
+import 'package:internal_sakumi/features/teacher/lecture/lesson_complete_view.dart';
+import 'package:internal_sakumi/features/teacher/lecture/lesson_pending_view.dart';
+import 'package:internal_sakumi/features/teacher/lecture/lesson_teaching_view.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
@@ -24,7 +24,11 @@ class DetailLessonScreen extends StatelessWidget {
         child: Scaffold(
           body: Column(
             children: [
-              HeaderTeacher(index: 1, classId: TextUtils.getName(position: 2), name: name,),
+              HeaderTeacher(
+                index: 1,
+                classId: TextUtils.getName(position: 2),
+                name: name,
+              ),
               Container(
                 margin: EdgeInsets.symmetric(
                     vertical: Resizable.padding(context, 20)),
@@ -42,8 +46,8 @@ class DetailLessonScreen extends StatelessWidget {
                       : Expanded(
                           child: SingleChildScrollView(
                               child: BlocProvider(
-                                  create: (c) => AttendanceCubit()..init(c),
-                                  child: BlocBuilder<AttendanceCubit, int>(
+                                  create: (c) => SessionCubit()..init(c),
+                                  child: BlocBuilder<SessionCubit, int>(
                                     builder: (_, state) {
                                       return Column(
                                         children: [

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
@@ -70,17 +71,73 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
   }
 }
 
-class AttendanceCubit extends Cubit<int> {
-  AttendanceCubit() : super(0);
+class SessionCubit extends Cubit<int> {
+  SessionCubit() : super(0);
 
   List<StudentModel>? listStudent;
   List<StudentLessonModel>? listStudentLesson;
   List<StudentClassModel>? listStudentClass;
-  //bool isShow = false;
+  int totalAttendance = 0;
+  bool? isNoteStudent = false;
+  bool? isNoteSupport = false;
+  bool? isNoteSensei = false;
+
+  static SessionCubit fromContext(BuildContext context) =>
+      BlocProvider.of<SessionCubit>(context);
 
   init(context) async {
     await loadStudentInClass(context);
     await loadStudentLesson(context);
+    totalAttendance = listStudentLesson!
+        .fold(0, (pre, e) => e.timekeeping > 0 ? (pre + 1) : pre);
+  }
+
+  _updateUI() {
+    emit(state + 1);
+  }
+
+  checkNoteStudent() {
+    if (isNoteStudent != null) {
+      if (isNoteStudent == false) {
+        isNoteStudent = true;
+      } else {
+        isNoteStudent = false;
+      }
+    }
+    _updateUI();
+  }
+
+  checkNoteSupport() {
+    if (isNoteSupport != null) {
+      if (isNoteSupport == false) {
+        isNoteSupport = true;
+      } else {
+        isNoteSupport = false;
+      }
+    }
+    _updateUI();
+  }
+
+  checkNoteSensei() {
+    if (isNoteSensei != null) {
+      if (isNoteSensei == false) {
+        isNoteSensei = true;
+      } else {
+        isNoteSensei = false;
+      }
+    }
+    _updateUI();
+  }
+
+  updateTimekeeping(int attendId) {
+    if (attendId! > 0) {
+      totalAttendance++;
+    } else {
+      totalAttendance--;
+    }
+
+    debugPrint('============> totalAttendance $totalAttendance -- $attendId');
+    emit(state + 1);
   }
 
   loadStudentInClass(context) async {
@@ -112,8 +169,6 @@ class AttendanceCubit extends Cubit<int> {
     var list = await teacherRepository.getStudentLessonInLesson(
         int.parse(TextUtils.getName(position: 2)),
         int.parse(TextUtils.getName()));
-
-    //isShow = list.fold(true, (pre, e) => pre && (e.timekeeping > 0));
 
     listStudentLesson = [];
     listStudentLesson!.addAll(list);

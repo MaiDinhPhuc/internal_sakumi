@@ -1,24 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
-import 'package:internal_sakumi/features/list_student_view.dart';
-import 'package:internal_sakumi/features/teacher/teacher_cubit.dart';
+import 'package:internal_sakumi/features/teacher/lecture/teacher_cubit.dart';
 import 'package:internal_sakumi/firebase_options.dart';
 import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/repository/user_repository.dart';
 import 'package:internal_sakumi/routes.dart';
-import 'package:internal_sakumi/screens/add_class_screen.dart';
-import 'package:internal_sakumi/screens/add_student_screen.dart';
-import 'package:internal_sakumi/screens/add_teacher_screen.dart';
-import 'package:internal_sakumi/screens/add_user_to_class_screen.dart';
-import 'package:internal_sakumi/screens/admin_screen.dart';
-import 'package:internal_sakumi/screens/detail_class_screen.dart';
-import 'package:internal_sakumi/screens/detail_student_screen.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
-import 'package:internal_sakumi/screens/master_screen.dart';
-import 'package:internal_sakumi/screens/teacher_screen.dart';
-import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {

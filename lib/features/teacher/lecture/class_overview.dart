@@ -2,16 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/teacher/teacher_cubit.dart';
+import 'package:internal_sakumi/features/teacher/lecture/teacher_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class ClassOverView extends StatelessWidget {
   final int index;
-  const ClassOverView(this.index,
-      {
-      Key? key})
-      : super(key: key);
+  const ClassOverView(this.index, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

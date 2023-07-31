@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:internal_sakumi/features/header_teacher.dart';
 
-import '../utils/text_utils.dart';
+import '../../utils/text_utils.dart';
 
 class ClassOverViewScreen extends StatelessWidget {
-  const ClassOverViewScreen(this.name,{super.key});
+  const ClassOverViewScreen(this.name, {super.key});
   final String name;
 
   @override
@@ -12,7 +12,11 @@ class ClassOverViewScreen extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          HeaderTeacher(index: 0, classId: TextUtils.getName(position: 2), name:name,),
+          HeaderTeacher(
+            index: 0,
+            classId: TextUtils.getName(position: 2),
+            name: name,
+          ),
           Text("OverView")
         ],
       ),

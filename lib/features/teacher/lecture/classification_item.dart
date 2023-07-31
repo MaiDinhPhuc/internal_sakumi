@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
-import 'package:internal_sakumi/features/teacher/attendance_item.dart';
+import 'package:internal_sakumi/features/teacher/lecture/attendance_item.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 

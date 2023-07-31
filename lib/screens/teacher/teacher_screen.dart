@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/teacher/class_item.dart';
-import 'package:internal_sakumi/features/teacher/teacher_cubit.dart';
+import 'package:internal_sakumi/features/teacher/lecture/class_item.dart';
+import 'package:internal_sakumi/features/teacher/lecture/teacher_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class TeacherScreen extends StatelessWidget {
