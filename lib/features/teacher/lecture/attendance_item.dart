@@ -86,10 +86,10 @@ class DropDownWidget extends StatelessWidget {
                         boxShadow: [
                           BoxShadow(
                               blurRadius: Resizable.size(context, 2),
-                              color: s < 1 ? greyColor.shade100 : primaryColor)
+                              color: s > 0 ? greyColor.shade100 : primaryColor)
                         ],
                         border: Border.all(
-                            color: s < 1 ? greyColor.shade100 : primaryColor),
+                            color: s > 0 ? greyColor.shade100 : primaryColor),
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(1000)),
                     dropdownElevation: 0,
