@@ -8,6 +8,7 @@ import 'package:internal_sakumi/screens/admin_screen.dart';
 import 'package:internal_sakumi/screens/class_overview_screen.dart';
 import 'package:internal_sakumi/screens/class_test_screen.dart';
 import 'package:internal_sakumi/screens/detail_class_screen.dart';
+import 'package:internal_sakumi/screens/detail_grading_screen.dart';
 import 'package:internal_sakumi/screens/detail_lesson_screen.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
 import 'package:internal_sakumi/screens/grading_screen.dart';
@@ -62,6 +63,8 @@ class Routes {
         handler: testHandler, transitionType: TransitionType.fadeIn);
     router.define('/:name/grading/:classId',
         handler: gradingHandler, transitionType: TransitionType.fadeIn);
+    router.define('/:name/grading/:classId/:lessonId',
+        handler: detailGradingHandler, transitionType: TransitionType.fadeIn);
     router.define('/:name/lesson/:classId/:lessonId',
         handler: detailLessonHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/:classId',
@@ -121,6 +124,14 @@ var detailClassHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return DetailClassScreen(params['classId'][0]);
 });
+
+
+var detailGradingHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return DetailGradingScreen(
+      params['name'][0]);
+});
+
 
 var detailLessonHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {

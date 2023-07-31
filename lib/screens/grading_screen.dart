@@ -1,18 +1,130 @@
 import 'package:flutter/material.dart';
-import 'package:internal_sakumi/features/header_teacher.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
+import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/class_appbar.dart';
+import 'package:internal_sakumi/features/teacher/grading_cubit.dart';
+import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
+import 'package:internal_sakumi/widget/submit_button.dart';
 
 class ClassGradingScreen extends StatelessWidget {
-  const ClassGradingScreen(this.name,{super.key});
+  const ClassGradingScreen(this.name, {super.key});
   final String name;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          HeaderTeacher(index: 3, classId: TextUtils.getName(position: 2), name: name),
-          Text("grading")
-        ],
+    return BlocProvider(
+      create: (context) => GradingCubit()..init(context),
+      child: Scaffold(
+        body: Column(
+          children: [
+            HeaderTeacher(
+                index: 3, classId: TextUtils.getName(position: 2), name: name),
+            BlocBuilder<GradingCubit, int>(builder: (c, s) {
+              var cubit = BlocProvider.of<GradingCubit>(c);
+              return cubit.classModel == null
+                  ? Transform.scale(
+                scale: 0.75,
+                child: const CircularProgressIndicator(),
+              )
+                  : Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              vertical: Resizable.padding(context, 20)),
+                          child: Text(
+                              '${AppText.textClass.text} ${cubit.classModel!.classCode}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: Resizable.font(context, 30))),
+                        ),
+                        cubit.listLessonResult == null || cubit.listResultCount == null || cubit.listStudentLessons == null || cubit.lessons == null ? Transform.scale(
+                          scale: 0.75,
+                          child: const CircularProgressIndicator(),
+                        ) : Column(
+                          children: [
+                            ...cubit.listLessonResult!.map((e) =>
+                                Container(
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: Resizable.padding(
+                                          context, 150),
+                                      vertical: Resizable.padding(
+                                          context, 5)),
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                          alignment: Alignment
+                                              .centerLeft,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal:
+                                              Resizable.padding(
+                                                  context, 20),
+                                              vertical: Resizable.padding(
+                                                  context, 8)),
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  width: Resizable.size(
+                                                      context, 1.5),
+                                                  color: greyColor
+                                                      .shade100),
+                                              borderRadius:
+                                              BorderRadius.circular(
+                                                  Resizable.size(context, 5))),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                            crossAxisAlignment : CrossAxisAlignment.start,
+                                                children: [
+                                                  Padding(padding: EdgeInsets.symmetric(vertical:Resizable.padding(context, 10) ),child: Text(cubit.lessons![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)].title, style: TextStyle(fontWeight: FontWeight.bold,fontSize: Resizable.font(context, 30),),),
+                                                      ),
+                                                  Text(cubit.lessons![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)].description),
+                                                  Text("${AppText.textNumberResultReceive.text} ${cubit.listResultCount![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)]}")
+                                                ],
+                                              ),
+                                              Expanded(child: Column(
+                                                mainAxisAlignment : MainAxisAlignment.spaceBetween,
+                                                crossAxisAlignment :CrossAxisAlignment.end,
+                                                children: [
+                                                  ElevatedButton(
+                                                    onPressed: ()async{
+                                                      await Navigator.pushNamed(context,
+                                                          "${Routes.teacher}?name=$name/grading/class?id=${TextUtils.getName(position: 2)}/lesson?id=${e.lessonId}");
+                                                    },
+                                                    style: ButtonStyle(
+                                                        shadowColor: MaterialStateProperty.all(
+                                                            primaryColor ),
+                                                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                                                            borderRadius:
+                                                            BorderRadius.circular(Resizable.padding(context, 1000)))),
+                                                        backgroundColor: MaterialStateProperty.all(
+                                                            primaryColor ),
+                                                        padding: MaterialStateProperty.all(EdgeInsets.symmetric(
+                                                            horizontal: Resizable.padding(context, 30)))),
+                                                    child: Text(AppText.titleGrading.text.toUpperCase(),
+                                                        style: TextStyle(
+                                                            fontWeight: FontWeight.w700,
+                                                            fontSize: Resizable.font(context, 16),
+                                                            color: Colors.white)),
+                                                  )
+                                                ],
+                                              ))
+                                            ],
+                                          )),
+                                    ],
+                                  ),
+                                ))
+                          ],
+                        )
+                      ],
+                    ),
+                  ));
+            }),
+          ],
+        ),
       ),
     );
   }

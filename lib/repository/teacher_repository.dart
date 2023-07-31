@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
+import 'package:internal_sakumi/model/homework_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
+import 'package:internal_sakumi/model/question_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
@@ -129,7 +132,7 @@ class TeacherRepository {
     return list;
   }
 
-  Future<List<StudentLessonModel>> getStudentLessonInLesson(
+  Future<List<StudentLessonModel>> getAllStudentLessonInLesson(
       int classId, int lessonId) async {
     final db = FirebaseFirestore.instance;
 
@@ -147,6 +150,23 @@ class TeacherRepository {
     return list;
   }
 
+  Future<List<AnswerModel>> getAnswerOfQuestion(
+      int questionId, int lessonId, int classId) async {
+    final db = FirebaseFirestore.instance;
+    final snapshot = await db
+        .collection('answer')
+        .where('parent_id', isEqualTo: lessonId)
+        .where('question_id', isEqualTo: questionId)
+        .where('class_id', isEqualTo: classId)
+        .get();
+
+    final list =
+        snapshot.docs.map((e) => AnswerModel.fromSnapshot(e)).toList();
+    return list;
+  }
+  
+  
+
   Future<List<StudentLessonModel>> getAllStudentLessons() async {
     final db = FirebaseFirestore.instance;
 
@@ -158,6 +178,45 @@ class TeacherRepository {
     //list.sort((a, b) => a.studentId.compareTo(b.studentId));
 
     return list;
+  }
+
+  Future<HomeworkModel?> getHomework(int lessonId, int classId) async {
+    final db = FirebaseFirestore.instance;
+    final snapshot = await db
+        .collection("homework")
+        .where("lesson_id", isEqualTo: lessonId)
+        .where("class_id", isEqualTo: classId)
+        .get();
+    if (snapshot.docs.isEmpty) {
+      return null;
+    }
+    final homework =
+        snapshot.docs.map((e) => HomeworkModel.fromSnapshot(e)).single;
+    return homework;
+  }
+
+  Future<QuestionModel> getQuestionByQuestionId(int questionId) async {
+    final db = FirebaseFirestore.instance;
+    final snapshot = await db
+        .collection("questions")
+        .where("id", isEqualTo: questionId)
+        .get();
+    final question =
+        snapshot.docs.map((e) => QuestionModel.fromSnapshot(e)).single;
+    return question;
+  }
+
+  Future<List<QuestionModel>> getDefaultHwQuestionByLessonId(
+      int lessonId) async {
+    final db = FirebaseFirestore.instance;
+    final snapshot = await db
+        .collection("questions")
+        .where("lesson_id", isEqualTo: lessonId)
+        .where("is_hw_default", isEqualTo: true)
+        .get();
+    final questions =
+    snapshot.docs.map((e) => QuestionModel.fromSnapshot(e)).toList();
+    return questions;
   }
 
   Future<void> updateTimekeeping(
