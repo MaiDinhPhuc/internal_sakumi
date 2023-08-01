@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:internal_sakumi/features/class_appbar.dart';
 
-import '../../utils/text_utils.dart';
+import '../../../utils/text_utils.dart';
 
 class ClassTestTab extends StatelessWidget {
   const ClassTestTab(this.name, {super.key});

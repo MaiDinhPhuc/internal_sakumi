@@ -6,12 +6,12 @@ import 'package:internal_sakumi/screens/admin/admin_screen.dart';
 import 'package:internal_sakumi/screens/admin/detail_class_screen.dart';
 import 'package:internal_sakumi/screens/detail_grading_screen.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
-import 'package:internal_sakumi/screens/grading_screen.dart';
 import 'package:internal_sakumi/screens/master_screen.dart';
-import 'package:internal_sakumi/screens/teacher/class_overview_tab.dart';
-import 'package:internal_sakumi/screens/teacher/class_test_tab.dart';
+import 'package:internal_sakumi/screens/teacher/tab/class_grading_tab.dart';
+import 'package:internal_sakumi/screens/teacher/tab/class_overview_tab.dart';
+import 'package:internal_sakumi/screens/teacher/tab/class_test_tab.dart';
 import 'package:internal_sakumi/screens/teacher/detail_lesson_screen.dart';
-import 'package:internal_sakumi/screens/teacher/list_lesson_tab.dart';
+import 'package:internal_sakumi/screens/teacher/tab/list_lesson_tab.dart';
 import 'package:internal_sakumi/screens/teacher/teacher_screen.dart';
 
 class Routes {
@@ -112,7 +112,7 @@ var overViewHandler =
 });
 var gradingHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return ClassGradingScreen(params['name'][0]);
+  return ClassGradingTab(params['name'][0]);
 });
 var testHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {

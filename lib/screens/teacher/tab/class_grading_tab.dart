@@ -9,8 +9,8 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 
-class ClassGradingScreen extends StatelessWidget {
-  const ClassGradingScreen(this.name, {super.key});
+class ClassGradingTab extends StatelessWidget {
+  const ClassGradingTab(this.name, {super.key});
   final String name;
   @override
   Widget build(BuildContext context) {
