@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/header_teacher.dart';
+import 'package:internal_sakumi/features/class_appbar.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/lesson_complete_view.dart';
 import 'package:internal_sakumi/features/teacher/lecture/lesson_pending_view.dart';
