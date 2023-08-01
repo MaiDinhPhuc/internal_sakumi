@@ -89,7 +89,7 @@ class AddClassScreen extends StatelessWidget {
             ),
           )
         : BlocBuilder<LoadClassCubit, ClassModel?>(
-            bloc: LoadClassCubit(classModel!)..load(),
+            bloc: LoadClassCubit(classModel!)..load(context),
             builder: (c, s) => Scaffold(
                   appBar: AppBar(
                     title: Text(classModel!.classCode),
@@ -215,7 +215,8 @@ class LoadClassCubit extends Cubit<ClassModel?> {
   final ClassModel model;
   LoadClassCubit(this.model) : super(null);
 
-  load() async {
-    emit(await UserRepository.getClassByClassId(model.classId, model.courseId));
+  load(context) async {
+    var userRepo = UserRepository.fromContext(context);
+    emit(await userRepo.getClassByClassId(model.classId, model.courseId));
   }
 }

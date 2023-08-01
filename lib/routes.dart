@@ -61,6 +61,8 @@ class Routes {
         handler: testHandler, transitionType: TransitionType.fadeIn);
     router.define('/:name/grading/:classId',
         handler: gradingHandler, transitionType: TransitionType.fadeIn);
+    router.define('/:name/grading/:classId/:lessonId',
+        handler: detailGradingHandler, transitionType: TransitionType.fadeIn);
     router.define('/:name/lesson/:classId/:lessonId',
         handler: detailLessonHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/:classId',

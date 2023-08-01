@@ -57,9 +57,10 @@ class AuthServices {
 
   static logInUser(String email, String password, context) async {
     try {
+      var userRepo = UserRepository.fromContext(context);
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      UserModel user = await UserRepository.getUser(email);
+      UserModel user = await userRepo.getUser(email);
 
       if (user.role == "admin" ||
           user.role == "master" ||

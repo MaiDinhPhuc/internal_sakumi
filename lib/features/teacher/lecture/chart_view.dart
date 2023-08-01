@@ -21,36 +21,6 @@ class ChartView extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Container(
-          //   margin: EdgeInsets.symmetric(vertical: Resizable.size(context, 10)),
-          //   child: Column(
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     children: [
-          //       Text(
-          //         AppText.txtQuantity.text,
-          //         style: TextStyle(
-          //             fontSize: Resizable.font(context, 17),
-          //             fontWeight: FontWeight.w700),
-          //       ),
-          //       Container(
-          //         margin: EdgeInsets.only(top: Resizable.padding(context, 15)),
-          //         child: Text(
-          //           '${cubit.listStudentInClass![index]}',
-          //           style: TextStyle(
-          //               color: primaryColor,
-          //               fontSize: Resizable.font(context, 70),
-          //               fontWeight: FontWeight.w600),
-          //         ),
-          //       ),
-          //       Text(
-          //         AppText.txtStudent.text,
-          //         style: TextStyle(
-          //             fontSize: Resizable.font(context, 14),
-          //             fontWeight: FontWeight.w600),
-          //       ),
-          //     ],
-          //   ),
-          // ),
           Expanded(flex: 4, child: Container()),
           const Expanded(flex: 2, child: ColumnChart()),
           Expanded(child: Container()),
@@ -62,7 +32,6 @@ class ChartView extends StatelessWidget {
                 points: cubit.listPoint,
               )),
           Expanded(flex: 4, child: Container()),
-          //AveragePointView(point: cubit.listPoint![index]),
         ],
       ),
     );
@@ -119,9 +88,7 @@ class LineChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          //width: Resizable.size(context, 360),
-          margin: EdgeInsets.only(bottom: Resizable.padding(context, 5)),
+        SizedBox(
           height: Resizable.size(context, 110),
           child: DChartLine(
             data: [
@@ -179,27 +146,7 @@ class LineChart extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  height: Resizable.size(context, 5),
-                  width: Resizable.size(context, 20),
-                  color: secondaryColor,
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      left: Resizable.padding(context, 3),
-                      right: Resizable.padding(context, 20)),
-                  child: Text(
-                    AppText.txtDoHomeworks.text,
-                    style: TextStyle(
-                        fontSize: Resizable.font(context, 14),
-                        fontWeight: FontWeight.w600),
-                  ),
-                )
-              ],
-            ),
-            Row(
-              children: [
-                Container(
-                  height: Resizable.size(context, 5),
+                  height: Resizable.size(context, 3),
                   width: Resizable.size(context, 20),
                   color: primaryColor,
                 ),
@@ -219,7 +166,27 @@ class LineChart extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  height: Resizable.size(context, 5),
+                  height: Resizable.size(context, 3),
+                  width: Resizable.size(context, 20),
+                  color: secondaryColor,
+                ),
+                Container(
+                  margin: EdgeInsets.only(
+                      left: Resizable.padding(context, 3),
+                      right: Resizable.padding(context, 20)),
+                  child: Text(
+                    AppText.txtDoHomeworks.text,
+                    style: TextStyle(
+                        fontSize: Resizable.font(context, 14),
+                        fontWeight: FontWeight.w600),
+                  ),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Container(
+                  height: Resizable.size(context, 3),
                   width: Resizable.size(context, 20),
                   color: Colors.yellow,
                   margin: EdgeInsets.only(right: Resizable.padding(context, 3)),

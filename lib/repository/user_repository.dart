@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
@@ -6,7 +8,10 @@ import 'package:internal_sakumi/model/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRepository {
-  static Future<StudentModel> getStudentInfo(int userId) async {
+  static UserRepository fromContext(BuildContext context) =>
+      RepositoryProvider.of<UserRepository>(context);
+
+  Future<StudentModel> getStudentInfo(int userId) async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db
         .collection("students")
@@ -17,7 +22,7 @@ class UserRepository {
     return studentInfo;
   }
 
-  static Future<UserModel> getUser(String email) async {
+  Future<UserModel> getUser(String email) async {
     final db = FirebaseFirestore.instance;
     final snapshot =
         await db.collection("users").where("email", isEqualTo: email).get();
@@ -25,7 +30,7 @@ class UserRepository {
     return user;
   }
 
-  static Future<ClassModel> getClassByClassId(int classId, int courseId) async {
+  Future<ClassModel> getClassByClassId(int classId, int courseId) async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db
         .collection("class")
@@ -37,7 +42,7 @@ class UserRepository {
     return classByClassId;
   }
 
-  static Future<String?> getName() async {
+  Future<String?> getName() async {
     SharedPreferences localData = await SharedPreferences.getInstance();
     return localData.getString(PrefKeyConfigs.name);
   }

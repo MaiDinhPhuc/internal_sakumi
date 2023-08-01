@@ -19,7 +19,7 @@ class HeaderTeacher extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder(
-        bloc: cubit,
+        bloc: cubit..load(context),
         builder: (c, s) => Container(
               padding: EdgeInsets.only(
                   bottom: Resizable.padding(context, 10),
@@ -149,10 +149,10 @@ List<NavigationModel> buttonList = [
 ];
 
 class NameCubit extends Cubit<String?> {
-  NameCubit() : super(null) {
-    load();
-  }
-  load() async {
-    emit(await UserRepository.getName());
+  NameCubit() : super(null);
+  
+  load(context) async {
+    var userRepo = UserRepository.fromContext(context);
+    emit(await userRepo.getName());
   }
 }

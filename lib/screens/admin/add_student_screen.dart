@@ -215,7 +215,7 @@ class AddStudentScreen extends StatelessWidget {
                         )))),
           )
         : BlocBuilder<LoadStudentCubit, StudentModel?>(
-            bloc: LoadStudentCubit(studentModel!)..load(),
+            bloc: LoadStudentCubit(studentModel!)..load(context),
             builder: (c, s) => Scaffold(
                   appBar: AppBar(
                     title: Text(AppText.btnAddStudent.text),
@@ -397,8 +397,9 @@ class LoadStudentCubit extends Cubit<StudentModel?> {
   final StudentModel model;
   LoadStudentCubit(this.model) : super(null);
 
-  load() async {
-    emit(await UserRepository.getStudentInfo(model.userId));
+  load(context) async {
+    var user = UserRepository.fromContext(context);
+    emit(await user.getStudentInfo(model.userId));
   }
 }
 
