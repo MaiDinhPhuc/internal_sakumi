@@ -12,7 +12,11 @@ class HeaderTeacher extends StatelessWidget {
   final NameCubit cubit;
   final int index;
   final String classId, name;
-  HeaderTeacher({Key? key, required this.index, required this.classId, required this.name})
+  HeaderTeacher(
+      {Key? key,
+      required this.index,
+      required this.classId,
+      required this.name})
       : cubit = NameCubit(),
         super(key: key);
 
@@ -82,27 +86,34 @@ class HeaderTeacher extends StatelessWidget {
                                             overlayColor:
                                                 MaterialStateProperty.all(
                                                     primaryColor.withAlpha(30)),
-                                            onTap: ()async {
+                                            onTap: () async {
                                               switch (e.id) {
                                                 case 0:
-                                                  debugPrint("========${e.button}======");
-                                                  await Navigator.pushNamed(context,
-                                                      "${Routes.teacher}?name=$name/overview/class?id=$classId"
-                                                  );
+                                                  debugPrint(
+                                                      "========${e.button}======");
+                                                  await Navigator.pushNamed(
+                                                      context,
+                                                      "${Routes.teacher}?name=$name/overview/class?id=$classId");
                                                   break;
                                                 case 1:
-                                                  debugPrint("========${e.button}======");
-                                                  await Navigator.pushNamed(context,
+                                                  debugPrint(
+                                                      "========${e.button}======");
+                                                  await Navigator.pushNamed(
+                                                      context,
                                                       "${Routes.teacher}?name=$name/lesson/class?id=$classId");
                                                   break;
                                                 case 2:
-                                                  debugPrint("========${e.button}======");
-                                                  await Navigator.pushNamed(context,
+                                                  debugPrint(
+                                                      "========${e.button}======");
+                                                  await Navigator.pushNamed(
+                                                      context,
                                                       "${Routes.teacher}?name=$name/test/class?id=$classId");
                                                   break;
                                                 case 3:
-                                                  debugPrint("========${e.button}======");
-                                                  await Navigator.pushNamed(context,
+                                                  debugPrint(
+                                                      "========${e.button}======");
+                                                  await Navigator.pushNamed(
+                                                      context,
                                                       "${Routes.teacher}?name=$name/grading/class?id=$classId");
                                                   break;
                                               }
@@ -150,7 +161,7 @@ List<NavigationModel> buttonList = [
 
 class NameCubit extends Cubit<String?> {
   NameCubit() : super(null);
-  
+
   load(context) async {
     var userRepo = UserRepository.fromContext(context);
     emit(await userRepo.getName());
