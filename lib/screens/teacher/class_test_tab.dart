@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:internal_sakumi/features/header_teacher.dart';
+import 'package:internal_sakumi/features/class_appbar.dart';
 
 import '../../utils/text_utils.dart';
 

@@ -166,7 +166,7 @@ class SessionCubit extends Cubit<int> {
     TeacherRepository teacherRepository =
         TeacherRepository.fromContext(context);
 
-    var list = await teacherRepository.getStudentLessonInLesson(
+    var list = await teacherRepository.getAllStudentLessonInLesson(
         int.parse(TextUtils.getName(position: 2)),
         int.parse(TextUtils.getName()));
 
