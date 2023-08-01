@@ -1,18 +1,16 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:internal_sakumi/model/teacher_model.dart';
-import 'package:internal_sakumi/screens/admin/add_student_screen.dart';
 import 'package:internal_sakumi/screens/admin/add_teacher_screen.dart';
 import 'package:internal_sakumi/screens/admin/add_user_to_class_screen.dart';
 import 'package:internal_sakumi/screens/admin/admin_screen.dart';
-import 'package:internal_sakumi/screens/teacher/class_overview_screen.dart';
-import 'package:internal_sakumi/screens/teacher/class_test_screen.dart';
+import 'package:internal_sakumi/screens/teacher/class_overview_tab.dart';
 import 'package:internal_sakumi/screens/admin/detail_class_screen.dart';
+import 'package:internal_sakumi/screens/teacher/class_test_tab.dart';
 import 'package:internal_sakumi/screens/teacher/detail_lesson_screen.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
 import 'package:internal_sakumi/screens/grading_screen.dart';
-import 'package:internal_sakumi/screens/teacher/list_lesson_screen.dart';
 import 'package:internal_sakumi/screens/master_screen.dart';
+import 'package:internal_sakumi/screens/teacher/list_lesson_tab.dart';
 import 'package:internal_sakumi/screens/teacher/teacher_screen.dart';
 
 class Routes {
@@ -103,11 +101,11 @@ var addTeacherHandler =
 
 var lessonsHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return ListLessonScreen(params['name'][0], params['classId'][0]);
+  return ListLessonTab(params['name'][0], params['classId'][0]);
 });
 var overViewHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return ClassOverViewScreen(params['name'][0]);
+  return ClassOverViewTab(params['name'][0]);
 });
 var gradingHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
@@ -115,7 +113,7 @@ var gradingHandler =
 });
 var testHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return ClassTestScreen(params['name'][0]);
+  return ClassTestTab(params['name'][0]);
 });
 var detailClassHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {

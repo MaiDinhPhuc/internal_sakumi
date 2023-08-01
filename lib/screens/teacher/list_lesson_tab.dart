@@ -11,11 +11,11 @@ import 'package:internal_sakumi/features/teacher/lecture/list_lesson_cubit.dart'
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
-class ListLessonScreen extends StatelessWidget {
+class ListLessonTab extends StatelessWidget {
   final String name;
   final String classId;
 
-  const ListLessonScreen(this.name, this.classId, {Key? key}) : super(key: key);
+  const ListLessonTab(this.name, this.classId, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

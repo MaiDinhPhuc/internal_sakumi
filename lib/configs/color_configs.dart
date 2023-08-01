@@ -33,7 +33,7 @@ const MaterialColor greyColor = MaterialColor(0xff5D60EF, <int, Color>{
   300: Color(0xFFD9D9D9),
   400: Color(0xFFBDBDBD),
   500: Color(0xff727272),
-  600: Color(0xFF717171),
+  600: Color(0xFF757575),
   700: Color(0xFF676767),
   800: Color(0xFF505050),
   900: Color(0xFF392D2F),

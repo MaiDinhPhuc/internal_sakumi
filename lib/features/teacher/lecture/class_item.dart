@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:internal_sakumi/features/teacher/lecture/chart_view.dart';
 import 'package:internal_sakumi/features/teacher/lecture/class_overview.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson_cubit.dart';
@@ -27,17 +26,21 @@ class ClassItem extends StatelessWidget {
                   },
                   onPressed: () {
                     BlocProvider.of<DropdownCubit>(c).update();
-                    if (BlocProvider.of<TeacherCubit>(c).listPoint == null) {
-                      BlocProvider.of<TeacherCubit>(c).loadStatisticClass(c);
-                    }
+                    // if (BlocProvider.of<TeacherCubit>(c).listPoint == null) {
+                    //   BlocProvider.of<TeacherCubit>(c).loadStatisticClass(c);
+                    // }
                   }),
               secondChild: CardItem(
+                  isExpand: true,
                   widget: Column(
                     children: [
                       ClassOverView(index),
                       (BlocProvider.of<TeacherCubit>(c).listStudentInClass ==
                               null)
-                          ? const CircularProgressIndicator()
+                          ? Transform.scale(
+                              scale: 0.75,
+                              child: const CircularProgressIndicator(),
+                            )
                           : ChartView(index)
                     ],
                   ),

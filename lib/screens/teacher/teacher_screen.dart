@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/lecture/class_item.dart';
+import 'package:internal_sakumi/features/teacher/lecture/class_item_row_layout.dart';
 import 'package:internal_sakumi/features/teacher/lecture/teacher_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:screenshot/screenshot.dart';
 
 class TeacherScreen extends StatelessWidget {
   final String name;
@@ -71,7 +73,7 @@ class TeacherScreen extends StatelessWidget {
               ),
               Container(
                 margin: EdgeInsets.symmetric(
-                    vertical: Resizable.padding(context, 20)),
+                    vertical: Resizable.padding(context, 30)),
                 child: Text(AppText.titleListClass.text.toUpperCase(),
                     style: TextStyle(
                         fontSize: Resizable.font(context, 30),
@@ -88,9 +90,53 @@ class TeacherScreen extends StatelessWidget {
                             )
                           : Container(
                               margin: EdgeInsets.symmetric(
-                                  horizontal: Resizable.padding(context, 200)),
+                                  horizontal: Resizable.padding(context, 150)),
                               child: Column(
                                 children: [
+                                  ClassItemRowLayout(
+                                    widgetClassCode: Text(
+                                        AppText.txtClassCode.text,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize:
+                                                Resizable.font(context, 17),
+                                            color: greyColor.shade600)),
+                                    widgetCourse: Text(AppText.txtCourse.text,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize:
+                                                Resizable.font(context, 17),
+                                            color: greyColor.shade600)),
+                                    widgetLessons: Text(
+                                        AppText.txtNumberOfLessons.text,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize:
+                                                Resizable.font(context, 17),
+                                            color: greyColor.shade600)),
+                                    widgetAttendance: Text(
+                                        AppText.txtRateOfAttendance.text,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize:
+                                                Resizable.font(context, 17),
+                                            color: greyColor.shade600)),
+                                    widgetSubmit: Text(
+                                        AppText.txtRateOfSubmitHomework.text,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize:
+                                                Resizable.font(context, 17),
+                                            color: greyColor.shade600)),
+                                    widgetEvaluate: Text(
+                                        AppText.txtEvaluate.text,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize:
+                                                Resizable.font(context, 17),
+                                            color: greyColor.shade600)),
+                                  ),
+                                  SizedBox(height: Resizable.size(context, 10)),
                                   ...cubit.listClass!
                                       .map((e) => ClassItem(
                                           cubit.listClass!.indexOf(e),

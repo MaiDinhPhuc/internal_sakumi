@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/model/class_model.dart';
@@ -15,15 +16,17 @@ class TeacherCubit extends Cubit<int> {
   List<ClassModel>? listClass;
   List<CourseModel>? courses;
   List<int>? listStatus, listStudentInClass;
-  List<List<int>?>? listSubmit, listAttendance;
+  List<List<int>>? listSubmit, listAttendance;
   List<double>? listPoint;
+  double? sumAttendance, sumSubmit;
 
-  void init(context) {
-    loadProfileTeacher(context);
-    loadListClassOfTeacher(context);
+  void init(context) async {
+    await loadProfileTeacher(context);
+    await loadListClassOfTeacher(context);
+    await loadStatisticClass(context);
   }
 
-  void loadProfileTeacher(context) async {
+  loadProfileTeacher(context) async {
     SharedPreferences localData = await SharedPreferences.getInstance();
     TeacherRepository teacherRepository =
         TeacherRepository.fromContext(context);
@@ -32,7 +35,7 @@ class TeacherCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  void loadListClassOfTeacher(context) async {
+  loadListClassOfTeacher(context) async {
     AdminRepository adminRepository = AdminRepository.fromContext(context);
     TeacherRepository teacherRepository =
         TeacherRepository.fromContext(context);
@@ -113,7 +116,19 @@ class TeacherCubit extends Cubit<int> {
       listAttendance!.add(attends);
       listSubmit!.add(homeworks);
     }
-    print('==========><========== $listAttendance === $listSubmit');
+
+    for (var i in listAttendance!) {
+      sumAttendance = i.fold(0, (pre, e) => pre! + e);
+    }
+    debugPrint('==============> loadStatisticClass $sumAttendance');
+    for (var i in listSubmit!) {
+      sumSubmit = i.fold(0, (pre, e) => pre! + e);
+    }
+    debugPrint(
+        '==============> loadStatisticClass $sumSubmit == ${listStudentInClass!.length}');
+
+    print(
+        '==========><========== $listAttendance === $listSubmit == $sumAttendance === $sumSubmit');
     emit(state + 1);
   }
 }

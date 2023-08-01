@@ -3,8 +3,8 @@ import 'package:internal_sakumi/features/header_teacher.dart';
 
 import '../../utils/text_utils.dart';
 
-class ClassTestScreen extends StatelessWidget {
-  const ClassTestScreen(this.name, {super.key});
+class ClassTestTab extends StatelessWidget {
+  const ClassTestTab(this.name, {super.key});
   final String name;
 
   @override

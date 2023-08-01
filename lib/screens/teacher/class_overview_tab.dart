@@ -3,8 +3,8 @@ import 'package:internal_sakumi/features/header_teacher.dart';
 
 import '../../utils/text_utils.dart';
 
-class ClassOverViewScreen extends StatelessWidget {
-  const ClassOverViewScreen(this.name, {super.key});
+class ClassOverViewTab extends StatelessWidget {
+  const ClassOverViewTab(this.name, {super.key});
   final String name;
 
   @override

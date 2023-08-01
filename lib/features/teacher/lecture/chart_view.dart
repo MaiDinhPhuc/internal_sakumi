@@ -6,6 +6,7 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/lecture/teacher_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
+import 'package:screenshot/screenshot.dart';
 
 class ChartView extends StatelessWidget {
   final int index;
@@ -16,46 +17,52 @@ class ChartView extends StatelessWidget {
     var cubit = BlocProvider.of<TeacherCubit>(context);
     return Container(
       margin: EdgeInsets.only(top: Resizable.size(context, 10)),
-      height: Resizable.size(context, 110),
+      height: Resizable.size(context, 130),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            margin: EdgeInsets.symmetric(vertical: Resizable.size(context, 10)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  AppText.txtQuantity.text,
-                  style: TextStyle(
-                      fontSize: Resizable.font(context, 17),
-                      fontWeight: FontWeight.w700),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: Resizable.padding(context, 15)),
-                  child: Text(
-                    '${cubit.listStudentInClass![index]}',
-                    style: TextStyle(
-                        color: primaryColor,
-                        fontSize: Resizable.font(context, 70),
-                        fontWeight: FontWeight.w600),
-                  ),
-                ),
-                Text(
-                  AppText.txtStudent.text,
-                  style: TextStyle(
-                      fontSize: Resizable.font(context, 14),
-                      fontWeight: FontWeight.w600),
-                ),
-              ],
-            ),
-          ),
-          LineChart(
-            attendances: cubit.listAttendance![index],
-            hws: cubit.listSubmit![index],
-          ),
-          AveragePointView(point: cubit.listPoint![index]),
-          const ColumnChart()
+          // Container(
+          //   margin: EdgeInsets.symmetric(vertical: Resizable.size(context, 10)),
+          //   child: Column(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       Text(
+          //         AppText.txtQuantity.text,
+          //         style: TextStyle(
+          //             fontSize: Resizable.font(context, 17),
+          //             fontWeight: FontWeight.w700),
+          //       ),
+          //       Container(
+          //         margin: EdgeInsets.only(top: Resizable.padding(context, 15)),
+          //         child: Text(
+          //           '${cubit.listStudentInClass![index]}',
+          //           style: TextStyle(
+          //               color: primaryColor,
+          //               fontSize: Resizable.font(context, 70),
+          //               fontWeight: FontWeight.w600),
+          //         ),
+          //       ),
+          //       Text(
+          //         AppText.txtStudent.text,
+          //         style: TextStyle(
+          //             fontSize: Resizable.font(context, 14),
+          //             fontWeight: FontWeight.w600),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          Expanded(flex: 4, child: Container()),
+          const Expanded(flex: 2, child: ColumnChart()),
+          Expanded(child: Container()),
+          Expanded(
+              flex: 8,
+              child: LineChart(
+                attendances: cubit.listAttendance![index],
+                hws: cubit.listSubmit![index],
+                points: cubit.listPoint,
+              )),
+          Expanded(flex: 4, child: Container()),
+          //AveragePointView(point: cubit.listPoint![index]),
         ],
       ),
     );
@@ -100,15 +107,22 @@ class AveragePointView extends StatelessWidget {
 
 class LineChart extends StatelessWidget {
   final List<int>? attendances, hws;
-  const LineChart({required this.attendances, required this.hws, Key? key})
+  final List<double>? points;
+  const LineChart(
+      {required this.attendances,
+      required this.hws,
+      required this.points,
+      Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        SizedBox(
-          width: Resizable.size(context, 180),
+        Container(
+          //width: Resizable.size(context, 360),
+          margin: EdgeInsets.only(bottom: Resizable.padding(context, 5)),
+          height: Resizable.size(context, 110),
           child: DChartLine(
             data: [
               {
@@ -135,58 +149,90 @@ class LineChart extends StatelessWidget {
                           }).toList()
                 ],
               },
+              {
+                'id': 'Points',
+                'data': [
+                  const {'domain': 0, 'measure': 0},
+                  ...List.generate(
+                      points!.length,
+                      (index) => {
+                            'domain': index + 1,
+                            'measure': points![index]
+                          }).toList()
+                ],
+              },
             ],
-            includePoints: true,
+            //includePoints: true,
             lineColor: (lineData, index, id) {
               if (id == 'Attendances') {
                 return primaryColor;
-              } else {
+              } else if (id == 'Homeworks') {
                 return secondaryColor;
               }
+              return Colors.yellow;
             },
           ),
         ),
-        Container(
-          margin: EdgeInsets.only(top: Resizable.padding(context, 20)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    height: Resizable.size(context, 5),
-                    width: Resizable.size(context, 20),
-                    color: secondaryColor,
-                    margin:
-                        EdgeInsets.only(right: Resizable.padding(context, 3)),
-                  ),
-                  Text(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Container(
+                  height: Resizable.size(context, 5),
+                  width: Resizable.size(context, 20),
+                  color: secondaryColor,
+                ),
+                Container(
+                  margin: EdgeInsets.only(
+                      left: Resizable.padding(context, 3),
+                      right: Resizable.padding(context, 20)),
+                  child: Text(
                     AppText.txtDoHomeworks.text,
                     style: TextStyle(
                         fontSize: Resizable.font(context, 14),
                         fontWeight: FontWeight.w600),
-                  )
-                ],
-              ),
-              Row(
-                children: [
-                  Container(
-                    height: Resizable.size(context, 5),
-                    width: Resizable.size(context, 20),
-                    color: primaryColor,
-                    margin:
-                        EdgeInsets.only(right: Resizable.padding(context, 3)),
                   ),
-                  Text(
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Container(
+                  height: Resizable.size(context, 5),
+                  width: Resizable.size(context, 20),
+                  color: primaryColor,
+                ),
+                Container(
+                  margin: EdgeInsets.only(
+                      left: Resizable.padding(context, 3),
+                      right: Resizable.padding(context, 20)),
+                  child: Text(
                     AppText.txtPresent.text,
                     style: TextStyle(
                         fontSize: Resizable.font(context, 14),
                         fontWeight: FontWeight.w600),
-                  )
-                ],
-              )
-            ],
-          ),
+                  ),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Container(
+                  height: Resizable.size(context, 5),
+                  width: Resizable.size(context, 20),
+                  color: Colors.yellow,
+                  margin: EdgeInsets.only(right: Resizable.padding(context, 3)),
+                ),
+                Text(
+                  AppText.txtPointOfTest.text,
+                  style: TextStyle(
+                      fontSize: Resizable.font(context, 14),
+                      fontWeight: FontWeight.w600),
+                )
+              ],
+            )
+          ],
         )
       ],
     );
@@ -206,13 +252,12 @@ class ColumnChart extends StatelessWidget {
                 style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: Resizable.font(context, 17)))),
-        Container(
-          width: Resizable.size(context, 85),
-          height: Resizable.size(context, 70),
-          margin: EdgeInsets.only(bottom: Resizable.size(context, 10)),
+        SizedBox(
+          //width: Resizable.size(context, 130),
+          height: Resizable.size(context, 56),
           child: DChartBarCustom(
             //domainLabelAlignVertical: CrossAxisAlignment.center,
-            spaceBetweenItem: Resizable.size(context, 3),
+            spaceBetweenItem: Resizable.size(context, 5),
             spaceDomainLinetoChart: Resizable.size(context, 1),
             spaceMeasureLinetoChart: Resizable.size(context, 0),
             showDomainLine: true,
@@ -227,6 +272,7 @@ class ColumnChart extends StatelessWidget {
             ],
           ),
         ),
+        SizedBox(height: Resizable.size(context, 35)),
       ],
     );
   }
