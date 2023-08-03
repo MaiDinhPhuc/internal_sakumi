@@ -7,6 +7,7 @@ import 'package:internal_sakumi/screens/admin/detail_class_screen.dart';
 import 'package:internal_sakumi/screens/detail_grading_screen.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
 import 'package:internal_sakumi/screens/master_screen.dart';
+import 'package:internal_sakumi/screens/teacher/class_screen.dart';
 import 'package:internal_sakumi/screens/teacher/tab/class_grading_tab.dart';
 import 'package:internal_sakumi/screens/teacher/tab/class_overview_tab.dart';
 import 'package:internal_sakumi/screens/teacher/tab/class_test_tab.dart';
@@ -36,6 +37,7 @@ class Routes {
   static const addTeacher = "/addTeacher";
 
   static const teacher = "/teacher";
+  static const classScreen = "classScreen";
 
   static const empty = '/empty';
 
@@ -45,6 +47,7 @@ class Routes {
       print("ROUTE WAS NOT FOUND !!!");
       return;
     });
+    router.define(classScreen, handler: classScreenHandler, transitionType: TransitionType.fadeIn);
     router.define(teacher,
         handler: teacherHandler, transitionType: TransitionType.fadeIn);
     router.define(admin,
@@ -75,6 +78,11 @@ class Routes {
 var emptyHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return const EmptyScreen();
+});
+
+var classScreenHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return const ClassScreen();
 });
 
 var teacherHandler =

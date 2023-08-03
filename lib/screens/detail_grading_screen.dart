@@ -79,10 +79,12 @@ class DetailGradingScreen extends StatelessWidget {
                                               child: Text(
                                                   AppText.titleQuestion.text,
                                                   style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w700,
                                                       fontSize: Resizable.font(
                                                           context, 20),
                                                       color:
-                                                          greyColor.shade500))),
+                                                          greyColor.shade600))),
                                           ...cubit.listQuestions!
                                               .map((e) => QuestionOptionItem(
                                                     s,
@@ -102,11 +104,14 @@ class DetailGradingScreen extends StatelessWidget {
                                         padding: EdgeInsets.only(
                                           top: Resizable.padding(context, 15),
                                         ),
-                                        child: Text("CHẤM ĐIỂM",
+                                        child: Text(
+                                            '${AppText.txtTest.text} / ${AppText.titleHomework.text}'
+                                                .toUpperCase(),
                                             style: TextStyle(
+                                                fontWeight: FontWeight.w700,
                                                 fontSize:
                                                     Resizable.font(context, 20),
-                                                color: greyColor.shade500))),
+                                                color: greyColor.shade600))),
                                     Container(
                                       margin: EdgeInsets.symmetric(
                                           vertical:

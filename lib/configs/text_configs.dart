@@ -30,7 +30,7 @@ enum AppText {
   titleGrammar,
   btnStart,
   textTest,
-  titleTest,
+  titleHomework,
   btnSubmit,
   btnCheckResult,
   textTrue,
@@ -133,7 +133,7 @@ enum AppText {
   textQuestionNumber,
   titleQuestion,
   textStudentNotDo,
-  textBack
+  textBack,
 }
 
 Map<AppText, String> texts = {
@@ -179,7 +179,7 @@ Map<AppText, String> texts = {
   AppText.titleGrammar: 'ngữ pháp',
   AppText.btnStart: 'Bắt đầu ngay',
   AppText.textTest: 'Đừng để những ngày tháng học tập của bạn trở nên vô nghĩa',
-  AppText.titleTest: 'Bài tập về nhà',
+  AppText.titleHomework: 'Bài tập về nhà',
   AppText.textTrue: 'Đúng',
   AppText.textFalse: 'Sai',
   AppText.textQuestion: 'Câu hỏi:  ',

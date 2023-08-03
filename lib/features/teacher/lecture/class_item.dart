@@ -22,7 +22,9 @@ class ClassItem extends StatelessWidget {
                   widget: ClassOverView(index),
                   onTap: () async {
                     await Navigator.pushNamed(context,
-                        "${Routes.teacher}?name=${TextUtils.getName().trim()}/overview/class?id=$classId");
+                        //Routes.classScreen
+                        "${Routes.teacher}?name=${TextUtils.getName().trim()}/overview/class?id=$classId"
+                        );
                   },
                   onPressed: () {
                     BlocProvider.of<DropdownCubit>(c).update();

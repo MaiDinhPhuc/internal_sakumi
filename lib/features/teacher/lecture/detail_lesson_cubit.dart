@@ -92,10 +92,6 @@ class SessionCubit extends Cubit<int> {
         .fold(0, (pre, e) => e.timekeeping > 0 ? (pre + 1) : pre);
   }
 
-  _updateUI() {
-    emit(state + 1);
-  }
-
   checkNoteStudent() {
     if (isNoteStudent != null) {
       if (isNoteStudent == false) {
@@ -104,7 +100,7 @@ class SessionCubit extends Cubit<int> {
         isNoteStudent = false;
       }
     }
-    _updateUI();
+    emit(state + 1);
   }
 
   checkNoteSupport() {
@@ -115,7 +111,7 @@ class SessionCubit extends Cubit<int> {
         isNoteSupport = false;
       }
     }
-    _updateUI();
+    emit(state + 1);
   }
 
   checkNoteSensei() {
@@ -126,7 +122,7 @@ class SessionCubit extends Cubit<int> {
         isNoteSensei = false;
       }
     }
-    _updateUI();
+    emit(state + 1);
   }
 
   updateTimekeeping(int attendId) {
