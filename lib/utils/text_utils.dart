@@ -1,5 +1,7 @@
 import 'dart:html';
 
+import 'package:flutter/material.dart';
+
 class TextUtils {
   static String getName({int? position}) {
     dynamic uri = Uri.dataFromString(window.location.href).toString();
@@ -16,6 +18,17 @@ class TextUtils {
 
     print("============> getName() $temp");
     return temp.trim();
+  }
+
+  static String getClassId(){
+    dynamic uri = Uri.dataFromString(window.location.href).toString();
+
+    String temp = '';
+
+    temp = Uri.decodeFull(uri).split('class?id=').last;
+
+    debugPrint("============> classId = $temp");
+    return temp.substring(0, 1).trim();
   }
 
   static String getErrorAuth(String data) {

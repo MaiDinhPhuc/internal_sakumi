@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
@@ -35,10 +36,8 @@ class ListLessonCubit extends Cubit<int> {
   loadClass(context) async {
     TeacherRepository teacherRepository =
         TeacherRepository.fromContext(context);
-
     classModel =
-        await teacherRepository.getClassById(int.parse(TextUtils.getName()));
-
+        await teacherRepository.getClassById(int.parse(TextUtils.getClassId()));
     emit(state + 1);
   }
 
@@ -47,7 +46,7 @@ class ListLessonCubit extends Cubit<int> {
         TeacherRepository.fromContext(context);
 
     listLessonResult = await teacherRepository
-        .getLessonResultByClassId(int.parse(TextUtils.getName()));
+        .getLessonResultByClassId(int.parse(TextUtils.getClassId()));
 
     lessons =
         await teacherRepository.getLessonsByCourseId(classModel!.courseId);

@@ -13,8 +13,10 @@ import 'package:internal_sakumi/utils/text_utils.dart';
 class ListLessonTab extends StatelessWidget {
   final String name;
   final String classId;
+  //final ListLessonCubit cubit;
 
-  const ListLessonTab(this.name, this.classId, {Key? key}) : super(key: key);
+  ListLessonTab(this.name, this.classId, {Key? key}) : //cubit = ListLessonCubit(),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,9 @@ class ListLessonTab extends StatelessWidget {
                   index: 1,
                   classId: TextUtils.getName(position: 2),
                   name: name),
-              BlocBuilder<ListLessonCubit, int>(builder: (c, s) {
+              BlocBuilder<ListLessonCubit, int>(
+                //bloc: ListLessonCubit()..init(context),
+                  builder: (c, s) {
                 var cubit = BlocProvider.of<ListLessonCubit>(c);
                 return cubit.classModel == null
                     ? Transform.scale(
@@ -35,6 +39,7 @@ class ListLessonTab extends StatelessWidget {
                         child: const CircularProgressIndicator(),
                       )
                     : Expanded(
+                  key: Key('aa ${cubit.listLessonResult?.first.status}'),
                         child: SingleChildScrollView(
                         child: Column(
                           children: [
@@ -112,10 +117,15 @@ class ListLessonTab extends StatelessWidget {
                                                         color:
                                                             Colors.transparent,
                                                         child: InkWell(
-                                                            onTap: () {
-                                                              Navigator.pushNamed(
+                                                            onTap: e.status != 'Finished' ? () async{
+                                                              var result = await  Navigator.pushNamed(
                                                                   context,
                                                                   "/teacher?name=$name/lesson/class?id=${e.classId}/lesson?id=${e.lessonId}");
+                                                              if(result != null && c.mounted){
+                                                                cubit.loadLessonResult(c);
+                                                              }
+                                                            } : (){
+                                                              //TODO navigate to detail grading
                                                             },
                                                             borderRadius:
                                                                 BorderRadius.circular(
