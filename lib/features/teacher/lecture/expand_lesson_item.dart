@@ -1,10 +1,17 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_network/image_network.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson_cubit.dart';
+import 'package:internal_sakumi/features/teacher/lecture/track_student_item_row_layout.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
+import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:internal_sakumi/widget/note_widget.dart';
+import 'dart:ui' as ui;
 
 class ExpandLessonItem extends StatelessWidget {
   final LessonResultModel lessonResultModel;
@@ -13,6 +20,11 @@ class ExpandLessonItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<ListLessonCubit>(context);
+    String imageUrl =
+        'https://firebasestorage.googleapis.com/v0/b/demoproject-f305d.appspot.com/o/question_result_image%2Fdata%2Fuser%2F0%2Fcom.example.firebase_demo%2Fcache%2F3ec5b469-bffe-4af4-85f1-989f58bf9b34%2FScreenshot_20220719-103331.png?alt=media&token=82cfb4f3-05f5-492f-a61a-f11e8cd7acc1';
+    // ignore: undefined_prefixed_name
+    ui.platformViewRegistry.registerViewFactory(
+        imageUrl, (int _) => ImageElement()..src = imageUrl);
     return Container(
       margin: EdgeInsets.symmetric(vertical: Resizable.padding(context, 10)),
       child: Column(
@@ -22,40 +34,63 @@ class ExpandLessonItem extends StatelessWidget {
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 19))),
-          Padding(
-            padding:
-                EdgeInsets.symmetric(vertical: Resizable.padding(context, 8)),
-            child: Text(
-                cubit
-                    .listLessonResult![
-                        cubit.listLessonResult!.indexOf(lessonResultModel)]
-                    .noteForSupport
-                    .toString(),
-                style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: Resizable.font(context, 19))),
-          ),
+          NoteWidget(cubit
+              .listLessonResult![
+                  cubit.listLessonResult!.indexOf(lessonResultModel)]
+              .noteForSupport
+              .toString()),
           Text(AppText.txtNoteFromAnotherTeacher.text,
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 19))),
-          Padding(
-            padding:
-                EdgeInsets.symmetric(vertical: Resizable.padding(context, 8)),
-            child: Text(
-                cubit
-                    .listLessonResult![
-                        cubit.listLessonResult!.indexOf(lessonResultModel)]
-                    .noteForTeacher
-                    .toString(),
-                style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: Resizable.font(context, 19))),
+          NoteWidget(cubit
+              .listLessonResult![
+                  cubit.listLessonResult!.indexOf(lessonResultModel)]
+              .noteForTeacher
+              .toString()),
+          Container(
+            height: Resizable.size(context, 1),
+            margin:
+                EdgeInsets.symmetric(vertical: Resizable.padding(context, 15)),
+            color: const Color(0xffD9D9D9),
           ),
-          Text(AppText.titleManageStudent.text,
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: Resizable.font(context, 19))),
+          TrackStudentItemRowLayout(
+              name: Text(
+                AppText.txtName.text,
+                style: TextStyle(
+                    color: const Color(0xff757575),
+                    fontWeight: FontWeight.w600,
+                    fontSize: Resizable.font(context, 17)),
+              ),
+              attendance: Text(
+                AppText.txtAttendance.text,
+                style: TextStyle(
+                    color: const Color(0xff757575),
+                    fontWeight: FontWeight.w600,
+                    fontSize: Resizable.font(context, 17)),
+              ),
+              submit: Text(
+                AppText.txtDoHomeworks.text,
+                style: TextStyle(
+                    color: const Color(0xff757575),
+                    fontWeight: FontWeight.w600,
+                    fontSize: Resizable.font(context, 17)),
+              ),
+              note: Text(
+                AppText.txtNoteFromAnotherTeacher.text,
+                style: TextStyle(
+                    color: const Color(0xff757575),
+                    fontWeight: FontWeight.w600,
+                    fontSize: Resizable.font(context, 17)),
+              )),
+          // SizedBox(
+          //   height: 700,
+          //   width: 200,
+          //   child: HtmlElementView(
+          //     viewType: imageUrl,
+          //   ),
+          // ),
+          //     ImageNetwork(image: 'https://firebasestorage.googleapis.com/v0/b/demoproject-f305d.appspot.com/o/question_result_image%2Fdata%2Fuser%2F0%2Fcom.example.firebase_demo%2Fcache%2F3ec5b469-bffe-4af4-85f1-989f58bf9b34%2FScreenshot_20220719-103331.png?alt=media&token=82cfb4f3-05f5-492f-a61a-f11e8cd7acc1', height: 300, width: 200,),
           cubit.listStudent == null
               ? Center(
                   child: Transform.scale(
@@ -70,82 +105,38 @@ class ExpandLessonItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ...cubit.listStudent!
-                          .map((e) => Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                      flex: 4,
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical:
-                                                Resizable.padding(context, 2)),
-                                        child: Text(
-                                          e.name,
-                                          style: TextStyle(
-                                              fontSize:
-                                                  Resizable.font(context, 20),
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      )),
-                                  Expanded(
-                                      flex: 1,
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child: cubit
-                                                        .listStudentLessons![
-                                                            cubit
-                                                                .listLessonResult!
-                                                                .indexOf(lessonResultModel)]![
-                                                            cubit.listStudent!
-                                                                .indexOf(e)]
-                                                        .timekeeping >
-                                                    0 &&
-                                                cubit
-                                                        .listStudentLessons![cubit
-                                                            .listLessonResult!
-                                                            .indexOf(
-                                                                lessonResultModel)]![cubit.listStudent!.indexOf(e)]
-                                                        .timekeeping <
-                                                    5
-                                            ? const Icon(Icons.check, color: greenColor)
-                                            : const Icon(Icons.close, color: redColor),
-                                      )),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child: cubit
-                                                  .listStudentLessons![cubit
-                                                          .listLessonResult!
-                                                          .indexOf(
-                                                              lessonResultModel)]![
-                                                      cubit.listStudent!
-                                                          .indexOf(e)]
-                                                  .hw >
-                                              -2
-                                          ? const Icon(Icons.check,
-                                              color: greenColor)
-                                          : const Icon(Icons.close,
-                                              color: redColor),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child: Text(cubit
+                          .map((e) => TrackStudentItemRowLayout(
+                              name: Text(
+                                e.name,
+                                style: TextStyle(
+                                    fontSize: Resizable.font(context, 20),
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              attendance: TrackingItem(cubit
                                           .listStudentLessons![cubit
                                                   .listLessonResult!
                                                   .indexOf(lessonResultModel)]![
                                               cubit.listStudent!.indexOf(e)]
-                                          .teacherNote
-                                          .toString()),
-                                    ),
-                                  )
-                                ],
-                              ))
-                          .toList()
+                                          .timekeeping <
+                                      6 &&
+                                  cubit
+                                          .listStudentLessons![cubit
+                                              .listLessonResult!
+                                              .indexOf(lessonResultModel)]![cubit.listStudent!.indexOf(e)]
+                                          .timekeeping >
+                                      0),
+                              submit: TrackingItem(
+                                cubit
+                                        .listStudentLessons![cubit
+                                                .listLessonResult!
+                                                .indexOf(lessonResultModel)]![
+                                            cubit.listStudent!.indexOf(e)]
+                                        .hw >
+                                    -2,
+                                isSubmit: true,
+                              ),
+                              note: NoteWidget(cubit.listStudentLessons![cubit.listLessonResult!.indexOf(lessonResultModel)]![cubit.listStudent!.indexOf(e)].teacherNote)))
+                          .toList(),
                     ],
                   ),
                 )

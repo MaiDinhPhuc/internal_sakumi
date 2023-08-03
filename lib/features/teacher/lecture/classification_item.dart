@@ -18,61 +18,107 @@ class ClassificationItem extends StatelessWidget {
     return BlocProvider(
         create: (context) => DropdownAttendanceCubit(index),
         child: BlocBuilder<DropdownAttendanceCubit, int>(
-            builder: (c, s) => Column(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(
-                          bottom: Resizable.padding(context, 10),
-                          right: Resizable.padding(context, 150),
-                          left: Resizable.padding(context, 150)),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: Resizable.padding(context, 20),
-                          vertical: Resizable.padding(context, 8)),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              width: Resizable.size(context, 1),
-                              color: greyColor.shade100),
-                          borderRadius: BorderRadius.circular(
-                              Resizable.size(context, 5))),
-                      child: Row(
-                        children: [
-                          Expanded(flex: 1, child: Container()),
-                          Expanded(
-                              flex: 6,
-                              child: Text(
-                                studentModel.name,
-                                style: TextStyle(
-                                    fontSize: Resizable.font(context, 20)),
-                              )),
-                          Expanded(
-                              flex: 3,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                      flex: 9,
-                                      child: DropDownWidget(
-                                          index, studentModel.userId,
-                                          items: firstItems)),
-                                  Expanded(flex: 1, child: Container()),
-                                ],
-                              )),
-                          Expanded(
-                              flex: 3,
-                              child: Row(
-                                children: [
-                                  Expanded(flex: 1, child: Container()),
-                                  Expanded(
-                                      flex: 9,
-                                      child: DropDownWidget(
-                                          index, studentModel.userId,
-                                          items: secondItems))
-                                ],
-                              )),
-                          Expanded(flex: 1, child: Container()),
-                        ],
-                      ),
-                    ),
+            builder: (c, s) => Container(
+              margin: EdgeInsets.only(
+                  bottom: Resizable.padding(context, 10),
+                  right: Resizable.padding(context, 150),
+                  left: Resizable.padding(context, 150)),
+              padding: EdgeInsets.symmetric(
+                  horizontal: Resizable.padding(context, 20),
+                  vertical: Resizable.padding(context, 8)),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(color: Colors.grey.shade400, blurRadius: Resizable.size(context, 7))
                   ],
-                )));
+                  border: Border.all(
+                      width: Resizable.size(context, 1),
+                      color: greyColor.shade100),
+                  borderRadius: BorderRadius.circular(
+                      Resizable.size(context, 5))),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(flex: 1, child: Container()),
+                      Expanded(
+                          flex: 6,
+                          child: Text(
+                            studentModel.name,
+                            style: TextStyle(
+                                fontSize: Resizable.font(context, 20)),
+                          )),
+                      Expanded(
+                          flex: 3,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  flex: 9,
+                                  child: DropDownWidget(
+                                      index, studentModel.userId,
+                                      items: firstItems)),
+                              Expanded(flex: 1, child: Container()),
+                            ],
+                          )),
+                      Expanded(
+                          flex: 3,
+                          child: Row(
+                            children: [
+                              Expanded(flex: 1, child: Container()),
+                              Expanded(
+                                  flex: 9,
+                                  child: DropDownWidget(
+                                      index, studentModel.userId,
+                                      items: secondItems))
+                            ],
+                          )),
+                      Expanded(flex: 1, child: Container()),
+                    ],
+                  ),
+                  Container(
+                    //padding: EdgeInsets.all(Resizable.padding(context, 5)),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                        color: greyColor.shade50,
+                        borderRadius:
+                        BorderRadius.circular(Resizable.padding(context, 10))),
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          //controller: controller,
+                          autofocus: true,
+                          initialValue: '',
+                          decoration: InputDecoration(
+                            enabled: true,
+                            hintText: 'active == true ? noNote : hintText',
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: Resizable.font(context, 18)),
+                            fillColor: greyColor.shade50,
+                            hoverColor: greyColor.shade50,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(
+                                  Resizable.padding(context, 10)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(
+                                  Resizable.padding(context, 10)),
+                            ),
+                            filled: true,
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(
+                                    Resizable.padding(context, 10)),
+                                borderSide: BorderSide.none),
+                          ),
+                          //onChanged: onChanged,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),));
   }
 }

@@ -85,9 +85,9 @@ class ListLessonTab extends StatelessWidget {
                                                           decoration: BoxDecoration(
                                                               border: Border.all(
                                                                   width: Resizable.size(
-                                                                      context, 1.5),
-                                                                  color: greyColor
-                                                                      .shade100),
+                                                                      context, 1),
+                                                                  color: state % 2 == 0 ? greyColor
+                                                                      .shade100 : Colors.black),
                                                               borderRadius:
                                                                   BorderRadius.circular(
                                                                       Resizable.size(context, 5))),

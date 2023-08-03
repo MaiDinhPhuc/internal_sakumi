@@ -48,7 +48,8 @@ class ClassItem extends StatelessWidget {
                   ),
                   onTap: () async {
                     await Navigator.pushNamed(context,
-                        "${Routes.teacher}?name=${TextUtils.getName().trim()}/class?id=$classId");
+                        //"${Routes.teacher}?name=${TextUtils.getName().trim()}/class?id=$classId"
+                        "${Routes.teacher}?name=${TextUtils.getName().trim()}/overview/class?id=$classId");
                   },
                   onPressed: () => BlocProvider.of<DropdownCubit>(c).update()),
               crossFadeState: state % 2 == 1

@@ -22,6 +22,7 @@ class LessonCompleteView extends StatelessWidget {
           )
         : Column(
             children: [
+              SizedBox(height: Resizable.padding(context, 10)),
               ...cubit.listStudent!
                   .map((e) => ClassificationItem(
                           e,
