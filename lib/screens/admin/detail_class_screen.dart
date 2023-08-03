@@ -13,7 +13,7 @@ import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/routes.dart';
-import 'package:internal_sakumi/screens/add_user_to_class_screen.dart';
+import 'package:internal_sakumi/screens/admin/add_user_to_class_screen.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
@@ -234,13 +234,12 @@ class TeachersInClassCubit extends Cubit<List<TeacherModel>> {
   load(context) async {
     AdminRepository adminRepository = AdminRepository.fromContext(context);
     TeacherRepository teacherRepository =
-    TeacherRepository.fromContext(context);
+        TeacherRepository.fromContext(context);
     List<int> list = [];
     List<TeacherModel> listTeacher = [];
     List<TeacherModel> listAllTeacher = await adminRepository.getAllTeacher();
-    List<TeacherClassModel> listTeacherClass =
-        await teacherRepository.getTeacherClassById(
-            'class_id', int.parse(TextUtils.getName()));
+    List<TeacherClassModel> listTeacherClass = await teacherRepository
+        .getTeacherClassById('class_id', int.parse(TextUtils.getName()));
     for (var i in listTeacherClass) {
       list.add(i.userId);
     }

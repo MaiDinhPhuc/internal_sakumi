@@ -2,6 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
+import 'package:internal_sakumi/features/teacher/lecture/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -85,10 +86,10 @@ class DropDownWidget extends StatelessWidget {
                         boxShadow: [
                           BoxShadow(
                               blurRadius: Resizable.size(context, 2),
-                              color: s < 1 ? greyColor.shade100 : primaryColor)
+                              color: s > 0 ? greyColor.shade100 : primaryColor)
                         ],
                         border: Border.all(
-                            color: s < 1 ? greyColor.shade100 : primaryColor),
+                            color: s > 0 ? greyColor.shade100 : primaryColor),
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(1000)),
                     dropdownElevation: 0,
@@ -109,6 +110,9 @@ class DropDownWidget extends StatelessWidget {
                       s = items.indexOf(v.toString());
                       BlocProvider.of<DropdownAttendanceCubit>(c)
                           .update(items.indexOf(v.toString()), userId, c);
+                      if (items.length == 7) {
+                        BlocProvider.of<SessionCubit>(c).updateTimekeeping(s);
+                      }
                     },
                     buttonHeight: Resizable.size(context, 20),
                     buttonWidth: double.maxFinite,

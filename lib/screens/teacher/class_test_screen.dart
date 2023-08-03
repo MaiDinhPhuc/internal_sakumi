@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:internal_sakumi/features/class_appbar.dart';
 
-import '../utils/text_utils.dart';
+import '../../utils/text_utils.dart';
 
 class ClassTestScreen extends StatelessWidget {
-  const ClassTestScreen(this.name,{super.key});
+  const ClassTestScreen(this.name, {super.key});
   final String name;
 
   @override
@@ -12,7 +12,11 @@ class ClassTestScreen extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          HeaderTeacher(index: 2, classId: TextUtils.getName(position: 2), name: name,),
+          HeaderTeacher(
+            index: 2,
+            classId: TextUtils.getName(position: 2),
+            name: name,
+          ),
           Text("test")
         ],
       ),
