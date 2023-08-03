@@ -4,14 +4,14 @@ import 'package:internal_sakumi/screens/admin/add_teacher_screen.dart';
 import 'package:internal_sakumi/screens/admin/add_user_to_class_screen.dart';
 import 'package:internal_sakumi/screens/admin/admin_screen.dart';
 import 'package:internal_sakumi/screens/admin/detail_class_screen.dart';
-import 'package:internal_sakumi/screens/detail_grading_screen.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
 import 'package:internal_sakumi/screens/master_screen.dart';
 import 'package:internal_sakumi/screens/teacher/class_screen.dart';
-import 'package:internal_sakumi/screens/teacher/tab/class_grading_tab.dart';
+import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
 import 'package:internal_sakumi/screens/teacher/tab/class_overview_tab.dart';
 import 'package:internal_sakumi/screens/teacher/tab/class_test_tab.dart';
 import 'package:internal_sakumi/screens/teacher/detail_lesson_screen.dart';
+import 'package:internal_sakumi/screens/teacher/tab/class_grading_tab.dart';
 import 'package:internal_sakumi/screens/teacher/tab/list_lesson_tab.dart';
 import 'package:internal_sakumi/screens/teacher/teacher_screen.dart';
 

@@ -3,11 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/class_appbar.dart';
-import 'package:internal_sakumi/features/teacher/mark/grading_cubit.dart';
+import 'package:internal_sakumi/features/teacher/grading/grading_cubit.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
-import 'package:internal_sakumi/widget/submit_button.dart';
 
 class ClassGradingTab extends StatelessWidget {
   const ClassGradingTab(this.name, {super.key});
@@ -77,10 +76,10 @@ class ClassGradingTab extends StatelessWidget {
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               Column(
-                                            crossAxisAlignment : CrossAxisAlignment.start,
+                                                crossAxisAlignment : CrossAxisAlignment.start,
                                                 children: [
                                                   Padding(padding: EdgeInsets.symmetric(vertical:Resizable.padding(context, 10) ),child: Text(cubit.lessons![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)].title, style: TextStyle(fontWeight: FontWeight.bold,fontSize: Resizable.font(context, 30),),),
-                                                      ),
+                                                  ),
                                                   Text(cubit.lessons![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)].description),
                                                   Text("${AppText.textNumberResultReceive.text} ${cubit.listResultCount![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)]}")
                                                 ],

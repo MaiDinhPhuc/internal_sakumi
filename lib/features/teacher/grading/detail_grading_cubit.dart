@@ -2,7 +2,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/homework_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
+import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/repository/teacher_repository.dart';
+import 'package:internal_sakumi/repository/user_repository.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
 class DetailGradingCubit extends Cubit<int> {
@@ -12,14 +14,14 @@ class DetailGradingCubit extends Cubit<int> {
   HomeworkModel? homework;
   QuestionModel? question;
   List<AnswerModel>? listAnswer;
-
+  List<StudentModel>? listStudent;
   init(context) async {
     await loadQuestionInLesson(context);
   }
 
   loadQuestionInLesson(context) async {
     TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
+    TeacherRepository.fromContext(context);
 
     homework = await teacherRepository.getHomework(
         int.parse(TextUtils.getName()),
@@ -36,6 +38,11 @@ class DetailGradingCubit extends Cubit<int> {
     }
     listAnswer = await teacherRepository.getAnswerOfQuestion(listQuestions!.first.id,int.parse(TextUtils.getName()),
         int.parse(TextUtils.getName(position: 2)));
+    listStudent = [];
+    var userRepository = UserRepository.fromContext(context);
+    for (var i in listAnswer!){
+      listStudent!.add(await userRepository.getStudentInfo(i.studentId));
+    }
     for(var i in listQuestions!){
       if(i.id == listQuestions!.first.id){
         question = i;

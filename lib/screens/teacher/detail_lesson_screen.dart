@@ -51,11 +51,11 @@ class DetailLessonScreen extends StatelessWidget {
                                     builder: (_, state) {
                                       return Column(
                                         children: [
-                                          if (s!.status == 'Pending')
+                                          if (s.status == 'Pending')
                                             LessonPendingView(s),
-                                          if (s!.status == 'Teaching')
+                                          if (s.status == 'Teaching')
                                             LessonTeachingView(),
-                                          if (s!.status == 'Complete')
+                                          if (s.status == 'Complete')
                                             LessonCompleteView(),
                                         ],
                                       );
