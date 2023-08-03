@@ -65,3 +65,5 @@ const MaterialColor blueColor = MaterialColor(_blueValue, <int, Color>{
 
 const MaterialColor redColor =
     MaterialColor(0xffB71C1C, <int, Color>{900: Color(0xffB71C1C)});
+
+const Color lightGreyColor = Color(0xfff4f4f4);
