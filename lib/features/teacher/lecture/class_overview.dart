@@ -8,9 +8,9 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-class ClassOverView extends StatelessWidget {
+class ClassOverview extends StatelessWidget {
   final int index;
-  const ClassOverView(this.index, {Key? key}) : super(key: key);
+  const ClassOverview(this.index, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,8 @@ class ClassOverView extends StatelessWidget {
                 fontWeight: FontWeight.w700,
                 fontSize: Resizable.font(context, 16))),
         widgetLessons: Row(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
+          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             LinearPercentIndicator(
               padding: EdgeInsets.zero,
@@ -54,8 +55,10 @@ class ClassOverView extends StatelessWidget {
                     fontSize: Resizable.font(context, 16)))
           ],
         ),
-        widgetAttendance: cubit.sumAttendance == null
-            ? Center(
+        widgetAttendance:
+        cubit.rateAttendance == null || cubit.rateAttendance!.isEmpty
+            ?
+        Center(
                 child: Transform.scale(
                   scale: 0.75,
                   child: const CircularProgressIndicator(),
@@ -63,16 +66,17 @@ class ClassOverView extends StatelessWidget {
               )
             : CircleProgress(
                 title:
-                    '${(cubit.sumAttendance! / (cubit.listStudentInClass![index] * cubit.courses![index].lessonCount) * 100).toStringAsFixed(0)} %',
+                    '${(cubit.rateAttendance![index] * 100).toStringAsFixed(0)} %',
                 lineWidth: Resizable.size(context, 3),
-                percent: cubit.sumAttendance! /
-                    (cubit.listStudentInClass![index] *
-                        cubit.courses![index].lessonCount),
+                percent: cubit.rateAttendance![index],
                 radius: Resizable.size(context, 15),
                 fontSize: Resizable.font(context, 14),
-              ),
-        widgetSubmit: cubit.sumSubmit == null
-            ? Center(
+              )
+    ,
+        widgetSubmit:
+        cubit.rateSubmit == null || cubit.rateAttendance!.isEmpty
+            ?
+        Center(
                 child: Transform.scale(
                   scale: 0.75,
                   child: const CircularProgressIndicator(),
@@ -80,14 +84,13 @@ class ClassOverView extends StatelessWidget {
               )
             : CircleProgress(
                 title:
-                    '${(cubit.sumSubmit! / (cubit.listStudentInClass![index] * cubit.courses![index].lessonCount) * 100).toStringAsFixed(0)} %',
+                    '${(cubit.rateSubmit![index]* 100).toStringAsFixed(0)} %',
                 lineWidth: Resizable.size(context, 3),
-                percent: cubit.sumSubmit! /
-                    (cubit.listStudentInClass![index] *
-                        cubit.courses![index].lessonCount),
+                percent: cubit.rateSubmit![index],
                 radius: Resizable.size(context, 15),
                 fontSize: Resizable.font(context, 14),
-              ),
+              )
+        ,
         widgetEvaluate: Container(
           width: Resizable.size(context, 20),
           height: Resizable.size(context, 20),

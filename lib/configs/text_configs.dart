@@ -141,7 +141,13 @@ enum AppText {
   textStudentAnswer,
   textGradingScale,
   textShowName,
-  textGeneralComment
+  textGeneralComment,
+  titleSlogan,
+  titleSakumiCenter,
+  txtMessageLogin,
+  txtHintAccount,
+  txtHintPassword,
+  txtForgetPassword,
 }
 
 Map<AppText, String> texts = {
@@ -286,7 +292,13 @@ Map<AppText, String> texts = {
   AppText.txtOK: 'Đồng ý',
   AppText.txtBack: 'Quay lại',
   AppText.txtActiveStatus: 'Tương tác',
-  AppText.txtLearningStatus: 'Học lực'
+  AppText.txtLearningStatus: 'Học lực',
+  AppText.titleSakumiCenter: 'Trung tâm Nhật ngữ Sakumi',
+  AppText.titleSlogan: 'Tri thức truyền từ tâm',
+  AppText.txtMessageLogin: 'Các sensei hãy đăng nhập để có thể sử dụng đầy đủ các chức năng hỗ trỡ trong việc đứng lớp nhé!',
+  AppText.txtHintAccount: 'abc123@gmail.com',
+  AppText.txtHintPassword: 'abc123',
+  AppText.txtForgetPassword: 'Quên mật khẩu'
 };
 
 extension AppTexts on AppText {

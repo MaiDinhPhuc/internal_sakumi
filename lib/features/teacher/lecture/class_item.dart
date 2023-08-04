@@ -19,7 +19,7 @@ class ClassItem extends StatelessWidget {
         child: BlocBuilder<DropdownCubit, int>(
           builder: (c, state) => AnimatedCrossFade(
               firstChild: CardItem(
-                  widget: ClassOverView(index),
+                  widget: ClassOverview(index),
                   onTap: () async {
                     await Navigator.pushNamed(context,
                         //Routes.classScreen
@@ -36,7 +36,7 @@ class ClassItem extends StatelessWidget {
                   isExpand: true,
                   widget: Column(
                     children: [
-                      ClassOverView(index),
+                      ClassOverview(index),
                       (BlocProvider.of<TeacherCubit>(c).listStudentInClass ==
                               null)
                           ? Transform.scale(

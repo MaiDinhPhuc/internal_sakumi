@@ -24,13 +24,13 @@ class ChartView extends StatelessWidget {
           Expanded(flex: 4, child: Container()),
           const Expanded(flex: 2, child: ColumnChart()),
           Expanded(child: Container()),
-          Expanded(
-              flex: 8,
-              child: LineChart(
-                attendances: cubit.listAttendance![index],
-                hws: cubit.listSubmit![index],
-                points: cubit.listPoint,
-              )),
+          // Expanded(
+          //     flex: 8,
+          //     child: LineChart(
+          //       attendances: cubit.listAttendance![index],
+          //       hws: cubit.listSubmit![index],
+          //       points: cubit.listPoint![index],
+          //     )),
           Expanded(flex: 4, child: Container()),
         ],
       ),
