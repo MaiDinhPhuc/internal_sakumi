@@ -3,7 +3,7 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 
 class CourseModel {
   final int courseId, lessonCount, termId;
-  final String description, level, termName, title, type;
+  final String description, level, termName, title, type, token;
 
   CourseModel(
       {required this.courseId,
@@ -13,7 +13,7 @@ class CourseModel {
       required this.termId,
       required this.termName,
       required this.title,
-      required this.type});
+      required this.type, required this.token});
 
   String get name {
     switch (type) {
@@ -37,6 +37,7 @@ class CourseModel {
         termId: data['term_id'],
         termName: data['term_name'],
         title: data['title'],
+        token: data['token'],
         type: data['type']);
   }
 }

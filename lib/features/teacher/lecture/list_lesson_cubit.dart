@@ -23,7 +23,7 @@ class ListLessonCubit extends Cubit<int> {
 
   List<StudentClassModel>? listStudentClass;
 
-  List<int>? listAttendance, listSubmitHomework, listNotMarked;
+  List<int>? listAttendance, listSubmitHomework, listMarked;
 
   List<StudentModel>? listStudent;
 
@@ -48,6 +48,8 @@ class ListLessonCubit extends Cubit<int> {
     listLessonResult = await teacherRepository
         .getLessonResultByClassId(int.parse(TextUtils.getClassId()));
 
+    debugPrint('==============> ${listLessonResult!.length}');
+
     lessons =
         await teacherRepository.getLessonsByCourseId(classModel!.courseId);
 
@@ -57,7 +59,7 @@ class ListLessonCubit extends Cubit<int> {
   loadStudentLesson(context) async {
     listAttendance = [];
     listSubmitHomework = [];
-    listNotMarked = [];
+    listMarked = [];
     listStudentClass = [];
     TeacherRepository teacherRepository =
         TeacherRepository.fromContext(context);
@@ -78,7 +80,7 @@ class ListLessonCubit extends Cubit<int> {
 
       listStudentLessons!.add(list);
 
-      var attendance = listAllStudentLesson!.fold(
+      var attendance = listStudentLessons![listLessonResult!.indexOf(i)].fold(
           <int>[],
           (pre, e) => [
                 ...pre,
@@ -88,14 +90,14 @@ class ListLessonCubit extends Cubit<int> {
                   e.timekeeping
               ]).toList();
 
-      var submit = listAllStudentLesson!.fold(
+      var submit = listStudentLessons![listLessonResult!.indexOf(i)].fold(
           <int>[],
           (pre, e) => [
                 ...pre,
                 if (e.hw > -2 && e.lessonId == i.lessonId) e.hw
               ]).toList();
 
-      var notMarked = listAllStudentLesson!.fold(
+      var marked = listStudentLessons![listLessonResult!.indexOf(i)].fold(
           <int>[],
           (pre, e) => [
                 ...pre,
@@ -103,7 +105,7 @@ class ListLessonCubit extends Cubit<int> {
               ]).toList();
 
       listSubmitHomework!.add(submit.length);
-      listNotMarked!.add(notMarked.length);
+      listMarked!.add(marked.length);
       listAttendance!.add(attendance.length);
     }
 

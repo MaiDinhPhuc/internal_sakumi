@@ -86,12 +86,11 @@ class CollapseLessonItem extends StatelessWidget {
                             horizontal: Resizable.padding(context, 10)),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10000),
-                            color: cubit.listNotMarked!.length ==
-                                    cubit.listStudentClass!.length
+                            color: cubit.listMarked![cubit.listLessonResult!.indexOf(lessonResultModel)] == cubit.listStudentClass!.length
                                 ? greenColor
                                 : redColor),
                         child: Text(
-                          (cubit.listNotMarked!.length ==
+                          (cubit.listMarked![cubit.listLessonResult!.indexOf(lessonResultModel)] ==
                                       cubit.listStudentClass!.length
                                   ? AppText.txtMarked.text
                                   : AppText.txtNotMark.text)

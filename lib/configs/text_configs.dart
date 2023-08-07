@@ -295,7 +295,7 @@ Map<AppText, String> texts = {
   AppText.txtLearningStatus: 'Học lực',
   AppText.titleSakumiCenter: 'Trung tâm Nhật ngữ Sakumi',
   AppText.titleSlogan: 'Tri thức truyền từ tâm',
-  AppText.txtMessageLogin: 'Các sensei hãy đăng nhập để có thể sử dụng đầy đủ các chức năng hỗ trỡ trong việc đứng lớp nhé!',
+  AppText.txtMessageLogin: 'Các sensei hãy đăng nhập để có thể sử dụng đầy đủ các chức năng hỗ trợ trong việc đứng lớp nhé!',
   AppText.txtHintAccount: 'abc123@gmail.com',
   AppText.txtHintPassword: 'abc123',
   AppText.txtForgetPassword: 'Quên mật khẩu'
