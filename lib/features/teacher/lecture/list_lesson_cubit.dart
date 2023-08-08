@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/class_model.dart';
@@ -36,23 +38,24 @@ class ListLessonCubit extends Cubit<int> {
   loadClass(context) async {
     TeacherRepository teacherRepository =
         TeacherRepository.fromContext(context);
+    var temp = Uri.dataFromString(window.location.href).toString();
     classModel =
-        await teacherRepository.getClassById(int.parse(TextUtils.getClassId()));
+        await teacherRepository.getClassById(int.parse(Uri.decodeFull(temp).split('class?id=').last.substring(0, 1).trim()));
     emit(state + 1);
   }
 
   loadLessonResult(context) async {
     TeacherRepository teacherRepository =
         TeacherRepository.fromContext(context);
-
+    debugPrint('==============> 111111');
     listLessonResult = await teacherRepository
         .getLessonResultByClassId(int.parse(TextUtils.getClassId()));
-
-    debugPrint('==============> ${listLessonResult!.length}');
+    debugPrint('==============> 222222');
+    //debugPrint('==============> ${listLessonResult!.length}');
 
     lessons =
         await teacherRepository.getLessonsByCourseId(classModel!.courseId);
-
+    debugPrint('==============> 333333');
     emit(state + 1);
   }
 

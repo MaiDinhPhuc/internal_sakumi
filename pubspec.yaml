@@ -51,6 +51,7 @@ dependencies:
   fluttertoast: ^8.2.1
   d_chart: ^2.3.0
   image_network: ^2.5.4+1
+  dotted_border: ^2.0.0+3
 
 
 dev_dependencies:

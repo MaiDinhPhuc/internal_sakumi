@@ -64,7 +64,7 @@ class LessonCompleteView extends StatelessWidget {
               SizedBox(height: Resizable.size(context, 40)),
               SubmitButton(
                 onPressed: () async{
-                  await detailCubit.updateStatus(context, 'Finished');
+                  //await detailCubit.updateStatus(context, 'Finished');
                   if(context.mounted) {
                     Navigator.pop(context, true);
                   }

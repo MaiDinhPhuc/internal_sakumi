@@ -8,10 +8,10 @@ import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/textfield_widget.dart';
 
-class ListTagView extends StatelessWidget {
+class ManageTagTab extends StatelessWidget {
   final ChooseTextColorCubit cubit;
   final TextEditingController controller;
-  ListTagView({Key? key})
+  ManageTagTab({Key? key})
       : cubit = ChooseTextColorCubit(),
         controller = TextEditingController(),
         super(key: key);

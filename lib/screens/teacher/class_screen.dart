@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/features/class_appbar.dart';
 import 'package:internal_sakumi/routes.dart';
-import 'package:internal_sakumi/screens/teacher/tab/class_overview_tab.dart';
 import 'package:internal_sakumi/screens/teacher/tab/list_lesson_tab.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:internal_sakumi/widget/custom_appbar.dart';
 
 class PersistentTabs extends StatelessWidget {
   const PersistentTabs(
@@ -108,13 +107,5 @@ class _ClassScreenState extends State<ClassScreen> {
             ),
           ),
         ));
-  }
-}
-
-class TabCubit extends Cubit<int> {
-  TabCubit() : super(0);
-
-  changeTab(int tab) {
-    emit(tab);
   }
 }

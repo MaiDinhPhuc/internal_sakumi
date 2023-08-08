@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
@@ -20,6 +22,7 @@ class ListLessonTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('================> ListLessonTab');
     return BlocProvider(
         create: (context) => ListLessonCubit()..init(context),
         child: Scaffold(
@@ -29,6 +32,8 @@ class ListLessonTab extends StatelessWidget {
                   index: 1,
                   classId: TextUtils.getName(position: 2),
                   name: name),
+              Text(TextUtils.getClassId()),
+              Text(Uri.dataFromString(window.location.href).toString()),
               BlocBuilder<ListLessonCubit, int>(
                 //bloc: ListLessonCubit()..init(context),
                   builder: (c, s) {
@@ -117,12 +122,17 @@ class ListLessonTab extends StatelessWidget {
                                                         color:
                                                             Colors.transparent,
                                                         child: InkWell(
-                                                            onTap: e.status != 'Finished' ? () async{
+                                                            onTap: e.status != 'Complete' ? () async{
                                                               var result = await  Navigator.pushNamed(
-                                                                  context,
+                                                                  c,
                                                                   "/teacher?name=$name/lesson/class?id=${e.classId}/lesson?id=${e.lessonId}");
-                                                              if(result != null && c.mounted){
-                                                                cubit.loadLessonResult(c);
+                                                              debugPrint('===============> resutl $result');
+                                                              if(c.mounted){
+                                                                debugPrint('===============> resutl2 $result');
+                                                                debugPrint("============> classId = ${Uri.dataFromString(window.location.href)}");
+                                                                await cubit.loadLessonResult(c);
+                                                                debugPrint('===============> resutl3 $result');
+
                                                               }
                                                             } : (){
                                                               //TODO navigate to detail grading

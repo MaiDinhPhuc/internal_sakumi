@@ -21,15 +21,15 @@ class TextUtils {
   }
 
   static String getClassId(){
-    dynamic uri = Uri.dataFromString(window.location.href).toString();
+    dynamic uri = Uri.dataFromString(window.location.href);
 
     String temp = '';
 
-    temp = Uri.decodeFull(uri).split('class?id=').last;
+    temp = Uri.decodeFull(uri.toString()).split('=').last;
 
-    debugPrint("============> classId = $temp");
+    debugPrint("============> classId = $temp === ${window.location.href} ${Uri.dataFromString(window.location.href)}");
     return temp.substring(0, 1).trim();
-  }
+  }//http://localhost:49203/#/teacher?name=kimngan/lesson/class?id=0
 
   static String getErrorAuth(String data) {
     int start = data.indexOf('(') + 1;
