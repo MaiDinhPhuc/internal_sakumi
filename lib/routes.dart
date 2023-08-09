@@ -4,6 +4,7 @@ import 'package:internal_sakumi/screens/admin/add_teacher_screen.dart';
 import 'package:internal_sakumi/screens/admin/add_user_to_class_screen.dart';
 import 'package:internal_sakumi/screens/admin/admin_screen.dart';
 import 'package:internal_sakumi/screens/admin/detail_class_screen.dart';
+import 'package:internal_sakumi/screens/admin/manage_general_screen.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
 import 'package:internal_sakumi/screens/master_screen.dart';
 import 'package:internal_sakumi/screens/teacher/class_screen.dart';
@@ -37,7 +38,8 @@ class Routes {
   static const addTeacher = "/addTeacher";
 
   static const teacher = "/teacher";
-  static const classScreen = "classScreen";
+  static const classScreen = "/classScreen";
+  static const manageGeneral = "manageGeneral";
 
   static const empty = '/empty';
 
@@ -52,6 +54,8 @@ class Routes {
         handler: teacherHandler, transitionType: TransitionType.fadeIn);
     router.define(admin,
         handler: adminHandler, transitionType: TransitionType.fadeIn);
+    router.define('/:name/manageGeneral',
+        handler: manageGeneralHandler, transitionType: TransitionType.fadeIn);
     router.define(master,
         handler: masterHandler, transitionType: TransitionType.fadeIn);
     router.define(addTeacher,
@@ -68,8 +72,8 @@ class Routes {
         handler: detailGradingHandler, transitionType: TransitionType.fadeIn);
     router.define('/:name/lesson/:classId/:lessonId',
         handler: detailLessonHandler, transitionType: TransitionType.fadeIn);
-    router.define('$admin/:classId',
-        handler: detailClassHandler, transitionType: TransitionType.fadeIn);
+    // router.define('$admin/:classId',
+    //     handler: detailClassHandler, transitionType: TransitionType.fadeIn);
     router.define(addUserToClass,
         handler: addUserToClassHandler, transitionType: TransitionType.fadeIn);
   }
@@ -109,7 +113,10 @@ var addTeacherHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return AddTeacherScreen();
 });
-
+var manageGeneralHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return ManageGeneralScreen();
+});
 var lessonsHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return ListLessonTab(params['name'][0], params['classId'][0]);

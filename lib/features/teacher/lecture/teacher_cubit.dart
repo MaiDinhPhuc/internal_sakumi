@@ -11,6 +11,7 @@ import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/repository/teacher_repository.dart';
+import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TeacherCubit extends Cubit<int> {
@@ -34,8 +35,8 @@ class TeacherCubit extends Cubit<int> {
     SharedPreferences localData = await SharedPreferences.getInstance();
     TeacherRepository teacherRepository =
         TeacherRepository.fromContext(context);
-    teacherProfile = await teacherRepository
-        .getTeacher(localData.getString(PrefKeyConfigs.code)!);
+    teacherProfile = await teacherRepository.getTeacher(TextUtils.getName());
+        //.getTeacher(localData.getString(PrefKeyConfigs.code)!);
     emit(state + 1);
   }
 
@@ -49,7 +50,7 @@ class TeacherCubit extends Cubit<int> {
     SharedPreferences localData = await SharedPreferences.getInstance();
 
     listTeacherClass = await teacherRepository.getTeacherClassById(
-        'user_id', localData.getInt(PrefKeyConfigs.userId)!);
+        'user_id', teacherProfile!.userId);
 
     listAllCourse = await teacherRepository.getAllCourse();
 

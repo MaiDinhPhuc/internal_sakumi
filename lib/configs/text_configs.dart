@@ -238,7 +238,7 @@ Map<AppText, String> texts = {
   AppText.btnCreateClass: 'Tạo lớp mới',
   AppText.titleListClass: 'Danh sách các lớp',
   AppText.titleListStudent: 'Danh sách học viên',
-  AppText.btnAddClass: 'Thêm lớp học',
+  AppText.btnAddClass: 'Thêm lớp học mới',
   AppText.btnAddStudent: 'Thêm học viên mới',
   AppText.btnAddTeacher: 'Thêm giáo viên',
   AppText.btnUpdate: 'Cập nhật',
