@@ -40,22 +40,17 @@ class ListLessonCubit extends Cubit<int> {
         TeacherRepository.fromContext(context);
     var temp = Uri.dataFromString(window.location.href).toString();
     classModel =
-        await teacherRepository.getClassById(int.parse(Uri.decodeFull(temp).split('class?id=').last.substring(0, 1).trim()));
+        await teacherRepository.getClassById(int.parse(TextUtils.getClassId()));
     emit(state + 1);
   }
 
   loadLessonResult(context) async {
     TeacherRepository teacherRepository =
         TeacherRepository.fromContext(context);
-    debugPrint('==============> 111111');
     listLessonResult = await teacherRepository
-        .getLessonResultByClassId(int.parse(TextUtils.getClassId()));
-    debugPrint('==============> 222222');
-    //debugPrint('==============> ${listLessonResult!.length}');
-
+        .getLessonResultByClassId(classModel!.classId);
     lessons =
         await teacherRepository.getLessonsByCourseId(classModel!.courseId);
-    debugPrint('==============> 333333');
     emit(state + 1);
   }
 

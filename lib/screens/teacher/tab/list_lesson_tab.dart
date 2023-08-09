@@ -15,10 +15,8 @@ import 'package:internal_sakumi/utils/text_utils.dart';
 class ListLessonTab extends StatelessWidget {
   final String name;
   final String classId;
-  //final ListLessonCubit cubit;
 
-  ListLessonTab(this.name, this.classId, {Key? key}) : //cubit = ListLessonCubit(),
-        super(key: key);
+  const ListLessonTab(this.name, this.classId, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +30,6 @@ class ListLessonTab extends StatelessWidget {
                   index: 1,
                   classId: TextUtils.getName(position: 2),
                   name: name),
-              Text(TextUtils.getClassId()),
-              Text(Uri.dataFromString(window.location.href).toString()),
               BlocBuilder<ListLessonCubit, int>(
                 //bloc: ListLessonCubit()..init(context),
                   builder: (c, s) {
@@ -123,16 +119,11 @@ class ListLessonTab extends StatelessWidget {
                                                             Colors.transparent,
                                                         child: InkWell(
                                                             onTap: e.status != 'Complete' ? () async{
-                                                              var result = await  Navigator.pushNamed(
+                                                              await  Navigator.pushNamed(
                                                                   c,
                                                                   "/teacher?name=$name/lesson/class?id=${e.classId}/lesson?id=${e.lessonId}");
-                                                              debugPrint('===============> resutl $result');
                                                               if(c.mounted){
-                                                                debugPrint('===============> resutl2 $result');
-                                                                debugPrint("============> classId = ${Uri.dataFromString(window.location.href)}");
                                                                 await cubit.loadLessonResult(c);
-                                                                debugPrint('===============> resutl3 $result');
-
                                                               }
                                                             } : (){
                                                               //TODO navigate to detail grading
