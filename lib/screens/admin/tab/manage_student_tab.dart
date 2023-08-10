@@ -2,12 +2,16 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
+import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/admin/dotted_border_button.dart';
 import 'package:internal_sakumi/features/admin/manage_student/student_item_row_layout.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/repository/admin_repository.dart';
+import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ManageStudentTab extends StatelessWidget {
   const ManageStudentTab({Key? key}) : super(key: key);
@@ -182,27 +186,16 @@ class ManageStudentTab extends StatelessWidget {
                                         )),
                                   )).toList(),
                           SizedBox(height: Resizable.size(context, 5)),
-                          InkWell(
-                            onTap: (){},
-                            borderRadius: BorderRadius.circular(Resizable.size(context, 5)),
-                            child: DottedBorder(
-                                borderType: BorderType.RRect,
-                                radius:
-                                Radius.circular(Resizable.size(context, 5)),
-                                padding: EdgeInsets.symmetric(
-                                    vertical: Resizable.padding(context, 15)),
-                                color: const Color(0xffE0E0E0),
-                                strokeWidth: Resizable.size(context, 1),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.add, color: const Color(0xff757575), size: Resizable.size(context, 10)),
-                                    Text(AppText.btnAddStudent.text.toUpperCase(), style: TextStyle(
-                                    fontSize: Resizable.font(context, 20), fontWeight: FontWeight.w700, color: const Color(0xff757575)
-                                  ))],
-                                )),
-                          ),
+                          DottedBorderButton(
+                              AppText.btnAddNewStudent.text.toUpperCase(),
+                              onPressed: () async {
+                                SharedPreferences localData =
+                                await SharedPreferences.getInstance();
+                                if (c.mounted) {
+                                  Navigator.pushNamed(context,
+                                      '${Routes.admin}?name=${localData.getString(PrefKeyConfigs.code)!}/${Routes.manageGeneral}');
+                                }
+                              }),
                           SizedBox(height: Resizable.size(context, 50)),
                         ],
                       ),

@@ -40,9 +40,9 @@ class AdminRepository {
     return listStudent;
   }
 
-  Future<List<TeacherClassModel>> getAllTeacherInClass() async {
+  Future<List<TeacherClassModel>> getAllTeacherInClassByClassId(int classId) async {
     final db = FirebaseFirestore.instance;
-    final snapshot = await db.collection("teacher_class").get();
+    final snapshot = await db.collection("teacher_class").where('class_id', isEqualTo: classId).get();
     final listTeacher =
         snapshot.docs.map((e) => TeacherClassModel.fromSnapshot(e)).toList();
     return listTeacher;

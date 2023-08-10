@@ -23,7 +23,7 @@ class AddClassScreen extends StatelessWidget {
     return classModel == null
         ? Scaffold(
             appBar: AppBar(
-              title: Text(AppText.btnAddClass.text),
+              title: Text(AppText.btnAddNewClass.text),
             ),
             body: Padding(
               padding: EdgeInsets.symmetric(

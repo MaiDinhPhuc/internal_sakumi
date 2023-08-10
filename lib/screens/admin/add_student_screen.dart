@@ -26,7 +26,7 @@ class AddStudentScreen extends StatelessWidget {
     return studentModel == null
         ? Scaffold(
             appBar: AppBar(
-              title: Text(AppText.btnAddStudent.text),
+              title: Text(AppText.btnAddNewStudent.text),
             ),
             body: BlocBuilder<ChooseLocationCubit, String>(
                 bloc: locationCubit,
@@ -218,7 +218,7 @@ class AddStudentScreen extends StatelessWidget {
             bloc: LoadStudentCubit(studentModel!)..load(context),
             builder: (c, s) => Scaffold(
                   appBar: AppBar(
-                    title: Text(AppText.btnAddStudent.text),
+                    title: Text(AppText.btnAddNewStudent.text),
                   ),
                   body: BlocBuilder<ChooseLocationCubit, String>(
                       bloc: locationCubit,

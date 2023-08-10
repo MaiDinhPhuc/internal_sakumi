@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/admin/dotted_border_button.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/repository/admin_repository.dart';
@@ -25,189 +26,160 @@ class ManageClassTab extends StatelessWidget {
                 "======== ========= =========== ${LoadListClassCubit().state.length} == ${list.length}");
             return list.isEmpty
                 ? Center(
-              child: SizedBox(
-                height: Resizable.size(context, 40),
-                width: Resizable.size(context, 40),
-                child: const CircularProgressIndicator(),
-              ),
-            )
-                : Column(
-              children: [
-                SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal:
-                        Resizable.padding(context, 150)),
-                    child: Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.symmetric(
-                              vertical: Resizable.padding(context, 20)),
-                          child: Text(
-                              AppText.titleListClass.text.toUpperCase(),
-                              style: TextStyle(
-                                fontSize: Resizable.font(context, 30),
-                                fontWeight: FontWeight.w800,
-                              )),
-                        ),
-                        ...List.generate(
-                            list.length,
-                                (index) => Container(
-                              margin: EdgeInsets.symmetric(
-                                // horizontal: Resizable.padding(
-                                //     context, 150),
-                                  vertical:
-                                  Resizable.padding(context, 5)),
-                              child: BlocProvider(
-                                  create: (context) => DropdownCubit(),
-                                  child: BlocBuilder<DropdownCubit, int>(
-                                    builder: (c, state) => Stack(
-                                      children: [
-                                        Container(
-                                            alignment:
-                                            Alignment.centerLeft,
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    width: Resizable.size(
-                                                        context, 1),
-                                                    color: state % 2 == 0
-                                                        ? greyColor
-                                                        .shade100
-                                                        : Colors.black),
-                                                borderRadius: BorderRadius.circular(
-                                                    Resizable.size(
-                                                        context, 5))),
-                                            child: list == null
-                                                ? Transform.scale(
-                                              scale: 0.75,
-                                              child:
-                                              const CircularProgressIndicator(),
-                                            )
-                                                : AnimatedCrossFade(
-                                                firstChild: Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: Resizable
-                                                          .padding(
-                                                          context,
-                                                          20),
-                                                      vertical: Resizable
-                                                          .padding(
-                                                          context,
-                                                          15)),
-                                                  child: Text(list[index].classCode,
-                                                      style: TextStyle(
-                                                          fontSize: Resizable.font(
-                                                              context,
-                                                              18)))),
-                                                secondChild: Column(
-                                                  crossAxisAlignment:
-                                                  CrossAxisAlignment
-                                                      .start,
-                                                  children: [
-                                                    Padding(
-                                                        padding: EdgeInsets.symmetric(
-                                                            horizontal: Resizable
-                                                                .padding(
-                                                                context,
-                                                                20),
-                                                            vertical: Resizable
-                                                                .padding(
-                                                                context,
-                                                                15)),
-                                                        child: Text(list[index].classCode,
-                                                            style: TextStyle(
-                                                                fontSize: Resizable.font(
-                                                                    context,
-                                                                    18)))),
-                                                    Text('kkkkkkk')
-                                                  ],
-                                                ),
-                                                crossFadeState: state % 2 == 1
-                                                    ? CrossFadeState
-                                                    .showSecond
-                                                    : CrossFadeState
-                                                    .showFirst,
-                                                duration: const Duration(
-                                                    milliseconds: 100))),
-                                        Positioned.fill(
-                                            child: Material(
-                                              color: Colors.transparent,
-                                              child: InkWell(
-                                                  onTap: () {
-    //if(c.mounted){
-    // Navigator.pushNamed(context, '${Routes.admin}?name=${localData.getString(PrefKeyConfigs.code)!}/${Routes.manageGeneral}');
-                                                  },
-                                                  borderRadius:
-                                                  BorderRadius.circular(
-                                                      Resizable.size(
-                                                          context, 5))),
-                                            )),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                              right: Resizable.padding(
-                                                  context, 10),
-                                              top: Resizable.padding(
-                                                  context, 8)),
-                                          alignment:
-                                          Alignment.centerRight,
-                                          child: IconButton(
-                                              onPressed: () => BlocProvider
-                                                  .of<DropdownCubit>(
-                                                  c)
-                                                  .update(),
-                                              splashRadius:
-                                              Resizable.size(
-                                                  context, 15),
-                                              icon: Icon(
-                                                state % 2 == 0
-                                                    ? Icons
-                                                    .keyboard_arrow_down
-                                                    : Icons
-                                                    .keyboard_arrow_up,
-                                              )),
-                                        )
-                                      ],
-                                    ),
-                                  )),
-                            )).toList(),
-                        SizedBox(height: Resizable.size(context, 5)),
-                        InkWell(
-                          onTap: () async{
-                            SharedPreferences localData = await SharedPreferences.getInstance();
-                            if(c.mounted){
-                            Navigator.pushNamed(context, '${Routes.admin}?name=${localData.getString(PrefKeyConfigs.code)!}/${Routes.manageGeneral}');
-                            }},
-                          borderRadius: BorderRadius.circular(Resizable.size(context, 5)),
-                          child: DottedBorder(
-                              borderType: BorderType.RRect,
-                              radius:
-                              Radius.circular(Resizable.size(context, 5)),
-                              padding: EdgeInsets.symmetric(
-                                  vertical: Resizable.padding(context, 15)),
-                              color: const Color(0xffE0E0E0),
-                              strokeWidth: Resizable.size(context, 1),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.add, color: const Color(0xff757575), size: Resizable.size(context, 10)),
-                                  Text(AppText.btnAddClass.text.toUpperCase(), style: TextStyle(
-                                      fontSize: Resizable.font(context, 20), fontWeight: FontWeight.w700, color: const Color(0xff757575)
-                                  ))],
-                              )),
-                        ),
-                        SizedBox(
-                            height:
-                            Resizable.size(context, 50)),
-                      ],
+                    child: SizedBox(
+                      height: Resizable.size(context, 40),
+                      width: Resizable.size(context, 40),
+                      child: const CircularProgressIndicator(),
                     ),
-                  ),
-                ),
-              ],
-            );
+                  )
+                : Column(
+                    children: [
+                      SingleChildScrollView(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: Resizable.padding(context, 150)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.symmetric(
+                                    vertical: Resizable.padding(context, 20)),
+                                child: Text(
+                                    AppText.titleListClass.text.toUpperCase(),
+                                    style: TextStyle(
+                                      fontSize: Resizable.font(context, 30),
+                                      fontWeight: FontWeight.w800,
+                                    )),
+                              ),
+                              ...List.generate(
+                                  list.length,
+                                  (index) => Container(
+                                        margin: EdgeInsets.symmetric(
+                                            // horizontal: Resizable.padding(
+                                            //     context, 150),
+                                            vertical:
+                                                Resizable.padding(context, 5)),
+                                        child: BlocProvider(
+                                            create: (context) =>
+                                                DropdownCubit(),
+                                            child:
+                                                BlocBuilder<DropdownCubit, int>(
+                                              builder: (c, state) => Stack(
+                                                children: [
+                                                  Container(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                              width: Resizable.size(
+                                                                  context, 1),
+                                                              color: state % 2 == 0
+                                                                  ? greyColor
+                                                                      .shade100
+                                                                  : Colors
+                                                                      .black),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  Resizable.size(
+                                                                      context, 5))),
+                                                      child: list == null
+                                                          ? Transform.scale(
+                                                              scale: 0.75,
+                                                              child:
+                                                                  const CircularProgressIndicator(),
+                                                            )
+                                                          : AnimatedCrossFade(
+                                                              firstChild: Padding(
+                                                                  padding:
+                                                                      EdgeInsets.symmetric(horizontal: Resizable.padding(context, 20), vertical: Resizable.padding(context, 15)),
+                                                                  child: Text(list[index].classCode, style: TextStyle(fontSize: Resizable.font(context, 18)))),
+                                                              secondChild: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Padding(
+                                                                      padding: EdgeInsets.symmetric(
+                                                                          horizontal: Resizable.padding(
+                                                                              context,
+                                                                              20),
+                                                                          vertical: Resizable.padding(
+                                                                              context,
+                                                                              15)),
+                                                                      child: Text(
+                                                                          list[index]
+                                                                              .classCode,
+                                                                          style:
+                                                                              TextStyle(fontSize: Resizable.font(context, 18)))),
+                                                                  Text(
+                                                                      'kkkkkkk')
+                                                                ],
+                                                              ),
+                                                              crossFadeState: state % 2 == 1 ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                                                              duration: const Duration(milliseconds: 100))),
+                                                  Positioned.fill(
+                                                      child: Material(
+                                                    color: Colors.transparent,
+                                                    child: InkWell(
+                                                        onTap: () {
+                                                          //if(c.mounted){
+                                                          // Navigator.pushNamed(context, '${Routes.admin}?name=${localData.getString(PrefKeyConfigs.code)!}/${Routes.manageGeneral}');
+                                                        },
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                Resizable.size(
+                                                                    context,
+                                                                    5))),
+                                                  )),
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        right:
+                                                            Resizable.padding(
+                                                                context, 10),
+                                                        top: Resizable.padding(
+                                                            context, 8)),
+                                                    alignment:
+                                                        Alignment.centerRight,
+                                                    child: IconButton(
+                                                        onPressed: () =>
+                                                            BlocProvider.of<
+                                                                        DropdownCubit>(
+                                                                    c)
+                                                                .update(),
+                                                        splashRadius:
+                                                            Resizable.size(
+                                                                context, 15),
+                                                        icon: Icon(
+                                                          state % 2 == 0
+                                                              ? Icons
+                                                                  .keyboard_arrow_down
+                                                              : Icons
+                                                                  .keyboard_arrow_up,
+                                                        )),
+                                                  )
+                                                ],
+                                              ),
+                                            )),
+                                      )).toList(),
+                              SizedBox(height: Resizable.size(context, 5)),
+                              DottedBorderButton(
+                                  AppText.btnAddNewClass.text.toUpperCase(),
+                                  onPressed: () async {
+                                SharedPreferences localData =
+                                    await SharedPreferences.getInstance();
+                                if (c.mounted) {
+                                  Navigator.pushNamed(context,
+                                      '${Routes.admin}?name=${localData.getString(PrefKeyConfigs.code)!}/${Routes.manageGeneral}');
+                                }
+                              }),
+                              SizedBox(height: Resizable.size(context, 50)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
           }),
     );
   }
