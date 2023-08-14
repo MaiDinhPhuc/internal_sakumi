@@ -52,7 +52,7 @@ dependencies:
   d_chart: ^2.3.0
   image_network: ^2.5.4+1
   dotted_border: ^2.0.0+3
-
+  assets_audio_player: ^3.0.6
 
 dev_dependencies:
   flutter_test:
@@ -79,6 +79,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/practice/110501/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

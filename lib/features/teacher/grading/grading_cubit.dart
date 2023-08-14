@@ -15,7 +15,6 @@ class GradingCubit extends Cubit<int>{
   List<List<StudentLessonModel>>? listStudentLessons;
   List<int>? listResultCount;
 
-
   init(context) async {
     await loadClass(context);
     await loadLessonResult(context);

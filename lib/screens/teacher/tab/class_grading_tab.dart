@@ -22,12 +22,13 @@ class ClassGradingTab extends StatelessWidget {
                 index: 3, classId: TextUtils.getName(position: 2), name: name),
             BlocBuilder<GradingCubit, int>(builder: (c, s) {
               var cubit = BlocProvider.of<GradingCubit>(c);
-              return cubit.classModel == null
-                  ? Transform.scale(
-                scale: 0.75,
-                child: const CircularProgressIndicator(),
-              )
-                  : Expanded(
+              if(cubit.classModel == null){
+                return Transform.scale(
+                  scale: 0.75,
+                  child: const CircularProgressIndicator(),
+                );
+              }
+              return Expanded(
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -80,8 +81,19 @@ class ClassGradingTab extends StatelessWidget {
                                                 children: [
                                                   Padding(padding: EdgeInsets.symmetric(vertical:Resizable.padding(context, 10) ),child: Text(cubit.lessons![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)].title, style: TextStyle(fontWeight: FontWeight.bold,fontSize: Resizable.font(context, 30),),),
                                                   ),
-                                                  Text(cubit.lessons![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)].description),
-                                                  Text("${AppText.textNumberResultReceive.text} ${cubit.listResultCount![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)]}")
+                                                  Text(cubit.lessons![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)].description.replaceAll("|", "\n"),style: TextStyle(fontWeight: FontWeight.w500, fontSize: Resizable.padding(context, 16))),
+                                                  Padding(padding: EdgeInsets.symmetric(vertical:Resizable.padding(context, 5)),child: RichText(text: TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text: AppText.textNumberResultReceive.text,
+                                                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: Resizable.padding(context, 16))
+                                                      ),
+                                                      TextSpan(
+                                                          text: " ${cubit.listResultCount![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)]}",
+                                                          style: TextStyle(fontWeight: FontWeight.w700, fontSize: Resizable.padding(context, 20), color: primaryColor)
+                                                      )
+                                                    ]
+                                                  )))
                                                 ],
                                               ),
                                               Expanded(child: Column(

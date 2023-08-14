@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
@@ -18,6 +19,59 @@ class DetailGradingView extends StatelessWidget {
           )
         : Column(
             children: [
+              // SizedBox(
+              //     width: MediaQuery.of(context).size.width *
+              //         0.5,
+              //     child: Row(
+              //       mainAxisAlignment : MainAxisAlignment.spaceAround,
+              //       children: [
+              //         Expanded(
+              //             flex: 6,
+              //             child: Padding(
+              //                 padding: EdgeInsets.only(
+              //                   top: Resizable.padding(context, 10),
+              //                 ),
+              //                 child: Text(AppText.titleGrading.text,
+              //                     style: TextStyle(
+              //                         fontSize:
+              //                         Resizable.font(context, 20),
+              //                         fontWeight: FontWeight.w700,
+              //                         color: greyColor.shade500)))),
+              //         Expanded(
+              //             flex: 2,
+              //             child: DropDownGrading(items: [
+              //               AppText.txtStudent.text,
+              //               ...cubit.listStudent!.map((e) => e.name).toList()
+              //             ])),
+              //         PopupMenuButton(
+              //           shape: RoundedRectangleBorder(
+              //             borderRadius: BorderRadius.all(
+              //               Radius.circular(Resizable.size(context, 10)),
+              //             ),
+              //           ),
+              //           itemBuilder: (context) => [
+              //             PopupMenuItem(
+              //               child: CheckboxListTile(
+              //                 controlAffinity: ListTileControlAffinity.leading,
+              //                 title: Text(AppText.textShowName.text),
+              //                 value: true,
+              //                 onChanged: (newValue) {},
+              //               ),
+              //             ),
+              //             PopupMenuItem(
+              //               child: CheckboxListTile(
+              //                 controlAffinity: ListTileControlAffinity.leading,
+              //                 title: Text(AppText.textGeneralComment.text),
+              //                 value: false,
+              //                 onChanged: (newValue) {},
+              //               ),
+              //             ),
+              //           ],
+              //           icon:const Icon(Icons.more_vert),
+              //         )
+              //       ],
+              //     )
+              // ),
               ...listAnswer!.map((e) => Container(
                     padding: EdgeInsets.symmetric(
                         vertical: Resizable.padding(context, 10),
