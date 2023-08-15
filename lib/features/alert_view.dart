@@ -77,7 +77,7 @@ void alertView(BuildContext context, String note) {
                                 .noteForStudents(context, note);
                             Navigator.pop(context);
                           },
-                          title: AppText.txtOK.text)
+                          title: AppText.txtAgree.text)
                     ],
                   )
                 ],

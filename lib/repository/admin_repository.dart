@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
+import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/tag_model.dart';
@@ -40,9 +41,13 @@ class AdminRepository {
     return listStudent;
   }
 
-  Future<List<TeacherClassModel>> getAllTeacherInClassByClassId(int classId) async {
+  Future<List<TeacherClassModel>> getAllTeacherInClassByClassId(
+      int classId) async {
     final db = FirebaseFirestore.instance;
-    final snapshot = await db.collection("teacher_class").where('class_id', isEqualTo: classId).get();
+    final snapshot = await db
+        .collection("teacher_class")
+        .where('class_id', isEqualTo: classId)
+        .get();
     final listTeacher =
         snapshot.docs.map((e) => TeacherClassModel.fromSnapshot(e)).toList();
     return listTeacher;
@@ -89,5 +94,80 @@ class AdminRepository {
         await db.collection("admin").where("user_id", isEqualTo: id).get();
     final admin = snapshot.docs.map((e) => AdminModel.fromSnapshot(e)).single;
     return admin;
+  }
+
+  Future<List<CourseModel>> getAllCourse() async {
+    final db = FirebaseFirestore.instance;
+    final snapshot = await db.collection("courses").get();
+    final courses =
+        snapshot.docs.map((e) => CourseModel.fromSnapshot(e)).toList();
+    return courses;
+  }
+
+  Future<CourseModel> getCourseByName(String title, String term) async {
+    final db = FirebaseFirestore.instance;
+    final snapshot = await db
+        .collection("courses")
+        .where('title', isEqualTo: title)
+        .where('term_name', isEqualTo: term)
+        .get();
+    final course = snapshot.docs.map((e) => CourseModel.fromSnapshot(e)).single;
+    return course;
+  }
+
+  Future<bool> createNewClass(ClassModel model, BuildContext context) async {
+    final db = FirebaseFirestore.instance;
+
+    final temp = await db
+        .collection("class")
+        .where('class_code', isEqualTo: model.classCode)
+        .get();
+
+    if (temp.docs.isEmpty) {
+      debugPrint('===============> check var ${model.classCode}');
+      await db
+          .collection("class")
+          .doc("class_${model.classId}_course_${model.courseId}")
+          .set({
+        'class_id': model.classId,
+        'course_id': model.courseId,
+        'description': model.description,
+        'end_time': model.endTime,
+        'start_time': model.startTime,
+        'note': model.note,
+        'class_code': model.classCode,
+      });
+      return true;
+    } else {
+      debugPrint('===============> check var 000 ${model.classCode}');
+      return false;
+    }
+  }
+
+  Future<bool> addStudentToClass(StudentClassModel model) async {
+    final db = FirebaseFirestore.instance;
+
+    final temp = await db
+        .collection("student_class").doc("student_${model.userId}_class_${model.classId}")
+        .get();
+
+    if(!temp.exists){
+      await db
+          .collection("student_class")
+          .doc("student_${model.userId}_class_${model.classId}")
+          .set({
+        'active_status': model.activeStatus,
+        'class_id': model.classId,
+        'class_status': "InProgress",
+        'date': model.date,
+        'id': model.id,
+        'learning_status': model.learningStatus,
+        'move_to': model.moveTo,
+        'user_id': model.userId,
+      });
+      return true;
+    } else{
+      return false;
+    }
   }
 }

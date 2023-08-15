@@ -52,7 +52,7 @@ dependencies:
   d_chart: ^2.3.0
   image_network: ^2.5.4+1
   dotted_border: ^2.0.0+3
-
+  syncfusion_flutter_datepicker: ^22.2.8
 
 dev_dependencies:
   flutter_test:

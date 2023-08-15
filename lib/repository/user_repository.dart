@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
+import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
@@ -45,5 +47,53 @@ class UserRepository {
   Future<String?> getName() async {
     SharedPreferences localData = await SharedPreferences.getInstance();
     return localData.getString(PrefKeyConfigs.name);
+  }
+
+  Future<void> saveUser(String email, String role, int uid) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc("user_${uid}_$role")
+        .set({'email': email, 'roles': role, 'user_id': uid});
+  }
+
+  Future<List<UserModel>> getAllUser() async {
+    final db = FirebaseFirestore.instance;
+    final snapshot = await db.collection("users").get();
+    final lists =
+    snapshot.docs.map((e) => UserModel.fromSnapshot(e)).toList();
+    return lists;
+  }
+
+  Future<bool> createNewStudent(BuildContext context, StudentModel model, UserModel user) async {
+    final db = FirebaseFirestore.instance;
+
+    final temp = await db
+        .collection("users")
+        .where('email', isEqualTo: user.email)
+        .get();
+
+    if(temp.docs.isEmpty){
+     await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: user.email, password: "Aa@12345");
+      await FirebaseAuth.instance.currentUser!.updatePassword("Aa@12345");
+      await FirebaseAuth.instance.currentUser!.updateEmail(user.email);
+      await saveUser(user.email, user.role, model.userId);
+      await db
+          .collection('students')
+          .doc("student_user_${user.id}")
+          .set({
+        'in_jp': model.inJapan,
+        'name': model.name,
+        'note': model.note,
+        'phone': model.phone,
+        'student_code': model.studentCode,
+        'url': model.url,
+        'user_id': model.userId,
+        'status': 'progress'
+      });
+      return true;
+    } else{
+      return false;
+    }
   }
 }
