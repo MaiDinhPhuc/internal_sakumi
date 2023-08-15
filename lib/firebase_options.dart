@@ -43,34 +43,25 @@ class DefaultFirebaseOptions {
     }
   }
 
-  // static const FirebaseOptions web = FirebaseOptions(
-  //   apiKey: 'AIzaSyCXP7wP9tXyST-2ONbrmjpswJjz4_7EKUg',
-  //   appId: '1:682372566037:web:a35f5554fb046d4313521c',
-  //   messagingSenderId: '682372566037',
-  //   projectId: 'demoproject-f305d',
-  //   authDomain: 'demoproject-f305d.firebaseapp.com',
-  //   databaseURL:
-  //       'https://demoproject-f305d-default-rtdb.asia-southeast1.firebasedatabase.app',
-  //   storageBucket: 'demoproject-f305d.appspot.com',
-  //   measurementId: 'G-T93N77QKEL',
-  // );
   static const FirebaseOptions web = FirebaseOptions(
-      apiKey: "AIzaSyBdDZJc47QcavzIA4ZtWnreKwC7bRZ-m3I",
-      authDomain: "sakumi-student.firebaseapp.com",
-      projectId: "sakumi-student",
-      storageBucket: "sakumi-student.appspot.com",
-      messagingSenderId: "800259355994",
-      appId: "1:800259355994:web:fee0c3e7ba537c26002f63",
-      measurementId: "G-NB3XS046GH");
-  // const firebaseConfig = {
-  //   apiKey: "AIzaSyBdDZJc47QcavzIA4ZtWnreKwC7bRZ-m3I",
-  //   authDomain: "sakumi-student.firebaseapp.com",
-  //   projectId: "sakumi-student",
-  //   storageBucket: "sakumi-student.appspot.com",
-  //   messagingSenderId: "800259355994",
-  //   appId: "1:800259355994:web:fee0c3e7ba537c26002f63",
-  //   measurementId: "G-NB3XS046GH"
-  // };
+    apiKey: 'AIzaSyCXP7wP9tXyST-2ONbrmjpswJjz4_7EKUg',
+    appId: '1:682372566037:web:a35f5554fb046d4313521c',
+    messagingSenderId: '682372566037',
+    projectId: 'demoproject-f305d',
+    authDomain: 'demoproject-f305d.firebaseapp.com',
+    databaseURL:
+        'https://demoproject-f305d-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'demoproject-f305d.appspot.com',
+    measurementId: 'G-T93N77QKEL',
+  );
+  // static const FirebaseOptions web = FirebaseOptions(
+  //     apiKey: "AIzaSyBdDZJc47QcavzIA4ZtWnreKwC7bRZ-m3I",
+  //     authDomain: "sakumi-student.firebaseapp.com",
+  //     projectId: "sakumi-student",
+  //     storageBucket: "sakumi-student.appspot.com",
+  //     messagingSenderId: "800259355994",
+  //     appId: "1:800259355994:web:fee0c3e7ba537c26002f63",
+  //     measurementId: "G-NB3XS046GH");
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAsG1lIXRDrtcb-xyxRPX0omJNXWFce-D0',

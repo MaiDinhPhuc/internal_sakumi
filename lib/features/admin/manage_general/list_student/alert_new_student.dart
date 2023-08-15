@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/admin/manage_general/alert_new_student_cubit.dart';
+import 'package:internal_sakumi/features/admin/manage_general/list_student/alert_add_student_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_field.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
@@ -14,7 +14,8 @@ import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 import 'package:intl/intl.dart';
 
-void alertNewStudent(BuildContext context, ManageGeneralCubit manageGeneralCubit) {
+void alertNewStudent(
+    BuildContext context, ManageGeneralCubit manageGeneralCubit) {
   final TextEditingController nameCon = TextEditingController();
   final TextEditingController stdCodeCon = TextEditingController();
   final TextEditingController phoneCon = TextEditingController();
@@ -27,10 +28,11 @@ void alertNewStudent(BuildContext context, ManageGeneralCubit manageGeneralCubit
       context: context,
       builder: (_) {
         return BlocProvider(
-            create: (context) => AlertNewStudentCubit()..loadAllUser(context, manageGeneralCubit),
-            child: BlocBuilder<AlertNewStudentCubit, int>(
+            create: (context) => AlertAddStudentCubit()
+              ..loadAllUser(context, manageGeneralCubit),
+            child: BlocBuilder<AlertAddStudentCubit, int>(
               builder: (c, _) {
-                var cubit = BlocProvider.of<AlertNewStudentCubit>(c);
+                var cubit = BlocProvider.of<AlertAddStudentCubit>(c);
                 return Dialog(
                   child: Form(
                       key: formKey,
@@ -64,66 +66,89 @@ void alertNewStudent(BuildContext context, ManageGeneralCubit manageGeneralCubit
                                       AppText.txtPleaseInputStudentCode.text),
                               Column(
                                 children: [
-                                  Row(crossAxisAlignment: CrossAxisAlignment.end,
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      Opacity(opacity: 0, child: Row(mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          InkWell(
-                                            onTap: () => cubit.isInJapan(),
-                                            child: cubit.active == true
-                                                ? const Icon(
-                                              Icons.check_box,
-                                              color: primaryColor,
-                                            )
-                                                : const Icon(
-                                                Icons.check_box_outline_blank),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(left: Resizable.padding(context, 5), right: Resizable.padding(context, 10)),
-                                            child: Text(AppText.txtStudentInJapan.text,
-                                                style: TextStyle(
-                                                    color: const Color(0xff757575),
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: Resizable.font(context, 18))),
-                                          )
-                                        ],
-                                      )),
+                                      Opacity(
+                                          opacity: 0,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              InkWell(
+                                                onTap: () => cubit.isInJapan(),
+                                                child: cubit.active == true
+                                                    ? const Icon(
+                                                        Icons.check_box,
+                                                        color: primaryColor,
+                                                      )
+                                                    : const Icon(Icons
+                                                        .check_box_outline_blank),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: Resizable.padding(
+                                                        context, 5),
+                                                    right: Resizable.padding(
+                                                        context, 10)),
+                                                child: Text(
+                                                    AppText
+                                                        .txtStudentInJapan.text,
+                                                    style: TextStyle(
+                                                        color: const Color(
+                                                            0xff757575),
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize:
+                                                            Resizable.font(
+                                                                context, 18))),
+                                              )
+                                            ],
+                                          )),
                                       Text(AppText.txtPhone.text,
                                           style: TextStyle(
-                                              fontWeight:
-                                              FontWeight.w600,
+                                              fontWeight: FontWeight.w600,
                                               fontSize:
-                                              Resizable.font(
-                                                  context, 18),
-                                              color: const Color(
-                                                  0xff757575))),
+                                                  Resizable.font(context, 18),
+                                              color: const Color(0xff757575))),
                                     ],
                                   ),
                                   Row(
                                     children: [
-                                      Row(mainAxisAlignment: MainAxisAlignment.center,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           InkWell(
                                             onTap: () => cubit.isInJapan(),
                                             child: cubit.active == true
                                                 ? const Icon(
-                                              Icons.check_box,
-                                              color: primaryColor,
-                                            )
-                                                : const Icon(
-                                                Icons.check_box_outline_blank),
+                                                    Icons.check_box,
+                                                    color: primaryColor,
+                                                  )
+                                                : const Icon(Icons
+                                                    .check_box_outline_blank),
                                           ),
                                           Padding(
-                                            padding: EdgeInsets.only(left: Resizable.padding(context, 5), right: Resizable.padding(context, 10)),
-                                            child: Text(AppText.txtStudentInJapan.text,
+                                            padding: EdgeInsets.only(
+                                                left: Resizable.padding(
+                                                    context, 5),
+                                                right: Resizable.padding(
+                                                    context, 10)),
+                                            child: Text(
+                                                AppText.txtStudentInJapan.text,
                                                 style: TextStyle(
-                                                    color: const Color(0xff757575),
+                                                    color:
+                                                        const Color(0xff757575),
                                                     fontWeight: FontWeight.w500,
-                                                    fontSize: Resizable.font(context, 18))),
+                                                    fontSize: Resizable.font(
+                                                        context, 18))),
                                           )
                                         ],
                                       ),
-                                      Expanded(child: InputField(controller: phoneCon))
+                                      Expanded(
+                                          child:
+                                              InputField(controller: phoneCon))
                                     ],
                                   )
                                 ],
@@ -168,51 +193,61 @@ void alertNewStudent(BuildContext context, ManageGeneralCubit manageGeneralCubit
                                                       name: nameCon.text,
                                                       url: '',
                                                       note: noteCon.text,
-                                                      userId: cubit
-                                                              .allUser!.length,
+                                                      userId:
+                                                          cubit.allUser!.length,
                                                       inJapan: cubit.active,
                                                       phone: phoneCon.text,
                                                       studentCode:
                                                           stdCodeCon.text,
-                                                      status: 'progress'),
+                                                      status: AppText.statusInProgress.text),
                                                   UserModel(
                                                       email: emailCon.text,
                                                       role: AppText
                                                           .selectorStudent.text,
                                                       id: cubit
-                                                              .allUser!.length));
+                                                          .allUser!.length));
                                               if (context.mounted) {
                                                 Navigator.pop(context);
                                                 if (cubit.checkCreate == true) {
-                                                  debugPrint('===========> listStudentClass ${cubit.listStudentClass!.length+1}');
-                                                  debugPrint('===========> userId ${cubit.allUser!.length + 1}');
+                                                  debugPrint(
+                                                      '===========> listStudentClass ${cubit.listStudentClass!.length + 1}');
+                                                  debugPrint(
+                                                      '===========> userId ${cubit.allUser!.length + 1}');
 
                                                   await cubit.addStudentToClass(
                                                       context,
                                                       StudentClassModel(
-                                                          id: cubit.listStudentClass!.length+1,
-                                                          classId: BlocProvider
-                                                                  .of<ManageGeneralCubit>(
-                                                                      context).selector,
+                                                          id: cubit
+                                                                  .listStudentClass!
+                                                                  .length +
+                                                              1,
+                                                          classId:
+                                                              manageGeneralCubit
+                                                                  .selector,
                                                           activeStatus: 5,
                                                           learningStatus: 5,
                                                           moveTo: 0,
                                                           userId: cubit.allUser!
-                                                                  .length +
-                                                              1,
+                                                                  .length,
                                                           classStatus:
-                                                              'progress',
-                                                          date: DateFormat('dd/MM/yyyy').format(DateTime.now())));
-                                                  if(context.mounted) {
-                                                    BlocProvider.of<ManageGeneralCubit>(context).loadStudentInClass(context, BlocProvider
-                                                        .of<ManageGeneralCubit>(
-                                                        context)
-                                                        .selector);
+                                                              AppText.statusInProgress.text,
+                                                          date: DateFormat(
+                                                                  'dd/MM/yyyy')
+                                                              .format(DateTime
+                                                                  .now())));
+                                                  if (context.mounted) {
+                                                    manageGeneralCubit
+                                                        .loadStudentInClass(
+                                                            context,
+                                                            manageGeneralCubit
+                                                                .selector);
                                                   }
                                                 } else {
                                                   notificationDialog(
                                                       context,
-                                                      AppText.txtPleaseCheckListUser.text);
+                                                      AppText
+                                                          .txtPleaseCheckListUser
+                                                          .text);
                                                 }
                                               }
                                             } else {

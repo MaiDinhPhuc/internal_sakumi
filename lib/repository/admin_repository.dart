@@ -41,6 +41,14 @@ class AdminRepository {
     return listStudent;
   }
 
+  Future<List<TeacherClassModel>> getAllTeacherInClass() async {
+    final db = FirebaseFirestore.instance;
+    final snapshot = await db.collection("teacher_class").get();
+    final listSensei =
+        snapshot.docs.map((e) => TeacherClassModel.fromSnapshot(e)).toList();
+    return listSensei;
+  }
+
   Future<List<TeacherClassModel>> getAllTeacherInClassByClassId(
       int classId) async {
     final db = FirebaseFirestore.instance;
@@ -158,11 +166,35 @@ class AdminRepository {
           .set({
         'active_status': model.activeStatus,
         'class_id': model.classId,
-        'class_status': "InProgress",
+        'class_status': model.classStatus,
         'date': model.date,
         'id': model.id,
         'learning_status': model.learningStatus,
         'move_to': model.moveTo,
+        'user_id': model.userId,
+      });
+      return true;
+    } else{
+      return false;
+    }
+  }
+
+  Future<bool> addTeacherToClass(TeacherClassModel model) async {
+    final db = FirebaseFirestore.instance;
+
+    final temp = await db
+        .collection("teacher_class").doc("teacher_${model.userId}_class_${model.classId}")
+        .get();
+
+    if(!temp.exists){
+      await db
+          .collection("teacher_class")
+          .doc("teacher_${model.userId}_class_${model.classId}")
+          .set({
+        'class_id': model.classId,
+        'class_status': model.classStatus,
+        'date': model.date,
+        'id': model.id,
         'user_id': model.userId,
       });
       return true;
