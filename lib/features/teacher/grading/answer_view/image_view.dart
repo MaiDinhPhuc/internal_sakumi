@@ -1,9 +1,12 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:image_network/image_network.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:internal_sakumi/utils/text_utils.dart';
 
 class ImageView extends StatelessWidget {
   const ImageView({super.key, required this.answer});
@@ -23,68 +26,90 @@ class ImageView extends StatelessWidget {
             fontWeight: FontWeight.w700,
           ),
         )),
-        Row(
-          children: [
-            SizedBox(
+        answer.questionType == 11
+            ? SizedBox(
+          height: Resizable.size(context, 100),
+          child: ListView.builder(
+              itemCount: answer.convertAnswer.length,
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.symmetric(
+                  vertical: Resizable.padding(context, 5)),
+              itemBuilder: (_, i) => Container(
+                margin: EdgeInsets.all(
+                    Resizable.padding(context, 2)),
                 height: Resizable.size(context, 100),
-                width:Resizable.size(context, 110),
-                child: Padding(
-                    padding: EdgeInsets.only(
-                        right: Resizable.padding(context, 10)),
-                    child: ClipRRect(
-                      borderRadius:
-                      BorderRadius.all(
-                          Radius.circular(Resizable.size(context, 10))),
-                      child: Image.network(answer.answer.first.toString(),
-                          fit: BoxFit.fitWidth),
-                    ))),
+                width: Resizable.size(context, 100),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage(
+                          'assets/practice/${TextUtils.getName()}/${answer.convertAnswer.first}'),
+                      fit: BoxFit.fill),
+                  border: Border.all(
+                      width: 0,
+                      color: secondaryColor),
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(
+                          Resizable.size(
+                              context, 5))),
+                ),
+              )),
+        )
+            : Row(
+          children: [
+            Padding(
+                key: Key(answer.convertAnswer.first),
+                padding: EdgeInsets.only(
+                    right: Resizable.padding(context, 10)),
+                child: ClipRRect(
+                  borderRadius:
+                  BorderRadius.all(
+                      Radius.circular(Resizable.size(context, 10))),
+                  child: ImageNetwork(
+                      fitWeb: BoxFitWeb.fill,
+                      image: answer.convertAnswer.first, height: Resizable.size(context, 100), width: Resizable.size(context, 100)),
+                )),
             if(answer.answer.length == 2)
-              SizedBox(
-                  height: Resizable.size(context,100),
-                  width:Resizable.size(context, 110),
-                  child: Padding(
-                      padding: EdgeInsets.only(
-                          right: Resizable.padding(context, 10)),
-                      child: ClipRRect(
+              Padding(
+                  key: Key(answer.convertAnswer[1]),
+                  padding: EdgeInsets.only(
+                      right: Resizable.padding(context, 10)),
+                  child: ClipRRect(
+                    borderRadius:
+                    BorderRadius.all(
+                        Radius.circular(Resizable.size(context, 10))),
+                    child: ImageNetwork(image: answer.convertAnswer[1].toString(),
+                        fitWeb: BoxFitWeb.fill,
+                        height: Resizable.size(context, 100), width: Resizable.size(context, 100)),
+                  )),
+            if(answer.answer.length > 2)
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  ClipRRect(
+                    key: Key(answer.convertAnswer[1]),
+                    borderRadius:
+                    BorderRadius.all(
+                        Radius.circular(Resizable.size(context, 10))),
+                    child: ImageNetwork(image: answer.convertAnswer[1].toString(),
+                        fitWeb: BoxFitWeb.fill,
+                        height: Resizable.size(context, 100), width: Resizable.size(context, 100)),
+                  ),
+                  BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+                    child: Container(
+                      decoration: BoxDecoration(
                         borderRadius:
                         BorderRadius.all(
                             Radius.circular(Resizable.size(context, 10))),
-                        child: Image.network(answer.answer[1].toString(),
-                            fit: BoxFit.fitWidth),
-                      ))),
-            if(answer.answer.length > 2)
-              SizedBox(
-                  height: Resizable.size(context, 100),
-                  width:Resizable.size(context, 110),
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Padding(
-                          padding: EdgeInsets.only(
-                              right: Resizable.padding(context, 10)),
-                          child: ClipRRect(
-                            borderRadius:
-                            BorderRadius.all(
-                                Radius.circular(Resizable.size(context, 10))),
-                            child: Image.network(answer.answer[1].toString(),
-                                fit: BoxFit.fitWidth),
-                          )),
-                      BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius:
-                            BorderRadius.all(
-                                Radius.circular(Resizable.size(context, 10))),
-                            color: Colors.grey.withOpacity(0.4),
-                          ),
-                          height: Resizable.size(context, 100),
-                          width:Resizable.size(context, 110),
-                        ),
+                        color: Colors.grey.withOpacity(0.4),
                       ),
-                      Text("+${answer.answer.length-2}",style: TextStyle(color:Colors.white,fontSize: Resizable.font(context, 30), fontWeight: FontWeight.w600),)
-                    ],
-                  ))
+                      height: Resizable.size(context, 100),
+                      width:Resizable.size(context, 100),
+                    ),
+                  ),
+                  Text("+${answer.answer.length-2}",style: TextStyle(color:Colors.white,fontSize: Resizable.font(context, 30), fontWeight: FontWeight.w600),)
+                ],
+              )
           ],
         )
       ],

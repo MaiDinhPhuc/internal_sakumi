@@ -92,7 +92,7 @@ class QuestionOptionItem extends StatelessWidget {
                                         image: DecorationImage(
                                             image: AssetImage(
                                                 'assets/practice/${TextUtils.getName()}/${questionModel.listImage[i]}'),
-                                            fit: BoxFit.fitWidth),
+                                            fit: BoxFit.fill),
                                         border: Border.all(
                                             width: 0,
                                             color: secondaryColor),
@@ -123,13 +123,13 @@ class QuestionOptionItem extends StatelessWidget {
                                       .map((item) => Container(
                                             margin: EdgeInsets.all(
                                                 Resizable.padding(context, 2)),
-                                            height: 100,
-                                            width: 100,
+                                            height: Resizable.size(context, 100),
+                                            width: Resizable.size(context, 100),
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
                                                   image: AssetImage(
                                                       'assets/practice/${TextUtils.getName()}/$item'),
-                                                  fit: BoxFit.fitWidth),
+                                                  fit: BoxFit.fill),
                                               border: Border.all(
                                                   width: 0,
                                                   color: secondaryColor),
@@ -147,13 +147,13 @@ class QuestionOptionItem extends StatelessWidget {
                                       .map((item) => Container(
                                             margin: EdgeInsets.all(
                                                 Resizable.padding(context, 2)),
-                                            height: 100,
-                                            width: 100,
+                                            height: Resizable.size(context, 100),
+                                            width: Resizable.size(context, 100),
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
                                                   image: AssetImage(
                                                       'assets/practice/${TextUtils.getName()}/$item'),
-                                                  fit: BoxFit.fitWidth),
+                                                  fit: BoxFit.fill),
                                               border: Border.all(
                                                   color: secondaryColor),
                                               borderRadius: BorderRadius.all(

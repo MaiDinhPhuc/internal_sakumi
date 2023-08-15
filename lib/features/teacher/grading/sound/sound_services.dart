@@ -32,15 +32,13 @@ class SoundService {
   stop(){
     if(_player != null){
       _player!.stop();
+      _player!.dispose();
     }
   }
 
-  seek(Duration position)async{
-    await _player?.seek(position);
+  seek(Duration position, String sound)async{
     if (_player != null) {
-      if (_player!.playerState.value == PlayerState.pause) {
-        _player!.play();
-      }
+      await _player!.seek(position);
     }
   }
 
@@ -52,36 +50,42 @@ class SoundService {
     await soundCubit.loading();
     await soundCubit.changeActive(type, sound);
 
-    player.open(Audio.file(sound), volume: 1).whenComplete(() {
-      debugPrint("=============>open complete $sound");
-    });
+    if(type == "network"){
+      player.open(Audio.network(sound), volume: 1).whenComplete(() {
+        debugPrint("=============>open complete $sound");
+      });
+    }
+    else{
+      player.open(Audio.file(sound), volume: 1).whenComplete(() {
+        debugPrint("=============>open complete $sound");
+      });
+    }
     player.current.listen((playingAudio) {
       soundCubit.duration = player.current.value!.audio.duration.inMilliseconds.toDouble();
       debugPrint("===========>voice duration : ${soundCubit.duration}");
     });
+    int count = 0;
     player.currentPosition.listen((currentPosition){
         soundCubit.change(currentPosition.inMilliseconds.toDouble());
-        final audioDuration = player.current.value?.audio.duration;
-        if (currentPosition >= audioDuration!) {
-            soundCubit.change(soundCubit.duration);
-            soundCubit.reStart();
-            debugPrint("===========>completed");
+        if (currentPosition.inMilliseconds == 0) {
+            count++;
+        }
+        if(count == 3){
+          soundCubit.change(soundCubit.duration);
+          soundCubit.reStart();
+          debugPrint("===========>completed");
         }
     });
-
-    // player.onPlayerComplete.listen((event) {
-
-    // });
   }
 
   pause(SoundCubit soundCubit) async {
-    await _player?.pause();
+    await _player!.pause();
     soundCubit.currentPosition = _player!.currentPosition.value.inMilliseconds.toDouble();
     await soundCubit.pause();
   }
 
   resume(SoundCubit soundCubit) async {
-    await _player?.play();
+    await _player!.play();
     await soundCubit.change(soundCubit.currentPosition);
   }
 

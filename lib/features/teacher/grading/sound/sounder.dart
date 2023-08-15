@@ -102,7 +102,7 @@ class Sounder extends StatelessWidget {
                               : p,
                       onChanged: (value) async {
                         final position = Duration(milliseconds: value.toInt());
-                        await SoundService.instance.seek(position);
+                        await SoundService.instance.seek(position, sound);
                       }),
                 ),
               ],
