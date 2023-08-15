@@ -26,8 +26,8 @@ class AuthServices {
       int uid,
       BuildContext context) async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: "Aa@12345");
+      // UserCredential userCredential = await FirebaseAuth.instance
+      //     .createUserWithEmailAndPassword(email: email, password: "Aa@12345");
       await FirebaseAuth.instance.currentUser!.updatePassword("Aa@12345");
       await FirebaseAuth.instance.currentUser!.updateEmail(email);
       await FirestoreServices.saveUser(email, role, uid);
@@ -37,7 +37,7 @@ class AuthServices {
           : await FirestoreServices.addSensei(name, note, phone, uid, code, "");
 
       if (context.mounted) {
-        userCredential;
+        //userCredential;
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Registration Successful')));
       }

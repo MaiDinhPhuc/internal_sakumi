@@ -52,7 +52,7 @@ class TeacherCubit extends Cubit<int> {
     listTeacherClass = await teacherRepository.getTeacherClassById(
         'user_id', teacherProfile!.userId);
 
-    listAllCourse = await teacherRepository.getAllCourse();
+    listAllCourse = await adminRepository.getAllCourse();
 
     listAllClass = await adminRepository.getListClass();
 

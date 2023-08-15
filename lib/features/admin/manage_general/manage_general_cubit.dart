@@ -17,14 +17,14 @@ class ManageGeneralCubit extends Cubit<int> {
     listAllClass = await adminRepository.getListClass();
     emit(listAllClass!.first.classId);
     loadTeacherInClass(context);
-    loadStudentInClass(context);
+    loadStudentInClass(context, selector);
   }
 
   selectedClass(int index, context) {
     selector = index;
     emit(selector);
     loadTeacherInClass(context);
-    loadStudentInClass(context);
+    loadStudentInClass(context, index);
   }
 
   loadTeacherInClass(BuildContext context)async{
@@ -44,11 +44,11 @@ class ManageGeneralCubit extends Cubit<int> {
     emit(state+2);
   }
 
-  loadStudentInClass(context)async{
+  loadStudentInClass(context, int selector)async{
     listStudent = null;
     var adminRepo = AdminRepository.fromContext(context);
     var listAllStudent = await adminRepo.getAllStudent();
-    var listAllStudentInClass = await adminRepo.getStudentClassByClassId(state);
+    var listAllStudentInClass = await adminRepo.getStudentClassByClassId(selector);
 
     listStudent = [];
     for(var i in listAllStudent){
@@ -58,6 +58,7 @@ class ManageGeneralCubit extends Cubit<int> {
         }
       }
     }
+    debugPrint('============> loadStudentInClass ${listStudent!.length}');
     emit(state+2);
   }
 }
