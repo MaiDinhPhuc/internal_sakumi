@@ -25,13 +25,9 @@ class ManageClassTab extends StatelessWidget {
             debugPrint(
                 "======== ========= =========== ${LoadListClassCubit().state.length} == ${list.length}");
             return list.isEmpty
-                ? Center(
-                    child: SizedBox(
-                      height: Resizable.size(context, 40),
-                      width: Resizable.size(context, 40),
-                      child: const CircularProgressIndicator(),
-                    ),
-                  )
+                ? Transform.scale(scale: 0.75, child: const Center(
+              child: CircularProgressIndicator(),
+            ))
                 : Column(
                     children: [
                       SingleChildScrollView(
@@ -54,7 +50,7 @@ class ManageClassTab extends StatelessWidget {
                               ),
                               ...List.generate(
                                   list.length,
-                                  (index) => Container(
+                                  (index) => (list[index].classId < 0 && list[index].courseId < 0) ? Container(): Container(
                                         margin: EdgeInsets.symmetric(
                                             // horizontal: Resizable.padding(
                                             //     context, 150),
@@ -191,6 +187,7 @@ class LoadListClassCubit extends Cubit<List<ClassModel>> {
   load(context) async {
     AdminRepository adminRepository = AdminRepository.fromContext(context);
     List<ClassModel> list = await adminRepository.getListClass();
+    debugPrint('===================> LoadListClassCubit ${list.length}');
     emit(list);
   }
 }

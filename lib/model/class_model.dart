@@ -16,13 +16,13 @@ class ClassModel {
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
     return ClassModel(
-      classId: data['class_id'],
-      courseId: data['course_id'],
-      description: data['description'],
-      endTime: data['end_time'],
-      startTime: data['start_time'],
-      note: data['note'],
-      classCode: data['class_code'],
+      classId: data['class_id']??-1,
+      courseId: data['course_id']??-1,
+      description: data['description']??'',
+      endTime: data['end_time']??'',
+      startTime: data['start_time']??'',
+      note: data['note']??'',
+      classCode: data['class_code']??'',
     );
   }
 }
