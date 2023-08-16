@@ -8,57 +8,14 @@ Future<void> waitingDialog(BuildContext context) {
   return showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => Dialog(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          child: Center(
-            child: Container(
-                height: Resizable.size(context, 50),
-                width: Resizable.size(context, 50),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius:
-                      BorderRadius.circular(Resizable.size(context, 5)),
-                ),
-                child: Transform.scale(
-                  scale: 0.75,
-                  child: const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                )),
-          )));
+      builder: (_) => const WaitingAlert());
 }
 
 Future<void> notificationDialog(BuildContext context, String content) {
   return showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => Dialog(
-          elevation: 0,
-          //backgroundColor: Colors.transparent,
-          alignment: Alignment.center,
-          child: Container(
-            width: Resizable.size(context, 200),
-            padding: EdgeInsets.all(Resizable.padding(context, 20)),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                    padding:
-                        EdgeInsets.only(bottom: Resizable.padding(context, 20)),
-                    child: Text(content,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: Resizable.font(context, 20)))),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: DialogButton(AppText.txtOK.text,
-                      onPressed: () => Navigator.pop(context)),
-                )
-              ],
-            ),
-          )));
+      builder: (_) => NotifyAlert(content));
 }
 
 Future<void> selectionDialog(BuildContext context, String firsTitle,
@@ -91,7 +48,7 @@ Future<void> selectionDialog(BuildContext context, String firsTitle,
                         SizedBox(width: Resizable.size(context, 20)),
                         Expanded(
                             child: DottedBorderButton(
-                                AppText.btnAddNewStudent.text,
+                                secondTitle,
                                 isManageGeneral: true, onPressed: secondFunction)),
                       ],
                     ),
@@ -99,3 +56,65 @@ Future<void> selectionDialog(BuildContext context, String firsTitle,
                 )));
       });
 }
+
+class WaitingAlert extends StatelessWidget {
+  const WaitingAlert({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        child: Center(
+          child: Container(
+              height: Resizable.size(context, 50),
+              width: Resizable.size(context, 50),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius:
+                BorderRadius.circular(Resizable.size(context, 5)),
+              ),
+              child: Transform.scale(
+                scale: 0.75,
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              )),
+        ));
+  }
+}
+
+class NotifyAlert extends StatelessWidget {
+  final String content;
+  const NotifyAlert(this.content, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+        elevation: 0,
+        alignment: Alignment.center,
+        child: Container(
+          width: Resizable.size(context, 200),
+          padding: EdgeInsets.all(Resizable.padding(context, 20)),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                  padding:
+                  EdgeInsets.only(bottom: Resizable.padding(context, 20)),
+                  child: Text(content,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: Resizable.font(context, 20)))),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: DialogButton(AppText.txtOK.text,
+                    onPressed: () => Navigator.pop(context)),
+              )
+            ],
+          ),
+        ));
+  }
+}
+

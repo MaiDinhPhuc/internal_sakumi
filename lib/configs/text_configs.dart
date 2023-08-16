@@ -78,11 +78,12 @@ enum AppText {
   btnAddNewClass,
   btnAddNewStudent,
   btnAddTeacher,
+  btnAddNewTeacher,
   btnUpdate,
   btnRemove,
   btnEdit,
   titleStatistics,
-  titleAddStudent,
+  btnAddStudent,
   titleAddTeacherToClass,
   txtNoStudent,
   txtNoClass,
@@ -166,7 +167,8 @@ enum AppText {
   txtPleaseInputTeacherCode,
   txtPleaseInputEmail,
   txtStudentInJapan,
-  txtGradingDone
+  txtGradingDone,
+  statusInProgress
 }
 
 Map<AppText, String> texts = {
@@ -261,11 +263,12 @@ Map<AppText, String> texts = {
   AppText.btnAddNewClass: 'Thêm lớp học mới',
   AppText.btnAddNewStudent: 'Thêm học viên mới',
   AppText.btnAddTeacher: 'Thêm giáo viên',
+  AppText.btnAddNewTeacher: 'Thêm giáo viên mới',
   AppText.btnUpdate: 'Cập nhật',
   AppText.btnRemove: 'Xoá',
   AppText.btnEdit: 'Sửa',
   AppText.titleStatistics: 'Thống kê',
-  AppText.titleAddStudent: 'Thêm học viên',
+  AppText.btnAddStudent: 'Thêm học viên',
   AppText.titleAddTeacherToClass: 'Thêm giáo viên vào lớp',
   AppText.txtNoStudent: 'Không có học viên',
   AppText.txtNoTeacher: 'Không có giáo viên',
@@ -336,6 +339,7 @@ Map<AppText, String> texts = {
   AppText.txtPleaseInputTeacherCode: 'Vui lòng nhập mã giáo viên',
   AppText.txtPleaseInputEmail: 'Vui lòng nhập email',
   AppText.txtStudentInJapan: 'Học viên ở Nhật Bản',
+  AppText.statusInProgress: 'InProgress'
 };
 
 extension AppTexts on AppText {

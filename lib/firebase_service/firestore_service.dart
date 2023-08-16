@@ -50,26 +50,7 @@ class FirestoreServices {
       'student_code': studentCode,
       'url': url,
       'user_id': uid,
-      'status': 'progress'
-    });
-  }
-
-  static addNewClass(int classId, int cid, String classCode, String description,
-      String start, String end, String note) async {
-    await FirebaseFirestore.instance
-        .collection('class')
-        .doc("class_${classId}_course_$cid")
-        .set({
-      'class_id': classId,
-      'course_id': cid,
-      'class_code': classCode,
-      'description': description,
-      'start_time': start,
-      'end_time': end,
-      'note': note,
-      'status': 'progress',
-      'list_student': [],
-      'list_teacher': []
+      'status': 'InProgress',
     });
   }
 }

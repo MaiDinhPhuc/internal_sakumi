@@ -54,6 +54,14 @@ class DefaultFirebaseOptions {
     storageBucket: 'demoproject-f305d.appspot.com',
     measurementId: 'G-T93N77QKEL',
   );
+  // static const FirebaseOptions web = FirebaseOptions(
+  //     apiKey: "AIzaSyBdDZJc47QcavzIA4ZtWnreKwC7bRZ-m3I",
+  //     authDomain: "sakumi-student.firebaseapp.com",
+  //     projectId: "sakumi-student",
+  //     storageBucket: "sakumi-student.appspot.com",
+  //     messagingSenderId: "800259355994",
+  //     appId: "1:800259355994:web:fee0c3e7ba537c26002f63",
+  //     measurementId: "G-NB3XS046GH");
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAsG1lIXRDrtcb-xyxRPX0omJNXWFce-D0',

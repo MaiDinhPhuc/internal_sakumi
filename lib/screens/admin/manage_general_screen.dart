@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_class/manage_general_list_class.dart';
-import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
+import 'package:internal_sakumi/features/admin/manage_general/list_teacher/manage_general_list_teacher.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
-import 'package:internal_sakumi/features/admin/manage_general/manage_general_list_student.dart';
-import 'package:internal_sakumi/features/admin/manage_general/user_item.dart';
+import 'package:internal_sakumi/features/admin/manage_general/list_student/manage_general_list_student.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/title_widget.dart';
 
@@ -83,55 +82,11 @@ class ManageGeneralScreen extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Expanded(
-                                              child: cubit.listTeacher == null
-                                                  ? Transform.scale(
-                                                      scale: 0.75,
-                                                      child: const Center(
-                                                        child:
-                                                            CircularProgressIndicator(),
-                                                      ),
-                                                    )
-                                                  : Column(
-                                                      children: [
-                                                        ...(cubit.listTeacher!)
-                                                            .map((e) => UserItem(
-                                                                '${e.name} ${AppText.txtSensei.text}',
-                                                                e.phone))
-                                                            .toList(),
-                                                        SizedBox(
-                                                            height: Resizable
-                                                                .padding(
-                                                                    context,
-                                                                    5)),
-                                                        Material(
-                                                            color: Colors
-                                                                .transparent,
-                                                            child: DottedBorderButton(
-                                                                AppText
-                                                                    .btnAddTeacher
-                                                                    .text
-                                                                    .toUpperCase(),
-                                                                isManageGeneral:
-                                                                    true,
-                                                                onPressed: () {
-
-                                                            })),
-                                                      ],
-                                                    )),
+                                          ManageGeneralListTeacher(cubit),
                                           SizedBox(
                                               width: Resizable.padding(
                                                   context, 10)),
-                                          Expanded(
-                                              child: cubit.listStudent == null
-                                                  ? Transform.scale(
-                                                      scale: 0.75,
-                                                      child: const Center(
-                                                        child:
-                                                            CircularProgressIndicator(),
-                                                      ),
-                                                    )
-                                                  : ManageGeneralListStudent(cubit)),
+                                          ManageGeneralListStudent(cubit)
                                         ],
                                       ),
                                     )

@@ -9,8 +9,8 @@ import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/repository/user_repository.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
-class AlertNewStudentCubit extends Cubit<int> {
-  AlertNewStudentCubit() : super(0);
+class AlertAddStudentCubit extends Cubit<int> {
+  AlertAddStudentCubit() : super(0);
 
   List<UserModel>? allUser;
   List<StudentClassModel>? listStudentClass;
@@ -52,6 +52,7 @@ class AlertNewStudentCubit extends Cubit<int> {
     //waitingDialog(context);
     //checkAdd =
     await adminRepository.addStudentToClass(model);
+    debugPrint('==============> addStudentToClass ${model.userId}');
   }
 
   createStudent(
