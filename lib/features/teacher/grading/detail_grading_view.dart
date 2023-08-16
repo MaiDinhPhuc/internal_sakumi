@@ -106,9 +106,32 @@ class DetailGradingView extends StatelessWidget {
                                   });
                                   if(cubit.listAnswer![cubit.listAnswer!.indexOf(e)].score == -1  &&  cubit.listAnswer![cubit.listAnswer!.indexOf(e)].newScore != -1){
                                     cubit.count++;
-                                    print("==========>count now: ${cubit.count}");
                                   }
                                   if(cubit.count == cubit.listAnswer!.length){
+
+                                    for(var i in cubit.listStudent!){
+                                      int temp = 0;
+                                      for(var j in cubit.listAnswer!){
+                                        if(i.userId == j.studentId){
+                                          if(j.newScore == -1){
+                                            temp = temp;
+                                          }else{
+                                            if(j.newScore == -1){
+                                              temp = temp;
+                                            }else{
+                                              temp = temp + j.newScore;
+                                            }
+                                          }
+                                        }
+                                      }
+                                      int submitScore = (temp/cubit.listQuestions!.length).round();
+                                      FirebaseFirestore.instance
+                                          .collection('student_lesson')
+                                          .doc('student_${e.studentId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 2)}')
+                                          .update({
+                                        'hw': temp == 0 ? -1 : submitScore,
+                                      });
+                                    }
                                     alertGradingDone(context, ()async{
                                       Navigator.of(context).pop();
                                       await Navigator.pushNamed(

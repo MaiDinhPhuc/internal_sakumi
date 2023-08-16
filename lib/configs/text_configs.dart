@@ -168,10 +168,12 @@ enum AppText {
   txtPleaseInputEmail,
   txtStudentInJapan,
   txtGradingDone,
-  statusInProgress
+  statusInProgress,
+  textNumberNotGrading
 }
 
 Map<AppText, String> texts = {
+  AppText.textNumberNotGrading: 'Số bài chưa chấm: ',
   AppText.txtGradingDone: 'Chấm điểm xong!',
   AppText.textShowName: 'Hiện tên',
   AppText.textGeneralComment: 'Nhận xét chung',

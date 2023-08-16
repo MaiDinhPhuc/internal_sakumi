@@ -4,7 +4,7 @@ class AnswerModel {
   final int  studentId, questionId, questionType, parentId, score;
   final String teacherNote, type;
   final List answer, images, records;
-  int? newScore;
+  int? _newScore;
 
   AnswerModel({
     required this.studentId,
@@ -18,6 +18,14 @@ class AnswerModel {
     required this.images,
     required this.records
   });
+
+
+  int get newScore => _newScore ?? score;
+
+  set newScore(int values) {
+    _newScore = values;
+  }
+
 
   List<String> get convertAnswer => convert(answer,questionType);
   List<String> convert(List answerList, int questionType){
