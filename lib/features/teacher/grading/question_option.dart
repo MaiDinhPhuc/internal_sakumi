@@ -98,8 +98,8 @@ class QuestionOptionItem extends StatelessWidget {
                                     itemBuilder: (_, i) => Container(
                                           margin: EdgeInsets.all(
                                               Resizable.padding(context, 2)),
-                                          height: 100,
-                                          width: 100,
+                                          height: MediaQuery.of(context).size.width*0.1,
+                                          width: MediaQuery.of(context).size.width*0.1,
                                           decoration: BoxDecoration(
                                             image: DecorationImage(
                                                 image: AssetImage(
@@ -134,8 +134,8 @@ class QuestionOptionItem extends StatelessWidget {
                                             margin: EdgeInsets.all(
                                                 Resizable.padding(context, 2)),
                                             height:
-                                                Resizable.size(context, 100),
-                                            width: Resizable.size(context, 100),
+                                            MediaQuery.of(context).size.width*0.1,
+                                            width: MediaQuery.of(context).size.width*0.1,
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
                                                   image: AssetImage(
@@ -159,8 +159,8 @@ class QuestionOptionItem extends StatelessWidget {
                                             margin: EdgeInsets.all(
                                                 Resizable.padding(context, 2)),
                                             height:
-                                                Resizable.size(context, 100),
-                                            width: Resizable.size(context, 100),
+                                            MediaQuery.of(context).size.width*0.1,
+                                            width: MediaQuery.of(context).size.width*0.1,
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
                                                   image: AssetImage(
