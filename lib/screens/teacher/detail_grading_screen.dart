@@ -108,7 +108,7 @@ class DetailGradingScreen extends StatelessWidget {
                                       child: DropDownGrading(items: [
                                         AppText.txtStudent.text,
                                         ...cubit.listStudent!.map((e) => e.name).toList()
-                                      ])),
+                                      ], onChanged: (items) {},value: AppText.txtStudent.text,)),
                                   PopupMenuButton(
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(

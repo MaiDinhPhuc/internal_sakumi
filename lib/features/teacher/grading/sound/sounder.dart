@@ -15,7 +15,8 @@ class Sounder extends StatelessWidget {
   final SoundCubit soundCubit;
   final int type;
   final String soundType;
-  const Sounder(this.sound, this.soundType,
+  final int index;
+  const Sounder(this.sound, this.soundType,this.index,
       {Key? key,
       this.size = 18,
       this.elevation = 2,
@@ -29,6 +30,7 @@ class Sounder extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       key: Key(sound),
+      width: MediaQuery.of(context).size.width*0.24,
       height: Resizable.size(context, 25),
       decoration: BoxDecoration(
         color: primaryColor,
@@ -86,8 +88,14 @@ class Sounder extends StatelessWidget {
                         SoundService.instance.pause(soundCubit);
                       }
                     }),
-                SizedBox(
-                  width: Resizable.size(context, 175),
+                (soundCubit.activeFilePath != sound )
+                    ? Text(soundType == "network"?' File thu âm ${index + 1}':' File âm thanh ${index + 1}',
+                    style: TextStyle(
+                        fontSize: Resizable.font(context, 16),
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white))
+                    : SizedBox(
+                  width: MediaQuery.of(context).size.width*0.205,
                   child: Slider(
                       key: Key("${soundCubit.duration}"),
                       activeColor: Colors.white,
@@ -98,8 +106,8 @@ class Sounder extends StatelessWidget {
                       value: p == 0
                           ? -2
                           : p == -1
-                              ? soundCubit.currentPosition
-                              : p,
+                          ? soundCubit.currentPosition
+                          : p,
                       onChanged: (value) async {
                         final position = Duration(milliseconds: value.toInt());
                         await SoundService.instance.seek(position, sound);

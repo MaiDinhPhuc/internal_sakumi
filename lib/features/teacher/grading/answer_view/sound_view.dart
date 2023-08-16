@@ -25,13 +25,13 @@ class SoundView extends StatelessWidget {
           ),
         )),
         ...answer.convertAnswer.map(
-              (e) => Padding(padding: EdgeInsets.only(right: Resizable.padding(context, 210)),child: Sounder(
-            e,
-            "network",
-            soundCubit: soundCubit,
-            backgroundColor: primaryColor,
-            iconColor: Colors.white,
-          )),
+              (e) =>Sounder(
+                e,
+                "network",answer.convertAnswer.indexOf(e),
+                soundCubit: soundCubit,
+                backgroundColor: primaryColor,
+                iconColor: Colors.white,
+              ),
         )
       ],
     );

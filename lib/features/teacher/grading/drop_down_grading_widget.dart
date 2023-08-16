@@ -4,8 +4,10 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class DropDownGrading extends StatelessWidget {
-  const DropDownGrading({super.key, required this.items});
+  const DropDownGrading({super.key, required this.items, required this.onChanged, required this.value});
   final List<String> items;
+  final String value;
+  final Function(String?) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +42,8 @@ class DropDownGrading extends StatelessWidget {
                       fontWeight: FontWeight.w500)),
             )))
             .toList(),
-        value: items[0],
-        onChanged: (v) {
-        },
+        value: value,
+        onChanged: onChanged,
         buttonHeight: Resizable.size(context, 20),
         buttonWidth: double.maxFinite,
       ),

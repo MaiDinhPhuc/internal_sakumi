@@ -15,13 +15,12 @@ class DetailGradingCubit extends Cubit<int> {
   QuestionModel? question;
   List<AnswerModel>? listAnswer;
   List<StudentModel>? listStudent;
+  int count = 0;
   init(context) async {
     await loadFirst(context);
   }
 
-
-   List<AnswerModel> get answers => listAnswer!.where((answer) => answer.questionId == state).toList();
-
+  List<AnswerModel> get answers => listAnswer!.where((answer) => answer.questionId == state).toList();
   loadFirst(context) async {
     TeacherRepository teacherRepository =
     TeacherRepository.fromContext(context);
@@ -29,21 +28,22 @@ class DetailGradingCubit extends Cubit<int> {
     UserRepository.fromContext(context);
     listQuestions = await teacherRepository.getQuestionByLessonId(TextUtils.getName());
     listAnswer = await teacherRepository.getAnswersOfQuestion(int.parse(TextUtils.getName()),int.parse(TextUtils.getName(position: 2)));
+
     List<StudentClassModel> listStudentClass = await teacherRepository.getStudentClassInClass(int.parse(TextUtils.getName(position: 2)));
     listStudent = [];
     for(var i in listStudentClass){
       listStudent!.add(await userRepository.getStudentInfo(i.userId));
     }
+    for(var i in listAnswer!){
+      if(i.score != -1 || i.answer.isEmpty){
+        count++;
+      }
+    }
     emit(listQuestions!.first.id);
-
   }
 
 
   change(int questionId, context)async {
-    TeacherRepository teacherRepository =
-    TeacherRepository.fromContext(context);
-    UserRepository userRepository =
-    UserRepository.fromContext(context);
     for(var i in listQuestions!){
       if(i.id == questionId){
         question = i;
