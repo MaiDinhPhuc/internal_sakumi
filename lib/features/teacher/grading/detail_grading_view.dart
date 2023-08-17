@@ -73,7 +73,7 @@ class DetailGradingView extends StatelessWidget {
                           child: BlocProvider(
                             create: (context)=>DropdownGradingCubit(cubit.listAnswer![cubit.listAnswer!.indexOf(e)].score != -1 ?
                             cubit.listAnswer![cubit.listAnswer!.indexOf(e)].score.toString()
-                                :cubit.listAnswer![cubit.listAnswer!.indexOf(e)].newScore == null
+                                :cubit.listAnswer![cubit.listAnswer!.indexOf(e)].newScore == -1
                                   ? AppText.textGradingScale.text
                                   : cubit.listAnswer![cubit.listAnswer!.indexOf(e)].newScore.toString()),
                             child: BlocBuilder<DropdownGradingCubit, String>(
@@ -108,7 +108,6 @@ class DetailGradingView extends StatelessWidget {
                                     cubit.count++;
                                   }
                                   if(cubit.count == cubit.listAnswer!.length){
-
                                     for(var i in cubit.listStudent!){
                                       int temp = 0;
                                       for(var j in cubit.listAnswer!){
@@ -122,6 +121,16 @@ class DetailGradingView extends StatelessWidget {
                                               temp = temp + j.newScore;
                                             }
                                           }
+                                        }
+                                        if(j.answer.isEmpty){
+                                          print("=============>update");
+                                          FirebaseFirestore.instance
+                                              .collection('answer')
+                                              .doc('student_${e.studentId}_homework_question_${j.questionId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 2)}')
+                                              .update({
+                                            'score': 1,
+                                          });
+                                          print("student_${e.studentId}_homework_question_${e.questionId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 2)}");
                                         }
                                       }
                                       int submitScore = (temp/cubit.listQuestions!.length).round();
