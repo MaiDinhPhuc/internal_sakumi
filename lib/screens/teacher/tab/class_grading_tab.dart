@@ -85,7 +85,7 @@ class ClassGradingTab extends StatelessWidget {
                                                   Padding(padding: EdgeInsets.symmetric(vertical:Resizable.padding(context, 5)),child: RichText(text: TextSpan(
                                                     children: [
                                                       TextSpan(
-                                                        text: AppText.textNumberResultReceive.text,
+                                                        text: AppText.textNumberNotGrading.text,
                                                         style: TextStyle(fontWeight: FontWeight.w500, fontSize: Resizable.padding(context, 16))
                                                       ),
                                                       TextSpan(
@@ -96,7 +96,8 @@ class ClassGradingTab extends StatelessWidget {
                                                   )))
                                                 ],
                                               ),
-                                              Expanded(child: Column(
+                                              if(cubit.listResultCount![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)]!=0)
+                                                Expanded(child: Column(
                                                 mainAxisAlignment : MainAxisAlignment.spaceBetween,
                                                 crossAxisAlignment :CrossAxisAlignment.end,
                                                 children: [
