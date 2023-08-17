@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/grading/sound/sound_cubit.dart';
 import 'package:internal_sakumi/routes.dart';
@@ -123,14 +122,12 @@ class DetailGradingView extends StatelessWidget {
                                           }
                                         }
                                         if(j.answer.isEmpty){
-                                          print("=============>update");
                                           FirebaseFirestore.instance
                                               .collection('answer')
                                               .doc('student_${e.studentId}_homework_question_${j.questionId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 2)}')
                                               .update({
                                             'score': 1,
                                           });
-                                          print("student_${e.studentId}_homework_question_${e.questionId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 2)}");
                                         }
                                       }
                                       int submitScore = (temp/cubit.listQuestions!.length).round();
