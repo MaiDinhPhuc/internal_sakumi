@@ -170,9 +170,9 @@ enum AppText {
   txtPleaseInputTeacherCode,
   txtPleaseInputEmail,
   txtStudentInJapan,
-  txtGradingDone,
   statusInProgress,
   txtWaiting,
+  txtGradingDone,
 }
 
 Map<AppText, String> texts = {
@@ -284,9 +284,12 @@ Map<AppText, String> texts = {
   AppText.txtHello: 'Xin chào',
   AppText.txtSensei: 'sensei',
   AppText.txtLesson: 'Buổi',
-  AppText.txtNoteBeforeTeaching: 'Dặn dò trước buổi học',
-  AppText.txtNoteFromSupport: 'Ghi chú từ Team Support',
-  AppText.txtNoteFromAnotherTeacher: 'Ghi chú từ Sensei',
+  AppText.titleNoteBeforeTeaching: 'Dặn dò trước buổi học',
+  AppText.titleNoteFromSupport: 'Ghi chú từ Team Support',
+  AppText.titleNoteFromAnotherTeacher: 'Ghi chú từ Sensei',
+  AppText.txtNoteBeforeTeaching: 'Sensei vui lòng bật record Google Meet trước khi bắt đầu buổi học',
+  AppText.txtNoteFromSupport: 'Sensei vui lòng liên hệ số điện thoại 0xxxxxxxxx khi cần hỗ trợ về trang thiết bị',
+  AppText.txtNoteFromAnotherTeacher: 'Sensei vui lòng liên hệ số điện thoại 0xxxxxxxxx khi cần hỗ trợ về giảng dạy',
   AppText.txtStartLesson: 'Bắt đầu buổi học',
   AppText.txtCompleteLesson: 'Hoàn thành buổi học',
   AppText.txtFinishLesson: 'Kết thúc buổi học',
@@ -315,9 +318,9 @@ Map<AppText, String> texts = {
   AppText.txtHintNoteForTeacher: 'Điền ghi chú dành cho Sensei tiếp theo...',
   AppText.titleNoteForSenseiAfterTeach: 'Dặn dò dành cho Sensei cuối buổi học',
   AppText.txtNoteForSenseiAfterTeach:
-      'Sensei vui lòng tắt record Google Meet trước khi bấm đồng ý kết thúc buổi học',
+  'Sensei vui lòng tắt record Google Meet trước khi bấm đồng ý kết thúc buổi học',
   AppText.txtQuestionForSenseiAfterTeach:
-      'Sensei có muốn kết thúc buổi học không?',
+  'Sensei có muốn kết thúc buổi học không?',
   AppText.txtAgree: 'Đồng ý',
   AppText.txtOK: 'OK',
   AppText.txtBack: 'Quay lại',
@@ -343,7 +346,8 @@ Map<AppText, String> texts = {
   AppText.txtPleaseInputTeacherCode: 'Vui lòng nhập mã giáo viên',
   AppText.txtPleaseInputEmail: 'Vui lòng nhập email',
   AppText.txtStudentInJapan: 'Học viên ở Nhật Bản',
-  AppText.statusInProgress: 'InProgress'
+  AppText.statusInProgress: 'InProgress',
+  AppText.txtWaiting: 'Waiting...'
 };
 
 extension AppTexts on AppText {
