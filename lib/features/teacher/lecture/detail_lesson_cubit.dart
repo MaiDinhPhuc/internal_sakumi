@@ -22,12 +22,14 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
   }
 
   load(context) async {
+    debugPrint('============> DetailLessonCubit 1');
     TeacherRepository teacherRepository =
         TeacherRepository.fromContext(context);
-
+debugPrint('============> DetailLessonCubit 2');
     emit(await teacherRepository.getLessonResultByLessonId(
         int.parse(TextUtils.getName()),
         int.parse(TextUtils.getName(position: 2))));
+    debugPrint('============> DetailLessonCubit 3');
   }
 
   updateStatus(context, String status) async {
@@ -168,6 +170,8 @@ class SessionCubit extends Cubit<int> {
 
     listStudentLesson = [];
     listStudentLesson!.addAll(list);
+
+
 
     emit(state + 1);
   }

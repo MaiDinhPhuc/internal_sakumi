@@ -20,7 +20,7 @@ class DetailLessonScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => DetailLessonCubit()..load(context),
+        create: (context) => DetailLessonCubit(),
         child: Scaffold(
           body: Column(
             children: [
@@ -38,29 +38,24 @@ class DetailLessonScreen extends StatelessWidget {
                         fontSize: Resizable.font(context, 30))),
               ),
               BlocBuilder<DetailLessonCubit, LessonResultModel?>(
-                  builder: (c, s) => s == null
-                      ? Transform.scale(
-                          scale: 0.75,
-                          child: const CircularProgressIndicator(),
-                        )
-                      : Expanded(
-                          child: SingleChildScrollView(
-                              child: BlocProvider(
-                                  create: (c) => SessionCubit()..init(c),
-                                  child: BlocBuilder<SessionCubit, int>(
-                                    builder: (_, state) {
-                                      return Column(
-                                        children: [
-                                          if (s.status == 'Pending')
-                                            LessonPendingView(s),
-                                          if (s.status == 'Teaching')
-                                            LessonTeachingView(),
-                                          if (s.status == 'Complete')
-                                            LessonCompleteView(),
-                                        ],
-                                      );
-                                    },
-                                  )))))
+                  builder: (c, s){
+                    var cubit = BlocProvider.of<DetailLessonCubit>(c);
+                    return Expanded(
+                        child: SingleChildScrollView(
+                            child: BlocProvider(
+                                create: (c) => SessionCubit()..init(c),
+                                child: BlocBuilder<SessionCubit, int>(
+                                  builder: (_, state) {
+                                    return Column(
+                                      children: [
+                                        s == null ? LessonPendingView() : (s.status == 'Teaching')
+                                            ? LessonTeachingView() :
+                                        LessonCompleteView(),
+                                      ],
+                                    );
+                                  },
+                                ))));
+                  })
             ],
           ),
         ));
