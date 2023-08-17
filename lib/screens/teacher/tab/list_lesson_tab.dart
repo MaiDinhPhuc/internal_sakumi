@@ -13,8 +13,10 @@ import 'package:internal_sakumi/features/teacher/lecture/list_lesson_cubit.dart'
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/repository/admin_repository.dart';
+import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
+import 'package:internal_sakumi/widget/circle_progress.dart';
 import 'package:intl/intl.dart';
 
 class ListLessonTab extends StatelessWidget {
@@ -77,9 +79,7 @@ class ListLessonTab extends StatelessWidget {
                                   //             StudentLessonModel(
                                   //                 grammar: -2,
                                   //                 hw: -2,
-                                  //                 id: cubit
-                                  //                     .lessons!
-                                  //                     .indexOf(i)+4,
+                                  //                 id: 10000,
                                   //                 classId: 2,
                                   //                 kanji: -2,
                                   //                 lessonId: cubit
@@ -93,20 +93,20 @@ class ListLessonTab extends StatelessWidget {
                                   //                 vocabulary: -2,
                                   //                 teacherNote:
                                   //                     'teacherNote'));
-                                  //         if(context.mounted) {
-                                  //           await addLessonResult(
-                                  //               context, LessonResultModel(id: 1000-2+cubit
-                                  //               .lessons!
-                                  //               .indexOf(i)+1, classId: 2, lessonId: cubit
-                                  //               .lessons![cubit
-                                  //               .lessons!
-                                  //               .indexOf(i)]
-                                  //               .lessonId, teacherId: 4, status: 'Teaching', date: DateFormat(
-                                  //               'dd/MM/yyyy')
-                                  //               .format(DateTime
-                                  //               .now()), noteForStudent: 'noteForStudent', noteForSupport: 'noteForSupport', noteForTeacher: 'noteForTeacher'));
-                                  //         }
-                                  //       }
+                                  //         // if(context.mounted) {
+                                  //         //   await addLessonResult(
+                                  //         //       context, LessonResultModel(id: 1000-2+cubit
+                                  //         //       .lessons!
+                                  //         //       .indexOf(i)+1, classId: 2, lessonId: cubit
+                                  //         //       .lessons![cubit
+                                  //         //       .lessons!
+                                  //         //       .indexOf(i)]
+                                  //         //       .lessonId, teacherId: 4, status: 'Teaching', date: DateFormat(
+                                  //         //       'dd/MM/yyyy')
+                                  //         //       .format(DateTime
+                                  //         //       .now()), noteForStudent: 'noteForStudent', noteForSupport: 'noteForSupport', noteForTeacher: 'noteForTeacher'));
+                                  //         // }
+                                  //       //}
                                   //     },
                                   //     child: Text('ADD')),
                                   Container(
@@ -173,12 +173,29 @@ class ListLessonTab extends StatelessWidget {
                                                         const CircularProgressIndicator(),
                                                       )
                                                           : AnimatedCrossFade(
-                                                          firstChild: CollapseLessonItem(cubit.lessons!.indexOf(e), e.title),
+                                                          firstChild: //
+                                                          CollapseLessonItem(cubit.lessons!.indexOf(e), e.title),
                                                           secondChild: Column(
                                                             crossAxisAlignment:
                                                             CrossAxisAlignment
                                                                 .start,
                                                             children: [
+                                                              // LessonItemRowLayout(name: Text(e.title), attend: CircleProgress(
+                                                              //   title:
+                                                              //   '0 %',
+                                                              //   lineWidth: Resizable.size(context, 3),
+                                                              //   percent: 0,
+                                                              //   radius: Resizable.size(context, 16),
+                                                              //   fontSize: Resizable.font(context, 14),
+                                                              // ), submit: CircleProgress(
+                                                              //   title:
+                                                              //   '0 %',
+                                                              //   lineWidth: Resizable.size(context, 3),
+                                                              //   percent: 0,
+                                                              //   radius: Resizable.size(context, 16),
+                                                              //   fontSize: Resizable.font(context, 14),
+                                                              // ), mark: Container()),
+                                                              //Text(AppText.titleStatistics.text)
                                                               CollapseLessonItem(
                                                                   cubit.lessons!.indexOf(e),
                                                                   e.title),
@@ -271,7 +288,8 @@ class ListLessonTab extends StatelessWidget {
                                                 ],
                                               ),
                                         )),
-                                  )),
+                                  )
+                                  ),
                                   SizedBox(
                                       height: Resizable.size(context, 50))
                                 ],
@@ -283,5 +301,11 @@ class ListLessonTab extends StatelessWidget {
             ],
           ),
         ));
+  }
+  addStudentLesson(context, StudentLessonModel model) async {
+    TeacherRepository teacherRepository = TeacherRepository.fromContext(context);
+    var check = await teacherRepository.addStudentLesson(model);
+
+    debugPrint('===================> check addStudentLesson $check');
   }
 }

@@ -33,6 +33,7 @@ class AdminRepository {
         .get();
     final listStudent =
         snapshot.docs.map((e) => StudentClassModel.fromSnapshot(e)).toList();
+    debugPrint('===============> getStudentClassByClassId ${listStudent.length} == ${listStudent.first.userId}');
     return listStudent;
   }
 
@@ -199,64 +200,6 @@ class AdminRepository {
         'date': model.date,
         'id': model.id,
         'user_id': model.userId,
-      });
-      return true;
-    } else{
-      return false;
-    }
-  }
-
-  Future<bool> addStudentLesson(StudentLessonModel model) async {
-    final db = FirebaseFirestore.instance;
-
-    final temp = await db
-        .collection("student_lesson").doc("student_${model.studentId}_lesson_${model.lessonId}_class_${model.classId}")
-        .get();
-
-    if(!temp.exists){
-      await db
-          .collection("student_lesson")
-          .doc("student_${model.studentId}_lesson_${model.lessonId}_class_${model.classId}")
-          .set({
-        'class_id': model.classId,
-        'grammar': model.grammar,
-        'hw': model.hw,
-        'id': model.id,
-        'kanji': model.kanji,
-        'lesson_id': model.lessonId,
-        'listening': model.listening,
-        'student_id': model.studentId,
-        'teacher_note': model.teacherNote,
-        'time_keeping': model.timekeeping,
-        'vocabulary': model.vocabulary
-      });
-      return true;
-    } else{
-      return false;
-    }
-  }
-
-  Future<bool> addLessonResult(LessonResultModel model) async {
-    final db = FirebaseFirestore.instance;
-
-    final temp = await db
-        .collection("lesson_result").doc("lesson_${model.lessonId}_class_${model.classId}")
-        .get();
-
-    if(!temp.exists){
-      await db
-          .collection("lesson_result")
-          .doc("lesson_${model.lessonId}_class_${model.classId}")
-          .set({
-        'class_id': model.classId,
-        'date': model.date,
-        'id': model.id,
-        'lesson_id': model.lessonId,
-        'status': model.status,
-        'student_note': model.noteForStudent,
-        'support_note': model.noteForSupport,
-        'teacher_id': model.teacherId,
-        'teacher_note': model.noteForTeacher,
       });
       return true;
     } else{

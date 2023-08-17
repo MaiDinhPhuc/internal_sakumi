@@ -149,28 +149,43 @@ class ListLessonCubit extends Cubit<int> {
   List<StudentModel>? listStudent;
 
   init(context) async {
+    debugPrint('==============> init 1');
     await loadClass(context);
+    debugPrint('==============> init 2');
     await loadLessonResult(context);
+    debugPrint('==============> init 3');
+    //await loadStudent(context);
     await loadStudentLesson(context);
+    debugPrint('==============> init 4');
   }
 
   loadClass(context) async {
+    debugPrint('==============> loadClass 1');
     TeacherRepository teacherRepository =
     TeacherRepository.fromContext(context);
+    debugPrint('==============> loadClass 2');
     var temp = Uri.dataFromString(window.location.href).toString();
+    debugPrint('==============> loadClass 3');
     classModel =
     await teacherRepository.getClassById(int.parse(TextUtils.getClassId()));
+    debugPrint('==============> loadClass 4 ${classModel!.classId} ${classModel!.courseId}  ${int.parse(TextUtils.getClassId())}');
     emit(state + 1);
+    debugPrint('==============> loadClass 5');
   }
 
   loadLessonResult(context) async {
+    debugPrint('==============> loadLessonResult 1');
     TeacherRepository teacherRepository =
     TeacherRepository.fromContext(context);
+    debugPrint('==============> loadLessonResult 2 ${classModel!.classId}');
     listLessonResult = await teacherRepository
         .getLessonResultByClassId(classModel!.classId);
+    debugPrint('==============> loadLessonResult 3 ${classModel!.courseId}');
     lessons =
     await teacherRepository.getLessonsByCourseId(classModel!.courseId);
+    debugPrint('==============> loadLessonResult 4 ${lessons!.length}');
     emit(state + 1);
+    debugPrint('==============> loadLessonResult 5');
   }
 
   // loadStudentLesson(context) async {
@@ -229,6 +244,7 @@ class ListLessonCubit extends Cubit<int> {
   //   emit(state + 1);
   // }
   loadStudentLesson(context) async {
+    debugPrint('==============> loadStudentLesson 1');
     listAttendance = [];
     listSubmitHomework = [];
     listMarked = [];
@@ -236,44 +252,60 @@ class ListLessonCubit extends Cubit<int> {
     listStudentClass = [];
     TeacherRepository teacherRepository =
     TeacherRepository.fromContext(context);
-
+    debugPrint('==============> loadStudentLesson 2');
     List<StudentLessonModel>? listAllStudentLesson = await teacherRepository
         .getAllStudentLessonsInClass(classModel!.classId);
 
     AdminRepository adminRepository = AdminRepository.fromContext(context);
-
+    debugPrint('==============> loadStudentLesson 3');
     listStudentClass = await adminRepository
         .getStudentClassByClassId(classModel!.classId);
-
+    debugPrint('==============> loadStudentLesson 4');
     var lstAll = await adminRepository.getAllStudent();
     listStudent = [];
+    debugPrint('==============> loadStudentLesson 444444');
     for (var i in lstAll) {
+      debugPrint('==============> loadStudentLesson 444444ppppp');
       for (var j in listStudentClass!) {
+        debugPrint('==============> loadStudentLesson 444444mmmm');
         if (i.userId == j.userId) {
+          debugPrint('==============> loadStudentLesson 444444ccccc');
           listStudent!.add(i);
           break;
         }
+        debugPrint('==============> loadStudentLesson 444444sssss');
       }
     }
+    debugPrint('==============> loadStudentLesson 5');
 
     listStudentLessons = [];
     for (var i in lessons!) {
+      debugPrint('==============> loadStudentLesson 555555 ${listAllStudentLesson!.length} == ${listAllStudentLesson!.first.lessonId} == ${lessons!.first.lessonId}');
       List<StudentLessonModel> list = listAllStudentLesson!.fold(
           <StudentLessonModel>[],
               (pre, e) => [...pre, if (i.lessonId == e.lessonId) e]).toList();
-
+      debugPrint('==============> loadStudentLesson 6 ${list.length} == ${listStudent!.length} == ${listStudent!.length}');
       List<StudentLessonModel?> lst = [];
       for(var j in listStudent!){
+        debugPrint('==============> loadStudentLesson 666666 ooooo ${listStudent!.length}');
+        // for(var k in list){
+        //   if(i.lessonId == k.lessonId && j.userId == k.studentId) {
+        //     lst.add(k); break;
+        //   }
+        // }
          List<StudentLessonModel?> llll = listAllStudentLesson!.fold(
             <StudentLessonModel?>[],
                 (pre, e) => [...pre, (i.lessonId == e.lessonId && j.userId == e.studentId)? e: null]).toList();
-        lst.add(llll.first);
-      }
-      //listTest!.add(lst);
 
+        debugPrint('==============> loadStudentLesson 66666 iiiiiiii ${llll.first?.lessonId}');
+        lst.add(llll.first);
+        debugPrint('==============> loadStudentLesson 66666 nnnnnnn ${lst.length}');
+      }
+
+      debugPrint('==============> loadStudentLesson 7');
       //listSL!.add(list.length);
       listStudentLessons!.add(lst);
-
+      debugPrint('==============> loadStudentLesson 8 ${listStudentLessons!.length}');
       var attendance = list.fold(
           <int>[],
               (pre, e) => [
@@ -283,51 +315,59 @@ class ListLessonCubit extends Cubit<int> {
                 i.lessonId == e.lessonId)
               e.timekeeping
           ]).toList();
-
+      debugPrint('==============> loadStudentLesson 9');
       var submit = list.fold(
           <int>[],
               (pre, e) => [
             ...pre,
             if (e.hw > -2 && e.lessonId == i.lessonId) e.hw
           ]).toList();
-
+      debugPrint('==============> loadStudentLesson 10');
       var marked = list.fold(
           <int>[],
               (pre, e) => [
             ...pre,
             if (e.hw > -1 && e.lessonId == i.lessonId) e.hw
           ]).toList();
-
+      debugPrint('==============> loadStudentLesson 11');
       listSubmitHomework!.add(submit.length);
+      debugPrint('==============> loadStudentLesson 12');
       listMarked!.add(marked.length);
+      debugPrint('==============> loadStudentLesson 13');
       listAttendance!.add(attendance.length);
+      debugPrint('==============> loadStudentLesson 14');
     }
-
+    debugPrint('==============> loadStudentLesson 5');
     emit(state + 1);
+    debugPrint('==============> loadStudentLesson 6');
   }
 
-  // loadStudent(context) async {
-  //   AdminRepository adminRepository = AdminRepository.fromContext(context);
-  //
-  //   var list = await adminRepository.getAllStudent();
-  //
-  //   listStudent = [];
-  //   for (var i in list) {
-  //     for (var j in listStudentClass!) {
-  //       if (i.userId == j.userId) {
-  //         listStudent!.add(i);
-  //         break;
-  //       }
-  //     }
-  //   }
-  //
-  //   // for(var i in listStudent!){
-  //   //   if(listStudent!.indexOf(i) > listSL!.length - 1){
-  //   //     listSL!.add(0);
-  //   //   }
-  //   // }
-  //
-  //   print("==============> test test ${listStudent!.first.userId} === $listSL === ${listTest}");
-  //   emit(state + 1);
-  // }
+  loadStudent(context) async {
+    AdminRepository adminRepository = AdminRepository.fromContext(context);
+    debugPrint('==============> loadStudent 1');
+    var list = await adminRepository.getAllStudent();
+    listStudentClass = [];
+    listStudentClass = await adminRepository.getStudentClassByClassId(classModel!.classId);
+    debugPrint('==============> loadStudent 2');
+    listStudent = [];
+    debugPrint('==============> loadStudent 3');
+    for (var i in list) {
+      for (var j in listStudentClass!) {
+        if (i.userId == j.userId) {
+          listStudent!.add(i);
+          break;
+        }
+      }
+    }
+    debugPrint('==============> loadStudent 4');
+
+    // for(var i in listStudent!){
+    //   if(listStudent!.indexOf(i) > listSL!.length - 1){
+    //     listSL!.add(0);
+    //   }
+    // }
+
+    //print("==============> test test ${listStudent!.first.userId} === $listSL === ${listTest}");
+    emit(state + 1);
+  }
 }
