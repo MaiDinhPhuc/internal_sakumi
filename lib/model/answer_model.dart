@@ -4,6 +4,7 @@ class AnswerModel {
   final int  studentId, questionId, questionType, parentId, score;
   final String teacherNote, type;
   final List answer, images, records;
+  int? newScore;
 
   AnswerModel({
     required this.studentId,
@@ -17,6 +18,29 @@ class AnswerModel {
     required this.images,
     required this.records
   });
+
+  List<String> get convertAnswer => convert(answer,questionType);
+  List<String> convert(List answerList, int questionType){
+    List<String> listCv = [];
+    if (questionType == 1 || questionType == 5 || questionType == 6 || questionType == 11 || questionType == 4) {
+      listCv = [answerList.first];
+    } else if (questionType == 3 || questionType == 10 || questionType == 2) {
+      for(var i in answerList){
+        listCv.add(i);
+      }
+    } else if (questionType == 7 ) {
+      String joinedString = answerList.join(' ');
+      listCv = [joinedString];
+    } else if(questionType == 8) {
+      for(var i in answerList){
+        listCv.add(i.toString().replaceAll("|", "-"));
+      }
+      String joinedString = listCv.join('\n');
+      listCv = [joinedString];
+    }
+    return listCv;
+  }
+
   factory AnswerModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;

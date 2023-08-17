@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
@@ -7,12 +8,16 @@ import 'package:internal_sakumi/features/teacher/grading/drop_down_grading_widge
 import 'package:internal_sakumi/features/teacher/grading/question_option.dart';
 import 'package:internal_sakumi/features/class_appbar.dart';
 import 'package:internal_sakumi/features/teacher/grading/detail_grading_cubit.dart';
+import 'package:internal_sakumi/features/teacher/grading/sound/sound_cubit.dart';
+import 'package:internal_sakumi/features/teacher/grading/sound/sound_services.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
+import 'package:internal_sakumi/widget/title_widget.dart';
 
 class DetailGradingScreen extends StatelessWidget {
   final String name;
-  const DetailGradingScreen(this.name, {super.key});
+  DetailGradingScreen(this.name, {super.key}): questionSoundCubit = SoundCubit();
+  final SoundCubit questionSoundCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -25,161 +30,131 @@ class DetailGradingScreen extends StatelessWidget {
                   index: 3,
                   classId: TextUtils.getName(position: 2),
                   name: name),
-              BlocBuilder<DetailGradingCubit, int>(builder: (c, s) {
+              Expanded(child: BlocBuilder<DetailGradingCubit, int>(builder: (c, s) {
                 var cubit = BlocProvider.of<DetailGradingCubit>(c);
-                return cubit.listQuestions == null
+                return s == -1
                     ? Transform.scale(
-                        scale: 0.75,
-                        child: const CircularProgressIndicator(),
-                      )
-                    : Expanded(
-                        child: SingleChildScrollView(
-                            child: SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                                margin: EdgeInsets.only(
-                                    top: Resizable.size(context, 15),
-                                    left: Resizable.size(context, 150),
-                                    bottom: Resizable.size(context, 15)),
-                                width: Resizable.size(context, 70),
-                                child: TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.arrow_back_ios_new,
-                                          size: Resizable.size(context, 15),
-                                          color: greyColor.shade500),
-                                      Text(AppText.textBack.text,
-                                          style: TextStyle(
-                                              color: greyColor.shade500,
-                                              fontSize:
-                                                  Resizable.font(context, 20)))
-                                    ],
-                                  ),
-                                )),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                  scale: 0.75,
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+                    : Padding(
+                  padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 50)),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: Resizable.padding(context, 20)),
+                            child: cubit.listQuestions == null
+                                ? Transform.scale(
+                              scale: 0.75,
+                              child: const CircularProgressIndicator(),
+                            ) : Column(
                               children: [
-                                SizedBox(
-                                    height: MediaQuery.of(context).size.height,
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        children: [
-                                          Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: Resizable.padding(
-                                                      context, 15),
-                                                  left: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.1),
-                                              child: Text(
-                                                  AppText.titleQuestion.text,
-                                                  style: TextStyle(
-                                                      fontSize: Resizable.font(
-                                                          context, 20),
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color:
-                                                          greyColor.shade500))),
-                                          ...cubit.listQuestions!
-                                              .map((e) => QuestionOptionItem(
-                                                    s,
-                                                    cubit.listQuestions!
-                                                        .indexOf(e),
-                                                    questionModel: e,
-                                                    onTap: () {
-                                                      cubit.change(e.id, c);
-                                                    },
-                                                  )),
-                                        ],
-                                      ),
-                                    )),
-                                Column(
-                                  children: [
-                                    SizedBox(
-                                        width: MediaQuery.of(context).size.width *
-                                            0.5,
-                                      child: Row(
-                                        mainAxisAlignment : MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Expanded(
-                                              flex: 6,
-                                              child: Padding(
-                                                  padding: EdgeInsets.only(
-                                                    top: Resizable.padding(context, 10),
-                                                  ),
-                                                  child: Text(AppText.titleGrading.text,
-                                                      style: TextStyle(
-                                                          fontSize:
-                                                          Resizable.font(context, 20),
-                                                          fontWeight: FontWeight.w700,
-                                                          color: greyColor.shade500)))),
-                                          Expanded(
-                                              flex: 2,
-                                              child: DropDownGrading(items: [
-                                                AppText.txtStudent.text,
-                                                ...cubit.listStudent!.map((e) => e.name).toList()
-                                              ])),
-                                          PopupMenuButton(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(Resizable.size(context, 10)),
-                                              ),
-                                            ),
-                                            itemBuilder: (context) => [
-                                              PopupMenuItem(
-                                                child: CheckboxListTile(
-                                                  controlAffinity: ListTileControlAffinity.leading,
-                                                  title: Text(AppText.textShowName.text),
-                                                  value: true,
-                                                  onChanged: (newValue) {},
-                                                ),
-                                              ),
-                                              PopupMenuItem(
-                                                child: CheckboxListTile(
-                                                  controlAffinity: ListTileControlAffinity.leading,
-                                                  title: Text(AppText.textGeneralComment.text),
-                                                  value: false,
-                                                  onChanged: (newValue) {},
-                                                ),
-                                              ),
-                                            ],
-                                            icon:const Icon(Icons.more_vert),
-                                          )
-                                        ],
-                                      )
+                                TitleWidget(AppText.titleQuestion.text.toUpperCase()),
+                                Expanded(child: Container(
+                                  margin: EdgeInsets.only(
+                                      bottom:
+                                      Resizable.padding(context, 5)),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        ...(cubit.listQuestions!)
+                                            .map((e) => IntrinsicHeight(
+                                          child: QuestionOptionItem(
+                                              s,
+                                              cubit.listQuestions!
+                                                  .indexOf(e),
+                                              questionModel: e,
+                                              onTap: () {
+                                                cubit.change(e.id, c);
+                                                SoundService.instance.stop();
+                                              },
+                                              soundCubit: questionSoundCubit
+                                          ),
+                                        ))
+                                            .toList(),
+                                      ],
                                     ),
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          vertical:
-                                              Resizable.padding(context, 5)),
-                                      padding: EdgeInsets.all(
-                                          Resizable.padding(context, 5)),
-                                      width: MediaQuery.of(context).size.width *
-                                          0.5,
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.85,
-                                      decoration: BoxDecoration(
-                                          color: lightGreyColor,
-                                          borderRadius: BorderRadius.circular(
-                                              Resizable.size(context, 5))),
-                                      child: DetailGradingView(cubit.listAnswer),
-                                    )
-                                  ],
-                                )
+                                  ),
+                                ))
                               ],
-                            )
-                          ],
-                        ),
-                      )));
-              }),
+                            ),
+                          )),
+                      Expanded(
+                          flex:2,
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Expanded(
+                                      flex:3,
+                                      child: Padding(
+                                      padding: EdgeInsets.only(
+                                        top: Resizable.padding(context, 10),
+                                      ),
+                                      child: Text(AppText.titleGrading.text.toUpperCase(),
+                                          style: TextStyle(
+                                              fontSize:
+                                              Resizable.font(context, 20),
+                                              fontWeight: FontWeight.w700,
+                                              color: greyColor.shade500)))),
+                                  Expanded(
+                                      flex: 1,
+                                      child: DropDownGrading(items: [
+                                        AppText.txtStudent.text,
+                                        ...cubit.listStudent!.map((e) => e.name).toList()
+                                      ], onChanged: (items) {},value: AppText.txtStudent.text,)),
+                                  PopupMenuButton(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(Resizable.size(context, 10)),
+                                      ),
+                                    ),
+                                    itemBuilder: (context) => [
+                                      PopupMenuItem(
+                                        child: CheckboxListTile(
+                                          controlAffinity: ListTileControlAffinity.leading,
+                                          title: Text(AppText.textShowName.text),
+                                          value: true,
+                                          onChanged: (newValue) {},
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        child: CheckboxListTile(
+                                          controlAffinity: ListTileControlAffinity.leading,
+                                          title: Text(AppText.textGeneralComment.text),
+                                          value: false,
+                                          onChanged: (newValue) {},
+                                        ),
+                                      ),
+                                    ],
+                                    icon:const Icon(Icons.more_vert),
+                                  )
+                                ],
+                              ),
+                              Expanded(child: Container(
+                                margin: EdgeInsets.only(
+                                    bottom:
+                                    Resizable.padding(context, 5), right: Resizable.padding(context, 10)),
+                                padding: EdgeInsets.all(
+                                    Resizable.padding(context, 5)),
+                                decoration: BoxDecoration(
+                                    color: lightGreyColor,
+                                    borderRadius: BorderRadius.circular(
+                                        Resizable.size(context, 5))),
+                                child: DetailGradingView(cubit,questionSoundCubit),
+                              ))
+                            ],
+                          ))
+                    ],
+                  ),
+                );
+              }),)
             ],
           ),
         ));
