@@ -173,7 +173,9 @@ enum AppText {
   statusInProgress,
   txtWaiting,
   txtGradingDone,
-  textNumberNotGrading
+  textNumberNotGrading,
+  titleSubject,
+  titleStatus,
 }
 
 Map<AppText, String> texts = {
@@ -349,7 +351,9 @@ Map<AppText, String> texts = {
   AppText.txtPleaseInputEmail: 'Vui lòng nhập email',
   AppText.txtStudentInJapan: 'Học viên ở Nhật Bản',
   AppText.statusInProgress: 'InProgress',
-  AppText.txtWaiting: 'Waiting...'
+  AppText.txtWaiting: 'Waiting...',
+  AppText.titleSubject: 'Tựa đề bài',
+  AppText.titleStatus: 'Trạng thái'
 };
 
 extension AppTexts on AppText {
