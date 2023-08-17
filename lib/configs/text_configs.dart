@@ -173,10 +173,12 @@ enum AppText {
   statusInProgress,
   txtWaiting,
   txtGradingDone,
+  textNumberNotGrading
 }
 
 Map<AppText, String> texts = {
   AppText.txtGradingDone: 'Chấm điểm xong!',
+  AppText.textNumberNotGrading: 'Số bài chưa chấm: ',
   AppText.textShowName: 'Hiện tên',
   AppText.textGeneralComment: 'Nhận xét chung',
   AppText.textGradingScale: 'Thang điểm',
