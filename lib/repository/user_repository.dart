@@ -75,8 +75,8 @@ class UserRepository {
 
     if(temp.docs.isEmpty){
      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: user.email, password: "Aa@12345");
-      await FirebaseAuth.instance.currentUser!.updatePassword("Aa@12345");
+          .createUserWithEmailAndPassword(email: user.email, password: "abc12345");
+      await FirebaseAuth.instance.currentUser!.updatePassword("abc12345");
       await FirebaseAuth.instance.currentUser!.updateEmail(user.email);
       await saveUser(user.email, user.role, model.userId);
       await db
@@ -107,8 +107,8 @@ class UserRepository {
 
     if(temp.docs.isEmpty){
       await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: user.email, password: "Aa@12345");
-      await FirebaseAuth.instance.currentUser!.updatePassword("Aa@12345");
+          .createUserWithEmailAndPassword(email: user.email, password: "abc12345");
+      await FirebaseAuth.instance.currentUser!.updatePassword("abc12345");
       await FirebaseAuth.instance.currentUser!.updateEmail(user.email);
       await saveUser(user.email, user.role, model.userId);
       await db

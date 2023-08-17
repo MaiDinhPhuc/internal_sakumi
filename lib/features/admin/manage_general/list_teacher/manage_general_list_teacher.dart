@@ -24,7 +24,7 @@ class ManageGeneralListTeacher extends StatelessWidget {
       ),
     ) : Column(
       children: [
-        ...(cubit.listTeacher!).map((e) => UserItem(e.name, e.phone)).toList(),
+        ...(cubit.listTeacher!).map((e) => UserItem(e.name, e.phone, e.url)).toList(),
         SizedBox(height: Resizable.padding(context, 5)),
         Material(
             color: Colors.transparent,

@@ -28,7 +28,7 @@ class AuthServices {
     try {
       // UserCredential userCredential = await FirebaseAuth.instance
       //     .createUserWithEmailAndPassword(email: email, password: "Aa@12345");
-      await FirebaseAuth.instance.currentUser!.updatePassword("Aa@12345");
+      await FirebaseAuth.instance.currentUser!.updatePassword("abc12345");
       await FirebaseAuth.instance.currentUser!.updateEmail(email);
       await FirestoreServices.saveUser(email, role, uid);
       role == AppText.selectorStudent.text
