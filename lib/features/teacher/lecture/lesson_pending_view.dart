@@ -139,23 +139,23 @@ class LessonPendingView extends StatelessWidget {
               // BlocProvider.of<DetailLessonCubit>(context)
               //     .updateStatus(context, 'Teaching');
               debugPrint('=====================> 1');
-              // SharedPreferences localData =
-              //     await SharedPreferences.getInstance();
+              SharedPreferences localData =
+                  await SharedPreferences.getInstance();
               debugPrint('=====================> 2');
               if (context.mounted) {
                 debugPrint('=====================> 3 == ${int.parse(TextUtils.getName(position: 2))} == ${int.parse(TextUtils.getName())}');
-                // await addLessonResult(
-                //     context,
-                //     LessonResultModel(
-                //         id: 1000,
-                //         classId: int.parse(TextUtils.getName(position: 2)),
-                //         lessonId: int.parse(TextUtils.getName()),
-                //         teacherId: int.parse(localData.getInt(PrefKeyConfigs.userId).toString()),
-                //         status: 'Teaching',
-                //         date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
-                //         noteForStudent: 'noteForStudent',
-                //         noteForSupport: 'noteForSupport',
-                //         noteForTeacher: 'noteForTeacher'));
+                await addLessonResult(
+                    context,
+                    LessonResultModel(
+                        id: 1000,
+                        classId: int.parse(TextUtils.getName(position: 2)),
+                        lessonId: int.parse(TextUtils.getName()),
+                        teacherId: int.parse(localData.getInt(PrefKeyConfigs.userId).toString()),
+                        status: 'Teaching',
+                        date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                        noteForStudent: 'noteForStudent',
+                        noteForSupport: 'noteForSupport',
+                        noteForTeacher: 'noteForTeacher'));
                 debugPrint('=====================> 4');
               }
 
@@ -168,10 +168,10 @@ class LessonPendingView extends StatelessWidget {
     );
   }
 
-  // addLessonResult(context, LessonResultModel model) async {
-  //   TeacherRepository teacherRepository = TeacherRepository.fromContext(context);
-  //   debugPrint('=====================>');
-  //   var check = await teacherRepository.addLessonResult(model);
-  //   debugPrint('=====================> $check');
-  // }
+  addLessonResult(context, LessonResultModel model) async {
+    TeacherRepository teacherRepository = TeacherRepository.fromContext(context);
+    debugPrint('=====================>');
+    var check = await teacherRepository.addLessonResult(model);
+    debugPrint('=====================> $check');
+  }
 }
