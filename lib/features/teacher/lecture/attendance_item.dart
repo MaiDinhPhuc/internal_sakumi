@@ -140,8 +140,8 @@ class DropDownWidget extends StatelessWidget {
   }
 
   addStudentLesson(context, StudentLessonModel model) async {
-    AdminRepository adminRepository = AdminRepository.fromContext(context);
-    var check = await adminRepository.addStudentLesson(model);
+    TeacherRepository teacherRepository = TeacherRepository.fromContext(context);
+    var check = await teacherRepository.addStudentLesson(model);
 
     debugPrint('===================> check addStudentLesson $check');
   }

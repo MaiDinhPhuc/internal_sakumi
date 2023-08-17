@@ -20,6 +20,21 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
   DetailLessonCubit() : super(null) {
     //load();
   }
+  addLessonResult(context, LessonResultModel model) async {
+    TeacherRepository teacherRepository =
+    TeacherRepository.fromContext(context);
+    debugPrint('=====================>');
+    var check = await teacherRepository.addLessonResult(model);
+    debugPrint('=====================> $check');
+
+    if(!check){
+      emit(await teacherRepository.getLessonResultByLessonId(
+          int.parse(TextUtils.getName()),
+          int.parse(TextUtils.getName(position: 2))));
+    } else {
+      (emit(model));
+    }
+  }
 
   load(context) async {
     debugPrint('============> DetailLessonCubit 1');
