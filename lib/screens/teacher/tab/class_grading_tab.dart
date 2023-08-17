@@ -50,7 +50,7 @@ class ClassGradingTab extends StatelessWidget {
                                 Container(
                                   margin: EdgeInsets.symmetric(
                                       horizontal: Resizable.padding(
-                                          context, 150),
+                                          context, 80),
                                       vertical: Resizable.padding(
                                           context, 5)),
                                   child: Stack(
@@ -76,26 +76,27 @@ class ClassGradingTab extends StatelessWidget {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Column(
+                                              Expanded(
+                                                  child: Column(
                                                 crossAxisAlignment : CrossAxisAlignment.start,
                                                 children: [
                                                   Padding(padding: EdgeInsets.symmetric(vertical:Resizable.padding(context, 10) ),child: Text(cubit.lessons![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)].title, style: TextStyle(fontWeight: FontWeight.bold,fontSize: Resizable.font(context, 30),),),
                                                   ),
                                                   Text(cubit.lessons![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)].description.replaceAll("|", "\n"),style: TextStyle(fontWeight: FontWeight.w500, fontSize: Resizable.padding(context, 16))),
                                                   Padding(padding: EdgeInsets.symmetric(vertical:Resizable.padding(context, 5)),child: RichText(text: TextSpan(
-                                                    children: [
-                                                      TextSpan(
-                                                        text: AppText.textNumberNotGrading.text,
-                                                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: Resizable.padding(context, 16))
-                                                      ),
-                                                      TextSpan(
-                                                          text: " ${cubit.listResultCount![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)]}",
-                                                          style: TextStyle(fontWeight: FontWeight.w700, fontSize: Resizable.padding(context, 20), color: primaryColor)
-                                                      )
-                                                    ]
+                                                      children: [
+                                                        TextSpan(
+                                                            text: AppText.textNumberNotGrading.text,
+                                                            style: TextStyle(fontWeight: FontWeight.w500, fontSize: Resizable.padding(context, 16))
+                                                        ),
+                                                        TextSpan(
+                                                            text: " ${cubit.listResultCount![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)]}",
+                                                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: Resizable.padding(context, 20), color: primaryColor)
+                                                        )
+                                                      ]
                                                   )))
                                                 ],
-                                              ),
+                                              )),
                                               if(cubit.listResultCount![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)]!=0)
                                                 Expanded(child: Column(
                                                 mainAxisAlignment : MainAxisAlignment.spaceBetween,
