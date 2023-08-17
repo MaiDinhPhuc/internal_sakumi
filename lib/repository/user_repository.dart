@@ -6,6 +6,7 @@ import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
+import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -74,8 +75,8 @@ class UserRepository {
 
     if(temp.docs.isEmpty){
      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: user.email, password: "Aa@12345");
-      await FirebaseAuth.instance.currentUser!.updatePassword("Aa@12345");
+          .createUserWithEmailAndPassword(email: user.email, password: "abc12345");
+      await FirebaseAuth.instance.currentUser!.updatePassword("abc12345");
       await FirebaseAuth.instance.currentUser!.updateEmail(user.email);
       await saveUser(user.email, user.role, model.userId);
       await db
@@ -89,7 +90,38 @@ class UserRepository {
         'student_code': model.studentCode,
         'url': model.url,
         'user_id': model.userId,
-        'status': 'progress'
+        'status': model.studentCode});
+      return true;
+    } else{
+      return false;
+    }
+  }
+
+  Future<bool> createNewTeacher(BuildContext context, TeacherModel model, UserModel user) async {
+    final db = FirebaseFirestore.instance;
+
+    final temp = await db
+        .collection("users")
+        .where('email', isEqualTo: user.email)
+        .get();
+
+    if(temp.docs.isEmpty){
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: user.email, password: "abc12345");
+      await FirebaseAuth.instance.currentUser!.updatePassword("abc12345");
+      await FirebaseAuth.instance.currentUser!.updateEmail(user.email);
+      await saveUser(user.email, user.role, model.userId);
+      await db
+          .collection('teacher')
+          .doc("teacher_user_${user.id}")
+          .set({
+        'name': model.name,
+        'note': model.note,
+        'phone': model.phone,
+        'status': model.status,
+        'teacher_code': model.teacherCode,
+        'url': model.url,
+        'user_id': model.userId,
       });
       return true;
     } else{

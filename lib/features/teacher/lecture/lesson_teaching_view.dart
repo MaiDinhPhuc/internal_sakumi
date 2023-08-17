@@ -5,6 +5,8 @@ import 'package:internal_sakumi/features/alert_view.dart';
 import 'package:internal_sakumi/features/teacher/lecture/attendance_item.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/note_for_team_card.dart';
+import 'package:internal_sakumi/model/student_lesson_model.dart';
+import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 
@@ -26,7 +28,7 @@ class LessonTeachingView extends StatelessWidget {
             children: [
               ...cubit.listStudent!.map((e) => AttendanceItem(
                       e,
-                      cubit.listStudentLesson![cubit.listStudent!.indexOf(e)]
+                      cubit.listStudent!.indexOf(e) > cubit.listStudentLesson!.length - 1 ? 0 :cubit.listStudentLesson![0]//cubit.listStudent!.indexOf(e)
                           .timekeeping,
                       items: [
                         AppText.txtNotTimeKeeping.text,
@@ -44,6 +46,7 @@ class LessonTeachingView extends StatelessWidget {
                 cubit.checkNoteStudent();
               }, onPressed: () {
                 cubit.checkNoteStudent();
+                debugPrint('============= totalAttendance ${cubit.totalAttendance}');
               }),
               SizedBox(height: Resizable.size(context, 40)),
               SubmitButton(

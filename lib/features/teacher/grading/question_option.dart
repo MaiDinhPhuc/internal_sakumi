@@ -9,7 +9,10 @@ import 'package:internal_sakumi/utils/text_utils.dart';
 
 class QuestionOptionItem extends StatelessWidget {
   const QuestionOptionItem(this.id, this.index,
-      {super.key, required this.questionModel, required this.onTap, required this.soundCubit});
+      {super.key,
+      required this.questionModel,
+      required this.onTap,
+      required this.soundCubit});
   final int id, index;
   final QuestionModel questionModel;
   final Function() onTap;
@@ -73,35 +76,43 @@ class QuestionOptionItem extends StatelessWidget {
                                     fontWeight: FontWeight.w700,
                                     fontSize: Resizable.font(context, 17)),
                               ),
-                            if(questionModel.sound != "")
-                              Sounder("assets/practice/${TextUtils.getName()}/${questionModel.listSound.first}", "assets", soundCubit: soundCubit, backgroundColor: primaryColor,iconColor: Colors.white,),
-                            if(questionModel.image != "")
+                            if (questionModel.sound != "")
+                              Expanded(
+                                child: Sounder(
+                                  "assets/practice/${TextUtils.getName()}/${questionModel.listSound.first}",
+                                  "assets",0,
+                                  soundCubit: soundCubit,
+                                  backgroundColor: primaryColor,
+                                  iconColor: Colors.white,
+                                ),
+                              ),
+                            if (questionModel.image != "")
                               SizedBox(
                                 height: Resizable.size(context, 100),
                                 child: ListView.builder(
                                     itemCount: questionModel.listImage.length,
                                     scrollDirection: Axis.horizontal,
                                     padding: EdgeInsets.symmetric(
-                                        vertical: Resizable.padding(context, 5)),
+                                        vertical:
+                                            Resizable.padding(context, 5)),
                                     itemBuilder: (_, i) => Container(
-                                      margin: EdgeInsets.all(
-                                          Resizable.padding(context, 2)),
-                                      height: 100,
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                                'assets/practice/${TextUtils.getName()}/${questionModel.listImage[i]}'),
-                                            fit: BoxFit.fitWidth),
-                                        border: Border.all(
-                                            width: 0,
-                                            color: secondaryColor),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(
-                                                Resizable.size(
+                                          margin: EdgeInsets.all(
+                                              Resizable.padding(context, 2)),
+                                          height: MediaQuery.of(context).size.width*0.1,
+                                          width: MediaQuery.of(context).size.width*0.1,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: AssetImage(
+                                                    'assets/practice/${TextUtils.getName()}/${questionModel.listImage[i]}'),
+                                                fit: BoxFit.fill),
+                                            border: Border.all(
+                                                width: 0,
+                                                color: secondaryColor),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(Resizable.size(
                                                     context, 5))),
-                                      ),
-                                    )),
+                                          ),
+                                        )),
                               ),
                             if (questionModel.questionType == 1 ||
                                 questionModel.questionType == 5)
@@ -114,7 +125,6 @@ class QuestionOptionItem extends StatelessWidget {
                                           color: Colors.black,
                                           fontSize: Resizable.font(context, 15),
                                           fontWeight: FontWeight.w800)))),
-
                             if (questionModel.questionType == 11) ...[
                               Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -123,13 +133,14 @@ class QuestionOptionItem extends StatelessWidget {
                                       .map((item) => Container(
                                             margin: EdgeInsets.all(
                                                 Resizable.padding(context, 2)),
-                                            height: 100,
-                                            width: 100,
+                                            height:
+                                            MediaQuery.of(context).size.width*0.1,
+                                            width: MediaQuery.of(context).size.width*0.1,
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
                                                   image: AssetImage(
                                                       'assets/practice/${TextUtils.getName()}/$item'),
-                                                  fit: BoxFit.fitWidth),
+                                                  fit: BoxFit.fill),
                                               border: Border.all(
                                                   width: 0,
                                                   color: secondaryColor),
@@ -147,13 +158,14 @@ class QuestionOptionItem extends StatelessWidget {
                                       .map((item) => Container(
                                             margin: EdgeInsets.all(
                                                 Resizable.padding(context, 2)),
-                                            height: 100,
-                                            width: 100,
+                                            height:
+                                            MediaQuery.of(context).size.width*0.1,
+                                            width: MediaQuery.of(context).size.width*0.1,
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
                                                   image: AssetImage(
                                                       'assets/practice/${TextUtils.getName()}/$item'),
-                                                  fit: BoxFit.fitWidth),
+                                                  fit: BoxFit.fill),
                                               border: Border.all(
                                                   color: secondaryColor),
                                               borderRadius: BorderRadius.all(

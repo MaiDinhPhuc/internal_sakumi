@@ -1,0 +1,228 @@
+[
+  {
+    "question": "[[0:00.000]]交差点\n[[0:06.123]]信号\n[[0:11.796]]バス停\n[[0:17.515]]大通り\n[[0:23.225]]橋\n[[0:28.748]]横断歩道\n[[0:35.501]]そのまま\n[[0:41.504]]左側にあります\n[[0:47.673]]すぐそこです\n[[0:53.638]]角を曲がる\n[[0:59.807]]右に曲がる\n[[1:05.491]]まっすぐ行く\n[[1:11.158]]しばらく行く\n[[1:17.606]]~ビル を入る\n[[1:23.794]]…を通って\n[[1:29.785]]手前\n[[1:35.608]]..を通り過ぎて\n[[1:41.570]]角にある\n[[1:47.252]]突き当たりにある\n[[1:53.377]]…通り沿い\n[[1:59.443]] 反対側\n[[2:05.036]]まず\n[[2:10.626]]次\n[[2:16.371]]そうしたら\n[[2:22.039]]そうすると/ すると",
+    "is_hw_default": false,
+    "question_type": 10,
+    "is_test_default": false,
+    "instruction": "Luyện đọc từ vựng ( đọc từ vựng sau khi ss gợi ý nha, nhớ học phần flashcard trước)",
+    "skill": 0,
+    "sound": "7.mp3",
+    "id": 27,
+    "lesson_id": 101403
+  },
+  {
+    "question": "[0:00.000]すみません、ちょっとよろしいでしょうか。\n[[0:09.446]]すみません。バス停はどこですか？\n[[0:19.227]]あの、すみません、ここに行きたいんですが、道に迷ってしまいまして……\n[[0:35.351]]すみません。郵便局はどう行ったらいいですか？\n今 、さくら駅の北口にいます。\"\n[[0:54.822]]あのう、ちょっとすみません。ここは、「中央公園」ですか。\n[[1:08.446]]はい、何でしょうか？\n[[1:14.607]]この道をまっすぐ行ってください。\n[[1:23.045]]もうちょっと先ですよ。\n[[1:30.197]]えーっと、次の角を右に曲がってください。\n[[1:42.018]]それから、１つ目の信号を右に曲がってください。\n[[1:53.551]]その手前の橋を渡ってください。\n[[2:03.697]]すぐ右に曲がったところにあります\n[[2:12.558]]銀行とコンビニの間の道を まっすぐ行ってください。\n[[2:25.200]]そうすると、黒いビルが見えます。\n[[2:34.311]]郵便局のとなりですよ。\n[[2:41.997]]その手前の道を入ってください。\n\n[[2:50.867]]右ですね。\n[[2:56.512]]いえ、1つ目じゃなくて、2つ目です。\n[[3:07.934]]えっと、橋を渡って、右ですね。\n\n[[3:20.912]]どのくらいかかりますか。\n[[3:28.664]]ん～、10分くらいですよ。\n[[3:38.400]]自転車で5か6分ですかね。\n\n[[3:49.693]]ああ、そうですか。ありがとうございます。\n[[4:00.200]]あ、いいえ。",
+    "is_hw_default": false,
+    "question_type": 10,
+    "is_test_default": false,
+    "instruction": "Luyện đọc câu ( đọc lặp lại sau khi nghe sensei đọc nha )",
+    "skill": 0,
+    "sound": "8.mp3",
+    "id": 28,
+    "lesson_id": 101403
+  },
+  {
+    "question": "Khi muốn nhờ vả ai đó bạn sẽ nói gì?",
+    "is_hw_default": false,
+    "question_type": 3,
+    "is_test_default": false,
+    "instruction": "Trả lời câu hỏi hoặc dịch câu",
+    "skill": 0,
+    "id": 29,
+    "lesson_id": 101403
+  },
+  {
+    "question": "Hãy hỏi bến xe bus nằm ở đâu",
+    "is_hw_default": false,
+    "question_type": 3,
+    "is_test_default": false,
+    "instruction": "Trả lời câu hỏi hoặc dịch câu",
+    "skill": 0,
+    "id": 30,
+    "lesson_id": 101403
+  },
+  {
+    "question": "Hãy trình bày răng bạn muốn đi đến chỗ này nhưng bạn đang bị lạc đường. ",
+    "is_hw_default": false,
+    "question_type": 3,
+    "is_test_default": false,
+    "instruction": "Trả lời câu hỏi hoặc dịch câu",
+    "skill": 0,
+    "id": 31,
+    "lesson_id": 101403
+  },
+  {
+    "question": "hãy hỏi cách đi đến bưu điện biết bạn đang đứng ở ga Sakura",
+    "is_hw_default": false,
+    "question_type": 3,
+    "is_test_default": false,
+    "instruction": "Trả lời câu hỏi hoặc dịch câu",
+    "skill": 0,
+    "id": 32,
+    "lesson_id": 101403
+  },
+  {
+    "question": "Hãy xác nhận xem chỗ nay có phải công viên trung tâm không",
+    "is_hw_default": false,
+    "question_type": 3,
+    "is_test_default": false,
+    "instruction": "Trả lời câu hỏi hoặc dịch câu",
+    "skill": 0,
+    "id": 33,
+    "lesson_id": 101403
+  },
+  {
+    "question": "Trả lời câu hỏi\" すみません、ちょっとよろしいでしょうか。\"",
+    "is_hw_default": false,
+    "question_type": 3,
+    "is_test_default": false,
+    "instruction": "Trả lời câu hỏi hoặc dịch câu",
+    "skill": 0,
+    "id": 34,
+    "lesson_id": 101403
+  },
+  {
+    "question": "\"Hãy đi thẳng con đường này\"",
+    "is_hw_default": false,
+    "question_type": 3,
+    "is_test_default": false,
+    "instruction": "Trả lời câu hỏi hoặc dịch câu",
+    "skill": 0,
+    "id": 35,
+    "lesson_id": 101403
+  },
+  {
+    "question": "\"Thêm một chút nữa",
+    "is_hw_default": false,
+    "question_type": 3,
+    "is_test_default": false,
+    "instruction": "Trả lời câu hỏi hoặc dịch câu",
+    "skill": 0,
+    "id": 36,
+    "lesson_id": 101403
+  },
+  {
+    "question": "\"Hãy rẽ phải ở góc đường tiếp theo",
+    "is_hw_default": false,
+    "question_type": 3,
+    "is_test_default": false,
+    "instruction": "Trả lời câu hỏi hoặc dịch câu",
+    "skill": 0,
+    "id": 37,
+    "lesson_id": 101403
+  },
+  {
+    "question": "\"Sau đó, hãy rẽ phải ở đèn giao thông thứ nhất\"",
+    "is_hw_default": false,
+    "question_type": 3,
+    "is_test_default": false,
+    "instruction": "Trả lời câu hỏi hoặc dịch câu",
+    "skill": 0,
+    "id": 38,
+    "lesson_id": 101403
+  },
+  {
+    "question": "\"Hãy băng qua cây cầu phía trước",
+    "is_hw_default": false,
+    "question_type": 3,
+    "is_test_default": false,
+    "instruction": "Trả lời câu hỏi hoặc dịch câu",
+    "skill": 0,
+    "id": 39,
+    "lesson_id": 101403
+  },
+  {
+    "question": "\"Nó nằm ở ngay chỗ bạn rẽ phải\"",
+    "is_hw_default": false,
+    "question_type": 3,
+    "is_test_default": false,
+    "instruction": "Trả lời câu hỏi hoặc dịch câu",
+    "skill": 0,
+    "id": 40,
+    "lesson_id": 101403
+  },
+  {
+    "question": "\"Hãy đi thẳng vào con đường giữa ngân hàng và bưu điện\"",
+    "is_hw_default": false,
+    "question_type": 3,
+    "is_test_default": false,
+    "instruction": "Trả lời câu hỏi hoặc dịch câu",
+    "skill": 0,
+    "id": 41,
+    "lesson_id": 101403
+  },
+  {
+    "question": "\"Ngay sau đó bạn sẽ thấy một toà nhà màu đen\"",
+    "is_hw_default": false,
+    "question_type": 3,
+    "is_test_default": false,
+    "instruction": "Trả lời câu hỏi hoặc dịch câu",
+    "skill": 0,
+    "id": 42,
+    "lesson_id": 101403
+  },
+  {
+    "question": "\"Bưu điện nằm ngay bên cạnh\"",
+    "is_hw_default": false,
+    "question_type": 3,
+    "is_test_default": false,
+    "instruction": "Trả lời câu hỏi hoặc dịch câu",
+    "skill": 0,
+    "id": 43,
+    "lesson_id": 101403
+  },
+  {
+    "question": "\"Hãy đi vào con đường phía trước",
+    "is_hw_default": false,
+    "question_type": 3,
+    "is_test_default": false,
+    "instruction": "Trả lời câu hỏi hoặc dịch câu",
+    "skill": 0,
+    "id": 44,
+    "lesson_id": 101403
+  },
+  {
+    "question": "[[0:00.000]]すみません。郵便局はどう行ったらいいですか？\n[[0:06.339]]この道 をまっすぐ行って、2 つ目の信号を左 に曲がってください。\n[[0:13.736]]1つ目の信号を左ですね。\n[[0:17.739]]いえ、1つ目じゃなくて、2 つ目です。\n[[0:22.831]]わかりました。ありがとうございます。\n[[0:28.024]]はい。アジア食 材バグースです。\n[[0:32.287 ]]すみません。そちらに行たいんですが、どう行ったらいいですか？\n今 、さくら駅 の北口にいます。\n[[0:43.267]]駅 の北口ですね。駅 の前 の道 を渡って、銀 行とコンビニの間 の道 を まっすぐ行ってください。\n[[0:55.642]]はい。\n[[0:56.886]]それから、１つ目の信号を右に曲がってください。\n[[1:02.476]]右ですね。\n[[1:04.969]]はい。その道 をまっすぐ行って、2 つ目の角を左に曲がってください。\n[[1:12.999]]はい。\n[[1:14.383]]そうすると、黒いビルが見えます。その隣です。\n[[1:20.543]]黒いビルの隣ですね。\nわかりました。ありがとうございます。\n[[1:27.124]]お待ちしております。",
+    "is_hw_default": false,
+    "question_type": 10,
+    "is_test_default": false,
+    "instruction": "Shadowing - Nghe và lặp lại",
+    "skill": 0,
+    "sound": "9.mp3",
+    "id": 45,
+    "lesson_id": 101403
+  },
+  {
+    "question": "[[0:00.000]]すみません。郵便局はどう行ったらいいですか？\n[[0:05.847]]この道 をまっすぐ行って、2 つ目の信号を左 に曲がってください。\n[[0:12.229]]1つ目の信号を左ですね。\n[[0:15.787]]いえ、1つ目じゃなくて、2 つ目です。\n[[0:20.175]]わかりました。ありがとうございます。\n[[0:23.749]]はい。アジア食 材バグースです。\n[[0:28.522]]すみません。そちらに行たいんですが、どう行ったらいいですか？\n今 、さくら駅 の北口にいます。\n[[0:39.124]]駅 の北口ですね。駅 の前 の道 を渡って、銀 行とコンビニの間 の道 を まっすぐ行ってください。\n[[0:50.864]]はい。\n[[0:52.346]]Ａ：それから、１つ目の信号を右に曲がってください。\n[[0:56.813]]Ｂ：右ですね。\n[[0:58.579]]Ａ：はい。その道 をまっすぐ行って、2 つ目の角を左に曲がってください。\n[[1:05.658]]Ｂ：はい。\n[[1:06.719]]Ａ：そうすると、黒いビルが見えます。その隣です。\n[[1:12.536]] Ｂ：黒いビルの隣ですね。\nわかりました。ありがとうございます。\n[[1:18.611]]Ａ：お待ちしております。",
+    "is_hw_default": false,
+    "question_type": 10,
+    "is_test_default": false,
+    "instruction": "Shadowing - Nghe và lặp lại",
+    "skill": 0,
+    "sound": "10.mp3",
+    "id": 46,
+    "lesson_id": 101403
+  },
+  {
+    "question": "[[0:00.000]]\n[[0:04.010]] Vâng, có vấn đề gì vậy ạ?\n[0:09.601]] \n[[0:15.044]] Bạn đi vào con đường ở giữa combini và ngân hàng ấy \n[[0:25.805]]\n[[0:27.396]] Sau đó, rẽ phải ở đèn giao thông thứ nhất\n[[0:34.824]] \n [[0:36.894]] Rồi bạn hãy đi thẳng con đường ấy, sau đó rẽ trái ở góc đường thứ \"2\"\n[[0:47.307]]\n[[0:49.693]] ngay sau đó bạn sẽ thấy một toà nhà máu trắng. nó ở bên cạnh ấy.\n[[1:02.463]]\n[[1:11.638]] 0 phút\n[[1:18.101]]\n[[1:21.836]] \n\n",
+    "is_hw_default": false,
+    "question_type": 10,
+    "is_test_default": false,
+    "instruction": "Roleplay - Kaiwa với sensei (nhớ trả lời theo gợi ý của sensei)",
+    "skill": 0,
+    "sound": "11.mp3",
+    "id": 47,
+    "lesson_id": 101403
+  },
+  {
+    "question": "[[0:00.000]] Xin lỗi, cho tôi hỏi một chút!\n[[0:06.979]]\n[[0:09.477]] Tôi muốn đi đến siêu thị Aeon thì đi như thế nào ạ?\n[[0:17.971]]\n[[0:25.811]] Vâng\n[[0:30.393]]\n[[0:34.803]] Bên phải nhỉ \n[[0:39.872]]\n[[0:47.263]] Ngay góc cua thứ nhất nhỉ\n[[0:52.639]]\n[[1:02.422]] Bên cạnh toà nhà màu trắng nhỉ. Từ đây đến đó khoảng bao lâu ạ?\n[[1:14.557]]\n[[1:18.029]] Cảm ơn nhiều ạ \n[[1:24.798]]",
+    "is_hw_default": false,
+    "question_type": 10,
+    "is_test_default": false,
+    "instruction": "Roleplay - Kaiwa với sensei (nhớ trả lời theo gợi ý của sensei)",
+    "skill": 0,
+    "sound": "12.mp3",
+    "id": 48,
+    "lesson_id": 101403
+  }
+]

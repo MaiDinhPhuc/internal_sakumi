@@ -1,6 +1,4 @@
 
-import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:assets_audio_player_web/web/assets_audio_player_web.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
@@ -15,16 +13,14 @@ import 'package:internal_sakumi/features/teacher/grading/sound/sound_services.da
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:internal_sakumi/widget/title_widget.dart';
-import 'package:screenshot/screenshot.dart';
 
 class DetailGradingScreen extends StatelessWidget {
   final String name;
-  DetailGradingScreen(this.name, {super.key}): soundCubit = SoundCubit();
-  final SoundCubit soundCubit;
+  DetailGradingScreen(this.name, {super.key}): questionSoundCubit = SoundCubit();
+  final SoundCubit questionSoundCubit;
 
   @override
   Widget build(BuildContext context) {
-    AssetsAudioPlayer player = AssetsAudioPlayer();
     return BlocProvider(
         create: (context) => DetailGradingCubit()..init(context),
         child: Scaffold(
@@ -39,7 +35,9 @@ class DetailGradingScreen extends StatelessWidget {
                 return s == -1
                     ? Transform.scale(
                   scale: 0.75,
-                  child: const CircularProgressIndicator(),
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 )
                     : Padding(
                   padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 50)),
@@ -54,47 +52,104 @@ class DetailGradingScreen extends StatelessWidget {
                                 ? Transform.scale(
                               scale: 0.75,
                               child: const CircularProgressIndicator(),
-                            ) : SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  TitleWidget(AppText.titleQuestion.text.toUpperCase()),
-                                  ...(cubit.listQuestions!)
-                                      .map((e) => IntrinsicHeight(
-                                    child: QuestionOptionItem(
-                                      s,
-                                      cubit.listQuestions!
-                                          .indexOf(e),
-                                      questionModel: e,
-                                      onTap: () {
-                                        cubit.change(e.id, c);
-                                        //SoundService.instance.stop();
-                                      },
-                                      soundCubit: soundCubit
+                            ) : Column(
+                              children: [
+                                TitleWidget(AppText.titleQuestion.text.toUpperCase()),
+                                Expanded(child: Container(
+                                  margin: EdgeInsets.only(
+                                      bottom:
+                                      Resizable.padding(context, 5)),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        ...(cubit.listQuestions!)
+                                            .map((e) => IntrinsicHeight(
+                                          child: QuestionOptionItem(
+                                              s,
+                                              cubit.listQuestions!
+                                                  .indexOf(e),
+                                              questionModel: e,
+                                              onTap: () {
+                                                cubit.change(e.id, c);
+                                                SoundService.instance.stop();
+                                              },
+                                              soundCubit: questionSoundCubit
+                                          ),
+                                        ))
+                                            .toList(),
+                                      ],
                                     ),
-                                  ))
-                                      .toList(),
-                                ],
-                              ),
+                                  ),
+                                ))
+                              ],
                             ),
                           )),
                       Expanded(
                           flex:2,
-                          child: Container(
-                            margin: EdgeInsets.symmetric(
-                                vertical:
-                                Resizable.padding(context, 5)),
-                            padding: EdgeInsets.all(
-                                Resizable.padding(context, 5)),
-                            width: MediaQuery.of(context).size.width *
-                                0.5,
-                            height:
-                            MediaQuery.of(context).size.height *
-                                0.85,
-                            decoration: BoxDecoration(
-                                color: lightGreyColor,
-                                borderRadius: BorderRadius.circular(
-                                    Resizable.size(context, 5))),
-                            child: DetailGradingView(cubit.listAnswer),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Expanded(
+                                      flex:3,
+                                      child: Padding(
+                                      padding: EdgeInsets.only(
+                                        top: Resizable.padding(context, 10),
+                                      ),
+                                      child: Text(AppText.titleGrading.text.toUpperCase(),
+                                          style: TextStyle(
+                                              fontSize:
+                                              Resizable.font(context, 20),
+                                              fontWeight: FontWeight.w700,
+                                              color: greyColor.shade500)))),
+                                  Expanded(
+                                      flex: 1,
+                                      child: DropDownGrading(items: [
+                                        AppText.txtStudent.text,
+                                        ...cubit.listStudent!.map((e) => e.name).toList()
+                                      ], onChanged: (items) {},value: AppText.txtStudent.text,)),
+                                  PopupMenuButton(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(Resizable.size(context, 10)),
+                                      ),
+                                    ),
+                                    itemBuilder: (context) => [
+                                      PopupMenuItem(
+                                        child: CheckboxListTile(
+                                          controlAffinity: ListTileControlAffinity.leading,
+                                          title: Text(AppText.textShowName.text),
+                                          value: true,
+                                          onChanged: (newValue) {},
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        child: CheckboxListTile(
+                                          controlAffinity: ListTileControlAffinity.leading,
+                                          title: Text(AppText.textGeneralComment.text),
+                                          value: false,
+                                          onChanged: (newValue) {},
+                                        ),
+                                      ),
+                                    ],
+                                    icon:const Icon(Icons.more_vert),
+                                  )
+                                ],
+                              ),
+                              Expanded(child: Container(
+                                margin: EdgeInsets.only(
+                                    bottom:
+                                    Resizable.padding(context, 5), right: Resizable.padding(context, 10)),
+                                padding: EdgeInsets.all(
+                                    Resizable.padding(context, 5)),
+                                decoration: BoxDecoration(
+                                    color: lightGreyColor,
+                                    borderRadius: BorderRadius.circular(
+                                        Resizable.size(context, 5))),
+                                child: DetailGradingView(cubit,questionSoundCubit),
+                              ))
+                            ],
                           ))
                     ],
                   ),

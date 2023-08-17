@@ -56,7 +56,7 @@ class AddUserToClassScreen extends StatelessWidget {
                       'user_id': int.parse(controller.text),
                       'active_status': 5,
                       'learning_status': 5,
-                      'class_status': 'InProgress',
+                      'class_status': AppText.statusInProgress.text,
                       'date': DateFormat('dd/MM/yyyy').format(DateTime.now()),
                       'move_to': 0,
                       'id': listStudentClass.length + 1,

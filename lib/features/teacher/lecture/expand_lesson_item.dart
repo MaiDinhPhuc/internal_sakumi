@@ -14,8 +14,8 @@ import 'package:internal_sakumi/widget/note_widget.dart';
 import 'dart:ui' as ui;
 
 class ExpandLessonItem extends StatelessWidget {
-  final LessonResultModel lessonResultModel;
-  const ExpandLessonItem(this.lessonResultModel, {Key? key}) : super(key: key);
+  final int index;
+  const ExpandLessonItem(this.index, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,29 +25,26 @@ class ExpandLessonItem extends StatelessWidget {
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(
         imageUrl, (int _) => ImageElement()..src = imageUrl);
+    //debugPrint('===============> lesson result ${cubit.listLessonResult!.indexOf(lessonResultModel)} == ${cubit.listLessonResult!.length}');
     return Container(
       margin: EdgeInsets.symmetric(vertical: Resizable.padding(context, 10)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(AppText.txtNoteFromSupport.text,
+          Text(AppText.titleNoteFromSupport.text,
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 19))),
-          NoteWidget(cubit
-              .listLessonResult![
-                  cubit.listLessonResult!.indexOf(lessonResultModel)]
-              .noteForSupport
-              .toString()),
-          Text(AppText.txtNoteFromAnotherTeacher.text,
+          NoteWidget(index > cubit.listLessonResult!.length - 1
+              ? ''
+              : cubit.listLessonResult![index].noteForSupport.toString()),
+          Text(AppText.titleNoteFromAnotherTeacher.text,
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 19))),
-          NoteWidget(cubit
-              .listLessonResult![
-                  cubit.listLessonResult!.indexOf(lessonResultModel)]
-              .noteForTeacher
-              .toString()),
+          NoteWidget(index > cubit.listLessonResult!.length - 1
+              ? ''
+              : cubit.listLessonResult![index].noteForTeacher.toString()),
           Container(
             height: Resizable.size(context, 1),
             margin:
@@ -77,7 +74,7 @@ class ExpandLessonItem extends StatelessWidget {
                     fontSize: Resizable.font(context, 17)),
               ),
               note: Text(
-                AppText.txtNoteFromAnotherTeacher.text,
+                AppText.titleNoteFromAnotherTeacher.text,
                 style: TextStyle(
                     color: const Color(0xff757575),
                     fontWeight: FontWeight.w600,
@@ -112,30 +109,28 @@ class ExpandLessonItem extends StatelessWidget {
                                     fontSize: Resizable.font(context, 20),
                                     fontWeight: FontWeight.w500),
                               ),
-                              attendance: TrackingItem(cubit
-                                          .listStudentLessons![cubit
-                                                  .listLessonResult!
-                                                  .indexOf(lessonResultModel)]![
-                                              cubit.listStudent!.indexOf(e)]
-                                          .timekeeping <
-                                      6 &&
-                                  cubit
-                                          .listStudentLessons![cubit
-                                              .listLessonResult!
-                                              .indexOf(lessonResultModel)]![cubit.listStudent!.indexOf(e)]
-                                          .timekeeping >
-                                      0),
-                              submit: TrackingItem(
-                                cubit
-                                        .listStudentLessons![cubit
-                                                .listLessonResult!
-                                                .indexOf(lessonResultModel)]![
-                                            cubit.listStudent!.indexOf(e)]
-                                        .hw >
-                                    -2,
+                              attendance:
+                              TrackingItem((cubit.listStudentLessons![index]![cubit.listStudent!.indexOf(e)] == null)
+                                  ? null
+                                  : (cubit.listStudentLessons![index]![cubit.listStudent!.indexOf(e)]!.timekeeping < 6 &&
+                                      cubit.listStudentLessons![index]![cubit.listStudent!.indexOf(e)]!.timekeeping >
+                                          0)),
+                              submit:
+                              TrackingItem(
+                                (cubit.listStudentLessons![index]![cubit.listStudent!.indexOf(e)] == null)
+                                    ? null
+                                    : (cubit
+                                            .listStudentLessons![index]![
+                                                cubit.listStudent!.indexOf(e)]!
+                                            .hw >
+                                        -2),
                                 isSubmit: true,
                               ),
-                              note: NoteWidget(cubit.listStudentLessons![cubit.listLessonResult!.indexOf(lessonResultModel)]![cubit.listStudent!.indexOf(e)].teacherNote)))
+                          //note: Text('${cubit.listStudent!.indexOf(e)}' + '${cubit.listStudentLessons![index]!.length}')
+                              note: NoteWidget(cubit.listStudentLessons![index]![cubit.listStudent!.indexOf(e)] == null
+                                  ? ''
+                                  : cubit.listStudentLessons![index]![cubit.listStudent!.indexOf(e)]!.teacherNote)
+                      ))
                           .toList(),
                     ],
                   ),

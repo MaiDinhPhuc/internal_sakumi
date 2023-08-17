@@ -4,7 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
+import 'package:internal_sakumi/model/lesson_model.dart';
+import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
+import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/tag_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
@@ -39,6 +42,14 @@ class AdminRepository {
     final listStudent =
         snapshot.docs.map((e) => StudentClassModel.fromSnapshot(e)).toList();
     return listStudent;
+  }
+
+  Future<List<TeacherClassModel>> getAllTeacherInClass() async {
+    final db = FirebaseFirestore.instance;
+    final snapshot = await db.collection("teacher_class").get();
+    final listSensei =
+        snapshot.docs.map((e) => TeacherClassModel.fromSnapshot(e)).toList();
+    return listSensei;
   }
 
   Future<List<TeacherClassModel>> getAllTeacherInClassByClassId(
@@ -158,12 +169,94 @@ class AdminRepository {
           .set({
         'active_status': model.activeStatus,
         'class_id': model.classId,
-        'class_status': "InProgress",
+        'class_status': model.classStatus,
         'date': model.date,
         'id': model.id,
         'learning_status': model.learningStatus,
         'move_to': model.moveTo,
         'user_id': model.userId,
+      });
+      return true;
+    } else{
+      return false;
+    }
+  }
+
+  Future<bool> addTeacherToClass(TeacherClassModel model) async {
+    final db = FirebaseFirestore.instance;
+
+    final temp = await db
+        .collection("teacher_class").doc("teacher_${model.userId}_class_${model.classId}")
+        .get();
+
+    if(!temp.exists){
+      await db
+          .collection("teacher_class")
+          .doc("teacher_${model.userId}_class_${model.classId}")
+          .set({
+        'class_id': model.classId,
+        'class_status': model.classStatus,
+        'date': model.date,
+        'id': model.id,
+        'user_id': model.userId,
+      });
+      return true;
+    } else{
+      return false;
+    }
+  }
+
+  Future<bool> addStudentLesson(StudentLessonModel model) async {
+    final db = FirebaseFirestore.instance;
+
+    final temp = await db
+        .collection("student_lesson").doc("student_${model.studentId}_lesson_${model.lessonId}_class_${model.classId}")
+        .get();
+
+    if(!temp.exists){
+      await db
+          .collection("student_lesson")
+          .doc("student_${model.studentId}_lesson_${model.lessonId}_class_${model.classId}")
+          .set({
+        'class_id': model.classId,
+        'grammar': model.grammar,
+        'hw': model.hw,
+        'id': model.id,
+        'kanji': model.kanji,
+        'lesson_id': model.lessonId,
+        'listening': model.listening,
+        'student_id': model.studentId,
+        'teacher_note': model.teacherNote,
+        'time_keeping': model.timekeeping,
+        'vocabulary': model.vocabulary
+      });
+      return true;
+    } else{
+      return false;
+    }
+  }
+
+  Future<bool> addLessonResult(LessonResultModel model) async {
+    final db = FirebaseFirestore.instance;
+
+    final temp = await db
+        .collection("lesson_result").doc("lesson_${model.lessonId}_class_${model.classId}")
+        .get();
+
+    if(!temp.exists){
+      await db
+          .collection("lesson_result")
+          .doc("lesson_${model.lessonId}_class_${model.classId}")
+          .set({
+        'class_id': model.classId,
+        'date': model.date,
+        'id': model.id,
+        'lesson_id': model.lessonId,
+        'status': model.status,
+        'student_note': model.noteForStudent,
+        'support_note': model.noteForSupport,
+        'teacher_id': model.teacherId,
+        'teacher_note': model.noteForTeacher,
       });
       return true;
     } else{

@@ -7,10 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
-import 'package:internal_sakumi/model/homework_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
+import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
@@ -95,7 +95,7 @@ class TeacherRepository {
         snapshot.docs.map((e) => LessonResultModel.fromSnapshot(e)).single;
     return result;
   }
-  
+
   Future<List<CourseModel>> getAllCourse() async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db.collection("courses").get();
@@ -125,6 +125,18 @@ class TeacherRepository {
         snapshot.docs.map((e) => StudentLessonModel.fromSnapshot(e)).single;
 
     return result;
+  }
+  Future<List<StudentClassModel>> getStudentClassInClass(
+       int classId) async {
+    final db = FirebaseFirestore.instance;
+    final snapshot = await db
+        .collection("student_class")
+        .where('class_id', isEqualTo: classId)
+        .get();
+    final list =
+        snapshot.docs.map((e) => StudentClassModel.fromSnapshot(e)).toList();
+
+    return list;
   }
 
   Future<List<StudentLessonModel>> getAllStudentLessonsInClass(
@@ -162,13 +174,12 @@ class TeacherRepository {
     return list;
   }
 
-  Future<List<AnswerModel>> getAnswerOfQuestion(
-      int questionId, int lessonId, int classId) async {
+  Future<List<AnswerModel>> getAnswersOfQuestion(
+       int lessonId, int classId) async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db
         .collection('answer')
         .where('parent_id', isEqualTo: lessonId)
-        .where('question_id', isEqualTo: questionId)
         .where('class_id', isEqualTo: classId)
         .get();
 

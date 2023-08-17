@@ -16,22 +16,22 @@ class ManageGeneralCubit extends Cubit<int> {
     AdminRepository adminRepository = AdminRepository.fromContext(context);
     listAllClass = await adminRepository.getListClass();
     emit(listAllClass!.first.classId);
-    loadTeacherInClass(context);
+    loadTeacherInClass(context, selector);
     loadStudentInClass(context, selector);
   }
 
   selectedClass(int index, context) {
     selector = index;
     emit(selector);
-    loadTeacherInClass(context);
+    loadTeacherInClass(context, index);
     loadStudentInClass(context, index);
   }
 
-  loadTeacherInClass(BuildContext context)async{
+  loadTeacherInClass(BuildContext context, int selector)async{
     listTeacher = null;
     var adminRepo = AdminRepository.fromContext(context);
     var listAllTeacher = await adminRepo.getAllTeacher();
-    var listAllTeacherInClass = await adminRepo.getAllTeacherInClassByClassId(state);
+    var listAllTeacherInClass = await adminRepo.getAllTeacherInClassByClassId(selector);
 
     listTeacher = [];
     for(var i in listAllTeacher){
@@ -46,6 +46,7 @@ class ManageGeneralCubit extends Cubit<int> {
 
   loadStudentInClass(context, int selector)async{
     listStudent = null;
+
     var adminRepo = AdminRepository.fromContext(context);
     var listAllStudent = await adminRepo.getAllStudent();
     var listAllStudentInClass = await adminRepo.getStudentClassByClassId(selector);

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson_cubit.dart';
+import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
+import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
@@ -86,7 +88,7 @@ class DropDownWidget extends StatelessWidget {
                         boxShadow: [
                           BoxShadow(
                               blurRadius: Resizable.size(context, 2),
-                              color: s > 0 ? greyColor.shade100 : primaryColor)
+                              color: s! > 0 ? greyColor.shade100 : primaryColor)
                         ],
                         border: Border.all(
                             color: s > 0 ? greyColor.shade100 : primaryColor),
@@ -106,11 +108,28 @@ class DropDownWidget extends StatelessWidget {
                                     fontWeight: FontWeight.w500))))
                         .toList(),
                     value: items[s],
-                    onChanged: (v) {
+                    onChanged: (v) async {
+                      await addStudentLesson(
+                          context,
+                          StudentLessonModel(
+                              grammar: -2,
+                              hw: -2,
+                              id: 10000,
+                              classId:
+                                  int.parse(TextUtils.getName(position: 2)),
+                              kanji: -2,
+                              lessonId: int.parse(TextUtils.getName()),
+                              listening: -2,
+                              studentId: userId,
+                              timekeeping: 0,
+                              vocabulary: -2,
+                              teacherNote: 'teacherNote'));
                       s = items.indexOf(v.toString());
-                      BlocProvider.of<DropdownAttendanceCubit>(c)
-                          .update(items.indexOf(v.toString()), userId, c);
-                      if (items.length == 7) {
+                      if (c.mounted) {
+                        BlocProvider.of<DropdownAttendanceCubit>(c)
+                            .update(items.indexOf(v.toString()), userId, c);
+                      }
+                      if (items.length == 7 && c.mounted) {
                         BlocProvider.of<SessionCubit>(c).updateTimekeeping(s);
                       }
                     },
@@ -118,6 +137,13 @@ class DropDownWidget extends StatelessWidget {
                     buttonWidth: double.maxFinite,
                   ),
                 )));
+  }
+
+  addStudentLesson(context, StudentLessonModel model) async {
+    AdminRepository adminRepository = AdminRepository.fromContext(context);
+    var check = await adminRepository.addStudentLesson(model);
+
+    debugPrint('===================> check addStudentLesson $check');
   }
 }
 
