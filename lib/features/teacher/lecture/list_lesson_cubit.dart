@@ -245,9 +245,9 @@ class ListLessonCubit extends Cubit<int> {
     listStudentClass = await adminRepository
         .getStudentClassByClassId(classModel!.classId);
 
-    var listkkkkkk = await adminRepository.getAllStudent();
+    var lstAll = await adminRepository.getAllStudent();
     listStudent = [];
-    for (var i in listkkkkkk) {
+    for (var i in lstAll) {
       for (var j in listStudentClass!) {
         if (i.userId == j.userId) {
           listStudent!.add(i);
