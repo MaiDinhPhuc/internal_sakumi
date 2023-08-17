@@ -177,8 +177,8 @@ enum AppText {
 }
 
 Map<AppText, String> texts = {
-  AppText.textNumberNotGrading: 'Số bài chưa chấm: ',
   AppText.txtGradingDone: 'Chấm điểm xong!',
+  AppText.textNumberNotGrading: 'Số bài chưa chấm: ',
   AppText.textShowName: 'Hiện tên',
   AppText.textGeneralComment: 'Nhận xét chung',
   AppText.textGradingScale: 'Thang điểm',
