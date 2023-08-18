@@ -82,8 +82,29 @@ flutter:
   assets:
     - assets/images/
     - assets/practice/110501/
+    - assets/practice/101401/
     - assets/practice/101402/
     - assets/practice/101403/
+    - assets/practice/101404/
+    - assets/practice/101405/
+    - assets/practice/100501/
+    - assets/practice/100502/
+    - assets/practice/100503/
+    - assets/practice/100504/
+    - assets/practice/100505/
+    - assets/practice/100506/
+    - assets/practice/100507/
+    - assets/practice/100508/
+    - assets/practice/100509/
+    - assets/practice/100510/
+    - assets/practice/100511/
+    - assets/practice/100512/
+    - assets/practice/100513/
+    - assets/practice/100514/
+    - assets/practice/100515/
+    - assets/practice/100516/
+    - assets/practice/100517/
+    - assets/practice/100518/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
