@@ -483,8 +483,9 @@ class LessonTabCubit extends Cubit<int> {
         attends.fold(0, (pre, e) => pre + ((e > 0 && e < 5) ? 1 : 0));
         int tempSbm = submits.fold(0, (pre, e) => pre + (e > -2 ? 1 : 0));
         int tempMark = submits.fold(0, (pre, e) => pre + (e > -1 ? 1 : 0));
+        debugPrint('============> oooooo  $tempSbm == $tempMark');
         listAttendance!.add(attends);
-        listMarked!.add(listStdClass.isEmpty ? null : tempSbm == tempMark ? true : false);
+        listMarked!.add(listStdClass.isEmpty ? null : (tempSbm == tempMark && tempSbm != 0) ? true : false);
         listSubmit!.add(submits);
         listRateAttend!.add((listStdClass.isEmpty) ? 0 : tempAtt / (listStdClass!.length));
         listRateSubmit!.add((listStdClass.isEmpty) ? 0 : tempSbm / (listStdClass!.length));
