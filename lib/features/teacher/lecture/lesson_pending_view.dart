@@ -153,9 +153,9 @@ class LessonPendingView extends StatelessWidget {
                         teacherId: int.parse(localData.getInt(PrefKeyConfigs.userId).toString()),
                         status: 'Teaching',
                         date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
-                        noteForStudent: 'noteForStudent',
-                        noteForSupport: 'noteForSupport',
-                        noteForTeacher: 'noteForTeacher'));
+                        noteForStudent: '',
+                        noteForSupport: '',
+                        noteForTeacher: ''));
                 debugPrint('=====================> 456789');
               }
 
