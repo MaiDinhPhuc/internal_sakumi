@@ -109,32 +109,40 @@ class DetailGradingScreen extends StatelessWidget {
                                         AppText.txtStudent.text,
                                         ...cubit.listStudent!.map((e) => e.name).toList()
                                       ], onChanged: (items) {},value: AppText.txtStudent.text,)),
-                                  PopupMenuButton(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(Resizable.size(context, 10)),
-                                      ),
-                                    ),
-                                    itemBuilder: (context) => [
-                                      PopupMenuItem(
-                                        child: CheckboxListTile(
-                                          controlAffinity: ListTileControlAffinity.leading,
-                                          title: Text(AppText.textShowName.text),
-                                          value: true,
-                                          onChanged: (newValue) {},
+                                  BlocProvider(create: (c)=>PopUpOptionCubit(),child: BlocBuilder<PopUpOptionCubit, List<bool>>(
+                                    builder: (cc,list){
+                                      return PopupMenuButton(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(Resizable.size(context, 10)),
+                                          ),
                                         ),
-                                      ),
-                                      PopupMenuItem(
-                                        child: CheckboxListTile(
-                                          controlAffinity: ListTileControlAffinity.leading,
-                                          title: Text(AppText.textGeneralComment.text),
-                                          value: false,
-                                          onChanged: (newValue) {},
-                                        ),
-                                      ),
-                                    ],
-                                    icon:const Icon(Icons.more_vert),
-                                  )
+                                        itemBuilder: (context) => [
+                                          PopupMenuItem(
+                                            child: CheckboxListTile(
+                                              controlAffinity: ListTileControlAffinity.leading,
+                                              title: Text(AppText.textShowName.text),
+                                              value: list[0],
+                                              onChanged: (newValue) {
+                                                BlocProvider.of<PopUpOptionCubit>(cc).change(!list[0], 0);
+                                              },
+                                            ),
+                                          ),
+                                          PopupMenuItem(
+                                            child: CheckboxListTile(
+                                              controlAffinity: ListTileControlAffinity.leading,
+                                              title: Text(AppText.textGeneralComment.text),
+                                              value: list[1],
+                                              onChanged: (newValue) {
+                                                BlocProvider.of<PopUpOptionCubit>(cc).change(!list[1], 1);
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                        icon:const Icon(Icons.more_vert),
+                                      );
+                                    },
+                                  ),)
                                 ],
                               ),
                               Expanded(child: Container(
@@ -158,5 +166,15 @@ class DetailGradingScreen extends StatelessWidget {
             ],
           ),
         ));
+  }
+}
+
+class PopUpOptionCubit extends Cubit<List<bool>>{
+  PopUpOptionCubit():super([false, false]);
+
+  change(bool value, int index){
+    List<bool> listState = state;
+    listState[index] = value;
+    emit(listState);
   }
 }

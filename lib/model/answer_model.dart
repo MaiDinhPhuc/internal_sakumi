@@ -5,6 +5,7 @@ class AnswerModel {
   final String teacherNote, type;
   final List answer, images, records;
   int? _newScore;
+  String? _newTeacherNote;
 
   AnswerModel({
     required this.studentId,
@@ -24,6 +25,12 @@ class AnswerModel {
 
   set newScore(int values) {
     _newScore = values;
+  }
+
+  String get newTeacherNote => _newTeacherNote ?? teacherNote;
+
+  set newTeacherNote(String value) {
+    _newTeacherNote = value;
   }
 
 
@@ -58,7 +65,7 @@ class AnswerModel {
       answer: data['answer'],
       score: data['score'],
       questionType: data['question_type'],
-      teacherNote: data['teacher_note'],
+      teacherNote: data['teacher_note']??"",
       parentId: data['parent_id'],
       type: data['type'],
       images: data['teacher_images_note'],
