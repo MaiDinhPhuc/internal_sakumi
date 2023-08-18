@@ -441,11 +441,8 @@ class LessonTabCubit extends Cubit<int> {
     listLessonResult = await teacherRepository
         .getLessonResultByClassId(classModel!.classId);
     debugPrint('==============> loadLessonResult 3 ${classModel!.courseId}');
-    lessons =
-    await teacherRepository.getLessonsByCourseId(classModel!.courseId);
-    debugPrint('==============> loadLessonResult 4 ${lessons!.length}');
     emit(state + 1);
-    debugPrint('==============> loadLessonResult 5');
+    debugPrint('==============> loadLessonResult 5 ${listLessonResult!.length}');
   }
 
   loadStatistic(context) async {
@@ -483,11 +480,12 @@ class LessonTabCubit extends Cubit<int> {
         attends.fold(0, (pre, e) => pre + ((e > 0 && e < 5) ? 1 : 0));
         int tempSbm = submits.fold(0, (pre, e) => pre + (e > -2 ? 1 : 0));
         int tempMark = submits.fold(0, (pre, e) => pre + (e > -1 ? 1 : 0));
-        debugPrint('============> oooooo  $tempSbm == $tempMark');
+        debugPrint('============> oooooo  $tempAtt === $tempSbm == $tempMark');
         listAttendance!.add(attends);
         listMarked!.add(listStdClass.isEmpty ? null : (tempSbm == tempMark && tempSbm != 0) ? true : false);
         listSubmit!.add(submits);
         listRateAttend!.add((listStdClass.isEmpty) ? 0 : tempAtt / (listStdClass!.length));
+        debugPrint('============> listRateAttend first ${listRateAttend!.first}');
         listRateSubmit!.add((listStdClass.isEmpty) ? 0 : tempSbm / (listStdClass!.length));
       }
       else{

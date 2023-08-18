@@ -119,6 +119,7 @@ class CollapseLessonItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<LessonTabCubit>(context);
+    debugPrint('==============> CollapseLessonItem ${index} ==== ${cubit.listLessonResult!.length}');
     return LessonItemRowLayout(
       lesson: Text(
           '${AppText.txtLesson.text} ${index + 1 < 10 ? '0${index + 1}' : '${index + 1}'}'
@@ -138,7 +139,7 @@ class CollapseLessonItem extends StatelessWidget {
                 child: CircularProgressIndicator(),
               ),
             )
-          : index > cubit.listStdClass.length - 1? Container(): CircleProgress(
+          : (index > cubit.listLessonResult!.length - 1) ? Container(): CircleProgress(
         title: '${(cubit.listRateAttend![index]*100).toStringAsFixed(0)} %',
         lineWidth: Resizable.size(context, 3),
         percent: cubit.listRateAttend![index],
@@ -152,7 +153,7 @@ class CollapseLessonItem extends StatelessWidget {
                 child: CircularProgressIndicator(),
               ),
             )
-          : index > cubit.listStdClass.length - 1? Container() :CircleProgress(
+          : (index > cubit.listLessonResult!.length - 1) ? Container() :CircleProgress(
         title: '${(cubit.listRateSubmit![index]*100).toStringAsFixed(0)} %',
         lineWidth: Resizable.size(context, 3),
         percent: cubit.listRateSubmit![index],
@@ -166,7 +167,7 @@ class CollapseLessonItem extends StatelessWidget {
                 child: CircularProgressIndicator(),
               ),
             )
-          : cubit.listMarked![index] == null
+          : (index > cubit.listLessonResult!.length - 1)
               ? Container()
               : Container(
                   padding: EdgeInsets.symmetric(
