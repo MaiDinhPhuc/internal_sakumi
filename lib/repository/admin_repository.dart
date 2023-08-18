@@ -31,9 +31,10 @@ class AdminRepository {
         .collection("student_class")
         .where('class_id', isEqualTo: classId)
         .get();
+    debugPrint('===============> getStudentClassByClassId ${snapshot.size}');
     final listStudent =
         snapshot.docs.map((e) => StudentClassModel.fromSnapshot(e)).toList();
-    debugPrint('===============> getStudentClassByClassId ${listStudent.length} == ${listStudent.first.userId}');
+    // debugPrint('===============> getStudentClassByClassId ${listStudent.length} == ${listStudent.first.userId}');
     return listStudent;
   }
 

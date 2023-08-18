@@ -156,11 +156,12 @@ class LessonPendingView extends StatelessWidget {
                         noteForStudent: 'noteForStudent',
                         noteForSupport: 'noteForSupport',
                         noteForTeacher: 'noteForTeacher'));
-                debugPrint('=====================> 4');
+                debugPrint('=====================> 456789');
               }
 
               if (context.mounted) {
-                BlocProvider.of<DetailLessonCubit>(context).load(context);
+                debugPrint('=============> addLessonResult');
+                await BlocProvider.of<DetailLessonCubit>(context).load(context);
               }
             },
             title: AppText.txtStartLesson.text)
