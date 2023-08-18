@@ -54,6 +54,7 @@ dependencies:
   dotted_border: ^2.0.0+3
   assets_audio_player: ^3.0.6
   syncfusion_flutter_datepicker: ^22.2.8
+  just_audio: ^0.9.34
 
 
 dev_dependencies:
@@ -98,13 +99,6 @@ flutter:
     - assets/practice/100509/
     - assets/practice/100510/
     - assets/practice/100511/
-    - assets/practice/100512/
-    - assets/practice/100513/
-    - assets/practice/100514/
-    - assets/practice/100515/
-    - assets/practice/100516/
-    - assets/practice/100517/
-    - assets/practice/100518/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

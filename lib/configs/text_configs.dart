@@ -177,9 +177,11 @@ enum AppText {
   textNumberNotGrading,
   titleSubject,
   titleStatus,
+  textSSNote
 }
 
 Map<AppText, String> texts = {
+  AppText.textSSNote: 'Sensei hãy nhận xét về bài làm của Học viên nhé...',
   AppText.txtGradingDone: 'Chấm điểm xong!',
   AppText.textNumberNotGrading: 'Số bài chưa chấm: ',
   AppText.textShowName: 'Hiện tên',
@@ -293,9 +295,12 @@ Map<AppText, String> texts = {
   AppText.titleNoteBeforeTeaching: 'Dặn dò trước buổi học',
   AppText.titleNoteFromSupport: 'Ghi chú từ Team Support',
   AppText.titleNoteFromAnotherTeacher: 'Ghi chú từ Sensei',
-  AppText.txtNoteBeforeTeaching: 'Sensei vui lòng bật record Google Meet trước khi bắt đầu buổi học',
-  AppText.txtNoteFromSupport: 'Sensei vui lòng liên hệ số điện thoại 0xxxxxxxxx khi cần hỗ trợ về trang thiết bị',
-  AppText.txtNoteFromAnotherTeacher: 'Sensei vui lòng liên hệ số điện thoại 0xxxxxxxxx khi cần hỗ trợ về giảng dạy',
+  AppText.txtNoteBeforeTeaching:
+      'Sensei vui lòng bật record Google Meet trước khi bắt đầu buổi học',
+  AppText.txtNoteFromSupport:
+      'Sensei vui lòng liên hệ số điện thoại 0xxxxxxxxx khi cần hỗ trợ về trang thiết bị',
+  AppText.txtNoteFromAnotherTeacher:
+      'Sensei vui lòng liên hệ số điện thoại 0xxxxxxxxx khi cần hỗ trợ về giảng dạy',
   AppText.txtStartLesson: 'Bắt đầu buổi học',
   AppText.txtCompleteLesson: 'Hoàn thành buổi học',
   AppText.txtFinishLesson: 'Kết thúc buổi học',
@@ -324,9 +329,9 @@ Map<AppText, String> texts = {
   AppText.txtHintNoteForTeacher: 'Điền ghi chú dành cho Sensei tiếp theo...',
   AppText.titleNoteForSenseiAfterTeach: 'Dặn dò dành cho Sensei cuối buổi học',
   AppText.txtNoteForSenseiAfterTeach:
-  'Sensei vui lòng tắt record Google Meet trước khi bấm đồng ý kết thúc buổi học',
+      'Sensei vui lòng tắt record Google Meet trước khi bấm đồng ý kết thúc buổi học',
   AppText.txtQuestionForSenseiAfterTeach:
-  'Sensei có muốn kết thúc buổi học không?',
+      'Sensei có muốn kết thúc buổi học không?',
   AppText.txtAgree: 'Đồng ý',
   AppText.txtOK: 'OK',
   AppText.txtBack: 'Quay lại',
@@ -334,7 +339,8 @@ Map<AppText, String> texts = {
   AppText.txtLearningStatus: 'Học lực',
   AppText.titleSakumiCenter: 'Trung tâm Nhật ngữ Sakumi',
   AppText.titleSlogan: 'Tri thức truyền từ tâm',
-  AppText.txtMessageLogin: 'Các sensei hãy đăng nhập để có thể sử dụng đầy đủ các chức năng hỗ trợ trong việc đứng lớp nhé!',
+  AppText.txtMessageLogin:
+      'Các sensei hãy đăng nhập để có thể sử dụng đầy đủ các chức năng hỗ trợ trong việc đứng lớp nhé!',
   AppText.txtHintAccount: 'abc123@gmail.com',
   AppText.txtHintPassword: 'abc123',
   AppText.txtForgetPassword: 'Quên mật khẩu',
@@ -343,9 +349,12 @@ Map<AppText, String> texts = {
   AppText.txtErrorStartDate: 'Vui lòng chọn ngày bắt đầu trước ngày kết thúc',
   AppText.txtPleaseChooseCourse: 'Vui lòng chọn khoá học',
   AppText.txtPleaseInputClassCode: 'Vui lòng nhập mã lớp học',
-  AppText.txtPleaseCheckListClass: 'Mã lớp đã tồn tại. Vui lòng kiểm tra lại danh sách lớp',
-  AppText.txtPleaseCheckListUser: 'Tài khoản này đã tồn tại. Vui lòng kiểm tra lại danh sách người dùng',
-  AppText.txtPleaseCheckListStudentInClass: 'Học viên này đã được thêm vào lớp. Vui lòng kiểm tra lại danh sách học viên trong lớp',
+  AppText.txtPleaseCheckListClass:
+      'Mã lớp đã tồn tại. Vui lòng kiểm tra lại danh sách lớp',
+  AppText.txtPleaseCheckListUser:
+      'Tài khoản này đã tồn tại. Vui lòng kiểm tra lại danh sách người dùng',
+  AppText.txtPleaseCheckListStudentInClass:
+      'Học viên này đã được thêm vào lớp. Vui lòng kiểm tra lại danh sách học viên trong lớp',
   AppText.txtPleaseSelect: 'Vui lòng lựa chọn',
   AppText.txtPleaseInputName: 'Vui lòng nhập tên',
   AppText.txtPleaseInputStudentCode: 'Vui lòng nhập mã học viên',

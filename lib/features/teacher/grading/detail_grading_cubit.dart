@@ -16,8 +16,18 @@ class DetailGradingCubit extends Cubit<int> {
   List<AnswerModel>? listAnswer;
   List<StudentModel>? listStudent;
   int count = 0;
+  List<int> listChecked = [];
   init(context) async {
     await loadFirst(context);
+  }
+
+  String getStudentNam(AnswerModel answerModel){
+    for(var i in listStudent!){
+      if(i.userId == answerModel.studentId){
+        return i.name;
+      }
+    }
+    return "";
   }
 
   List<AnswerModel> get answers => listAnswer!.where((answer) => answer.questionId == state).toList();
@@ -33,11 +43,6 @@ class DetailGradingCubit extends Cubit<int> {
     listStudent = [];
     for(var i in listStudentClass){
       listStudent!.add(await userRepository.getStudentInfo(i.userId));
-    }
-    for(var i in listAnswer!){
-      if(i.score != -1 || i.answer.isEmpty){
-        count++;
-      }
     }
     emit(listQuestions!.first.id);
   }
