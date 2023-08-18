@@ -59,12 +59,17 @@ class DetailLessonScreen extends StatelessWidget {
               BlocBuilder<DetailLessonCubit, LessonResultModel?>(
                   builder: (c, s){
                     var cubit = BlocProvider.of<DetailLessonCubit>(c);
+                    debugPrint('==============> DetailLessonCubit ${cubit.state?.status}');
+
                     return Expanded(
+                      key: Key('${cubit.state?.status}'),
                         child: SingleChildScrollView(
                             child: BlocProvider(
                                 create: (c) => SessionCubit()..init(c),
                                 child: BlocBuilder<SessionCubit, int>(
                                   builder: (_, state) {
+
+                                    debugPrint('==============> SessionCubit $state === $s');
                                     return Column(
                                       children: [
                                         s == null? LessonPendingView() : (s.status == 'Teaching')
