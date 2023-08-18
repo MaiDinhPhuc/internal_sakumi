@@ -347,7 +347,8 @@ class ListLessonTab extends StatelessWidget {
                                         fontWeight: FontWeight.w800,
                                         fontSize: Resizable.font(context, 30))),
                               ),
-                              cubit.lessons == null
+                              cubit.lessons == null ||
+                                      cubit.listLessonResult == null
                                   ? Transform.scale(
                                       scale: 0.75,
                                       child: const CircularProgressIndicator(),
@@ -434,18 +435,35 @@ class ListLessonTab extends StatelessWidget {
                                                           color: Colors
                                                               .transparent,
                                                           child: InkWell(
-                                                              onTap:
-                                                              // (cubit.listLessonResult![cubit.lessons!.indexOf(e)]!.status !=
-                                                              //     'Complete')
-                                                                  () async {
-                                                                debugPrint(
-                                                                    '================> ooooooo ${cubit.classModel!.classId} == ${e.lessonId}');
-                                                                await Navigator.pushNamed(
-                                                                    c,
-                                                                    "/teacher?name=$name/lesson/class?id=${cubit.classModel!.classId}/lesson?id=${e.lessonId}");
+                                                              onTap: () async {
+                                                                debugPrint('===========> 000000 ${cubit.lessons!.indexOf(
+                                                                    e)} == ${cubit.listLessonResult!.length -
+                                                                    1}');
+                                                                if(cubit.lessons!.indexOf(
+                                                                    e) >
+                                                                    cubit.listLessonResult!.length -
+                                                                        1){
+                                                                  await Navigator
+                                                                      .pushNamed(
+                                                                      c,
+                                                                      "/teacher?name=$name/lesson/class?id=${cubit.classModel!.classId}/lesson?id=${e.lessonId}");
+                                                                }
+                                                                else if(cubit.listLessonResult![cubit.lessons!.indexOf(e)]!
+                                                                    .status !=
+                                                                    'Complete'){
+                                                                  await Navigator
+                                                                      .pushNamed(
+                                                                      c,
+                                                                      "/teacher?name=$name/lesson/class?id=${cubit.classModel!.classId}/lesson?id=${e.lessonId}");
+                                                                } else{}
                                                                 if (c
                                                                     .mounted) {
-                                                                  await cubit.init(c);
+                                                                  await cubit.loadLessonResult(context);
+                                                                  if(c.mounted) {
+                                                                    await cubit
+                                                                      .loadStatistic(
+                                                                      c);
+                                                                  }
                                                                 }
                                                               },
                                                               borderRadius:

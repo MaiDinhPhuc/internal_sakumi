@@ -16,30 +16,30 @@ import 'package:shared_preferences/shared_preferences.dart';
 class DetailLessonScreen extends StatelessWidget {
   final String name, classId, lessonId;
   final DetailLessonCubit cubit;
-  late SharedPreferences localData;
+  int userId = -1;
   DetailLessonScreen(this.name, this.classId, this.lessonId, {Key? key})
       : cubit = DetailLessonCubit(),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // WidgetsBinding.instance.addPostFrameCallback((_) async{
-    //  localData = await SharedPreferences.getInstance();
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
+      userId = await localUserId();
+    });
     return BlocProvider(
-        create: (context) => DetailLessonCubit(),
-        //   ..addLessonResult(
-        // context,
-        // LessonResultModel(
-        //     id: 1000,
-        //     classId: int.parse(TextUtils.getName(position: 2)),
-        //     lessonId: int.parse(TextUtils.getName()),
-        //     teacherId: int.parse(localData.getInt(PrefKeyConfigs.userId).toString()),
-        //     status: 'Teaching',
-        //     date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
-        //     noteForStudent: 'noteForStudent',
-        //     noteForSupport: 'noteForSupport',
-        //     noteForTeacher: 'noteForTeacher')),
+        create: (context) => DetailLessonCubit()
+          ..addLessonResult(
+        context,
+        LessonResultModel(
+            id: 1000,
+            classId: int.parse(TextUtils.getName(position: 2)),
+            lessonId: int.parse(TextUtils.getName()),
+            teacherId: userId,
+            status: 'Pending',
+            date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+            noteForStudent: '',
+            noteForSupport: '',
+            noteForTeacher: '')),
         child: Scaffold(
           body: Column(
             children: [
@@ -60,8 +60,12 @@ class DetailLessonScreen extends StatelessWidget {
                   builder: (c, s){
                     var cubit = BlocProvider.of<DetailLessonCubit>(c);
                     debugPrint('==============> DetailLessonCubit ${cubit.state?.status}');
-
-                    return Expanded(
+                    return s == null ? Transform.scale(
+                      scale: 0.75,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ): Expanded(
                       key: Key('${cubit.state?.status}'),
                         child: SingleChildScrollView(
                             child: BlocProvider(
@@ -72,9 +76,9 @@ class DetailLessonScreen extends StatelessWidget {
                                     debugPrint('==============> SessionCubit $state === $s');
                                     return Column(
                                       children: [
-                                        s == null? LessonPendingView() : (s.status == 'Teaching')
-                                            ? LessonTeachingView() :
-                                        LessonCompleteView(),
+                                        if(s.status == 'Pending') LessonPendingView(),
+                                        if(s.status == 'Teaching') LessonTeachingView(),
+                                        if(s.status == 'Complete') LessonCompleteView(),
                                       ],
                                     );
                                   },
@@ -83,5 +87,10 @@ class DetailLessonScreen extends StatelessWidget {
             ],
           ),
         ));
+  }
+  localUserId()async{
+    SharedPreferences localData = await SharedPreferences.getInstance();
+    int userId = localData.getInt(PrefKeyConfigs.userId)!.toInt();
+    return userId;
   }
 }

@@ -393,8 +393,10 @@ class LessonTabCubit extends Cubit<int> {
     debugPrint('==============> init 3');
     await loadStudentInClass(context);
     debugPrint('==============> init 4');
+    await loadLessonResult(context);
+    debugPrint('==============> init 5');
     await loadStatistic(context);
-    debugPrint('==============> init 5 ${listRateAttend}');
+    debugPrint('==============> init 6 ${listRateAttend}');
   }
 
   loadLesson(context) async {
@@ -497,6 +499,7 @@ class LessonTabCubit extends Cubit<int> {
         listSubmit!.add(submits);
         listRateAttend!.add(0);
         listRateSubmit!.add(0);
+        //listLessonResult!.add(null);
       }
     }
     emit(state + 1);
