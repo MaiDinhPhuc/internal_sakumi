@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/features/teacher/lecture/chart_view.dart';
 import 'package:internal_sakumi/features/teacher/lecture/class_overview.dart';
-import 'package:internal_sakumi/features/teacher/lecture/detail_lesson_cubit.dart';
+import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/teacher_cubit.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';

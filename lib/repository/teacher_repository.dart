@@ -91,8 +91,10 @@ class TeacherRepository {
         .where('class_id', isEqualTo: classId)
         .where('lesson_id', isEqualTo: id)
         .get();
+    debugPrint('===============> getLessonResultByLessonId ${snapshot.size}');
     final result =
         snapshot.docs.map((e) => LessonResultModel.fromSnapshot(e)).single;
+    // debugPrint('===============> getLessonResultByLessonId ${result.lessonId}');
     return result;
   }
 
@@ -105,7 +107,8 @@ class TeacherRepository {
   }
 
   Future<List<QuestionModel>> getQuestionByLessonId(String lessonId) async {
-    final jsonData = await rootBundle.loadString("assets/practice/$lessonId/btvn.json");
+    final jsonData =
+        await rootBundle.loadString("assets/practice/$lessonId/btvn.json");
     final response = jsonDecode(jsonData) as List<dynamic>;
     List<QuestionModel> list = response.isNotEmpty
         ? response.map((e) => QuestionModel.fromMap(e)).toList()
@@ -126,8 +129,8 @@ class TeacherRepository {
 
     return result;
   }
-  Future<List<StudentClassModel>> getStudentClassInClass(
-       int classId) async {
+
+  Future<List<StudentClassModel>> getStudentClassInClass(int classId) async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db
         .collection("student_class")
@@ -150,7 +153,7 @@ class TeacherRepository {
 
     final list =
         snapshot.docs.map((e) => StudentLessonModel.fromSnapshot(e)).toList();
-debugPrint('==============> getAllStudentLessonsInClass ${list.length}');
+    debugPrint('==============> getAllStudentLessonsInClass ${list.length}');
     //list.sort((a, b) => a.studentId.compareTo(b.studentId));
 
     return list;
@@ -175,7 +178,7 @@ debugPrint('==============> getAllStudentLessonsInClass ${list.length}');
   }
 
   Future<List<AnswerModel>> getAnswersOfQuestion(
-       int lessonId, int classId) async {
+      int lessonId, int classId) async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db
         .collection('answer')
@@ -198,6 +201,37 @@ debugPrint('==============> getAllStudentLessonsInClass ${list.length}');
     //list.sort((a, b) => a.studentId.compareTo(b.studentId));
 
     return list;
+  }
+
+  Future<ClassModel> getClass(int classId) async {
+    final db = FirebaseFirestore.instance;
+
+    final snapshot = await db
+        .collection('class')
+        .where('class_id', isEqualTo: classId)
+        .get();
+
+    final result = snapshot.docs.map((e) => ClassModel.fromSnapshot(e)).single;
+
+    //list.sort((a, b) => a.studentId.compareTo(b.studentId));
+
+    return result;
+  }
+
+  Future<LessonModel> getLesson(int courseId, int lessonId) async {
+    final db = FirebaseFirestore.instance;
+
+    final snapshot = await db
+        .collection('lessons')
+        .where('course_id', isEqualTo: courseId)
+        .where('lesson_id', isEqualTo: lessonId)
+        .get();
+
+    final lesson = snapshot.docs.map((e) => LessonModel.fromSnapshot(e)).single;
+
+    //list.sort((a, b) => a.studentId.compareTo(b.studentId));
+
+    return lesson;
   }
 
   Future<void> updateTimekeeping(
@@ -240,13 +274,16 @@ debugPrint('==============> getAllStudentLessonsInClass ${list.length}');
     final db = FirebaseFirestore.instance;
 
     final temp = await db
-        .collection("student_lesson").doc("student_${model.studentId}_lesson_${model.lessonId}_class_${model.classId}")
+        .collection("student_lesson")
+        .doc(
+            "student_${model.studentId}_lesson_${model.lessonId}_class_${model.classId}")
         .get();
 
-    if(!temp.exists){
+    if (!temp.exists) {
       await db
           .collection("student_lesson")
-          .doc("student_${model.studentId}_lesson_${model.lessonId}_class_${model.classId}")
+          .doc(
+              "student_${model.studentId}_lesson_${model.lessonId}_class_${model.classId}")
           .set({
         'class_id': model.classId,
         'grammar': model.grammar,
@@ -261,7 +298,7 @@ debugPrint('==============> getAllStudentLessonsInClass ${list.length}');
         'vocabulary': model.vocabulary
       });
       return true;
-    } else{
+    } else {
       return false;
     }
   }
@@ -270,10 +307,11 @@ debugPrint('==============> getAllStudentLessonsInClass ${list.length}');
     final db = FirebaseFirestore.instance;
 
     final temp = await db
-        .collection("lesson_result").doc("lesson_${model.lessonId}_class_${model.classId}")
+        .collection("lesson_result")
+        .doc("lesson_${model.lessonId}_class_${model.classId}")
         .get();
 
-    if(!temp.exists){
+    if (!temp.exists) {
       await db
           .collection("lesson_result")
           .doc("lesson_${model.lessonId}_class_${model.classId}")
@@ -289,7 +327,7 @@ debugPrint('==============> getAllStudentLessonsInClass ${list.length}');
         'teacher_note': model.noteForTeacher,
       });
       return true;
-    } else{
+    } else {
       return false;
     }
   }
