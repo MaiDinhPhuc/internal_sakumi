@@ -105,36 +105,67 @@ class DetailGradingScreen extends StatelessWidget {
                                               color: greyColor.shade500)))),
                                   Expanded(
                                       flex: 1,
-                                      child: DropDownGrading(items: [
-                                        AppText.txtStudent.text,
-                                        ...cubit.listStudent!.map((e) => e.name).toList()
-                                      ], onChanged: (items) {},value: AppText.txtStudent.text,)),
-                                  PopupMenuButton(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(Resizable.size(context, 10)),
-                                      ),
-                                    ),
-                                    itemBuilder: (context) => [
-                                      PopupMenuItem(
-                                        child: CheckboxListTile(
-                                          controlAffinity: ListTileControlAffinity.leading,
-                                          title: Text(AppText.textShowName.text),
-                                          value: true,
-                                          onChanged: (newValue) {},
+                                      child: BlocProvider(create: (context)=>DropdownGradingCubit(AppText.txtStudent.text),
+                                      child: BlocBuilder<DropdownGradingCubit, String>(
+                                        builder: (ccc, state){
+                                          return DropDownGrading(items: [
+                                            AppText.txtStudent.text,
+                                            ...cubit.listStudent!.map((e) => e.name).toList()
+                                          ], onChanged: (item) {
+                                            if(item !=  AppText.txtStudent.text){
+                                              BlocProvider.of<DropdownGradingCubit>(ccc).change(item!);
+                                              cubit.studentId = cubit.listStudent![cubit.listStudent!.indexOf(cubit.listStudent!.where((element) => element.name == item).single)].userId;
+                                              cubit.updateAnswerView(cubit.state);
+                                            }else{
+                                              BlocProvider.of<DropdownGradingCubit>(ccc).change(item!);
+                                              cubit.studentId = null;
+                                              cubit.updateAnswerView(cubit.state);
+                                            }
+                                          },value: state);
+                                        },
+                                      ))),
+                                  BlocProvider(create: (c)=>PopUpOptionCubit(),child: BlocBuilder<PopUpOptionCubit, List<bool>>(
+                                    builder: (cc,list){
+                                      return PopupMenuButton(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(Resizable.size(context, 10)),
+                                          ),
                                         ),
-                                      ),
-                                      PopupMenuItem(
-                                        child: CheckboxListTile(
-                                          controlAffinity: ListTileControlAffinity.leading,
-                                          title: Text(AppText.textGeneralComment.text),
-                                          value: false,
-                                          onChanged: (newValue) {},
-                                        ),
-                                      ),
-                                    ],
-                                    icon:const Icon(Icons.more_vert),
-                                  )
+                                        itemBuilder: (context) => [
+                                          PopupMenuItem(
+                                            padding: EdgeInsets.zero,
+                                            child: CheckboxListTile(
+                                              controlAffinity: ListTileControlAffinity.leading,
+                                              title: Text(AppText.textShowName.text),
+                                              value: list[0],
+                                              onChanged: (newValue) {
+                                                BlocProvider.of<PopUpOptionCubit>(cc).change(newValue!, 0);
+                                                cubit.isShowName = !cubit.isShowName;
+                                                cubit.updateAnswerView(cubit.state);
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ),
+                                          PopupMenuItem(
+                                            padding: EdgeInsets.zero,
+                                            child: CheckboxListTile(
+                                              controlAffinity: ListTileControlAffinity.leading,
+                                              title: Text(AppText.textGeneralComment.text),
+                                              value: list[1],
+                                              onChanged: (newValue) {
+                                                BlocProvider.of<PopUpOptionCubit>(cc).change(newValue!, 1);
+                                                cubit.isGeneralComment = !cubit.isGeneralComment;
+                                                cubit.updateAnswerView(cubit.state);
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                        icon:const Icon(Icons.more_vert),
+                                      );
+                                    },
+                                  ),)
                                 ],
                               ),
                               Expanded(child: Container(
@@ -158,5 +189,15 @@ class DetailGradingScreen extends StatelessWidget {
             ],
           ),
         ));
+  }
+}
+
+class PopUpOptionCubit extends Cubit<List<bool>>{
+  PopUpOptionCubit():super([true , false]);
+
+  change(bool value, int index){
+    List<bool> listState = state;
+    listState[index] = value;
+    emit(listState);
   }
 }

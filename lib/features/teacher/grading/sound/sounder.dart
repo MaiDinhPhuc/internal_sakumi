@@ -1,10 +1,11 @@
-
+import 'dart:js' as js;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/features/teacher/grading/sound/sound_cubit.dart';
 import 'package:internal_sakumi/features/teacher/grading/sound/sound_services.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Sounder extends StatelessWidget {
   final String sound;
@@ -77,42 +78,50 @@ class Sounder extends StatelessWidget {
                                             size:
                                                 Resizable.size(context, size))),
                     onTap: () async {
-                      if (soundCubit.activeFilePath != sound) {
-                        SoundService.instance
-                            .playSound(sound, soundCubit, soundType);
+                      if(soundType == "network"){
+                         js.context.callMethod('open', [sound]);
                       }
-                      if (p == -1 && soundCubit.activeFilePath == sound) {
-                        SoundService.instance.resume(soundCubit);
-                      }
-                      if (p > 0 && soundCubit.activeFilePath == sound) {
-                        SoundService.instance.pause(soundCubit);
-                      }
+                      // if (soundCubit.activeFilePath != sound) {
+                      //   SoundService.instance
+                      //       .playSound(sound, soundCubit, soundType);
+                      // }
+                      // if (p == -1 && soundCubit.activeFilePath == sound) {
+                      //   SoundService.instance.resume(soundCubit);
+                      // }
+                      // if (p > 0 && soundCubit.activeFilePath == sound) {
+                      //   SoundService.instance.pause(soundCubit);
+                      // }
                     }),
-                (soundCubit.activeFilePath != sound )
-                    ? Text(soundType == "network"?' File thu âm ${index + 1}':' File âm thanh ${index + 1}',
+                Text(soundType == "network"?' File thu âm ${index + 1}':' File âm thanh ${index + 1}',
                     style: TextStyle(
                         fontSize: Resizable.font(context, 16),
                         fontWeight: FontWeight.w800,
                         color: Colors.white))
-                    : SizedBox(
-                  width: MediaQuery.of(context).size.width*0.205,
-                  child: Slider(
-                      key: Key("${soundCubit.duration}"),
-                      activeColor: Colors.white,
-                      inactiveColor: Colors.grey.shade100,
-                      thumbColor: Colors.white,
-                      min: -2,
-                      max: soundCubit.duration,
-                      value: p == 0
-                          ? -2
-                          : p == -1
-                          ? soundCubit.currentPosition
-                          : p,
-                      onChanged: (value) async {
-                        final position = Duration(milliseconds: value.toInt());
-                        await SoundService.instance.seek(position, sound);
-                      }),
-                ),
+                // (soundCubit.activeFilePath != sound )
+                //     ? Text(soundType == "network"?' File thu âm ${index + 1}':' File âm thanh ${index + 1}',
+                //     style: TextStyle(
+                //         fontSize: Resizable.font(context, 16),
+                //         fontWeight: FontWeight.w800,
+                //         color: Colors.white))
+                //     : SizedBox(
+                //   width: MediaQuery.of(context).size.width*0.205,
+                //   child: Slider(
+                //       key: Key("${soundCubit.duration}"),
+                //       activeColor: Colors.white,
+                //       inactiveColor: Colors.grey.shade100,
+                //       thumbColor: Colors.white,
+                //       min: -2,
+                //       max: soundCubit.duration,
+                //       value: p == 0
+                //           ? -2
+                //           : p == -1
+                //           ? soundCubit.currentPosition
+                //           : p,
+                //       onChanged: (value) async {
+                //         final position = Duration(milliseconds: value.toInt());
+                //         await SoundService.instance.seek(position, sound);
+                //       }),
+                // ),
               ],
             );
           }),
