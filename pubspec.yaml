@@ -55,6 +55,7 @@ dependencies:
   assets_audio_player: ^3.0.6
   syncfusion_flutter_datepicker: ^22.2.8
   just_audio: ^0.9.34
+  url_launcher: ^6.1.12
 
 
 dev_dependencies:

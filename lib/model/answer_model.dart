@@ -27,7 +27,7 @@ class AnswerModel {
     _newScore = values;
   }
 
-  String get newTeacherNote => _newTeacherNote ?? teacherNote;
+  String get newTeacherNote =>  _newTeacherNote ?? teacherNote;
 
   set newTeacherNote(String value) {
     _newTeacherNote = value;
