@@ -63,12 +63,7 @@ class LessonCompleteView extends StatelessWidget {
               }),
               SizedBox(height: Resizable.size(context, 40)),
               SubmitButton(
-                onPressed: () async{
-                  //await detailCubit.updateStatus(context, 'Finished');
-                  if(context.mounted) {
-                    Navigator.pop(context, true);
-                  }
-                },
+                onPressed: () => Navigator.pop(context),
                 isActive:
                     cubit.isNoteSensei != false && cubit.isNoteSupport != false,
                 title: AppText.txtCompleteLesson.text,

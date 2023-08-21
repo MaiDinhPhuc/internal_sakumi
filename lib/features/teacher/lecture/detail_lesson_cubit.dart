@@ -21,11 +21,27 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
     //load();
   }
 
+  addLessonResult(context, LessonResultModel model) async {
+    TeacherRepository teacherRepository =
+        TeacherRepository.fromContext(context);
+    debugPrint('=====================>');
+    var check = await teacherRepository.addLessonResult(model);
+    debugPrint('=====================> $check');
+
+    if (!check) {
+      emit(await teacherRepository.getLessonResultByLessonId(
+          int.parse(TextUtils.getName()),
+          int.parse(TextUtils.getName(position: 2))));
+    } else {
+      (emit(model));
+    }
+  }
+
   load(context) async {
     debugPrint('============> DetailLessonCubit 1');
     TeacherRepository teacherRepository =
         TeacherRepository.fromContext(context);
-debugPrint('============> DetailLessonCubit 2');
+    debugPrint('============> DetailLessonCubit 2');
     emit(await teacherRepository.getLessonResultByLessonId(
         int.parse(TextUtils.getName()),
         int.parse(TextUtils.getName(position: 2))));
@@ -149,10 +165,10 @@ class SessionCubit extends Cubit<int> {
     listStudentClass!.addAll(list);
 
     listStudent = [];
-    for (var i in listStudentClass!) {
-      for (var j in listAllStudent) {
+    for (var i in listAllStudent) {
+      for (var j in listStudentClass!) {
         if (i.userId == j.userId) {
-          listStudent!.add(j);
+          listStudent!.add(i);
           break;
         }
       }
@@ -168,11 +184,13 @@ class SessionCubit extends Cubit<int> {
         int.parse(TextUtils.getName(position: 2)),
         int.parse(TextUtils.getName()));
 
+    debugPrint(
+        '=============> loadStudentLesson loadStudentLesson ${list.length}');
     listStudentLesson = [];
     listStudentLesson!.addAll(list);
 
-
-
+    debugPrint(
+        '=============> loadStudentLesson loadStudentLesson loadStudentLesson');
     emit(state + 1);
   }
 }

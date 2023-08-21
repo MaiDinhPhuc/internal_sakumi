@@ -1,37 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:internal_sakumi/widget/circle_progress.dart';
 
 class LessonItemRowLayout extends StatelessWidget {
-  final Widget name, submit, attend, mark;
-  const LessonItemRowLayout({required this.name, required this.attend, required this.submit, required this.mark, Key? key}) : super(key: key);
+  final Widget lesson, name, submit, attend, mark;
+  const LessonItemRowLayout({required this.lesson, required this.name, required this.attend, required this.submit, required this.mark, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        Expanded(flex: 3, child: Align(alignment: Alignment.centerLeft,
+          child: lesson,
+        )),
         Expanded(
-            flex: 8,
+            flex: 16,
             child: Align(alignment: Alignment.centerLeft,
               child: name,
             )),
         Expanded(
-            flex: 2,
+            flex: 4,
             child: Align(alignment: Alignment.center,
               child: attend,
             )),
         Expanded(
-            flex: 2,
+            flex: 4,
             child: Align(alignment: Alignment.center,
               child: submit,
             )),
         Expanded(
-            flex: 4,
+            flex: 8,
             child: Align(alignment: Alignment.center,
               child: mark,
             )),
         Expanded(
-            flex: 1,
-            child: Container()),
+            flex: 2,
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Opacity(opacity: 0,
+                child: CircleProgress(
+                  title:
+                  '0 %',
+                  lineWidth: Resizable.size(context, 3),
+                  percent: 0,
+                  radius: Resizable.size(context, 16),
+                  fontSize: Resizable.font(context, 14),
+                ),
+              ),
+            )),
       ],
     );
   }
