@@ -7,7 +7,6 @@ import 'package:internal_sakumi/model/navigation/navigation.dart';
 import 'package:internal_sakumi/repository/user_repository.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HeaderTeacher extends StatelessWidget {
@@ -39,61 +38,61 @@ class HeaderTeacher extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  // Card(
-                  //   shape: const CircleBorder(),
-                  //   elevation: Resizable.size(context, 2),
-                  //   child: InkWell(
-                  //     borderRadius: BorderRadius.circular(10000),
-                  //     //child: Image.asset('assets/images/img_sakumi.png', scale: 5),
-                  //     //   child: Padding(
-                  //     //     padding: EdgeInsets.all(Resizable.padding(context, 7)),
-                  //     //     child: Image.asset('assets/images/img_logo.png', scale: 40)
-                  //     //   ),
-                  //     child: Padding(
-                  //       padding: EdgeInsets.all(Resizable.padding(context, 7)),
-                  //       child: const Icon(Icons.home),
-                  //     ),
-                  //     onTap: ()async{
-                  //       SharedPreferences localData = await SharedPreferences.getInstance();
-                  //       String name = localData.getString(PrefKeyConfigs.code).toString();
-                  //       debugPrint('================> test $name');
-                  //       if(context.mounted) {
-                  //         Navigator.pushReplacementNamed(
-                  //           context, "teacher?name=${name.trim()}");
-                  //       }
-                  //     },
-                  //   ),
-                  // ),
                   Expanded(
                       child: Align(
                     alignment: Alignment.center,
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Card(
-                            shape: const CircleBorder(),
-                            elevation: Resizable.size(context, 2),
-                            margin: EdgeInsets.only(right: Resizable.padding(context, 30)),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(10000),
-                              //child: Image.asset('assets/images/img_sakumi.png', scale: 5),
-                              //   child: Padding(
-                              //     padding: EdgeInsets.all(Resizable.padding(context, 7)),
-                              //     child: Image.asset('assets/images/img_logo.png', scale: 40)
-                              //   ),
-                              child: Padding(
-                                padding: EdgeInsets.all(Resizable.padding(context, 7)),
-                                child: const Icon(Icons.home),
-                              ),
-                              onTap: ()async{
-                                SharedPreferences localData = await SharedPreferences.getInstance();
-                                String name = localData.getString(PrefKeyConfigs.code).toString();
-                                debugPrint('================> test $name');
-                                if(context.mounted) {
-                                  Navigator.pushReplacementNamed(
-                                      context, "teacher?name=${name.trim()}");
-                                }
-                              },
+                          Container(
+                            height: 30,
+                            margin:
+                            const EdgeInsets.symmetric(horizontal: 3),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: Row(
+                                    children: [
+                                      Image.asset('assets/images/ic_home.png', scale: 60),
+                                      SizedBox(width: Resizable.padding(context, 5)),
+                                      Text(AppText.titleHome.text,
+                                          style: TextStyle(
+                                              color: greyColor.shade600,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 16)),
+                                    ],
+                                  ),
+                                ),
+                                Positioned.fill(
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                      borderRadius:
+                                      BorderRadius.circular(100),
+                                      overlayColor:
+                                      MaterialStateProperty.all(
+                                          primaryColor.withAlpha(30)),
+                                        onTap: ()async{
+                                          SharedPreferences localData = await SharedPreferences.getInstance();
+                                          String name = localData.getString(PrefKeyConfigs.code).toString();
+                                          debugPrint('================> test $name');
+                                          if(context.mounted) {
+                                            Navigator.pushReplacementNamed(
+                                                context, "teacher?name=${name.trim()}");
+                                          }
+                                        },
+                                      child: Container(
+                                        margin:
+                                        const EdgeInsets.symmetric(
+                                            horizontal: 2),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
                           ),
                           ...buttonList
@@ -111,11 +110,11 @@ class HeaderTeacher extends StatelessWidget {
                                     mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(e.button.toUpperCase(),
-                                          style: const TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w900,
-                                              fontSize: 14)),
+                                      Text(e.button,
+                                          style: TextStyle(
+                                              color: greyColor.shade600,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 16)),
                                     ],
                                   ),
                                 ),

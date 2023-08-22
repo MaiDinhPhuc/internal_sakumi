@@ -177,10 +177,12 @@ enum AppText {
   textNumberNotGrading,
   titleSubject,
   titleStatus,
-  textSSNote
+  textSSNote,
+  titleHome
 }
 
 Map<AppText, String> texts = {
+  AppText.titleHome: 'Trang chủ',
   AppText.textSSNote: 'Sensei hãy nhận xét về bài làm của Học viên nhé...',
   AppText.txtGradingDone: 'Chấm điểm xong!',
   AppText.textNumberNotGrading: 'Số bài chưa chấm: ',
