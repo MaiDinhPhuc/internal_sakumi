@@ -3,13 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/teacher/lecture/detail_lesson_cubit.dart';
+import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
-import 'package:internal_sakumi/repository/admin_repository.dart';
-import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
+import 'package:internal_sakumi/widget/waiting_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -136,44 +135,30 @@ class LessonPendingView extends StatelessWidget {
         SizedBox(height: Resizable.size(context, 20)),
         SubmitButton(
             onPressed: () async {
-              // BlocProvider.of<DetailLessonCubit>(context)
-              //     .updateStatus(context, 'Teaching');
-              debugPrint('=====================> 1');
-              // SharedPreferences localData =
-              //     await SharedPreferences.getInstance();
-              debugPrint('=====================> 2');
-              // if (context.mounted) {
-              //   debugPrint('=====================> 3 == ${int.parse(TextUtils.getName(position: 2))} == ${int.parse(TextUtils.getName())}');
-                // await addLessonResult(
-                //     context,
-                //     LessonResultModel(
-                //         id: 1000,
-                //         classId: int.parse(TextUtils.getName(position: 2)),
-                //         lessonId: int.parse(TextUtils.getName()),
-                //         teacherId: int.parse(localData.getInt(PrefKeyConfigs.userId).toString()),
-                //         status: 'Teaching',
-                //         date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
-                //         noteForStudent: '',
-                //         noteForSupport: '',
-                //         noteForTeacher: ''));
-                //debugPrint('=====================> 456789');
-              // }
-              await BlocProvider.of<DetailLessonCubit>(context).updateStatus(context, 'Teaching');
-              // if (context.mounted) {
-              //   debugPrint('=============> addLessonResult');
-              //   await BlocProvider.of<DetailLessonCubit>(context).load(context);
-              // }
+              SharedPreferences localData =
+                  await SharedPreferences.getInstance();
+              if (context.mounted) {
+                waitingDialog(context);
+                await BlocProvider.of<DetailLessonCubit>(context).addLessonResult(
+                    context,
+                    LessonResultModel(
+                        id: 1000,
+                        classId: int.parse(TextUtils.getName(position: 2)),
+                        lessonId: int.parse(TextUtils.getName()),
+                        teacherId: int.parse(localData.getInt(PrefKeyConfigs.userId).toString()),
+                        status: 'Teaching',
+                        date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                        noteForStudent: '',
+                        noteForSupport: '',
+                        noteForTeacher: ''));
+                debugPrint('=====================> 456789');
+                if(context.mounted) {
+                  Navigator.pop(context);
+                }
+              }
             },
             title: AppText.txtStartLesson.text)
       ],
     );
   }
-
-  // addLessonResult(context, LessonResultModel model) async {
-  //   TeacherRepository teacherRepository = TeacherRepository.fromContext(context);
-  //   debugPrint('=====================>');
-  //   var check = await teacherRepository.addLessonResult(model);
-  //   debugPrint('=====================> $check');
-  // }
 }
-

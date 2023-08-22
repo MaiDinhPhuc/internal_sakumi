@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/admin/manage_general/list_student/alert_checkbox_student.dart';
 import 'package:internal_sakumi/features/teacher/grading/detail_grading_view.dart';
 import 'package:internal_sakumi/features/teacher/grading/drop_down_grading_widget.dart';
 import 'package:internal_sakumi/features/teacher/grading/question_option.dart';
@@ -92,7 +93,7 @@ class DetailGradingScreen extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Expanded(
-                                      flex:3,
+                                      flex:6,
                                       child: Padding(
                                       padding: EdgeInsets.only(
                                         top: Resizable.padding(context, 10),
@@ -105,10 +106,53 @@ class DetailGradingScreen extends StatelessWidget {
                                               color: greyColor.shade500)))),
                                   Expanded(
                                       flex: 1,
-                                      child: DropDownGrading(items: [
-                                        AppText.txtStudent.text,
-                                        ...cubit.listStudent!.map((e) => e.name).toList()
-                                      ], onChanged: (items) {},value: AppText.txtStudent.text,)),
+                                      child: PopupMenuButton(itemBuilder: (context) => [
+                                        ...cubit.listStudent!.map((e) => PopupMenuItem(
+                                          padding: EdgeInsets.zero,
+                                          child: BlocProvider(create: (c)=>CheckBoxFilterCubit(true),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
+                                            return CheckboxListTile(
+                                              controlAffinity: ListTileControlAffinity.leading,
+                                              title: Text(e.name),
+                                              value: state,
+                                              onChanged: (newValue) {
+                                                BlocProvider.of<
+                                                    CheckBoxFilterCubit>(cc)
+                                                    .update();
+                                              },
+                                            );
+                                          }))
+                                        ))
+                                      ],
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(Resizable.size(context, 10)),
+                                          ),
+                                        ),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    blurRadius: Resizable.size(context, 2),
+                                                    color: greyColor.shade100)
+                                              ],
+                                              border: Border.all(
+                                                  color: greyColor.shade100),
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.circular(1000)),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              Expanded(child: Center(
+                                                child: Text(AppText.txtStudent.text,
+                                                    style: TextStyle(
+                                                        fontSize: Resizable.font(context, 18),
+                                                        fontWeight: FontWeight.w500))
+                                              )),
+                                              const Icon(Icons.keyboard_arrow_down)
+                                            ],
+                                          ),
+                                        )
+                                      )),
                                   BlocProvider(create: (c)=>PopUpOptionCubit(),child: BlocBuilder<PopUpOptionCubit, List<bool>>(
                                     builder: (cc,list){
                                       return PopupMenuButton(
@@ -119,22 +163,30 @@ class DetailGradingScreen extends StatelessWidget {
                                         ),
                                         itemBuilder: (context) => [
                                           PopupMenuItem(
+                                            padding: EdgeInsets.zero,
                                             child: CheckboxListTile(
                                               controlAffinity: ListTileControlAffinity.leading,
                                               title: Text(AppText.textShowName.text),
                                               value: list[0],
                                               onChanged: (newValue) {
-                                                BlocProvider.of<PopUpOptionCubit>(cc).change(!list[0], 0);
+                                                BlocProvider.of<PopUpOptionCubit>(cc).change(newValue!, 0);
+                                                cubit.isShowName = !cubit.isShowName;
+                                                cubit.updateAnswerView(cubit.state);
+                                                Navigator.pop(context);
                                               },
                                             ),
                                           ),
                                           PopupMenuItem(
+                                            padding: EdgeInsets.zero,
                                             child: CheckboxListTile(
                                               controlAffinity: ListTileControlAffinity.leading,
                                               title: Text(AppText.textGeneralComment.text),
                                               value: list[1],
                                               onChanged: (newValue) {
-                                                BlocProvider.of<PopUpOptionCubit>(cc).change(!list[1], 1);
+                                                BlocProvider.of<PopUpOptionCubit>(cc).change(newValue!, 1);
+                                                cubit.isGeneralComment = !cubit.isGeneralComment;
+                                                cubit.updateAnswerView(cubit.state);
+                                                Navigator.pop(context);
                                               },
                                             ),
                                           ),
@@ -170,11 +222,19 @@ class DetailGradingScreen extends StatelessWidget {
 }
 
 class PopUpOptionCubit extends Cubit<List<bool>>{
-  PopUpOptionCubit():super([false, false]);
+  PopUpOptionCubit():super([true , false]);
 
   change(bool value, int index){
     List<bool> listState = state;
     listState[index] = value;
     emit(listState);
+  }
+}
+
+class CheckBoxFilterCubit extends Cubit<bool> {
+  CheckBoxFilterCubit(bool state) : super(state);
+
+  update() {
+    emit(!state);
   }
 }

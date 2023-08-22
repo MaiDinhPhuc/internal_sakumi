@@ -17,11 +17,14 @@ class DetailGradingCubit extends Cubit<int> {
   List<StudentModel>? listStudent;
   int count = 0;
   List<int> listChecked = [];
+  bool isShowName = true;
+  bool isGeneralComment = false;
+  int? studentId;
   init(context) async {
     await loadFirst(context);
   }
 
-  String getStudentNam(AnswerModel answerModel){
+  String getStudentName(AnswerModel answerModel){
     for(var i in listStudent!){
       if(i.userId == answerModel.studentId){
         return i.name;
@@ -30,7 +33,18 @@ class DetailGradingCubit extends Cubit<int> {
     return "";
   }
 
-  List<AnswerModel> get answers => listAnswer!.where((answer) => answer.questionId == state).toList();
+  updateAnswerView(int questionId)async{
+   emit(0);
+   emit(questionId);
+  }
+  updateAfterGrading(int questionId)async{
+    emit(-2);
+    await Future.delayed(const Duration(milliseconds: 2000));
+    emit(questionId);
+  }
+
+  List<AnswerModel> get answers => listAnswer!.where((answer) => answer.questionId == state && (studentId == null ? true : answer.studentId == studentId)).toList();
+
   loadFirst(context) async {
     TeacherRepository teacherRepository =
     TeacherRepository.fromContext(context);
@@ -42,11 +56,15 @@ class DetailGradingCubit extends Cubit<int> {
     List<StudentClassModel> listStudentClass = await teacherRepository.getStudentClassInClass(int.parse(TextUtils.getName(position: 2)));
     listStudent = [];
     for(var i in listStudentClass){
-      listStudent!.add(await userRepository.getStudentInfo(i.userId));
+      for(var j in listAnswer!){
+        if(i.userId == j.studentId){
+          listStudent!.add(await userRepository.getStudentInfo(i.userId));
+          break;
+        }
+      }
     }
     emit(listQuestions!.first.id);
   }
-
 
   change(int questionId, context)async {
     for(var i in listQuestions!){

@@ -10,6 +10,7 @@ import 'package:internal_sakumi/utils/text_utils.dart';
 
 import 'alert_grading_done.dart';
 import 'answer_view/answer_info_view.dart';
+import 'answer_view/input_form/input_teacher_note.dart';
 import 'detail_grading_cubit.dart';
 
 
@@ -20,7 +21,8 @@ class DetailGradingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return cubit.listAnswer == null
+    final TextEditingController noteController = TextEditingController();
+    return cubit.listAnswer == null || cubit.state == -2
         ? const Center(
             child: CircularProgressIndicator(),
           )
@@ -28,10 +30,37 @@ class DetailGradingView extends StatelessWidget {
             child: Column(
               children: [
                 ...cubit.answers.map((e) => AnswerInfoView(
-                      answerModel: e,
-                      soundCubit: soundCubit,
-                      cubit: cubit,
-                    )),
+                  answerModel: e,
+                  soundCubit: soundCubit,
+                  cubit: cubit,
+                )),
+                if(cubit.isGeneralComment)
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        vertical: Resizable.padding(context, 10),
+                        horizontal: Resizable.padding(context, 10)),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(Resizable.size(context, 5))),
+                        color: Colors.white),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(AppText.textGeneralComment.text, style: TextStyle(fontSize: Resizable.font(context, 18),fontWeight: FontWeight.w700)),
+                        InputTeacherNote( noteController: noteController, onChange: (String? text) {
+                          if (text != null) {
+                            for(var i in cubit.answers){
+                              i.newTeacherNote = text;
+                            }
+                          }
+                        }, onOpenFile: () {
+                          print("============>open file");
+                        }, onOpenMic: () {
+                          print("============>open mic");
+                        })
+                      ],
+                    ),
+                  ),
                 Padding(
                   padding: EdgeInsets.only(top: Resizable.padding(context, 15)),
                   child: ElevatedButton(
@@ -40,7 +69,7 @@ class DetailGradingView extends StatelessWidget {
                         FirebaseFirestore.instance
                             .collection('answer')
                             .doc(
-                                'student_${i.studentId}_homework_question_${i.questionId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 2)}')
+                            'student_${i.studentId}_homework_question_${i.questionId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 2)}')
                             .update({
                           'score': cubit
                               .listAnswer![cubit.listAnswer!.indexOf(i)]
@@ -54,6 +83,8 @@ class DetailGradingView extends StatelessWidget {
                         cubit.listChecked.add(cubit.state);
                         cubit.count++;
                       }
+                      cubit.updateAfterGrading(cubit.state);
+                      cubit.isGeneralComment = false;
                       if (cubit.count == cubit.listAnswer!.length) {
                         for (var i in cubit.listStudent!) {
                           int temp = 0;
@@ -67,11 +98,11 @@ class DetailGradingView extends StatelessWidget {
                             }
                           }
                           int submitScore =
-                              (temp / cubit.listQuestions!.length).round();
+                          (temp / cubit.listQuestions!.length).round();
                           FirebaseFirestore.instance
                               .collection('student_lesson')
                               .doc(
-                                  'student_${i.userId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 2)}')
+                              'student_${i.userId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 2)}')
                               .update({
                             'hw': temp == 0 ? -1 : submitScore,
                           });
@@ -89,7 +120,7 @@ class DetailGradingView extends StatelessWidget {
                             borderRadius: BorderRadius.circular(
                                 Resizable.padding(context, 1000)))),
                         backgroundColor:
-                            MaterialStateProperty.all(primaryColor),
+                        MaterialStateProperty.all(primaryColor),
                         padding: MaterialStateProperty.all(EdgeInsets.symmetric(
                             horizontal: Resizable.padding(context, 30)))),
                     child: Text(AppText.btnUpdate.text.toUpperCase(),

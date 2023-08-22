@@ -6,7 +6,7 @@ import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
 import 'package:internal_sakumi/features/admin/manage_student/student_item_row_layout.dart';
-import 'package:internal_sakumi/features/teacher/lecture/detail_lesson_cubit.dart';
+import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/routes.dart';
