@@ -19,7 +19,7 @@ class DetailGradingCubit extends Cubit<int> {
   List<int> listChecked = [];
   bool isShowName = true;
   bool isGeneralComment = false;
-  int? studentId;
+  List<int>? listStudentId;
   init(context) async {
     await loadFirst(context);
   }
@@ -43,7 +43,7 @@ class DetailGradingCubit extends Cubit<int> {
     emit(questionId);
   }
 
-  List<AnswerModel> get answers => listAnswer!.where((answer) => answer.questionId == state && (studentId == null ? true : answer.studentId == studentId)).toList();
+  List<AnswerModel> get answers => listAnswer!.where((answer) => answer.questionId == state && listStudentId!.contains(answer.studentId)).toList();
 
   loadFirst(context) async {
     TeacherRepository teacherRepository =
@@ -62,6 +62,10 @@ class DetailGradingCubit extends Cubit<int> {
           break;
         }
       }
+    }
+    listStudentId = [];
+    for(var i in listStudent!){
+      listStudentId!.add(i.userId);
     }
     emit(listQuestions!.first.id);
   }

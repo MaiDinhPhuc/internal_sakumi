@@ -1,11 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/admin/manage_general/list_student/alert_checkbox_student.dart';
 import 'package:internal_sakumi/features/teacher/grading/detail_grading_view.dart';
-import 'package:internal_sakumi/features/teacher/grading/drop_down_grading_widget.dart';
 import 'package:internal_sakumi/features/teacher/grading/question_option.dart';
 import 'package:internal_sakumi/features/class_appbar.dart';
 import 'package:internal_sakumi/features/teacher/grading/detail_grading_cubit.dart';
@@ -109,15 +106,21 @@ class DetailGradingScreen extends StatelessWidget {
                                       child: PopupMenuButton(itemBuilder: (context) => [
                                         ...cubit.listStudent!.map((e) => PopupMenuItem(
                                           padding: EdgeInsets.zero,
-                                          child: BlocProvider(create: (c)=>CheckBoxFilterCubit(true),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
+                                          child: BlocProvider(create: (c)=>CheckBoxFilterCubit(cubit.listStudentId!.contains(e.userId)),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
                                             return CheckboxListTile(
                                               controlAffinity: ListTileControlAffinity.leading,
                                               title: Text(e.name),
                                               value: state,
                                               onChanged: (newValue) {
-                                                BlocProvider.of<
-                                                    CheckBoxFilterCubit>(cc)
-                                                    .update();
+                                                if(state && cubit.listStudentId!.length == 1){}
+                                                else if(state && cubit.listStudentId!.length != 1){
+                                                  cubit.listStudentId!.remove(e.userId);
+                                                  BlocProvider.of<CheckBoxFilterCubit>(cc).update();
+                                                }else{
+                                                  cubit.listStudentId!.add(e.userId);
+                                                  BlocProvider.of<CheckBoxFilterCubit>(cc).update();
+                                                }
+                                                cubit.updateAnswerView(cubit.state);
                                               },
                                             );
                                           }))
