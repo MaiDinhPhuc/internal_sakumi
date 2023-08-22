@@ -127,6 +127,7 @@ class SessionCubit extends Cubit<int> {
         isNoteStudent = false;
       }
     }
+    debugPrint('================> checkNoteStudent $isNoteStudent');
     emit(state + 1);
   }
 
@@ -153,13 +154,15 @@ class SessionCubit extends Cubit<int> {
   }
 
   updateTimekeeping(int attendId) {
-    if (attendId! > 0) {
+    debugPrint('============> totalAttendance000 $totalAttendance -- $attendId');
+    if (attendId > 0 && totalAttendance < listStudent!.length) {
       totalAttendance++;
-    } else {
+    }
+    if(attendId <= 0) {
       totalAttendance--;
     }
 
-    debugPrint('============> totalAttendance $totalAttendance -- $attendId');
+    debugPrint('============> totalAttendance1111 $totalAttendance -- $attendId');
     emit(state + 1);
   }
 
@@ -182,6 +185,7 @@ class SessionCubit extends Cubit<int> {
         }
       }
     }
+    debugPrint('================> listStudent ${listStudent!.length}');
     emit(state + 1);
   }
 

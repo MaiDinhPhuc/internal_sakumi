@@ -31,7 +31,7 @@ class LessonTeachingView extends StatelessWidget {
             children: [
               ...cubit.listStudent!.map((e) => AttendanceItem(
                       e,
-                      cubit.listStudent!.indexOf(e) > cubit.listStudentLesson!.length - 1 ? 0 :cubit.listStudentLesson![0]//cubit.listStudent!.indexOf(e)
+                      cubit.listStudent!.indexOf(e) > cubit.listStudentLesson!.length - 1 ? 0 :cubit.listStudentLesson![cubit.listStudent!.indexOf(e)]//cubit.listStudent!.indexOf(e)
                           .timekeeping,
                       items: [
                         AppText.txtNotTimeKeeping.text,
