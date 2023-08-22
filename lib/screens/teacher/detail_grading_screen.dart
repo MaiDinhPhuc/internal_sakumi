@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/admin/manage_general/list_student/alert_checkbox_student.dart';
 import 'package:internal_sakumi/features/teacher/grading/detail_grading_view.dart';
 import 'package:internal_sakumi/features/teacher/grading/drop_down_grading_widget.dart';
 import 'package:internal_sakumi/features/teacher/grading/question_option.dart';
@@ -92,7 +93,7 @@ class DetailGradingScreen extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Expanded(
-                                      flex:3,
+                                      flex:6,
                                       child: Padding(
                                       padding: EdgeInsets.only(
                                         top: Resizable.padding(context, 10),
@@ -105,25 +106,53 @@ class DetailGradingScreen extends StatelessWidget {
                                               color: greyColor.shade500)))),
                                   Expanded(
                                       flex: 1,
-                                      child: BlocProvider(create: (context)=>DropdownGradingCubit(AppText.txtStudent.text),
-                                      child: BlocBuilder<DropdownGradingCubit, String>(
-                                        builder: (ccc, state){
-                                          return DropDownGrading(items: [
-                                            AppText.txtStudent.text,
-                                            ...cubit.listStudent!.map((e) => e.name).toList()
-                                          ], onChanged: (item) {
-                                            if(item !=  AppText.txtStudent.text){
-                                              BlocProvider.of<DropdownGradingCubit>(ccc).change(item!);
-                                              cubit.studentId = cubit.listStudent![cubit.listStudent!.indexOf(cubit.listStudent!.where((element) => element.name == item).single)].userId;
-                                              cubit.updateAnswerView(cubit.state);
-                                            }else{
-                                              BlocProvider.of<DropdownGradingCubit>(ccc).change(item!);
-                                              cubit.studentId = null;
-                                              cubit.updateAnswerView(cubit.state);
-                                            }
-                                          },value: state);
-                                        },
-                                      ))),
+                                      child: PopupMenuButton(itemBuilder: (context) => [
+                                        ...cubit.listStudent!.map((e) => PopupMenuItem(
+                                          padding: EdgeInsets.zero,
+                                          child: BlocProvider(create: (c)=>CheckBoxFilterCubit(true),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
+                                            return CheckboxListTile(
+                                              controlAffinity: ListTileControlAffinity.leading,
+                                              title: Text(e.name),
+                                              value: state,
+                                              onChanged: (newValue) {
+                                                BlocProvider.of<
+                                                    CheckBoxFilterCubit>(cc)
+                                                    .update();
+                                              },
+                                            );
+                                          }))
+                                        ))
+                                      ],
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(Resizable.size(context, 10)),
+                                          ),
+                                        ),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    blurRadius: Resizable.size(context, 2),
+                                                    color: greyColor.shade100)
+                                              ],
+                                              border: Border.all(
+                                                  color: greyColor.shade100),
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.circular(1000)),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              Expanded(child: Center(
+                                                child: Text(AppText.txtStudent.text,
+                                                    style: TextStyle(
+                                                        fontSize: Resizable.font(context, 18),
+                                                        fontWeight: FontWeight.w500))
+                                              )),
+                                              const Icon(Icons.keyboard_arrow_down)
+                                            ],
+                                          ),
+                                        )
+                                      )),
                                   BlocProvider(create: (c)=>PopUpOptionCubit(),child: BlocBuilder<PopUpOptionCubit, List<bool>>(
                                     builder: (cc,list){
                                       return PopupMenuButton(
@@ -199,5 +228,13 @@ class PopUpOptionCubit extends Cubit<List<bool>>{
     List<bool> listState = state;
     listState[index] = value;
     emit(listState);
+  }
+}
+
+class CheckBoxFilterCubit extends Cubit<bool> {
+  CheckBoxFilterCubit(bool state) : super(state);
+
+  update() {
+    emit(!state);
   }
 }

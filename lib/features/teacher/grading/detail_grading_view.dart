@@ -66,9 +66,6 @@ class DetailGradingView extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       for (var i in cubit.answers) {
-                        print("=====>note ${cubit
-                            .listAnswer![cubit.listAnswer!.indexOf(i)]
-                            .newTeacherNote}");
                         FirebaseFirestore.instance
                             .collection('answer')
                             .doc(
