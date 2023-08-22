@@ -298,9 +298,33 @@ class TeacherRepository {
 
     await db
         .collection('lesson_result')
-        .doc("lesson_${lessonId + 1}_class_$classId")
+        .doc("lesson_${lessonId}_class_$classId")
         .update({
       'student_note': note,
+    });
+  }
+
+  Future<void> noteForSupport(
+      int lessonId, int classId, String note) async {
+    final db = FirebaseFirestore.instance;
+
+    await db
+        .collection('lesson_result')
+        .doc("lesson_${lessonId}_class_$classId")
+        .update({
+      'support_note': note,
+    });
+  }
+
+  Future<void> noteForAnotherSensei(
+      int lessonId, int classId, String note) async {
+    final db = FirebaseFirestore.instance;
+
+    await db
+        .collection('lesson_result')
+        .doc("lesson_${lessonId}_class_$classId")
+        .update({
+      'teacher_note': note,
     });
   }
 

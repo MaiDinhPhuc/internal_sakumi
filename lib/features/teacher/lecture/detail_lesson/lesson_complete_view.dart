@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/classification_item.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
+import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/session_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/note_for_team_card.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
+import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 class LessonCompleteView extends StatelessWidget {
   const LessonCompleteView({Key? key}) : super(key: key);
@@ -48,6 +50,7 @@ class LessonCompleteView extends StatelessWidget {
                   hintText: AppText.txtHintNoteForSupport.text,
                   noNote: AppText.txtNoNoteForSupport.text, onChanged: (v) {
                 cubit.isNoteSupport = v.isNotEmpty ? null : true;
+                cubit.inputSupport(v);
                 cubit.checkNoteSupport();
               }, onPressed: () {
                 cubit.checkNoteSupport();
@@ -56,13 +59,30 @@ class LessonCompleteView extends StatelessWidget {
                   hintText: AppText.txtHintNoteForTeacher.text,
                   noNote: AppText.txtNoNoteForTeacher.text, onChanged: (v) {
                 cubit.isNoteSensei = v.isNotEmpty ? null : true;
+                cubit.inputSensei(v);
                 cubit.checkNoteSensei();
               }, onPressed: () {
                 cubit.checkNoteSensei();
               }),
               SizedBox(height: Resizable.size(context, 40)),
               SubmitButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: ()async{
+                  waitingDialog(context);
+                  await BlocProvider.of<DetailLessonCubit>(context)
+                      .noteForSupport(context, cubit.noteSupport.isNotEmpty
+                      ? cubit.noteSupport
+                      : AppText.txtNoNoteForSupport.text);
+                  if(context.mounted) {
+                    await BlocProvider.of<DetailLessonCubit>(context)
+                      .noteForAnotherSensei(context, cubit.noteSupport.isNotEmpty
+                      ? cubit.noteSensei
+                      : AppText.txtNoNoteForTeacher.text);
+                  }
+                  if(context.mounted){
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  }
+                },
                 isActive:
                     cubit.isNoteSensei != false && cubit.isNoteSupport != false,
                 title: AppText.txtCompleteLesson.text,

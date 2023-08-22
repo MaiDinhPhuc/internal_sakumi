@@ -88,122 +88,44 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
         noteForSupport: state!.noteForSupport,
         noteForTeacher: state!.noteForTeacher));
   }
-}
 
-class SessionCubit extends Cubit<int> {
-  SessionCubit() : super(0);
-
-  List<StudentModel>? listStudent;
-  List<StudentLessonModel>? listStudentLesson;
-  List<StudentClassModel>? listStudentClass;
-  int totalAttendance = 0, teacherId = -1;
-  ClassModel? classModel;
-  bool? isNoteStudent = false;
-  bool? isNoteSupport = false;
-  bool? isNoteSensei = false;
-
-  static SessionCubit fromContext(BuildContext context) =>
-      BlocProvider.of<SessionCubit>(context);
-
-  init(context) async {
-    await getTeacherId();
-    await loadStudentInClass(context);
-    await loadStudentLesson(context);
-    totalAttendance = listStudentLesson!
-        .fold(0, (pre, e) => e.timekeeping > 0 ? (pre + 1) : pre);
-  }
-
-  getTeacherId() async {
-    SharedPreferences localData = await SharedPreferences.getInstance();
-
-    teacherId = int.parse(localData.getInt(PrefKeyConfigs.userId).toString());
-  }
-
-  checkNoteStudent() {
-    if (isNoteStudent != null) {
-      if (isNoteStudent == false) {
-        isNoteStudent = true;
-      } else {
-        isNoteStudent = false;
-      }
-    }
-    debugPrint('================> checkNoteStudent $isNoteStudent');
-    emit(state + 1);
-  }
-
-  checkNoteSupport() {
-    if (isNoteSupport != null) {
-      if (isNoteSupport == false) {
-        isNoteSupport = true;
-      } else {
-        isNoteSupport = false;
-      }
-    }
-    emit(state + 1);
-  }
-
-  checkNoteSensei() {
-    if (isNoteSensei != null) {
-      if (isNoteSensei == false) {
-        isNoteSensei = true;
-      } else {
-        isNoteSensei = false;
-      }
-    }
-    emit(state + 1);
-  }
-
-  updateTimekeeping(int attendId) {
-    debugPrint('============> totalAttendance000 $totalAttendance -- $attendId');
-    if (attendId > 0 && totalAttendance < listStudent!.length) {
-      totalAttendance++;
-    }
-    if(attendId <= 0) {
-      totalAttendance--;
-    }
-
-    debugPrint('============> totalAttendance1111 $totalAttendance -- $attendId');
-    emit(state + 1);
-  }
-
-  loadStudentInClass(context) async {
-    AdminRepository adminRepository = AdminRepository.fromContext(context);
-    List<StudentModel> listAllStudent = await adminRepository.getAllStudent();
-
-    List<StudentClassModel>? list = await adminRepository
-        .getStudentClassByClassId(int.parse(TextUtils.getName(position: 2)));
-
-    listStudentClass = [];
-    listStudentClass!.addAll(list);
-
-    listStudent = [];
-    for (var i in listAllStudent) {
-      for (var j in listStudentClass!) {
-        if (i.userId == j.userId) {
-          listStudent!.add(i);
-          break;
-        }
-      }
-    }
-    debugPrint('================> listStudent ${listStudent!.length}');
-    emit(state + 1);
-  }
-
-  loadStudentLesson(context) async {
+  noteForSupport(context, String note) async {
     TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
+    TeacherRepository.fromContext(context);
 
-    var list = await teacherRepository.getAllStudentLessonInLesson(
+    await teacherRepository.noteForSupport(
+        int.parse(TextUtils.getName()),
         int.parse(TextUtils.getName(position: 2)),
-        int.parse(TextUtils.getName()));
+        note);
+    emit(LessonResultModel(
+        id: state!.id,
+        classId: state!.classId,
+        lessonId: state!.lessonId,
+        teacherId: state!.teacherId,
+        status: state!.status,
+        date: state!.date,
+        noteForStudent: state!.noteForStudent,
+        noteForSupport: note,
+        noteForTeacher: state!.noteForTeacher));
+  }
 
-    debugPrint(
-        '=============> loadStudentLesson loadStudentLesson ${list.length}');
-    listStudentLesson = [];
-    listStudentLesson!.addAll(list);
+  noteForAnotherSensei(context, String note) async {
+    TeacherRepository teacherRepository =
+    TeacherRepository.fromContext(context);
 
-    debugPrint(
-        '=============> loadStudentLesson loadStudentLesson loadStudentLesson');
-    emit(state + 1);
+    await teacherRepository.noteForAnotherSensei(
+        int.parse(TextUtils.getName()),
+        int.parse(TextUtils.getName(position: 2)),
+        note);
+    emit(LessonResultModel(
+        id: state!.id,
+        classId: state!.classId,
+        lessonId: state!.lessonId,
+        teacherId: state!.teacherId,
+        status: state!.status,
+        date: state!.date,
+        noteForStudent: state!.noteForStudent,
+        noteForSupport: state!.noteForSupport,
+        noteForTeacher: note));
   }
 }

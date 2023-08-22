@@ -3,10 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/alert_view.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/attendance_item.dart';
-import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
+import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/session_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/note_for_team_card.dart';
-import 'package:internal_sakumi/model/student_lesson_model.dart';
-import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 
@@ -45,6 +43,8 @@ class LessonTeachingView extends StatelessWidget {
               NoteForTeamCard(cubit.isNoteStudent,
                   hintText: AppText.txtHintNoteForStudent.text,
                   noNote: AppText.txtNoNoteForStudent.text, onChanged: (v) {
+                cubit.inputStudent(v);
+                //debugPrint('============= controller ${controller.text}');
                 cubit.isNoteStudent = v.isNotEmpty ? null : true;
                 cubit.checkNoteStudent();
               }, onPressed: () {
@@ -55,8 +55,8 @@ class LessonTeachingView extends StatelessWidget {
               SubmitButton(
                   onPressed: () => alertView(
                       context,
-                      controller.text.isNotEmpty
-                          ? controller.text
+                      cubit.noteStudent.isNotEmpty
+                          ? cubit.noteStudent
                           : AppText.txtNoNoteForStudent.text),
                   title: AppText.txtFinishLesson.text,
                   isActive:
