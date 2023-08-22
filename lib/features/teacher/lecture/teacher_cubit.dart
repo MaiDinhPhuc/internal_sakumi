@@ -1,9 +1,5 @@
-import 'dart:html';
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
@@ -36,7 +32,7 @@ class TeacherCubit extends Cubit<int> {
     TeacherRepository teacherRepository =
         TeacherRepository.fromContext(context);
     teacherProfile = await teacherRepository.getTeacher(TextUtils.getName());
-        //.getTeacher(localData.getString(PrefKeyConfigs.code)!);
+    //.getTeacher(localData.getString(PrefKeyConfigs.code)!);
     emit(state + 1);
   }
 
@@ -101,6 +97,9 @@ class TeacherCubit extends Cubit<int> {
       List<StudentLessonModel> lessonsInClass = listAllStudentLessons
           .fold([], (pre, e) => [...pre, if (e.classId == i.classId) e]);
       listStudentInClass!.add(studentsInClass);
+
+      var lessons = await teacherRepository.getLessonsByCourseId(i.courseId);
+
       debugPrint(
           '============> student in class ${listStudentInClass![listClass!.indexOf(i)]}');
       List<int> attends = [];
@@ -108,25 +107,35 @@ class TeacherCubit extends Cubit<int> {
       List<double> points = [];
       double pts = 0.0;
       int att = 0, sub = 0;
-      for (var j = 1; j <= courses![listClass!.indexOf(i)].lessonCount; j++) {
+      //for (var j = 1; j <= courses![listClass!.indexOf(i)].lessonCount; j++) {
+      for (var j in lessons) {
         debugPrint('============> lesson $j');
         var attendance = lessonsInClass.fold(
             0,
             (pre, e) =>
-                pre + ((e.timekeeping > 0 && e.timekeeping < 5 && e.lessonId == j) ? 1 : 0));
+                pre +
+                ((e.timekeeping > 0 &&
+                        e.timekeeping < 5 &&
+                        e.lessonId == j.lessonId)
+                    ? 1
+                    : 0));
+        debugPrint('============> lesson attendance $attendance');
+        var hw = lessonsInClass.fold(
+            0,
+            (pre, e) =>
+                pre + ((e.hw > -2 && e.lessonId == j.lessonId) ? 1 : 0));
 
-        var hw = lessonsInClass
-            .fold(0, (pre, e) => pre + ((e.hw > -2 && e.lessonId == j) ? 1 : 0));
-
-        var point = lessonsInClass
-            .fold(0, (pre, e) => pre + ((e.hw > -1 && e.lessonId == j) ? e.hw : 0));
+        var point = lessonsInClass.fold(
+            0,
+            (pre, e) =>
+                pre + ((e.hw > -1 && e.lessonId == j.lessonId) ? e.hw : 0));
 
         att = att + attendance;
         sub = sub + hw;
         pts = pts + point;
         attends.add(attendance);
         homeworks.add(hw);
-        points.add(point/listStudentInClass![listClass!.indexOf(i)]);
+        points.add(point / listStudentInClass![listClass!.indexOf(i)]);
         //pts.add(point / ((listStudentInClass!.length * ) / 10));
       }
       debugPrint('=----= $attends ==== $homeworks');
@@ -141,12 +150,6 @@ class TeacherCubit extends Cubit<int> {
       listSubmit!.add(homeworks);
       listPoint!.add(points);
     }
-
-    debugPrint(
-        '==============> loadStatisticClass $rateSubmit == ${listStudentInClass!.length}');
-
-    print(
-        '==========><========== $listAttendance === $listSubmit == $rateAttendance === $rateSubmit === $listPoint');
     emit(state + 1);
   }
 }

@@ -4,7 +4,7 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
-import 'package:internal_sakumi/features/teacher/list_class/teacher_cubit.dart';
+import 'package:internal_sakumi/features/teacher/lecture/teacher_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:screenshot/screenshot.dart';
 
