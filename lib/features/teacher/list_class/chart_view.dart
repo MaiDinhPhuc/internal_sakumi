@@ -15,7 +15,16 @@ class ChartView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<TeacherCubit>(context);
-    return Container(
+    return
+        cubit.listPoint!.isEmpty ||
+        cubit.listSubmit!.isEmpty ||
+        cubit.listAttendance!.isEmpty
+        ? Center(
+          child: Transform.scale(
+            scale: 0.75,
+            child: const CircularProgressIndicator(),
+          ),
+        ) : Container(
       margin: EdgeInsets.only(top: Resizable.size(context, 10)),
       height: Resizable.size(context, 130),
       child: Row(

@@ -7,13 +7,15 @@ class InputDropdown extends StatelessWidget {
   final String title, hint;
   final String? errorText;
   final Function(String?) onChanged;
-
+  final int height;
+  final bool isCircleBorder;
   const InputDropdown(
       {required this.onChanged,
       required this.title,
       required this.hint,
       required this.items,
       this.errorText,
+      this.height = 36, this.isCircleBorder = false,
       Key? key})
       : super(key: key);
 
@@ -33,11 +35,11 @@ class InputDropdown extends StatelessWidget {
                   color: const Color(0xffE0E0E0),
                   width: Resizable.size(context, 0.5)),
               borderRadius:
-                  BorderRadius.circular(Resizable.padding(context, 5)),
+                  BorderRadius.circular(Resizable.padding(context, isCircleBorder ? 1000 : 5)),
             ),
             border: OutlineInputBorder(
                 borderRadius:
-                    BorderRadius.circular(Resizable.padding(context, 5)),
+                    BorderRadius.circular(Resizable.padding(context, isCircleBorder ? 1000 : 5)),
                 borderSide: BorderSide(
                     color: const Color(0xffE0E0E0),
                     width: Resizable.size(context, 0.5))),
@@ -62,17 +64,17 @@ class InputDropdown extends StatelessWidget {
               horizontal: Resizable.padding(context, 0)),
           hint: Container(
               alignment: Alignment.centerLeft,
-              height: Resizable.size(context, 36),
+              height: Resizable.size(context, height.toDouble()),
               padding:
                   EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
               child: Text(
                 hint,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    fontSize: Resizable.font(context, 18),
+                    fontSize: Resizable.font(context, height > 35 ? 18 : 14),
                     color: const Color(0xff757575)),
               )),
-          buttonHeight: Resizable.size(context, 36),
+          buttonHeight: Resizable.size(context, height.toDouble()),
           items: items
               .map((item) => DropdownMenuItem<String>(
                     value: item,
