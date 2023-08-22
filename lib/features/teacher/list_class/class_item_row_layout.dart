@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:internal_sakumi/widget/circle_progress.dart';
 
 class ClassItemRowLayout extends StatelessWidget {
   final Widget widgetClassCode,
@@ -43,7 +45,17 @@ class ClassItemRowLayout extends StatelessWidget {
             child: Container(alignment: Alignment.center, child: widgetSubmit)),
         Expanded(
             flex: 1,
-            child: Container(alignment: Alignment.center, child: Container())),
+            child: Container(alignment: Alignment.center, child: Opacity(
+              opacity: 0,
+              child: CircleProgress(
+                title:
+                '%',
+                lineWidth: Resizable.size(context, 3),
+                percent: 0,
+                radius: Resizable.size(context, 15),
+                fontSize: Resizable.font(context, 14),
+              ),
+            ))),
         Expanded(
             flex: 2,
             child:
