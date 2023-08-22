@@ -79,11 +79,11 @@ class LessonTabCubit extends Cubit<int> {
     listLessonResult = await teacherRepository
         .getLessonResultByClassId(classModel!.classId);
 
-
     for(var lesson in lessons!){
       for(var item in listLessonResult!){
         if(lesson.lessonId == item!.lessonId){
           lessonResults![lessons!.indexOf(lesson)] = item;
+          debugPrint('=============> item ${item.lessonId}');
         }
       }
     }
