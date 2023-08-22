@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/prefKey_configs.dart';
+import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
@@ -7,6 +9,7 @@ import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DropdownCubit extends Cubit<int> {
   DropdownCubit() : super(0);
@@ -17,35 +20,34 @@ class DropdownCubit extends Cubit<int> {
 }
 
 class DetailLessonCubit extends Cubit<LessonResultModel?> {
-  DetailLessonCubit() : super(null) {
-    //load();
-  }
+  DetailLessonCubit() : super(null);
+
+  String? title;
+  bool? check;
+  int? teacherId;
 
   addLessonResult(context, LessonResultModel model) async {
     TeacherRepository teacherRepository =
         TeacherRepository.fromContext(context);
-    debugPrint('=====================>');
-    var check = await teacherRepository.addLessonResult(model);
-    debugPrint('=====================> $check');
 
-    if (!check) {
+    SharedPreferences localData = await SharedPreferences.getInstance();
+    teacherId = int.parse(localData.getInt(PrefKeyConfigs.userId).toString());
+    check = await teacherRepository.addLessonResult(model);
+
+    debugPrint('=============> addLessonResult $check');
+
+    var classModel = await teacherRepository
+        .getClass(int.parse(TextUtils.getName(position: 2)));
+    var lessonModel = await teacherRepository.getLesson(
+        classModel.courseId, int.parse(TextUtils.getName()));
+    title = lessonModel.title;
+    if (check == false) {
       emit(await teacherRepository.getLessonResultByLessonId(
           int.parse(TextUtils.getName()),
           int.parse(TextUtils.getName(position: 2))));
-    } else {
+    } else if (check == true) {
       (emit(model));
     }
-  }
-
-  load(context) async {
-    debugPrint('============> DetailLessonCubit 1');
-    TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
-    debugPrint('============> DetailLessonCubit 2');
-    emit(await teacherRepository.getLessonResultByLessonId(
-        int.parse(TextUtils.getName()),
-        int.parse(TextUtils.getName(position: 2))));
-    debugPrint('============> DetailLessonCubit 3');
   }
 
   updateStatus(context, String status) async {
@@ -65,7 +67,6 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
         noteForStudent: state!.noteForStudent,
         noteForSupport: state!.noteForSupport,
         noteForTeacher: state!.noteForTeacher));
-    //load(context);
   }
 
   noteForStudents(context, String note) async {
@@ -95,7 +96,8 @@ class SessionCubit extends Cubit<int> {
   List<StudentModel>? listStudent;
   List<StudentLessonModel>? listStudentLesson;
   List<StudentClassModel>? listStudentClass;
-  int totalAttendance = 0;
+  int totalAttendance = 0, teacherId = -1;
+  ClassModel? classModel;
   bool? isNoteStudent = false;
   bool? isNoteSupport = false;
   bool? isNoteSensei = false;
@@ -104,10 +106,17 @@ class SessionCubit extends Cubit<int> {
       BlocProvider.of<SessionCubit>(context);
 
   init(context) async {
+    await getTeacherId();
     await loadStudentInClass(context);
     await loadStudentLesson(context);
     totalAttendance = listStudentLesson!
         .fold(0, (pre, e) => e.timekeeping > 0 ? (pre + 1) : pre);
+  }
+
+  getTeacherId() async {
+    SharedPreferences localData = await SharedPreferences.getInstance();
+
+    teacherId = int.parse(localData.getInt(PrefKeyConfigs.userId).toString());
   }
 
   checkNoteStudent() {

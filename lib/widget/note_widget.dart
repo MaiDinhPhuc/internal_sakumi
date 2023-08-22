@@ -25,7 +25,7 @@ class NoteWidget extends StatelessWidget {
 
 class TrackingItem extends StatelessWidget {
   final bool isSubmit;
-  final bool? condition;
+  final int condition;
   const TrackingItem(this.condition, {this.isSubmit = false, Key? key})
       : super(key: key);
 
@@ -36,20 +36,28 @@ class TrackingItem extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(1000),
-          color: condition == null
-              ? const Color(0xff9E9E9E)
-              : condition == true
-                  ? const Color(0xff33691E)
-                  : const Color(0xffB71C1C)),
+          color: isSubmit
+              ? condition < -2
+                  ? const Color(0xff9E9E9E)
+                  : condition > -2
+                      ? const Color(0xff33691E)
+                      : const Color(0xffB71C1C)
+              : condition < 1
+                  ? const Color(0xff9E9E9E)
+                  : (condition > 0 && condition < 6)
+                      ? const Color(0xff33691E)
+                      : const Color(0xffB71C1C)),
       child: Text(
-        (condition == null
-                ? AppText.txtWaiting.text
-                : condition == true
-                    ? isSubmit
+        (isSubmit
+                ? condition < -2
+                    ? AppText.txtWaiting.text
+                    : condition > -2
                         ? AppText.txtSubmitted.text
-                        : AppText.txtPresent.text
-                    : isSubmit
-                        ? AppText.txtNotSubmit.text
+                        : AppText.txtNotSubmit.text
+                : condition < 1
+                    ? AppText.txtWaiting.text
+                    : (condition > 0 && condition < 6)
+                        ? AppText.txtPresent.text
                         : AppText.txtNotPresent.text)
             .toUpperCase(),
         textAlign: TextAlign.center,
