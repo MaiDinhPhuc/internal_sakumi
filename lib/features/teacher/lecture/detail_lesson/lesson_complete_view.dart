@@ -92,9 +92,3 @@ class LessonCompleteView extends StatelessWidget {
           );
   }
 }
-
-class ActiveCubit extends Cubit<List<bool?>> {
-  ActiveCubit() : super([]);
-
-  update() {}
-}

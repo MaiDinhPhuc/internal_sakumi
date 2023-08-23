@@ -154,7 +154,7 @@ class ListLessonTab extends StatelessWidget {
                                                                     cubit.listLessonResult!
                                                                             .length -
                                                                         1) {
-                                                                  await Navigator
+                                                                  Navigator
                                                                       .pushNamed(
                                                                           c,
                                                                           "/teacher?name=$name/lesson/class?id=${cubit.classModel!.classId}/lesson?id=${e.lessonId}");
@@ -164,21 +164,24 @@ class ListLessonTab extends StatelessWidget {
                                                                             .indexOf(e)]!
                                                                         .status !=
                                                                     'Complete') {
-                                                                  await Navigator
+                                                                Navigator
                                                                       .pushNamed(
                                                                           c,
                                                                           "/teacher?name=$name/lesson/class?id=${cubit.classModel!.classId}/lesson?id=${e.lessonId}");
-                                                                } else {}
-                                                                if (c.mounted) {
+                                                                } else {
+                                                                  Navigator
+                                                                      .pushNamed(
+                                                                      c,
+                                                                      "/teacher?name=$name/grading/class?id=${cubit.classModel!.classId}/lesson?id=${e.lessonId}");
+                                                                }
+                                                                await cubit
+                                                                    .loadLessonResult(
+                                                                    context);
+                                                                if (c
+                                                                    .mounted) {
                                                                   await cubit
-                                                                      .loadLessonResult(
-                                                                          context);
-                                                                  if (c
-                                                                      .mounted) {
-                                                                    await cubit
-                                                                        .loadStatistic(
-                                                                            c);
-                                                                  }
+                                                                      .loadStatistic(
+                                                                      c);
                                                                 }
                                                               },
                                                               borderRadius:

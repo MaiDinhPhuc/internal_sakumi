@@ -12,10 +12,8 @@ import 'package:internal_sakumi/utils/text_utils.dart';
 
 class DetailLessonScreen extends StatelessWidget {
   final String name, classId, lessonId;
-  final DetailLessonCubit cubit;
-  DetailLessonScreen(this.name, this.classId, this.lessonId, {Key? key})
-      : cubit = DetailLessonCubit(),
-        super(key: key);
+  const DetailLessonScreen(this.name, this.classId, this.lessonId, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +28,7 @@ class DetailLessonScreen extends StatelessWidget {
                 name: name,
               ),
               Expanded(
-                  key: Key('${cubit.state?.status}'),
+                  //key: Key('${cubit.state?.status}'),
                   child: SingleChildScrollView(
                       child: BlocBuilder<SessionCubit, int>(
                     builder: (cc, state) {
@@ -41,6 +39,9 @@ class DetailLessonScreen extends StatelessWidget {
                           child: BlocBuilder<DetailLessonCubit,
                               LessonResultModel?>(
                             builder: (cc, s) {
+                              debugPrint('==============> lesson detail ${BlocProvider.of<DetailLessonCubit>(
+                                  cc)
+                                  .state?.status}');
                               return s == null
                                   ? Transform.scale(
                                       scale: 0.75,
@@ -61,19 +62,12 @@ class DetailLessonScreen extends StatelessWidget {
                                                   fontSize: Resizable.font(
                                                       context, 30))),
                                         ),
-                                        if (BlocProvider.of<DetailLessonCubit>(
-                                                    cc)
-                                                .check ==
-                                            false && s.status == 'Pending')
+                                        if (s.status == 'Pending')
                                           LessonPendingView(BlocProvider.of<DetailLessonCubit>(
                                               cc)),
-                                        if (BlocProvider.of<DetailLessonCubit>(
-                                                        cc)
-                                                    .state!.status == 'Teaching')
+                                        if (s.status == 'Teaching')
                                           LessonTeachingView(),
-                                        if (BlocProvider.of<DetailLessonCubit>(
-                                            cc)
-                                            .state!.status == 'Complete')
+                                        if (s.status == 'Complete')
                                           LessonCompleteView(BlocProvider.of<DetailLessonCubit>(
                                               cc)),
                                       ],
