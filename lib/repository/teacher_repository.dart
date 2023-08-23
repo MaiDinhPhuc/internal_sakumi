@@ -361,32 +361,39 @@ class TeacherRepository {
     }
   }
 
-  Future<bool> addLessonResult(LessonResultModel model) async {
+  Future<bool> checkLessonResult(int lessonId, int classId) async {
     final db = FirebaseFirestore.instance;
 
     final temp = await db
         .collection("lesson_result")
-        .doc("lesson_${model.lessonId}_class_${model.classId}")
+        .doc("lesson_${lessonId}_class_$classId")
         .get();
-
-    if (!temp.exists) {
-      await db
-          .collection("lesson_result")
-          .doc("lesson_${model.lessonId}_class_${model.classId}")
-          .set({
-        'class_id': model.classId,
-        'date': model.date,
-        'id': model.id,
-        'lesson_id': model.lessonId,
-        'status': model.status,
-        'student_note': model.noteForStudent,
-        'support_note': model.noteForSupport,
-        'teacher_id': model.teacherId,
-        'teacher_note': model.noteForTeacher,
-      });
-      return true;
-    } else {
+    debugPrint('=============> temp.exists ${temp.exists}');
+    if (temp.exists == false) {
+      debugPrint('=============> temp.exists = false');
       return false;
+    } else {
+      debugPrint('=============> temp.exists = true');
+      return true;
     }
+  }
+
+  Future<void> addLessonResult(LessonResultModel model)async{
+    final db = FirebaseFirestore.instance;
+
+    await db
+        .collection("lesson_result")
+        .doc("lesson_${model.lessonId}_class_${model.classId}")
+        .set({
+      'class_id': model.classId,
+      'date': model.date,
+      'id': model.id,
+      'lesson_id': model.lessonId,
+      'status': model.status,
+      'student_note': model.noteForStudent,
+      'support_note': model.noteForSupport,
+      'teacher_id': model.teacherId,
+      'teacher_note': model.noteForTeacher,
+    });
   }
 }

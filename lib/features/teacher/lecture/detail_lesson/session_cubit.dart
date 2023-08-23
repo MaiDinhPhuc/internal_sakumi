@@ -30,6 +30,7 @@ class SessionCubit extends Cubit<int> {
 
   init(context) async {
     await getTeacherId();
+    debugPrint('===============> init session $teacherId');
     await loadStudentInClass(context);
     await loadStudentLesson(context);
     totalAttendance = listStudentLesson!
@@ -96,7 +97,7 @@ class SessionCubit extends Cubit<int> {
     if (attendId > 0 && totalAttendance < listStudent!.length) {
       totalAttendance++;
     }
-    if(attendId <= 0) {
+    if(attendId <= 0 && totalAttendance > 0) {
       totalAttendance--;
     }
 

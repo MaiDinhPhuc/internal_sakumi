@@ -10,12 +10,12 @@ import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 class LessonCompleteView extends StatelessWidget {
-  const LessonCompleteView({Key? key}) : super(key: key);
+  final DetailLessonCubit detailCubit;
+  const LessonCompleteView(this.detailCubit, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<SessionCubit>(context);
-    var detailCubit = BlocProvider.of<DetailLessonCubit>(context);
     return cubit.listStudent == null || cubit.listStudentLesson == null
         ? Transform.scale(
             scale: 0.75,
@@ -68,12 +68,12 @@ class LessonCompleteView extends StatelessWidget {
               SubmitButton(
                 onPressed: ()async{
                   waitingDialog(context);
-                  await BlocProvider.of<DetailLessonCubit>(context)
+                  await detailCubit
                       .noteForSupport(context, cubit.noteSupport.isNotEmpty
                       ? cubit.noteSupport
                       : AppText.txtNoNoteForSupport.text);
                   if(context.mounted) {
-                    await BlocProvider.of<DetailLessonCubit>(context)
+                    await detailCubit
                       .noteForAnotherSensei(context, cubit.noteSupport.isNotEmpty
                       ? cubit.noteSensei
                       : AppText.txtNoNoteForTeacher.text);

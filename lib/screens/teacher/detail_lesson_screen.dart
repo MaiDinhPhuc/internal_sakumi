@@ -9,7 +9,6 @@ import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/session_c
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
-import 'package:intl/intl.dart';
 
 class DetailLessonScreen extends StatelessWidget {
   final String name, classId, lessonId;
@@ -37,25 +36,12 @@ class DetailLessonScreen extends StatelessWidget {
                     builder: (cc, state) {
                       return BlocProvider(
                           create: (cc) => DetailLessonCubit()
-                            ..addLessonResult(
-                                cc,
-                                LessonResultModel(
-                                    id: 1000,
-                                    classId: int.parse(
-                                        TextUtils.getName(position: 2)),
-                                    lessonId: int.parse(TextUtils.getName()),
-                                    teacherId: BlocProvider.of<SessionCubit>(cc)
-                                        .teacherId,
-                                    status: 'Teaching',
-                                    date: DateFormat('dd/MM/yyyy')
-                                        .format(DateTime.now()),
-                                    noteForStudent: '',
-                                    noteForSupport: '',
-                                    noteForTeacher: '')),
+                            ..checkLessonResult(
+                                cc),
                           child: BlocBuilder<DetailLessonCubit,
                               LessonResultModel?>(
                             builder: (cc, s) {
-                              return (s == null && cubit.check == null)
+                              return s == null
                                   ? Transform.scale(
                                       scale: 0.75,
                                       child: const Center(
@@ -78,20 +64,18 @@ class DetailLessonScreen extends StatelessWidget {
                                         if (BlocProvider.of<DetailLessonCubit>(
                                                     cc)
                                                 .check ==
-                                            true)
-                                          LessonPendingView(),
+                                            false && s.status == 'Pending')
+                                          LessonPendingView(BlocProvider.of<DetailLessonCubit>(
+                                              cc)),
                                         if (BlocProvider.of<DetailLessonCubit>(
                                                         cc)
-                                                    .check ==
-                                                false &&
-                                            s!.status == 'Teaching')
+                                                    .state!.status == 'Teaching')
                                           LessonTeachingView(),
                                         if (BlocProvider.of<DetailLessonCubit>(
-                                                        cc)
-                                                    .check ==
-                                                false &&
-                                            s!.status == 'Complete')
-                                          LessonCompleteView(),
+                                            cc)
+                                            .state!.status == 'Complete')
+                                          LessonCompleteView(BlocProvider.of<DetailLessonCubit>(
+                                              cc)),
                                       ],
                                     );
                             },
