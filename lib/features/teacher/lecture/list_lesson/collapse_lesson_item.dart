@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/admin/manage_general/user_item.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_tab_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -29,6 +30,19 @@ class CollapseLessonItem extends StatelessWidget {
           style: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: Resizable.font(context, 16))),
+      sensei: Align(
+        alignment: Alignment.center,
+        child: Opacity(
+          opacity: 0,
+          child: CircleProgress(
+            title: '0 %',
+            lineWidth: Resizable.size(context, 3),
+            percent: 0,
+            radius: Resizable.size(context, 16),
+            fontSize: Resizable.font(context, 14),
+          ),
+        ),
+      ),
       attend: cubit.listRateAttend == null
           ? Transform.scale(
               scale: 0.75,
@@ -85,6 +99,7 @@ class CollapseLessonItem extends StatelessWidget {
                         fontSize: Resizable.font(context, 14),
                         fontWeight: FontWeight.w800),
                   )),
+      dropdown: Container(),
     );
   }
 }
