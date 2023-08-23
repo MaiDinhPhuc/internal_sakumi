@@ -12,11 +12,12 @@ class QuestionOptionItem extends StatelessWidget {
       {super.key,
       required this.questionModel,
       required this.onTap,
-      required this.soundCubit});
+      required this.soundCubit, required this.isDone});
   final int id, index;
   final QuestionModel questionModel;
   final Function() onTap;
   final SoundCubit soundCubit;
+  final bool isDone;
   @override
   Widget build(BuildContext context) {
     String question = questionModel.convertQuestion;
@@ -55,11 +56,17 @@ class QuestionOptionItem extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "${AppText.textQuestionNumber.text}${index + 1}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: Resizable.font(context, 17)),
+                          Row(
+                            children: [
+                              Icon(Icons.check_circle, color: isDone?greenColor:greyColor.shade500),
+                              SizedBox(width: Resizable.padding(context, 5)),
+                              Text(
+                                "${AppText.textQuestionNumber.text}${index + 1}",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: Resizable.font(context, 17)),
+                              )
+                            ],
                           ),
                           if (id == questionModel.id) ...[
                             if (questionModel.instruction != "")
