@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
-import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
@@ -10,10 +8,10 @@ import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LessonPendingView extends StatelessWidget {
-  const LessonPendingView({Key? key}) : super(key: key);
+  final DetailLessonCubit cubit;
+  const LessonPendingView(this.cubit, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -135,26 +133,21 @@ class LessonPendingView extends StatelessWidget {
         SizedBox(height: Resizable.size(context, 20)),
         SubmitButton(
             onPressed: () async {
-              SharedPreferences localData =
-                  await SharedPreferences.getInstance();
+              waitingDialog(context);
+              await cubit.addLessonResult(
+                  context,
+                  LessonResultModel(
+                      id: 1000,
+                      classId: int.parse(TextUtils.getName(position: 2)),
+                      lessonId: int.parse(TextUtils.getName()),
+                      teacherId: cubit.teacherId!,
+                      status: 'Teaching',
+                      date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                      noteForStudent: '',
+                      noteForSupport: '',
+                      noteForTeacher: ''));
               if (context.mounted) {
-                waitingDialog(context);
-                await BlocProvider.of<DetailLessonCubit>(context).addLessonResult(
-                    context,
-                    LessonResultModel(
-                        id: 1000,
-                        classId: int.parse(TextUtils.getName(position: 2)),
-                        lessonId: int.parse(TextUtils.getName()),
-                        teacherId: int.parse(localData.getInt(PrefKeyConfigs.userId).toString()),
-                        status: 'Teaching',
-                        date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
-                        noteForStudent: '',
-                        noteForSupport: '',
-                        noteForTeacher: ''));
-                debugPrint('=====================> 456789');
-                if(context.mounted) {
-                  Navigator.pop(context);
-                }
+                Navigator.pop(context);
               }
             },
             title: AppText.txtStartLesson.text)
