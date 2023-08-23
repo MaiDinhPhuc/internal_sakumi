@@ -150,63 +150,63 @@ class AnswerInfoView extends StatelessWidget {
                               }
                             },
                             onOpenFile: () async{
-                              await pickImage(answerModel);
-                              print(answerModel.listImagePicker.length);
+                              // await pickImage(answerModel);
+                              // print(answerModel.listImagePicker.length);
                             },
                             onOpenMic: () {
                               print("============>open mic");
                             })),
-                    BlocProvider(create: (context)=>ImagePickerCubit(answerModel.listImagePicker), child: BlocBuilder<ImagePickerCubit, List<Uint8List>>(
-                      builder: (c,list){
-                        if(list.isEmpty){
-                          return Container();
-                        }
-                        return SizedBox(
-                            height: Resizable.size(context, 250),
-                            child: ListView.builder(
-                              itemCount: list.length,
-                              scrollDirection: Axis.horizontal,
-                              padding: EdgeInsets.symmetric(
-                                  vertical:
-                                  Resizable.padding(context, 5)),
-                              itemBuilder: (_, i) => Padding(
-                                  padding: EdgeInsets.only(
-                                      right:
-                                      Resizable.padding(context, 10)),
-                                  child: Stack(
-                                      alignment: Alignment.topRight,
-                                      children: [
-                                        Image.memory(answerModel.listImagePicker.first, fit: BoxFit.fill, height: 100,width: 100),
-                                        Container(
-                                            height: Resizable.size(
-                                                context, 40),
-                                            width: Resizable.size(
-                                                context, 30),
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.only(
-                                                  topRight:
-                                                  Radius.circular(
-                                                      Resizable.size(
-                                                          context,
-                                                          30)),
-                                                  bottomLeft:
-                                                  Radius.circular(
-                                                      Resizable.size(
-                                                          context,
-                                                          30))),
-                                            ),
-                                            child: GestureDetector(
-                                                onTap: (){},
-                                                child: Icon(
-                                                  Icons.close_rounded,
-                                                  size: Resizable.size(
-                                                      context, 18),
-                                                  color: Colors.white,
-                                                )))
-                                      ])),
-                            )) ;
-                      },
-                    ),)
+                    // BlocProvider(create: (context)=>ImagePickerCubit(answerModel.listImagePicker), child: BlocBuilder<ImagePickerCubit, List<Uint8List>>(
+                    //   builder: (c,list){
+                    //     if(list.isEmpty){
+                    //       return Container();
+                    //     }
+                    //     return SizedBox(
+                    //         height: Resizable.size(context, 250),
+                    //         child: ListView.builder(
+                    //           itemCount: list.length,
+                    //           scrollDirection: Axis.horizontal,
+                    //           padding: EdgeInsets.symmetric(
+                    //               vertical:
+                    //               Resizable.padding(context, 5)),
+                    //           itemBuilder: (_, i) => Padding(
+                    //               padding: EdgeInsets.only(
+                    //                   right:
+                    //                   Resizable.padding(context, 10)),
+                    //               child: Stack(
+                    //                   alignment: Alignment.topRight,
+                    //                   children: [
+                    //                     Image.memory(answerModel.listImagePicker.first, fit: BoxFit.fill, height: 100,width: 100),
+                    //                     Container(
+                    //                         height: Resizable.size(
+                    //                             context, 40),
+                    //                         width: Resizable.size(
+                    //                             context, 30),
+                    //                         decoration: BoxDecoration(
+                    //                           borderRadius: BorderRadius.only(
+                    //                               topRight:
+                    //                               Radius.circular(
+                    //                                   Resizable.size(
+                    //                                       context,
+                    //                                       30)),
+                    //                               bottomLeft:
+                    //                               Radius.circular(
+                    //                                   Resizable.size(
+                    //                                       context,
+                    //                                       30))),
+                    //                         ),
+                    //                         child: GestureDetector(
+                    //                             onTap: (){},
+                    //                             child: Icon(
+                    //                               Icons.close_rounded,
+                    //                               size: Resizable.size(
+                    //                                   context, 18),
+                    //                               color: Colors.white,
+                    //                             )))
+                    //                   ])),
+                    //         )) ;
+                    //   },
+                    // ),)
                   ]
               ],
             ),
