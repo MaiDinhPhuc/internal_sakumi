@@ -14,9 +14,9 @@ import 'package:internal_sakumi/widget/title_widget.dart';
 
 class DetailGradingScreen extends StatelessWidget {
   final String name;
-  DetailGradingScreen(this.name, {super.key}): questionSoundCubit = SoundCubit();
+  DetailGradingScreen(this.name, {super.key}): questionSoundCubit = SoundCubit(), checkActiveCubit = CheckActiveCubit();
   final SoundCubit questionSoundCubit;
-
+  final CheckActiveCubit checkActiveCubit;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -188,6 +188,11 @@ class DetailGradingScreen extends StatelessWidget {
                                               onChanged: (newValue) {
                                                 BlocProvider.of<PopUpOptionCubit>(cc).change(newValue!, 1);
                                                 cubit.isGeneralComment = !cubit.isGeneralComment;
+                                                if(newValue == true){
+                                                  for(var i in cubit.answers){
+                                                    i.listImagePicker = [];
+                                                  }
+                                                }
                                                 cubit.updateAnswerView(cubit.state);
                                                 Navigator.pop(context);
                                               },
@@ -210,7 +215,7 @@ class DetailGradingScreen extends StatelessWidget {
                                     color: lightGreyColor,
                                     borderRadius: BorderRadius.circular(
                                         Resizable.size(context, 5))),
-                                child: DetailGradingView(cubit,questionSoundCubit),
+                                child: DetailGradingView(cubit,questionSoundCubit, checkActiveCubit: checkActiveCubit,),
                               ))
                             ],
                           ))
