@@ -331,4 +331,17 @@ class TeacherRepository {
       return false;
     }
   }
+
+  Future<void> updateProfileTeacher(
+     String id, String name, String phone) async {
+    final db = FirebaseFirestore.instance;
+
+    await db
+        .collection('teacher')
+        .doc("teacher_user_$id")
+        .update({
+      'name': name,
+      'phone': phone,
+    });
+  }
 }
