@@ -178,7 +178,11 @@ enum AppText {
   titleSubject,
   titleStatus,
   textSSNote,
-  titleHome
+  titleHome,
+  optInProgress,
+  optComplete,
+  optBoth,
+  txtFilter,
 }
 
 Map<AppText, String> texts = {
@@ -366,7 +370,11 @@ Map<AppText, String> texts = {
   AppText.statusInProgress: 'InProgress',
   AppText.txtWaiting: 'Waiting...',
   AppText.titleSubject: 'Tựa đề bài',
-  AppText.titleStatus: 'Trạng thái'
+  AppText.titleStatus: 'Trạng thái',
+  AppText.optBoth: 'Cả 2',
+  AppText.optInProgress: 'Đang diễn ra',
+  AppText.optComplete: 'Đã kết thúc',
+  AppText.txtFilter: 'Bộ lọc'
 };
 
 extension AppTexts on AppText {

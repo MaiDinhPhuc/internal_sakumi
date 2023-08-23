@@ -20,6 +20,8 @@ class DetailGradingCubit extends Cubit<int> {
   bool isShowName = true;
   bool isGeneralComment = false;
   List<int>? listStudentId;
+  List<bool>? listState;
+
   init(context) async {
     await loadFirst(context);
   }
@@ -67,7 +69,35 @@ class DetailGradingCubit extends Cubit<int> {
     for(var i in listStudent!){
       listStudentId!.add(i.userId);
     }
+    listState = [];
+    checkDone(true);
     emit(listQuestions!.first.id);
+  }
+
+  bool checkDone(bool isFirst){
+    if(isFirst){
+      for(var i in listQuestions!){
+        bool check = false;
+        int count = 0;
+        for(var j in getAnswerById(i.id))
+        {
+          if(j.newScore != -1){
+            count++;
+          }
+        }
+        if(count == getAnswerById(i.id).length){
+          check = true;
+        }
+        listState!.add(check);
+      }
+    }
+    bool isDone = listState!.every((element) => element == true);
+    return isDone;
+  }
+
+  List<AnswerModel> getAnswerById(int questionId){
+    List<AnswerModel> list = listAnswer!.where((answer) => answer.questionId == questionId).toList();
+    return list;
   }
 
   change(int questionId, context)async {
@@ -79,4 +109,5 @@ class DetailGradingCubit extends Cubit<int> {
     }
     emit(questionId);
   }
+
 }

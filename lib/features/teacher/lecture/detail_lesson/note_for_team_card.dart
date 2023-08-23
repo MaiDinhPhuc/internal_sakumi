@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
-import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
+import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/session_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class NoteForTeamCard extends StatelessWidget {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/teacher/lecture/teacher_cubit.dart';
+import 'package:internal_sakumi/features/teacher/list_class/teacher_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
 import 'package:screenshot/screenshot.dart';
@@ -15,7 +15,16 @@ class ChartView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<TeacherCubit>(context);
-    return Container(
+    return
+        cubit.listPoint!.isEmpty ||
+        cubit.listSubmit!.isEmpty ||
+        cubit.listAttendance!.isEmpty
+        ? Center(
+          child: Transform.scale(
+            scale: 0.75,
+            child: const CircularProgressIndicator(),
+          ),
+        ) : Container(
       margin: EdgeInsets.only(top: Resizable.size(context, 10)),
       height: Resizable.size(context, 130),
       child: Row(

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AnswerModel {
@@ -6,6 +8,7 @@ class AnswerModel {
   final List answer, images, records;
   int? _newScore;
   String? _newTeacherNote;
+  List<Uint8List> listImagePicker = [];
 
   AnswerModel({
     required this.studentId,

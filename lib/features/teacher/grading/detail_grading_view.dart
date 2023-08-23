@@ -79,13 +79,19 @@ class DetailGradingView extends StatelessWidget {
                               .newTeacherNote,
                         });
                       }
-                      if (cubit.listChecked.contains(cubit.state) == false) {
-                        cubit.listChecked.add(cubit.state);
-                        cubit.count++;
+                      bool isDone = true;
+                      for (var i in cubit.answers) {
+                        if(i.newScore == -1){
+                          isDone = false;
+                        }
+                      }
+                      if(isDone){
+                        cubit.listState![cubit.listQuestions!.indexOf(cubit.listQuestions!.firstWhere((element) => element.id == cubit.state))] = isDone;
                       }
                       cubit.updateAfterGrading(cubit.state);
+
                       cubit.isGeneralComment = false;
-                      if (cubit.count == cubit.listAnswer!.length) {
+                      if (cubit.checkDone(false)) {
                         for (var i in cubit.listStudent!) {
                           int temp = 0;
                           for (var j in cubit.listAnswer!) {

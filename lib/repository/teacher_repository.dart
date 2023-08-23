@@ -49,6 +49,19 @@ class TeacherRepository {
     return listTeacher;
   }
 
+  Future<List<TeacherClassModel>> getTeacherClassByStatus(
+      int id, String status) async {
+    final db = FirebaseFirestore.instance;
+    final snapshot = await db
+        .collection("teacher_class")
+        .where('user_id', isEqualTo: id)
+        .where('class_status', isEqualTo: status)
+        .get();
+    final list =
+        snapshot.docs.map((e) => TeacherClassModel.fromSnapshot(e)).toList();
+    return list;
+  }
+
   Future<List<LessonModel>> getLessonsByCourseId(int id) async {
     final db = FirebaseFirestore.instance;
     final snapshot =
@@ -56,6 +69,16 @@ class TeacherRepository {
     final lessons =
         snapshot.docs.map((e) => LessonModel.fromSnapshot(e)).toList();
     lessons.sort((a, b) => a.lessonId.compareTo(b.lessonId));
+    return lessons;
+  }
+
+  Future<List<LessonModel>> getAllLesson() async {
+    final db = FirebaseFirestore.instance;
+    final snapshot =
+    await db.collection("lessons").get();
+    final lessons =
+    snapshot.docs.map((e) => LessonModel.fromSnapshot(e)).toList();
+    //lessons.sort((a, b) => a.lessonId.compareTo(b.lessonId));
     return lessons;
   }
 
@@ -79,6 +102,17 @@ class TeacherRepository {
         snapshot.docs.map((e) => LessonResultModel.fromSnapshot(e)).toList();
 
     //list.sort((a, b) => a.lessonId.compareTo(b.lessonId));
+
+    return list;
+  }
+
+  Future<List<LessonResultModel>> getAllLessonResult() async {
+    final db = FirebaseFirestore.instance;
+
+    final snapshot = await db.collection('lesson_result').get();
+
+    final list =
+    snapshot.docs.map((e) => LessonResultModel.fromSnapshot(e)).toList();
 
     return list;
   }
@@ -264,9 +298,33 @@ class TeacherRepository {
 
     await db
         .collection('lesson_result')
-        .doc("lesson_${lessonId + 1}_class_$classId")
+        .doc("lesson_${lessonId}_class_$classId")
         .update({
       'student_note': note,
+    });
+  }
+
+  Future<void> noteForSupport(
+      int lessonId, int classId, String note) async {
+    final db = FirebaseFirestore.instance;
+
+    await db
+        .collection('lesson_result')
+        .doc("lesson_${lessonId}_class_$classId")
+        .update({
+      'support_note': note,
+    });
+  }
+
+  Future<void> noteForAnotherSensei(
+      int lessonId, int classId, String note) async {
+    final db = FirebaseFirestore.instance;
+
+    await db
+        .collection('lesson_result')
+        .doc("lesson_${lessonId}_class_$classId")
+        .update({
+      'teacher_note': note,
     });
   }
 
@@ -303,32 +361,39 @@ class TeacherRepository {
     }
   }
 
-  Future<bool> addLessonResult(LessonResultModel model) async {
+  Future<bool> checkLessonResult(int lessonId, int classId) async {
     final db = FirebaseFirestore.instance;
 
     final temp = await db
         .collection("lesson_result")
-        .doc("lesson_${model.lessonId}_class_${model.classId}")
+        .doc("lesson_${lessonId}_class_$classId")
         .get();
-
-    if (!temp.exists) {
-      await db
-          .collection("lesson_result")
-          .doc("lesson_${model.lessonId}_class_${model.classId}")
-          .set({
-        'class_id': model.classId,
-        'date': model.date,
-        'id': model.id,
-        'lesson_id': model.lessonId,
-        'status': model.status,
-        'student_note': model.noteForStudent,
-        'support_note': model.noteForSupport,
-        'teacher_id': model.teacherId,
-        'teacher_note': model.noteForTeacher,
-      });
-      return true;
-    } else {
+    debugPrint('=============> temp.exists ${temp.exists}');
+    if (temp.exists == false) {
+      debugPrint('=============> temp.exists = false');
       return false;
+    } else {
+      debugPrint('=============> temp.exists = true');
+      return true;
     }
+  }
+
+  Future<void> addLessonResult(LessonResultModel model)async{
+    final db = FirebaseFirestore.instance;
+
+    await db
+        .collection("lesson_result")
+        .doc("lesson_${model.lessonId}_class_${model.classId}")
+        .set({
+      'class_id': model.classId,
+      'date': model.date,
+      'id': model.id,
+      'lesson_id': model.lessonId,
+      'status': model.status,
+      'student_note': model.noteForStudent,
+      'support_note': model.noteForSupport,
+      'teacher_id': model.teacherId,
+      'teacher_note': model.noteForTeacher,
+    });
   }
 }
