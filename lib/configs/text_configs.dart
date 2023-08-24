@@ -179,9 +179,12 @@ enum AppText {
   titleStatus,
   textSSNote,
   titleHome,
-
   txtTeacherProfile,
   txtChangeImage, txtBaseInfo, txtPassLogin,
+  optInProgress,
+  optComplete,
+  optBoth,
+  txtFilter,
 }
 
 Map<AppText, String> texts = {
@@ -371,10 +374,15 @@ Map<AppText, String> texts = {
   AppText.titleSubject: 'Tựa đề bài',
   AppText.titleStatus: 'Trạng thái',
 
+
   AppText.txtTeacherProfile: 'Profile Giáo viên',
   AppText.txtChangeImage: 'Đổi ảnh mới',
   AppText.txtBaseInfo: 'Thông tin cơ bản',
   AppText.txtPassLogin: 'Mật khẩu đăng nhập',
+  AppText.optBoth: 'Cả 2',
+  AppText.optInProgress: 'Đang diễn ra',
+  AppText.optComplete: 'Đã kết thúc',
+  AppText.txtFilter: 'Bộ lọc'
 };
 
 extension AppTexts on AppText {

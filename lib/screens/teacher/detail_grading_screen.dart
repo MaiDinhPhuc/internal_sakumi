@@ -1,11 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/admin/manage_general/list_student/alert_checkbox_student.dart';
 import 'package:internal_sakumi/features/teacher/grading/detail_grading_view.dart';
-import 'package:internal_sakumi/features/teacher/grading/drop_down_grading_widget.dart';
 import 'package:internal_sakumi/features/teacher/grading/question_option.dart';
 import 'package:internal_sakumi/features/class_appbar.dart';
 import 'package:internal_sakumi/features/teacher/grading/detail_grading_cubit.dart';
@@ -17,9 +14,9 @@ import 'package:internal_sakumi/widget/title_widget.dart';
 
 class DetailGradingScreen extends StatelessWidget {
   final String name;
-  DetailGradingScreen(this.name, {super.key}): questionSoundCubit = SoundCubit();
+  DetailGradingScreen(this.name, {super.key}): questionSoundCubit = SoundCubit(), checkActiveCubit = CheckActiveCubit();
   final SoundCubit questionSoundCubit;
-
+  final CheckActiveCubit checkActiveCubit;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -74,7 +71,7 @@ class DetailGradingScreen extends StatelessWidget {
                                                 cubit.change(e.id, c);
                                                 SoundService.instance.stop();
                                               },
-                                              soundCubit: questionSoundCubit
+                                              soundCubit: questionSoundCubit, isDone: cubit.listState![cubit.listQuestions!.indexOf(e)],
                                           ),
                                         ))
                                             .toList(),
@@ -109,15 +106,21 @@ class DetailGradingScreen extends StatelessWidget {
                                       child: PopupMenuButton(itemBuilder: (context) => [
                                         ...cubit.listStudent!.map((e) => PopupMenuItem(
                                           padding: EdgeInsets.zero,
-                                          child: BlocProvider(create: (c)=>CheckBoxFilterCubit(true),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
+                                          child: BlocProvider(create: (c)=>CheckBoxFilterCubit(cubit.listStudentId!.contains(e.userId)),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
                                             return CheckboxListTile(
                                               controlAffinity: ListTileControlAffinity.leading,
                                               title: Text(e.name),
                                               value: state,
                                               onChanged: (newValue) {
-                                                BlocProvider.of<
-                                                    CheckBoxFilterCubit>(cc)
-                                                    .update();
+                                                if(state && cubit.listStudentId!.length == 1){}
+                                                else if(state && cubit.listStudentId!.length != 1){
+                                                  cubit.listStudentId!.remove(e.userId);
+                                                  BlocProvider.of<CheckBoxFilterCubit>(cc).update();
+                                                }else{
+                                                  cubit.listStudentId!.add(e.userId);
+                                                  BlocProvider.of<CheckBoxFilterCubit>(cc).update();
+                                                }
+                                                cubit.updateAnswerView(cubit.state);
                                               },
                                             );
                                           }))
@@ -185,6 +188,11 @@ class DetailGradingScreen extends StatelessWidget {
                                               onChanged: (newValue) {
                                                 BlocProvider.of<PopUpOptionCubit>(cc).change(newValue!, 1);
                                                 cubit.isGeneralComment = !cubit.isGeneralComment;
+                                                if(newValue == true){
+                                                  for(var i in cubit.answers){
+                                                    i.listImagePicker = [];
+                                                  }
+                                                }
                                                 cubit.updateAnswerView(cubit.state);
                                                 Navigator.pop(context);
                                               },
@@ -207,7 +215,7 @@ class DetailGradingScreen extends StatelessWidget {
                                     color: lightGreyColor,
                                     borderRadius: BorderRadius.circular(
                                         Resizable.size(context, 5))),
-                                child: DetailGradingView(cubit,questionSoundCubit),
+                                child: DetailGradingView(cubit,questionSoundCubit, checkActiveCubit: checkActiveCubit,),
                               ))
                             ],
                           ))

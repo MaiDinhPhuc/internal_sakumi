@@ -5,7 +5,6 @@ import 'package:internal_sakumi/features/teacher/profile/body_profile.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import '../../features/class_appbar.dart';
-import '../../features/teacher/lecture/teacher_cubit.dart';
 import '../../utils/text_utils.dart';
 
 class TeacherProfile extends StatelessWidget {

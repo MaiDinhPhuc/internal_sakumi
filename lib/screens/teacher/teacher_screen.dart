@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/admin/manage_general/input_form/input_dropdown.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
-import 'package:internal_sakumi/features/teacher/lecture/teacher_cubit.dart';
-import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/features/teacher/list_class/teacher_cubit.dart';
+import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:screenshot/screenshot.dart';
+import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
+import '../../routes.dart';
 import '../../utils/text_utils.dart';
 
 class TeacherScreen extends StatelessWidget {
@@ -81,7 +83,7 @@ class TeacherScreen extends StatelessWidget {
               ),
               Container(
                 margin: EdgeInsets.symmetric(
-                    vertical: Resizable.padding(context, 30)),
+                    vertical: Resizable.padding(context, 10)),
                 child: Text(AppText.titleListClass.text.toUpperCase(),
                     style: TextStyle(
                         fontSize: Resizable.font(context, 30),
@@ -90,69 +92,100 @@ class TeacherScreen extends StatelessWidget {
               BlocBuilder<TeacherCubit, int>(
                   builder: (_, __) => cubit.listClass == null
                       ? const Center(
-                          child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(),
+                  )
+                      : Container(
+                    margin: EdgeInsets.symmetric(
+                        horizontal:
+                        Resizable.padding(context, 150)),
+                    child: Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.centerRight,
+                          child: SizedBox(
+                            width: Resizable.size(context, 120),
+                            child: InputDropdown(
+                                isCircleBorder: true,
+                                height: 30,
+                                title: AppText.txtCourse.text,
+                                hint: AppText.txtFilter.text,
+                                errorText: AppText
+                                    .txtPleaseChooseCourse.text,
+                                onChanged: (v) async {
+                                  waitingDialog(context);
+                                  await cubit.loadListClassOfTeacher(context, v.toString());
+                                  if (context.mounted) {
+                                    Navigator.pop(context);
+                                  }
+                                },
+                                items: [
+                                  AppText.optBoth.text,
+                                  AppText.optInProgress.text,
+                                  AppText.optComplete.text,
+                                ]),
+                          ),
+                        ),
+                        ClassItemRowLayout(
+                          widgetClassCode: Text(
+                              AppText.txtClassCode.text,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: Resizable.font(
+                                      context, 17),
+                                  color: greyColor.shade600)),
+                          widgetCourse: Text(
+                              AppText.txtCourse.text,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: Resizable.font(
+                                      context, 17),
+                                  color: greyColor.shade600)),
+                          widgetLessons: Text(
+                              AppText.txtNumberOfLessons.text,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: Resizable.font(
+                                      context, 17),
+                                  color: greyColor.shade600)),
+                          widgetAttendance: Text(
+                              AppText.txtRateOfAttendance.text,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: Resizable.font(
+                                      context, 17),
+                                  color: greyColor.shade600)),
+                          widgetSubmit: Text(
+                              AppText
+                                  .txtRateOfSubmitHomework.text,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: Resizable.font(
+                                      context, 17),
+                                  color: greyColor.shade600)),
+                          widgetEvaluate: Text(
+                              AppText.txtEvaluate.text,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: Resizable.font(
+                                      context, 17),
+                                  color: greyColor.shade600)),
+                        ),
+                        SizedBox(
+                            height:
+                            Resizable.size(context, 10)),
+                        (cubit.listClass!.isNotEmpty) ?
+                        Column(
+                            children: cubit.listClass!
+                                .map((e) => ClassItem(
+                                cubit.listClass!.indexOf(e),
+                                e.classId))
+                                .toList()
+                        ) : Center(
+                          child: Text(AppText.txtNoClass.text),
                         )
-                      : cubit.listClass!.isEmpty
-                          ? Center(
-                              child: Text(AppText.txtNoClass.text),
-                            )
-                          : Container(
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: Resizable.padding(context, 150)),
-                              child: Column(
-                                children: [
-                                  ClassItemRowLayout(
-                                    widgetClassCode: Text(
-                                        AppText.txtClassCode.text,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize:
-                                                Resizable.font(context, 17),
-                                            color: greyColor.shade600)),
-                                    widgetCourse: Text(AppText.txtCourse.text,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize:
-                                                Resizable.font(context, 17),
-                                            color: greyColor.shade600)),
-                                    widgetLessons: Text(
-                                        AppText.txtNumberOfLessons.text,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize:
-                                                Resizable.font(context, 17),
-                                            color: greyColor.shade600)),
-                                    widgetAttendance: Text(
-                                        AppText.txtRateOfAttendance.text,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize:
-                                                Resizable.font(context, 17),
-                                            color: greyColor.shade600)),
-                                    widgetSubmit: Text(
-                                        AppText.txtRateOfSubmitHomework.text,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize:
-                                                Resizable.font(context, 17),
-                                            color: greyColor.shade600)),
-                                    widgetEvaluate: Text(
-                                        AppText.txtEvaluate.text,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize:
-                                                Resizable.font(context, 17),
-                                            color: greyColor.shade600)),
-                                  ),
-                                  SizedBox(height: Resizable.size(context, 10)),
-                                  ...cubit.listClass!
-                                      .map((e) => ClassItem(
-                                          cubit.listClass!.indexOf(e),
-                                          e.classId))
-                                      .toList(),
-                                ],
-                              ),
-                            ))
+                      ],
+                    ),
+                  ))
             ],
           ),
         )),

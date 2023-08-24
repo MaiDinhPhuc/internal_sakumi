@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker_web/image_picker_web.dart';
@@ -8,7 +10,6 @@ import 'package:internal_sakumi/widget/custom_button.dart';
 
 import '../../../configs/color_configs.dart';
 import '../../../utils/resizable.dart';
-import '../lecture/teacher_cubit.dart';
 
 class BodyProfile extends StatelessWidget {
   const BodyProfile({Key? key}) : super(key: key);
@@ -32,14 +33,16 @@ class BodyProfile extends StatelessWidget {
                   CircleAvatar(
                     radius: Resizable.size(context, 80),
                     backgroundColor: greyColor.shade300,
-                    backgroundImage: profileCubit.fromPicker!.image,
+                    backgroundImage: NetworkImage(
+                        profileCubit.profileTeacher!.url.isEmpty ? profileCubit.defaultImage : profileCubit.profileTeacher!.url
+                    ) ,
                   ),
                   SizedBox(height: Resizable.size(context, 20)),
                   CustomButton(
                       onPress: () async {
-                        Image? img = await ImagePickerWeb.getImageAsWidget();
-                        if(img != null) {
-                          profileCubit.changeAvatar(img);
+                        Uint8List? imgData = await ImagePickerWeb.getImageAsBytes();
+                        if(imgData != null) {
+                          profileCubit.changeAvatar(context, imgData!);
                         }
                       },
                       bgColor: Colors.white,
