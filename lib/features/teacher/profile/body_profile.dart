@@ -8,7 +8,6 @@ import 'package:internal_sakumi/widget/custom_button.dart';
 
 import '../../../configs/color_configs.dart';
 import '../../../utils/resizable.dart';
-import '../lecture/teacher_cubit.dart';
 
 class BodyProfile extends StatelessWidget {
   const BodyProfile({Key? key}) : super(key: key);
