@@ -78,9 +78,11 @@ class Sounder extends StatelessWidget {
                                             size:
                                                 Resizable.size(context, size))),
                     onTap: () async {
-                      if(soundType == "network"){
-                         js.context.callMethod('open', [sound]);
-                      }
+                      // if(soundType == "network"){
+                      //    js.context.callMethod('open', [sound]);
+                      // }
+                      SoundService.instance
+                          .playSound(sound, soundCubit, soundType);
                       // if (soundCubit.activeFilePath != sound) {
                       //   SoundService.instance
                       //       .playSound(sound, soundCubit, soundType);

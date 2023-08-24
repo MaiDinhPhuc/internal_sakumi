@@ -1,8 +1,7 @@
-//import 'package:assets_audio_player/assets_audio_player.dart';
-//import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/features/teacher/grading/sound/sound_cubit.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:video_player/video_player.dart';
+
 
 
 class SoundService {
@@ -12,18 +11,22 @@ class SoundService {
 
   static SoundService get instance => _instance;
 
-  AudioPlayer? _player;
+  VideoPlayerController? _player;
   //AssetsAudioPlayer? _player;
 
-  AudioPlayer newPlayer() {
-    // if (_player != null) {
-    //   if (_player!.state == PlayerState.playing) {
-    //     _player!.stop();
-    //   }
-    //   _player!.release();
-    // }
+  VideoPlayerController newPlayer(String url) {
+    if (_player != null) {
+      // if (_player!.state == PlayerState.playing) {
+      //   _player!.stop();
+      // }
+      _player!.pause();
+      _player!.dispose();
+    }
 
-    _player = AudioPlayer();
+    _player = VideoPlayerController.network(
+      url,
+      videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+    )..initialize();
 
     return _player!;
   }
@@ -39,31 +42,31 @@ class SoundService {
   //   return _player!;
   // }
 
-  AudioPlayer getPlayer(){
-    return _player!;
-  }
+  // AudioPlayer getPlayer(){
+  //   return _player!;
+  // }
   // AssetsAudioPlayer getPlayer(){
   //   return _player!;
   // }
 
 
-  stop(){
-    if(_player != null){
-      _player!.stop();
-      _player!.dispose();
-    }
-  }
-
-  seek(Duration position, String sound)async{
-    if (_player != null) {
-      await _player!.seek(position);
-    }
-  }
+  // stop(){
+  //   if(_player != null){
+  //     _player!.stop();
+  //     _player!.dispose();
+  //   }
+  // }
+  //
+  // seek(Duration position, String sound)async{
+  //   if (_player != null) {
+  //     await _player!.seek(position);
+  //   }
+  // }
 
 
 
   playSound(String sound, SoundCubit soundCubit, String type) async {
-    var player = newPlayer();
+    var player = newPlayer(sound);
 
     await soundCubit.loading();
     await soundCubit.changeActive(type, sound);
@@ -78,7 +81,7 @@ class SoundService {
     //     debugPrint("=============>open complete $sound");
     //   });
     // }
-    player.setUrl('https://firebasestorage.googleapis.com/v0/b/sakumi-student.appspot.com/o/question_voice_records%2Faudio_0_question_23_lesson_110501_student_3_class_1?alt=media&token=8f79d46b-1677-4ec1-b2d3-ba6de6f00cd8');
+    //player.setUrl('https://firebasestorage.googleapis.com/v0/b/sakumi-student.appspot.com/o/question_voice_records%2Faudio_0_question_23_lesson_110501_student_3_class_1?alt=media&token=8f79d46b-1677-4ec1-b2d3-ba6de6f00cd8');
     player.play();
     //player.play(UrlSource('https://firebasestorage.googleapis.com/v0/b/sakumi-student.appspot.com/o/question_voice_records%2Faudio_0_question_23_lesson_110501_student_3_class_1?alt=media&token=8f79d46b-1677-4ec1-b2d3-ba6de6f00cd8'));
     // player.current.listen((playingAudio) {

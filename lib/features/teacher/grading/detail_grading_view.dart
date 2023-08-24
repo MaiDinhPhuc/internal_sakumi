@@ -122,7 +122,6 @@ Future<void> submit(DetailGradingCubit cubit, context, CheckActiveCubit checkCub
   }
 
   for (var i in cubit.answers) {
-    print('student_${i.studentId}_homework_question_${i.questionId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 2)}');
     FirebaseFirestore.instance
         .collection('answer')
         .doc(
