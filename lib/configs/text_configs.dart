@@ -181,6 +181,12 @@ enum AppText {
   titleHome,
   txtTeacherProfile,
   txtChangeImage, txtBaseInfo, txtPassLogin,
+  txtCurrentPass,
+  txtNewPass,
+  txtAgainNewPass,
+  txtChangePass,
+  txtExit,
+  txtUpdate,
   optInProgress,
   optComplete,
   optBoth,
@@ -382,7 +388,15 @@ Map<AppText, String> texts = {
   AppText.optBoth: 'Cả 2',
   AppText.optInProgress: 'Đang diễn ra',
   AppText.optComplete: 'Đã kết thúc',
-  AppText.txtFilter: 'Bộ lọc'
+  AppText.txtFilter: 'Bộ lọc',
+  AppText.txtCurrentPass: 'Mật khẩu hiện tại',
+  AppText.txtNewPass: 'Mật khẩu mới',
+  AppText.txtAgainNewPass: 'Nhập lại mật khẩu mới',
+  AppText.txtChangePass: 'Đổi mật khẩu',
+  AppText.txtUpdate: 'Cập nhật',
+  AppText.txtExit: 'Thoát',
+
+
 };
 
 extension AppTexts on AppText {
