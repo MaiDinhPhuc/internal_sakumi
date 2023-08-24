@@ -44,7 +44,8 @@ class LessonCompleteView extends StatelessWidget {
                             'C',
                             'D',
                             'E'
-                          ]))
+                          ]
+    ))
                   .toList(),
               NoteForTeamCard(cubit.isNoteSupport,
                   hintText: AppText.txtHintNoteForSupport.text,

@@ -269,14 +269,26 @@ class TeacherRepository {
   }
 
   Future<void> updateTimekeeping(
-      int id, int lessonId, int classId, int attendId) async {
+      int userId, int lessonId, int classId, int attendId) async {
     final db = FirebaseFirestore.instance;
 
     await db
         .collection('student_lesson')
-        .doc("student_${id}_lesson_${lessonId}_class_$classId")
+        .doc("student_${userId}_lesson_${lessonId}_class_$classId")
         .update({
       'time_keeping': attendId,
+    });
+  }
+
+  Future<void> updateStudentStatus(
+      int userId, int classId, int point, String type) async {
+    final db = FirebaseFirestore.instance;
+
+    await db
+        .collection('student_class')
+        .doc("student_${userId}_class_$classId")
+        .update({
+      type: point,
     });
   }
 
@@ -316,16 +328,19 @@ class TeacherRepository {
     });
   }
 
-  Future<void> noteForAnotherSensei(
-      int lessonId, int classId, String note) async {
+  Future<void> noteForAnotherSensei(int lessonId, int classId, String note) async {
     final db = FirebaseFirestore.instance;
 
-    await db
-        .collection('lesson_result')
-        .doc("lesson_${lessonId}_class_$classId")
-        .update({
-      'teacher_note': note,
-    });
+    //final temp = await db.collection('lesson_result').doc("lesson_${lessonId}_class_$classId").get();
+
+    //if(temp.exists){
+      await db
+          .collection('lesson_result')
+          .doc("lesson_${lessonId}_class_$classId")
+          .update({
+        'teacher_note': note,
+      });
+    //}
   }
 
   Future<bool> addStudentLesson(StudentLessonModel model) async {
