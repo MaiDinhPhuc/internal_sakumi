@@ -40,16 +40,19 @@ class DetailGradingCubit extends Cubit<int> {
     emit(questionId);
   }
 
+  loadingState(){
+    emit(-2);
+  }
+
   updateAfterGrading(int questionId) async {
     now = questionId;
-    emit(-2);
     await Future.delayed(const Duration(milliseconds: 2000));
     emit(questionId);
   }
 
   List<AnswerModel> get answers => listAnswer!
       .where((answer) =>
-          answer.questionId == state &&
+          answer.questionId == now &&
           listStudentId!.contains(answer.studentId))
       .toList();
 

@@ -8,8 +8,8 @@ class AnswerModel {
   final List answer, images, records;
   int? _newScore;
   String? _newTeacherNote;
-  List<Uint8List> listImagePicker = [];
-  List<String> listImageUrl = [];
+  List<dynamic>? _listImagePicker;
+  List<String>? _listImageUrl;
 
   AnswerModel({
     required this.studentId,
@@ -24,6 +24,25 @@ class AnswerModel {
     required this.records
   });
 
+  List<dynamic> get listImagePicker => _listImagePicker ?? images;
+  set listImagePicker(List<dynamic> values) {
+    _listImagePicker = values;
+  }
+
+  List<String> get listImageUrl => _listImageUrl ?? [];
+  set listImageUrl(List<String> values) {
+    _listImageUrl = values;
+  }
+
+  bool checkIsUrl(value){
+    if (value is String) {
+      return true;
+    } else if (value is Uint8List) {
+      return false;
+    }
+    return true;
+  }
+
 
   int get newScore => _newScore ?? score;
 
@@ -33,7 +52,7 @@ class AnswerModel {
 
   String get newTeacherNote =>  _newTeacherNote ?? teacherNote;
 
-  set newTeacherNote(String value) {
+  set newTeacherNote(String? value) {
     _newTeacherNote = value;
   }
 

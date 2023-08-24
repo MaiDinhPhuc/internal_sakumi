@@ -186,10 +186,12 @@ enum AppText {
   optBoth,
   txtFilter,
   textStudentNotSubmit,
-  textContactIT
+  textContactIT,
+  textDetail
 }
 
 Map<AppText, String> texts = {
+  AppText.textDetail: 'Chi tiết',
   AppText.textStudentNotSubmit: 'Lớp chưa có ai nộp bài tập!',
   AppText.textContactIT: 'Lỗi khi load data, vui lòng liên hệ team IT để được support',
   AppText.titleHome: 'Trang chủ',

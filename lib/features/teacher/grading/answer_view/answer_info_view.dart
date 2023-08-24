@@ -79,8 +79,8 @@ class AnswerInfoView extends StatelessWidget {
                     }
                   },
                   onOpenFile: () async {
-                    await imageCubit.pickImage(answerModel);
-                  }, onOpenMic: () {  }, type: 'single',
+                    await imageCubit.pickImage(answerModel,checkActiveCubit, cubit);
+                  }, onOpenMic: () {  }, type: 'single', checkActiveCubit: checkActiveCubit,
                 )
             ]),
           )
