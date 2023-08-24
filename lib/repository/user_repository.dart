@@ -32,7 +32,13 @@ class UserRepository {
     final user = snapshot.docs.map((e) => UserModel.fromSnapshot(e)).single;
     return user;
   }
-
+  Future<UserModel> getUserTeacherById(int id) async {
+    final db = FirebaseFirestore.instance;
+    final snapshot =
+    await db.collection("users").where("user_id", isEqualTo: id).get();
+    final user = snapshot.docs.map((e) => UserModel.fromSnapshot(e)).single;
+    return user;
+  }
   Future<ClassModel> getClassByClassId(int classId, int courseId) async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db

@@ -7,8 +7,11 @@ import 'package:internal_sakumi/features/teacher/list_class/class_item.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
 import 'package:internal_sakumi/features/teacher/list_class/teacher_cubit.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
+import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
+
+import '../../utils/text_utils.dart';
 
 class TeacherScreen extends StatelessWidget {
   final String name;
@@ -36,9 +39,14 @@ class TeacherScreen extends StatelessWidget {
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        CircleAvatar(
-                          radius: Resizable.size(context, 25),
-                          backgroundColor: greyColor.shade300,
+                        GestureDetector(
+                          onTap: (){
+                            Navigator.pushNamed(context,'${Routes.teacher}?name=${TextUtils.getName().trim()}/profile');
+                          },
+                          child: CircleAvatar(
+                            radius: Resizable.size(context, 25),
+                            backgroundColor: greyColor.shade300,
+                          ),
                         ),
                         SizedBox(width: Resizable.size(context, 10)),
                         BlocBuilder<TeacherCubit, int>(

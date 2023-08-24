@@ -12,7 +12,25 @@ class TeacherModel {
       required this.phone,
       required this.teacherCode,
       required this.status});
-
+  TeacherModel copyWith({
+    String? name,
+    String? note,
+    String? phone,
+    String? teacherCode,
+    String? url,
+    String? status,
+    int? userId,
+  }) {
+    return TeacherModel(
+      name: name ?? this.name,
+      note: note ?? this.note,
+      phone: phone ?? this.phone,
+      teacherCode: teacherCode ?? this.teacherCode,
+      url: url ?? this.url,
+      status: status ?? this.status,
+      userId: userId ?? this.userId,
+    );
+  }
   factory TeacherModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;

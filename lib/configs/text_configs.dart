@@ -183,6 +183,8 @@ enum AppText {
   optComplete,
   optBoth,
   txtFilter,
+  txtTeacherProfile,
+  txtChangeImage, txtBaseInfo, txtPassLogin,
 }
 
 Map<AppText, String> texts = {
@@ -295,7 +297,7 @@ Map<AppText, String> texts = {
   AppText.titleChooseBackground: 'Chọn màu nền',
   AppText.titleChooseTextColor: 'Chọn màu chữ',
   AppText.txtHello: 'Xin chào',
-  AppText.txtSensei: 'sensei',
+  AppText.txtSensei: 'Sensei',
   AppText.txtLesson: 'Buổi',
   AppText.subjectLesson: 'Buổi học',
   AppText.titleNoteBeforeTeaching: 'Dặn dò trước buổi học',
@@ -374,7 +376,11 @@ Map<AppText, String> texts = {
   AppText.optBoth: 'Cả 2',
   AppText.optInProgress: 'Đang diễn ra',
   AppText.optComplete: 'Đã kết thúc',
-  AppText.txtFilter: 'Bộ lọc'
+  AppText.txtFilter: 'Bộ lọc',
+  AppText.txtTeacherProfile: 'Profile Giáo viên',
+  AppText.txtChangeImage: 'Đổi ảnh mới',
+  AppText.txtBaseInfo: 'Thông tin cơ bản',
+  AppText.txtPassLogin: 'Mật khẩu đăng nhập',
 };
 
 extension AppTexts on AppText {

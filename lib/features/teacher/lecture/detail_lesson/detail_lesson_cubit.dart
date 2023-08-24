@@ -38,8 +38,8 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
         TextUtils.getName(position: 2)));
 
     debugPrint('=============> addLessonResult $check');
-
-    emit(
+    if(check == false) {
+      emit(
         LessonResultModel(
             id: 1000,
             classId: int.parse(TextUtils.getName(position: 2)),
@@ -51,6 +51,13 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
             noteForSupport: '',
             noteForTeacher: '')
     );
+    }
+
+    if(check == true){
+      emit(await teacherRepository.getLessonResultByLessonId(
+          int.parse(TextUtils.getName()),
+          int.parse(TextUtils.getName(position: 2))));
+    }
   }
 
   addLessonResult(context, LessonResultModel model)async{
