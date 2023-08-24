@@ -16,6 +16,8 @@ import 'package:internal_sakumi/screens/teacher/tab/class_grading_tab.dart';
 import 'package:internal_sakumi/screens/teacher/tab/list_lesson_tab.dart';
 import 'package:internal_sakumi/screens/teacher/teacher_screen.dart';
 
+import 'screens/teacher/teacher_profile.dart';
+
 class Routes {
   static FluroRouter router = FluroRouter();
 
@@ -42,6 +44,7 @@ class Routes {
   static const manageGeneral = "manageGeneral";
 
   static const empty = '/empty';
+
 
   static void configureRoutes(FluroRouter router) {
     router.notFoundHandler = Handler(
@@ -76,6 +79,9 @@ class Routes {
     //     handler: detailClassHandler, transitionType: TransitionType.fadeIn);
     router.define(addUserToClass,
         handler: addUserToClassHandler, transitionType: TransitionType.fadeIn);
+
+    router.define('/:name/profile',
+        handler: profileTeacherHandler, transitionType: TransitionType.fadeIn);
   }
 }
 
@@ -145,4 +151,7 @@ var detailLessonHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return DetailLessonScreen(
       params['name'][0], params['classId'][0], params['lessonId'][0]);
+});
+var profileTeacherHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return TeacherProfile(params['name'][0]);
 });

@@ -378,22 +378,44 @@ class TeacherRepository {
     }
   }
 
-  Future<void> addLessonResult(LessonResultModel model)async{
+  Future<bool> addLessonResult(LessonResultModel model) async {
+    final db = FirebaseFirestore.instance;
+
+    final temp = await db
+        .collection("lesson_result").doc("lesson_${model.lessonId}_class_${model.classId}")
+        .get();
+
+    if(!temp.exists){
+      await db
+          .collection("lesson_result")
+          .doc("lesson_${model.lessonId}_class_${model.classId}")
+          .set({
+        'class_id': model.classId,
+        'date': model.date,
+        'id': model.id,
+        'lesson_id': model.lessonId,
+        'status': model.status,
+        'student_note': model.noteForStudent,
+        'support_note': model.noteForSupport,
+        'teacher_id': model.teacherId,
+        'teacher_note': model.noteForTeacher,
+      });
+      return true;
+    } else{
+      return false;
+    }
+  }
+
+  Future<void> updateProfileTeacher(
+     String id, String name, String phone) async {
     final db = FirebaseFirestore.instance;
 
     await db
-        .collection("lesson_result")
-        .doc("lesson_${model.lessonId}_class_${model.classId}")
-        .set({
-      'class_id': model.classId,
-      'date': model.date,
-      'id': model.id,
-      'lesson_id': model.lessonId,
-      'status': model.status,
-      'student_note': model.noteForStudent,
-      'support_note': model.noteForSupport,
-      'teacher_id': model.teacherId,
-      'teacher_note': model.noteForTeacher,
+        .collection('teacher')
+        .doc("teacher_user_$id")
+        .update({
+      'name': name,
+      'phone': phone,
     });
   }
 }

@@ -28,7 +28,7 @@ class ImageView extends StatelessWidget {
         )),
         answer.questionType == 11
             ? SizedBox(
-          height: Resizable.size(context, 100),
+          height: Resizable.size(context, 200),
           child: ListView.builder(
               itemCount: answer.convertAnswer.length,
               scrollDirection: Axis.horizontal,
@@ -37,8 +37,8 @@ class ImageView extends StatelessWidget {
               itemBuilder: (_, i) => Container(
                 margin: EdgeInsets.all(
                     Resizable.padding(context, 2)),
-                height: Resizable.size(context, 100),
-                width: Resizable.size(context, 100),
+                height: Resizable.size(context, 200),
+                width: Resizable.size(context, 200),
                 decoration: BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage(
@@ -65,8 +65,8 @@ class ImageView extends StatelessWidget {
                   BorderRadius.all(
                       Radius.circular(Resizable.size(context, 10))),
                   child: ImageNetwork(
-                      fitWeb: BoxFitWeb.fill,
-                      image: answer.convertAnswer.first, height: Resizable.size(context, 100), width: Resizable.size(context, 100)),
+                      fitWeb: answer.questionType == 4 ? BoxFitWeb.contain : BoxFitWeb.fill,
+                      image: answer.convertAnswer.first, height: Resizable.size(context, 200), width: Resizable.size(context, 200)),
                 )),
             if(answer.answer.length == 2)
               Padding(
@@ -78,8 +78,8 @@ class ImageView extends StatelessWidget {
                     BorderRadius.all(
                         Radius.circular(Resizable.size(context, 10))),
                     child: ImageNetwork(image: answer.convertAnswer[1].toString(),
-                        fitWeb: BoxFitWeb.fill,
-                        height: Resizable.size(context, 100), width: Resizable.size(context, 100)),
+                        fitWeb: answer.questionType == 4 ? BoxFitWeb.contain :  BoxFitWeb.fill,
+                        height: Resizable.size(context, 200), width: Resizable.size(context, 200)),
                   )),
             if(answer.answer.length > 2)
               Stack(
@@ -91,8 +91,8 @@ class ImageView extends StatelessWidget {
                     BorderRadius.all(
                         Radius.circular(Resizable.size(context, 10))),
                     child: ImageNetwork(image: answer.convertAnswer[1].toString(),
-                        fitWeb: BoxFitWeb.fill,
-                        height: Resizable.size(context, 100), width: Resizable.size(context, 100)),
+                        fitWeb:answer.questionType == 4 ? BoxFitWeb.contain :  BoxFitWeb.fill,
+                        height: Resizable.size(context, 200), width: Resizable.size(context, 200)),
                   ),
                   BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
@@ -103,8 +103,8 @@ class ImageView extends StatelessWidget {
                             Radius.circular(Resizable.size(context, 10))),
                         color: Colors.grey.withOpacity(0.4),
                       ),
-                      height: Resizable.size(context, 100),
-                      width:Resizable.size(context, 100),
+                      height: Resizable.size(context, 200),
+                      width:Resizable.size(context, 200),
                     ),
                   ),
                   Text("+${answer.answer.length-2}",style: TextStyle(color:Colors.white,fontSize: Resizable.font(context, 30), fontWeight: FontWeight.w600),)
