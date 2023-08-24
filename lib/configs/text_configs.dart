@@ -185,9 +185,13 @@ enum AppText {
   txtFilter,
   txtTeacherProfile,
   txtChangeImage, txtBaseInfo, txtPassLogin,
+  textStudentNotSubmit,
+  textContactIT
 }
 
 Map<AppText, String> texts = {
+  AppText.textStudentNotSubmit: 'Lớp chưa có ai nộp bài tập!',
+  AppText.textContactIT: 'Lỗi khi load data, vui lòng liên hệ team IT để được support',
   AppText.titleHome: 'Trang chủ',
   AppText.textSSNote: 'Sensei hãy nhận xét về bài làm của Học viên nhé...',
   AppText.txtGradingDone: 'Chấm điểm xong!',

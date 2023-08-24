@@ -9,6 +9,7 @@ class AnswerModel {
   int? _newScore;
   String? _newTeacherNote;
   List<Uint8List> listImagePicker = [];
+  List<String> listImageUrl = [];
 
   AnswerModel({
     required this.studentId,

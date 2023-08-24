@@ -2,6 +2,7 @@ import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/features/teacher/grading/answer_view/pick_image_cubit.dart';
 import 'package:internal_sakumi/features/teacher/grading/answer_view/student_answer_view.dart';
 import 'package:internal_sakumi/features/teacher/grading/detail_grading_cubit.dart';
+import 'package:internal_sakumi/features/teacher/grading/detail_grading_view.dart';
 import 'package:internal_sakumi/features/teacher/grading/sound/sound_cubit.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -13,12 +14,13 @@ class AnswerInfoView extends StatelessWidget {
       {super.key,
       required this.answerModel,
       required this.soundCubit,
-      required this.cubit})
+      required this.cubit, required this.checkActiveCubit})
       : imageCubit = ImagePickerCubit();
   final AnswerModel answerModel;
   final SoundCubit soundCubit;
   final DetailGradingCubit cubit;
   final ImagePickerCubit imageCubit;
+  final CheckActiveCubit checkActiveCubit;
   @override
   Widget build(BuildContext context) {
     TextEditingController noteController =
@@ -62,7 +64,7 @@ class AnswerInfoView extends StatelessWidget {
               StudentAnswerView(
                 answerModel: answerModel,
                 cubit: cubit,
-                soundCubit: soundCubit,
+                soundCubit: soundCubit, checkActiveCubit: checkActiveCubit,
               ),
               if (!cubit.isGeneralComment)
                 TeacherNoteView(

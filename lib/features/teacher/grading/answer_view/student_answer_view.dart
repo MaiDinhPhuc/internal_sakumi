@@ -17,10 +17,11 @@ class StudentAnswerView extends StatelessWidget {
       {super.key,
       required this.answerModel,
       required this.cubit,
-      required this.soundCubit});
+      required this.soundCubit, required this.checkActiveCubit});
   final AnswerModel answerModel;
   final DetailGradingCubit cubit;
   final SoundCubit soundCubit;
+  final CheckActiveCubit checkActiveCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +97,11 @@ class StudentAnswerView extends StatelessWidget {
                               .listAnswer![
                                   cubit.listAnswer!.indexOf(answerModel)]
                               .newScore = -1;
+                        }
+                        if(cubit.answers.every((element) => element.newScore != element.score) || (cubit.answers.every((element) => element.score != -1) && cubit.answers.any((element) => element.newScore != element.score))){
+                          checkActiveCubit.changeActive(true);
+                        }else{
+                          checkActiveCubit.changeActive(false);
                         }
                       },
                       value: s);

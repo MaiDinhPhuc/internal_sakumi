@@ -13,7 +13,8 @@ import 'answer_view/pick_image_cubit.dart';
 import 'detail_grading_cubit.dart';
 
 class DetailGradingView extends StatelessWidget {
-  DetailGradingView(this.cubit, this.soundCubit, {super.key, required this.checkActiveCubit})
+  DetailGradingView(this.cubit, this.soundCubit,
+      {super.key, required this.checkActiveCubit})
       : imageCubit = ImagePickerCubit();
   final DetailGradingCubit cubit;
   final SoundCubit soundCubit;
@@ -27,74 +28,86 @@ class DetailGradingView extends StatelessWidget {
         ? const Center(
             child: CircularProgressIndicator(),
           )
-        : SingleChildScrollView(
-            child: Column(
-              children: [
-                ...cubit.answers.map((e) => AnswerInfoView(
-                      answerModel: e,
-                      soundCubit: soundCubit,
-                      cubit: cubit,
-                    )),
-                if (cubit.isGeneralComment)
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        vertical: Resizable.padding(context, 10),
-                        horizontal: Resizable.padding(context, 10)),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(Resizable.size(context, 5))),
-                        color: Colors.white),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(AppText.textGeneralComment.text,
-                            style: TextStyle(
-                                fontSize: Resizable.font(context, 18),
-                                fontWeight: FontWeight.w700)),
-                        TeacherNoteView(
-                          imagePickerCubit: imageCubit,
-                          answerModel: cubit.listAnswer!.first,
-                          cubit: cubit,
-                          noteController: noteController,
-                          onChange: (String? text) {
-                            if (text != null) {
-                              for (var i in cubit.answers) {
-                                i.newTeacherNote = text;
-                              }
-                            }
-                          },
-                          onOpenFile: () async {
-                            await imageCubit.pickImageForAll(cubit.answers);
-                          },
-                          onOpenMic: () {},
-                          type: 'all',
+        : BlocBuilder<CheckActiveCubit, bool>(
+            bloc: checkActiveCubit,
+            builder: (c, s) {
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ...cubit.answers.map((e) => AnswerInfoView(
+                          answerModel: e,
+                          soundCubit: soundCubit,
+                          cubit: cubit, checkActiveCubit: checkActiveCubit,
+                        )),
+                    if (cubit.isGeneralComment)
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            vertical: Resizable.padding(context, 10),
+                            horizontal: Resizable.padding(context, 10)),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(Resizable.size(context, 5))),
+                            color: Colors.white),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(AppText.textGeneralComment.text,
+                                style: TextStyle(
+                                    fontSize: Resizable.font(context, 18),
+                                    fontWeight: FontWeight.w700)),
+                            TeacherNoteView(
+                              imagePickerCubit: imageCubit,
+                              answerModel: cubit.listAnswer!.first,
+                              cubit: cubit,
+                              noteController: noteController,
+                              onChange: (String? text) {
+                                if (text != null) {
+                                  for (var i in cubit.answers) {
+                                    i.newTeacherNote = text;
+                                  }
+                                }
+                              },
+                              onOpenFile: () async {
+                                await imageCubit.pickImageForAll(cubit.answers);
+                              },
+                              onOpenMic: () {},
+                              type: 'all',
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                Padding(
-                    padding:
-                        EdgeInsets.only(top: Resizable.padding(context, 15)),
-                    child: SubmitButton(
-                        onPressed: () async {
-                          await submit(cubit);
-                        },
-                        title: AppText.btnUpdate.text.toUpperCase()))
-              ],
-            ),
-          );
+                      ),
+                    Padding(
+                        padding: EdgeInsets.only(
+                            top: Resizable.padding(context, 15)),
+                        child: SubmitButton(
+                            isActive: s,
+                            onPressed: () async {
+                              await submit(cubit);
+                            },
+                            title: AppText.btnUpdate.text.toUpperCase()))
+                  ],
+                ),
+              );
+            });
   }
 }
 
-class CheckActiveCubit extends Cubit<bool>{
-  CheckActiveCubit():super(false);
+class CheckActiveCubit extends Cubit<bool> {
+  CheckActiveCubit() : super(false);
 
-  changeActive(bool value){
+  changeActive(bool value) {
     emit(value);
   }
 }
 
 Future<void> submit(DetailGradingCubit cubit) async {
+
+  for(var i in cubit.answers){
+    if(i.listImagePicker.isNotEmpty){
+
+    }
+  }
+
   for (var i in cubit.answers) {
     FirebaseFirestore.instance
         .collection('answer')

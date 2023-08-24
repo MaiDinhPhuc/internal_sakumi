@@ -7,7 +7,6 @@ import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/repository/user_repository.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
-
 class DetailGradingCubit extends Cubit<int> {
   DetailGradingCubit() : super(-1);
 
@@ -15,7 +14,7 @@ class DetailGradingCubit extends Cubit<int> {
   QuestionModel? question;
   List<AnswerModel>? listAnswer;
   List<StudentModel>? listStudent;
-  int count = 0;
+  int now = 0;
   List<int> listChecked = [];
   bool isShowName = true;
   bool isGeneralComment = false;
@@ -26,75 +25,84 @@ class DetailGradingCubit extends Cubit<int> {
     await loadFirst(context);
   }
 
-  String getStudentName(AnswerModel answerModel){
-    for(var i in listStudent!){
-      if(i.userId == answerModel.studentId){
+  String getStudentName(AnswerModel answerModel) {
+    for (var i in listStudent!) {
+      if (i.userId == answerModel.studentId) {
         return i.name;
       }
     }
     return "";
   }
 
-  updateAnswerView(int questionId)async{
-   emit(0);
-   emit(questionId);
+  updateAnswerView(int questionId) async {
+    now = questionId;
+    emit(0);
+    emit(questionId);
   }
-  updateAfterGrading(int questionId)async{
+
+  updateAfterGrading(int questionId) async {
+    now = questionId;
     emit(-2);
     await Future.delayed(const Duration(milliseconds: 2000));
     emit(questionId);
   }
 
-  List<AnswerModel> get answers => listAnswer!.where((answer) => answer.questionId == state && listStudentId!.contains(answer.studentId)).toList();
-
+  List<AnswerModel> get answers => listAnswer!
+      .where((answer) =>
+          answer.questionId == state &&
+          listStudentId!.contains(answer.studentId))
+      .toList();
 
   loadFirst(context) async {
     TeacherRepository teacherRepository =
-    TeacherRepository.fromContext(context);
-    UserRepository userRepository =
-    UserRepository.fromContext(context);
-    listQuestions = await teacherRepository.getQuestionByLessonId(TextUtils.getName());
-    listAnswer = await teacherRepository.getAnswersOfQuestion(int.parse(TextUtils.getName()),int.parse(TextUtils.getName(position: 2)));
+        TeacherRepository.fromContext(context);
+    UserRepository userRepository = UserRepository.fromContext(context);
+    listQuestions =
+        await teacherRepository.getQuestionByLessonId(TextUtils.getName());
+    listAnswer = await teacherRepository.getAnswersOfQuestion(
+        int.parse(TextUtils.getName()),
+        int.parse(TextUtils.getName(position: 2)));
 
-    if(listAnswer!.isEmpty){
+    if (listAnswer!.isEmpty) {
       emit(0);
-    }else{
-      List<StudentClassModel> listStudentClass = await teacherRepository.getStudentClassInClass(int.parse(TextUtils.getName(position: 2)));
+    } else {
+      List<StudentClassModel> listStudentClass = await teacherRepository
+          .getStudentClassInClass(int.parse(TextUtils.getName(position: 2)));
       listStudent = [];
-      for(var i in listStudentClass){
-        for(var j in listAnswer!){
-          if(i.userId == j.studentId){
+      for (var i in listStudentClass) {
+        for (var j in listAnswer!) {
+          if (i.userId == j.studentId) {
             listStudent!.add(await userRepository.getStudentInfo(i.userId));
             break;
           }
         }
       }
       listStudentId = [];
-      for(var i in listStudent!){
+      for (var i in listStudent!) {
         listStudentId!.add(i.userId);
       }
       listState = [];
       checkDone(true);
-      if(listQuestions!.isNotEmpty){
+      if (listQuestions!.isNotEmpty) {
+        now = listQuestions!.first.id;
         emit(listQuestions!.first.id);
-      }else{
+      } else {
         emit(0);
       }
     }
   }
 
-  bool checkDone(bool isFirst){
-    if(isFirst){
-      for(var i in listQuestions!){
+  bool checkDone(bool isFirst) {
+    if (isFirst) {
+      for (var i in listQuestions!) {
         bool check = false;
         int count = 0;
-        for(var j in getAnswerById(i.id))
-        {
-          if(j.newScore != -1){
+        for (var j in getAnswerById(i.id)) {
+          if (j.newScore != -1) {
             count++;
           }
         }
-        if(count == getAnswerById(i.id).length){
+        if (count == getAnswerById(i.id).length) {
           check = true;
         }
         listState!.add(check);
@@ -104,19 +112,20 @@ class DetailGradingCubit extends Cubit<int> {
     return isDone;
   }
 
-  List<AnswerModel> getAnswerById(int questionId){
-    List<AnswerModel> list = listAnswer!.where((answer) => answer.questionId == questionId).toList();
+  List<AnswerModel> getAnswerById(int questionId) {
+    List<AnswerModel> list =
+        listAnswer!.where((answer) => answer.questionId == questionId).toList();
     return list;
   }
 
-  change(int questionId, context)async {
-    for(var i in listQuestions!){
-      if(i.id == questionId){
+  change(int questionId, context) async {
+    for (var i in listQuestions!) {
+      if (i.id == questionId) {
         question = i;
         break;
       }
     }
+    now = questionId;
     emit(questionId);
   }
-
 }
