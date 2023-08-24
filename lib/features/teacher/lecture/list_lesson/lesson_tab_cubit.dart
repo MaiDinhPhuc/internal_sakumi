@@ -6,6 +6,7 @@ import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
+import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
@@ -21,6 +22,7 @@ class LessonTabCubit extends Cubit<int> {
   List<List<StudentLessonModel?>> listStdLesson = [];
   List<List<int>>? listSubmit, listAttendance;
   List<List<String>>? listNote;
+  List<TeacherModel?>? infoTeachers;
   List<double>? listRateAttend, listRateSubmit;
   List<bool?>? listMarked;
 
@@ -38,19 +40,20 @@ class LessonTabCubit extends Cubit<int> {
     debugPrint('==============> init 6 $listRateAttend');
   }
 
-  loadLesson(context) async {
-    TeacherRepository teacherRepo = TeacherRepository.fromContext(context);
-    lessons = await teacherRepo.getLessonsByCourseId(classModel!.courseId);
-
-    emit(state + 1);
-  }
-
   loadClass(context) async {
     TeacherRepository teacherRepo = TeacherRepository.fromContext(context);
     classModel =
-        await teacherRepo.getClassById(int.parse(TextUtils.getClassId()));
+    await teacherRepo.getClassById(int.parse(TextUtils.getClassId()));
     debugPrint(
         '==============> loadClass 4 ${classModel!.classId} ${classModel!.courseId} ${int.parse(TextUtils.getClassId())}');
+    emit(state + 1);
+  }
+
+  loadLesson(context) async {
+    debugPrint('==============> loadLesson 000');
+    TeacherRepository teacherRepo = TeacherRepository.fromContext(context);
+    lessons = await teacherRepo.getLessonsByCourseId(classModel!.courseId);
+debugPrint('==============> loadLesson ${lessons?.length}');
     emit(state + 1);
   }
 
@@ -74,19 +77,40 @@ class LessonTabCubit extends Cubit<int> {
   loadLessonResult(context) async {
     TeacherRepository teacherRepository =
     TeacherRepository.fromContext(context);
+    AdminRepository adminRepo = AdminRepository.fromContext(context);
     listLessonResult = [];
     lessonResults = List.generate(lessons!.length, (index) => null);
+    infoTeachers = List.generate(lessons!.length, (index) => null);
+
     listLessonResult = await teacherRepository
         .getLessonResultByClassId(classModel!.classId);
+
+    var teachers = await adminRepo.getAllTeacher();
+
+    debugPrint('=============> teachers ${teachers.length}');
 
     for(var lesson in lessons!){
       for(var item in listLessonResult!){
         if(lesson.lessonId == item!.lessonId){
           lessonResults![lessons!.indexOf(lesson)] = item;
-          debugPrint('=============> item ${item.lessonId}');
+          debugPrint('=============> item ${item.teacherId}');
         }
       }
     }
+    debugPrint('=============> lessonResults ${lessonResults?.length}');
+    for(var i in lessonResults!){
+      debugPrint('===============>>>>>>>>>>>>> iiiiii ${i?.teacherId}');
+      if(i != null){
+        for(var j in teachers){
+          debugPrint('=============> item item ${j?.name}');
+          if(i!.teacherId == j.userId){
+            infoTeachers![lessonResults!.indexOf(i)] = j;
+            debugPrint('=============> item0000 ${j!.name}');
+          }
+        }
+      }
+    }
+debugPrint('==============> item 111111');
     emit(state + 1);
   }
 

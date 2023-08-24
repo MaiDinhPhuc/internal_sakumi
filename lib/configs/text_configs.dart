@@ -297,7 +297,7 @@ Map<AppText, String> texts = {
   AppText.titleChooseBackground: 'Chọn màu nền',
   AppText.titleChooseTextColor: 'Chọn màu chữ',
   AppText.txtHello: 'Xin chào',
-  AppText.txtSensei: 'sensei',
+  AppText.txtSensei: 'Sensei',
   AppText.txtLesson: 'Buổi',
   AppText.subjectLesson: 'Buổi học',
   AppText.titleNoteBeforeTeaching: 'Dặn dò trước buổi học',
