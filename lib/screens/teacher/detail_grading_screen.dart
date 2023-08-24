@@ -46,10 +46,12 @@ class DetailGradingScreen extends StatelessWidget {
                           flex: 1,
                           child: Padding(
                             padding: EdgeInsets.only(left: Resizable.padding(context, 20)),
-                            child: cubit.listQuestions == null
+                            child: cubit.listAnswer == null
                                 ? Transform.scale(
                               scale: 0.75,
                               child: const CircularProgressIndicator(),
+                            ): cubit.listAnswer!.isEmpty ? Center(
+                              child: Text("Lớp chưa có ai nộp bài tập"),
                             ) : Column(
                               children: [
                                 TitleWidget(AppText.titleQuestion.text.toUpperCase()),

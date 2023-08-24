@@ -56,23 +56,31 @@ class DetailGradingCubit extends Cubit<int> {
     listQuestions = await teacherRepository.getQuestionByLessonId(TextUtils.getName());
     listAnswer = await teacherRepository.getAnswersOfQuestion(int.parse(TextUtils.getName()),int.parse(TextUtils.getName(position: 2)));
 
-    List<StudentClassModel> listStudentClass = await teacherRepository.getStudentClassInClass(int.parse(TextUtils.getName(position: 2)));
-    listStudent = [];
-    for(var i in listStudentClass){
-      for(var j in listAnswer!){
-        if(i.userId == j.studentId){
-          listStudent!.add(await userRepository.getStudentInfo(i.userId));
-          break;
+    if(listAnswer!.isEmpty){
+      emit(0);
+    }else{
+      List<StudentClassModel> listStudentClass = await teacherRepository.getStudentClassInClass(int.parse(TextUtils.getName(position: 2)));
+      listStudent = [];
+      for(var i in listStudentClass){
+        for(var j in listAnswer!){
+          if(i.userId == j.studentId){
+            listStudent!.add(await userRepository.getStudentInfo(i.userId));
+            break;
+          }
         }
       }
+      listStudentId = [];
+      for(var i in listStudent!){
+        listStudentId!.add(i.userId);
+      }
+      listState = [];
+      checkDone(true);
+      if(listQuestions!.isNotEmpty){
+        emit(listQuestions!.first.id);
+      }else{
+        emit(0);
+      }
     }
-    listStudentId = [];
-    for(var i in listStudent!){
-      listStudentId!.add(i.userId);
-    }
-    listState = [];
-    checkDone(true);
-    emit(listQuestions!.first.id);
   }
 
   bool checkDone(bool isFirst){
