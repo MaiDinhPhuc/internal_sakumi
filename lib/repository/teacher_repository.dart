@@ -14,7 +14,7 @@ import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
-
+import 'package:firebase_storage/firebase_storage.dart';
 class TeacherRepository {
   static TeacherRepository fromContext(BuildContext context) =>
       RepositoryProvider.of<TeacherRepository>(context);
@@ -74,10 +74,9 @@ class TeacherRepository {
 
   Future<List<LessonModel>> getAllLesson() async {
     final db = FirebaseFirestore.instance;
-    final snapshot =
-    await db.collection("lessons").get();
+    final snapshot = await db.collection("lessons").get();
     final lessons =
-    snapshot.docs.map((e) => LessonModel.fromSnapshot(e)).toList();
+        snapshot.docs.map((e) => LessonModel.fromSnapshot(e)).toList();
     //lessons.sort((a, b) => a.lessonId.compareTo(b.lessonId));
     return lessons;
   }
@@ -112,7 +111,7 @@ class TeacherRepository {
     final snapshot = await db.collection('lesson_result').get();
 
     final list =
-    snapshot.docs.map((e) => LessonResultModel.fromSnapshot(e)).toList();
+        snapshot.docs.map((e) => LessonResultModel.fromSnapshot(e)).toList();
 
     return list;
   }
@@ -304,8 +303,7 @@ class TeacherRepository {
     });
   }
 
-  Future<void> noteForSupport(
-      int lessonId, int classId, String note) async {
+  Future<void> noteForSupport(int lessonId, int classId, String note) async {
     final db = FirebaseFirestore.instance;
 
     await db
@@ -407,15 +405,27 @@ class TeacherRepository {
   }
 
   Future<void> updateProfileTeacher(
-     String id, String name, String phone) async {
+      String id, TeacherModel model) async {
     final db = FirebaseFirestore.instance;
 
-    await db
-        .collection('teacher')
-        .doc("teacher_user_$id")
-        .update({
-      'name': name,
-      'phone': phone,
+    await db.collection('teacher').doc("teacher_user_$id").update({
+      'name': model.name,
+      'note': model.note,
+      'url': model.url,
+      'status': model.status,
+      'teacher_code': model.teacherCode,
+      'phone': model.phone,
+      'user_id': model.userId,
+
     });
   }
+
+  Future<String> uploadImageAndGetUrl(Uint8List data ,String folder) async {
+    final now = DateTime.now().microsecondsSinceEpoch;
+    final ref = FirebaseStorage.instance.ref().child('$folder/$now');
+    await ref.putData(data ,SettableMetadata(contentType: '.png'));
+    return await ref.getDownloadURL();
+  }
+
+
 }

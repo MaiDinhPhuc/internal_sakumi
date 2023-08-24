@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -19,11 +21,10 @@ class TeacherProfileCubit extends Cubit<int> {
   bool isEditBaseInfo = false;
   bool isEditPassLogin = false;
   bool isUpdate = false;
-  Image? fromPicker;
+  String defaultImage = 'https://cdn3.iconfinder.com/data/icons/education-1-28/49/144-512.png';
   List<Map<String, dynamic>>? listInfoTextField;
 
   load(BuildContext context) async {
-    emit(0);
     UserRepository userRepository = UserRepository.fromContext(context);
     TeacherRepository teacherRepository =
         TeacherRepository.fromContext(context);
@@ -31,12 +32,7 @@ class TeacherProfileCubit extends Cubit<int> {
     profileTeacher = await teacherRepository
         .getTeacher(localData.getString(PrefKeyConfigs.code).toString());
     debugPrint('=>>>>>>>profileTeacher: ${profileTeacher!.name}');
-    if(profileTeacher!.url.isEmpty) {
-      fromPicker = Image.network('https://cdn3.iconfinder.com/data/icons/education-1-28/49/144-512.png');
-    }
-    else {
-      fromPicker = Image.network(profileTeacher!.url);
-    }
+
     userModel = await userRepository.getUserTeacherById(profileTeacher!.userId);
     listInfoTextField = [];
     isEditBaseInfo = false;
@@ -112,13 +108,22 @@ class TeacherProfileCubit extends Cubit<int> {
     TeacherRepository.fromContext(context);
     final controllerName = listInfoTextField?[0]['controller'] as TextEditingController;
     final controllerPhone = listInfoTextField?[1]['controller'] as TextEditingController;
-    await teacherRepository.updateProfileTeacher(profileTeacher!.userId.toString(), controllerName.text, controllerPhone.text);
+    profileTeacher = profileTeacher!.copyWith(
+      name: controllerName.text,
+      phone: controllerPhone.text
+    );
+    await teacherRepository.updateProfileTeacher(profileTeacher!.userId.toString(), profileTeacher!);
     Fluttertoast.showToast(msg: 'Cập nhật thông tin thành công');
     load(context);
   }
 
-  void changeAvatar(Image img) async {
-    fromPicker = img;
+  void changeAvatar(BuildContext context, Uint8List img) async {
+    TeacherRepository teacherRepository =
+    TeacherRepository.fromContext(context);
+    final url = await teacherRepository.uploadImageAndGetUrl(img, 'teacher_avatar');
+    debugPrint('==============>url: $url');
+    profileTeacher = profileTeacher!.copyWith(url: url);
+    await teacherRepository.updateProfileTeacher(profileTeacher!.userId.toString(), profileTeacher!);
     emit(state+1);
   }
 }

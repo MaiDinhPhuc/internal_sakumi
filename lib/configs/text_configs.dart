@@ -179,12 +179,12 @@ enum AppText {
   titleStatus,
   textSSNote,
   titleHome,
+  txtTeacherProfile,
+  txtChangeImage, txtBaseInfo, txtPassLogin,
   optInProgress,
   optComplete,
   optBoth,
   txtFilter,
-  txtTeacherProfile,
-  txtChangeImage, txtBaseInfo, txtPassLogin,
   textStudentNotSubmit,
   textContactIT
 }
