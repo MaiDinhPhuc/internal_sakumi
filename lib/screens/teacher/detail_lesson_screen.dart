@@ -30,12 +30,10 @@ class DetailLessonScreen extends StatelessWidget {
               Expanded(
                   //key: Key('${cubit.state?.status}'),
                   child: SingleChildScrollView(
-                      child: BlocBuilder<SessionCubit, int>(
-                    builder: (cc, state) {
-                      return BlocProvider(
-                          create: (cc) => DetailLessonCubit()
+                      child: BlocProvider(
+                          create: (context) => DetailLessonCubit()
                             ..checkLessonResult(
-                                cc),
+                                context),
                           child: BlocBuilder<DetailLessonCubit,
                               LessonResultModel?>(
                             builder: (cc, s) {
@@ -44,38 +42,36 @@ class DetailLessonScreen extends StatelessWidget {
                                   .state?.status}');
                               return s == null
                                   ? Transform.scale(
-                                      scale: 0.75,
-                                      child: const Center(
-                                        child: CircularProgressIndicator(),
-                                      ),
-                                    )
+                                scale: 0.75,
+                                child: const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              )
                                   : Column(
-                                      children: [
-                                        Container(
-                                          margin: EdgeInsets.symmetric(
-                                              vertical: Resizable.padding(
-                                                  context, 20)),
-                                          child: Text(
-                                              '${BlocProvider.of<DetailLessonCubit>(cc).title}',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w800,
-                                                  fontSize: Resizable.font(
-                                                      context, 30))),
-                                        ),
-                                        if (s.status == 'Pending')
-                                          LessonPendingView(BlocProvider.of<DetailLessonCubit>(
-                                              cc)),
-                                        if (s.status == 'Teaching')
-                                          LessonTeachingView(),
-                                        if (s.status == 'Complete')
-                                          LessonCompleteView(BlocProvider.of<DetailLessonCubit>(
-                                              cc)),
-                                      ],
-                                    );
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: Resizable.padding(
+                                            context, 20)),
+                                    child: Text(
+                                        '${BlocProvider.of<DetailLessonCubit>(cc).title}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: Resizable.font(
+                                                context, 30))),
+                                  ),
+                                  if (s.status == 'Pending')
+                                    LessonPendingView(BlocProvider.of<DetailLessonCubit>(
+                                        cc)),
+                                  if (s.status == 'Teaching')
+                                    LessonTeachingView(),
+                                  if (s.status == 'Complete')
+                                    LessonCompleteView(BlocProvider.of<DetailLessonCubit>(
+                                        cc)),
+                                ],
+                              );
                             },
-                          ));
-                    },
-                  )))
+                          ))))
             ],
           ),
         ));

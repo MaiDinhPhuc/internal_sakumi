@@ -280,6 +280,18 @@ class TeacherRepository {
     });
   }
 
+  Future<void> updateTeacherNote(
+      int userId, int lessonId, int classId, String note) async {
+    final db = FirebaseFirestore.instance;
+
+    await db
+        .collection('student_lesson')
+        .doc("student_${userId}_lesson_${lessonId}_class_$classId")
+        .update({
+      'teacher_note': note,
+    });
+  }
+
   Future<void> updateStudentStatus(
       int userId, int classId, int point, String type) async {
     final db = FirebaseFirestore.instance;

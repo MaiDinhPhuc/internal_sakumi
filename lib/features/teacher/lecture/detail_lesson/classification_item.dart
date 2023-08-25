@@ -9,9 +9,10 @@ import 'package:internal_sakumi/utils/resizable.dart';
 
 class ClassificationItem extends StatelessWidget {
   final int index;
+  final TextEditingController controller;
   final StudentModel studentModel;
   final List<String> firstItems, secondItems;
-  const ClassificationItem(this.studentModel, this.index,
+  const ClassificationItem(this.studentModel, this.index, this.controller,
       { required this.firstItems, required this.secondItems,
       Key? key})
       : super(key: key);
@@ -63,7 +64,7 @@ class ClassificationItem extends StatelessWidget {
                                       items: firstItems,
                                       onPressed: (v) {
                                         s = firstItems.indexOf(v.toString());
-                                        debugPrint('==========> index $s');
+                                        debugPrint('==========> index $s === ${controller.text}');
                                         BlocProvider.of<DropdownAttendanceCubit>(c).updateStudentStatus('active_status', s, studentModel.userId, context);
                                       })))),
                       Expanded(flex: 1, child: Container()),
@@ -101,11 +102,14 @@ class ClassificationItem extends StatelessWidget {
             decoration: BoxDecoration(
                 color: greyColor.shade50,
                 borderRadius:
-                    BorderRadius.circular(Resizable.padding(context, 10))),
-            child: TextFormField(
-              //controller: controller,
+                    BorderRadius.circular(Resizable.padding(context, 5))),
+            child: TextFormField(key: Key('oooooooo'),
+              controller: controller,
               autofocus: true,
-              initialValue: '',
+              //initialValue: '',
+              onChanged: (v){
+
+              },
               decoration: InputDecoration(
                 enabled: true,
                 hintText: AppText.txtHintNoteForStudent.text,

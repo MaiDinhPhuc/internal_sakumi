@@ -145,15 +145,10 @@ class ListLessonTab extends StatelessWidget {
                                                               onDoubleTap:
                                                                   () {},
                                                               onTap: () async {
-                                                                debugPrint(
-                                                                    '===========> 000000 ${cubit.lessons!.indexOf(e)} == ${cubit.listLessonResult!.length - 1}');
+                                                                // debugPrint(
+                                                                //     '===========> 000000 ${cubit.lessons!.indexOf(e)} == ${cubit.listLessonResult!.length - 1}');
                                                                 if (cubit
-                                                                        .lessons!
-                                                                        .indexOf(
-                                                                            e) >
-                                                                    cubit.listLessonResult!
-                                                                            .length -
-                                                                        1) {
+                                                                        .lessonResults![cubit.lessons!.indexOf(e)] == null) {
                                                                   await Navigator
                                                                       .pushNamed(
                                                                           c,

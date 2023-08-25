@@ -9,40 +9,40 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 
 class LessonTeachingView extends StatelessWidget {
-  final TextEditingController controller;
-  LessonTeachingView({Key? key})
-      : controller = TextEditingController(),
-        super(key: key);
+  const LessonTeachingView({Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
 
-    var cubit = BlocProvider.of<SessionCubit>(context);
-    debugPrint('===============> LessonTeachingView 1${cubit.listStudent == null }');
-    debugPrint('===============> LessonTeachingView 2${ cubit.listStudentLesson == null}');
-    return cubit.listStudent == null || cubit.listStudentLesson == null
-        ? Transform.scale(
-            scale: 0.75,
-            child: const CircularProgressIndicator(),
-          )
-        : Column(
-            children: [
-              ...cubit.listStudent!.map((e) => AttendanceItem(
-                      e,
-                      cubit.listStudent!.indexOf(e) > cubit.listStudentLesson!.length - 1 ? 0 :cubit.listStudentLesson![cubit.listStudent!.indexOf(e)]//cubit.listStudent!.indexOf(e)
-                          .timekeeping,
-                      items: [
-                        AppText.txtNotTimeKeeping.text,
-                        AppText.txtPresent.text,
-                        AppText.txtInLate.text,
-                        AppText.txtOutSoon.text,
-                        '${AppText.txtInLate.text} + ${AppText.txtOutSoon.text}',
-                        AppText.txtPermitted.text,
-                        AppText.txtAbsent.text,
-                      ])),
-              NoteForTeamCard(cubit.isNoteStudent,
-                  hintText: AppText.txtHintNoteForStudent.text,
-                  noNote: AppText.txtNoNoteForStudent.text, onChanged: (v) {
+    // var cubit = BlocProvider.of<SessionCubit>(context);
+    // debugPrint('===============> LessonTeachingView 1${cubit.listStudent == null }');
+    // debugPrint('===============> LessonTeachingView 2${ cubit.listStudentLesson == null}');
+    return BlocBuilder<SessionCubit, int>(builder: (c, _){
+      var cubit = BlocProvider.of<SessionCubit>(c);
+      return cubit.listStudent == null || cubit.listStudentLesson == null
+          ? Transform.scale(
+        scale: 0.75,
+        child: const CircularProgressIndicator(),
+      )
+          : Column(
+        children: [
+          ...cubit.listStudent!.map((e) => AttendanceItem(
+              e,
+              cubit.listStudent!.indexOf(e) > cubit.listStudentLesson!.length - 1 ? 0 :cubit.listStudentLesson![cubit.listStudent!.indexOf(e)]//cubit.listStudent!.indexOf(e)
+                  .timekeeping,
+              items: [
+                AppText.txtNotTimeKeeping.text,
+                AppText.txtPresent.text,
+                AppText.txtInLate.text,
+                AppText.txtOutSoon.text,
+                '${AppText.txtInLate.text} + ${AppText.txtOutSoon.text}',
+                AppText.txtPermitted.text,
+                AppText.txtAbsent.text,
+              ])),
+          NoteForTeamCard(cubit.isNoteStudent,
+              hintText: AppText.txtHintNoteForStudent.text,
+              noNote: AppText.txtNoNoteForStudent.text, onChanged: (v) {
                 cubit.inputStudent(v);
                 //debugPrint('============= controller ${controller.text}');
                 cubit.isNoteStudent = v.isNotEmpty ? null : true;
@@ -51,19 +51,20 @@ class LessonTeachingView extends StatelessWidget {
                 cubit.checkNoteStudent();
                 debugPrint('============= totalAttendance ${cubit.totalAttendance}');
               }),
-              SizedBox(height: Resizable.size(context, 40)),
-              SubmitButton(
-                  onPressed: () => alertView(
-                      context,
-                      cubit.noteStudent.isNotEmpty
-                          ? cubit.noteStudent
-                          : AppText.txtNoNoteForStudent.text),
-                  title: AppText.txtFinishLesson.text,
-                  isActive:
-                      cubit.totalAttendance == cubit.listStudent!.length &&
-                          cubit.isNoteStudent != false),
-              SizedBox(height: Resizable.size(context, 100)),
-            ],
-          );
+          SizedBox(height: Resizable.size(context, 40)),
+          SubmitButton(
+              onPressed: () => alertView(
+                  context,
+                  cubit.noteStudent.isNotEmpty
+                      ? cubit.noteStudent
+                      : AppText.txtNoNoteForStudent.text),
+              title: AppText.txtFinishLesson.text,
+              isActive:
+              cubit.totalAttendance == cubit.listStudent!.length &&
+                  cubit.isNoteStudent != false),
+          SizedBox(height: Resizable.size(context, 100)),
+        ],
+      );
+    });
   }
 }
