@@ -29,7 +29,7 @@ class CustomButton extends StatelessWidget {
           foregroundColor: MaterialStateProperty.all(foreColor),
           backgroundColor: MaterialStateProperty.all(bgColor),
           overlayColor: MaterialStateProperty.all(
-              greyColor.shade300,
+             Colors.black.withOpacity(0.3)
         ),
         ),
         child:  Text(text),
