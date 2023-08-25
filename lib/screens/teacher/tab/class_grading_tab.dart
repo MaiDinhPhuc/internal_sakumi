@@ -41,7 +41,7 @@ class ClassGradingTab extends StatelessWidget {
                                   fontWeight: FontWeight.w800,
                                   fontSize: Resizable.font(context, 30))),
                         ),
-                        cubit.listLessonResult == null || cubit.listResultCount == null || cubit.listStudentLessons == null || cubit.lessons == null ? Transform.scale(
+                        cubit.listLessonResult == null || cubit.listResultNotGradingCount == null || cubit.listResultCount == null || cubit.listStudentLessons == null || cubit.lessons == null ? Transform.scale(
                           scale: 0.75,
                           child: const CircularProgressIndicator(),
                         ) : Column(
@@ -86,7 +86,7 @@ class ClassGradingTab extends StatelessWidget {
                                                   Padding(padding: EdgeInsets.symmetric(vertical:Resizable.padding(context, 5)),child: RichText(text: TextSpan(
                                                       children: [
                                                         TextSpan(
-                                                            text: AppText.textNumberNotGrading.text,
+                                                            text: AppText.textNumberResultReceive.text,
                                                             style: TextStyle(fontWeight: FontWeight.w500, fontSize: Resizable.padding(context, 16))
                                                         ),
                                                         TextSpan(
@@ -94,11 +94,22 @@ class ClassGradingTab extends StatelessWidget {
                                                             style: TextStyle(fontWeight: FontWeight.w700, fontSize: Resizable.padding(context, 20), color: primaryColor)
                                                         )
                                                       ]
+                                                  ))),
+                                                  Padding(padding: EdgeInsets.symmetric(vertical:Resizable.padding(context, 5)),child: RichText(text: TextSpan(
+                                                      children: [
+                                                        TextSpan(
+                                                            text: AppText.textNumberNotGrading.text,
+                                                            style: TextStyle(fontWeight: FontWeight.w500, fontSize: Resizable.padding(context, 16))
+                                                        ),
+                                                        TextSpan(
+                                                            text: " ${cubit.listResultNotGradingCount![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)]}",
+                                                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: Resizable.padding(context, 20), color: primaryColor)
+                                                        )
+                                                      ]
                                                   )))
                                                 ],
                                               )),
-                                              if(cubit.listResultCount![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)]!=0)
-                                                Expanded(child: Column(
+                                              Expanded(child: Column(
                                                 mainAxisAlignment : MainAxisAlignment.spaceBetween,
                                                 crossAxisAlignment :CrossAxisAlignment.end,
                                                 children: [
@@ -109,15 +120,15 @@ class ClassGradingTab extends StatelessWidget {
                                                     },
                                                     style: ButtonStyle(
                                                         shadowColor: MaterialStateProperty.all(
-                                                            primaryColor ),
+                                                            cubit.listResultNotGradingCount![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)] == 0 ? greenColor: primaryColor ),
                                                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                                                             borderRadius:
                                                             BorderRadius.circular(Resizable.padding(context, 1000)))),
                                                         backgroundColor: MaterialStateProperty.all(
-                                                            primaryColor ),
+                                                            cubit.listResultNotGradingCount![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)] == 0 ? greenColor :primaryColor ),
                                                         padding: MaterialStateProperty.all(EdgeInsets.symmetric(
                                                             horizontal: Resizable.padding(context, 30)))),
-                                                    child: Text(AppText.titleGrading.text.toUpperCase(),
+                                                    child: Text(cubit.listResultNotGradingCount![cubit.lessons!.indexWhere((element) => e.lessonId == element.lessonId)] == 0 ? AppText.textDetail.text : AppText.titleGrading.text.toUpperCase(),
                                                         style: TextStyle(
                                                             fontWeight: FontWeight.w700,
                                                             fontSize: Resizable.font(context, 16),

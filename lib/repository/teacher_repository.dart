@@ -421,8 +421,7 @@ class TeacherRepository {
     final db = FirebaseFirestore.instance;
 
     final temp = await db
-        .collection("lesson_result").doc(
-        "lesson_${model.lessonId}_class_${model.classId}")
+        .collection("lesson_result").doc("lesson_${model.lessonId}_class_${model.classId}")
         .get();
 
     if (!temp.exists) {
@@ -441,7 +440,7 @@ class TeacherRepository {
         'teacher_note': model.noteForTeacher,
       });
       return true;
-    } else {
+    } else{
       return false;
     }
   }

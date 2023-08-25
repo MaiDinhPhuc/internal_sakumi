@@ -36,8 +36,12 @@ class DetailGradingScreen extends StatelessWidget {
                   child: const Center(
                     child: CircularProgressIndicator(),
                   ),
-                )
-                    : Padding(
+                ) : cubit.listAnswer!.isEmpty ? Center(
+                  child: Text(AppText.textStudentNotSubmit.text),
+                ) : cubit.listQuestions!.isEmpty?  Center(
+                  child: Text(AppText.textContactIT.text),
+                ) :
+                Padding(
                   padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 50)),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,11 +50,11 @@ class DetailGradingScreen extends StatelessWidget {
                           flex: 1,
                           child: Padding(
                             padding: EdgeInsets.only(left: Resizable.padding(context, 20)),
-                            child: cubit.listQuestions == null
+                            child: cubit.listAnswer == null
                                 ? Transform.scale(
                               scale: 0.75,
                               child: const CircularProgressIndicator(),
-                            ) : Column(
+                            ): Column(
                               children: [
                                 TitleWidget(AppText.titleQuestion.text.toUpperCase()),
                                 Expanded(child: Container(
@@ -66,10 +70,12 @@ class DetailGradingScreen extends StatelessWidget {
                                               s,
                                               cubit.listQuestions!
                                                   .indexOf(e),
+                                              cubit.now,
                                               questionModel: e,
                                               onTap: () {
                                                 cubit.change(e.id, c);
-                                                SoundService.instance.stop();
+                                                checkActiveCubit.changeActive(false);
+                                                //SoundService.instance.stop();
                                               },
                                               soundCubit: questionSoundCubit, isDone: cubit.listState![cubit.listQuestions!.indexOf(e)],
                                           ),

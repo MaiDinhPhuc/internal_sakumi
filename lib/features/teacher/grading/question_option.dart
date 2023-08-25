@@ -8,12 +8,12 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
 class QuestionOptionItem extends StatelessWidget {
-  const QuestionOptionItem(this.id, this.index,
+  const QuestionOptionItem(this.id, this.index,this.now,
       {super.key,
       required this.questionModel,
       required this.onTap,
       required this.soundCubit, required this.isDone});
-  final int id, index;
+  final int id, index, now;
   final QuestionModel questionModel;
   final Function() onTap;
   final SoundCubit soundCubit;
@@ -24,7 +24,7 @@ class QuestionOptionItem extends StatelessWidget {
     return Row(
       children: [
         Container(
-          color: id == questionModel.id ? primaryColor : Colors.transparent,
+          color: id == questionModel.id || now == questionModel.id ? primaryColor : Colors.transparent,
           width: Resizable.size(context, 4),
           margin: EdgeInsets.only(
               right: Resizable.padding(context, 5),
@@ -39,12 +39,12 @@ class QuestionOptionItem extends StatelessWidget {
                     borderRadius:
                         BorderRadius.circular(Resizable.size(context, 5)),
                     side: BorderSide(
-                        color: id != questionModel.id
-                            ? const Color(0xffE0E0E0)
-                            : Colors.black,
+                        color: id == questionModel.id || now == questionModel.id
+                            ? Colors.black
+                            : const Color(0xffE0E0E0),
                         width: Resizable.size(context, 1))),
                 elevation:
-                    id != questionModel.id ? Resizable.size(context, 2) : 0,
+                id == questionModel.id || now == questionModel.id ? 0 : Resizable.size(context, 2),
                 child: InkWell(
                   onTap: onTap,
                   borderRadius:
@@ -68,7 +68,7 @@ class QuestionOptionItem extends StatelessWidget {
                               )
                             ],
                           ),
-                          if (id == questionModel.id) ...[
+                          if (id == questionModel.id || now == questionModel.id) ...[
                             if (questionModel.instruction != "")
                               Text(
                                 questionModel.instruction,
