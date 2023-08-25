@@ -395,6 +395,7 @@ Map<AppText, String> texts = {
   AppText.txtExit: 'Thoát',
 };
 
+
 extension AppTexts on AppText {
   static String getStringValue(String value) {
     return value;
