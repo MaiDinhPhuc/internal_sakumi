@@ -26,8 +26,7 @@ class TeacherScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // var cubit = BlocProvider.of<TeacherCubit>(context)..init(context, AppText.optBoth.text);
-    final profileCubit = BlocProvider.of<AppBarInfoTeacherCubit>(context)..load(context);
+    final profileCubit = BlocProvider.of<AppBarInfoTeacherCubit>(context);
     debugPrint('=>>>>>>>>>>>>>profileCubit');
     return Scaffold(
           body: Column(
@@ -45,57 +44,59 @@ class TeacherScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      BlocBuilder<AppBarInfoTeacherCubit, TeacherModel?>(
-                        bloc: profileCubit,
-                        builder: (context, s) {
-                          return Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CircleAvatar(
-                                radius: Resizable.size(context, 25),
-                                backgroundColor: greyColor.shade300,
-                                child: s == null ? Container() : ImageNetwork(
-                                  key: Key(s.url),
-                                  image:  s.url.isEmpty? AppConfigs.defaultImage : s.url,
-                                  height: Resizable.size(context, 50),
-                                  borderRadius: BorderRadius.circular(1000),
-                                  width: Resizable.size(context, 50),
-                                  onLoading: Transform.scale(
-                                    scale: 0.25,
-                                    child: const CircularProgressIndicator(),
+                      BlocProvider(
+                    create: (context) => profileCubit..load(context),
+                        child: BlocBuilder<AppBarInfoTeacherCubit, TeacherModel?>(
+                          builder: (context, s) {
+                            return Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CircleAvatar(
+                                  radius: Resizable.size(context, 25),
+                                  backgroundColor: greyColor.shade300,
+                                  child: s == null ? Container() : ImageNetwork(
+                                    key: Key(s.url),
+                                    image:  s.url.isEmpty? AppConfigs.defaultImage : s.url,
+                                    height: Resizable.size(context, 50),
+                                    borderRadius: BorderRadius.circular(1000),
+                                    width: Resizable.size(context, 50),
+                                    onLoading: Transform.scale(
+                                      scale: 0.25,
+                                      child: const CircularProgressIndicator(),
+                                    ),
+                                    duration: 100,
+                                    onTap: () {
+                                      Navigator.pushNamed(context,
+                                          '${Routes.teacher}?name=${TextUtils.getName().trim()}/profile');
+                                    },
                                   ),
-                                  duration: 100,
-                                  onTap: () {
-                                    Navigator.pushNamed(context,
-                                        '${Routes.teacher}?name=${TextUtils.getName().trim()}/profile');
-                                  },
                                 ),
-                              ),
-                              SizedBox(width: Resizable.size(context, 10)),
-                              s == null
-                                  ? Container()
-                                  : Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          AppText.txtHello.text,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: Resizable.font(
-                                                  context, 24)),
-                                        ),
-                                        Text(
-                                            '${s.name} ${AppText.txtSensei.text}',
+                                SizedBox(width: Resizable.size(context, 10)),
+                                s == null
+                                    ? Container()
+                                    : Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            AppText.txtHello.text,
                                             style: TextStyle(
-                                                fontWeight: FontWeight.w800,
+                                                fontWeight: FontWeight.w500,
                                                 fontSize: Resizable.font(
-                                                    context, 40)))
-                                      ],
-                                    )
-                            ],
-                          );
-                        },
+                                                    context, 24)),
+                                          ),
+                                          Text(
+                                              '${s.name} ${AppText.txtSensei.text}',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w800,
+                                                  fontSize: Resizable.font(
+                                                      context, 40)))
+                                        ],
+                                      )
+                              ],
+                            );
+                          },
+                        ),
                       ),
                       Icon(
                         Icons.menu,
