@@ -11,6 +11,8 @@ import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'features/teacher/profile/app_bar_info_teacher_cubit.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Routes.configureRoutes(Routes.router);
@@ -35,6 +37,7 @@ class MyApp extends StatelessWidget {
         child: MultiBlocProvider(
             providers: [
               BlocProvider(create: (context) => TeacherCubit()..init(context, AppText.optBoth.text)),
+              BlocProvider(create: (context) => AppBarInfoTeacherCubit()),
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,

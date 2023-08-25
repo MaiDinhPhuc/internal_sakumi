@@ -190,7 +190,7 @@ enum AppText {
   optInProgress,
   optComplete,
   optBoth,
-  txtFilter,
+  txtFilter, txtLogout, txtTeacherLogOut,
 }
 
 Map<AppText, String> texts = {
@@ -303,7 +303,7 @@ Map<AppText, String> texts = {
   AppText.titleChooseBackground: 'Chọn màu nền',
   AppText.titleChooseTextColor: 'Chọn màu chữ',
   AppText.txtHello: 'Xin chào',
-  AppText.txtSensei: 'sensei',
+  AppText.txtSensei: 'Sensei',
   AppText.txtLesson: 'Buổi',
   AppText.subjectLesson: 'Buổi học',
   AppText.titleNoteBeforeTeaching: 'Dặn dò trước buổi học',
@@ -379,8 +379,10 @@ Map<AppText, String> texts = {
   AppText.txtWaiting: 'Waiting...',
   AppText.titleSubject: 'Tựa đề bài',
   AppText.titleStatus: 'Trạng thái',
-
-
+  AppText.optBoth: 'Cả 2',
+  AppText.optInProgress: 'Đang diễn ra',
+  AppText.optComplete: 'Đã kết thúc',
+  AppText.txtFilter: 'Bộ lọc',
   AppText.txtTeacherProfile: 'Profile Giáo viên',
   AppText.txtChangeImage: 'Đổi ảnh mới',
   AppText.txtBaseInfo: 'Thông tin cơ bản',
@@ -395,6 +397,8 @@ Map<AppText, String> texts = {
   AppText.txtChangePass: 'Đổi mật khẩu',
   AppText.txtUpdate: 'Cập nhật',
   AppText.txtExit: 'Thoát',
+  AppText.txtLogout: 'Đăng xuất',
+  AppText.txtTeacherLogOut: 'Sensei có đồng ý đăng xuất hay không?',
 
 
 };

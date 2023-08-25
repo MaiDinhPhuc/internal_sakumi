@@ -42,6 +42,8 @@ class _InfoPassState extends State<InfoPass> {
                   : IconButton(
                   onPressed: () {
                     profileCubit.editPass();
+                    FocusScope.of(context)
+                        .requestFocus(listPass[1]['focusNode']);
                   },
                   iconSize: Resizable.size(context, 20),
                   icon: Image.asset('assets/images/ic_edit.png'))
@@ -124,44 +126,32 @@ class _InfoPassState extends State<InfoPass> {
           profileCubit.isEditPassLogin
               ? Row(
             children: [
-              Container(
-                margin: EdgeInsets.only(
-                    bottom: Resizable.padding(context, 20)),
-                height: Resizable.size(context, 25),
-                width: Resizable.size(context, 100),
-                child: CustomButton(
-                    onPress: () {
-                      final isValid = _form.currentState!.validate();
-                      if (!isValid) {
-                        return;
-                      }
-                      else{
-                        _form.currentState!.save();
-                        // profileCubit.updateProfile(context);
-                      }
+              CustomButton(
+                  onPress: () {
+                    final isValid = _form.currentState!.validate();
+                    if (!isValid) {
+                      return;
+                    }
+                    else{
+                      _form.currentState!.save();
+                      profileCubit.changePassWord(context);
+                    }
 
-                    },
-                    bgColor: primaryColor.shade500,
-                    foreColor:Colors.white,
-                    text: AppText.txtChangePass.text),
-              ),
+                  },
+                  bgColor: primaryColor.shade500,
+                  foreColor:Colors.white,
+                  text: AppText.txtChangePass.text),
               SizedBox(
                 width: Resizable.size(context, 5),
               ),
-              Container(
-                margin: EdgeInsets.only(
-                    bottom: Resizable.padding(context, 20)),
-                height: Resizable.size(context, 25),
-                width: Resizable.size(context, 100),
-                child: CustomButton(
-                    onPress: () {
-                      _form.currentState?.reset();
-                      profileCubit.exit('pass');
-                    },
-                    bgColor: Colors.white,
-                    foreColor: primaryColor.shade500,
-                    text: AppText.txtExit.text),
-              ),
+              CustomButton(
+                  onPress: () {
+                    _form.currentState?.reset();
+                    profileCubit.exit('pass');
+                  },
+                  bgColor: Colors.white,
+                  foreColor: primaryColor.shade500,
+                  text: AppText.txtExit.text),
             ],
           )
               : Container(),

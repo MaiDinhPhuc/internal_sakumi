@@ -38,7 +38,6 @@ class InputCustom extends StatelessWidget {
       }
     });
     controller.addListener(() {
-      debugPrint('=>>>>>>> ${controller.text}');
       cubit.checkText(controller.text, index, type);
     });
     return Column(
@@ -119,6 +118,9 @@ class InputCustom extends StatelessWidget {
          controller.text.isEmpty ||
          controller.text == null) {
        return 'Mật khẩu trống';
+     }
+     if(controller.text.length < 6) {
+       return 'Mật khẩu có ít nhất 6 kí tự';
      }
      if(index == 2) {
        final againPass = controller.text;

@@ -13,6 +13,7 @@ import '../../../configs/prefKey_configs.dart';
 import '../../../model/teacher_model.dart';
 import '../../../repository/teacher_repository.dart';
 import '../../../utils/text_utils.dart';
+import 'app_bar_info_teacher_cubit.dart';
 
 class TeacherProfileCubit extends Cubit<int> {
   TeacherProfileCubit() : super(0);
@@ -21,8 +22,9 @@ class TeacherProfileCubit extends Cubit<int> {
   bool isEditBaseInfo = false;
   bool isEditPassLogin = false;
   bool isUpdate = false;
-  String defaultImage =
-      'https://cdn3.iconfinder.com/data/icons/education-1-28/49/144-512.png';
+
+
+  String passTeacher = '';
   List<Map<String, dynamic>>? listInfoTextField;
   List<Map<String, dynamic>>? listPassWordField;
 
@@ -34,7 +36,7 @@ class TeacherProfileCubit extends Cubit<int> {
     profileTeacher = await teacherRepository
         .getTeacher(localData.getString(PrefKeyConfigs.code).toString());
     debugPrint('=>>>>>>>profileTeacher: ${profileTeacher!.name}');
-
+    passTeacher = localData.getString(PrefKeyConfigs.password).toString();
     userModel = await userRepository.getUserTeacherById(profileTeacher!.userId);
     listInfoTextField = [];
     isEditBaseInfo = false;
@@ -75,7 +77,7 @@ class TeacherProfileCubit extends Cubit<int> {
       'isEdit': false,
       'isFocus': false,
       'isShowPass': false,
-      'controller': TextEditingController(text: 'aaaaaaa'),
+      'controller': TextEditingController(text: passTeacher),
     });
     listPassWordField?.add({
       'title': '${AppText.txtNewPass.text}:',
@@ -148,6 +150,8 @@ class TeacherProfileCubit extends Cubit<int> {
       listPassWordField?[2]['controller'] as TextEditingController;
       controllerNewPass.text = '';
       controllerAgainNewPass.text = '';
+      listPassWordField?[1]['isShowPass'] = false;
+      listPassWordField?[2]['isShowPass'] = false;
       editPass();
     }
   }
@@ -164,6 +168,7 @@ class TeacherProfileCubit extends Cubit<int> {
     await teacherRepository.updateProfileTeacher(
         profileTeacher!.userId.toString(), profileTeacher!);
     Fluttertoast.showToast(msg: 'Cập nhật thông tin thành công');
+    context.read<AppBarInfoTeacherCubit>().update(profileTeacher!);
     load(context);
   }
 
@@ -176,6 +181,8 @@ class TeacherProfileCubit extends Cubit<int> {
     profileTeacher = profileTeacher!.copyWith(url: url);
     await teacherRepository.updateProfileTeacher(
         profileTeacher!.userId.toString(), profileTeacher!);
+    Fluttertoast.showToast(msg: 'Bạn đã đổi avatar');
+    context.read<AppBarInfoTeacherCubit>().update(profileTeacher!);
     emit(state + 1);
   }
 
@@ -193,5 +200,21 @@ class TeacherProfileCubit extends Cubit<int> {
     listPassWordField?[index]['isShowPass'] =
         !listPassWordField?[index]['isShowPass'];
     emit(state + 1);
+  }
+
+
+  void changePassWord(BuildContext context) async {
+    TeacherRepository teacherRepository =
+    TeacherRepository.fromContext(context);
+    final newPass = (listPassWordField![1]['controller'] as TextEditingController).text;
+    final res = await teacherRepository.changePassword(userModel!.email, passTeacher, newPass);
+    debugPrint('=>>>>>>>>> resaaaaaaaaa: $res');
+    SharedPreferences sharedPreferences =
+    await SharedPreferences.getInstance();
+    if(res) {
+      await sharedPreferences.setString(PrefKeyConfigs.password, newPass);
+      load(context);
+    }
+
   }
 }

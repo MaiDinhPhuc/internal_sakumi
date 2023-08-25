@@ -21,22 +21,7 @@ class UserItem extends StatelessWidget {
               width: Resizable.size(context, 1))),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: Resizable.size(context, 15),
-            backgroundColor: const Color(0xffD9D9D9),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(1000),
-              child: ImageNetwork(
-                  image: url,
-                  height: Resizable.size(context, 30),
-                  width: Resizable.size(context, 30),
-                  onError: Container(),
-                  onLoading: Transform.scale(
-                    scale: 0.5,
-                    child: const CircularProgressIndicator(),
-                  )),
-            ),
-          ),
+          SmallAvatar(url),
           SizedBox(width: Resizable.padding(context, 20)),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,6 +40,31 @@ class UserItem extends StatelessWidget {
             ],
           )
         ],
+      ),
+    );
+  }
+}
+
+class SmallAvatar extends StatelessWidget {
+  final String url;
+  const SmallAvatar(this.url, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(
+      radius: Resizable.size(context, 16),
+      backgroundColor: const Color(0xffD9D9D9),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(1000),
+        child: url == '' ? Container(): ImageNetwork(
+            image: url,
+            height: Resizable.size(context, 32),
+            width: Resizable.size(context, 32),
+            onError: Container(),
+            onLoading: Transform.scale(
+              scale: 0.5,
+              child: const CircularProgressIndicator(),
+            )),
       ),
     );
   }

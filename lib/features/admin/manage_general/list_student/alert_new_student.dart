@@ -224,8 +224,8 @@ void alertNewStudent(
                                                           classId:
                                                               manageGeneralCubit
                                                                   .selector,
-                                                          activeStatus: 5,
-                                                          learningStatus: 5,
+                                                          activeStatus: 0,
+                                                          learningStatus: 0,
                                                           moveTo: 0,
                                                           userId: cubit.allUser!
                                                                   .length,
