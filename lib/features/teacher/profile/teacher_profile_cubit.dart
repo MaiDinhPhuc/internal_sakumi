@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -19,11 +21,12 @@ class TeacherProfileCubit extends Cubit<int> {
   bool isEditBaseInfo = false;
   bool isEditPassLogin = false;
   bool isUpdate = false;
-  Image? fromPicker;
+  String defaultImage =
+      'https://cdn3.iconfinder.com/data/icons/education-1-28/49/144-512.png';
   List<Map<String, dynamic>>? listInfoTextField;
+  List<Map<String, dynamic>>? listPassWordField;
 
   load(BuildContext context) async {
-    emit(0);
     UserRepository userRepository = UserRepository.fromContext(context);
     TeacherRepository teacherRepository =
         TeacherRepository.fromContext(context);
@@ -31,12 +34,7 @@ class TeacherProfileCubit extends Cubit<int> {
     profileTeacher = await teacherRepository
         .getTeacher(localData.getString(PrefKeyConfigs.code).toString());
     debugPrint('=>>>>>>>profileTeacher: ${profileTeacher!.name}');
-    if(profileTeacher!.url.isEmpty) {
-      fromPicker = Image.network('https://cdn3.iconfinder.com/data/icons/education-1-28/49/144-512.png');
-    }
-    else {
-      fromPicker = Image.network(profileTeacher!.url);
-    }
+
     userModel = await userRepository.getUserTeacherById(profileTeacher!.userId);
     listInfoTextField = [];
     isEditBaseInfo = false;
@@ -44,81 +42,156 @@ class TeacherProfileCubit extends Cubit<int> {
     isUpdate = false;
     listInfoTextField?.add({
       'title': '${AppText.txtName.text}:',
-      'value': profileTeacher?.name,
-      'isEdit': true,
       'focusNode': FocusNode(),
+      'isEdit': true,
       'isFocus': false,
       'controller': TextEditingController(text: profileTeacher?.name),
     });
     listInfoTextField?.add({
       'title': '${AppText.txtPhone.text}:',
-      'value': profileTeacher?.phone,
-      'isEdit': true,
       'focusNode': FocusNode(),
+      'isEdit': true,
       'isFocus': false,
       'controller': TextEditingController(text: profileTeacher?.phone),
     });
     listInfoTextField?.add({
       'title': '${AppText.textEmail.text}:',
-      'value': userModel?.email,
-      'isEdit': false,
       'focusNode': FocusNode(),
+      'isEdit': false,
       'isFocus': false,
       'controller': TextEditingController(text: userModel?.email),
     });
     listInfoTextField?.add({
       'title': '${AppText.txtTeacherCode.text}:',
-      'value': profileTeacher?.teacherCode,
-      'isEdit': false,
       'focusNode': FocusNode(),
+      'isEdit': false,
       'isFocus': false,
       'controller': TextEditingController(text: profileTeacher?.teacherCode),
+    });
+    listPassWordField = [];
+    listPassWordField?.add({
+      'title': '${AppText.txtCurrentPass.text}:',
+      'focusNode': FocusNode(),
+      'isEdit': false,
+      'isFocus': false,
+      'isShowPass': false,
+      'controller': TextEditingController(text: 'aaaaaaa'),
+    });
+    listPassWordField?.add({
+      'title': '${AppText.txtNewPass.text}:',
+      'focusNode': FocusNode(),
+      'isEdit': true,
+      'isFocus': false,
+      'isShowPass': false,
+      'controller': TextEditingController(),
+    });
+    listPassWordField?.add({
+      'title': '${AppText.txtAgainNewPass.text}:',
+      'focusNode': FocusNode(),
+      'isEdit': true,
+      'isFocus': false,
+      'isShowPass': false,
+      'controller': TextEditingController(),
     });
     emit(state + 1);
   }
 
   void editInfo() {
-     isEditBaseInfo = !isEditBaseInfo;
-     emit(state + 1);
+    isEditBaseInfo = !isEditBaseInfo;
+    emit(state + 1);
   }
 
-  void setFocus( bool value , int index) {
-    listInfoTextField?[index]['isFocus'] = value;
-    emit(state+1);
-  }
-
-  void checkText(String text, int index) {
-    final controllerName = listInfoTextField?[0]['controller'] as TextEditingController;
-    final controllerPhone = listInfoTextField?[1]['controller'] as TextEditingController;
-    if(controllerName.text != profileTeacher!.name || controllerPhone.text != profileTeacher!.phone){
-      isUpdate = true;
+  void setFocus(String type, int index, bool value) {
+    if (type == 'info') {
+      if (!isEditBaseInfo) return;
+      listInfoTextField?[index]['isFocus'] = value;
     }
     else {
-      isUpdate = false;
+      if (!isEditPassLogin || index == 0) return;
+      listPassWordField?[index]['isFocus'] = value;
+
     }
-    emit(state+1);
+    emit(state + 1);
   }
 
-  void exit() {
-    final controllerName = listInfoTextField?[0]['controller'] as TextEditingController;
-    final controllerPhone = listInfoTextField?[1]['controller'] as TextEditingController;
-    controllerName.text = profileTeacher!.name;
-    controllerPhone.text = profileTeacher!.phone;
-    editInfo();
+  void checkText(String text, int index, String type) {
+    if (type == 'info') {
+      final controllerName =
+          listInfoTextField?[0]['controller'] as TextEditingController;
+      final controllerPhone =
+          listInfoTextField?[1]['controller'] as TextEditingController;
+      if (controllerName.text != profileTeacher!.name ||
+          controllerPhone.text != profileTeacher!.phone) {
+        isUpdate = true;
+      } else {
+        isUpdate = false;
+      }
+      emit(state + 1);
+    }
+
+  }
+
+  void exit(String type) {
+    if(type == 'info') {
+      final controllerName =
+      listInfoTextField?[0]['controller'] as TextEditingController;
+      final controllerPhone =
+      listInfoTextField?[1]['controller'] as TextEditingController;
+      controllerName.text = profileTeacher!.name;
+      controllerPhone.text = profileTeacher!.phone;
+      editInfo();
+    }
+   else {
+      final controllerNewPass =
+      listPassWordField?[1]['controller'] as TextEditingController;
+      final controllerAgainNewPass =
+      listPassWordField?[2]['controller'] as TextEditingController;
+      controllerNewPass.text = '';
+      controllerAgainNewPass.text = '';
+      editPass();
+    }
   }
 
   void updateProfile(BuildContext context) async {
     TeacherRepository teacherRepository =
-    TeacherRepository.fromContext(context);
-    final controllerName = listInfoTextField?[0]['controller'] as TextEditingController;
-    final controllerPhone = listInfoTextField?[1]['controller'] as TextEditingController;
-    await teacherRepository.updateProfileTeacher(profileTeacher!.userId.toString(), controllerName.text, controllerPhone.text);
+        TeacherRepository.fromContext(context);
+    final controllerName =
+        listInfoTextField?[0]['controller'] as TextEditingController;
+    final controllerPhone =
+        listInfoTextField?[1]['controller'] as TextEditingController;
+    profileTeacher = profileTeacher!
+        .copyWith(name: controllerName.text, phone: controllerPhone.text);
+    await teacherRepository.updateProfileTeacher(
+        profileTeacher!.userId.toString(), profileTeacher!);
     Fluttertoast.showToast(msg: 'Cập nhật thông tin thành công');
     load(context);
   }
 
-  void changeAvatar(Image img) async {
-    fromPicker = img;
-    emit(state+1);
+  void changeAvatar(BuildContext context, Uint8List img) async {
+    TeacherRepository teacherRepository =
+        TeacherRepository.fromContext(context);
+    final url =
+        await teacherRepository.uploadImageAndGetUrl(img, 'teacher_avatar');
+    debugPrint('==============>url: $url');
+    profileTeacher = profileTeacher!.copyWith(url: url);
+    await teacherRepository.updateProfileTeacher(
+        profileTeacher!.userId.toString(), profileTeacher!);
+    emit(state + 1);
+  }
+
+  void editPass() {
+    isEditPassLogin = !isEditPassLogin;
+    emit(state + 1);
+  }
+
+  void setFocusPass(bool value, int index) {
+    listPassWordField?[index]['isFocus'] = value;
+    emit(state + 1);
+  }
+
+  void hidePass(int index) {
+    listPassWordField?[index]['isShowPass'] =
+        !listPassWordField?[index]['isShowPass'];
+    emit(state + 1);
   }
 }

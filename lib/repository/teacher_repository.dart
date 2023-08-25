@@ -14,7 +14,7 @@ import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
-
+import 'package:firebase_storage/firebase_storage.dart';
 class TeacherRepository {
   static TeacherRepository fromContext(BuildContext context) =>
       RepositoryProvider.of<TeacherRepository>(context);
@@ -26,31 +26,35 @@ class TeacherRepository {
         .where("teacher_code", isEqualTo: teacherCode)
         .get();
     final classByClassId =
-        snapshot.docs.map((e) => TeacherModel.fromSnapshot(e)).single;
+        snapshot.docs
+            .map((e) => TeacherModel.fromSnapshot(e))
+            .single;
     return classByClassId;
   }
 
   Future<TeacherModel> getTeacherById(int id) async {
     final db = FirebaseFirestore.instance;
     final snapshot =
-        await db.collection("teacher").where("user_id", isEqualTo: id).get();
+    await db.collection("teacher").where("user_id", isEqualTo: id).get();
     final classByClassId =
-        snapshot.docs.map((e) => TeacherModel.fromSnapshot(e)).single;
+        snapshot.docs
+            .map((e) => TeacherModel.fromSnapshot(e))
+            .single;
     return classByClassId;
   }
 
-  Future<List<TeacherClassModel>> getTeacherClassById(
-      String string, int id) async {
+  Future<List<TeacherClassModel>> getTeacherClassById(String string,
+      int id) async {
     final db = FirebaseFirestore.instance;
     final snapshot =
-        await db.collection("teacher_class").where(string, isEqualTo: id).get();
+    await db.collection("teacher_class").where(string, isEqualTo: id).get();
     final listTeacher =
-        snapshot.docs.map((e) => TeacherClassModel.fromSnapshot(e)).toList();
+    snapshot.docs.map((e) => TeacherClassModel.fromSnapshot(e)).toList();
     return listTeacher;
   }
 
-  Future<List<TeacherClassModel>> getTeacherClassByStatus(
-      int id, String status) async {
+  Future<List<TeacherClassModel>> getTeacherClassByStatus(int id,
+      String status) async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db
         .collection("teacher_class")
@@ -58,16 +62,16 @@ class TeacherRepository {
         .where('class_status', isEqualTo: status)
         .get();
     final list =
-        snapshot.docs.map((e) => TeacherClassModel.fromSnapshot(e)).toList();
+    snapshot.docs.map((e) => TeacherClassModel.fromSnapshot(e)).toList();
     return list;
   }
 
   Future<List<LessonModel>> getLessonsByCourseId(int id) async {
     final db = FirebaseFirestore.instance;
     final snapshot =
-        await db.collection("lessons").where('course_id', isEqualTo: id).get();
+    await db.collection("lessons").where('course_id', isEqualTo: id).get();
     final lessons =
-        snapshot.docs.map((e) => LessonModel.fromSnapshot(e)).toList();
+    snapshot.docs.map((e) => LessonModel.fromSnapshot(e)).toList();
     lessons.sort((a, b) => a.lessonId.compareTo(b.lessonId));
     return lessons;
   }
@@ -85,8 +89,10 @@ class TeacherRepository {
   Future<ClassModel> getClassById(int id) async {
     final db = FirebaseFirestore.instance;
     final snapshot =
-        await db.collection("class").where('class_id', isEqualTo: id).get();
-    final result = snapshot.docs.map((e) => ClassModel.fromSnapshot(e)).single;
+    await db.collection("class").where('class_id', isEqualTo: id).get();
+    final result = snapshot.docs
+        .map((e) => ClassModel.fromSnapshot(e))
+        .single;
     return result;
   }
 
@@ -99,7 +105,7 @@ class TeacherRepository {
         .get();
 
     final list =
-        snapshot.docs.map((e) => LessonResultModel.fromSnapshot(e)).toList();
+    snapshot.docs.map((e) => LessonResultModel.fromSnapshot(e)).toList();
 
     //list.sort((a, b) => a.lessonId.compareTo(b.lessonId));
 
@@ -117,8 +123,8 @@ class TeacherRepository {
     return list;
   }
 
-  Future<LessonResultModel> getLessonResultByLessonId(
-      int id, int classId) async {
+  Future<LessonResultModel> getLessonResultByLessonId(int id,
+      int classId) async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db
         .collection("lesson_result")
@@ -127,7 +133,9 @@ class TeacherRepository {
         .get();
     debugPrint('===============> getLessonResultByLessonId ${snapshot.size}');
     final result =
-        snapshot.docs.map((e) => LessonResultModel.fromSnapshot(e)).single;
+        snapshot.docs
+            .map((e) => LessonResultModel.fromSnapshot(e))
+            .single;
     // debugPrint('===============> getLessonResultByLessonId ${result.lessonId}');
     return result;
   }
@@ -136,13 +144,13 @@ class TeacherRepository {
     final db = FirebaseFirestore.instance;
     final snapshot = await db.collection("courses").get();
     final courses =
-        snapshot.docs.map((e) => CourseModel.fromSnapshot(e)).toList();
+    snapshot.docs.map((e) => CourseModel.fromSnapshot(e)).toList();
     return courses;
   }
 
   Future<List<QuestionModel>> getQuestionByLessonId(String lessonId) async {
     final jsonData =
-        await rootBundle.loadString("assets/practice/$lessonId/btvn.json");
+    await rootBundle.loadString("assets/practice/$lessonId/btvn.json");
     final response = jsonDecode(jsonData) as List<dynamic>;
     List<QuestionModel> list = response.isNotEmpty
         ? response.map((e) => QuestionModel.fromMap(e)).toList()
@@ -150,8 +158,8 @@ class TeacherRepository {
     return list;
   }
 
-  Future<StudentLessonModel> getStudentLessonInClass(
-      int id, int lessonId) async {
+  Future<StudentLessonModel> getStudentLessonInClass(int id,
+      int lessonId) async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db
         .collection("student_lesson")
@@ -159,7 +167,9 @@ class TeacherRepository {
         .where('student_id', isEqualTo: id)
         .get();
     final result =
-        snapshot.docs.map((e) => StudentLessonModel.fromSnapshot(e)).single;
+        snapshot.docs
+            .map((e) => StudentLessonModel.fromSnapshot(e))
+            .single;
 
     return result;
   }
@@ -171,7 +181,7 @@ class TeacherRepository {
         .where('class_id', isEqualTo: classId)
         .get();
     final list =
-        snapshot.docs.map((e) => StudentClassModel.fromSnapshot(e)).toList();
+    snapshot.docs.map((e) => StudentClassModel.fromSnapshot(e)).toList();
 
     return list;
   }
@@ -186,15 +196,15 @@ class TeacherRepository {
         .get();
 
     final list =
-        snapshot.docs.map((e) => StudentLessonModel.fromSnapshot(e)).toList();
+    snapshot.docs.map((e) => StudentLessonModel.fromSnapshot(e)).toList();
     debugPrint('==============> getAllStudentLessonsInClass ${list.length}');
     //list.sort((a, b) => a.studentId.compareTo(b.studentId));
 
     return list;
   }
 
-  Future<List<StudentLessonModel>> getAllStudentLessonInLesson(
-      int classId, int lessonId) async {
+  Future<List<StudentLessonModel>> getAllStudentLessonInLesson(int classId,
+      int lessonId) async {
     final db = FirebaseFirestore.instance;
 
     final snapshot = await db
@@ -204,15 +214,15 @@ class TeacherRepository {
         .get();
 
     final list =
-        snapshot.docs.map((e) => StudentLessonModel.fromSnapshot(e)).toList();
+    snapshot.docs.map((e) => StudentLessonModel.fromSnapshot(e)).toList();
 
     //list.sort((a, b) => a.studentId.compareTo(b.studentId));
 
     return list;
   }
 
-  Future<List<AnswerModel>> getAnswersOfQuestion(
-      int lessonId, int classId) async {
+  Future<List<AnswerModel>> getAnswersOfQuestion(int lessonId,
+      int classId) async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db
         .collection('answer')
@@ -230,7 +240,7 @@ class TeacherRepository {
     final snapshot = await db.collection('student_lesson').get();
 
     final list =
-        snapshot.docs.map((e) => StudentLessonModel.fromSnapshot(e)).toList();
+    snapshot.docs.map((e) => StudentLessonModel.fromSnapshot(e)).toList();
 
     //list.sort((a, b) => a.studentId.compareTo(b.studentId));
 
@@ -245,7 +255,9 @@ class TeacherRepository {
         .where('class_id', isEqualTo: classId)
         .get();
 
-    final result = snapshot.docs.map((e) => ClassModel.fromSnapshot(e)).single;
+    final result = snapshot.docs
+        .map((e) => ClassModel.fromSnapshot(e))
+        .single;
 
     //list.sort((a, b) => a.studentId.compareTo(b.studentId));
 
@@ -261,15 +273,17 @@ class TeacherRepository {
         .where('lesson_id', isEqualTo: lessonId)
         .get();
 
-    final lesson = snapshot.docs.map((e) => LessonModel.fromSnapshot(e)).single;
+    final lesson = snapshot.docs
+        .map((e) => LessonModel.fromSnapshot(e))
+        .single;
 
     //list.sort((a, b) => a.studentId.compareTo(b.studentId));
 
     return lesson;
   }
 
-  Future<void> updateTimekeeping(
-      int userId, int lessonId, int classId, int attendId) async {
+  Future<void> updateTimekeeping(int userId, int lessonId, int classId,
+      int attendId) async {
     final db = FirebaseFirestore.instance;
 
     await db
@@ -280,8 +294,8 @@ class TeacherRepository {
     });
   }
 
-  Future<void> updateTeacherNote(
-      int userId, int lessonId, int classId, String note) async {
+  Future<void> updateTeacherNote(int userId, int lessonId, int classId,
+      String note) async {
     final db = FirebaseFirestore.instance;
 
     await db
@@ -292,8 +306,8 @@ class TeacherRepository {
     });
   }
 
-  Future<void> updateStudentStatus(
-      int userId, int classId, int point, String type) async {
+  Future<void> updateStudentStatus(int userId, int classId, int point,
+      String type) async {
     final db = FirebaseFirestore.instance;
 
     await db
@@ -304,8 +318,8 @@ class TeacherRepository {
     });
   }
 
-  Future<void> changeStatusLesson(
-      int lessonId, int classId, String status) async {
+  Future<void> changeStatusLesson(int lessonId, int classId,
+      String status) async {
     final db = FirebaseFirestore.instance;
 
     await db
@@ -316,8 +330,8 @@ class TeacherRepository {
     });
   }
 
-  Future<void> noteForAllStudentInClass(
-      int lessonId, int classId, String note) async {
+  Future<void> noteForAllStudentInClass(int lessonId, int classId,
+      String note) async {
     final db = FirebaseFirestore.instance;
 
     await db
@@ -328,8 +342,7 @@ class TeacherRepository {
     });
   }
 
-  Future<void> noteForSupport(
-      int lessonId, int classId, String note) async {
+  Future<void> noteForSupport(int lessonId, int classId, String note) async {
     final db = FirebaseFirestore.instance;
 
     await db
@@ -340,19 +353,16 @@ class TeacherRepository {
     });
   }
 
-  Future<void> noteForAnotherSensei(int lessonId, int classId, String note) async {
+  Future<void> noteForAnotherSensei(int lessonId, int classId,
+      String note) async {
     final db = FirebaseFirestore.instance;
 
-    //final temp = await db.collection('lesson_result').doc("lesson_${lessonId}_class_$classId").get();
-
-    //if(temp.exists){
-      await db
-          .collection('lesson_result')
-          .doc("lesson_${lessonId}_class_$classId")
-          .update({
-        'teacher_note': note,
-      });
-    //}
+    await db
+        .collection('lesson_result')
+        .doc("lesson_${lessonId}_class_$classId")
+        .update({
+      'teacher_note': note,
+    });
   }
 
   Future<bool> addStudentLesson(StudentLessonModel model) async {
@@ -361,14 +371,16 @@ class TeacherRepository {
     final temp = await db
         .collection("student_lesson")
         .doc(
-            "student_${model.studentId}_lesson_${model.lessonId}_class_${model.classId}")
+        "student_${model.studentId}_lesson_${model.lessonId}_class_${model
+            .classId}")
         .get();
 
     if (!temp.exists) {
       await db
           .collection("student_lesson")
           .doc(
-              "student_${model.studentId}_lesson_${model.lessonId}_class_${model.classId}")
+          "student_${model.studentId}_lesson_${model.lessonId}_class_${model
+              .classId}")
           .set({
         'class_id': model.classId,
         'grammar': model.grammar,
@@ -409,10 +421,11 @@ class TeacherRepository {
     final db = FirebaseFirestore.instance;
 
     final temp = await db
-        .collection("lesson_result").doc("lesson_${model.lessonId}_class_${model.classId}")
+        .collection("lesson_result").doc(
+        "lesson_${model.lessonId}_class_${model.classId}")
         .get();
 
-    if(!temp.exists){
+    if (!temp.exists) {
       await db
           .collection("lesson_result")
           .doc("lesson_${model.lessonId}_class_${model.classId}")
@@ -428,21 +441,31 @@ class TeacherRepository {
         'teacher_note': model.noteForTeacher,
       });
       return true;
-    } else{
+    } else {
       return false;
     }
   }
 
   Future<void> updateProfileTeacher(
-     String id, String name, String phone) async {
+      String id, TeacherModel model) async {
     final db = FirebaseFirestore.instance;
 
-    await db
-        .collection('teacher')
-        .doc("teacher_user_$id")
-        .update({
-      'name': name,
-      'phone': phone,
+    await db.collection('teacher').doc("teacher_user_$id").update({
+      'name': model.name,
+      'note': model.note,
+      'url': model.url,
+      'status': model.status,
+      'teacher_code': model.teacherCode,
+      'phone': model.phone,
+      'user_id': model.userId,
+
     });
+  }
+
+  Future<String> uploadImageAndGetUrl(Uint8List data ,String folder) async {
+    final now = DateTime.now().microsecondsSinceEpoch;
+    final ref = FirebaseStorage.instance.ref().child('$folder/$now');
+    await ref.putData(data ,SettableMetadata(contentType: '.png'));
+    return await ref.getDownloadURL();
   }
 }
