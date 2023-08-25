@@ -6,6 +6,7 @@ import 'package:internal_sakumi/widget/custom_button.dart';
 import '../../../configs/color_configs.dart';
 import '../../../configs/text_configs.dart';
 import '../../../utils/resizable.dart';
+import 'input_custom.dart';
 
 class InfoForm extends StatefulWidget {
   const InfoForm({Key? key}) : super(key: key);
@@ -52,147 +53,128 @@ class _InfoFormState extends State<InfoForm> {
             thickness: 2,
             endIndent: Resizable.size(context, 100),
           ),
-          GridView.builder(
-              padding: EdgeInsets.only(right: Resizable.padding(context, 100)),
-              itemCount: listInfo.length,
-              shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: (Resizable.width(context) * 2 / 3 - Resizable.size(context, 150)) / (2 * Resizable.size(context, 100) ) ,
-                  crossAxisSpacing: Resizable.padding(context, 100),
-              ),
-              itemBuilder: (context, index) {
-                return LayoutBuilder(
-                  builder: (context, constraint) {
-                    final focusNode = listInfo[index]['focusNode'] as FocusNode;
-                    final controller = listInfo[index]['controller'] as TextEditingController;
-                    focusNode.addListener(() {
-                      if (focusNode
-                          .hasFocus) {
-                        profileCubit.setFocus(true, index);
-                      } else {
-                        profileCubit.setFocus(false, index);
-                      }
-                    });
-                    controller.addListener(() {
-                      profileCubit.checkText(controller.text, index);
-                    });
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          listInfo[index]['title'],
-                          style: TextStyle(
-                              fontSize: Resizable.font(context, 20),
-                              fontWeight: FontWeight.bold,
-                              color: greyColor.shade600),
-                        ),
-                        SizedBox(
-                          height: Resizable.size(context, 5),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            boxShadow: (profileCubit.isEditBaseInfo &&
-                                    listInfo[index]['isFocus'])
-                                ? [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.3),
-                                      spreadRadius: 2,
-                                      blurRadius: 4,
-                                      offset: const Offset(0,
-                                          4), // changes the position of the shadow
-                                    ),
-                                  ]
-                                : null,
-                          ),
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              border: const OutlineInputBorder(),
-                              fillColor: profileCubit.isEditBaseInfo
-                                  ? Colors.white
-                                  : greyColor.shade50,
-                              filled: true,
-                              enabled: !(profileCubit.isEditBaseInfo &&
-                                  !listInfo[index]['isEdit']),
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: Resizable.padding(context, 5),
-                                  vertical: Resizable.padding(context, 5)),
-                            ),
-                            style: TextStyle(
-                                fontSize: Resizable.font(context, 18),
-                                fontWeight: FontWeight.bold),
-                            readOnly: !profileCubit.isEditBaseInfo,
-                            focusNode: focusNode,
-                            controller: controller,
-                            validator: (value) {
-                              if (value == null ||
-                                  controller.text.isEmpty ||
-                                  controller.text == null) {
-                                return 'Dữ liệu không hợp lệ';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: Resizable.size(context, 5),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              }),
+          Padding(
+            padding: EdgeInsets.only(right: Resizable.padding(context, 100)),
+            child: Row(
+              children: [
+                Expanded(
+                    child: InputCustom(
+                  controller:
+                      listInfo[0]['controller'] as TextEditingController,
+                  focusNode: listInfo[0]['focusNode'] as FocusNode,
+                  index: 0,
+                  type: 'info',
+                  title: listInfo[0]['title'],
+                  item: listInfo[0],
+                  cubit: profileCubit,
+                  isEdit: profileCubit.isEditBaseInfo,
+                  isFocus: listInfo[0]['isFocus'],
+                )),
+                SizedBox(
+                  width: Resizable.padding(context, 100),
+                ),
+                Expanded(
+                    child: InputCustom(
+                  controller:
+                      listInfo[1]['controller'] as TextEditingController,
+                  focusNode: listInfo[1]['focusNode'] as FocusNode,
+                  index: 1,
+                  type: 'info',
+                  title: listInfo[1]['title'],
+                  item: listInfo[1],
+                  cubit: profileCubit,
+                  isEdit: profileCubit.isEditBaseInfo,
+                  isFocus: listInfo[1]['isFocus'],
+                )),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(right: Resizable.padding(context, 100)),
+            child: Row(
+              children: [
+                Expanded(
+                    child: InputCustom(
+                  controller:
+                      listInfo[2]['controller'] as TextEditingController,
+                  focusNode: listInfo[2]['focusNode'] as FocusNode,
+                  index: 2,
+                  type: 'info',
+                  title: listInfo[2]['title'],
+                  item: listInfo[2],
+                  cubit: profileCubit,
+                  isEdit: profileCubit.isEditBaseInfo,
+                  isFocus: listInfo[2]['isFocus'],
+                )),
+                SizedBox(
+                  width: Resizable.padding(context, 100),
+                ),
+                Expanded(
+                    child: InputCustom(
+                  controller:
+                      listInfo[3]['controller'] as TextEditingController,
+                  focusNode: listInfo[3]['focusNode'] as FocusNode,
+                  index: 3,
+                  type: 'info',
+                  title: listInfo[3]['title'],
+                  item: listInfo[3],
+                  cubit: profileCubit,
+                  isEdit: profileCubit.isEditBaseInfo,
+                  isFocus: listInfo[3]['isFocus'],
+                )),
+              ],
+            ),
+          ),
           profileCubit.isEditBaseInfo
-              ? Row(
-                  children: [
-                    IgnorePointer(
-                      ignoring: !profileCubit.isUpdate,
-                      child: Container(
+              ? Padding(
+                  padding: EdgeInsets.only(top: Resizable.padding(context, 20)),
+                  child: Row(
+                    children: [
+                      IgnorePointer(
+                        ignoring: !profileCubit.isUpdate,
+                        child: Container(
+                          margin: EdgeInsets.only(
+                              bottom: Resizable.padding(context, 20)),
+                          height: Resizable.size(context, 25),
+                          width: Resizable.size(context, 100),
+                          child: CustomButton(
+                              onPress: () {
+                                final isValid = _form.currentState!.validate();
+                                if (!isValid) {
+                                  return;
+                                } else {
+                                  _form.currentState!.save();
+                                  profileCubit.updateProfile(context);
+                                }
+                              },
+                              bgColor: profileCubit.isUpdate
+                                  ? primaryColor.shade500
+                                  : greyColor.shade50,
+                              foreColor: profileCubit.isUpdate
+                                  ? Colors.white
+                                  : primaryColor.shade500,
+                              text: 'Cập nhật'),
+                        ),
+                      ),
+                      SizedBox(
+                        width: Resizable.size(context, 5),
+                      ),
+                      Container(
                         margin: EdgeInsets.only(
                             bottom: Resizable.padding(context, 20)),
                         height: Resizable.size(context, 25),
                         width: Resizable.size(context, 100),
                         child: CustomButton(
                             onPress: () {
-                              final isValid = _form.currentState!.validate();
-                              if (!isValid) {
-                                return;
-                              }
-                              else{
-                                _form.currentState!.save();
-                                profileCubit.updateProfile(context);
-                              }
-
+                              _form.currentState?.reset();
+                              profileCubit.exit('info');
                             },
-                            bgColor: profileCubit.isUpdate
-                                ? primaryColor.shade500
-                                : greyColor.shade50,
-                            foreColor: profileCubit.isUpdate
-                                ? Colors.white
-                                : primaryColor.shade500,
-                            text: 'Cập nhật'),
+                            bgColor: Colors.white,
+                            foreColor: primaryColor.shade500,
+                            text: 'Thoát'),
                       ),
-                    ),
-                    SizedBox(
-                      width: Resizable.size(context, 5),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(
-                          bottom: Resizable.padding(context, 20)),
-                      height: Resizable.size(context, 25),
-                      width: Resizable.size(context, 100),
-                      child: CustomButton(
-                          onPress: () {
-                            _form.currentState?.reset();
-                            profileCubit.exit();
-                          },
-                          bgColor: Colors.white,
-                          foreColor: primaryColor.shade500,
-                          text: 'Thoát'),
-                    ),
-                  ],
+                    ],
+                  ),
                 )
               : Container(),
         ],

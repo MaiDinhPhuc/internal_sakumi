@@ -179,15 +179,27 @@ enum AppText {
   titleStatus,
   textSSNote,
   titleHome,
+  txtTeacherProfile,
+  txtChangeImage, txtBaseInfo, txtPassLogin,
+  txtCurrentPass,
+  txtNewPass,
+  txtAgainNewPass,
+  txtChangePass,
+  txtExit,
+  txtUpdate,
   optInProgress,
   optComplete,
   optBoth,
   txtFilter,
-  txtTeacherProfile,
-  txtChangeImage, txtBaseInfo, txtPassLogin,
+  textStudentNotSubmit,
+  textContactIT,
+  textDetail
 }
 
 Map<AppText, String> texts = {
+  AppText.textDetail: 'Chi tiết',
+  AppText.textStudentNotSubmit: 'Lớp chưa có ai nộp bài tập!',
+  AppText.textContactIT: 'Lỗi khi load data, vui lòng liên hệ team IT để được support',
   AppText.titleHome: 'Trang chủ',
   AppText.textSSNote: 'Sensei hãy nhận xét về bài làm của Học viên nhé...',
   AppText.txtGradingDone: 'Chấm điểm xong!',
@@ -325,7 +337,7 @@ Map<AppText, String> texts = {
   AppText.txtNotTimeKeeping: 'Chưa điểm danh',
   AppText.txtTest: 'Bài kiểm tra',
   AppText.txtPointOfTest: 'Điểm kiểm tra',
-  AppText.txtAveragePoint: '(Điểm trung bình)',
+  AppText.txtAveragePoint: 'Điểm trung bình',
   AppText.txtDoHomeworks: 'Làm BTVN',
   AppText.txtNotMark: 'Chưa chấm bài tập về nhà',
   AppText.txtMarked: 'Đã chấm bài tập về nhà',
@@ -381,7 +393,14 @@ Map<AppText, String> texts = {
   AppText.txtChangeImage: 'Đổi ảnh mới',
   AppText.txtBaseInfo: 'Thông tin cơ bản',
   AppText.txtPassLogin: 'Mật khẩu đăng nhập',
+  AppText.txtCurrentPass: 'Mật khẩu hiện tại',
+  AppText.txtNewPass: 'Mật khẩu mới',
+  AppText.txtAgainNewPass: 'Nhập lại mật khẩu mới',
+  AppText.txtChangePass: 'Đổi mật khẩu',
+  AppText.txtUpdate: 'Cập nhật',
+  AppText.txtExit: 'Thoát',
 };
+
 
 extension AppTexts on AppText {
   static String getStringValue(String value) {

@@ -1,8 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/profile/info_form.dart';
+import 'package:internal_sakumi/features/teacher/profile/info_pass.dart';
 import 'package:internal_sakumi/features/teacher/profile/teacher_profile_cubit.dart';
 import 'package:internal_sakumi/widget/custom_button.dart';
 
@@ -31,14 +34,16 @@ class BodyProfile extends StatelessWidget {
                   CircleAvatar(
                     radius: Resizable.size(context, 80),
                     backgroundColor: greyColor.shade300,
-                    backgroundImage: profileCubit.fromPicker!.image,
+                    backgroundImage: NetworkImage(
+                        profileCubit.profileTeacher!.url.isEmpty ? profileCubit.defaultImage : profileCubit.profileTeacher!.url
+                    ) ,
                   ),
                   SizedBox(height: Resizable.size(context, 20)),
                   CustomButton(
                       onPress: () async {
-                        Image? img = await ImagePickerWeb.getImageAsWidget();
-                        if(img != null) {
-                          profileCubit.changeAvatar(img);
+                        Uint8List? imgData = await ImagePickerWeb.getImageAsBytes();
+                        if(imgData != null) {
+                          profileCubit.changeAvatar(context, imgData!);
                         }
                       },
                       bgColor: Colors.white,
@@ -51,31 +56,7 @@ class BodyProfile extends StatelessWidget {
                   child: Column(
                     children: [
                       const InfoForm(),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                AppText.txtPassLogin.text.toUpperCase(),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: Resizable.font(context, 20),
-                                    color: greyColor.shade600),
-                              ),
-                              IconButton(
-                                  onPressed: () {},
-                                  iconSize: Resizable.size(context, 20),
-                                  icon:
-                                      Image.asset('assets/images/ic_edit.png'))
-                            ],
-                          ),
-                          Divider(
-                            thickness: 2,
-                            endIndent: Resizable.size(context, 100),
-                          ),
-                        ],
-                      )
+                      const InfoPass()
                     ],
                   ))
             ],

@@ -75,6 +75,7 @@ class AuthServices {
               await SharedPreferences.getInstance();
           sharedPreferences.setString(
               PrefKeyConfigs.code, adminModel.adminCode);
+          sharedPreferences.setString(PrefKeyConfigs.password, password);
           sharedPreferences.setInt(PrefKeyConfigs.userId, adminModel.userId);
           sharedPreferences.setString(PrefKeyConfigs.name, adminModel.name);
           Navigator.pushReplacementNamed(
@@ -89,8 +90,12 @@ class AuthServices {
               await SharedPreferences.getInstance();
           sharedPreferences.setString(
               PrefKeyConfigs.code, teacherModel.teacherCode);
+          sharedPreferences.setString(PrefKeyConfigs.password, password);
           sharedPreferences.setInt(PrefKeyConfigs.userId, teacherModel.userId);
           sharedPreferences.setString(PrefKeyConfigs.name, teacherModel.name);
+
+          var localData = sharedPreferences.getString(PrefKeyConfigs.password);
+          debugPrint('=============> password ${password} ==== ${localData}');
           Navigator.pushReplacementNamed(context,
               "${Routes.teacher}?name=${teacherModel.teacherCode.trim()}");
         }

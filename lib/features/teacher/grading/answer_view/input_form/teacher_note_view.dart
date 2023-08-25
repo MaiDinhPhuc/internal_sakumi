@@ -1,10 +1,10 @@
-import 'dart:typed_data';
-
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_network/image_network.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/features/teacher/grading/answer_view/pick_image_cubit.dart';
 import 'package:internal_sakumi/features/teacher/grading/detail_grading_cubit.dart';
+import 'package:internal_sakumi/features/teacher/grading/detail_grading_view.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
@@ -18,7 +18,7 @@ class TeacherNoteView extends StatelessWidget {
       required this.cubit,
       required this.noteController,
       required this.onChange,
-      required this.onOpenFile, required this.onOpenMic, required this.type});
+      required this.onOpenFile, required this.onOpenMic, required this.type, required this.checkActiveCubit});
   final ImagePickerCubit imagePickerCubit;
   final AnswerModel answerModel;
   final DetailGradingCubit cubit;
@@ -27,9 +27,10 @@ class TeacherNoteView extends StatelessWidget {
   final Function() onOpenFile;
   final Function() onOpenMic;
   final String type;
+  final CheckActiveCubit checkActiveCubit;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ImagePickerCubit, List<Uint8List>>(
+    return BlocBuilder<ImagePickerCubit, List<dynamic>>(
         bloc: imagePickerCubit..init(type == 'single' ? answerModel.listImagePicker: []),
         builder: (cc, list) {
           return Column(
@@ -58,7 +59,9 @@ class TeacherNoteView extends StatelessWidget {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(
                                     Resizable.size(context, 10)),
-                                child: Image.memory(list[i], fit: BoxFit.fill),
+                                child: answerModel.checkIsUrl(list[i]) ? ImageNetwork(
+                                    fitWeb: BoxFitWeb.fill,
+                                    image: list[i], height: Resizable.size(context, 250), width: Resizable.size(context, 200),) : Image.memory(list[i], fit: BoxFit.fill),
                               ),
                               Container(
                                   height: Resizable.size(context, 20),
@@ -75,9 +78,9 @@ class TeacherNoteView extends StatelessWidget {
                                       onTap: () async {
                                         if(type == 'single'){
                                           await imagePickerCubit.removeImage(
-                                              answerModel, list[i]);
+                                              answerModel, list[i],checkActiveCubit ,cubit);
                                         }else{
-                                          imagePickerCubit.removeImageForAll(cubit.answers, list[i]);
+                                          imagePickerCubit.removeImageForAll(cubit.answers, list[i],checkActiveCubit ,cubit);
                                         }
                                       },
                                       child: Icon(

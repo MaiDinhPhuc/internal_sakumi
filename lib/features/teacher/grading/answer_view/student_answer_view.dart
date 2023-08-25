@@ -17,13 +17,16 @@ class StudentAnswerView extends StatelessWidget {
       {super.key,
       required this.answerModel,
       required this.cubit,
-      required this.soundCubit});
+      required this.soundCubit,
+      required this.checkActiveCubit});
   final AnswerModel answerModel;
   final DetailGradingCubit cubit;
   final SoundCubit soundCubit;
+  final CheckActiveCubit checkActiveCubit;
 
   @override
   Widget build(BuildContext context) {
+    print(answerModel.newScore);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -82,6 +85,12 @@ class StudentAnswerView extends StatelessWidget {
                         "10",
                       ],
                       onChanged: (item) {
+                        var temp = 0;
+                        if (item == AppText.textGradingScale.text) {
+                          temp = -1;
+                        } else {
+                          temp = int.parse(item!);
+                        }
                         if (item != AppText.textGradingScale.text) {
                           BlocProvider.of<DropdownGradingCubit>(c)
                               .change(item!);
@@ -96,6 +105,21 @@ class StudentAnswerView extends StatelessWidget {
                               .listAnswer![
                                   cubit.listAnswer!.indexOf(answerModel)]
                               .newScore = -1;
+                        }
+                        if(cubit.answers.every((element) => element.score != -1)){
+                          if (temp !=
+                              cubit
+                                  .listAnswer![
+                              cubit.listAnswer!.indexOf(answerModel)]
+                                  .score) {
+                            checkActiveCubit.changeActive(true);
+                          }
+                        }else{
+                          if(cubit.answers.every((element) => element.newScore != -1)){
+                            checkActiveCubit.changeActive(true);
+                          }else{
+                            checkActiveCubit.changeActive(false);
+                          }
                         }
                       },
                       value: s);
