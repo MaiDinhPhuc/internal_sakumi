@@ -54,8 +54,35 @@ class AttendanceItem extends StatelessWidget {
                               Expanded(
                                   flex: 2,
                                   child: DropDownWidget(
-                                      attendId, studentModel.userId,
-                                      items: items))
+                                      studentModel.userId,
+                                      selectorId: s,
+                                      items: items,
+                                    onPressed: (v) async {
+                                      await addStudentLesson(
+                                          context,
+                                          StudentLessonModel(
+                                              grammar: -2,
+                                              hw: -2,
+                                              id: 10000,
+                                              classId:
+                                              int.parse(TextUtils.getName(position: 2)),
+                                              kanji: -2,
+                                              lessonId: int.parse(TextUtils.getName()),
+                                              listening: -2,
+                                              studentId: studentModel.userId,
+                                              timekeeping: 0,
+                                              vocabulary: -2,
+                                              teacherNote: ''));
+                                      s = items.indexOf(v.toString());
+                                      if (c.mounted) {
+                                        BlocProvider.of<DropdownAttendanceCubit>(c)
+                                            .updateAttendance(items.indexOf(v.toString()), studentModel.userId, c);
+                                      }
+                                      if (items.length == 7 && c.mounted) {
+                                        BlocProvider.of<SessionCubit>(c).updateTimekeeping(s);
+                                      }
+                                    },
+                                  ))
                             ],
                           )),
                       Expanded(flex: 1, child: Container()),
@@ -63,81 +90,6 @@ class AttendanceItem extends StatelessWidget {
                   ),
                 )));
   }
-}
-
-class DropDownWidget extends StatelessWidget {
-  final int attendId, userId;
-  final List<String> items;
-  const DropDownWidget(this.attendId, this.userId,
-      {required this.items, Key? key})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => DropdownAttendanceCubit(attendId),
-        child: BlocBuilder<DropdownAttendanceCubit, int>(
-            builder: (c, s) => DropdownButtonHideUnderline(
-                  child: DropdownButton2(
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    buttonPadding: EdgeInsets.symmetric(
-                        vertical: Resizable.size(context, 0),
-                        horizontal: Resizable.padding(context, 10)),
-                    buttonDecoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                              blurRadius: Resizable.size(context, 2),
-                              color: s! > 0 ? greyColor.shade100 : primaryColor)
-                        ],
-                        border: Border.all(
-                            color: s > 0 ? greyColor.shade100 : primaryColor),
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(1000)),
-                    dropdownElevation: 0,
-                    dropdownDecoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(10)),
-                    itemHeight: Resizable.size(context, 25),
-                    items: items
-                        .map((item) => DropdownMenuItem<String>(
-                            value: item,
-                            child: Text(item,
-                                style: TextStyle(
-                                    fontSize: Resizable.font(context, 18),
-                                    fontWeight: FontWeight.w500))))
-                        .toList(),
-                    value: items[s],
-                    onChanged: (v) async {
-                      await addStudentLesson(
-                          context,
-                          StudentLessonModel(
-                              grammar: -2,
-                              hw: -2,
-                              id: 10000,
-                              classId:
-                                  int.parse(TextUtils.getName(position: 2)),
-                              kanji: -2,
-                              lessonId: int.parse(TextUtils.getName()),
-                              listening: -2,
-                              studentId: userId,
-                              timekeeping: 0,
-                              vocabulary: -2,
-                              teacherNote: 'teacherNote'));
-                      s = items.indexOf(v.toString());
-                      if (c.mounted) {
-                        BlocProvider.of<DropdownAttendanceCubit>(c)
-                            .update(items.indexOf(v.toString()), userId, c);
-                      }
-                      if (items.length == 7 && c.mounted) {
-                        BlocProvider.of<SessionCubit>(c).updateTimekeeping(s);
-                      }
-                    },
-                    buttonHeight: Resizable.size(context, 20),
-                    buttonWidth: double.maxFinite,
-                  ),
-                )));
-  }
-
   addStudentLesson(context, StudentLessonModel model) async {
     TeacherRepository teacherRepository = TeacherRepository.fromContext(context);
     var check = await teacherRepository.addStudentLesson(model);
@@ -146,11 +98,59 @@ class DropDownWidget extends StatelessWidget {
   }
 }
 
-class DropdownAttendanceCubit extends Cubit<int> {
-  final int attendId;
-  DropdownAttendanceCubit(this.attendId) : super(attendId);
+class DropDownWidget extends StatelessWidget {
+  final int userId, selectorId;
+  final List<String> items;
+  final Function(String? v) onPressed;
+  const DropDownWidget(this.userId,
+      {required this.selectorId, required this.items, required this.onPressed, Key? key})
+      : super(key: key);
 
-  update(int attendId, int id, context) async {
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonHideUnderline(
+      child: DropdownButton2(
+        icon: const Icon(Icons.keyboard_arrow_down),
+        buttonPadding: EdgeInsets.symmetric(
+            vertical: Resizable.size(context, 0),
+            horizontal: Resizable.padding(context, 10)),
+        buttonDecoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                  blurRadius: Resizable.size(context, 2),
+                  color: selectorId! > 0 ? greyColor.shade100 : primaryColor)
+            ],
+            border: Border.all(
+                color: selectorId > 0 ? greyColor.shade100 : primaryColor),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(1000)),
+        dropdownElevation: 0,
+        dropdownDecoration: BoxDecoration(
+            border: Border.all(color: Colors.black),
+            borderRadius: BorderRadius.circular(10)),
+        itemHeight: Resizable.size(context, 25),
+        items: items
+            .map((item) => DropdownMenuItem<String>(
+            value: item,
+            child: Text(item,
+                style: TextStyle(
+                    fontSize: Resizable.font(context, 18),
+                    fontWeight: FontWeight.w500))))
+            .toList(),
+        value: items[selectorId],
+        onChanged: onPressed,
+        buttonHeight: Resizable.size(context, 20),
+        buttonWidth: double.maxFinite,
+      ),
+    );
+  }
+}
+
+class DropdownAttendanceCubit extends Cubit<int> {
+  final int userId;
+  DropdownAttendanceCubit(this.userId) : super(userId);
+
+  updateAttendance(int attendId, int id, context) async {
     TeacherRepository teacherRepository =
         TeacherRepository.fromContext(context);
     await teacherRepository.updateTimekeeping(
@@ -160,6 +160,15 @@ class DropdownAttendanceCubit extends Cubit<int> {
         attendId);
     emit(attendId);
     debugPrint(
-        '=============> attendId : $id === $attendId === ${this.attendId}');
+        '=============> attendId : $id === $attendId === ${userId}');
+  }
+
+  updateStudentStatus(String type, int point, int id, context)async{
+    TeacherRepository teacherRepository =
+    TeacherRepository.fromContext(context);
+
+    await teacherRepository.updateStudentStatus(id, int.parse(TextUtils.getName(position: 2)), point, type);
+
+    emit(point);
   }
 }

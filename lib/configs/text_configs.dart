@@ -181,6 +181,12 @@ enum AppText {
   titleHome,
   txtTeacherProfile,
   txtChangeImage, txtBaseInfo, txtPassLogin,
+  txtCurrentPass,
+  txtNewPass,
+  txtAgainNewPass,
+  txtChangePass,
+  txtExit,
+  txtUpdate,
   optInProgress,
   optComplete,
   optBoth,
@@ -387,7 +393,14 @@ Map<AppText, String> texts = {
   AppText.txtChangeImage: 'Đổi ảnh mới',
   AppText.txtBaseInfo: 'Thông tin cơ bản',
   AppText.txtPassLogin: 'Mật khẩu đăng nhập',
+  AppText.txtCurrentPass: 'Mật khẩu hiện tại',
+  AppText.txtNewPass: 'Mật khẩu mới',
+  AppText.txtAgainNewPass: 'Nhập lại mật khẩu mới',
+  AppText.txtChangePass: 'Đổi mật khẩu',
+  AppText.txtUpdate: 'Cập nhật',
+  AppText.txtExit: 'Thoát',
 };
+
 
 extension AppTexts on AppText {
   static String getStringValue(String value) {

@@ -37,6 +37,10 @@ class SessionCubit extends Cubit<int> {
         .fold(0, (pre, e) => e.timekeeping > 0 ? (pre + 1) : pre);
   }
 
+  updateUI(){
+    emit(state+1);
+  }
+
   getTeacherId() async {
     SharedPreferences localData = await SharedPreferences.getInstance();
 

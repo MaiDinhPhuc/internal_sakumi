@@ -43,7 +43,7 @@ class LessonTabCubit extends Cubit<int> {
   loadClass(context) async {
     TeacherRepository teacherRepo = TeacherRepository.fromContext(context);
     classModel =
-    await teacherRepo.getClassById(int.parse(TextUtils.getClassId()));
+    await teacherRepo.getClassById(int.parse(TextUtils.getName()));
     debugPrint(
         '==============> loadClass 4 ${classModel!.classId} ${classModel!.courseId} ${int.parse(TextUtils.getClassId())}');
     emit(state + 1);
