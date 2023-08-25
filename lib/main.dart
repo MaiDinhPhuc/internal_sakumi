@@ -10,7 +10,6 @@ import 'package:internal_sakumi/repository/user_repository.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 import 'features/teacher/profile/app_bar_info_teacher_cubit.dart';
 
 void main() async {
@@ -36,7 +35,7 @@ class MyApp extends StatelessWidget {
         ],
         child: MultiBlocProvider(
             providers: [
-              BlocProvider(create: (context) => TeacherCubit()..init(context, AppText.optBoth.text)),
+              // BlocProvider(create: (context) => TeacherCubit()..init(context, AppText.optBoth.text)),
               BlocProvider(create: (context) => AppBarInfoTeacherCubit()),
             ],
             child: MaterialApp(

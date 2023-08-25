@@ -22,8 +22,7 @@ class BodyProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          TeacherProfileCubit()..load(context),
+      create: (context) => TeacherProfileCubit()..load(context),
       child: BlocBuilder<TeacherProfileCubit, int>(
         builder: (context, state) {
           if (state == 0) return const CircularProgressIndicator();
@@ -35,20 +34,30 @@ class BodyProfile extends StatelessWidget {
             children: [
               Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ImageNetwork(
-                    key: Key(profileCubit.profileTeacher!.url),
-                  image:  profileCubit.profileTeacher!.url.isEmpty ? AppConfigs.defaultImage : profileCubit.profileTeacher!.url,
-                    height: Resizable.size(context, 160),
-                    borderRadius: BorderRadius.circular(1000),
-                    width: Resizable.size(context, 160),
+                  CircleAvatar(
+                    radius: Resizable.size(context, 80),
+                    backgroundColor: primaryColor.shade50,
+                    child: ImageNetwork(
+                        key: Key(profileCubit.profileTeacher!.url),
+                        image: profileCubit.profileTeacher!.url.isEmpty
+                            ? AppConfigs.defaultImage
+                            : profileCubit.profileTeacher!.url,
+                        height: Resizable.size(context, 160),
+                        borderRadius: BorderRadius.circular(1000),
+                        width: Resizable.size(context, 160),
+                        duration: 0,
+                        onLoading: Transform.scale(
+                          scale: 0.5,
+                          child: const CircularProgressIndicator(),
+                        )),
                   ),
                   CustomButton(
                       onPress: () async {
-                        Uint8List? imgData = await ImagePickerWeb.getImageAsBytes();
-                        if(imgData != null) {
+                        Uint8List? imgData =
+                            await ImagePickerWeb.getImageAsBytes();
+                        if (imgData != null) {
                           profileCubit.changeAvatar(context, imgData!);
                         }
                       },
@@ -57,7 +66,7 @@ class BodyProfile extends StatelessWidget {
                       text: AppText.txtChangeImage.text)
                 ],
               )),
-               Expanded(
+              Expanded(
                   flex: 2,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +80,7 @@ class BodyProfile extends StatelessWidget {
                                 builder: (context) => const LogOutDialog());
                           },
                           bgColor: primaryColor.shade500,
-                          foreColor:Colors.white,
+                          foreColor: Colors.white,
                           text: AppText.txtLogout.text),
                     ],
                   ))

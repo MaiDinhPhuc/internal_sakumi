@@ -42,7 +42,7 @@ class DefaultFirebaseOptions {
         );
     }
   }
-
+  
   static const FirebaseOptions web = AppConfigs.endpointFirebaseDebug? FirebaseOptions(
     apiKey: 'AIzaSyCXP7wP9tXyST-2ONbrmjpswJjz4_7EKUg',
     appId: '1:682372566037:web:a35f5554fb046d4313521c',
@@ -61,7 +61,6 @@ class DefaultFirebaseOptions {
       messagingSenderId: "800259355994",
       appId: "1:800259355994:web:fee0c3e7ba537c26002f63",
       measurementId: "G-NB3XS046GH") ;
-
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAsG1lIXRDrtcb-xyxRPX0omJNXWFce-D0',
