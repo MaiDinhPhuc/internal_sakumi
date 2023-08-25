@@ -331,7 +331,7 @@ Map<AppText, String> texts = {
   AppText.txtNotTimeKeeping: 'Chưa điểm danh',
   AppText.txtTest: 'Bài kiểm tra',
   AppText.txtPointOfTest: 'Điểm kiểm tra',
-  AppText.txtAveragePoint: '(Điểm trung bình)',
+  AppText.txtAveragePoint: 'Điểm trung bình',
   AppText.txtDoHomeworks: 'Làm BTVN',
   AppText.txtNotMark: 'Chưa chấm bài tập về nhà',
   AppText.txtMarked: 'Đã chấm bài tập về nhà',
