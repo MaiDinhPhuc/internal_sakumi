@@ -1,11 +1,15 @@
 import 'dart:typed_data';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_network/image_network.dart';
 import 'package:image_picker_web/image_picker_web.dart';
+import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/profile/info_form.dart';
 import 'package:internal_sakumi/features/teacher/profile/info_pass.dart';
+import 'package:internal_sakumi/features/teacher/profile/log_out_dialog.dart';
 import 'package:internal_sakumi/features/teacher/profile/teacher_profile_cubit.dart';
 import 'package:internal_sakumi/widget/custom_button.dart';
 
@@ -18,8 +22,7 @@ class BodyProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          TeacherProfileCubit()..load(context),
+      create: (context) => TeacherProfileCubit()..load(context),
       child: BlocBuilder<TeacherProfileCubit, int>(
         builder: (context, state) {
           if (state == 0) return const CircularProgressIndicator();
@@ -27,22 +30,34 @@ class BodyProfile extends StatelessWidget {
           final profileCubit = context.read<TeacherProfileCubit>();
           final listInfo = profileCubit.listInfoTextField!;
           return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                   child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CircleAvatar(
                     radius: Resizable.size(context, 80),
-                    backgroundColor: greyColor.shade300,
-                    backgroundImage: NetworkImage(
-                        profileCubit.profileTeacher!.url.isEmpty ? profileCubit.defaultImage : profileCubit.profileTeacher!.url
-                    ) ,
+                    backgroundColor: primaryColor.shade50,
+                    child: ImageNetwork(
+                        key: Key(profileCubit.profileTeacher!.url),
+                        image: profileCubit.profileTeacher!.url.isEmpty
+                            ? AppConfigs.defaultImage
+                            : profileCubit.profileTeacher!.url,
+                        height: Resizable.size(context, 160),
+                        borderRadius: BorderRadius.circular(1000),
+                        width: Resizable.size(context, 160),
+                        duration: 0,
+                        onLoading: Transform.scale(
+                          scale: 0.5,
+                          child: const CircularProgressIndicator(),
+                        )),
                   ),
-                  SizedBox(height: Resizable.size(context, 20)),
                   CustomButton(
                       onPress: () async {
-                        Uint8List? imgData = await ImagePickerWeb.getImageAsBytes();
-                        if(imgData != null) {
+                        Uint8List? imgData =
+                            await ImagePickerWeb.getImageAsBytes();
+                        if (imgData != null) {
                           profileCubit.changeAvatar(context, imgData!);
                         }
                       },
@@ -54,9 +69,19 @@ class BodyProfile extends StatelessWidget {
               Expanded(
                   flex: 2,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const InfoForm(),
-                      const InfoPass()
+                      const InfoPass(),
+                      CustomButton(
+                          onPress: () async {
+                            showDialog(
+                                context: context,
+                                builder: (context) => const LogOutDialog());
+                          },
+                          bgColor: primaryColor.shade500,
+                          foreColor: Colors.white,
+                          text: AppText.txtLogout.text),
                     ],
                   ))
             ],

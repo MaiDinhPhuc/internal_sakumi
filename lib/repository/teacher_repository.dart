@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
@@ -15,6 +17,7 @@ import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+
 class TeacherRepository {
   static TeacherRepository fromContext(BuildContext context) =>
       RepositoryProvider.of<TeacherRepository>(context);
@@ -356,7 +359,6 @@ class TeacherRepository {
   Future<void> noteForAnotherSensei(int lessonId, int classId,
       String note) async {
     final db = FirebaseFirestore.instance;
-
     await db
         .collection('lesson_result')
         .doc("lesson_${lessonId}_class_$classId")
@@ -364,7 +366,6 @@ class TeacherRepository {
       'teacher_note': note,
     });
   }
-
   Future<bool> addStudentLesson(StudentLessonModel model) async {
     final db = FirebaseFirestore.instance;
 
@@ -417,11 +418,13 @@ class TeacherRepository {
     }
   }
 
+
   Future<bool> addLessonResult(LessonResultModel model) async {
     final db = FirebaseFirestore.instance;
 
     final temp = await db
-        .collection("lesson_result").doc("lesson_${model.lessonId}_class_${model.classId}")
+        .collection("lesson_result").doc(
+        "lesson_${model.lessonId}_class_${model.classId}")
         .get();
 
     if (!temp.exists) {
@@ -440,7 +443,7 @@ class TeacherRepository {
         'teacher_note': model.noteForTeacher,
       });
       return true;
-    } else{
+    } else {
       return false;
     }
   }
@@ -464,7 +467,25 @@ class TeacherRepository {
   Future<String> uploadImageAndGetUrl(Uint8List data ,String folder) async {
     final now = DateTime.now().microsecondsSinceEpoch;
     final ref = FirebaseStorage.instance.ref().child('$folder/$now');
-    await ref.putData(data ,SettableMetadata(contentType: '.png'));
+    await ref.putData(data, SettableMetadata(contentType: '.png'));
     return await ref.getDownloadURL();
+  }
+
+  Future<bool> changePassword(email, oldPass, newPass) async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    bool res = false;
+    var cred = EmailAuthProvider.credential(email: email, password: oldPass);
+
+    try {
+      await currentUser!.reauthenticateWithCredential(cred);
+
+      await currentUser.updatePassword(newPass);
+      Fluttertoast.showToast(msg: 'Đổi mật khẩu thành công');
+      res = true;
+    } catch (error) {
+      debugPrint('=>>>>>>>>>>>>>error: $error');
+      Fluttertoast.showToast(msg: 'Có lỗi xảy ra! Thử lại');
+    }
+    return res;
   }
 }

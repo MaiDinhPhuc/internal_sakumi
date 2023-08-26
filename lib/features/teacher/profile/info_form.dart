@@ -126,56 +126,41 @@ class _InfoFormState extends State<InfoForm> {
             ),
           ),
           profileCubit.isEditBaseInfo
-              ? Padding(
-                  padding: EdgeInsets.only(top: Resizable.padding(context, 20)),
-                  child: Row(
-                    children: [
-                      IgnorePointer(
-                        ignoring: !profileCubit.isUpdate,
-                        child: Container(
-                          margin: EdgeInsets.only(
-                              bottom: Resizable.padding(context, 20)),
-                          height: Resizable.size(context, 25),
-                          width: Resizable.size(context, 100),
-                          child: CustomButton(
-                              onPress: () {
-                                final isValid = _form.currentState!.validate();
-                                if (!isValid) {
-                                  return;
-                                } else {
-                                  _form.currentState!.save();
-                                  profileCubit.updateProfile(context);
-                                }
-                              },
-                              bgColor: profileCubit.isUpdate
-                                  ? primaryColor.shade500
-                                  : greyColor.shade50,
-                              foreColor: profileCubit.isUpdate
-                                  ? Colors.white
-                                  : primaryColor.shade500,
-                              text: 'Cập nhật'),
-                        ),
-                      ),
-                      SizedBox(
-                        width: Resizable.size(context, 5),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                            bottom: Resizable.padding(context, 20)),
-                        height: Resizable.size(context, 25),
-                        width: Resizable.size(context, 100),
-                        child: CustomButton(
-                            onPress: () {
-                              _form.currentState?.reset();
-                              profileCubit.exit('info');
-                            },
-                            bgColor: Colors.white,
-                            foreColor: primaryColor.shade500,
-                            text: 'Thoát'),
-                      ),
-                    ],
+              ? Row(
+                children: [
+                  IgnorePointer(
+                    ignoring: !profileCubit.isUpdate,
+                    child: CustomButton(
+                        onPress: () {
+                          final isValid = _form.currentState!.validate();
+                          if (!isValid) {
+                            return;
+                          } else {
+                            _form.currentState!.save();
+                            profileCubit.updateProfile(context);
+                          }
+                        },
+                        bgColor: profileCubit.isUpdate
+                            ? primaryColor.shade500
+                            : greyColor.shade50,
+                        foreColor: profileCubit.isUpdate
+                            ? Colors.white
+                            : primaryColor.shade500,
+                        text: 'Cập nhật'),
                   ),
-                )
+                  SizedBox(
+                    width: Resizable.size(context, 5),
+                  ),
+                  CustomButton(
+                      onPress: () {
+                        _form.currentState?.reset();
+                        profileCubit.exit('info');
+                      },
+                      bgColor: Colors.white,
+                      foreColor: primaryColor.shade500,
+                      text: 'Thoát'),
+                ],
+              )
               : Container(),
         ],
       ),

@@ -193,7 +193,8 @@ enum AppText {
   txtFilter,
   textStudentNotSubmit,
   textContactIT,
-  textDetail
+  textDetail,
+  txtLogout, txtTeacherLogOut
 }
 
 Map<AppText, String> texts = {
@@ -399,6 +400,9 @@ Map<AppText, String> texts = {
   AppText.txtChangePass: 'Đổi mật khẩu',
   AppText.txtUpdate: 'Cập nhật',
   AppText.txtExit: 'Thoát',
+  AppText.txtLogout: 'Đăng xuất',
+  AppText.txtTeacherLogOut: 'Sensei có đồng ý đăng xuất hay không?',
+
 };
 
 
