@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
+import 'package:internal_sakumi/configs/text_configs.dart';
 
 class StudentLessonModel {
   final int grammar,
@@ -11,7 +14,23 @@ class StudentLessonModel {
       studentId,
       timekeeping,
       vocabulary;
-  final String teacherNote;
+  final String teacherNote, supportNote;
+
+  Color get attendColor {
+    if(timekeeping == 5) return const Color(0xffF57F17);
+    if(timekeeping == 6) return const Color(0xffB71C1C);
+    if(timekeeping < 5) return const Color(0xff33691E);
+
+    return primaryColor;
+  }
+
+  String get attendTitle {
+    if(timekeeping == 6) return AppText.txtAbsent.text;
+    if(timekeeping == 5) return AppText.txtPermitted.text;
+    if(timekeeping < 5) return AppText.txtPresent.text;
+
+    return AppText.txtNotTimeKeeping.text;
+  }
 
   StudentLessonModel(
       {required this.grammar,
@@ -24,7 +43,7 @@ class StudentLessonModel {
       required this.studentId,
       required this.timekeeping,
       required this.vocabulary,
-      required this.teacherNote});
+      required this.teacherNote, required this.supportNote});
 
   factory StudentLessonModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
@@ -40,6 +59,6 @@ class StudentLessonModel {
         studentId: data['student_id'],
         timekeeping: data['time_keeping'],
         teacherNote: data['teacher_note'],
-        vocabulary: data['vocabulary']);
+        vocabulary: data['vocabulary'], supportNote: data['support_note']??'');
   }
 }
