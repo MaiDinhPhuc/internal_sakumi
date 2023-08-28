@@ -170,6 +170,7 @@ class ExpandLearnedLesson extends StatelessWidget {
         Container(
           margin:
           EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
+          padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 10)),
           constraints: BoxConstraints(
             minHeight: Resizable.size(context, 30)
           ),
@@ -191,6 +192,7 @@ class ExpandLearnedLesson extends StatelessWidget {
         Container(
             margin:
             EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
+            padding: EdgeInsets.symmetric(vertical: Resizable.padding(context, 10)),
             constraints: BoxConstraints(
                 minHeight: Resizable.size(context, 30)
             ),
