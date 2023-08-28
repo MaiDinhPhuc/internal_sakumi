@@ -76,13 +76,13 @@ class _ClassScreenState extends State<ClassScreen> {
                           ...List.generate(
                               2,
                               (index) => Container(
+                                    margin: EdgeInsets.only(
+                                        right: Resizable.padding(context, 20)),
                                     child: InkWell(
                                       onTap: () => BlocProvider.of<TabCubit>(c)
                                           .changeTab(index),
                                       child: Text('Tab $index'),
                                     ),
-                                    margin: EdgeInsets.only(
-                                        right: Resizable.padding(context, 20)),
                                   )).toList()
                         ],
                       )),

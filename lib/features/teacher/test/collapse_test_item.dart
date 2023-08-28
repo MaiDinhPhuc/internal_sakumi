@@ -8,81 +8,95 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
 
 class CollapseTestItem extends StatelessWidget {
-  const CollapseTestItem({super.key, required this.index, required this.title});
-  final int index;
+  const CollapseTestItem(
+      {super.key,
+      required this.index,
+      required this.title,
+      required this.testId});
+  final int index, testId;
   final String title;
 
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<TestCubit>(context);
     return TestItemRowLayout(
-      test: Text(
-          '${AppText.textLesson.text} ${index + 1 < 10 ? '0${index + 1}' : '${index + 1}'}'
-              .toUpperCase(),
-          style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: Resizable.font(context, 20))),
+      test: Padding(
+          padding: EdgeInsets.only(left: Resizable.padding(context, 10)),
+          child: Text(
+              '${AppText.textLesson.text} ${index + 1 < 10 ? '0${index + 1}' : '${index + 1}'}'
+                  .toUpperCase(),
+              style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: Resizable.font(context, 20)))),
       name: Text(title.toUpperCase(),
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: Resizable.font(context, 16))),
-      submit: Transform.scale(
-        scale: 0.75,
-        child: const Center(
-          child: CircularProgressIndicator(),
-        ),
-      ),
-
-      // cubit.listRateSubmit == null
-      //     ? Transform.scale(
-      //   scale: 0.75,
-      //   child: const Center(
-      //     child: CircularProgressIndicator(),
-      //   ),
-      // )
-      //     : (index > cubit.listLessonResult!.length - 1) ? Container() :CircleProgress(
-      //   title: '${(cubit.listRateSubmit![index]*100).toStringAsFixed(0)} %',
-      //   lineWidth: Resizable.size(context, 3),
-      //   percent: cubit.listRateSubmit![index],
-      //   radius: Resizable.size(context, 16),
-      //   fontSize: Resizable.font(context, 14),
-      // ),//Text(cubit.listRateSubmit![index].toStringAsFixed(2).toString()),
-      mark: Transform.scale(
-        scale: 0.75,
-        child: const Center(
-          child: CircularProgressIndicator(),
-        ),
-      ),
-      // cubit.listMarked == null
-      //     ? Transform.scale(
-      //   scale: 0.75,
-      //   child: const Center(
-      //     child: CircularProgressIndicator(),
-      //   ),
-      // )
-      //     : (index > cubit.listLessonResult!.length - 1)
-      //     ? Container()
-      //     : Container(
-      //     padding: EdgeInsets.symmetric(
-      //         vertical: Resizable.padding(context, 4),
-      //         horizontal: Resizable.padding(context, 10)),
-      //     decoration: BoxDecoration(
-      //         borderRadius: BorderRadius.circular(10000),
-      //         color: cubit.listMarked![index] == true
-      //             ? greenColor
-      //             : redColor),
-      //     child: Text(
-      //       (cubit.listMarked![index] == true
-      //           ? AppText.txtMarked.text
-      //           : AppText.txtNotMark.text)
-      //           .toUpperCase(),
-      //       style: TextStyle(
-      //           color: Colors.white,
-      //           fontSize: Resizable.font(context, 14),
-      //           fontWeight: FontWeight.w800),
-      //     )),
-      status: Container(),
+      submit: cubit.listSubmit == null
+          ? Transform.scale(
+              scale: 0.75,
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : cubit.listSubmit![index] == 0
+              ? Container()
+              : CircleProgress(
+                  title:
+                      '${(cubit.listSubmit![index] * 100).toStringAsFixed(0)} %',
+                  lineWidth: Resizable.size(context, 3),
+                  percent: cubit.listSubmit![index],
+                  radius: Resizable.size(context, 16),
+                  fontSize: Resizable.font(context, 14),
+                ),
+      mark: cubit.listGPA == null
+          ? Transform.scale(
+              scale: 0.75,
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : cubit.listGPA![index] == 0
+              ? Container()
+              : Container(
+                  padding: EdgeInsets.symmetric(
+                      vertical: Resizable.padding(context, 4),
+                      horizontal: Resizable.padding(context, 10)),
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(10000)),
+                  child: Text(
+                    cubit.listGPA![index].toString(),
+                    style: TextStyle(
+                        color: primaryColor,
+                        fontSize: Resizable.font(context, 14),
+                        fontWeight: FontWeight.w800),
+                  )),
+      status: cubit.listTestResult == null
+          ? Transform.scale(
+              scale: 0.75,
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : !cubit.checkGrading(testId)
+              ? Image.asset('assets/images/ic_check.png',
+                  color: greenColor, scale: 30)
+              : Container(
+                  padding: EdgeInsets.symmetric(
+                      vertical: Resizable.padding(context, 4),
+                      horizontal: Resizable.padding(context, 10)),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10000),
+                      color: redColor),
+                  child: Text(
+                    AppText.txtNotGradingTest.text.toUpperCase(),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: Resizable.font(context, 14),
+                        fontWeight: FontWeight.w800),
+                  )),
+      dropdown: Container(),
     );
   }
 }

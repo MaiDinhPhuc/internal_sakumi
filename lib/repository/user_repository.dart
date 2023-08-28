@@ -20,6 +20,7 @@ class UserRepository {
         .collection("students")
         .where("user_id", isEqualTo: userId)
         .get();
+    debugPrint("==========>get db.students");
     final studentInfo =
         snapshot.docs.map((e) => StudentModel.fromSnapshot(e)).single;
     return studentInfo;

@@ -80,8 +80,8 @@ class TrackStudentItemRowLayout extends StatelessWidget {
 }
 
 class TestItemRowLayout extends StatelessWidget {
-  final Widget test, name, submit, mark, status;
-  const TestItemRowLayout({ required this.name, required this.submit, required this.mark, required this.test, required this.status, Key? key}) : super(key: key);
+  final Widget test, name, submit, mark, status, dropdown;
+  const TestItemRowLayout({ required this.name, required this.submit, required this.mark, required this.test, required this.status, Key? key, required this.dropdown}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -107,9 +107,15 @@ class TestItemRowLayout extends StatelessWidget {
               child: mark,
             )),
         Expanded(
-            flex: 4,
+            flex: 6,
             child: Align(alignment: Alignment.center,
               child: status,
+            )),
+        Expanded(
+            flex: 2,
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: dropdown,
             ))
       ],
     );

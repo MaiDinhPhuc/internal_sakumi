@@ -203,9 +203,19 @@ enum AppText {
   stsRetained,
   stsInProgress,
   stsViewer,
+  txtTestEmpty,
+  txtNotGradingTest,
+  txtAssignmentTest,
+  txtSSConfirmAssignTest,
+  txtNotGrading
 }
 
 Map<AppText, String> texts = {
+  AppText.txtNotGrading: 'Chưa chấm',
+  AppText.txtSSConfirmAssignTest: 'Sensei có đồng ý giao bài hay không?',
+  AppText.txtAssignmentTest: 'Giao bài kiểm tra',
+  AppText.txtNotGradingTest: 'Chưa chấm bài kiểm tra',
+  AppText.txtTestEmpty: 'Chưa có bài kiểm tra có thể giao trong lớp!',
   AppText.textLesson: 'Bài',
   AppText.txtRateOfSubmitTest: 'Tỉ lệ nộp bài',
   AppText.textDetail: 'Chi tiết',
