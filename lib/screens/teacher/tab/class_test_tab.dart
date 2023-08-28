@@ -54,7 +54,8 @@ class ClassTestTab extends StatelessWidget {
                                   )
                                 : Column(
                                     children: [
-                                      Container(
+                                      if(cubit.listTest!.isNotEmpty)
+                                        Container(
                                           padding: EdgeInsets.symmetric(
                                               horizontal: Resizable.padding(
                                                   context, 20)),
