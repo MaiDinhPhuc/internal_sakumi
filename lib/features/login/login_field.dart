@@ -49,7 +49,7 @@ class LoginField extends StatelessWidget {
       ),
       prefixIcon: Row(mainAxisSize: MainAxisSize.min,
       children: [
-        Container(padding: EdgeInsets.only(left: Resizable.padding(context, 10)), child: Image.asset('assets/images/ic_${isPasswordField?'lock':'person'}.png', scale: 4)),
+        Container(padding: EdgeInsets.only(left: Resizable.padding(context, 10)), child: Image.asset('assets/images/ic_${isPasswordField?'lock':'person'}.png', width: Resizable.size(context, 12))),
         Container(
           margin: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 5), vertical: Resizable.padding(context, 8)),
           width: Resizable.size(context, 0.5), color: Colors.black,
