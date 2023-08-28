@@ -124,7 +124,7 @@ class TeacherCubit extends Cubit<int> {
                 ((e.classId == item.classId &&
                         e.lessonId == lesson.lessonId &&
                         e.timekeeping > 0 &&
-                        e.timekeeping < 6)
+                        e.timekeeping < 5)
                     ? 1
                     : 0));
         int sub = listAllStudentLessons.fold(
