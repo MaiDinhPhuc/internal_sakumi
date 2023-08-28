@@ -201,6 +201,8 @@ enum AppText {
   stsRetained,
   stsInProgress,
   stsViewer,
+  txtWrongPassword,
+  txtWrongAccount,
 }
 
 Map<AppText, String> texts = {
@@ -414,6 +416,8 @@ Map<AppText, String> texts = {
   AppText.stsRetained: 'Giữ lại',
   AppText.stsInProgress: 'Đang học',
   AppText.stsViewer: 'Người xem',
+  AppText.txtWrongPassword: 'Vui lòng kiểm tra lại mật khẩu',
+  AppText.txtWrongAccount: 'Vui lòng kiểm tra lại tài khoản',
 };
 
 

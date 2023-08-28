@@ -120,16 +120,17 @@ class AuthServices {
       //       const SnackBar(content: Text('Password did not match')));
       // }
 
-      Fluttertoast.showToast(
-          msg: TextUtils.getErrorAuth(e.message.toString()),
-          backgroundColor: Colors.red,
+      await Fluttertoast.showToast(
+          msg: e.code == 'invalid-email'
+              ? AppText.txtWrongAccount.text
+              : e.code == 'missing-password' ? AppText.txtWrongPassword.text : 'Error',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 10,
+          timeInSecForIosWeb: 5,
           textColor: Colors.white,
           fontSize: 16.0);
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${e.message}\n${e.code}\n${e.tenantId}')));
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(content: Text('${e.message}\n${e.code}\n${e.tenantId}')));
     }
   }
 }
