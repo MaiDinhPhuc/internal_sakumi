@@ -55,7 +55,7 @@ class CollapseOverviewStudentItem extends StatelessWidget {
           child: AspectRatio(
             aspectRatio: 1,
             child: Container(
-              padding: EdgeInsets.all(Resizable.padding(context, 15)),
+              padding: EdgeInsets.all(Resizable.padding(context, 10)),
               decoration: BoxDecoration(
                 color: cubit.students![index].color,
                   borderRadius: BlocProvider.of<DropdownCubit>(context).state % 2 == 0

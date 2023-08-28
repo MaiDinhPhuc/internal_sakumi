@@ -50,8 +50,8 @@ class ListLessonTab extends StatelessWidget {
                                         fontWeight: FontWeight.w800,
                                         fontSize: Resizable.font(context, 30))),
                               ),
-                              cubit.lessons == null ||
-                                      cubit.listLessonResult == null
+                              cubit.lessons == null || cubit
+                                  .lessonResults == null
                                   ? Transform.scale(
                                       scale: 0.75,
                                       child: const CircularProgressIndicator(),
@@ -154,7 +154,7 @@ class ListLessonTab extends StatelessWidget {
                                                                           c,
                                                                           "/teacher?name=$name/lesson/class?id=${cubit.classModel!.classId}/lesson?id=${e.lessonId}");
                                                                 } else if (cubit
-                                                                        .listLessonResult![cubit
+                                                                        .lessonResults![cubit
                                                                             .lessons!
                                                                             .indexOf(e)]!
                                                                         .status !=
@@ -280,7 +280,8 @@ class ListLessonTab extends StatelessWidget {
                                                                     .url),
                                                               ),
                                                               mark: Container(),
-                                                              dropdown:
+                                                              dropdown: cubit
+                                                                  .lessonResults![cubit.lessons!.indexOf(e)] == null ? Container() :
                                                               IconButton(
                                                                   onPressed:
                                                                       () {

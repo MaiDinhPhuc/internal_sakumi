@@ -55,32 +55,32 @@ class OverviewItemRowLayout extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-            flex: 1,
+            flex: 3,
             child: Container(
               alignment: Alignment.center,
               child: icon,
             )),
         Expanded(
-            flex: 1,
+            flex: 3,
             child: Container(
             )),
         Expanded(
-            flex: 4,
+            flex: 18,
             child: Container(alignment: Alignment.centerLeft, child: name)),
         Expanded(
-            flex: 2,
+            flex: 8,
             child: Container(alignment: Alignment.center, child: attend)),
         Expanded(
-            flex: 2,
+            flex: 8,
             child: Container(alignment: Alignment.center, child: submit)),
         Expanded(
-            flex: 2,
+            flex: 8,
             child: Container(alignment: Alignment.center, child: point)),
         Expanded(
-            flex: 1,
+            flex: 4,
             child: Container(alignment: Alignment.center, child: dropdown)),
         Expanded(
-            flex: 1,
+            flex: 4,
             child: Container(alignment: Alignment.center, child: evaluate)),
       ],
     );
