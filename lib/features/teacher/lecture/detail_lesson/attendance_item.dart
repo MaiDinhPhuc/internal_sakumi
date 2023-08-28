@@ -72,7 +72,7 @@ class AttendanceItem extends StatelessWidget {
                                               studentId: studentModel.userId,
                                               timekeeping: 0,
                                               vocabulary: -2,
-                                              teacherNote: ''));
+                                              teacherNote: '', supportNote: ''));
                                       s = items.indexOf(v.toString());
                                       if (c.mounted) {
                                         BlocProvider.of<DropdownAttendanceCubit>(c)
