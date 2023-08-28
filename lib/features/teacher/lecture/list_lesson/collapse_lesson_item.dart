@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/admin/manage_general/user_item.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_tab_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -17,7 +16,6 @@ class CollapseLessonItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<LessonTabCubit>(context);
-    debugPrint('==============> CollapseLessonItem ${index} ==== ${cubit.listLessonResult!.length}');
     return LessonItemRowLayout(
       lesson: Text(
           '${AppText.txtLesson.text} ${index + 1 < 10 ? '0${index + 1}' : '${index + 1}'}'
@@ -50,7 +48,7 @@ class CollapseLessonItem extends StatelessWidget {
                 child: CircularProgressIndicator(),
               ),
             )
-          : (index > cubit.listLessonResult!.length - 1) ? Container(): CircleProgress(
+          : cubit.lessonResults![index] == null ? Container(): CircleProgress(
         title: '${(cubit.listRateAttend![index]*100).toStringAsFixed(0)} %',
         lineWidth: Resizable.size(context, 3),
         percent: cubit.listRateAttend![index],
@@ -64,7 +62,7 @@ class CollapseLessonItem extends StatelessWidget {
                 child: CircularProgressIndicator(),
               ),
             )
-          : (index > cubit.listLessonResult!.length - 1) ? Container() :CircleProgress(
+          : cubit.lessonResults![index] == null ? Container() :CircleProgress(
         title: '${(cubit.listRateSubmit![index]*100).toStringAsFixed(0)} %',
         lineWidth: Resizable.size(context, 3),
         percent: cubit.listRateSubmit![index],
@@ -78,7 +76,7 @@ class CollapseLessonItem extends StatelessWidget {
                 child: CircularProgressIndicator(),
               ),
             )
-          : (index > cubit.listLessonResult!.length - 1)
+          : cubit.lessonResults![index] == null
               ? Container()
               : Container(
                   padding: EdgeInsets.symmetric(

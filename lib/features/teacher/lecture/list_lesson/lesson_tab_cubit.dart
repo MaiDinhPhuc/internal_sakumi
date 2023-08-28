@@ -16,7 +16,7 @@ class LessonTabCubit extends Cubit<int> {
 
   ClassModel? classModel;
   List<LessonModel>? lessons;
-  List<LessonResultModel?>? listLessonResult, lessonResults;
+  List<LessonResultModel?>?  lessonResults;
   List<StudentClassModel> listStdClass = [];
   List<StudentModel>? students;
   List<List<StudentLessonModel?>> listStdLesson = [];
@@ -37,23 +37,19 @@ class LessonTabCubit extends Cubit<int> {
     await loadLessonResult(context);
     debugPrint('==============> init 5');
     await loadStatistic(context);
-    debugPrint('==============> init 6 $listRateAttend');
+    debugPrint('==============> init 6');
   }
 
   loadClass(context) async {
     TeacherRepository teacherRepo = TeacherRepository.fromContext(context);
     classModel =
     await teacherRepo.getClassById(int.parse(TextUtils.getName()));
-    debugPrint(
-        '==============> loadClass 4 ${classModel!.classId} ${classModel!.courseId} ${int.parse(TextUtils.getClassId())}');
     emit(state + 1);
   }
 
   loadLesson(context) async {
-    debugPrint('==============> loadLesson 000');
     TeacherRepository teacherRepo = TeacherRepository.fromContext(context);
     lessons = await teacherRepo.getLessonsByCourseId(classModel!.courseId);
-debugPrint('==============> loadLesson ${lessons?.length}');
     emit(state + 1);
   }
 
@@ -78,39 +74,31 @@ debugPrint('==============> loadLesson ${lessons?.length}');
     TeacherRepository teacherRepository =
     TeacherRepository.fromContext(context);
     AdminRepository adminRepo = AdminRepository.fromContext(context);
-    listLessonResult = [];
+
     lessonResults = List.generate(lessons!.length, (index) => null);
     infoTeachers = List.generate(lessons!.length, (index) => null);
 
-    listLessonResult = await teacherRepository
+    var listLessonResult = await teacherRepository
         .getLessonResultByClassId(classModel!.classId);
 
     var teachers = await adminRepo.getAllTeacher();
-
-    debugPrint('=============> teachers ${teachers.length}');
 
     for(var lesson in lessons!){
       for(var item in listLessonResult!){
         if(lesson.lessonId == item!.lessonId){
           lessonResults![lessons!.indexOf(lesson)] = item;
-          debugPrint('=============> item ${item.teacherId}');
         }
       }
     }
-    debugPrint('=============> lessonResults ${lessonResults?.length}');
     for(var i in lessonResults!){
-      debugPrint('===============>>>>>>>>>>>>> iiiiii ${i?.teacherId}');
       if(i != null){
         for(var j in teachers){
-          debugPrint('=============> item item ${j?.name}');
           if(i!.teacherId == j.userId){
             infoTeachers![lessonResults!.indexOf(i)] = j;
-            debugPrint('=============> item0000 ${j!.name}');
           }
         }
       }
     }
-debugPrint('==============> item 111111');
     emit(state + 1);
   }
 
@@ -129,18 +117,15 @@ debugPrint('==============> item 111111');
       List<int> attends = [];
       List<int> submits = [];
       List<String> notes = [];
-      debugPrint('============> lesson ${lesson.lessonId} == ${lessons!.length}');
+
       List<StudentLessonModel> listStdLessonInLesson = list.fold(
           <StudentLessonModel>[],
           (pre, e) => [...pre, if (e.lessonId == lesson.lessonId) e]).toList();
-      debugPrint('============> lesson0000 ${listStdLessonInLesson.length} == ${listStdClass!.length}');
+
       if(listStdLessonInLesson.isNotEmpty){
-        debugPrint('============> listStdLessonInLesson.isNotEmpty 0');
         for (var std in listStdClass!) {
           if (listStdClass!.indexOf(std) <= listStdLessonInLesson.length-1) {
-            debugPrint('============> listStdLessonInLesson.isNotEmpty 2 ${listStdClass!.indexOf(std)} == ${listStdLessonInLesson.length} == ${std.userId}');
             if(std.userId == listStdLessonInLesson[listStdClass!.indexOf(std)].studentId){
-              debugPrint('============> listStdLessonInLesson.isNotEmpty 22222 ${std.userId}');
               attends.add(
                   listStdLessonInLesson[listStdClass!.indexOf(std)].timekeeping);
               submits.add(listStdLessonInLesson[listStdClass!.indexOf(std)].hw);
@@ -156,14 +141,11 @@ debugPrint('==============> item 111111');
             submits.add(-3);
             notes.add('');
           }
-          debugPrint('============> listStdLessonInLesson.isNotEmpty 1');
         }
-        debugPrint('============> attends $attends');
         int tempAtt =
         attends.fold(0, (pre, e) => pre + ((e > 0 && e < 5) ? 1 : 0));
         int tempSbm = submits.fold(0, (pre, e) => pre + (e > -2 ? 1 : 0));
         int tempMark = submits.fold(0, (pre, e) => pre + (e > -1 ? 1 : 0));
-        debugPrint('============> oooooo  $tempSbm == $tempMark');
         listAttendance!.add(attends);
         listMarked!.add(listStdClass.isEmpty ? null : (tempSbm == tempMark && tempSbm != 0) ? true : false);
         listSubmit!.add(submits);
