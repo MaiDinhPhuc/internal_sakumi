@@ -83,12 +83,12 @@ class LessonCompleteView extends StatelessWidget {
                         await detailCubit
                             .noteForSupport(context, cubit.noteSupport.isNotEmpty
                             ? cubit.noteSupport
-                            : AppText.txtNoNoteForSupport.text);
+                            : '');
                         if(context.mounted) {
                           await detailCubit
                               .noteForAnotherSensei(context, cubit.noteSupport.isNotEmpty
                               ? cubit.noteSensei
-                              : AppText.txtNoNoteForTeacher.text);
+                              : '');
                         }
                         if(context.mounted){
                           for(var std in cubit.listStudent!){
