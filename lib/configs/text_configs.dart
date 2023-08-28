@@ -194,10 +194,14 @@ enum AppText {
   textStudentNotSubmit,
   textContactIT,
   textDetail,
-  txtLogout, txtTeacherLogOut
+  txtLogout, txtTeacherLogOut,
+  txtRateOfSubmitTest,
+  textLesson
 }
 
 Map<AppText, String> texts = {
+  AppText.textLesson: 'Bài',
+  AppText.txtRateOfSubmitTest: 'Tỉ lệ nộp bài',
   AppText.textDetail: 'Chi tiết',
   AppText.textStudentNotSubmit: 'Lớp chưa có ai nộp bài tập!',
   AppText.textContactIT: 'Lỗi khi load data, vui lòng liên hệ team IT để được support',
