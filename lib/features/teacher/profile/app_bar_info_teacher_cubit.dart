@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +11,7 @@ class AppBarInfoTeacherCubit extends Cubit<TeacherModel?> {
 
   load(context) async {
     emit(null);
+    debugPrint('=>>>>>>>>appBar');
     TeacherRepository teacherRepository =
     TeacherRepository.fromContext(context);
     SharedPreferences localData = await SharedPreferences.getInstance();

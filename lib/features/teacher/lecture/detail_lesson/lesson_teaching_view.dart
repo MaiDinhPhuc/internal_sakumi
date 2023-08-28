@@ -57,7 +57,7 @@ class LessonTeachingView extends StatelessWidget {
                   context,
                   cubit.noteStudent.isNotEmpty
                       ? cubit.noteStudent
-                      : AppText.txtNoNoteForStudent.text),
+                      : ''),
               title: AppText.txtFinishLesson.text,
               isActive:
               cubit.totalAttendance == cubit.listStudent!.length &&

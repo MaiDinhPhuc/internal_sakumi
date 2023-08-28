@@ -1,5 +1,6 @@
 import 'dart:html';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_network/image_network.dart';
@@ -443,13 +444,17 @@ class HeaderTeacher extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      s == null
-                          ? const CircularProgressIndicator()
-                          : Text('${s.name} ${AppText.txtSensei.text}',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: Resizable.font(context, 40))),
-                      SizedBox(width: Resizable.padding(context, 10)),
+                     Expanded(child:  s == null
+                         ?  const Align(
+                       alignment: Alignment.centerRight,
+                         child: CircularProgressIndicator())
+                         : AutoSizeText('${s.name} ${AppText.txtSensei.text}',
+                         maxLines: 1,
+                         textAlign: TextAlign.right,
+                         style: TextStyle(
+                             fontWeight: FontWeight.w800,
+                             fontSize: Resizable.font(context, 40))),),
+                      SizedBox(width: Resizable.padding(context, 10),),
                       s == null
                           ? CircleAvatar(
                               radius: Resizable.size(context, 15),

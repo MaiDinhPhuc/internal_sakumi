@@ -203,9 +203,21 @@ enum AppText {
   stsRetained,
   stsInProgress,
   stsViewer,
+  txtTestEmpty,
+  txtNotGradingTest,
+  txtAssignmentTest,
+  txtSSConfirmAssignTest,
+  txtNotGrading,
+  txtWrongPassword,
+  txtWrongAccount
 }
 
 Map<AppText, String> texts = {
+  AppText.txtNotGrading: 'Chưa chấm',
+  AppText.txtSSConfirmAssignTest: 'Sensei có đồng ý giao bài hay không?',
+  AppText.txtAssignmentTest: 'Giao bài kiểm tra',
+  AppText.txtNotGradingTest: 'Chưa chấm bài kiểm tra',
+  AppText.txtTestEmpty: 'Chưa có bài kiểm tra có thể giao trong lớp!',
   AppText.textLesson: 'Bài',
   AppText.txtRateOfSubmitTest: 'Tỉ lệ nộp bài',
   AppText.textDetail: 'Chi tiết',
@@ -418,6 +430,8 @@ Map<AppText, String> texts = {
   AppText.stsRetained: 'Giữ lại',
   AppText.stsInProgress: 'Đang học',
   AppText.stsViewer: 'Người xem',
+  AppText.txtWrongPassword: 'Vui lòng kiểm tra lại mật khẩu',
+  AppText.txtWrongAccount: 'Vui lòng kiểm tra lại tài khoản',
 };
 
 

@@ -507,6 +507,9 @@ class TeacherRepository {
     final snapshot =
     await db.collection("student_test").where("class_id", isEqualTo: classId).where("test_id",isEqualTo: testId).get();
     debugPrint("==========>get db.student_test");
+    if(snapshot.docs.isEmpty){
+      return [];
+    }
     final list = snapshot.docs.map((e) => StudentTestModel.fromSnapshot(e)).toList();
     return list;
   }
