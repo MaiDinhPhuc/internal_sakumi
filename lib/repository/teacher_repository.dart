@@ -14,9 +14,12 @@ import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
+import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:internal_sakumi/model/test_model.dart';
+import 'package:internal_sakumi/model/test_result_model.dart';
 
 class TeacherRepository {
   static TeacherRepository fromContext(BuildContext context) =>
@@ -488,4 +491,48 @@ class TeacherRepository {
     }
     return res;
   }
+
+  Future<List<TestModel>> getListTestByCourseId(int courseId) async {
+    final db = FirebaseFirestore.instance;
+    final snapshot =
+    await db.collection("test").where("course_id", isEqualTo: courseId).get();
+    debugPrint("==========>get db.test");
+    final test = snapshot.docs.map((e) => TestModel.fromSnapshot(e)).toList();
+    test.sort((a, b) => a.id.compareTo(b.id));
+    return test;
+  }
+
+  Future<List<StudentTestModel>> getListStudentTest(int classId, int testId) async {
+    final db = FirebaseFirestore.instance;
+    final snapshot =
+    await db.collection("student_test").where("class_id", isEqualTo: classId).where("test_id",isEqualTo: testId).get();
+    debugPrint("==========>get db.student_test");
+    final list = snapshot.docs.map((e) => StudentTestModel.fromSnapshot(e)).toList();
+    return list;
+  }
+
+  Future<List<TestResultModel>> getListStudentResult(int classId) async {
+    final db = FirebaseFirestore.instance;
+    final snapshot =
+    await db.collection("test_result").where("class_id", isEqualTo: classId).get();
+    debugPrint("==========>get db.test_result");
+    final list = snapshot.docs.map((e) => TestResultModel.fromSnapshot(e)).toList();
+    list.sort((a, b) => a.testId.compareTo(b.testId));
+    return list;
+  }
+  // static Future createStudentTest(int testId) async {
+  //   CollectionReference create =
+  //   FirebaseFirestore.instance.collection('student_test');
+  //   create
+  //       .doc('student_${id}_test_${testId}_class_$classId')
+  //       .set({
+  //     'class_id': int.parse(classId),
+  //     'score': -2,
+  //     'student_id': int.parse(id),
+  //     'test_id': testId,
+  //   })
+  //       .then((value) => debugPrint("student test Added"))
+  //       .catchError((error) => debugPrint("Failed to add result: $error"))
+  //       .whenComplete(() => Future.delayed(const Duration(milliseconds: 1000)));
+  // }
 }

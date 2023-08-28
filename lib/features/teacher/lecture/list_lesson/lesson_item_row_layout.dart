@@ -78,3 +78,40 @@ class TrackStudentItemRowLayout extends StatelessWidget {
     );
   }
 }
+
+class TestItemRowLayout extends StatelessWidget {
+  final Widget test, name, submit, mark, status;
+  const TestItemRowLayout({ required this.name, required this.submit, required this.mark, required this.test, required this.status, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(flex: 3, child: Align(alignment: Alignment.centerLeft,
+          child: test,
+        )),
+        Expanded(
+            flex: 16,
+            child: Align(alignment: Alignment.centerLeft,
+              child: name,
+            )),
+        Expanded(
+            flex: 4,
+            child: Align(alignment: Alignment.center,
+              child: submit,
+            )),
+        Expanded(
+            flex: 4,
+            child: Align(alignment: Alignment.center,
+              child: mark,
+            )),
+        Expanded(
+            flex: 4,
+            child: Align(alignment: Alignment.center,
+              child: status,
+            ))
+      ],
+    );
+  }
+}

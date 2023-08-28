@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/overview/class_overview_cubit.dart';
 import 'package:internal_sakumi/features/teacher/overview/overview_chart.dart';
@@ -6,17 +7,18 @@ import 'package:internal_sakumi/utils/resizable.dart';
 
 class StatisticClassView extends StatelessWidget {
   final ClassOverviewCubit cubit;
-  const StatisticClassView(this.cubit, {Key? key}) : super(key: key);
+  const StatisticClassView(this.cubit,
+      {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Row(key: const Key('okkkkkkkkkk'),
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(child: Container(
           margin: EdgeInsets.symmetric(vertical: Resizable.padding(context, 20)),
           height: Resizable.size(context, 85),
-          padding: EdgeInsets.only(left: Resizable.padding(context, 10), right: Resizable.padding(context, 10), top: Resizable.padding(context, 10)),
+          padding: EdgeInsets.only(left: Resizable.padding(context, 10), top: Resizable.padding(context, 10)),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(Resizable.size(context, 5)),
               border: Border.all(
@@ -33,25 +35,29 @@ class StatisticClassView extends StatelessWidget {
                     fontSize: Resizable.font(context, 20)
                 )),
               ),
-              Row(mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(child: cubit.students == null ? Transform.scale(
-                    scale: 0.5,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ) : Text(cubit.students!.length.toString(), style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600,
-                      fontSize: Resizable.font(context, 40)
-                  ))),
-                  Expanded(flex: 3, child: cubit.listAttendance.isEmpty ? Transform.scale(
-                    scale: 0.5,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ) : OverviewChart(points: cubit.listAttendance))
-                ],
+              Center(
+                child: Row(mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(child: cubit.students == null ? Align(
+                      alignment: Alignment.centerLeft,
+                      child: Transform.scale(
+                        scale: 0.5,
+                        child: const CircularProgressIndicator(),
+                      ),
+                    ) : Text(cubit.students!.length.toString(), style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: Resizable.font(context, 40)
+                    ))),
+                    Expanded(child: cubit.listAttendance == null ? Align(
+                      alignment: Alignment.centerRight,
+                      child: Transform.scale(
+                        scale: 0.5,
+                        child: const CircularProgressIndicator(),
+                      ),
+                    ) : OverviewChart(points: cubit.listAttendance!))
+                  ],
+                ),
               )
             ],
           ),
@@ -59,7 +65,7 @@ class StatisticClassView extends StatelessWidget {
         SizedBox(width: Resizable.size(context, 20)),
         Expanded(child: Container(
           height: Resizable.size(context, 85),
-          padding: EdgeInsets.all(Resizable.padding(context, 10)),
+          padding: EdgeInsets.only(top: Resizable.padding(context, 10), left: Resizable.padding(context, 10)),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(Resizable.size(context, 5)),
               border: Border.all(
@@ -78,22 +84,24 @@ class StatisticClassView extends StatelessWidget {
               ),
               Row(mainAxisSize: MainAxisSize.max,
                 children: [
-                  Expanded(child: cubit.listHomework.isEmpty ? Transform.scale(
-                    scale: 0.5,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
+                  Expanded(child: cubit.listHomework == null ? Align(
+                    alignment: Alignment.centerLeft,
+                    child: Transform.scale(
+                      scale: 0.5,
+                      child: const CircularProgressIndicator(),
                     ),
                   ) : Text('${cubit.percentHw.toStringAsFixed(0)} %', style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
                       fontSize: Resizable.font(context, 40)
                   ))),
-                  Expanded(flex: 3, child: cubit.listHomework.isEmpty ? Transform.scale(
-                    scale: 0.5,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
+                  Expanded(child: cubit.listHomework == null ? Align(
+                    alignment: Alignment.centerRight,
+                    child: Transform.scale(
+                      scale: 0.5,
+                      child: const CircularProgressIndicator(),
                     ),
-                  ) : OverviewChart(points: cubit.listHomework))
+                  ) : OverviewChart(points: cubit.listHomework!, isPercent: true))
                 ],
               )
             ],
@@ -102,7 +110,7 @@ class StatisticClassView extends StatelessWidget {
         SizedBox(width: Resizable.size(context, 20)),
         Expanded(child: Container(
           height: Resizable.size(context, 85),
-          padding: EdgeInsets.all(Resizable.padding(context, 10)),
+          padding: EdgeInsets.only(top: Resizable.padding(context, 10), left: Resizable.padding(context, 10)),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(Resizable.size(context, 5)),
               border: Border.all(
@@ -121,22 +129,24 @@ class StatisticClassView extends StatelessWidget {
               ),
               Row(mainAxisSize: MainAxisSize.max,
                 children: [
-                  Expanded(child: cubit.listPoints.isEmpty ? Transform.scale(
-                    scale: 0.5,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
+                  Expanded(child: cubit.listPoints == null ? Align(
+                    alignment: Alignment.centerLeft,
+                    child: Transform.scale(
+                      scale: 0.5,
+                      child: const CircularProgressIndicator(),
                     ),
                   ) : Text(cubit.averagePts.toStringAsFixed(1), style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
                       fontSize: Resizable.font(context, 40)
                   ))),
-                  Expanded(flex: 3, child: cubit.listPoints.isEmpty ? Transform.scale(
-                    scale: 0.5,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
+                  Expanded(child: cubit.listPoints == null ? Align(
+                    alignment: Alignment.centerRight,
+                    child: Transform.scale(
+                      scale: 0.5,
+                      child: const CircularProgressIndicator(),
                     ),
-                  ) : OverviewChart(points: cubit.listPoints))
+                  ) : OverviewChart(points: cubit.listPoints!))
                 ],
               )
             ],

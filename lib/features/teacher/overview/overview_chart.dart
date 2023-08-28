@@ -5,8 +5,10 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
 
 class OverviewChart extends StatelessWidget {
-  final List<double>? points;
-  const OverviewChart({required this.points, Key? key}) : super(key: key);
+  final List<double> points;
+  final bool isPercent;
+  const OverviewChart({required this.points, this.isPercent = false, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,30 +61,27 @@ class OverviewItemRowLayout extends StatelessWidget {
               child: icon,
             )),
         Expanded(
-            flex: 5,
+            flex: 1,
             child: Container(
-                alignment: Alignment.centerLeft,
-                child: name)),
+            )),
+        Expanded(
+            flex: 4,
+            child: Container(alignment: Alignment.centerLeft, child: name)),
         Expanded(
             flex: 2,
-            child:
-                Container(alignment: Alignment.center, child: attend)),
+            child: Container(alignment: Alignment.center, child: attend)),
         Expanded(
             flex: 2,
-            child: Container(
-                alignment: Alignment.center, child: submit)),
+            child: Container(alignment: Alignment.center, child: submit)),
         Expanded(
             flex: 2,
             child: Container(alignment: Alignment.center, child: point)),
         Expanded(
             flex: 1,
-            child: Container(
-                alignment: Alignment.center,
-                child: dropdown)),
+            child: Container(alignment: Alignment.center, child: dropdown)),
         Expanded(
-            flex: 2,
-            child:
-                Container(alignment: Alignment.center, child: evaluate)),
+            flex: 1,
+            child: Container(alignment: Alignment.center, child: evaluate)),
       ],
     );
   }

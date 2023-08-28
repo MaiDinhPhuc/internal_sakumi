@@ -194,10 +194,20 @@ enum AppText {
   textStudentNotSubmit,
   textContactIT,
   textDetail,
-  txtLogout, txtTeacherLogOut
+  txtLogout, txtTeacherLogOut,
+  txtRateOfSubmitTest,
+  textLesson,
+  stsCompleted,
+  stsDropped,
+  stsMoved,
+  stsRetained,
+  stsInProgress,
+  stsViewer,
 }
 
 Map<AppText, String> texts = {
+  AppText.textLesson: 'Bài',
+  AppText.txtRateOfSubmitTest: 'Tỉ lệ nộp bài',
   AppText.textDetail: 'Chi tiết',
   AppText.textStudentNotSubmit: 'Lớp chưa có ai nộp bài tập!',
   AppText.textContactIT: 'Lỗi khi load data, vui lòng liên hệ team IT để được support',
@@ -402,7 +412,12 @@ Map<AppText, String> texts = {
   AppText.txtExit: 'Thoát',
   AppText.txtLogout: 'Đăng xuất',
   AppText.txtTeacherLogOut: 'Sensei có đồng ý đăng xuất hay không?',
-
+  AppText.stsCompleted: 'Đã hoàn thành',
+  AppText.stsDropped: 'Huỷ lớp',
+  AppText.stsMoved: 'Chuyển lớp',
+  AppText.stsRetained: 'Giữ lại',
+  AppText.stsInProgress: 'Đang học',
+  AppText.stsViewer: 'Người xem',
 };
 
 
