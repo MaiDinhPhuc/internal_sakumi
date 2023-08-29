@@ -109,6 +109,14 @@ flutter:
     - assets/practice/100509/
     - assets/practice/100510/
     - assets/practice/100511/
+    - assets/test/4/
+    - assets/test/7/
+    - assets/test/8/
+    - assets/test/11/
+    - assets/test/14/
+    - assets/test/17/
+    - assets/test/23/
+    - assets/test/26/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

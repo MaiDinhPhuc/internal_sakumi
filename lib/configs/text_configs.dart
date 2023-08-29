@@ -209,10 +209,16 @@ enum AppText {
   txtSSConfirmAssignTest,
   txtNotGrading,
   txtWrongPassword,
-  txtWrongAccount
+  txtWrongAccount,
+  stsRenew,
+  stsRemove,
+  stsUpSale
 }
 
 Map<AppText, String> texts = {
+  AppText.stsUpSale: 'Lên cấp',
+  AppText.stsRemove: 'Đã xoá',
+  AppText.stsRenew: 'ReNew',
   AppText.txtNotGrading: 'Chưa chấm',
   AppText.txtSSConfirmAssignTest: 'Sensei có đồng ý giao bài hay không?',
   AppText.txtAssignmentTest: 'Giao bài kiểm tra',
