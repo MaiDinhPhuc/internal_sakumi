@@ -71,7 +71,7 @@ class ClassOverviewCubit extends Cubit<int> {
       for(var j in stdLessonsInClass!){
         if(i.lessonId == j.lessonId){
           numOfStdLessons++;
-          if(j.timekeeping > 0 && j.timekeeping < 6){
+          if(j.timekeeping > 0 && j.timekeeping < 5){
             attend++;
           }
           if(j.hw > -2) {hw++;}
@@ -97,7 +97,7 @@ class ClassOverviewCubit extends Cubit<int> {
       List<StudentLessonModel> sl = stdLessonsInClass!.fold(<StudentLessonModel>[],
               (pre, e) => [...pre, if (e.studentId == std.userId) e]);
 
-      stdAttends!.add(sl.isEmpty ? 0 : sl.fold(0, (pre, e) => pre + ((e.timekeeping > 0 && e.timekeeping < 6) ? 1 : 0))/(sl.length));
+      stdAttends!.add(sl.isEmpty ? 0 : sl.fold(0, (pre, e) => pre + ((e.timekeeping > 0 && e.timekeeping < 5) ? 1 : 0))/(sl.length));
       stdHomeworks!.add(sl.isEmpty ? 0 : sl.fold(0.0, (pre, e) => pre + ((e.hw > -2) ? 1 : 0))/(sl.length));
       stdPoints!.add(sl.isEmpty ? 0 : sl.fold(0.0, (pre, e) => pre + ((e.hw > -1) ? e.hw : 0))/(sl.length));
       List<StudentLessonModel?> temp = List.generate(lessons!.length, (index) => null);
