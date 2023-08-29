@@ -5,10 +5,15 @@ class InputField extends StatelessWidget {
   final TextEditingController controller;
   final bool isExpand;
   final String? errorText;
+  final Function(String)? onChange;
+  final bool autoFocus, enabled;
   const InputField(
       {required this.controller,
       this.isExpand = false,
+      this.autoFocus = true,
+      this.enabled = true,
       this.errorText,
+      this.onChange,
       Key? key})
       : super(key: key);
 
@@ -17,6 +22,7 @@ class InputField extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
       child: TextFormField(
+        enabled: enabled,
         validator: (value) {
           if ((value == null ||
                   controller.text.isEmpty ||
@@ -29,7 +35,7 @@ class InputField extends StatelessWidget {
         style: TextStyle(
             fontSize: Resizable.font(context, 18), fontWeight: FontWeight.w500),
         controller: controller,
-        autofocus: true,
+        autofocus: autoFocus,
         //initialValue: '',
         decoration: InputDecoration(
           isDense: true,
@@ -52,7 +58,7 @@ class InputField extends StatelessWidget {
         keyboardType: TextInputType.multiline,
         maxLines: isExpand ? null : 1,
         minLines: isExpand ? 3 : 1,
-        onChanged: (v) {},
+        onChanged: onChange,
       ),
     );
   }
@@ -63,11 +69,16 @@ class InputItem extends StatelessWidget {
   final String title;
   final String? errorText;
   final bool isExpand;
+  final bool autoFocus, enabled;
+  final Function(String)? onChange;
   const InputItem(
       {required this.title,
       required this.controller,
       this.isExpand = false,
+      this.autoFocus = true,
+      this.enabled = true,
       this.errorText,
+      this.onChange,
       Key? key})
       : super(key: key);
 
@@ -87,6 +98,9 @@ class InputItem extends StatelessWidget {
               controller: controller,
               isExpand: isExpand,
               errorText: errorText,
+              autoFocus: autoFocus,
+              onChange: onChange,
+              enabled: enabled,
             ),
           ],
         ));

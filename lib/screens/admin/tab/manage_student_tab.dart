@@ -5,6 +5,7 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
+import 'package:internal_sakumi/features/admin/manage_general/list_student/alert_edit_student_profile.dart';
 import 'package:internal_sakumi/features/admin/manage_student/student_item_row_layout.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/model/student_model.dart';
@@ -151,7 +152,7 @@ class ManageStudentTab extends StatelessWidget {
                                                   child: Material(
                                                 color: Colors.transparent,
                                                 child: InkWell(
-                                                    onTap: () {},
+                                                    onTap: () =>alertEditStudentProfile(c,list[index]),
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             Resizable.size(
@@ -210,6 +211,13 @@ class LoadListStudentCubit extends Cubit<List<StudentModel>> {
   LoadListStudentCubit() : super([]);
 
   load(context) async {
+    AdminRepository adminRepository = AdminRepository.fromContext(context);
+    List<StudentModel> list = await adminRepository.getAllStudent();
+    emit(list);
+  }
+
+  update(context)async{
+    emit([]);
     AdminRepository adminRepository = AdminRepository.fromContext(context);
     List<StudentModel> list = await adminRepository.getAllStudent();
     emit(list);
