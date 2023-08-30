@@ -37,7 +37,7 @@ class TeacherProfileCubit extends Cubit<int> {
         .getTeacher(localData.getString(PrefKeyConfigs.code).toString());
     debugPrint('=>>>>>>>profileTeacher: ${profileTeacher!.name}');
     passTeacher = localData.getString(PrefKeyConfigs.password).toString();
-    userModel = await userRepository.getUserTeacherById(profileTeacher!.userId);
+    userModel = await userRepository.getUserById(profileTeacher!.userId);
     listInfoTextField = [];
     isEditBaseInfo = false;
     isEditPassLogin = false;

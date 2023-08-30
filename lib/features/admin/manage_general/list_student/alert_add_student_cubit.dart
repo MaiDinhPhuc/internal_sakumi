@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
-import 'package:internal_sakumi/firebase_service/auth_service.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
@@ -48,9 +47,6 @@ class AlertAddStudentCubit extends Cubit<int> {
 
   addStudentToClass(BuildContext context, StudentClassModel model) async {
     AdminRepository adminRepository = AdminRepository.fromContext(context);
-    //Navigator.pop(context);
-    //waitingDialog(context);
-    //checkAdd =
     await adminRepository.addStudentToClass(model);
     debugPrint('==============> addStudentToClass ${model.userId}');
   }

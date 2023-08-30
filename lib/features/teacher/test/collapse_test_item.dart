@@ -61,15 +61,18 @@ class CollapseTestItem extends StatelessWidget {
               ? Container()
               : Container(
                   padding: EdgeInsets.symmetric(
-                      vertical: Resizable.padding(context, 4),
-                      horizontal: Resizable.padding(context, 10)),
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(10000)),
+                      vertical: Resizable.padding(context, 10),
+                      horizontal: Resizable.padding(context, 12)),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          width: Resizable.size(context, 1),
+                          color: greyColor.shade100),
+                      borderRadius: BorderRadius.circular(10)),
                   child: Text(
                     cubit.listGPA![index].toString(),
                     style: TextStyle(
                         color: primaryColor,
-                        fontSize: Resizable.font(context, 14),
+                        fontSize: Resizable.font(context, 18),
                         fontWeight: FontWeight.w800),
                   )),
       status: cubit.listTestResult == null
