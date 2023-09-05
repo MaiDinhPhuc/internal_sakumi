@@ -71,7 +71,7 @@ class Routes {
         handler: testHandler, transitionType: TransitionType.fadeIn);
     router.define('/:name/grading/:classId',
         handler: gradingHandler, transitionType: TransitionType.fadeIn);
-    router.define('/:name/grading/:classId/:lessonId',
+    router.define('/:name/grading/:classId/:type/:parentId',
         handler: detailGradingHandler, transitionType: TransitionType.fadeIn);
     router.define('/:name/lesson/:classId/:lessonId',
         handler: detailLessonHandler, transitionType: TransitionType.fadeIn);
@@ -145,7 +145,7 @@ var detailClassHandler =
 });
 var detailGradingHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return DetailGradingScreen(params['name'][0]);
+  return DetailGradingScreen(params['name'][0], params['type'][0]);
 });
 var detailLessonHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {

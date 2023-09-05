@@ -89,7 +89,7 @@ class QuestionModel {
 
   factory QuestionModel.fromMap(Map<String, dynamic> json) => QuestionModel(
       id: json['id'],
-      lessonId: json['lesson_id'],
+      lessonId: json['lesson_id']??0,
       a: json['a']??"",
       b: json['b']??"",
       c: json['c']??"",

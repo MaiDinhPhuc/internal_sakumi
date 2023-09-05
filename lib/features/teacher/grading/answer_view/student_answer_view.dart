@@ -26,7 +26,6 @@ class StudentAnswerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(answerModel.newScore);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

@@ -11,7 +11,10 @@ class ManageGeneralCubit extends Cubit<int> {
   List<ClassModel>? listAllClass;
   List<TeacherModel>? listTeacher;
   List<StudentModel>? listStudent;
+  List<StudentClassModel>? listStudentClass;
   int selector = 0;
+
+  List<String> listMenu = ["Completed","InProgress","Viewer","ReNew","UpSale","Moved","Retained","Dropped","Remove"];
 
   loadAllClass(context) async {
     AdminRepository adminRepository = AdminRepository.fromContext(context);
@@ -47,6 +50,7 @@ class ManageGeneralCubit extends Cubit<int> {
 
   loadStudentInClass(context, int selector)async{
     listStudent = null;
+    listStudentClass = null;
     debugPrint('============> loadStudentInClass 1');
     var adminRepo = AdminRepository.fromContext(context);
     debugPrint('============> loadStudentInClass 2');
@@ -55,6 +59,7 @@ class ManageGeneralCubit extends Cubit<int> {
     List<StudentClassModel> listAllStudentInClass = await adminRepo.getStudentClassByClassId(selector);
     debugPrint('============> loadStudentInClass 4');
     listStudent = [];
+    listStudentClass = listAllStudentInClass;
     for(var i in listAllStudent){
       debugPrint('============> loadStudentInClass 5');
       for(var j in listAllStudentInClass){
@@ -66,5 +71,25 @@ class ManageGeneralCubit extends Cubit<int> {
     }
     debugPrint('============> loadStudentInClass ${listStudent!.length}');
     emit(state+2);
+  }
+
+
+  StudentClassModel getStudentClass(int studentId){
+    StudentClassModel? studentClassModel;
+    for(var i in listStudentClass!){
+      if(i.userId == studentId){
+        studentClassModel = i;
+        break;
+      }
+    }
+    return studentClassModel!;
+  }
+}
+
+class MenuPopupCubit extends Cubit<int>{
+  MenuPopupCubit():super(0);
+
+  update(){
+    emit(state+1);
   }
 }

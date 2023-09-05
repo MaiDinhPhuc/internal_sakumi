@@ -128,6 +128,23 @@ class TeacherRepository {
 
     return list;
   }
+  Future<List<StudentLessonModel>> getAllStudentLessonInLesson(int classId,
+      int lessonId) async {
+    final db = FirebaseFirestore.instance;
+
+    final snapshot = await db
+        .collection('student_lesson')
+        .where('class_id', isEqualTo: classId)
+        .where('lesson_id', isEqualTo: lessonId)
+        .get();
+
+    final list =
+    snapshot.docs.map((e) => StudentLessonModel.fromSnapshot(e)).toList();
+
+    //list.sort((a, b) => a.studentId.compareTo(b.studentId));
+
+    return list;
+  }
 
   Future<LessonResultModel> getLessonResultByLessonId(int id,
       int classId) async {
@@ -157,6 +174,15 @@ class TeacherRepository {
   Future<List<QuestionModel>> getQuestionByLessonId(String lessonId) async {
     final jsonData =
     await rootBundle.loadString("assets/practice/$lessonId/btvn.json");
+    final response = jsonDecode(jsonData) as List<dynamic>;
+    List<QuestionModel> list = response.isNotEmpty
+        ? response.map((e) => QuestionModel.fromMap(e)).toList()
+        : [];
+    return list;
+  }
+  Future<List<QuestionModel>> getQuestionByTestId(String testId) async {
+    final jsonData =
+    await rootBundle.loadString("assets/test/$testId/test.json");
     final response = jsonDecode(jsonData) as List<dynamic>;
     List<QuestionModel> list = response.isNotEmpty
         ? response.map((e) => QuestionModel.fromMap(e)).toList()
@@ -209,14 +235,12 @@ class TeacherRepository {
     return list;
   }
 
-  Future<List<StudentLessonModel>> getAllStudentLessonInLesson(int classId,
-      int lessonId) async {
+  Future<List<StudentLessonModel>> getAllStudentLesson(int classId) async {
     final db = FirebaseFirestore.instance;
 
     final snapshot = await db
         .collection('student_lesson')
         .where('class_id', isEqualTo: classId)
-        .where('lesson_id', isEqualTo: lessonId)
         .get();
 
     final list =
@@ -227,12 +251,12 @@ class TeacherRepository {
     return list;
   }
 
-  Future<List<AnswerModel>> getAnswersOfQuestion(int lessonId,
+  Future<List<AnswerModel>> getListAnswer(int id,
       int classId) async {
     final db = FirebaseFirestore.instance;
     final snapshot = await db
         .collection('answer')
-        .where('parent_id', isEqualTo: lessonId)
+        .where('parent_id', isEqualTo: id)
         .where('class_id', isEqualTo: classId)
         .get();
 
@@ -513,8 +537,21 @@ class TeacherRepository {
     final list = snapshot.docs.map((e) => StudentTestModel.fromSnapshot(e)).toList();
     return list;
   }
+  Future<List<StudentTestModel>> getAllStudentTest(int classId) async {
+    final db = FirebaseFirestore.instance;
 
-  Future<List<TestResultModel>> getListStudentResult(int classId) async {
+    final snapshot = await db
+        .collection('student_test')
+        .where('class_id', isEqualTo: classId)
+        .get();
+
+    final list =
+    snapshot.docs.map((e) => StudentTestModel.fromSnapshot(e)).toList();
+
+    return list;
+  }
+
+  Future<List<TestResultModel>> getListTestResult(int classId) async {
     final db = FirebaseFirestore.instance;
     final snapshot =
     await db.collection("test_result").where("class_id", isEqualTo: classId).get();

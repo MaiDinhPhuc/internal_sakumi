@@ -21,8 +21,8 @@ class DetailGradingCubit extends Cubit<int> {
   List<int>? listStudentId;
   List<bool>? listState;
 
-  init(context) async {
-    await loadFirst(context);
+  init(context,String type) async {
+    await loadFirst(context, type);
   }
 
   String getStudentName(AnswerModel answerModel) {
@@ -46,7 +46,6 @@ class DetailGradingCubit extends Cubit<int> {
 
   updateAfterGrading(int questionId) async {
     now = questionId;
-    await Future.delayed(const Duration(milliseconds: 2000));
     emit(questionId);
   }
 
@@ -56,13 +55,18 @@ class DetailGradingCubit extends Cubit<int> {
           listStudentId!.contains(answer.studentId))
       .toList();
 
-  loadFirst(context) async {
+  loadFirst(context, String type) async {
     TeacherRepository teacherRepository =
         TeacherRepository.fromContext(context);
     UserRepository userRepository = UserRepository.fromContext(context);
-    listQuestions =
-        await teacherRepository.getQuestionByLessonId(TextUtils.getName());
-    listAnswer = await teacherRepository.getAnswersOfQuestion(
+    if(type == "test"){
+      listQuestions =
+      await teacherRepository.getQuestionByTestId(TextUtils.getName());
+    }else{
+      listQuestions =
+      await teacherRepository.getQuestionByLessonId(TextUtils.getName());
+    }
+    listAnswer = await teacherRepository.getListAnswer(
         int.parse(TextUtils.getName()),
         int.parse(TextUtils.getName(position: 2)));
 

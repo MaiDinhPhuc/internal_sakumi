@@ -66,7 +66,7 @@ class TestCubit extends Cubit<int> {
       listGPA!.add(sum / (count == 0 ? 1 : count));
     }
     listTestResult = await teacherRepository
-        .getListStudentResult(int.parse(TextUtils.getName()));
+        .getListTestResult(int.parse(TextUtils.getName()));
     emit(state + 1);
   }
 

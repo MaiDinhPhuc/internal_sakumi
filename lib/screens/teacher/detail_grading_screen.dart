@@ -14,13 +14,14 @@ import 'package:internal_sakumi/widget/title_widget.dart';
 
 class DetailGradingScreen extends StatelessWidget {
   final String name;
-  DetailGradingScreen(this.name, {super.key}): questionSoundCubit = SoundCubit(), checkActiveCubit = CheckActiveCubit();
+  final String type;
+  DetailGradingScreen(this.name,this.type, {super.key}): questionSoundCubit = SoundCubit(), checkActiveCubit = CheckActiveCubit();
   final SoundCubit questionSoundCubit;
   final CheckActiveCubit checkActiveCubit;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => DetailGradingCubit()..init(context),
+        create: (context) => DetailGradingCubit()..init(context, type),
         child: Scaffold(
           body: Column(
             children: [
@@ -221,7 +222,7 @@ class DetailGradingScreen extends StatelessWidget {
                                     color: lightGreyColor,
                                     borderRadius: BorderRadius.circular(
                                         Resizable.size(context, 5))),
-                                child: DetailGradingView(cubit,questionSoundCubit, checkActiveCubit: checkActiveCubit,),
+                                child: DetailGradingView(cubit,questionSoundCubit, checkActiveCubit: checkActiveCubit,type: type,),
                               ))
                             ],
                           ))
