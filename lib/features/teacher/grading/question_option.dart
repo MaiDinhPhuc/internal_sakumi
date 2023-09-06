@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/grading/sound/sound_cubit.dart';
@@ -8,23 +9,28 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
 class QuestionOptionItem extends StatelessWidget {
-  const QuestionOptionItem(this.id, this.index,this.now,
+  const QuestionOptionItem(this.id, this.index, this.now,
       {super.key,
       required this.questionModel,
       required this.onTap,
-      required this.soundCubit, required this.isDone});
+      required this.soundCubit,
+      required this.isDone,
+      required this.token});
   final int id, index, now;
   final QuestionModel questionModel;
   final Function() onTap;
   final SoundCubit soundCubit;
   final bool isDone;
+  final String token;
   @override
   Widget build(BuildContext context) {
     String question = questionModel.convertQuestion;
     return Row(
       children: [
         Container(
-          color: id == questionModel.id || now == questionModel.id ? primaryColor : Colors.transparent,
+          color: id == questionModel.id || now == questionModel.id
+              ? primaryColor
+              : Colors.transparent,
           width: Resizable.size(context, 4),
           margin: EdgeInsets.only(
               right: Resizable.padding(context, 5),
@@ -43,8 +49,9 @@ class QuestionOptionItem extends StatelessWidget {
                             ? Colors.black
                             : const Color(0xffE0E0E0),
                         width: Resizable.size(context, 1))),
-                elevation:
-                id == questionModel.id || now == questionModel.id ? 0 : Resizable.size(context, 2),
+                elevation: id == questionModel.id || now == questionModel.id
+                    ? 0
+                    : Resizable.size(context, 2),
                 child: InkWell(
                   onTap: onTap,
                   borderRadius:
@@ -58,7 +65,9 @@ class QuestionOptionItem extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.check_circle, color: isDone?greenColor:greyColor.shade500),
+                              Icon(Icons.check_circle,
+                                  color:
+                                      isDone ? greenColor : greyColor.shade500),
                               SizedBox(width: Resizable.padding(context, 5)),
                               Text(
                                 "${AppText.textQuestionNumber.text}${index + 1}",
@@ -68,7 +77,8 @@ class QuestionOptionItem extends StatelessWidget {
                               )
                             ],
                           ),
-                          if (id == questionModel.id || now == questionModel.id) ...[
+                          if (id == questionModel.id ||
+                              now == questionModel.id) ...[
                             if (questionModel.instruction != "")
                               Text(
                                 questionModel.instruction,
@@ -87,7 +97,8 @@ class QuestionOptionItem extends StatelessWidget {
                               Expanded(
                                 child: Sounder(
                                   "assets/practice/${TextUtils.getName()}/${questionModel.listSound.first}",
-                                  "assets",0,
+                                  "assets",
+                                  0,
                                   soundCubit: soundCubit,
                                   backgroundColor: primaryColor,
                                   iconColor: Colors.white,
@@ -105,12 +116,20 @@ class QuestionOptionItem extends StatelessWidget {
                                     itemBuilder: (_, i) => Container(
                                           margin: EdgeInsets.all(
                                               Resizable.padding(context, 2)),
-                                          height: MediaQuery.of(context).size.width*0.1,
-                                          width: MediaQuery.of(context).size.width*0.1,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.1,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.1,
                                           decoration: BoxDecoration(
                                             image: DecorationImage(
-                                                image: AssetImage(
-                                                    'assets/practice/${TextUtils.getName()}/${questionModel.listImage[i]}'),
+                                                image: NetworkImage(
+                                                    AppConfigs.getDataUrl(
+                                                        "btvn_${TextUtils.getName()}_${questionModel.listImage[i]}",
+                                                        token)),
                                                 fit: BoxFit.fill),
                                             border: Border.all(
                                                 width: 0,
@@ -140,13 +159,20 @@ class QuestionOptionItem extends StatelessWidget {
                                       .map((item) => Container(
                                             margin: EdgeInsets.all(
                                                 Resizable.padding(context, 2)),
-                                            height:
-                                            MediaQuery.of(context).size.width*0.1,
-                                            width: MediaQuery.of(context).size.width*0.1,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.1,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.1,
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
-                                                  image: AssetImage(
-                                                      'assets/practice/${TextUtils.getName()}/$item'),
+                                                  image: NetworkImage(
+                                                      AppConfigs.getDataUrl(
+                                                          "btvn_${TextUtils.getName()}_$item",
+                                                          token)),
                                                   fit: BoxFit.fill),
                                               border: Border.all(
                                                   width: 0,
@@ -165,13 +191,20 @@ class QuestionOptionItem extends StatelessWidget {
                                       .map((item) => Container(
                                             margin: EdgeInsets.all(
                                                 Resizable.padding(context, 2)),
-                                            height:
-                                            MediaQuery.of(context).size.width*0.1,
-                                            width: MediaQuery.of(context).size.width*0.1,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.1,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.1,
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
-                                                  image: AssetImage(
-                                                      'assets/practice/${TextUtils.getName()}/$item'),
+                                                  image: NetworkImage(
+                                                      AppConfigs.getDataUrl(
+                                                          "btvn_${TextUtils.getName()}_$item",
+                                                          token)),
                                                   fit: BoxFit.fill),
                                               border: Border.all(
                                                   color: secondaryColor),

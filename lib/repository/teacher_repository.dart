@@ -12,6 +12,7 @@ import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
+import 'package:internal_sakumi/model/response_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
@@ -20,6 +21,8 @@ import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
+
+import 'api_provider.dart';
 
 class TeacherRepository {
   static TeacherRepository fromContext(BuildContext context) =>
@@ -102,6 +105,18 @@ class TeacherRepository {
     return result;
   }
 
+  Future<CourseModel> getCourseById(int id) async {
+    final db = FirebaseFirestore.instance;
+    final snapshot =
+    await db.collection("courses").where("course_id", isEqualTo: id).get();
+    debugPrint("============> get db from courses");
+    final course =
+        snapshot.docs
+            .map((e) => CourseModel.fromSnapshot(e))
+            .single;
+    return course;
+  }
+
   Future<List<LessonResultModel>> getLessonResultByClassId(int id) async {
     final db = FirebaseFirestore.instance;
 
@@ -171,15 +186,18 @@ class TeacherRepository {
     return courses;
   }
 
-  Future<List<QuestionModel>> getQuestionByLessonId(String lessonId) async {
-    final jsonData =
-    await rootBundle.loadString("assets/practice/$lessonId/btvn.json");
-    final response = jsonDecode(jsonData) as List<dynamic>;
-    List<QuestionModel> list = response.isNotEmpty
-        ? response.map((e) => QuestionModel.fromMap(e)).toList()
-        : [];
-    return list;
+  Future<List<QuestionModel>> getQuestionByUrl(String url) async {
+    APIResponseModel response = await APIProvider.instance
+        .get(url);
+
+    if (response.statusCode == 200) {
+      return (response.json as List).map((e) => QuestionModel.fromMap(e)).toList();
+    } else {
+      debugPrint("=======>error ${response.statusCode}");
+      return [];
+    }
   }
+
   Future<List<QuestionModel>> getQuestionByTestId(String testId) async {
     final jsonData =
     await rootBundle.loadString("assets/test/$testId/test.json");
