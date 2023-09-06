@@ -23,7 +23,7 @@ class ManageGeneralListStudent extends StatelessWidget {
       ),
     ) : Column(
       children: [
-        ...(cubit.listStudent!).map((e) => UserItem(e.name, e.phone, e.url)).toList(),
+        ...(cubit.listStudent!).map((e) => StudentItem(student: e,cubit: cubit,)).toList(),
         SizedBox(height: Resizable.padding(context, 5)),
         Material(
             color: Colors.transparent,

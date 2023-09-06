@@ -212,10 +212,13 @@ enum AppText {
   txtWrongAccount,
   stsRenew,
   stsRemove,
-  stsUpSale
+  stsUpSale, txtType, textMarked, textNotMarked
 }
 
 Map<AppText, String> texts = {
+  AppText.textNotMarked: 'Chưa chấm',
+  AppText.textMarked: 'Đã chấm',
+  AppText.txtType: 'Loại bài',
   AppText.stsUpSale: 'Lên cấp',
   AppText.stsRemove: 'Đã xoá',
   AppText.stsRenew: 'ReNew',

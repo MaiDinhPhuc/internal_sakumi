@@ -15,12 +15,13 @@ import 'detail_grading_cubit.dart';
 
 class DetailGradingView extends StatelessWidget {
   DetailGradingView(this.cubit, this.soundCubit,
-      {super.key, required this.checkActiveCubit})
+      {super.key, required this.checkActiveCubit, required this.type})
       : imageCubit = ImagePickerCubit();
   final DetailGradingCubit cubit;
   final SoundCubit soundCubit;
   final ImagePickerCubit imageCubit;
   final CheckActiveCubit checkActiveCubit;
+  final String type;
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +84,7 @@ class DetailGradingView extends StatelessWidget {
                     child: SubmitButton(
                         isActive: s,
                         onPressed: () async {
-                          await submit(cubit, context, checkActiveCubit);
+                          await submit(cubit, context, checkActiveCubit, type);
                         },
                         title: AppText.btnUpdate.text.toUpperCase()));
               })
@@ -102,7 +103,7 @@ class CheckActiveCubit extends Cubit<bool> {
   }
 }
 
-Future<void> submit(DetailGradingCubit cubit, context, CheckActiveCubit checkCubit) async {
+Future<void> submit(DetailGradingCubit cubit, context, CheckActiveCubit checkCubit, String type) async {
   cubit.loadingState();
   TeacherRepository teacherRepository =
   TeacherRepository.fromContext(context);
@@ -125,7 +126,7 @@ Future<void> submit(DetailGradingCubit cubit, context, CheckActiveCubit checkCub
     FirebaseFirestore.instance
         .collection('answer')
         .doc(
-            'student_${i.studentId}_homework_question_${i.questionId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 2)}')
+            type == "test"? 'student_${i.studentId}_test_question_${i.questionId}_class_${TextUtils.getName(position: 2)}' :'student_${i.studentId}_homework_question_${i.questionId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 2)}')
         .update({
       'score': cubit.listAnswer![cubit.listAnswer!.indexOf(i)].newScore,
       'teacher_note':
@@ -162,13 +163,24 @@ Future<void> submit(DetailGradingCubit cubit, context, CheckActiveCubit checkCub
         }
       }
       int submitScore = (temp / cubit.listQuestions!.length).round();
-      FirebaseFirestore.instance
-          .collection('student_lesson')
-          .doc(
-              'student_${i.userId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 2)}')
-          .update({
-        'hw': temp == 0 ? -1 : submitScore,
-      });
+      if(type == "test"){
+        FirebaseFirestore.instance
+            .collection('student_test')
+            .doc(
+            'student_${i.userId}_test_${TextUtils.getName()}_class_${TextUtils.getName(position: 2)}')
+            .update({
+          'score': temp == 0 ? -1 : submitScore,
+        });
+      }else{
+        FirebaseFirestore.instance
+            .collection('student_lesson')
+            .doc(
+            'student_${i.userId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 2)}')
+            .update({
+          'hw': temp == 0 ? -1 : submitScore,
+        });
+      }
+
     }
   }
 }

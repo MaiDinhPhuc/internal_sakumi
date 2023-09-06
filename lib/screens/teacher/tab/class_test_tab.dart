@@ -114,7 +114,7 @@ class ClassTestTab extends StatelessWidget {
                                         ...cubit.listTest!.map((e) => cubit
                                                 .checkAlready(e.id)
                                             ? TestAlreadyView(
-                                                e: e, cubit: cubit)
+                                                e: e, cubit: cubit, name: name,)
                                             : TestNotAlreadyView(
                                                 index:
                                                     cubit.listTest!.indexOf(e),

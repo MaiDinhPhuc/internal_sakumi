@@ -167,7 +167,7 @@ class ListLessonTab extends StatelessWidget {
                                                                   await Navigator
                                                                       .pushNamed(
                                                                       c,
-                                                                      "/teacher?name=$name/grading/class?id=${cubit.classModel!.classId}/lesson?id=${e.lessonId}");
+                                                                      "/teacher?name=$name/grading/class?id=${cubit.classModel!.classId}/type?type=btvn/lesson?id=${e.lessonId}");
                                                                 }
                                                                 if (c.mounted) {
                                                                   await cubit

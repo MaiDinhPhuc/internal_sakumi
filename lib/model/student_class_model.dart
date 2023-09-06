@@ -6,7 +6,8 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 class StudentClassModel {
   final int activeStatus, classId, id, learningStatus, moveTo, userId;
   final String classStatus, date;
-  const StudentClassModel(
+  String? _status;
+  StudentClassModel(
       {required this.id,
       required this.classId,
       required this.activeStatus,
@@ -16,8 +17,14 @@ class StudentClassModel {
       required this.classStatus,
       required this.date});
 
+
+  String get status => _status ?? classStatus;
+  set status(String value){
+    _status = value;
+  }
+
   Color get color {
-    switch (classStatus) {
+    switch (status) {
       case 'Completed':
       case 'Moved':
       case 'UpSale':
@@ -36,7 +43,7 @@ class StudentClassModel {
   }
 
   String get icon {
-    switch (classStatus) {
+    switch (status) {
       case 'Completed':
         return 'check';
       case 'Moved':
@@ -54,7 +61,7 @@ class StudentClassModel {
   }
 
   String get title {
-    switch (classStatus) {
+    switch (status) {
       case 'Completed':
         return AppText.stsCompleted.text;
       case 'Moved':

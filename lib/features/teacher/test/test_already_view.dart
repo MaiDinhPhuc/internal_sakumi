@@ -5,15 +5,18 @@ import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_le
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
 import 'package:internal_sakumi/features/teacher/test/test_cubit.dart';
 import 'package:internal_sakumi/model/test_model.dart';
+import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:internal_sakumi/utils/text_utils.dart';
 
 import 'collapse_test_item.dart';
 import 'expand_test_item.dart';
 
 class TestAlreadyView extends StatelessWidget {
-  const TestAlreadyView({super.key, required this.e, required this.cubit});
+  const TestAlreadyView({super.key, required this.e, required this.cubit, required this.name});
   final TestModel e;
   final TestCubit cubit;
+  final String name;
 
   @override
   Widget build(BuildContext context) {
@@ -68,8 +71,10 @@ class TestAlreadyView extends StatelessWidget {
                     child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                      onDoubleTap: () {},
-                      onTap: () async {},
+                      onTap: () async {
+                        await Navigator.pushNamed(context,
+                            "${Routes.teacher}?name=$name/grading/class?id=${TextUtils.getName()}/type?type=test/parent?id=${e.id}");
+                      },
                       borderRadius:
                           BorderRadius.circular(Resizable.size(context, 5))),
                 )),
