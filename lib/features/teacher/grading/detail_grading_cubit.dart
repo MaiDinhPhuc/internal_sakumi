@@ -1,5 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
+import 'package:internal_sakumi/model/class_model.dart';
+import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
@@ -14,12 +17,15 @@ class DetailGradingCubit extends Cubit<int> {
   QuestionModel? question;
   List<AnswerModel>? listAnswer;
   List<StudentModel>? listStudent;
+  ClassModel? classModel;
+  CourseModel? courseModel;
   int now = 0;
   List<int> listChecked = [];
   bool isShowName = true;
   bool isGeneralComment = false;
   List<int>? listStudentId;
   List<bool>? listState;
+  String token = "";
 
   init(context,String type) async {
     await loadFirst(context, type);
@@ -59,13 +65,17 @@ class DetailGradingCubit extends Cubit<int> {
     TeacherRepository teacherRepository =
         TeacherRepository.fromContext(context);
     UserRepository userRepository = UserRepository.fromContext(context);
+    classModel = await teacherRepository.getClassById(int.parse(TextUtils.getName(position: 2)));
+    courseModel = await teacherRepository.getCourseById(classModel!.courseId);
+    token = courseModel!.token;
     if(type == "test"){
       listQuestions =
-      await teacherRepository.getQuestionByTestId(TextUtils.getName());
+      await teacherRepository.getQuestionByUrl(AppConfigs.getDataUrl("test_${TextUtils.getName()}.json",token));
     }else{
       listQuestions =
-      await teacherRepository.getQuestionByLessonId(TextUtils.getName());
+      await teacherRepository.getQuestionByUrl(AppConfigs.getDataUrl("btvn_${TextUtils.getName()}.json",token));
     }
+
     listAnswer = await teacherRepository.getListAnswer(
         int.parse(TextUtils.getName()),
         int.parse(TextUtils.getName(position: 2)));
