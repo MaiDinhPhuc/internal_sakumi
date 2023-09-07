@@ -96,8 +96,10 @@ class QuestionOptionItem extends StatelessWidget {
                             if (questionModel.sound != "")
                               Expanded(
                                 child: Sounder(
-                                  "assets/practice/${TextUtils.getName()}/${questionModel.listSound.first}",
-                                  "assets",
+                                  AppConfigs.getDataUrl(
+                                      "btvn_${TextUtils.getName()}_${questionModel.listSound.first}",
+                                      token),
+                                  "network",
                                   0,
                                   soundCubit: soundCubit,
                                   backgroundColor: primaryColor,
