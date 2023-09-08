@@ -74,7 +74,7 @@ class DetailGradingCubit extends Cubit<int> {
     }else{
       listQuestions =
       await teacherRepository.getQuestionByUrl(AppConfigs.getDataUrl("btvn_${TextUtils.getName()}.json",token));
-    }
+       }
 
     listAnswer = await teacherRepository.getListAnswer(
         int.parse(TextUtils.getName()),

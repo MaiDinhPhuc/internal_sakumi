@@ -1,11 +1,15 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/features/teacher/grading/answer_view/pick_image_cubit.dart';
+import 'package:internal_sakumi/features/teacher/grading/answer_view/record_dialog.dart';
+import 'package:internal_sakumi/features/teacher/grading/answer_view/record_services.dart';
 import 'package:internal_sakumi/features/teacher/grading/answer_view/student_answer_view.dart';
+import 'package:internal_sakumi/features/teacher/grading/answer_view/voice_record_cubit.dart';
 import 'package:internal_sakumi/features/teacher/grading/detail_grading_cubit.dart';
 import 'package:internal_sakumi/features/teacher/grading/detail_grading_view.dart';
 import 'package:internal_sakumi/features/teacher/grading/sound/sound_cubit.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:microphone/microphone.dart';
 
 import 'input_form/teacher_note_view.dart';
 
@@ -15,12 +19,13 @@ class AnswerInfoView extends StatelessWidget {
       required this.answerModel,
       required this.soundCubit,
       required this.cubit, required this.checkActiveCubit})
-      : imageCubit = ImagePickerCubit();
+      : imageCubit = ImagePickerCubit(), voiceRecordCubit = VoiceRecordCubit();
   final AnswerModel answerModel;
   final SoundCubit soundCubit;
   final DetailGradingCubit cubit;
   final ImagePickerCubit imageCubit;
   final CheckActiveCubit checkActiveCubit;
+  final VoiceRecordCubit voiceRecordCubit;
   @override
   Widget build(BuildContext context) {
     TextEditingController noteController =
@@ -80,7 +85,15 @@ class AnswerInfoView extends StatelessWidget {
                   },
                   onOpenFile: () async {
                     await imageCubit.pickImage(answerModel,checkActiveCubit, cubit);
-                  }, onOpenMic: () {  }, type: 'single', checkActiveCubit: checkActiveCubit,
+                  }, onOpenMic: () {
+                  RecordService.instance.start();
+                  showDialog(
+                      context: context,
+                      builder: (context) =>  RecordDialog(stop: () {
+                        Navigator.of(context).pop();
+                        RecordService.instance.stop();
+                      }));
+                }, type: 'single', checkActiveCubit: checkActiveCubit,
                 )
             ]),
           )
