@@ -13,7 +13,7 @@ class SoundService {
 
   VideoPlayerController? _player;
 
-  VideoPlayerController newPlayer(String url, String type) {
+  Future<VideoPlayerController> newPlayer(String url, String type) async {
 
     if (_player != null) {
       if (_player!.value.isPlaying) {
@@ -26,12 +26,14 @@ class SoundService {
       _player = VideoPlayerController.network(
         url,
         videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
-      )..initialize();
+      );
+      await _player!.initialize();
     }else{
       _player = VideoPlayerController.asset(
         url,
         videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
-      )..initialize();
+      );
+      await _player!.initialize();
     }
 
     return _player!;
@@ -80,7 +82,7 @@ class SoundService {
 
   playSound(String sound, SoundCubit soundCubit, String type) async {
     debugPrint("=======>$sound");
-    var player = newPlayer(sound, type);
+    var player = await newPlayer(sound, type);
 
     await soundCubit.loading();
     await soundCubit.changeActive(type, sound);
