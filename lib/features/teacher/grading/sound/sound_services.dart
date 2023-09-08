@@ -22,12 +22,16 @@ class SoundService {
       _player!.dispose();
     }
 
+    debugPrint("========>init");
+
     if(type == "network"){
-      _player = VideoPlayerController.network(
-        url,
+      _player = VideoPlayerController.networkUrl(
+        Uri.parse(url),
         videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
       );
+      debugPrint("========>init before");
       await _player!.initialize();
+      debugPrint("========>init after");
     }else{
       _player = VideoPlayerController.asset(
         url,
