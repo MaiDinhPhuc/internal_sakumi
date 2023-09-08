@@ -103,11 +103,6 @@ class TeacherScreen extends StatelessWidget {
                         );
                       },
                     ),
-                    Icon(
-                      Icons.menu,
-                      size: Resizable.size(context, 30),
-                      color: Colors.black,
-                    )
                   ],
                 ),
               ),
