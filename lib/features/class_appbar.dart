@@ -460,40 +460,47 @@ class HeaderTeacher extends StatelessWidget {
                               radius: Resizable.size(context, 15),
                               backgroundColor: greyColor.shade300,
                             )
-                          : CircleAvatar(
-                              radius: Resizable.size(context, 15),
-                              backgroundColor: greyColor.shade300,
-                              child: ImageNetwork(
-                                key: Key(s.url),
-                                image: s.url.isEmpty
-                                    ? AppConfigs.defaultImage
-                                    : s.url,
-                                height: Resizable.size(context, 30),
-                                borderRadius: BorderRadius.circular(1000),
-                                width: Resizable.size(context, 30),
-                                onLoading: Transform.scale(
-                                  scale: 0.25,
-                                  child: const CircularProgressIndicator(),
-                                ),
-                                duration: 0,
-                                onTap: () {
-                                  var uri =
-                                      Uri.dataFromString(window.location.href)
-                                          .toString();
-                                  var profileUri =
-                                      '${Routes.teacher}?name=$name/profile';
-                                  debugPrint(
-                                      '=>>>>>>>>>>>>>>> uri: $uri , profileUri: $profileUri');
-
-                                  if (uri.contains(profileUri)) {
-                                    Navigator.pushReplacementNamed(
-                                        context, profileUri);
-                                  } else {
-                                    Navigator.pushNamed(context, profileUri);
-                                  }
-                                },
-                              ),
+                          : Container(
+                        decoration: const BoxDecoration(
+                          color: primaryColor,
+                          shape: BoxShape.circle,
+                          boxShadow: [BoxShadow(blurRadius: 5, color: Colors.black)],
+                        ),
+                        child: CircleAvatar(
+                          radius: Resizable.size(context, 15),
+                          backgroundColor: greyColor.shade300,
+                          child: ImageNetwork(
+                            key: Key(s.url),
+                            image: s.url.isEmpty
+                                ? AppConfigs.defaultImage
+                                : s.url,
+                            height: Resizable.size(context, 30),
+                            borderRadius: BorderRadius.circular(1000),
+                            width: Resizable.size(context, 30),
+                            onLoading: Transform.scale(
+                              scale: 0.25,
+                              child: const CircularProgressIndicator(),
                             ),
+                            duration: 0,
+                            onTap: () {
+                              var uri =
+                              Uri.dataFromString(window.location.href)
+                                  .toString();
+                              var profileUri =
+                                  '${Routes.teacher}?name=$name/profile';
+                              debugPrint(
+                                  '=>>>>>>>>>>>>>>> uri: $uri , profileUri: $profileUri');
+
+                              if (uri.contains(profileUri)) {
+                                Navigator.pushReplacementNamed(
+                                    context, profileUri);
+                              } else {
+                                Navigator.pushNamed(context, profileUri);
+                              }
+                            },
+                          ),
+                        )
+                      ),
                     ],
                   ),
                 )

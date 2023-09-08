@@ -52,30 +52,37 @@ class TeacherScreen extends StatelessWidget {
                         return Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            CircleAvatar(
-                              radius: Resizable.size(context, 25),
-                              backgroundColor: greyColor.shade300,
-                              child: s == null
-                                  ? Container()
-                                  : ImageNetwork(
-                                      key: Key(s.url),
-                                      image: s.url.isEmpty
-                                          ? AppConfigs.defaultImage
-                                          : s.url,
-                                      height: Resizable.size(context, 50),
-                                      borderRadius: BorderRadius.circular(1000),
-                                      width: Resizable.size(context, 50),
-                                      onLoading: Transform.scale(
-                                        scale: 0.25,
-                                        child:
-                                            const CircularProgressIndicator(),
-                                      ),
-                                      duration: 100,
-                                      onTap: () {
-                                        Navigator.pushNamed(context,
-                                            '${Routes.teacher}?name=${TextUtils.getName().trim()}/profile');
-                                      },
-                                    ),
+                            Container(
+                                decoration: const BoxDecoration(
+                                  color: primaryColor,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [BoxShadow(blurRadius: 5, color: Colors.black)],
+                                ),
+                              child: CircleAvatar(
+                                radius: Resizable.size(context, 25),
+                                backgroundColor: greyColor.shade300,
+                                child: s == null
+                                    ? Container()
+                                    : ImageNetwork(
+                                  key: Key(s.url),
+                                  image: s.url.isEmpty
+                                      ? AppConfigs.defaultImage
+                                      : s.url,
+                                  height: Resizable.size(context, 50),
+                                  borderRadius: BorderRadius.circular(1000),
+                                  width: Resizable.size(context, 50),
+                                  onLoading: Transform.scale(
+                                    scale: 0.25,
+                                    child:
+                                    const CircularProgressIndicator(),
+                                  ),
+                                  duration: 100,
+                                  onTap: () {
+                                    Navigator.pushNamed(context,
+                                        '${Routes.teacher}?name=${TextUtils.getName().trim()}/profile');
+                                  },
+                                ),
+                              )
                             ),
                             SizedBox(width: Resizable.size(context, 10)),
                             s == null
@@ -105,14 +112,6 @@ class TeacherScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                    vertical: Resizable.padding(context, 10)),
-                child: Text(AppText.titleListClass.text.toUpperCase(),
-                    style: TextStyle(
-                        fontSize: Resizable.font(context, 30),
-                        fontWeight: FontWeight.w800)),
               ),
               BlocProvider(
                 create: (context) =>
