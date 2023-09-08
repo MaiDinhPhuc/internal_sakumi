@@ -78,10 +78,10 @@ class OverviewItemRowLayout extends StatelessWidget {
             child: Container(alignment: Alignment.center, child: point)),
         Expanded(
             flex: 4,
-            child: Container(alignment: Alignment.center, child: dropdown)),
+            child: Container(alignment: Alignment.center, child: evaluate)),
         Expanded(
             flex: 4,
-            child: Container(alignment: Alignment.center, child: evaluate)),
+            child: Container(alignment: Alignment.center, child: dropdown)),
       ],
     );
   }
