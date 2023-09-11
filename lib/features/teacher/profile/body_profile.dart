@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +12,9 @@ import 'package:internal_sakumi/features/teacher/profile/info_form.dart';
 import 'package:internal_sakumi/features/teacher/profile/info_pass.dart';
 import 'package:internal_sakumi/features/teacher/profile/log_out_dialog.dart';
 import 'package:internal_sakumi/features/teacher/profile/teacher_profile_cubit.dart';
+import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/widget/custom_button.dart';
+import 'package:intl/intl.dart';
 
 import '../../../configs/color_configs.dart';
 import '../../../utils/resizable.dart';
@@ -78,6 +81,28 @@ class BodyProfile extends StatelessWidget {
                             showDialog(
                                 context: context,
                                 builder: (context) => const LogOutDialog());
+
+                            // final list = await TeacherRepository.fromContext(context).getAllLessonResult();
+                            // for(var item in list) {
+                            //   final random = Random();
+                            //   DateFormat s = DateFormat('dd/MM/yyyy');
+                            //   final DateTime currentDate = s.parse(item.date!);
+                            //   final randomHour = random.nextInt(24);
+                            //   final randomMinute = random.nextInt(60);
+                            //   final randomSecond = random.nextInt(60);
+                            //
+                            //   final randomTime = DateTime(
+                            //     currentDate.year,
+                            //     currentDate.month,
+                            //     currentDate.day,
+                            //     randomHour,
+                            //     randomMinute,
+                            //     randomSecond,
+                            //   );
+                            //   final date = DateFormat('dd/MM/yyyy HH:mm:ss').format(randomTime);
+                            //
+                            //   await TeacherRepository.fromContext(context).changeDate(item.lessonId, item.classId, date);
+                            // }
                           },
                           bgColor: primaryColor.shade500,
                           foreColor: Colors.white,

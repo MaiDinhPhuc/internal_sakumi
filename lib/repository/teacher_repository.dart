@@ -377,6 +377,17 @@ class TeacherRepository {
       'status': status,
     });
   }
+  Future<void> changeDate(int lessonId, int classId,
+      String date) async {
+    final db = FirebaseFirestore.instance;
+
+    await db
+        .collection('lesson_result')
+        .doc("lesson_${lessonId}_class_$classId")
+        .update({
+      'date': date,
+    });
+  }
 
   Future<void> noteForAllStudentInClass(int lessonId, int classId,
       String note) async {
