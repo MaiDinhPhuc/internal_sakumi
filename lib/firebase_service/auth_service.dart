@@ -95,7 +95,7 @@ class AuthServices {
           sharedPreferences.setString(PrefKeyConfigs.name, teacherModel.name);
 
           var localData = sharedPreferences.getString(PrefKeyConfigs.password);
-          debugPrint('=============> password ${password} ==== ${localData}');
+          debugPrint('=============> password $password ==== $localData');
           Navigator.pushReplacementNamed(context,
               "${Routes.teacher}?name=${teacherModel.teacherCode.trim()}");
         }

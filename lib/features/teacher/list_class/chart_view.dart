@@ -1,5 +1,4 @@
 import 'package:d_chart/d_chart.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
@@ -7,7 +6,7 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/list_class/teacher_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
-import 'package:screenshot/screenshot.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ChartView extends StatelessWidget {
   final int index;
@@ -84,6 +83,12 @@ class AveragePointView extends StatelessWidget {
   }
 }
 
+class ChartData {
+  ChartData(this.index, this.value);
+  final int index;
+  final int value;
+}
+
 class CustomLineChart extends StatelessWidget {
   final List<int>? attendances, hws;
   final List<double>? points;
@@ -100,105 +105,42 @@ class CustomLineChart extends StatelessWidget {
       children: [
         SizedBox(
           height: Resizable.size(context, 110),
-          child: LineChart(LineChartData(
-            lineTouchData: const LineTouchData(enabled: false),
-            backgroundColor: null,
-            lineBarsData: [LineChartBarData(
-              isCurved: false,
-              color: primaryColor,
-              barWidth: 2,
-              isStrokeCapRound: false,
-              dotData: const FlDotData(show: true),
-              belowBarData: BarAreaData(show: false),
-              spots: [
-                ...List.generate(
-                                attendances!.length,
-                                (index) => FlSpot((index+1).toDouble(), attendances![index].toDouble())).toList()
-              ],
-            ),
-              LineChartBarData(
-                isCurved: false,
-                color: secondaryColor,
-                barWidth: 2,
-                isStrokeCapRound: false,
-                dotData: const FlDotData(show: true),
-                belowBarData: BarAreaData(show: false),
-                spots: [
-                  ...List.generate(
-                      hws!.length,
-                          (index) => FlSpot((index+1).toDouble(), hws![index].toDouble())).toList()
-                ],
-              ),
-              LineChartBarData(
-                isCurved: false,
-                color: Colors.yellow,
-                barWidth: 2,
-                isStrokeCapRound: false,
-                dotData: const FlDotData(show: true),
-                belowBarData: BarAreaData(show: false),
-                spots: [
-                  ...List.generate(
-                      points!.length,
-                          (index) => FlSpot((index+1).toDouble(), points![index].toDouble())).toList()
-                ],
-              )],
-            minX: 1,
-            maxX: hws!.length.toDouble(),
-            minY: 0,
-          )),
+          child: SfCartesianChart(
+                primaryXAxis: NumericAxis(
+                  minimum: 1,
+                  isVisible: false,
+                ),
+                series: <LineSeries<ChartData, int>>[
+                  LineSeries<ChartData, int>(
+                      color: primaryColor,
+                      dataSource:  <ChartData>[
+                        ...List.generate(attendances!.length,
+                                (index) => ChartData(index+1,attendances![index])).toList()
+                      ],
+                      xValueMapper: (ChartData chartData, _) => chartData.index,
+                      yValueMapper: (ChartData chartData, _) => chartData.value,
+                  ),
+                  LineSeries<ChartData, int>(
+                    color: secondaryColor,
+                    dataSource:  <ChartData>[
+                      ...List.generate(hws!.length,
+                              (index) => ChartData(index+1,hws![index])).toList()
+                    ],
+                    xValueMapper: (ChartData chartData, _) => chartData.index,
+                    yValueMapper: (ChartData chartData, _) => chartData.value,
+                  ),
+                  LineSeries<ChartData, int>(
+                    color: Colors.yellow,
+                    dataSource:  <ChartData>[
+                      ...List.generate(points!.length,
+                              (index) => ChartData(index+1,int.parse(points![index].toString()))).toList()
+                    ],
+                    xValueMapper: (ChartData chartData, _) => chartData.index,
+                    yValueMapper: (ChartData chartData, _) => chartData.value,
+                  )
+                ]
+            )
         ),
-        // SizedBox(
-        //   height: Resizable.size(context, 110),
-        //   child: DChartLine(
-        //     data: [
-        //       {
-        //         'id': 'Attendances',
-        //         'data': [
-        //           {'domain': 0, 'measure': attendances![0]},
-        //           ...List.generate(
-        //               attendances!.length-1,
-        //               (index) => {
-        //                     'domain': index + 1,
-        //                     'measure': attendances![index+1]
-        //                   }).toList()
-        //         ],
-        //       },
-        //       {
-        //         'id': 'Homeworks',
-        //         'data': [
-        //           {'domain': 0, 'measure': hws![0]},
-        //           ...List.generate(
-        //               hws!.length-1,
-        //               (index) => {
-        //                     'domain': index + 1,
-        //                     'measure': hws![index+1]
-        //                   }).toList()
-        //         ],
-        //       },
-        //       {
-        //         'id': 'Points',
-        //         'data': [
-        //           {'domain': 0, 'measure': points![0]},
-        //           ...List.generate(
-        //               points!.length-1,
-        //               (index) => {
-        //                     'domain': index + 1,
-        //                     'measure': points![index+1]
-        //                   }).toList()
-        //         ],
-        //       },
-        //     ],
-        //     //includePoints: true,
-        //     lineColor: (lineData, index, id) {
-        //       if (id == 'Attendances') {
-        //         return primaryColor;
-        //       } else if (id == 'Homeworks') {
-        //         return secondaryColor;
-        //       }
-        //       return Colors.yellow;
-        //     },
-        //   ),
-        // ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

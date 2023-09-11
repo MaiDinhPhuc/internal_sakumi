@@ -96,6 +96,10 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
         int.parse(TextUtils.getName()),
         int.parse(TextUtils.getName(position: 2)),
         note);
+    await teacherRepository.updateTeacherInLessonResult(
+        int.parse(TextUtils.getName()),
+        int.parse(TextUtils.getName(position: 2)),teacherId!
+        );
     emit(LessonResultModel(
         id: state!.id,
         classId: state!.classId,

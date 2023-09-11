@@ -1,8 +1,10 @@
 import 'package:d_chart/d_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
+import 'package:internal_sakumi/features/teacher/list_class/chart_view.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class OverviewChart extends StatelessWidget {
   final List<double> points;
@@ -15,23 +17,22 @@ class OverviewChart extends StatelessWidget {
     return SizedBox(
       height: Resizable.size(context, 50),
       // width: Resizable.size(context, 100),
-      child: DChartLine(
-        data: [
-          {
-            'id': 'Points',
-            'data': [
-              const {'domain': 0, 'measure': 0},
-              ...List.generate(
-                  points!.length,
-                  (index) =>
-                      {'domain': index + 1, 'measure': points![index]}).toList()
-            ],
-          },
-        ],
-        //includePoints: true,
-        lineColor: (lineData, index, id) {
-          return primaryColor;
-        },
+      child: SfCartesianChart(
+          primaryXAxis: NumericAxis(
+            minimum: 1,
+            isVisible: false,
+          ),
+          series: <LineSeries<ChartData, int>>[
+            LineSeries<ChartData, int>(
+              color: primaryColor,
+              dataSource:  <ChartData>[
+                ...List.generate(points.length,
+                        (index) => ChartData(index+1,int.parse(points[index].round().toString()))).toList()
+              ],
+              xValueMapper: (ChartData chartData, _) => chartData.index,
+              yValueMapper: (ChartData chartData, _) => chartData.value,
+            ),
+          ]
       ),
     );
   }
