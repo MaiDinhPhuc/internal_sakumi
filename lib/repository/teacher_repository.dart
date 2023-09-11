@@ -375,7 +375,7 @@ class TeacherRepository {
         .doc("lesson_${lessonId}_class_$classId")
         .update({
       'status': status,
-    });
+    } );
   }
 
   Future<void> noteForAllStudentInClass(int lessonId, int classId,
