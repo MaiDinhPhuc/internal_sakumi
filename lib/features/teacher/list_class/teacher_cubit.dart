@@ -22,12 +22,17 @@ class TeacherCubit extends Cubit<int> {
   List<List<double>>? listPoint;
   List<double>? rateAttendance, rateSubmit;
   List<LessonResultModel> allLessonResults = [];
+  bool isListDone = true;
+  bool isListInProgress = true;
+  bool isListDoneOld = true;
+  bool isListInProgressOld = true;
+  bool isChange = false;
 
-  init(context, String option) async {
+  init(context) async {
     debugPrint('============> init 1');
     await loadProfileTeacher(context);
     debugPrint('============> init 2');
-    await loadListClassOfTeacher(context, option);
+    await loadListClassOfTeacher(context);
     debugPrint('============> init 3');
     await loadStatisticClass(context);
     debugPrint('============> init 4');
@@ -40,7 +45,7 @@ class TeacherCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  loadListClassOfTeacher(context, String option) async {
+  loadListClassOfTeacher(context) async {
     AdminRepository adminRepository = AdminRepository.fromContext(context);
     TeacherRepository teacherRepository =
         TeacherRepository.fromContext(context);
@@ -48,11 +53,23 @@ class TeacherCubit extends Cubit<int> {
     List<ClassModel> listAllClass = [];
     List<CourseModel> listAllCourse = [];
 
-    listTeacherClass = await (option == AppText.optBoth.text
-        ? teacherRepository.getTeacherClassById(
-            'user_id', teacherProfile!.userId)
-        : teacherRepository.getTeacherClassByStatus(
-            teacherProfile!.userId, TeacherClassModel.fromString(option)));
+
+    if(isListInProgress && isListDone){
+      listTeacherClass = await  teacherRepository.getTeacherClassById(
+          'user_id', teacherProfile!.userId);
+    }else if(isListInProgress && !isListDone){
+      listTeacherClass = await  teacherRepository.getTeacherClassByStatus(
+          teacherProfile!.userId, TeacherClassModel.fromString(AppText.optInProgress.text));
+    }else if(!isListInProgress && isListDone){
+      listTeacherClass = await  teacherRepository.getTeacherClassByStatus(
+          teacherProfile!.userId, TeacherClassModel.fromString(AppText.optComplete.text));
+    }
+
+    // listTeacherClass = await (option == AppText.optBoth.text
+    //     ? teacherRepository.getTeacherClassById(
+    //         'user_id', teacherProfile!.userId)
+    //     : teacherRepository.getTeacherClassByStatus(
+    //         teacherProfile!.userId, TeacherClassModel.fromString(option)));
 
     listAllClass = await adminRepository.getListClass();
     listAllCourse = await adminRepository.getAllCourse();

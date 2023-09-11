@@ -86,7 +86,7 @@ class CollapseOverviewStudentItem extends StatelessWidget {
           radius: Resizable.size(context, 16),
           fontSize: Resizable.font(context, 14),
         ), point: cubit.stdPoints == null ? Transform.scale(
-            scale: 0.75, child: const Center(child: CircularProgressIndicator())) : CircleAvatar(
+            scale: 0.75, child: const Center(child: CircularProgressIndicator())) : cubit.stdPoints![index] == 0? Container() : CircleAvatar(
           radius: Resizable.size(context, 16),
           child: Text(cubit.stdPoints![index].toStringAsFixed(1)),
         ), dropdown: IconButton(

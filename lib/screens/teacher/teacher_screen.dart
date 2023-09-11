@@ -18,6 +18,7 @@ import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 import '../../routes.dart';
 import '../../utils/text_utils.dart';
+import 'detail_grading_screen.dart';
 
 class TeacherScreen extends StatelessWidget {
   final String name;
@@ -115,7 +116,7 @@ class TeacherScreen extends StatelessWidget {
               ),
               BlocProvider(
                 create: (context) =>
-                    TeacherCubit()..init(context, AppText.optBoth.text),
+                    TeacherCubit()..init(context),
                 child: BlocBuilder<TeacherCubit, int>(builder: (c, __) {
                   var cubit = BlocProvider.of<TeacherCubit>(c);
                   return cubit.listClass == null
@@ -126,32 +127,84 @@ class TeacherScreen extends StatelessWidget {
                           margin: EdgeInsets.symmetric(
                               horizontal: Resizable.padding(context, 150)),
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Container(
-                                alignment: Alignment.centerRight,
-                                child: SizedBox(
-                                  width: Resizable.size(context, 120),
-                                  child: InputDropdown(
-                                      isCircleBorder: true,
-                                      height: 30,
-                                      title: AppText.txtCourse.text,
-                                      hint: AppText.txtFilter.text,
-                                      errorText:
-                                          AppText.txtPleaseChooseCourse.text,
-                                      onChanged: (v) async {
+                                alignment: Alignment.centerRight, width: Resizable.size(context, 120),
+                                child: PopupMenuButton(
+                                    onCanceled: () async{
+                                      if(cubit.isListInProgress != cubit.isListInProgressOld || cubit.isListDone != cubit.isListDoneOld){
+                                        cubit.isChange = true;
+                                      }
+                                      if(cubit.isChange){
                                         waitingDialog(context);
-                                        await cubit.loadListClassOfTeacher(
-                                            context, v.toString());
+                                        await cubit.loadListClassOfTeacher(context);
                                         if (context.mounted) {
                                           Navigator.pop(context);
+                                          cubit.isChange = false;
+                                          cubit.isListInProgressOld = cubit.isListInProgress;
+                                          cubit.isListDoneOld = cubit.isListDone;
                                         }
-                                      },
-                                      items: [
-                                        AppText.optBoth.text,
-                                        AppText.optInProgress.text,
-                                        AppText.optComplete.text,
-                                      ]),
-                                ),
+                                      }
+                                    },
+                                    itemBuilder: (context) => [
+                                  ...listFilter.map((e) => PopupMenuItem(
+                                      padding: EdgeInsets.zero,
+                                      child: BlocProvider(create: (c)=>CheckBoxFilterCubit(e == AppText.optInProgress.text ? cubit.isListInProgress : cubit.isListDone),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
+                                        return CheckboxListTile(
+                                          controlAffinity: ListTileControlAffinity.leading,
+                                          title: Text(e),
+                                          value: state,
+                                          onChanged: (newValue) {
+                                            if(e == AppText.optInProgress.text){
+                                              cubit.isListInProgress = newValue!;
+                                            }else{
+                                              cubit.isListDone = newValue!;
+                                            }
+                                            if(cubit.isListInProgress == false && cubit.isListDone == false){
+                                              if(e == AppText.optInProgress.text){
+                                                cubit.isListInProgress = !newValue;
+                                              }else{
+                                                cubit.isListDone = !newValue;
+                                              }
+                                            }else{
+                                              BlocProvider.of<CheckBoxFilterCubit>(cc).update();
+                                            }
+                                          },
+                                        );
+                                      }))
+                                  ))
+                                ],
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(Resizable.size(context, 10)),
+                                      ),
+                                    ),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                                blurRadius: Resizable.size(context, 2),
+                                                color: greyColor.shade100)
+                                          ],
+                                          border: Border.all(
+                                              color: greyColor.shade100),
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(1000)),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Expanded(child: Center(
+                                              child: Text(AppText.txtFilter.text,
+                                                  style: TextStyle(
+                                                      fontSize: Resizable.font(context, 18),
+                                                      fontWeight: FontWeight.w500))
+                                          )),
+                                          const Icon(Icons.keyboard_arrow_down)
+                                        ],
+                                      ),
+                                    )
+                                )
                               ),
                               ClassItemRowLayout(
                                 widgetClassCode: Text(AppText.txtClassCode.text,
@@ -214,3 +267,4 @@ class TeacherScreen extends StatelessWidget {
     ));
   }
 }
+List<String> listFilter = [AppText.optInProgress.text,AppText.optComplete.text];

@@ -1,4 +1,5 @@
 import 'package:d_chart/d_chart.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
@@ -35,7 +36,7 @@ class ChartView extends StatelessWidget {
           Expanded(child: Container()),
           Expanded(
               flex: 8,
-              child: LineChart(
+              child: CustomLineChart(
                 attendances: cubit.listAttendance![index],
                 hws: cubit.listSubmit![index],
                 points: cubit.listPoint![index],
@@ -83,10 +84,10 @@ class AveragePointView extends StatelessWidget {
   }
 }
 
-class LineChart extends StatelessWidget {
+class CustomLineChart extends StatelessWidget {
   final List<int>? attendances, hws;
   final List<double>? points;
-  const LineChart(
+  const CustomLineChart(
       {required this.attendances,
       required this.hws,
       required this.points,
@@ -99,56 +100,105 @@ class LineChart extends StatelessWidget {
       children: [
         SizedBox(
           height: Resizable.size(context, 110),
-          child: DChartLine(
-            data: [
-              {
-                'id': 'Attendances',
-                'data': [
-                  const {'domain': 0, 'measure': 0},
-                  ...List.generate(
-                      attendances!.length,
-                      (index) => {
-                            'domain': index + 1,
-                            'measure': attendances![index]
-                          }).toList()
-                ],
-              },
-              {
-                'id': 'Homeworks',
-                'data': [
-                  const {'domain': 0, 'measure': 0},
+          child: LineChart(LineChartData(
+            lineTouchData: const LineTouchData(enabled: false),
+            backgroundColor: null,
+            lineBarsData: [LineChartBarData(
+              isCurved: false,
+              color: primaryColor,
+              barWidth: 2,
+              isStrokeCapRound: false,
+              dotData: const FlDotData(show: true),
+              belowBarData: BarAreaData(show: false),
+              spots: [
+                ...List.generate(
+                                attendances!.length,
+                                (index) => FlSpot((index+1).toDouble(), attendances![index].toDouble())).toList()
+              ],
+            ),
+              LineChartBarData(
+                isCurved: false,
+                color: secondaryColor,
+                barWidth: 2,
+                isStrokeCapRound: false,
+                dotData: const FlDotData(show: true),
+                belowBarData: BarAreaData(show: false),
+                spots: [
                   ...List.generate(
                       hws!.length,
-                      (index) => {
-                            'domain': index + 1,
-                            'measure': hws![index]
-                          }).toList()
+                          (index) => FlSpot((index+1).toDouble(), hws![index].toDouble())).toList()
                 ],
-              },
-              {
-                'id': 'Points',
-                'data': [
-                  const {'domain': 0, 'measure': 0},
+              ),
+              LineChartBarData(
+                isCurved: false,
+                color: Colors.yellow,
+                barWidth: 2,
+                isStrokeCapRound: false,
+                dotData: const FlDotData(show: true),
+                belowBarData: BarAreaData(show: false),
+                spots: [
                   ...List.generate(
                       points!.length,
-                      (index) => {
-                            'domain': index + 1,
-                            'measure': points![index]
-                          }).toList()
+                          (index) => FlSpot((index+1).toDouble(), points![index].toDouble())).toList()
                 ],
-              },
-            ],
-            //includePoints: true,
-            lineColor: (lineData, index, id) {
-              if (id == 'Attendances') {
-                return primaryColor;
-              } else if (id == 'Homeworks') {
-                return secondaryColor;
-              }
-              return Colors.yellow;
-            },
-          ),
+              )],
+            minX: 1,
+            maxX: hws!.length.toDouble(),
+            minY: 0,
+          )),
         ),
+        // SizedBox(
+        //   height: Resizable.size(context, 110),
+        //   child: DChartLine(
+        //     data: [
+        //       {
+        //         'id': 'Attendances',
+        //         'data': [
+        //           {'domain': 0, 'measure': attendances![0]},
+        //           ...List.generate(
+        //               attendances!.length-1,
+        //               (index) => {
+        //                     'domain': index + 1,
+        //                     'measure': attendances![index+1]
+        //                   }).toList()
+        //         ],
+        //       },
+        //       {
+        //         'id': 'Homeworks',
+        //         'data': [
+        //           {'domain': 0, 'measure': hws![0]},
+        //           ...List.generate(
+        //               hws!.length-1,
+        //               (index) => {
+        //                     'domain': index + 1,
+        //                     'measure': hws![index+1]
+        //                   }).toList()
+        //         ],
+        //       },
+        //       {
+        //         'id': 'Points',
+        //         'data': [
+        //           {'domain': 0, 'measure': points![0]},
+        //           ...List.generate(
+        //               points!.length-1,
+        //               (index) => {
+        //                     'domain': index + 1,
+        //                     'measure': points![index+1]
+        //                   }).toList()
+        //         ],
+        //       },
+        //     ],
+        //     //includePoints: true,
+        //     lineColor: (lineData, index, id) {
+        //       if (id == 'Attendances') {
+        //         return primaryColor;
+        //       } else if (id == 'Homeworks') {
+        //         return secondaryColor;
+        //       }
+        //       return Colors.yellow;
+        //     },
+        //   ),
+        // ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
