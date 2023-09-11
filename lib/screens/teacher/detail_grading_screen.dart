@@ -76,9 +76,9 @@ class DetailGradingScreen extends StatelessWidget {
                                               onTap: () {
                                                 cubit.change(e.id, c);
                                                 checkActiveCubit.changeActive(false);
-                                                //SoundService.instance.stop();
+                                                SoundService.instance.dispose();
                                               },
-                                              soundCubit: questionSoundCubit, isDone: cubit.listState![cubit.listQuestions!.indexOf(e)],
+                                              soundCubit: questionSoundCubit, isDone: cubit.listState![cubit.listQuestions!.indexOf(e)], token: cubit.token,
                                           ),
                                         ))
                                             .toList(),

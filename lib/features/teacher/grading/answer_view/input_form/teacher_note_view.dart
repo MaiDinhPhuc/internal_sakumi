@@ -32,7 +32,7 @@ class TeacherNoteView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ImagePickerCubit, List<dynamic>>(
         bloc: imagePickerCubit..init(type == 'single' ? answerModel.listImagePicker: []),
-        builder: (cc, list) {
+        builder: (cc, listImage) {
           return Column(
             children: [
               Padding(
@@ -42,12 +42,12 @@ class TeacherNoteView extends StatelessWidget {
                       onChange: onChange,
                       onOpenFile: onOpenFile,
                       onOpenMic: onOpenMic)),
-              list.isEmpty
+              listImage.isEmpty
                   ? Container()
                   : SizedBox(
                       height: Resizable.size(context, 250),
                       child: ListView.builder(
-                        itemCount: list.length,
+                        itemCount: listImage.length,
                         scrollDirection: Axis.horizontal,
                         padding: EdgeInsets.symmetric(
                             vertical: Resizable.padding(context, 5)),
@@ -59,9 +59,9 @@ class TeacherNoteView extends StatelessWidget {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(
                                     Resizable.size(context, 10)),
-                                child: answerModel.checkIsUrl(list[i]) ? ImageNetwork(
+                                child: answerModel.checkIsUrl(listImage[i]) ? ImageNetwork(
                                     fitWeb: BoxFitWeb.fill,
-                                    image: list[i], height: Resizable.size(context, 250), width: Resizable.size(context, 200),) : Image.memory(list[i], fit: BoxFit.fill),
+                                    image: listImage[i], height: Resizable.size(context, 250), width: Resizable.size(context, 200),) : Image.memory(listImage[i], fit: BoxFit.fill),
                               ),
                               Container(
                                   height: Resizable.size(context, 20),
@@ -78,9 +78,9 @@ class TeacherNoteView extends StatelessWidget {
                                       onTap: () async {
                                         if(type == 'single'){
                                           await imagePickerCubit.removeImage(
-                                              answerModel, list[i],checkActiveCubit ,cubit);
+                                              answerModel, listImage[i],checkActiveCubit ,cubit);
                                         }else{
-                                          imagePickerCubit.removeImageForAll(cubit.answers, list[i],checkActiveCubit ,cubit);
+                                          imagePickerCubit.removeImageForAll(cubit.answers, listImage[i],checkActiveCubit ,cubit);
                                         }
                                       },
                                       child: Icon(

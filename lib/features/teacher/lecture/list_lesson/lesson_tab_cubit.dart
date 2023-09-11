@@ -10,6 +10,7 @@ import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
+import 'package:intl/intl.dart';
 
 class LessonTabCubit extends Cubit<int> {
   LessonTabCubit() : super(0);
@@ -80,7 +81,27 @@ class LessonTabCubit extends Cubit<int> {
 
     var listLessonResult = await teacherRepository
         .getLessonResultByClassId(classModel!.classId);
+    listLessonResult.sort(
+        (a,b) {
+          DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm:ss');
+          final dateA = dateFormat.parse(a!.date!);
+          final dateB = dateFormat.parse(b!.date!);
+          return dateA.compareTo(dateB);
+        }
+    );
+    var listBase = <LessonModel>[];
+    for (var item in listLessonResult) {
+      final it = lessons!
+          .firstWhere((element) => element.lessonId == item.lessonId);
+      listBase.add(it);
+    }
+    for (var item in lessons!) {
+      if (!listBase.contains(item)) {
+        listBase.add(item);
+      }
+    }
 
+    lessons = List.of(listBase);
     var teachers = await adminRepo.getAllTeacher();
 
     for(var lesson in lessons!){
