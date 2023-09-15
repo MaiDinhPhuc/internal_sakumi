@@ -84,8 +84,16 @@ class LessonTabCubit extends Cubit<int> {
     listLessonResult.sort(
         (a,b) {
           DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm:ss');
-          final dateA = dateFormat.parse(a!.date!);
-          final dateB = dateFormat.parse(b!.date!);
+          var tempA = a.date;
+          var tempB = b.date;
+          if(tempA!.length == 10) {
+            tempA += ' 00:00:00';
+          }
+          if(tempB!.length == 10) {
+            tempB += ' 00:00:00';
+          }
+          final dateA = dateFormat.parse(tempA);
+          final dateB = dateFormat.parse(tempB);
           return dateA.compareTo(dateB);
         }
     );

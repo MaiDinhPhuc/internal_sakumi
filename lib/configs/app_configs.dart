@@ -2,7 +2,7 @@ class AppConfigs{
 
   static const String endPoint = "http://173.199.127.90:3000";
 
-  static const bool endpointFirebaseDebug = false;
+  static const bool endpointFirebaseDebug = true;
 
   static const bool isRunningDebugMode = true;
 

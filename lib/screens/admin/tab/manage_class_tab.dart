@@ -89,7 +89,7 @@ class ManageClassTab extends StatelessWidget {
                         (cubit.listClass!.isNotEmpty)
                             ? Column(children: [
                           ...cubit.listClass!
-                              .map((e) => ClassInAdminItem(
+                              .map((e) => ClassItemInAdmin(
                               cubit.listClass!.indexOf(e),
                               e.classId))
                               .toList(),

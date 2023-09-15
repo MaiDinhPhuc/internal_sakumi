@@ -61,9 +61,9 @@ class ClassItem extends StatelessWidget {
   }
 }
 
-class ClassInAdminItem extends StatelessWidget {
+class ClassItemInAdmin extends StatelessWidget {
   final int index, classId;
-  const ClassInAdminItem(this.index, this.classId, {Key? key}) : super(key: key);
+  const ClassItemInAdmin(this.index, this.classId, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -75,15 +75,11 @@ class ClassInAdminItem extends StatelessWidget {
                   widget: ClassOverviewInAdmin(index),
                   onTap: () async {
                     // await Navigator.pushNamed(context,
-                    //     //Routes.classScreen
-                    //     "${Routes.teacher}?name=${TextUtils.getName().trim()}/overview/class?id=$classId"
+                    //     "${Routes.admin}?name=${TextUtils.getName().trim()}/overview/class?id=$classId"
                     // );
                   },
                   onPressed: () {
                     BlocProvider.of<DropdownCubit>(c).update();
-                    // if (BlocProvider.of<TeacherCubit>(c).listPoint == null) {
-                    //   BlocProvider.of<TeacherCubit>(c).loadStatisticClass(c);
-                    // }
                   }),
               secondChild: CardItem(
                   isExpand: true,

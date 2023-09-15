@@ -86,14 +86,15 @@ class AnswerInfoView extends StatelessWidget {
                   onOpenFile: () async {
                     await imageCubit.pickImage(answerModel,checkActiveCubit, cubit);
                   }, onOpenMic: () {
-                  RecordService.instance.start();
-                  showDialog(
-                      context: context,
-                      builder: (context) =>  RecordDialog(stop: () async {
-                        Navigator.of(context).pop();
-                        await RecordService.instance.stop();
-                        RecordService.instance.dispose();
-                      }));
+                    //TODO: record in here
+                  // RecordService.instance.start();
+                  // showDialog(
+                  //     context: context,
+                  //     builder: (context) =>  RecordDialog(stop: () async {
+                  //       Navigator.of(context).pop();
+                  //       await RecordService.instance.stop();
+                  //       RecordService.instance.dispose();
+                  //     }));
                 }, type: 'single', checkActiveCubit: checkActiveCubit,
                 )
             ]),
