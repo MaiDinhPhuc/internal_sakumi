@@ -1,20 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
-import 'package:internal_sakumi/model/teacher_class_model.dart';
-import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/repository/teacher_repository.dart';
-import 'package:internal_sakumi/utils/text_utils.dart';
 
-class TeacherCubit extends Cubit<int> {
-  TeacherCubit() : super(0);
+class LoadListClassCubit extends Cubit<int> {
+  LoadListClassCubit() : super(0);
 
-  TeacherModel? teacherProfile;
   List<ClassModel>? listClass;
   List<CourseModel>? courses;
   List<int>? listStatus, listStudentInClass;
@@ -22,67 +16,30 @@ class TeacherCubit extends Cubit<int> {
   List<List<double>>? listPoint;
   List<double>? rateAttendance, rateSubmit;
   List<LessonResultModel> allLessonResults = [];
-  bool isListDone = true;
-  bool isListInProgress = true;
-  bool isListDoneOld = true;
-  bool isListInProgressOld = true;
-  bool isChange = false;
 
   init(context) async {
-    debugPrint('============> init 1');
-    await loadProfileTeacher(context);
-    debugPrint('============> init 2');
-    await loadListClassOfTeacher(context);
-    debugPrint('============> init 3');
+    await loadListClass(context);
     await loadStatisticClass(context);
-    debugPrint('============> init 4');
   }
 
-  loadProfileTeacher(context) async {
-    TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
-    teacherProfile = await teacherRepository.getTeacher(TextUtils.getName());
-    emit(state + 1);
-  }
-
-  loadListClassOfTeacher(context) async {
+  loadListClass(context) async {
     AdminRepository adminRepository = AdminRepository.fromContext(context);
     TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
-    List<TeacherClassModel> listTeacherClass = [];
+    TeacherRepository.fromContext(context);
     List<ClassModel> listAllClass = [];
     List<CourseModel> listAllCourse = [];
-
-
-    if(isListInProgress && isListDone){
-      listTeacherClass = await  teacherRepository.getTeacherClassById(
-          'user_id', teacherProfile!.userId);
-    }else if(isListInProgress && !isListDone){
-      listTeacherClass = await  teacherRepository.getTeacherClassByStatus(
-          teacherProfile!.userId, TeacherClassModel.fromString(AppText.optInProgress.text));
-    }else if(!isListInProgress && isListDone){
-      listTeacherClass = await  teacherRepository.getTeacherClassByStatus(
-          teacherProfile!.userId, TeacherClassModel.fromString(AppText.optComplete.text));
-    }
-
-    // listTeacherClass = await (option == AppText.optBoth.text
-    //     ? teacherRepository.getTeacherClassById(
-    //         'user_id', teacherProfile!.userId)
-    //     : teacherRepository.getTeacherClassByStatus(
-    //         teacherProfile!.userId, TeacherClassModel.fromString(option)));
 
     listAllClass = await adminRepository.getAllClass();
     listAllCourse = await adminRepository.getAllCourse();
 
     listClass = [];
-    for (var i in listTeacherClass) {
-      for (var j in listAllClass) {
-        if (i.classId == j.classId) {
-          listClass!.add(j);
-          break;
+
+      for (var i in listAllClass) {
+        if (i.classStatus != "Remove") {
+          listClass!.add(i);
         }
       }
-    }
+
 
     courses = [];
     listStatus = [];
@@ -90,20 +47,20 @@ class TeacherCubit extends Cubit<int> {
 
     for (var i in listClass!) {
       var temp = allLessonResults.fold(<LessonResultModel>[],
-          (pre, e) => [...pre, if (i.classId == e.classId) e]);
+              (pre, e) => [...pre, if (i.classId == e.classId) e]);
 
       listStatus!.add(temp
           .fold(<LessonResultModel>[],
               (pre, e) => [...pre, if (e.status == 'Complete') e])
           .toList()
           .length);
-
       for (var j in listAllCourse) {
-        if (i.courseId == j.courseId) {
+        if (i.courseId == j.courseId && i.classStatus != "Remove") {
           courses!.add(j);
           break;
         }
       }
+
     }
 
     emit(state + 1);
@@ -111,7 +68,7 @@ class TeacherCubit extends Cubit<int> {
 
   loadStatisticClass(context) async {
     TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
+    TeacherRepository.fromContext(context);
 
     listSubmit = [];
     listAttendance = [];
@@ -124,11 +81,11 @@ class TeacherCubit extends Cubit<int> {
 
     var lstLesson = await teacherRepository.getAllLesson();
     for (var item in listClass!) {
-      var activeLessonResults = allLessonResults!.fold(<LessonResultModel>[],
-          (pre, e) => [...pre, if (item.classId == e.classId) e]);
+      var activeLessonResults = allLessonResults.fold(<LessonResultModel>[],
+              (pre, e) => [...pre, if (item.classId == e.classId) e]);
 
       List<LessonModel> lessons = lstLesson.fold(<LessonModel>[],
-          (pre, e) => [...pre, if (item.courseId == e.courseId) e]);
+              (pre, e) => [...pre, if (item.courseId == e.courseId) e]);
 
       List<int> attendances = [], submits = [];
       List<double> points = [];
@@ -136,36 +93,36 @@ class TeacherCubit extends Cubit<int> {
       for (var lesson in lessons) {
         int att = listAllStudentLessons.fold(
             0,
-            (pre, e) =>
-                pre +
+                (pre, e) =>
+            pre +
                 ((e.classId == item.classId &&
-                        e.lessonId == lesson.lessonId &&
-                        e.timekeeping > 0 &&
-                        e.timekeeping < 5)
+                    e.lessonId == lesson.lessonId &&
+                    e.timekeeping > 0 &&
+                    e.timekeeping < 5)
                     ? 1
                     : 0));
         int sub = listAllStudentLessons.fold(
             0,
-            (pre, e) =>
-                pre +
+                (pre, e) =>
+            pre +
                 ((e.classId == item.classId &&
-                        e.lessonId == lesson.lessonId &&
-                        e.hw > -2)
+                    e.lessonId == lesson.lessonId &&
+                    e.hw > -2)
                     ? 1
                     : 0));
         double pts = listAllStudentLessons.fold(
             0,
-            (pre, e) =>
-                pre +
+                (pre, e) =>
+            pre +
                 ((e.classId == item.classId &&
-                        e.lessonId == lesson.lessonId &&
-                        e.hw > -1)
+                    e.lessonId == lesson.lessonId &&
+                    e.hw > -1)
                     ? e.hw
                     : 0));
         int sumItem = listAllStudentLessons.fold(
             0,
-            (pre, e) =>
-                pre +
+                (pre, e) =>
+            pre +
                 ((e.classId == item.classId && e.lessonId == lesson.lessonId)
                     ? 1
                     : 0));

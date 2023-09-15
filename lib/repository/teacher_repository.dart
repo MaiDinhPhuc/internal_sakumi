@@ -375,7 +375,7 @@ class TeacherRepository {
         .doc("lesson_${lessonId}_class_$classId")
         .update({
       'status': status,
-    });
+    } );
   }
 
   Future<void> noteForAllStudentInClass(int lessonId, int classId,
@@ -387,6 +387,17 @@ class TeacherRepository {
         .doc("lesson_${lessonId}_class_$classId")
         .update({
       'student_note': note,
+    });
+  }
+  Future<void> updateTeacherInLessonResult(int lessonId, int classId,
+      int studentId) async {
+    final db = FirebaseFirestore.instance;
+
+    await db
+        .collection('lesson_result')
+        .doc("lesson_${lessonId}_class_$classId")
+        .update({
+      'teacher_id': studentId,
     });
   }
 

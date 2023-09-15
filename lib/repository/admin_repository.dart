@@ -4,10 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
-import 'package:internal_sakumi/model/lesson_model.dart';
-import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
-import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/tag_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
@@ -19,10 +16,32 @@ class AdminRepository {
 
   Future<List<ClassModel>> getListClass() async {
     final db = FirebaseFirestore.instance;
-    final snapshot = await db.collection("class").get();
+    final snapshot = await db
+        .collection("class")
+        .where("class_status", isNotEqualTo: "Remove")
+        .get();
     final listClass =
         snapshot.docs.map((e) => ClassModel.fromSnapshot(e)).toList();
+    listClass.sort((a, b) => a.classId.compareTo(b.classId));
     return listClass;
+  }
+  Future<List<ClassModel>> getAllClass() async {
+    final db = FirebaseFirestore.instance;
+    final snapshot = await db
+        .collection("class")
+        .get();
+    final listClass =
+    snapshot.docs.map((e) => ClassModel.fromSnapshot(e)).toList();
+    listClass.sort((a, b) => a.classId.compareTo(b.classId));
+    return listClass;
+  }
+  Future<List<TeacherClassModel>> getAllTeacherClass() async {
+    final db = FirebaseFirestore.instance;
+    final snapshot =
+    await db.collection("teacher_class").get();
+    final listTeacher =
+    snapshot.docs.map((e) => TeacherClassModel.fromSnapshot(e)).toList();
+    return listTeacher;
   }
 
   Future<List<StudentClassModel>> getStudentClassByClassId(int classId) async {
@@ -71,7 +90,6 @@ class AdminRepository {
     final snapshot = await db.collection("students").get();
     final lists =
         snapshot.docs.map((e) => StudentModel.fromSnapshot(e)).toList();
-    print("============> sflsdkflsdklf");
     return lists;
   }
 
@@ -149,6 +167,7 @@ class AdminRepository {
         'start_time': model.startTime,
         'note': model.note,
         'class_code': model.classCode,
+        'class_status': model.classStatus
       });
       return true;
     } else {
@@ -161,10 +180,13 @@ class AdminRepository {
     final db = FirebaseFirestore.instance;
 
     final temp = await db
-        .collection("student_class").doc("student_${model.userId}_class_${model.classId}")
+        .collection("student_class")
+        .doc("student_${model.userId}_class_${model.classId}")
         .get();
 
-    if(!temp.exists){
+
+
+    if (!temp.exists) {
       await db
           .collection("student_class")
           .doc("student_${model.userId}_class_${model.classId}")
@@ -179,7 +201,12 @@ class AdminRepository {
         'user_id': model.userId,
       });
       return true;
-    } else{
+    } else {
+      await db
+          .collection("student_class")
+          .doc("student_${model.userId}_class_${model.classId}").update({
+        'class_status': "InProgress"
+      });
       return false;
     }
   }
@@ -188,10 +215,11 @@ class AdminRepository {
     final db = FirebaseFirestore.instance;
 
     final temp = await db
-        .collection("teacher_class").doc("teacher_${model.userId}_class_${model.classId}")
+        .collection("teacher_class")
+        .doc("teacher_${model.userId}_class_${model.classId}")
         .get();
 
-    if(!temp.exists){
+    if (!temp.exists) {
       await db
           .collection("teacher_class")
           .doc("teacher_${model.userId}_class_${model.classId}")
@@ -203,7 +231,7 @@ class AdminRepository {
         'user_id': model.userId,
       });
       return true;
-    } else{
+    } else {
       return false;
     }
   }

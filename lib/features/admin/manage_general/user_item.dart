@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_network/image_network.dart';
@@ -6,8 +5,8 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:screenshot/screenshot.dart';
 
+import 'list_student/alert_confirm_change_student_status.dart';
 import 'manage_general_cubit.dart';
 
 class UserItem extends StatelessWidget {
@@ -100,35 +99,50 @@ class StudentItem extends StatelessWidget {
           child: BlocBuilder<MenuPopupCubit, int>(
             builder: (cc, s){
               var popupCubit = BlocProvider.of<MenuPopupCubit>(cc);
-              return CircleAvatar(
-                radius: Resizable.size(context, 10),
+              return Container(
+                height: 30,
+                width: 30,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(1000),
+                  boxShadow: [BoxShadow(blurRadius: 5, color: cubit.getStudentClass(student.userId).color)],
+                ),
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(1000),
                     child: PopupMenuButton(itemBuilder: (context) => [
-                      ...cubit.listMenu.map((e) => PopupMenuItem(
+                      ...cubit.listStudentStatusMenu.map((e) => PopupMenuItem(
                           padding: EdgeInsets.zero,
                           child: BlocProvider(create: (context)=>CheckBoxFilterCubit(cubit.getStudentClass(student.userId).status == e),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (c,state){
-                            return CheckboxListTile(
-                              controlAffinity: ListTileControlAffinity.leading,
-                              title: Text(e),
-                              value: state,
-                              onChanged: (newValue) {
-                                if(newValue == true){
-                                  FirebaseFirestore.instance
-                                      .collection('student_class')
-                                      .doc('student_${student.userId}_class_${cubit.getStudentClass(student.userId).classId}')
-                                      .update({
-                                    'class_status': e
-                                  }).whenComplete(() {
-                                    cubit.getStudentClass(student.userId).status = e;
-                                    popupCubit.update();
-                                    Navigator.pop(context);
-                                  });
-                                }else{
-                                  Navigator.pop(context);
+                            return InkWell(
+                              onTap: (){
+                                Navigator.pop(context);
+                                if(cubit.getStudentClass(student.userId).status != e){
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => ConfirmChangeStudentStatus(e,cubit.getStudentClass(student.userId),student,cubit,popupCubit));
                                 }
                               },
+                              child: Container(
+                                  height: Resizable.size(
+                                      context, 33),
+                                  decoration: BoxDecoration(
+                                      color: state? primaryColor: Colors.white
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: Resizable.padding(
+                                        context, 10)),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(e, style: TextStyle(fontSize: Resizable.font(
+                                            context, 15),color:state? Colors.white : Colors.black)),
+                                        if(state)
+                                          const Icon(Icons.check, color: Colors.white,)
+                                      ],
+                                    ),
+                                  )
+                              ),
                             );
+
                           }))
                       ))
                     ],

@@ -142,7 +142,7 @@ class LessonPendingView extends StatelessWidget {
                       lessonId: int.parse(TextUtils.getName()),
                       teacherId: cubit.teacherId!,
                       status: 'Teaching',
-                      date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                      date: DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now()),
                       noteForStudent: '',
                       noteForSupport: '',
                       noteForTeacher: ''));

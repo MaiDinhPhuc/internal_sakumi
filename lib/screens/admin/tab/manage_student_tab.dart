@@ -1,4 +1,3 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
@@ -61,8 +60,6 @@ class ManageStudentTab extends StatelessWidget {
                               list.length,
                               (index) => Container(
                                     margin: EdgeInsets.symmetric(
-                                        // horizontal: Resizable.padding(
-                                        //     context, 150),
                                         vertical:
                                             Resizable.padding(context, 5)),
                                     child: BlocProvider(

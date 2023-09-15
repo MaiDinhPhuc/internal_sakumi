@@ -6,6 +6,7 @@ import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/repository/user_repository.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
+import 'package:internal_sakumi/screens/splash_screen.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 import 'configs/color_configs.dart';
@@ -41,52 +42,12 @@ class MyApp extends StatelessWidget {
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
-              home: LogInScreen(),
+              home: const SplashScreen(),
               title: 'Nội Bộ Sakumi',
               theme: ThemeData(
                 primarySwatch: primaryColor,
               ),
               onGenerateRoute: Routes.router.generator,
             )));
-    // return MaterialApp(
-    //   theme: ThemeData(
-    //     primarySwatch: primaryColor,
-    //   ),
-    //   debugShowCheckedModeBanner: false,
-    //   home: LogInScreen(),
-    //   onGenerateRoute: Routes.router.generator,
-    //   //routes: {
-    //   // Routes.master: (context) => const MasterScreen(),
-    //   // Routes.teacher: (context) => const TeacherScreen(),
-    //   // Routes.admin: (context) => const AdminScreen(),
-    //   // //
-    //   // Routes.addTeacher: (context) => AddTeacherScreen(),
-    //   // Routes.home: (context) => const HomeScreen(),
-    //   // Routes.login: (context) => LogInScreen(),
-    //   //
-    //   // Routes.addUserToClass: (context) {
-    //   //   Map map = ModalRoute.of(context)!.settings.arguments as Map;
-    //   //   return AddUserToClassScreen(
-    //   //       isStudent: map['isStudent'], classId: map['classId']);
-    //   // },
-    //   //
-    //   // Routes.detailClass: (context) {
-    //   //   Map map = ModalRoute.of(context)!.settings.arguments as Map;
-    //   //   return DetailClassScreen(classModel: map['classModel']);
-    //   // },
-    //   // Routes.detailStudent: (context) {
-    //   //   Map map = ModalRoute.of(context)!.settings.arguments as Map;
-    //   //   return DetailStudentScreen(studentModel: map['studentModel']);
-    //   // },
-    //   // Routes.addClass: (context) {
-    //   //   Map map = ModalRoute.of(context)!.settings.arguments as Map;
-    //   //   return AddClassScreen(classModel: map['classModel']);
-    //   // },
-    //   // Routes.addStudent: (context) {
-    //   //   Map map = ModalRoute.of(context)!.settings.arguments as Map;
-    //   //   return AddStudentScreen(studentModel: map['studentModel']);
-    //   // },
-    //   //},
-    // );
   }
 }

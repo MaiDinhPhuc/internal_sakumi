@@ -3,4 +3,5 @@ class PrefKeyConfigs {
   static const String code = 'user_code_by_role';
   static const String name = 'user_name';
   static const String password = 'password';
+  static const String email = 'email';
 }

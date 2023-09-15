@@ -9,17 +9,17 @@ class RecordService {
 
   MicrophoneRecorder? _recorder;
 
-  MicrophoneRecorder newRecorder() {
-    // if (_recorder != null) {
-    //   if (_recorder!.value.recording != null) {
-    //     _recorder!.stop();
-    //   }
-    //   _recorder!.dispose();
-    // }
+  Future<MicrophoneRecorder> newRecorder()  async {
+    if (_recorder != null) {
+      if (_recorder!.value.recording != null) {
+        await _recorder!.stop();
+      }
+      _recorder!.dispose();
+    }
 
     _recorder = MicrophoneRecorder();
 
-    _recorder!.init();
+    await _recorder!.init();
 
     return _recorder!;
   }
@@ -31,13 +31,13 @@ class RecordService {
   }
 
   start()async{
-    var recorder = newRecorder();
-    recorder.start();
+    var recorder = await newRecorder();
+    await recorder.start();
   }
 
-  stop() {
-     _recorder!.stop();
-     print("========>${_recorder!.value.recording!.url}");
+  stop()async {
+     await _recorder!.stop();
+     print("========>${_recorder!.toBytes()}");
   }
 
 }

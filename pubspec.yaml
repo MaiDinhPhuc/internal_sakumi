@@ -60,6 +60,7 @@ dependencies:
   dio: ^5.2.1+1
   microphone: ^0.1.0
   avatar_glow: ^2.0.2
+  syncfusion_flutter_charts: ^22.2.12
 
 
 dev_dependencies:
@@ -87,49 +88,6 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
-    - assets/practice/110501/
-    - assets/practice/101401/
-    - assets/practice/101402/
-    - assets/practice/101403/
-    - assets/practice/101404/
-    - assets/practice/101405/
-    - assets/practice/101406/
-    - assets/practice/101407/
-    - assets/practice/101408/
-    - assets/practice/101410/
-    - assets/practice/101412/
-    - assets/practice/101414/
-    - assets/practice/101415/
-    - assets/practice/101492/
-    - assets/practice/100501/
-    - assets/practice/100502/
-    - assets/practice/100503/
-    - assets/practice/100504/
-    - assets/practice/100505/
-    - assets/practice/100506/
-    - assets/practice/100507/
-    - assets/practice/100508/
-    - assets/practice/100509/
-    - assets/practice/100510/
-    - assets/practice/100511/
-    - assets/practice/102501/
-    - assets/practice/102502/
-    - assets/practice/102503/
-    - assets/practice/102504/
-    - assets/practice/102505/
-    - assets/practice/102506/
-    - assets/practice/102507/
-    - assets/practice/102508/
-    - assets/practice/102509/
-    - assets/practice/102510/
-    - assets/test/4/
-    - assets/test/7/
-    - assets/test/8/
-    - assets/test/11/
-    - assets/test/14/
-    - assets/test/17/
-    - assets/test/23/
-    - assets/test/26/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

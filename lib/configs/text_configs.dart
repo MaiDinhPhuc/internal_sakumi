@@ -212,10 +212,13 @@ enum AppText {
   txtWrongAccount,
   stsRenew,
   stsRemove,
-  stsUpSale, txtType, textMarked, textNotMarked
+  stsUpSale, txtType, textMarked, textNotMarked,
+  txtInvalidLogin,txtConfirmChangeStatus
 }
 
 Map<AppText, String> texts = {
+  AppText.txtConfirmChangeStatus: 'SS chắc chắn muốn thay đổi\n trạng thái của @ từ % thành #',
+  AppText.txtInvalidLogin: 'Thông tin đăng nhập không hợp lệ',
   AppText.textNotMarked: 'Chưa chấm',
   AppText.textMarked: 'Đã chấm',
   AppText.txtType: 'Loại bài',

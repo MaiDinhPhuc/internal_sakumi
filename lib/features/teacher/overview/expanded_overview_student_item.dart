@@ -6,6 +6,7 @@ import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_le
 import 'package:internal_sakumi/features/teacher/overview/class_overview_cubit.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:screenshot/screenshot.dart';
 
 class ExpandedOverviewStudentItem extends StatelessWidget {
   final int index;
@@ -56,13 +57,17 @@ class ExpandedOverviewStudentItem extends StatelessWidget {
                                     firstChild: CollapseLearnedLesson(cubit.listStdLesson![index].indexOf(e)+1, cubit.listStdLesson![index]
                                     [cubit.listStdLesson![index].indexOf(e)]!.attendColor, cubit.listStdLesson![index]
                                     [cubit.listStdLesson![index].indexOf(e)]!
-                                        .attendTitle),
+                                        .attendTitle, cubit.listStdLesson![index]
+                                    [cubit.listStdLesson![index].indexOf(e)]!.hwTitle,cubit.listStdLesson![index]
+                                    [cubit.listStdLesson![index].indexOf(e)]!.hwColor ),
                                     secondChild: Column(
                                       children: [
                                         CollapseLearnedLesson(cubit.listStdLesson![index].indexOf(e)+1, cubit.listStdLesson![index]
                                         [cubit.listStdLesson![index].indexOf(e)]!.attendColor, cubit.listStdLesson![index]
                                         [cubit.listStdLesson![index].indexOf(e)]!
-                                            .attendTitle),
+                                            .attendTitle, cubit.listStdLesson![index]
+                                        [cubit.listStdLesson![index].indexOf(e)]!.hwTitle,cubit.listStdLesson![index]
+                                        [cubit.listStdLesson![index].indexOf(e)]!.hwColor),
                                         ExpandLearnedLesson(cubit.listStdLesson![index]
                                         [cubit.listStdLesson![index].indexOf(e)]!)
                                       ],
@@ -81,31 +86,37 @@ class ExpandedOverviewStudentItem extends StatelessWidget {
 
 class CollapseLearnedLesson extends StatelessWidget {
   final int numberOfLesson;
-  final String title;
-  final Color color;
-  const CollapseLearnedLesson(this.numberOfLesson, this.color, this.title, {Key? key}) : super(key: key);
+  final String attendTitle;
+  final Color attendColor;
+  final String hwTitle;
+  final Color hwColor;
+  const CollapseLearnedLesson(this.numberOfLesson, this.attendColor, this.attendTitle, this.hwTitle, this.hwColor, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment:
-      MainAxisAlignment.spaceBetween,
       children: [
-        Text(
+        Expanded(
+            flex: 6,
+            child: Text(
             '${AppText.txtLesson.text} $numberOfLesson',
             style: TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: Resizable.font(
-                    context, 18))),
-        Row(
+                    context, 18)))),
+        Expanded(
+            flex: 8,
+            child: Row(
           children: [
-            Container(
+            Expanded(
+                flex:4,
+                child: Container(
               alignment: Alignment.center,
               constraints: BoxConstraints(
-                minWidth: Resizable.size(context, 100)
+                  minWidth: Resizable.size(context, 100)
               ),
               decoration: BoxDecoration(
-                  color: color,
+                  color: attendColor,
                   borderRadius:
                   BorderRadius.circular(
                       1000)),
@@ -116,15 +127,47 @@ class CollapseLearnedLesson extends StatelessWidget {
                   vertical: Resizable.padding(
                       context, 3)),
               child: Text(
-                  title,
+                  attendTitle,
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight:
                       FontWeight.w700,
                       fontSize: Resizable.font(
                           context, 16))),
-            ),
-            IconButton(
+            )),
+            Expanded(
+                flex:4,
+                child: Container(
+              alignment: Alignment.center,
+              constraints: BoxConstraints(
+                  minWidth: Resizable.size(context, 100)
+              ),
+              decoration: BoxDecoration(
+                  color: hwColor,
+                  borderRadius:
+                  BorderRadius.circular(
+                      1000)),
+              margin: EdgeInsets.only(
+                  right: Resizable.padding(
+                      context, 20)),
+              padding: EdgeInsets.symmetric(
+                  vertical: Resizable.padding(
+                      context, 3)),
+              child: Text(
+                  hwTitle,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight:
+                      FontWeight.w700,
+                      fontSize: Resizable.font(
+                          context, 16))),
+            )),
+            Expanded(
+                flex:5,
+                child: Container()),
+            Expanded(
+                flex:1,
+                child: IconButton(
                 onPressed: () {
                   BlocProvider.of<
                       DropdownCubit>(context)
@@ -138,9 +181,9 @@ class CollapseLearnedLesson extends StatelessWidget {
                       ? Icons
                       .keyboard_arrow_down
                       : Icons.keyboard_arrow_up,
-                ))
+                )))
           ],
-        )
+        ))
       ],
     );
   }

@@ -11,7 +11,9 @@ import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/repository/user_repository.dart';
 import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/screens/login_screen.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
+import 'package:internal_sakumi/widget/waiting_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthServices {
@@ -55,29 +57,34 @@ class AuthServices {
     }
   }
 
-  static logInUser(String email, String password, context) async {
+  static logInUser(TextEditingController emailController, TextEditingController passwordController, context, ErrorCubit cubit) async {
+    waitingDialog(context);
     try {
       var userRepo = UserRepository.fromContext(context);
       await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-      UserModel user = await userRepo.getUser(email);
+          .signInWithEmailAndPassword(email: emailController.text, password: passwordController.text);
+      UserModel user = await userRepo.getUser(emailController.text);
 
       if (user.role == "admin" ||
           user.role == "master" ||
           user.role == "teacher") {
         debugPrint("======== ${user.role} ==========");
-
+        SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
         AdminRepository adminRepository = AdminRepository.fromContext(context);
 
         if (user.role == "admin") {
           AdminModel adminModel = await adminRepository.getAdminById(user.id);
-          SharedPreferences sharedPreferences =
-              await SharedPreferences.getInstance();
+
           sharedPreferences.setString(
               PrefKeyConfigs.code, adminModel.adminCode);
-          sharedPreferences.setString(PrefKeyConfigs.password, password);
+          sharedPreferences.setString(PrefKeyConfigs.password, passwordController.text);
           sharedPreferences.setInt(PrefKeyConfigs.userId, adminModel.userId);
           sharedPreferences.setString(PrefKeyConfigs.name, adminModel.name);
+          sharedPreferences.setString(PrefKeyConfigs.email, emailController.text);
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
           Navigator.pushReplacementNamed(
               context, "${Routes.admin}?name=${adminModel.adminCode.trim()}");
         }
@@ -86,51 +93,87 @@ class AuthServices {
               TeacherRepository.fromContext(context);
           TeacherModel teacherModel =
               await teacherRepository.getTeacherById(user.id);
-          SharedPreferences sharedPreferences =
-              await SharedPreferences.getInstance();
           sharedPreferences.setString(
               PrefKeyConfigs.code, teacherModel.teacherCode);
-          sharedPreferences.setString(PrefKeyConfigs.password, password);
+          sharedPreferences.setString(PrefKeyConfigs.password, passwordController.text);
           sharedPreferences.setInt(PrefKeyConfigs.userId, teacherModel.userId);
           sharedPreferences.setString(PrefKeyConfigs.name, teacherModel.name);
+          sharedPreferences.setString(PrefKeyConfigs.email, emailController.text);
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
+          Navigator.pushReplacementNamed(context,
+              "${Routes.teacher}?name=${teacherModel.teacherCode.trim()}");
+        }
+        if (user.role == "master") {
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
+          Navigator.pushReplacementNamed(context, Routes.master);
+        }
+        emailController.clear();
+        passwordController.clear();
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('You are Logged in ${user.role}')));
+      } else {
+        FirebaseAuth.instance.signOut().then((value) {
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('You don\'t have permission to access ')));
+        });
+      }
+    } on FirebaseAuthException catch (e) {
+      if (context.mounted) {
+        Navigator.pop(context);
+      }
+      RegExp regex = RegExp(r'\((.*?)\)');
 
-          var localData = sharedPreferences.getString(PrefKeyConfigs.password);
-          debugPrint('=============> password ${password} ==== ${localData}');
+      Match? match = regex.firstMatch(e.message!);
+
+      if (match != null) {
+        String result = match.group(1)!;
+        if(result == 'auth/user-not-found'){
+          cubit.changeError(AppText.txtWrongAccount.text);
+        }else if(result == 'auth/wrong-password'){
+          cubit.changeError(AppText.txtWrongPassword.text);
+          passwordController.clear();
+        }else{
+          cubit.changeError(AppText.txtInvalidLogin.text);
+        }
+      }
+    }
+  }
+  static autoLogInUser(String email,context) async {
+    try {
+      var userRepo = UserRepository.fromContext(context);
+      UserModel user = await userRepo.getUser(email);
+
+      if (user.role == "admin" ||
+          user.role == "master" ||
+          user.role == "teacher") {
+        debugPrint("======== ${user.role} ==========");
+        if (user.role == "admin") {
+          AdminRepository adminRepository = AdminRepository.fromContext(context);
+          AdminModel adminModel = await adminRepository.getAdminById(user.id);
+          Navigator.pushReplacementNamed(
+              context, "${Routes.admin}?name=${adminModel.adminCode.trim()}");
+        }
+        if (user.role == "teacher") {
+          TeacherRepository teacherRepository =
+          TeacherRepository.fromContext(context);
+          TeacherModel teacherModel =
+          await teacherRepository.getTeacherById(user.id);
           Navigator.pushReplacementNamed(context,
               "${Routes.teacher}?name=${teacherModel.teacherCode.trim()}");
         }
         if (user.role == "master") {
           Navigator.pushReplacementNamed(context, Routes.master);
         }
-
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('You are Logged in ${user.role}')));
-      } else {
-        FirebaseAuth.instance.signOut().then((value) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text('You don\'t have permission to access ')));
-        });
       }
     } on FirebaseAuthException catch (e) {
-      // if (e.message == 'auth/user-not-found') {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //       const SnackBar(content: Text('No user Found with this Email')));
-      // } else if (e.message == 'wrong-password') {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //       const SnackBar(content: Text('Password did not match')));
-      // }
-
-      await Fluttertoast.showToast(
-          msg: e.code == 'invalid-email'
-              ? AppText.txtWrongAccount.text
-              : e.code == 'missing-password' ? AppText.txtWrongPassword.text : 'Error',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 5,
-          textColor: Colors.white,
-          fontSize: 16.0);
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //     SnackBar(content: Text('${e.message}\n${e.code}\n${e.tenantId}')));
+      debugPrint("==========>login Error");
     }
   }
 }

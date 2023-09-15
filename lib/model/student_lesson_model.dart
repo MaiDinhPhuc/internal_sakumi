@@ -24,6 +24,23 @@ class StudentLessonModel {
     return primaryColor;
   }
 
+  Color get hwColor {
+
+    if(hw == -2) return const Color(0xffB71C1C);
+    if(hw != -2) return const Color(0xff33691E);
+
+    return primaryColor;
+  }
+
+
+  String get hwTitle {
+    if(hw == -2) return AppText.txtNotSubmit.text;
+    if(hw != -2) return AppText.txtSubmitted.text;
+
+    return "error";
+  }
+
+
   String get attendTitle {
     if(timekeeping == 6) return AppText.txtAbsent.text;
     if(timekeeping == 5) return AppText.txtPermitted.text;
