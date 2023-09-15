@@ -3,8 +3,7 @@ class AppConfigs{
   static const String endPoint = "http://173.199.127.90:3000";
 
   static const bool endpointFirebaseDebug = false;
-
-  static const bool isRunningDebugMode = false;
+  
 
   static String getDataUrl(String file, String token){
     return "https://noibo.sakumi.edu.vn/files/$token/$file";

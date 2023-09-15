@@ -36,15 +36,38 @@ class SplashScreen extends StatelessWidget {
     dynamic uri = Uri.dataFromString(window.location.href).toString();
     SharedPreferences localData = await SharedPreferences.getInstance();
     String userId = localData.getInt(PrefKeyConfigs.userId).toString();
-    // if (userId == "null" || userId == "-1") {
-    //   Navigator.pushReplacementNamed(context, "/login");
-    // } else {
-    //   if (Uri.decodeFull(uri).split(',').last.length ==
-    //       (AppConfigs.isRunningDebugMode ? 23 : 27)) {
-    //     String userEmail = localData.getString(PrefKeyConfigs.email).toString();
-    //     AuthServices.autoLogInUser(userEmail, context);
-    //   }
-    // }
-    Navigator.pushReplacementNamed(context, "/login");
+    print("=======>uri: ${Uri.decodeFull(uri)}");
+    if (userId == "null" || userId == "-1") {
+      Navigator.pushReplacementNamed(context, "/login");
+    } else {
+      if (Navigator.of(context).isCurrent("/")) {
+        String userEmail = localData.getString(PrefKeyConfigs.email).toString();
+        AuthServices.autoLogInUser(userEmail, context);
+      }
+      // String userEmail = localData.getString(PrefKeyConfigs.email).toString();
+      // AuthServices.autoLogInUser(userEmail, context);
+    }
+    // Navigator.pushReplacementNamed(context, "/login");
   }
+
+}
+extension NavigatorStateExtension on NavigatorState {
+
+  void pushNamedIfNotCurrent( String routeName, { Object? arguments} ) {
+    if (!isCurrent(routeName)) {
+      pushNamed( routeName, arguments: arguments );
+    }
+  }
+
+  bool isCurrent( String routeName ) {
+    bool isCurrent = false;
+    popUntil( (route) {
+      if (route.settings.name == routeName) {
+        isCurrent = true;
+      }
+      return true;
+    } );
+    return isCurrent;
+  }
+
 }

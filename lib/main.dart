@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
-              home: const SplashScreen(),
+              // home: const SplashScreen(),
               title: 'Nội Bộ Sakumi',
               theme: ThemeData(
                 primarySwatch: primaryColor,
