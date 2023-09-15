@@ -12,7 +12,7 @@ class RecordService {
   Future<MicrophoneRecorder> newRecorder()  async {
     if (_recorder != null) {
       if (_recorder!.value.recording != null) {
-        _recorder!.stop();
+        await _recorder!.stop();
       }
       _recorder!.dispose();
     }
@@ -32,12 +32,12 @@ class RecordService {
 
   start()async{
     var recorder = await newRecorder();
-    recorder.start();
+    await recorder.start();
   }
 
-  stop() {
-     _recorder!.stop();
-     print("========>${_recorder!.value.recording!.url}");
+  stop()async {
+     await _recorder!.stop();
+     print("========>${_recorder!.toBytes()}");
   }
 
 }

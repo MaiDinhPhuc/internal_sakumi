@@ -189,14 +189,15 @@ void alertNewClass(BuildContext context) {
                                                           .format(DateTimeCubit
                                                               .startDay),
                                                       note: noteCon.text,
-                                                      classCode: codeCon.text));
+                                                      classCode: codeCon.text,classStatus: 'Preparing'));
                                               if (context.mounted) {
                                                 Navigator.pop(context);
                                                 if (cubit.check == true) {
                                                   await BlocProvider.of<
                                                               ManageGeneralCubit>(
                                                           context)
-                                                      .loadAllClass(context);
+                                                      .loadAfterAddClass(cubit
+                                                      .listClass!.length,context);
                                                 } else {
                                                   notificationDialog(
                                                       context,

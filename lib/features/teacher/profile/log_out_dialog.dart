@@ -36,7 +36,8 @@ class LogOutDialog extends StatelessWidget {
           sharedPreferences.setString(PrefKeyConfigs.password, '');
           sharedPreferences.setInt(PrefKeyConfigs.userId, -1);
           sharedPreferences.setString(PrefKeyConfigs.name, '');
-          Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+          sharedPreferences.setString(PrefKeyConfigs.email, '');
+          Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
         }, bgColor: primaryColor.shade500, foreColor: Colors.white, text: AppText.txtAgree.text),
       ],
     );

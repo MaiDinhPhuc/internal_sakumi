@@ -13,6 +13,7 @@ import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/repository/user_repository.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:internal_sakumi/widget/back_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'teacher/profile/app_bar_info_teacher_cubit.dart';
@@ -32,7 +33,6 @@ class HeaderTeacher extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AppBarInfoTeacherCubit, TeacherModel?>(
         builder: (c, s) {
-          debugPrint('=>>>>>>>>>>>>> build again: ${s?.url}');
           return Container(
             padding: EdgeInsets.only(
                 bottom: Resizable.padding(context, 10),
@@ -55,56 +55,7 @@ class HeaderTeacher extends StatelessWidget {
                               : MainAxisAlignment.center,
                           children: [
                             index == -1
-                                ? Container(
-                              height: 30,
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 3),
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(Icons.arrow_back_ios_new_rounded , color: primaryColor.shade500,),
-                                        SizedBox(
-                                            width: Resizable.padding(
-                                                context, 5)),
-                                        Text(AppText.txtBack.text,
-                                            style: TextStyle(
-                                                color: greyColor.shade600,
-                                                fontWeight:
-                                                FontWeight.w700,
-                                                fontSize: 16)),
-                                      ],
-                                    ),
-                                  ),
-                                  Positioned.fill(
-                                    child: Material(
-                                      color: Colors.transparent,
-                                      child: InkWell(
-                                        borderRadius:
-                                        BorderRadius.circular(100),
-                                        overlayColor:
-                                        MaterialStateProperty.all(
-                                            primaryColor
-                                                .withAlpha(30)),
-                                        onTap: ()  {
-                                          Navigator.pop(context);
-                                        },
-                                        child: Container(
-                                          margin:
-                                          const EdgeInsets.symmetric(
-                                              horizontal: 2),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            )
+                                ? const CustomBackButton()
                                 : Container(
                                     height: 30,
                                     margin: const EdgeInsets.symmetric(
@@ -283,162 +234,6 @@ class HeaderTeacher extends StatelessWidget {
                                 ))
                           ]),
                     )),
-                // Expanded(
-                //
-                //     child: Align(
-                //   alignment: Alignment.center,
-                //   child: Row(
-                //       mainAxisAlignment: index == -1 ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
-                //       children: [
-                //        index == -1 ? IconButton(onPressed: (){
-                //          Navigator.pop(context);
-                //        }, icon: Icon(Icons.arrow_back , color: primaryColor.shade500)) : Container(
-                //           height: 30,
-                //           margin: const EdgeInsets.symmetric(horizontal: 3),
-                //           child: Stack(
-                //             alignment: Alignment.center,
-                //             children: [
-                //               Padding(
-                //                 padding: const EdgeInsets.symmetric(
-                //                     horizontal: 10),
-                //                 child: Row(
-                //                   children: [
-                //                     Image.asset('assets/images/ic_home.png',
-                //                         scale: 60),
-                //                     SizedBox(
-                //                         width: Resizable.padding(context, 5)),
-                //                     Text(AppText.titleHome.text,
-                //                         style: TextStyle(
-                //                             color: greyColor.shade600,
-                //                             fontWeight: FontWeight.w700,
-                //                             fontSize: 16)),
-                //                   ],
-                //                 ),
-                //               ),
-                //               Positioned.fill(
-                //                 child: Material(
-                //                   color: Colors.transparent,
-                //                   child: InkWell(
-                //                     borderRadius: BorderRadius.circular(100),
-                //                     overlayColor: MaterialStateProperty.all(
-                //                         primaryColor.withAlpha(30)),
-                //                     onTap: () async {
-                //                       SharedPreferences localData =
-                //                           await SharedPreferences
-                //                               .getInstance();
-                //                       String name = localData
-                //                           .getString(PrefKeyConfigs.code)
-                //                           .toString();
-                //                       debugPrint(
-                //                           '================> test $name');
-                //                       if (context.mounted) {
-                //                         Navigator.pushReplacementNamed(
-                //                             context,
-                //                             "${Routes.teacher}?name=$name");
-                //                       }
-                //                     },
-                //                     child: Container(
-                //                       margin: const EdgeInsets.symmetric(
-                //                           horizontal: 2),
-                //                     ),
-                //                   ),
-                //                 ),
-                //               )
-                //             ],
-                //           ),
-                //         ),
-                //          ...(index == -1 ? [] : buttonList)
-                //             .map((e) => Container(
-                //                   height: 30,
-                //                   margin: const EdgeInsets.symmetric(
-                //                       horizontal: 3),
-                //                   child: Stack(
-                //                     alignment: Alignment.center,
-                //                     children: [
-                //                       Padding(
-                //                         padding: const EdgeInsets.symmetric(
-                //                             horizontal: 10),
-                //                         child: Row(
-                //                           mainAxisAlignment:
-                //                               MainAxisAlignment.spaceBetween,
-                //                           children: [
-                //                             Text(e.button,
-                //                                 style: TextStyle(
-                //                                     color: greyColor.shade600,
-                //                                     fontWeight:
-                //                                         FontWeight.w700,
-                //                                     fontSize: 16)),
-                //                           ],
-                //                         ),
-                //                       ),
-                //                       Positioned.fill(
-                //                         child: Container(
-                //                           color: index == e.id
-                //                               ? primaryColor
-                //                               : Colors.transparent,
-                //                           margin: const EdgeInsets.only(
-                //                               top: 25,
-                //                               bottom: 3,
-                //                               left: 10,
-                //                               right: 10),
-                //                         ),
-                //                       ),
-                //                       Positioned.fill(
-                //                         child: Material(
-                //                           color: Colors.transparent,
-                //                           child: InkWell(
-                //                             borderRadius:
-                //                                 BorderRadius.circular(100),
-                //                             overlayColor:
-                //                                 MaterialStateProperty.all(
-                //                                     primaryColor
-                //                                         .withAlpha(30)),
-                //                             onTap: () async {
-                //                               switch (e.id) {
-                //                                 case 0:
-                //                                   debugPrint(
-                //                                       "========${e.button}======");
-                //                                   await Navigator.pushNamed(
-                //                                       context,
-                //                                       "${Routes.teacher}?name=$name/overview/class?id=$classId");
-                //                                   break;
-                //                                 case 1:
-                //                                   debugPrint(
-                //                                       "========${e.button}======");
-                //                                   await Navigator.pushNamed(
-                //                                       context,
-                //                                       "${Routes.teacher}?name=$name/lesson/class?id=$classId");
-                //                                   break;
-                //                                 case 2:
-                //                                   debugPrint(
-                //                                       "========${e.button}======");
-                //                                   await Navigator.pushNamed(
-                //                                       context,
-                //                                       "${Routes.teacher}?name=$name/test/class?id=$classId");
-                //                                   break;
-                //                                 case 3:
-                //                                   debugPrint(
-                //                                       "========${e.button}======");
-                //                                   await Navigator.pushNamed(
-                //                                       context,
-                //                                       "${Routes.teacher}?name=$name/grading/class?id=$classId");
-                //                                   break;
-                //                               }
-                //                             },
-                //                             child: Container(
-                //                               margin:
-                //                                   const EdgeInsets.symmetric(
-                //                                       horizontal: 2),
-                //                             ),
-                //                           ),
-                //                         ),
-                //                       )
-                //                     ],
-                //                   ),
-                //                 ))
-                //             .toList()
-                //       ]),
-                // )),
                 Expanded(
                   flex: 3,
                   child: Row(
@@ -488,9 +283,6 @@ class HeaderTeacher extends StatelessWidget {
                                   .toString();
                               var profileUri =
                                   '${Routes.teacher}?name=$name/profile';
-                              debugPrint(
-                                  '=>>>>>>>>>>>>>>> uri: $uri , profileUri: $profileUri');
-
                               if (uri.contains(profileUri)) {
                                 Navigator.pushReplacementNamed(
                                     context, profileUri);

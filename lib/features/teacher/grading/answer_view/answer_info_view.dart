@@ -89,9 +89,10 @@ class AnswerInfoView extends StatelessWidget {
                   RecordService.instance.start();
                   showDialog(
                       context: context,
-                      builder: (context) =>  RecordDialog(stop: () {
+                      builder: (context) =>  RecordDialog(stop: () async {
                         Navigator.of(context).pop();
-                        RecordService.instance.stop();
+                        await RecordService.instance.stop();
+                        RecordService.instance.dispose();
                       }));
                 }, type: 'single', checkActiveCubit: checkActiveCubit,
                 )

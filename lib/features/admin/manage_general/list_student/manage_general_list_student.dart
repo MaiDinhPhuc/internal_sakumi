@@ -25,19 +25,20 @@ class ManageGeneralListStudent extends StatelessWidget {
       children: [
         ...(cubit.listStudent!).map((e) => StudentItem(student: e,cubit: cubit,)).toList(),
         SizedBox(height: Resizable.padding(context, 5)),
-        Material(
-            color: Colors.transparent,
-            child: DottedBorderButton(
-                AppText.btnAddStudent.text.toUpperCase(),
-                isManageGeneral: true, onPressed: () async {
-              selectionDialog(context, AppText.btnAddStudent.text, AppText.btnAddNewStudent.text, () {
-                Navigator.pop(context);
-                alertCheckBoxStudent(context, cubit);
-              }, () {
-                Navigator.pop(context);
-                alertNewStudent(context, cubit);
-              });
-            })),
+        if(cubit.listStudent!.isNotEmpty|| cubit.canAdd == true)
+          Material(
+              color: Colors.transparent,
+              child: DottedBorderButton(
+                  AppText.btnAddStudent.text.toUpperCase(),
+                  isManageGeneral: true, onPressed: () async {
+                selectionDialog(context, AppText.btnAddStudent.text, AppText.btnAddNewStudent.text, () {
+                  Navigator.pop(context);
+                  alertCheckBoxStudent(context, cubit);
+                }, () {
+                  Navigator.pop(context);
+                  alertNewStudent(context, cubit);
+                });
+              })),
       ],
     ));
   }

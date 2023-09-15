@@ -22,16 +22,13 @@ class SoundService {
       _player!.dispose();
     }
 
-    debugPrint("========>init");
 
     if(type == "network"){
       _player = VideoPlayerController.networkUrl(
         Uri.parse(url),
         videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
       );
-      debugPrint("========>init before");
       await _player!.initialize();
-      debugPrint("========>init after");
     }else{
       _player = VideoPlayerController.asset(
         url,
@@ -61,7 +58,6 @@ class SoundService {
 
   seek(Duration position){
     if(_player != null){
-      debugPrint("========>seek to ${position.inMilliseconds.toDouble()} ");
       _player!.seekTo(position);
     }
   }
@@ -85,7 +81,6 @@ class SoundService {
 
 
   playSound(String sound, SoundCubit soundCubit, String type) async {
-    debugPrint("=======>$sound");
     var player = await newPlayer(sound, type);
 
     await soundCubit.loading();

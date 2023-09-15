@@ -13,7 +13,7 @@ class VoiceRecordCubit extends Cubit<List<dynamic>>{
   }
 
   stopRecord(){
-    print(RecordService.instance.stop());
+    RecordService.instance.stop();
   }
 
 }

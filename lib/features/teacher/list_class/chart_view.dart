@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/admin/manage_class/list_class_cubit.dart';
 import 'package:internal_sakumi/features/teacher/list_class/teacher_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
@@ -44,6 +45,45 @@ class ChartView extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class CharInAdminView extends StatelessWidget {
+  final int index;
+  const CharInAdminView(this.index, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var cubit = BlocProvider.of<LoadListClassCubit>(context);
+    return
+      cubit.listPoint!.isEmpty ||
+          cubit.listSubmit!.isEmpty ||
+          cubit.listAttendance!.isEmpty
+          ? Center(
+        child: Transform.scale(
+          scale: 0.75,
+          child: const CircularProgressIndicator(),
+        ),
+      ) : Container(
+        margin: EdgeInsets.only(top: Resizable.size(context, 10)),
+        height: Resizable.size(context, 130),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(flex: 4, child: Container()),
+            const Expanded(flex: 2, child: ColumnChart()),
+            Expanded(child: Container()),
+            Expanded(
+                flex: 8,
+                child: CustomLineChart(
+                  attendances: cubit.listAttendance![index],
+                  hws: cubit.listSubmit![index],
+                  points: cubit.listPoint![index],
+                )),
+            Expanded(flex: 4, child: Container()),
+          ],
+        ),
+      );
   }
 }
 

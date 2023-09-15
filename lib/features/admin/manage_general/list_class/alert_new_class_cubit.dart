@@ -16,7 +16,7 @@ class AlertNewClassCubit extends Cubit<int> {
 
   loadCourse(context) async {
     AdminRepository adminRepository = AdminRepository.fromContext(context);
-    listClass = await adminRepository.getListClass();
+    listClass = await adminRepository.getAllClass();
     listCourse = await adminRepository.getAllCourse();
     emit(state + 1);
   }
