@@ -36,14 +36,15 @@ class SplashScreen extends StatelessWidget {
     dynamic uri = Uri.dataFromString(window.location.href).toString();
     SharedPreferences localData = await SharedPreferences.getInstance();
     String userId = localData.getInt(PrefKeyConfigs.userId).toString();
-    if (userId == "null" || userId == "-1") {
-      Navigator.pushReplacementNamed(context, "/login");
-    } else {
-      if (Uri.decodeFull(uri).split(',').last.length ==
-          (AppConfigs.isRunningDebugMode ? 23 : 27)) {
-        String userEmail = localData.getString(PrefKeyConfigs.email).toString();
-        AuthServices.autoLogInUser(userEmail, context);
-      }
-    }
+    // if (userId == "null" || userId == "-1") {
+    //   Navigator.pushReplacementNamed(context, "/login");
+    // } else {
+    //   if (Uri.decodeFull(uri).split(',').last.length ==
+    //       (AppConfigs.isRunningDebugMode ? 23 : 27)) {
+    //     String userEmail = localData.getString(PrefKeyConfigs.email).toString();
+    //     AuthServices.autoLogInUser(userEmail, context);
+    //   }
+    // }
+    Navigator.pushReplacementNamed(context, "/login");
   }
 }
