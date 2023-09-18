@@ -1,8 +1,6 @@
 import 'dart:html';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/Material.dart';
-import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/firebase_service/auth_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,7 +34,6 @@ class SplashScreen extends StatelessWidget {
     dynamic uri = Uri.dataFromString(window.location.href).toString();
     SharedPreferences localData = await SharedPreferences.getInstance();
     String userId = localData.getInt(PrefKeyConfigs.userId).toString();
-    print("=======>uri: ${Uri.decodeFull(uri)}");
     if (userId == "null" || userId == "-1") {
       Navigator.pushReplacementNamed(context, "/login");
     } else {
@@ -44,10 +41,7 @@ class SplashScreen extends StatelessWidget {
         String userEmail = localData.getString(PrefKeyConfigs.email).toString();
         AuthServices.autoLogInUser(userEmail, context);
       }
-      // String userEmail = localData.getString(PrefKeyConfigs.email).toString();
-      // AuthServices.autoLogInUser(userEmail, context);
     }
-    // Navigator.pushReplacementNamed(context, "/login");
   }
 
 }

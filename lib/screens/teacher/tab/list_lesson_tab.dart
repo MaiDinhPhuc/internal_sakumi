@@ -13,10 +13,10 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
 class ListLessonTab extends StatelessWidget {
-  final String name;
+  final String name, role;
   final String classId;
 
-  const ListLessonTab(this.name, this.classId, {Key? key}) : super(key: key);
+  const ListLessonTab(this.name, this.classId,this.role, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +27,8 @@ class ListLessonTab extends StatelessWidget {
             children: [
               HeaderTeacher(
                   index: 1,
-                  classId: TextUtils.getName(position: 2),
-                  name: name),
+                  classId: role == "teacher"?TextUtils.getName(position: 3):TextUtils.getName(),
+                  name: name, role: role),
               BlocBuilder<LessonTabCubit, int>(builder: (c, s) {
                 var cubit = BlocProvider.of<LessonTabCubit>(c);
                 return cubit.classModel == null
@@ -137,7 +137,8 @@ class ListLessonTab extends StatelessWidget {
                                                                     ),
                                                                     crossFadeState: state % 2 == 1 ? CrossFadeState.showSecond : CrossFadeState.showFirst,
                                                                     duration: const Duration(milliseconds: 100))),
-                                                        Positioned.fill(
+                                                        if(role == "teacher")
+                                                          Positioned.fill(
                                                             child: Material(
                                                           color: Colors
                                                               .transparent,

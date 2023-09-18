@@ -24,7 +24,7 @@ class FilterClassStatusMenu extends StatelessWidget {
                   child: BlocProvider(create: (c)=>CheckBoxFilterCubit(cubit.listStateClassStatus[cubit.listClassStatusMenu.indexOf(e)]),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
                     return CheckboxListTile(
                       controlAffinity: ListTileControlAffinity.leading,
-                      title: Text(e),
+                      title: Text(vietnameseSubText(e)),
                       value: state,
                       onChanged: (newValue) {
                         cubit.listStateClassStatus[cubit.listClassStatusMenu.indexOf(e)] = newValue!;

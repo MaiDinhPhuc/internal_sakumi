@@ -21,7 +21,7 @@ class ClassGradingTab extends StatelessWidget {
         body: Column(
           children: [
             HeaderTeacher(
-                index: 3, classId: TextUtils.getName(position: 2), name: name),
+                index: 3, classId: TextUtils.getName(position: 2), name: name, role: 'teacher'),
             BlocBuilder<GradingCubit, int>(builder: (c, s) {
               var cubit = BlocProvider.of<GradingCubit>(c);
               if(cubit.classModel == null){

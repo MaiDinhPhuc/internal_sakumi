@@ -119,7 +119,7 @@ class ManageGeneralListClass extends StatelessWidget {
                                                                         child: Row(
                                                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                           children: [
-                                                                            Text(ee, style: TextStyle(fontSize: Resizable.font(
+                                                                            Text(vietnameseSubText(ee), style: TextStyle(fontSize: Resizable.font(
                                                                                 context, 15),color:state? Colors.white : Colors.black)),
                                                                             if(state)
                                                                               const Icon(Icons.check, color: Colors.white,)

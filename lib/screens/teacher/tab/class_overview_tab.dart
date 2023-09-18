@@ -15,8 +15,9 @@ import 'package:internal_sakumi/widget/circle_progress.dart';
 import '../../../utils/text_utils.dart';
 
 class ClassOverViewTab extends StatelessWidget {
-  const ClassOverViewTab(this.name, {super.key});
+  const ClassOverViewTab(this.name,this.role, {super.key});
   final String name;
+  final String role;
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +28,8 @@ class ClassOverViewTab extends StatelessWidget {
             children: [
               HeaderTeacher(
                 index: 0,
-                classId: TextUtils.getName(position: 2),
-                name: name,
+                classId: role == "teacher"?TextUtils.getName(position: 3):TextUtils.getName(),
+                name: name,role: role
               ),
               BlocBuilder<ClassOverviewCubit, int>(builder: (c, _) {
                 var cubit = BlocProvider.of<ClassOverviewCubit>(c);
@@ -122,10 +123,10 @@ class ClassOverViewTab extends StatelessWidget {
                                                     borderRadius:
                                                     BorderRadius.circular(Resizable.size(context, 5))),
                                                 child: AnimatedCrossFade(
-                                                    firstChild: CollapseOverviewStudentItem(cubit.students!.indexOf(e)),
+                                                    firstChild: CollapseOverviewStudentItem(cubit.students!.indexOf(e), role),
                                                     secondChild: Column(
                                                       children: [
-                                                        CollapseOverviewStudentItem(cubit.students!.indexOf(e)),
+                                                        CollapseOverviewStudentItem(cubit.students!.indexOf(e), role),
                                                         ExpandedOverviewStudentItem(cubit.students!.indexOf(e))
                                                       ],
                                                     ),

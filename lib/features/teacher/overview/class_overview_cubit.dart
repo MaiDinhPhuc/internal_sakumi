@@ -21,6 +21,7 @@ class ClassOverviewCubit extends Cubit<int> {
   double percentHw = 0, averagePts = 0;
   List<List<StudentLessonModel?>>? listStdLesson;
   List<StudentLessonModel>? stdLessonsInClass;
+  List<String> listStudentStatusMenu = ["Completed","InProgress","Viewer","ReNew","UpSale","Moved","Retained","Dropped","Remove"];
   
 
   init(context) async {
@@ -28,7 +29,6 @@ class ClassOverviewCubit extends Cubit<int> {
     await loadClass(context);
     await loadGeneralStatistic(context);
     await loadStudentInClass(context);
-    //await Future.delayed(const Duration(milliseconds: 500));
     await loadDetailStatistic(context);
   }
 
@@ -47,7 +47,7 @@ class ClassOverviewCubit extends Cubit<int> {
     var list = await adminRepo.getAllStudent();
     students = [];
     for (var i in list) {
-      for (var j in listStdClass!) {
+      for (var j in listStdClass) {
         if (i.userId == j.userId) {
           students!.add(i);
         }
@@ -85,7 +85,7 @@ class ClassOverviewCubit extends Cubit<int> {
       listPoints!.add(numOfStdLessons == 0? 0: point/numOfStdLessons);
     }
 
-    percentHw = lessonResults.isEmpty ? 0 : listHomework!.fold(0.0, (pre, e) => pre + e)/lessonResults!.length;
+    percentHw = lessonResults.isEmpty ? 0 : listHomework!.fold(0.0, (pre, e) => pre + e)/lessonResults.length;
     averagePts = listPoints!.isEmpty ? 0 : listPoints!.fold(0.0, (pre, e) => pre + e)/listPoints!.length;
 
     emit(state + 1);

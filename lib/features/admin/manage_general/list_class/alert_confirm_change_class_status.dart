@@ -16,7 +16,7 @@ class ConfirmChangeClassStatus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(AppText.txtConfirmChangeStatus.text.replaceAll("@", classModel.classCode).replaceAll("#", newStatus).replaceAll("%", classModel.classStatus), style: const TextStyle(
+      title: Text(AppText.txtConfirmChangeStatus.text.replaceAll("@", classModel.classCode).replaceAll("#", vietnameseSubText(newStatus)).replaceAll("%", vietnameseSubText(classModel.classStatus)), style: const TextStyle(
           fontWeight: FontWeight.bold
       ),),
       titlePadding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 50)),

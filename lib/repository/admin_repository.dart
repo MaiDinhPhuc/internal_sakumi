@@ -167,7 +167,8 @@ class AdminRepository {
         'start_time': model.startTime,
         'note': model.note,
         'class_code': model.classCode,
-        'class_status': model.classStatus
+        'class_status': model.classStatus,
+        'class_type' : model.classType
       });
       return true;
     } else {

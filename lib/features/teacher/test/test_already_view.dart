@@ -13,10 +13,10 @@ import 'collapse_test_item.dart';
 import 'expand_test_item.dart';
 
 class TestAlreadyView extends StatelessWidget {
-  const TestAlreadyView({super.key, required this.e, required this.cubit, required this.name});
+  const TestAlreadyView({super.key, required this.e, required this.cubit, required this.name, required this.role});
   final TestModel e;
   final TestCubit cubit;
-  final String name;
+  final String name, role;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,8 @@ class TestAlreadyView extends StatelessWidget {
                                 ? CrossFadeState.showSecond
                                 : CrossFadeState.showFirst,
                             duration: const Duration(milliseconds: 100))),
-                Positioned.fill(
+                if(role == "teacher")
+                  Positioned.fill(
                     child: Material(
                   color: Colors.transparent,
                   child: InkWell(

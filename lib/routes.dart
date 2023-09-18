@@ -61,20 +61,22 @@ class Routes {
         handler: teacherHandler, transitionType: TransitionType.fadeIn);
     router.define(admin,
         handler: adminHandler, transitionType: TransitionType.fadeIn);
-    router.define('/:name/manageGeneral',
-        handler: manageGeneralHandler, transitionType: TransitionType.fadeIn);
     router.define(master,
         handler: masterHandler, transitionType: TransitionType.fadeIn);
+    router.define('/:name/manageGeneral',
+        handler: manageGeneralHandler, transitionType: TransitionType.fadeIn);
+    router.define('/:name/profile',
+        handler: profileTeacherHandler, transitionType: TransitionType.fadeIn);
     router.define(addTeacher,
         handler: addTeacherHandler, transitionType: TransitionType.fadeIn);
-    router.define('/:name/overview/:classId',
-        handler: overViewHandler, transitionType: TransitionType.fadeIn);
-    router.define('/:name/lesson/:classId',
-        handler: lessonsHandler, transitionType: TransitionType.fadeIn);
-    router.define('/:name/test/:classId',
-        handler: testHandler, transitionType: TransitionType.fadeIn);
     router.define('/:name/grading/:classId',
         handler: gradingHandler, transitionType: TransitionType.fadeIn);
+    router.define('/:name/:role/overview/:classId',
+        handler: overViewHandler, transitionType: TransitionType.fadeIn);
+    router.define('/:name/:role/lesson/:classId',
+        handler: lessonsHandler, transitionType: TransitionType.fadeIn);
+    router.define('/:name/:role/:test/:classId',
+        handler: testHandler, transitionType: TransitionType.fadeIn);
     router.define('/:name/grading/:classId/:type/:parentId',
         handler: detailGradingHandler, transitionType: TransitionType.fadeIn);
     router.define('/:name/lesson/:classId/:lessonId',
@@ -84,8 +86,7 @@ class Routes {
     router.define(addUserToClass,
         handler: addUserToClassHandler, transitionType: TransitionType.fadeIn);
 
-    router.define('/:name/profile',
-        handler: profileTeacherHandler, transitionType: TransitionType.fadeIn);
+
   }
 }
 
@@ -137,11 +138,11 @@ Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
 });
 var lessonsHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return ListLessonTab(params['name'][0], params['classId'][0]);
+  return ListLessonTab(params['name'][0], params['classId'][0], params['role'][0]);
 });
 var overViewHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return ClassOverViewTab(params['name'][0]);
+  return ClassOverViewTab(params['name'][0], params['role'][0]);
 });
 var gradingHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
@@ -149,7 +150,7 @@ var gradingHandler =
 });
 var testHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return ClassTestTab(params['name'][0]);
+  return ClassTestTab(params['name'][0],params['role'][0]);
 });
 var detailClassHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {

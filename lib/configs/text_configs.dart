@@ -217,7 +217,7 @@ enum AppText {
 }
 
 Map<AppText, String> texts = {
-  AppText.txtConfirmChangeStatus: 'SS chắc chắn muốn thay đổi\n trạng thái của @ từ % thành #',
+  AppText.txtConfirmChangeStatus: 'SS chắc chắn muốn thay đổi\n trạng thái của @ từ % sang #',
   AppText.txtInvalidLogin: 'Thông tin đăng nhập không hợp lệ',
   AppText.textNotMarked: 'Chưa chấm',
   AppText.textMarked: 'Đã chấm',
@@ -453,4 +453,33 @@ extension AppTexts on AppText {
   }
 
   String get text => texts[this] ?? '--TextNotFound--';
+}
+
+String vietnameseSubText(String text){
+  switch (text) {
+    case 'Completed':
+      return "Hoàn Thành";
+    case 'Moved':
+      return "Chuyển Lớp";
+    case 'UpSale':
+      return "Lên Kỳ";
+    case 'Retained':
+      return "Bảo Lưu";
+    case 'ReNew':
+      return "Đăng Ký Lại";
+    case 'Dropped':
+      return "Nghỉ Học";
+    case 'Remove':
+      return "Xoá";
+    case 'Viewer':
+      return "Người Xem";
+    case 'InProgress':
+      return "Đang Học";
+    case 'Cancel':
+      return "Huỷ";
+    case 'Preparing':
+      return "Mới Tạo";
+    default:
+      return "error";
+  }
 }

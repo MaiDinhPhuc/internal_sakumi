@@ -189,7 +189,7 @@ void alertNewClass(BuildContext context) {
                                                           .format(DateTimeCubit
                                                               .startDay),
                                                       note: noteCon.text,
-                                                      classCode: codeCon.text,classStatus: 'Preparing'));
+                                                      classCode: codeCon.text,classStatus: 'Preparing',classType: 0));
                                               if (context.mounted) {
                                                 Navigator.pop(context);
                                                 if (cubit.check == true) {

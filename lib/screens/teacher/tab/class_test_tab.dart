@@ -11,8 +11,9 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import '../../../utils/text_utils.dart';
 
 class ClassTestTab extends StatelessWidget {
-  const ClassTestTab(this.name, {super.key});
+  const ClassTestTab(this.name, this.role,{super.key});
   final String name;
+  final String role;
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +24,8 @@ class ClassTestTab extends StatelessWidget {
           children: [
             HeaderTeacher(
               index: 2,
-              classId: TextUtils.getName(position: 2),
-              name: name,
+              classId: role == "teacher"?TextUtils.getName(position: 3):TextUtils.getName(),
+              name: name,role: role
             ),
             BlocBuilder<TestCubit, int>(builder: (cc, s) {
               var cubit = BlocProvider.of<TestCubit>(cc);
@@ -114,7 +115,7 @@ class ClassTestTab extends StatelessWidget {
                                         ...cubit.listTest!.map((e) => cubit
                                                 .checkAlready(e.id)
                                             ? TestAlreadyView(
-                                                e: e, cubit: cubit, name: name,)
+                                                e: e, cubit: cubit, name: name, role: role,)
                                             : TestNotAlreadyView(
                                                 index:
                                                     cubit.listTest!.indexOf(e),
@@ -126,7 +127,7 @@ class ClassTestTab extends StatelessWidget {
                                                           TextUtils.getName()),
                                                       e.courseId,
                                                       e.id);
-                                                },
+                                                }, role: role,
                                               ))
                                     ],
                                   )

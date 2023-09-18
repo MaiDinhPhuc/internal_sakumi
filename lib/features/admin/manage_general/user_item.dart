@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_network/image_network.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
+import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -133,7 +134,7 @@ class StudentItem extends StatelessWidget {
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(e, style: TextStyle(fontSize: Resizable.font(
+                                        Text(vietnameseSubText(e), style: TextStyle(fontSize: Resizable.font(
                                             context, 15),color:state? Colors.white : Colors.black)),
                                         if(state)
                                           const Icon(Icons.check, color: Colors.white,)
