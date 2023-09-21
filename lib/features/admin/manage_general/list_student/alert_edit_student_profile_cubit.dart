@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
-import 'package:internal_sakumi/repository/user_repository.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class EditStudentProfileCubit extends Cubit<int>{
   EditStudentProfileCubit(): super(0);
@@ -16,12 +16,11 @@ class EditStudentProfileCubit extends Cubit<int>{
   bool changed = false;
 
   init(context, StudentModel studentModel)async{
-    UserRepository userRepository = UserRepository.fromContext(context);
     name = studentModel.name;
     phone = studentModel.phone;
     studentCode = studentModel.studentCode;
     note = studentModel.note;
-    userModel = await userRepository.getUserById(studentModel.userId);
+    userModel = await FireBaseProvider.instance.getUserById(studentModel.userId);
     email = userModel!.email;
     emit(state+1);
   }

@@ -1,7 +1,5 @@
-import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_network/image_network.dart';
@@ -12,9 +10,7 @@ import 'package:internal_sakumi/features/teacher/profile/info_form.dart';
 import 'package:internal_sakumi/features/teacher/profile/info_pass.dart';
 import 'package:internal_sakumi/features/teacher/profile/log_out_dialog.dart';
 import 'package:internal_sakumi/features/teacher/profile/teacher_profile_cubit.dart';
-import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/widget/custom_button.dart';
-import 'package:intl/intl.dart';
 
 import '../../../configs/color_configs.dart';
 import '../../../utils/resizable.dart';

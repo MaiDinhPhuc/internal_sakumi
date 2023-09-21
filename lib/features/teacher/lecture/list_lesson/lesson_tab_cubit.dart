@@ -7,8 +7,7 @@ import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
-import 'package:internal_sakumi/repository/admin_repository.dart';
-import 'package:internal_sakumi/repository/teacher_repository.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:intl/intl.dart';
 
@@ -42,27 +41,31 @@ class LessonTabCubit extends Cubit<int> {
   }
 
   loadClass(context) async {
-    TeacherRepository teacherRepo = TeacherRepository.fromContext(context);
     classModel =
-    await teacherRepo.getClassById(int.parse(TextUtils.getName()));
+    await FireBaseProvider.instance.getClassById(int.parse(TextUtils.getName()));
     emit(state + 1);
   }
 
   loadLesson(context) async {
-    TeacherRepository teacherRepo = TeacherRepository.fromContext(context);
-    lessons = await teacherRepo.getLessonsByCourseId(classModel!.courseId);
+    lessons = await FireBaseProvider.instance.getLessonsByCourseId(classModel!.courseId);
     emit(state + 1);
   }
 
   loadStudentInClass(context) async {
-    TeacherRepository teacherRepo = TeacherRepository.fromContext(context);
-    AdminRepository adminRepo = AdminRepository.fromContext(context);
     listStdClass =
-        await teacherRepo.getStudentClassInClass(classModel!.classId);
-    var list = await adminRepo.getAllStudent();
+        await FireBaseProvider.instance.getStudentClassInClass(classModel!.classId);
+    List<StudentClassModel> temp = [];
+    for(var i in listStdClass){
+      if(i.classStatus != "Remove"){
+        temp.add(i);
+      }
+    }
+    listStdClass = [];
+    listStdClass = temp;
+    var list = await FireBaseProvider.instance.getAllStudent();
     students = [];
     for (var i in list) {
-      for (var j in listStdClass!) {
+      for (var j in listStdClass) {
         if (i.userId == j.userId) {
           students!.add(i);
         }
@@ -72,14 +75,11 @@ class LessonTabCubit extends Cubit<int> {
   }
 
   loadLessonResult(context) async {
-    TeacherRepository teacherRepository =
-    TeacherRepository.fromContext(context);
-    AdminRepository adminRepo = AdminRepository.fromContext(context);
 
     lessonResults = List.generate(lessons!.length, (index) => null);
     infoTeachers = List.generate(lessons!.length, (index) => null);
 
-    var listLessonResult = await teacherRepository
+    var listLessonResult = await FireBaseProvider.instance
         .getLessonResultByClassId(classModel!.classId);
     listLessonResult.sort(
         (a,b) {
@@ -110,7 +110,7 @@ class LessonTabCubit extends Cubit<int> {
     }
 
     lessons = List.of(listBase);
-    var teachers = await adminRepo.getAllTeacher();
+    var teachers = await FireBaseProvider.instance.getAllTeacher();
 
     for(var lesson in lessons!){
       for(var item in listLessonResult!){
@@ -132,9 +132,8 @@ class LessonTabCubit extends Cubit<int> {
   }
 
   loadStatistic(context) async {
-    TeacherRepository teacherRepo = TeacherRepository.fromContext(context);
     var list =
-        await teacherRepo.getAllStudentLessonsInClass(classModel!.classId);
+        await FireBaseProvider.instance.getAllStudentLessonsInClass(classModel!.classId);
     listSubmit = [];
     listAttendance = [];
     listNote = [];
@@ -150,6 +149,7 @@ class LessonTabCubit extends Cubit<int> {
       List<StudentLessonModel> listStdLessonInLesson = list.fold(
           <StudentLessonModel>[],
           (pre, e) => [...pre, if (e.lessonId == lesson.lessonId) e]).toList();
+      print("======>length : ${listStdLessonInLesson.length}");
 
       if(listStdLessonInLesson.isNotEmpty){
         for (var std in listStdClass!) {

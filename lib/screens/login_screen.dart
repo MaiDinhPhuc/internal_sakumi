@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/login/login_field.dart';
-import 'package:internal_sakumi/firebase_service/auth_service.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class LogInScreen extends StatelessWidget {
@@ -176,7 +176,7 @@ class LogInScreen extends StatelessWidget {
                                             Resizable.padding(context, 15)))),
                                 onPressed: () {
                                   cubit.changeError("");
-                                  AuthServices.logInUser(emailTextController,
+                                  FireBaseProvider.instance.logInUser(emailTextController,
                                       passwordTextController, context, cubit);
                                 },
                                 child: Row(

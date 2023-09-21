@@ -6,7 +6,7 @@ import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/classific
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/session_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/note_for_team_card.dart';
-import 'package:internal_sakumi/repository/teacher_repository.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
@@ -81,18 +81,18 @@ class LessonCompleteView extends StatelessWidget {
                       onPressed: ()async{
                         waitingDialog(context);
                         await detailCubit
-                            .noteForSupport(context, cubit.noteSupport.isNotEmpty
+                            .noteForSupport( cubit.noteSupport.isNotEmpty
                             ? cubit.noteSupport
                             : '');
                         if(context.mounted) {
                           await detailCubit
-                              .noteForAnotherSensei(context, cubit.noteSupport.isNotEmpty
+                              .noteForAnotherSensei( cubit.noteSupport.isNotEmpty
                               ? cubit.noteSensei
                               : '');
                         }
                         if(context.mounted){
                           for(var std in cubit.listStudent!){
-                            await updateTeacherNote(context, std.userId, listController[cubit.listStudent!.indexOf(std)].text);
+                            await updateTeacherNote(std.userId, listController[cubit.listStudent!.indexOf(std)].text);
                           }
                           SharedPreferences localData = await SharedPreferences.getInstance();
                           if(context.mounted){
@@ -113,9 +113,7 @@ class LessonCompleteView extends StatelessWidget {
           );
   }
 
-  updateTeacherNote(context, int userId, String note)async{
-    TeacherRepository teacherRepository = TeacherRepository.fromContext(context);
-
-    await teacherRepository.updateTeacherNote(userId, int.parse(TextUtils.getName()), int.parse(TextUtils.getName(position: 2)), note);
+  updateTeacherNote(int userId, String note)async{
+    await FireBaseProvider.instance.updateTeacherNote(userId, int.parse(TextUtils.getName()), int.parse(TextUtils.getName(position: 2)), note);
   }
 }

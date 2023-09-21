@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
-import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
-import 'package:internal_sakumi/repository/admin_repository.dart';
-import 'package:internal_sakumi/repository/teacher_repository.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
 class ClassOverviewCubit extends Cubit<int> {
@@ -33,36 +31,58 @@ class ClassOverviewCubit extends Cubit<int> {
   }
 
   loadClass(context) async {
-    TeacherRepository teacherRepo = TeacherRepository.fromContext(context);
-    classModel = await teacherRepo.getClassById(int.parse(TextUtils.getName()));
-    lessons = await teacherRepo.getLessonsByCourseId(classModel!.courseId);
+    classModel = await FireBaseProvider.instance.getClassById(int.parse(TextUtils.getName()));
+    lessons = await FireBaseProvider.instance.getLessonsByCourseId(classModel!.courseId);
     emit(state + 1);
   }
 
-  loadStudentInClass(context) async {
-    TeacherRepository teacherRepo = TeacherRepository.fromContext(context);
-    AdminRepository adminRepo = AdminRepository.fromContext(context);
-    listStdClass =
-        await teacherRepo.getStudentClassInClass(classModel!.classId);
-    var list = await adminRepo.getAllStudent();
-    students = [];
-    for (var i in list) {
-      for (var j in listStdClass) {
-        if (i.userId == j.userId) {
-          students!.add(i);
-        }
+  loadAfterRemove(int userId){
+    for(int i= 0; i<listStdClass.length; i++){
+      if(listStdClass[i].userId == userId){
+        listStdClass.remove(listStdClass[i]);
+        break;
+      }
+    }
+    for(int i= 0; i<students!.length; i++){
+      if(students![i].userId == userId){
+        students!.remove(students![i]);
+        break;
       }
     }
     emit(state + 1);
   }
 
+  loadStudentInClass(context) async {
+    listStdClass =
+        await FireBaseProvider.instance.getStudentClassInClass(classModel!.classId);
+    List<StudentClassModel> temp = [];
+    for(var i in listStdClass){
+      if(i.classStatus != "Remove"){
+        temp.add(i);
+      }
+    }
+    listStdClass = [];
+    listStdClass = temp;
+    listStdClass.sort((a, b) => a.userId.compareTo(b.userId));
+    var list = await FireBaseProvider.instance.getAllStudent();
+    students = [];
+    for (var i in list) {
+      for (var j in listStdClass) {
+        if (i.userId == j.userId) {
+          students!.add(i);
+          break;
+        }
+      }
+    }
+    students!.sort((a, b) => a.userId.compareTo(b.userId));
+    emit(state + 1);
+  }
+
   loadGeneralStatistic(context) async {
-    debugPrint('==============> loadGeneralStatistic');
-    TeacherRepository teacherRepo = TeacherRepository.fromContext(context);
-    stdLessonsInClass = await teacherRepo
+    stdLessonsInClass = await FireBaseProvider.instance
         .getAllStudentLessonsInClass(int.parse(TextUtils.getName()));
 
-    var lessonResults = await teacherRepo
+    var lessonResults = await FireBaseProvider.instance
         .getLessonResultByClassId(int.parse(TextUtils.getName()));
 
     listAttendance = []; listHomework = []; listPoints = [];

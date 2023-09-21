@@ -135,7 +135,6 @@ class LessonPendingView extends StatelessWidget {
             onPressed: () async {
               waitingDialog(context);
               await cubit.addLessonResult(
-                  context,
                   LessonResultModel(
                       id: 1000,
                       classId: int.parse(TextUtils.getName(position: 2)),

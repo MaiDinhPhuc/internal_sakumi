@@ -3,8 +3,7 @@ import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
-import 'package:internal_sakumi/repository/admin_repository.dart';
-import 'package:internal_sakumi/repository/teacher_repository.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class LoadListClassCubit extends Cubit<int> {
   LoadListClassCubit() : super(0);
@@ -23,14 +22,11 @@ class LoadListClassCubit extends Cubit<int> {
   }
 
   loadListClass(context) async {
-    AdminRepository adminRepository = AdminRepository.fromContext(context);
-    TeacherRepository teacherRepository =
-    TeacherRepository.fromContext(context);
     List<ClassModel> listAllClass = [];
     List<CourseModel> listAllCourse = [];
 
-    listAllClass = await adminRepository.getAllClass();
-    listAllCourse = await adminRepository.getAllCourse();
+    listAllClass = await FireBaseProvider.instance.getAllClass();
+    listAllCourse = await FireBaseProvider.instance.getAllCourse();
 
     listClass = [];
 
@@ -43,7 +39,7 @@ class LoadListClassCubit extends Cubit<int> {
 
     courses = [];
     listStatus = [];
-    allLessonResults = await teacherRepository.getAllLessonResult();
+    allLessonResults = await FireBaseProvider.instance.getAllLessonResult();
 
     for (var i in listClass!) {
       var temp = allLessonResults.fold(<LessonResultModel>[],
@@ -67,8 +63,6 @@ class LoadListClassCubit extends Cubit<int> {
   }
 
   loadStatisticClass(context) async {
-    TeacherRepository teacherRepository =
-    TeacherRepository.fromContext(context);
 
     listSubmit = [];
     listAttendance = [];
@@ -77,9 +71,9 @@ class LoadListClassCubit extends Cubit<int> {
     rateSubmit = [];
     rateAttendance = [];
 
-    var listAllStudentLessons = await teacherRepository.getAllStudentLessons();
+    var listAllStudentLessons = await FireBaseProvider.instance.getAllStudentLessons();
 
-    var lstLesson = await teacherRepository.getAllLesson();
+    var lstLesson = await FireBaseProvider.instance.getAllLesson();
     for (var item in listClass!) {
       var activeLessonResults = allLessonResults.fold(<LessonResultModel>[],
               (pre, e) => [...pre, if (item.classId == e.classId) e]);

@@ -5,8 +5,7 @@ import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
-import 'package:internal_sakumi/repository/admin_repository.dart';
-import 'package:internal_sakumi/repository/teacher_repository.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -110,11 +109,9 @@ class SessionCubit extends Cubit<int> {
   }
 
   loadStudentInClass(context) async {
-    AdminRepository adminRepository = AdminRepository.fromContext(context);
-    List<StudentModel> listAllStudent = await adminRepository.getAllStudent();
+    List<StudentModel> listAllStudent = await FireBaseProvider.instance.getAllStudent();
 
-    List<StudentClassModel>? list = await adminRepository
-        .getStudentClassByClassId(int.parse(TextUtils.getName(position: 2)));
+    List<StudentClassModel>? list = await  FireBaseProvider.instance.getStudentClassInClass(int.parse(TextUtils.getName(position: 2)));
 
     listStudentClass = [];
     listStudentClass!.addAll(list);
@@ -133,10 +130,8 @@ class SessionCubit extends Cubit<int> {
   }
 
   loadStudentLesson(context) async {
-    TeacherRepository teacherRepository =
-    TeacherRepository.fromContext(context);
 
-    var list = await teacherRepository.getAllStudentLessonInLesson(
+    var list = await FireBaseProvider.instance.getAllStudentLessonInLesson(
         int.parse(TextUtils.getName(position: 2)),
         int.parse(TextUtils.getName()));
 

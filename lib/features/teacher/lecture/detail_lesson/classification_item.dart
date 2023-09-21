@@ -4,7 +4,6 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/attendance_item.dart';
 import 'package:internal_sakumi/model/student_model.dart';
-import 'package:internal_sakumi/repository/teacher_repository.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class ClassificationItem extends StatelessWidget {
@@ -65,7 +64,7 @@ class ClassificationItem extends StatelessWidget {
                                       onPressed: (v) {
                                         s = firstItems.indexOf(v.toString());
                                         debugPrint('==========> index $s === ${controller.text}');
-                                        BlocProvider.of<DropdownAttendanceCubit>(c).updateStudentStatus('active_status', s, studentModel.userId, context);
+                                        BlocProvider.of<DropdownAttendanceCubit>(c).updateStudentStatus('active_status', s, studentModel.userId);
                                       })))),
                       Expanded(flex: 1, child: Container()),
                     ],
@@ -87,7 +86,7 @@ class ClassificationItem extends StatelessWidget {
                                     items: secondItems,
                                     onPressed: (v) {
                                       s = secondItems.indexOf(v.toString());
-                                      BlocProvider.of<DropdownAttendanceCubit>(c).updateStudentStatus('learning_status', s, studentModel.userId, c);
+                                      BlocProvider.of<DropdownAttendanceCubit>(c).updateStudentStatus('learning_status', s, studentModel.userId);
                                     })))
                       )
                     ],

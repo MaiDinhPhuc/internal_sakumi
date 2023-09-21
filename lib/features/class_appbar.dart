@@ -10,7 +10,6 @@ import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/navigation/navigation.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
-import 'package:internal_sakumi/repository/user_repository.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/back_button.dart';
@@ -313,7 +312,10 @@ class NameCubit extends Cubit<String?> {
   NameCubit() : super(null);
 
   load(context) async {
-    var userRepo = UserRepository.fromContext(context);
-    emit(await userRepo.getName());
+    emit(await getName());
   }
+}
+Future<String?> getName() async {
+  SharedPreferences localData = await SharedPreferences.getInstance();
+  return localData.getString(PrefKeyConfigs.name);
 }

@@ -1,18 +1,14 @@
 import 'dart:collection';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
-import 'package:internal_sakumi/repository/admin_repository.dart';
-import 'package:internal_sakumi/repository/teacher_repository.dart';
-import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/screens/admin/add_user_to_class_screen.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
@@ -195,13 +191,11 @@ class StudentsInClassCubit extends Cubit<List<StudentModel>?> {
       : super(null);
 
   load(context) async {
-    AdminRepository adminRepository = AdminRepository.fromContext(context);
     List<int> list = [];
     List<StudentModel> listStudent = [];
-    List<StudentModel> listAllStudent = await adminRepository.getAllStudent();
+    List<StudentModel> listAllStudent = await FireBaseProvider.instance.getAllStudent();
 
-    List<StudentClassModel> listStudentClass = await adminRepository
-        .getStudentClassByClassId(int.parse(TextUtils.getName()));
+    List<StudentClassModel> listStudentClass = await  FireBaseProvider.instance.getStudentClassInClass(int.parse(TextUtils.getName()));
 
     for (var i in listStudentClass) {
       list.add(i.userId);
@@ -232,13 +226,10 @@ class TeachersInClassCubit extends Cubit<List<TeacherModel>> {
       : super([]);
 
   load(context) async {
-    AdminRepository adminRepository = AdminRepository.fromContext(context);
-    TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
     List<int> list = [];
     List<TeacherModel> listTeacher = [];
-    List<TeacherModel> listAllTeacher = await adminRepository.getAllTeacher();
-    List<TeacherClassModel> listTeacherClass = await teacherRepository
+    List<TeacherModel> listAllTeacher = await FireBaseProvider.instance.getAllTeacher();
+    List<TeacherClassModel> listTeacherClass = await FireBaseProvider.instance
         .getTeacherClassById('class_id', int.parse(TextUtils.getName()));
     for (var i in listTeacherClass) {
       list.add(i.userId);

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/grading/sound/sound_cubit.dart';
-import 'package:internal_sakumi/repository/teacher_repository.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
@@ -105,8 +105,6 @@ class CheckActiveCubit extends Cubit<bool> {
 
 Future<void> submit(DetailGradingCubit cubit, context, CheckActiveCubit checkCubit, String type) async {
   cubit.loadingState();
-  TeacherRepository teacherRepository =
-  TeacherRepository.fromContext(context);
   for(var i in cubit.answers){
     if(i.listImagePicker.isNotEmpty){
       List<String> list = [];
@@ -114,7 +112,7 @@ Future<void> submit(DetailGradingCubit cubit, context, CheckActiveCubit checkCub
         if(i.checkIsUrl(j)){
           list.add(j);
         }else{
-          final url = await teacherRepository.uploadImageAndGetUrl(j, 'teacher_note_for_student');
+          final url = await FireBaseProvider.instance.uploadImageAndGetUrl(j, 'teacher_note_for_student');
           list.add(url);
         }
       }

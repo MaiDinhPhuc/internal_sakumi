@@ -5,7 +5,7 @@ import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
-import 'package:internal_sakumi/repository/admin_repository.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class ManageGeneralCubit extends Cubit<int> {
   ManageGeneralCubit() : super(-1);
@@ -25,9 +25,8 @@ class ManageGeneralCubit extends Cubit<int> {
   List<String> listAllClassStatusMenu = ["Preparing", "InProgress", "Completed", "Cancel", "Remove"];
 
   loadAllClass(context) async {
-    AdminRepository adminRepository = AdminRepository.fromContext(context);
-    listAllClass = await adminRepository.getListClass();
-    listAllCourse = await adminRepository.getAllCourse();
+    listAllClass = await FireBaseProvider.instance.getListClassNotRemove();
+    listAllCourse = await FireBaseProvider.instance.getAllCourse();
     listClassNow = listAllClass;
     for(int i = 0; i < listAllCourse!.length ;i++){
       listStateCourse.add(true);
@@ -39,9 +38,8 @@ class ManageGeneralCubit extends Cubit<int> {
   }
 
   loadAfterAddClass(int index,context) async {
-    AdminRepository adminRepository = AdminRepository.fromContext(context);
-    listAllClass = await adminRepository.getListClass();
-    listAllCourse = await adminRepository.getAllCourse();
+    listAllClass = await FireBaseProvider.instance.getListClassNotRemove();
+    listAllCourse = await FireBaseProvider.instance.getAllCourse();
     listClassNow = listAllClass;
     selector = index;
     canAdd = true;
@@ -51,8 +49,7 @@ class ManageGeneralCubit extends Cubit<int> {
   }
 
   loadAfterChangeClassStatus(ClassModel classModel, String newStatus, context)async{
-    AdminRepository adminRepository = AdminRepository.fromContext(context);
-    listAllClass = await adminRepository.getListClass();
+    listAllClass = await FireBaseProvider.instance.getListClassNotRemove();
     filterClass();
     emit(state+2);
   }
@@ -120,9 +117,8 @@ class ManageGeneralCubit extends Cubit<int> {
 
   loadTeacherInClass(BuildContext context, int selector)async{
     listTeacher = null;
-    var adminRepo = AdminRepository.fromContext(context);
-    var listAllTeacher = await adminRepo.getAllTeacher();
-    var listAllTeacherInClass = await adminRepo.getAllTeacherInClassByClassId(selector);
+    var listAllTeacher = await FireBaseProvider.instance.getAllTeacher();
+    var listAllTeacherInClass = await FireBaseProvider.instance.getAllTeacherInClassByClassId(selector);
     debugPrint('============> loadTeacherInClass ${listAllTeacherInClass.length}');
     listTeacher = [];
     for(var i in listAllTeacher){
@@ -149,11 +145,10 @@ class ManageGeneralCubit extends Cubit<int> {
     listStudent = null;
     listStudentClass = null;
     debugPrint('============> loadStudentInClass 1');
-    var adminRepo = AdminRepository.fromContext(context);
     debugPrint('============> loadStudentInClass 2');
-    var listAllStudent = await adminRepo.getAllStudent();
+    var listAllStudent = await FireBaseProvider.instance.getAllStudent();
     debugPrint('============> loadStudentInClass 3 $selector');
-    List<StudentClassModel> listAllStudentInClass = await adminRepo.getStudentClassByClassId(selector);
+    List<StudentClassModel> listAllStudentInClass = await FireBaseProvider.instance.getStudentClassInClass(selector);
     debugPrint('============> loadStudentInClass 4');
     listStudent = [];
     listStudentClass = listAllStudentInClass;

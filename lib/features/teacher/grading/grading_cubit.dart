@@ -6,7 +6,7 @@ import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
-import 'package:internal_sakumi/repository/teacher_repository.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
 class GradingCubit extends Cubit<int> {
@@ -33,34 +33,28 @@ class GradingCubit extends Cubit<int> {
   }
 
   loadClass(context) async {
-    TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
 
     classModel =
-        await teacherRepository.getClassById(int.parse(TextUtils.getName()));
+        await FireBaseProvider.instance.getClassById(int.parse(TextUtils.getName()));
 
     emit(state + 2);
   }
 
   loadBTVN(context) async {
-    TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
-    listLessonResult = await teacherRepository
+    listLessonResult = await FireBaseProvider.instance
         .getLessonResultByClassId(int.parse(TextUtils.getName()));
     lessons =
-        await teacherRepository.getLessonsByCourseId(classModel!.courseId);
-    listStudentLessons = await teacherRepository
-        .getAllStudentLesson(int.parse(TextUtils.getName()));
+        await FireBaseProvider.instance.getLessonsByCourseId(classModel!.courseId);
+    listStudentLessons = await FireBaseProvider.instance
+        .getAllStudentLessonsInClass(int.parse(TextUtils.getName()));
     emit(state + 2);
   }
 
   loadTest(context) async {
-    TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
-    tests = await teacherRepository.getListTestByCourseId(classModel!.courseId);
-    listTestResult = await teacherRepository
+    tests = await FireBaseProvider.instance.getListTestByCourseId(classModel!.courseId);
+    listTestResult = await FireBaseProvider.instance
         .getListTestResult(int.parse(TextUtils.getName()));
-    listStudentTests = await teacherRepository
+    listStudentTests = await FireBaseProvider.instance
         .getAllStudentTest(int.parse(TextUtils.getName()));
     emit(state + 1);
   }

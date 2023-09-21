@@ -2,7 +2,7 @@ import 'dart:html';
 
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
-import 'package:internal_sakumi/firebase_service/auth_service.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/resizable.dart';
@@ -39,7 +39,7 @@ class SplashScreen extends StatelessWidget {
     } else {
       if (Navigator.of(context).isCurrent("/")) {
         String userEmail = localData.getString(PrefKeyConfigs.email).toString();
-        AuthServices.autoLogInUser(userEmail, context);
+        FireBaseProvider.instance.autoLogInUser(userEmail, context);
       }
     }
   }

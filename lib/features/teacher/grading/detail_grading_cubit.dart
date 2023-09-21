@@ -6,8 +6,7 @@ import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
-import 'package:internal_sakumi/repository/teacher_repository.dart';
-import 'package:internal_sakumi/repository/user_repository.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
 class DetailGradingCubit extends Cubit<int> {
@@ -62,34 +61,31 @@ class DetailGradingCubit extends Cubit<int> {
       .toList();
 
   loadFirst(context, String type) async {
-    TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
-    UserRepository userRepository = UserRepository.fromContext(context);
-    classModel = await teacherRepository.getClassById(int.parse(TextUtils.getName(position: 2)));
-    courseModel = await teacherRepository.getCourseById(classModel!.courseId);
+    classModel = await FireBaseProvider.instance.getClassById(int.parse(TextUtils.getName(position: 2)));
+    courseModel = await FireBaseProvider.instance.getCourseById(classModel!.courseId);
     token = courseModel!.token;
     if(type == "test"){
       listQuestions =
-      await teacherRepository.getQuestionByUrl(AppConfigs.getDataUrl("test_${TextUtils.getName()}.json",token));
+      await FireBaseProvider.instance.getQuestionByUrl(AppConfigs.getDataUrl("test_${TextUtils.getName()}.json",token));
     }else{
       listQuestions =
-      await teacherRepository.getQuestionByUrl(AppConfigs.getDataUrl("btvn_${TextUtils.getName()}.json",token));
-       }
+      await FireBaseProvider.instance.getQuestionByUrl(AppConfigs.getDataUrl("btvn_${TextUtils.getName()}.json",token));
+    }
 
-    listAnswer = await teacherRepository.getListAnswer(
+    listAnswer = await FireBaseProvider.instance.getListAnswer(
         int.parse(TextUtils.getName()),
         int.parse(TextUtils.getName(position: 2)));
 
     if (listAnswer!.isEmpty) {
       emit(0);
     } else {
-      List<StudentClassModel> listStudentClass = await teacherRepository
+      List<StudentClassModel> listStudentClass = await FireBaseProvider.instance
           .getStudentClassInClass(int.parse(TextUtils.getName(position: 2)));
       listStudent = [];
       for (var i in listStudentClass) {
         for (var j in listAnswer!) {
-          if (i.userId == j.studentId) {
-            listStudent!.add(await userRepository.getStudentInfo(i.userId));
+          if (i.userId == j.studentId && i.classStatus != "Remove") {
+            listStudent!.add(await FireBaseProvider.instance.getStudentInfo(i.userId));
             break;
           }
         }

@@ -1,4 +1,3 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
@@ -6,11 +5,8 @@ import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_class/list_class_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
-import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
-import 'package:internal_sakumi/model/class_model.dart';
-import 'package:internal_sakumi/repository/admin_repository.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:shared_preferences/shared_preferences.dart';

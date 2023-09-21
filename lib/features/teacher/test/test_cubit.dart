@@ -8,9 +8,7 @@ import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
-import 'package:internal_sakumi/repository/teacher_repository.dart';
-import 'package:internal_sakumi/repository/user_repository.dart';
-import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,23 +25,22 @@ class TestCubit extends Cubit<int> {
   List<StudentModel>? listStudents;
 
   init(context) async {
-    TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
-    UserRepository userRepository = UserRepository.fromContext(context);
     classModel =
-        await teacherRepository.getClassById(int.parse(TextUtils.getName()));
+        await FireBaseProvider.instance.getClassById(int.parse(TextUtils.getName()));
     listTest =
-        await teacherRepository.getListTestByCourseId(classModel!.courseId);
+        await FireBaseProvider.instance.getListTestByCourseId(classModel!.courseId);
     listTestState = [];
     for (var i in listTest!) {
-      listTestState!.add(await teacherRepository.getListStudentTest(
+      listTestState!.add(await FireBaseProvider.instance.getListStudentTest(
           int.parse(TextUtils.getName()), i.id));
     }
-    List<StudentClassModel> listStudentClass = await teacherRepository
+    List<StudentClassModel> listStudentClass = await FireBaseProvider.instance
         .getStudentClassInClass(int.parse(TextUtils.getName()));
     listStudents = [];
     for (var i in listStudentClass) {
-      listStudents!.add(await userRepository.getStudentInfo(i.userId));
+      if(i.classStatus != "Remove"){
+        listStudents!.add(await FireBaseProvider.instance.getStudentInfo(i.userId));
+      }
     }
     listSubmit = [];
     listGPA = [];
@@ -65,7 +62,7 @@ class TestCubit extends Cubit<int> {
       listSubmit!.add(temp / listStudents!.length);
       listGPA!.add(sum / (count == 0 ? 1 : count));
     }
-    listTestResult = await teacherRepository
+    listTestResult = await FireBaseProvider.instance
         .getListTestResult(int.parse(TextUtils.getName()));
     emit(state + 1);
   }
