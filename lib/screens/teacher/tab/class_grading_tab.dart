@@ -21,7 +21,7 @@ class ClassGradingTab extends StatelessWidget {
         body: Column(
           children: [
             HeaderTeacher(
-                index: 3, classId: TextUtils.getName(position: 2), name: name, role: 'teacher'),
+                index: 3, classId: TextUtils.getName(position: 3), name: name, role: 'teacher'),
             BlocBuilder<GradingCubit, int>(builder: (c, s) {
               var cubit = BlocProvider.of<GradingCubit>(c);
               if(cubit.classModel == null){
@@ -180,7 +180,7 @@ class ClassGradingTab extends StatelessWidget {
                                             ElevatedButton(
                                               onPressed: ()async{
                                                 await Navigator.pushNamed(context,
-                                                    "${Routes.teacher}?name=$name/grading/class?id=${TextUtils.getName(position: 2)}/type?type=btvn/parent?id=${e.lessonId}");
+                                                    "${Routes.teacher}?name=$name/role?role=teacher/grading/class?id=${TextUtils.getName(position: 3)}/type?type=btvn/parent?id=${e.lessonId}");
                                               },
                                               style: ButtonStyle(
                                                   shadowColor: MaterialStateProperty.all(
@@ -274,7 +274,7 @@ class ClassGradingTab extends StatelessWidget {
                                             ElevatedButton(
                                               onPressed: ()async{
                                                   await Navigator.pushNamed(context,
-                                                      "${Routes.teacher}?name=$name/grading/class?id=${TextUtils.getName(position: 2)}/type?type=test/parent?id=${e.testId}");
+                                                      "${Routes.teacher}?name=$name/grading/class?id=${TextUtils.getName(position: 3)}/type?type=test/parent?id=${e.testId}");
                                               },
                                               style: ButtonStyle(
                                                   shadowColor: MaterialStateProperty.all(

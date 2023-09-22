@@ -69,7 +69,7 @@ class Routes {
         handler: profileTeacherHandler, transitionType: TransitionType.fadeIn);
     router.define(addTeacher,
         handler: addTeacherHandler, transitionType: TransitionType.fadeIn);
-    router.define('/:name/grading/:classId',
+    router.define('/:name/:role/grading/:classId',
         handler: gradingHandler, transitionType: TransitionType.fadeIn);
     router.define('/:name/:role/overview/:classId',
         handler: overViewHandler, transitionType: TransitionType.fadeIn);
@@ -77,9 +77,9 @@ class Routes {
         handler: lessonsHandler, transitionType: TransitionType.fadeIn);
     router.define('/:name/:role/:test/:classId',
         handler: testHandler, transitionType: TransitionType.fadeIn);
-    router.define('/:name/grading/:classId/:type/:parentId',
+    router.define('/:name/:role/grading/:classId/:type/:parentId',
         handler: detailGradingHandler, transitionType: TransitionType.fadeIn);
-    router.define('/:name/lesson/:classId/:lessonId',
+    router.define('/:name/:role/lesson/:classId/:lessonId',
         handler: detailLessonHandler, transitionType: TransitionType.fadeIn);
     // router.define('$admin/:classId',
     //     handler: detailClassHandler, transitionType: TransitionType.fadeIn);
