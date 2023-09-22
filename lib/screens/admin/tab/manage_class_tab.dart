@@ -17,7 +17,7 @@ class ManageClassTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoadListClassCubit()..init(context),
+      create: (context) => LoadListClassCubit()..init(),
       child: BlocBuilder<LoadListClassCubit, int>(
           builder: (c, list) {
             var cubit = BlocProvider.of<LoadListClassCubit>(c);

@@ -16,12 +16,12 @@ class LoadListClassCubit extends Cubit<int> {
   List<double>? rateAttendance, rateSubmit;
   List<LessonResultModel> allLessonResults = [];
 
-  init(context) async {
-    await loadListClass(context);
-    await loadStatisticClass(context);
+  init() async {
+    await loadListClass();
+    await loadStatisticClass();
   }
 
-  loadListClass(context) async {
+  loadListClass() async {
     List<ClassModel> listAllClass = [];
     List<CourseModel> listAllCourse = [];
 
@@ -62,7 +62,7 @@ class LoadListClassCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  loadStatisticClass(context) async {
+  loadStatisticClass() async {
 
     listSubmit = [];
     listAttendance = [];
