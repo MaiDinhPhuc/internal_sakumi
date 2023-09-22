@@ -10,9 +10,9 @@ class TestNotAlreadyView extends StatelessWidget {
       {super.key,
       required this.index,
       required this.title,
-      required this.onTap});
+      required this.onTap, required this.role});
   final int index;
-  final String title;
+  final String title, role;
   final Function() onTap;
 
   @override
@@ -45,7 +45,7 @@ class TestNotAlreadyView extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 16))),
           submit: Container(),
-          status: ElevatedButton(
+          status: role == "teacher" ? ElevatedButton(
             onPressed: () => alertAssignTestView(context, onTap),
             style: ButtonStyle(
                 shadowColor: MaterialStateProperty.all(greyColor.shade500),
@@ -61,7 +61,7 @@ class TestNotAlreadyView extends StatelessWidget {
                     fontWeight: FontWeight.w800,
                     fontSize: Resizable.font(context, 12),
                     color: greyColor.shade500)),
-          ),
+          ) : Container(),
           mark: Container(),
           dropdown: Container()),
     );

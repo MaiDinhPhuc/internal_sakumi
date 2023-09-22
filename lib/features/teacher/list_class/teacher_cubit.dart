@@ -7,8 +7,7 @@ import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
-import 'package:internal_sakumi/repository/admin_repository.dart';
-import 'package:internal_sakumi/repository/teacher_repository.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
 class TeacherCubit extends Cubit<int> {
@@ -39,29 +38,24 @@ class TeacherCubit extends Cubit<int> {
   }
 
   loadProfileTeacher(context) async {
-    TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
-    teacherProfile = await teacherRepository.getTeacher(TextUtils.getName());
+    teacherProfile = await FireBaseProvider.instance.getTeacherByTeacherCode(TextUtils.getName());
     emit(state + 1);
   }
 
   loadListClassOfTeacher(context) async {
-    AdminRepository adminRepository = AdminRepository.fromContext(context);
-    TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
     List<TeacherClassModel> listTeacherClass = [];
     List<ClassModel> listAllClass = [];
     List<CourseModel> listAllCourse = [];
 
 
     if(isListInProgress && isListDone){
-      listTeacherClass = await  teacherRepository.getTeacherClassById(
+      listTeacherClass = await  FireBaseProvider.instance.getTeacherClassById(
           'user_id', teacherProfile!.userId);
     }else if(isListInProgress && !isListDone){
-      listTeacherClass = await  teacherRepository.getTeacherClassByStatus(
+      listTeacherClass = await  FireBaseProvider.instance.getTeacherClassByStatus(
           teacherProfile!.userId, TeacherClassModel.fromString(AppText.optInProgress.text));
     }else if(!isListInProgress && isListDone){
-      listTeacherClass = await  teacherRepository.getTeacherClassByStatus(
+      listTeacherClass = await  FireBaseProvider.instance.getTeacherClassByStatus(
           teacherProfile!.userId, TeacherClassModel.fromString(AppText.optComplete.text));
     }
 
@@ -71,8 +65,8 @@ class TeacherCubit extends Cubit<int> {
     //     : teacherRepository.getTeacherClassByStatus(
     //         teacherProfile!.userId, TeacherClassModel.fromString(option)));
 
-    listAllClass = await adminRepository.getAllClass();
-    listAllCourse = await adminRepository.getAllCourse();
+    listAllClass = await FireBaseProvider.instance.getAllClass();
+    listAllCourse = await FireBaseProvider.instance.getAllCourse();
 
     listClass = [];
     for (var i in listTeacherClass) {
@@ -86,7 +80,7 @@ class TeacherCubit extends Cubit<int> {
 
     courses = [];
     listStatus = [];
-    allLessonResults = await teacherRepository.getAllLessonResult();
+    allLessonResults = await FireBaseProvider.instance.getAllLessonResult();
 
     for (var i in listClass!) {
       var temp = allLessonResults.fold(<LessonResultModel>[],
@@ -110,8 +104,6 @@ class TeacherCubit extends Cubit<int> {
   }
 
   loadStatisticClass(context) async {
-    TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
 
     listSubmit = [];
     listAttendance = [];
@@ -120,11 +112,11 @@ class TeacherCubit extends Cubit<int> {
     rateSubmit = [];
     rateAttendance = [];
 
-    var listAllStudentLessons = await teacherRepository.getAllStudentLessons();
+    var listAllStudentLessons = await FireBaseProvider.instance.getAllStudentLessons();
 
-    var lstLesson = await teacherRepository.getAllLesson();
+    var lstLesson = await FireBaseProvider.instance.getAllLesson();
     for (var item in listClass!) {
-      var activeLessonResults = allLessonResults!.fold(<LessonResultModel>[],
+      var activeLessonResults = allLessonResults.fold(<LessonResultModel>[],
           (pre, e) => [...pre, if (item.classId == e.classId) e]);
 
       List<LessonModel> lessons = lstLesson.fold(<LessonModel>[],

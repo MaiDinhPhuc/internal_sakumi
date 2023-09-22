@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/filter_class_status_menu.dart';
+import 'package:internal_sakumi/features/admin/manage_general/filter_class_type_menu.dart';
 import 'package:internal_sakumi/features/admin/manage_general/filter_course_menu.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_class/manage_general_list_class.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_teacher/manage_general_list_teacher.dart';
@@ -34,6 +35,7 @@ class ManageGeneralScreen extends StatelessWidget {
                   Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    FilterClassTypeMenu(cubit: cubit),
                     FilterCourseMenu(cubit: cubit),
                     FilterClassStatusMenu(cubit:cubit)
                   ],

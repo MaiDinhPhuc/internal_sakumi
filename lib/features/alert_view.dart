@@ -72,9 +72,9 @@ void alertView(BuildContext context, String note) {
                       SubmitButton(
                           onPressed: () {
                             BlocProvider.of<DetailLessonCubit>(context)
-                                .updateStatus(context, 'Complete');
+                                .updateStatus('Complete');
                             BlocProvider.of<DetailLessonCubit>(context)
-                                .noteForStudents(context, note);
+                                .noteForStudents(note);
                             Navigator.pop(context);
                           },
                           title: AppText.txtAgree.text)

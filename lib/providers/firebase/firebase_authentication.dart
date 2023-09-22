@@ -1,80 +1,41 @@
+import 'dart:typed_data';
+
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/Material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/firebase_service/firestore_service.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
-import 'package:internal_sakumi/repository/admin_repository.dart';
-import 'package:internal_sakumi/repository/teacher_repository.dart';
-import 'package:internal_sakumi/repository/user_repository.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
-import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthServices {
-  static signupUser(
-      String name,
-      String note,
-      String phone,
-      String code,
-      bool inJapan,
-      String email,
-      String role,
-      int uid,
-      BuildContext context) async {
-    try {
-      // UserCredential userCredential = await FirebaseAuth.instance
-      //     .createUserWithEmailAndPassword(email: email, password: "Aa@12345");
-      await FirebaseAuth.instance.currentUser!.updatePassword("abc12345");
-      await FirebaseAuth.instance.currentUser!.updateEmail(email);
-      await FirestoreServices.saveUser(email, role, uid);
-      role == AppText.selectorStudent.text
-          ? await FirestoreServices.addStudent(
-              uid, name, note, phone, code, "", inJapan)
-          : await FirestoreServices.addSensei(name, note, phone, uid, code, "");
+class FirebaseAuthentication {
+  FirebaseAuthentication._privateConstructor();
+  static final FirebaseAuthentication instance = FirebaseAuthentication._privateConstructor();
 
-      if (context.mounted) {
-        //userCredential;
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Registration Successful')));
-      }
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Password Provided is too weak')));
-      } else if (e.code == 'email-already-in-use') {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Email Provided already Exists')));
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
-    }
-  }
-
-  static logInUser(TextEditingController emailController, TextEditingController passwordController, context, ErrorCubit cubit) async {
+  Future<bool> logInUser(TextEditingController emailController, TextEditingController passwordController, BuildContext context, ErrorCubit cubit)async{
     waitingDialog(context);
     try {
-      var userRepo = UserRepository.fromContext(context);
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: emailController.text, password: passwordController.text);
-      UserModel user = await userRepo.getUser(emailController.text);
+      UserModel user = await FireBaseProvider.instance.getUser(emailController.text);
 
       if (user.role == "admin" ||
           user.role == "master" ||
           user.role == "teacher") {
         debugPrint("======== ${user.role} ==========");
         SharedPreferences sharedPreferences =
-        await SharedPreferences.getInstance();
-        AdminRepository adminRepository = AdminRepository.fromContext(context);
+            await SharedPreferences.getInstance();
 
         if (user.role == "admin") {
-          AdminModel adminModel = await adminRepository.getAdminById(user.id);
+          AdminModel adminModel = await FireBaseProvider.instance.getAdminById(user.id);
 
           sharedPreferences.setString(
               PrefKeyConfigs.code, adminModel.adminCode);
@@ -89,10 +50,8 @@ class AuthServices {
               context, "${Routes.admin}?name=${adminModel.adminCode.trim()}");
         }
         if (user.role == "teacher") {
-          TeacherRepository teacherRepository =
-              TeacherRepository.fromContext(context);
           TeacherModel teacherModel =
-              await teacherRepository.getTeacherById(user.id);
+              await FireBaseProvider.instance.getTeacherById(user.id);
           sharedPreferences.setString(
               PrefKeyConfigs.code, teacherModel.teacherCode);
           sharedPreferences.setString(PrefKeyConfigs.password, passwordController.text);
@@ -124,47 +83,75 @@ class AuthServices {
               content: Text('You don\'t have permission to access ')));
         });
       }
+      return true;
     } on FirebaseAuthException catch (e) {
       if (context.mounted) {
         Navigator.pop(context);
       }
-      RegExp regex = RegExp(r'\((.*?)\)');
+      debugPrint("code : ${e.code}");
+      debugPrint("message : ${e.message}");
+      if(AppConfigs.isRunningDebug){
+        RegExp regex = RegExp(r'\((.*?)\)');
 
-      Match? match = regex.firstMatch(e.message!);
+        Match? match = regex.firstMatch(e.message!);
 
-      if (match != null) {
-        String result = match.group(1)!;
-        if(result == 'auth/user-not-found'){
+        if (match != null) {
+          String result = match.group(1)!;
+          if(result == 'auth/user-not-found'){
+            cubit.changeError(AppText.txtWrongAccount.text);
+          }else if(result == 'auth/wrong-password'){
+            cubit.changeError(AppText.txtWrongPassword.text);
+            passwordController.clear();
+          }else{
+            cubit.changeError(AppText.txtInvalidLogin.text);
+          }
+        }
+      }else{
+        if(e.code == 'user-not-found'){
           cubit.changeError(AppText.txtWrongAccount.text);
-        }else if(result == 'auth/wrong-password'){
+        }else if(e.code == 'wrong-password'){
           cubit.changeError(AppText.txtWrongPassword.text);
           passwordController.clear();
         }else{
           cubit.changeError(AppText.txtInvalidLogin.text);
         }
       }
+
+      return false;
     }
   }
-  static autoLogInUser(String email,context) async {
+
+  Future<bool> logOutUser(BuildContext context)async{
+    final auth = FirebaseAuth.instance;
+    await auth.signOut();
+    SharedPreferences sharedPreferences =
+    await SharedPreferences.getInstance();
+    sharedPreferences.setString(
+        PrefKeyConfigs.code, '');
+    sharedPreferences.setString(PrefKeyConfigs.password, '');
+    sharedPreferences.setInt(PrefKeyConfigs.userId, -1);
+    sharedPreferences.setString(PrefKeyConfigs.name, '');
+    sharedPreferences.setString(PrefKeyConfigs.email, '');
+    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+    return true;
+  }
+
+  Future<bool> autoLogInUser(String email, BuildContext context)async{
     try {
-      var userRepo = UserRepository.fromContext(context);
-      UserModel user = await userRepo.getUser(email);
+      UserModel user = await FireBaseProvider.instance.getUser(email);
 
       if (user.role == "admin" ||
           user.role == "master" ||
           user.role == "teacher") {
         debugPrint("======== ${user.role} ==========");
         if (user.role == "admin") {
-          AdminRepository adminRepository = AdminRepository.fromContext(context);
-          AdminModel adminModel = await adminRepository.getAdminById(user.id);
+          AdminModel adminModel = await FireBaseProvider.instance.getAdminById(user.id);
           Navigator.pushReplacementNamed(
               context, "${Routes.admin}?name=${adminModel.adminCode.trim()}");
         }
         if (user.role == "teacher") {
-          TeacherRepository teacherRepository =
-          TeacherRepository.fromContext(context);
           TeacherModel teacherModel =
-          await teacherRepository.getTeacherById(user.id);
+          await FireBaseProvider.instance.getTeacherById(user.id);
           Navigator.pushReplacementNamed(context,
               "${Routes.teacher}?name=${teacherModel.teacherCode.trim()}");
         }
@@ -172,9 +159,36 @@ class AuthServices {
           Navigator.pushReplacementNamed(context, Routes.master);
         }
       }
+      return true;
     } on FirebaseAuthException catch (e) {
       debugPrint("==========>login Error");
+      return false;
     }
   }
-}
 
+  Future<bool> changePassword(String email, String oldPass, String newPass) async{
+
+    final currentUser = FirebaseAuth.instance.currentUser;
+    bool res = false;
+    var cred = EmailAuthProvider.credential(email: email, password: oldPass);
+
+    try {
+      await currentUser!.reauthenticateWithCredential(cred);
+
+      await currentUser.updatePassword(newPass);
+      Fluttertoast.showToast(msg: 'Đổi mật khẩu thành công');
+      res = true;
+    } catch (error) {
+      debugPrint('=>>>>>>>>>>>>>error: $error');
+      Fluttertoast.showToast(msg: 'Có lỗi xảy ra! Thử lại');
+    }
+    return res;
+  }
+
+  Future<String> uploadImageAndGetUrl(Uint8List data ,String folder) async {
+    final now = DateTime.now().microsecondsSinceEpoch;
+    final ref = FirebaseStorage.instance.ref().child('$folder/$now');
+    await ref.putData(data, SettableMetadata(contentType: '.png'));
+    return await ref.getDownloadURL();
+  }
+}

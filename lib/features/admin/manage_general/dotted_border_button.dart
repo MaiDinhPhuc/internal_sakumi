@@ -26,7 +26,6 @@ class DottedBorderButton extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.add, color: const Color(0xff757575), size: Resizable.size(context, 10)),
               Text(title, style: TextStyle(
                   fontSize: Resizable.font(context, isManageGeneral ? 15 : 20), fontWeight: FontWeight.w700, color: const Color(0xff757575)
               ))],

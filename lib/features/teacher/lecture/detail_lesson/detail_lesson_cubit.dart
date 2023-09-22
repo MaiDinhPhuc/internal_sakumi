@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
-import 'package:internal_sakumi/repository/teacher_repository.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,19 +22,17 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
   bool? check;
   int? teacherId;
 
-  checkLessonResult(context) async {
-    TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
+  checkLessonResult() async {
 
     SharedPreferences localData = await SharedPreferences.getInstance();
     teacherId = int.parse(localData.getInt(PrefKeyConfigs.userId).toString());
-    var classModel = await teacherRepository
-        .getClass(int.parse(TextUtils.getName(position: 2)));
-    var lessonModel = await teacherRepository.getLesson(
+    var classModel = await FireBaseProvider.instance
+        .getClassById(int.parse(TextUtils.getName(position: 2)));
+    var lessonModel = await FireBaseProvider.instance.getLesson(
         classModel.courseId, int.parse(TextUtils.getName()));
     title = lessonModel.title;
 
-    check = await teacherRepository.checkLessonResult(int.parse(TextUtils.getName()), int.parse(
+    check = await FireBaseProvider.instance.checkLessonResult(int.parse(TextUtils.getName()), int.parse(
         TextUtils.getName(position: 2)));
 
     debugPrint('=============> addLessonResult $check');
@@ -54,26 +52,21 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
     }
 
     if(check == true){
-      emit(await teacherRepository.getLessonResultByLessonId(
+      emit(await FireBaseProvider.instance.getLessonResultByLessonId(
           int.parse(TextUtils.getName()),
           int.parse(TextUtils.getName(position: 2))));
     }
   }
 
-  addLessonResult(context, LessonResultModel model)async{
-    TeacherRepository teacherRepository =
-    TeacherRepository.fromContext(context);
+  addLessonResult(LessonResultModel model)async{
 
-    await teacherRepository.addLessonResult(model);
+    await FireBaseProvider.instance.addLessonResult(model);
 
     emit(model);
   }
 
-  updateStatus(context, String status) async {
-    TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
-
-    await teacherRepository.changeStatusLesson(int.parse(TextUtils.getName()),
+  updateStatus(String status) async {
+    await FireBaseProvider.instance.changeStatusLesson(int.parse(TextUtils.getName()),
         int.parse(TextUtils.getName(position: 2)), status);
 
     emit(LessonResultModel(
@@ -88,15 +81,12 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
         noteForTeacher: state!.noteForTeacher));
   }
 
-  noteForStudents(context, String note) async {
-    TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
-
-    await teacherRepository.noteForAllStudentInClass(
+  noteForStudents(String note) async {
+    await FireBaseProvider.instance.noteForAllStudentInClass(
         int.parse(TextUtils.getName()),
         int.parse(TextUtils.getName(position: 2)),
         note);
-    await teacherRepository.updateTeacherInLessonResult(
+    await FireBaseProvider.instance.updateTeacherInLessonResult(
         int.parse(TextUtils.getName()),
         int.parse(TextUtils.getName(position: 2)),teacherId!
         );
@@ -112,11 +102,9 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
         noteForTeacher: state!.noteForTeacher));
   }
 
-  noteForSupport(context, String note) async {
-    TeacherRepository teacherRepository =
-    TeacherRepository.fromContext(context);
+  noteForSupport(String note) async {
 
-    await teacherRepository.noteForSupport(
+    await FireBaseProvider.instance.noteForSupport(
         int.parse(TextUtils.getName()),
         int.parse(TextUtils.getName(position: 2)),
         note);
@@ -132,11 +120,9 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
         noteForTeacher: state!.noteForTeacher));
   }
 
-  noteForAnotherSensei(context, String note) async {
-    TeacherRepository teacherRepository =
-    TeacherRepository.fromContext(context);
+  noteForAnotherSensei(String note) async {
 
-    await teacherRepository.noteForAnotherSensei(
+    await FireBaseProvider.instance.noteForAnotherSensei(
         int.parse(TextUtils.getName()),
         int.parse(TextUtils.getName(position: 2)),
         note);

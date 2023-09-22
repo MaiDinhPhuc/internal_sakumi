@@ -3,16 +3,13 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker_web/image_picker_web.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/user_model.dart';
-import 'package:internal_sakumi/repository/user_repository.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../configs/prefKey_configs.dart';
 import '../../../model/teacher_model.dart';
-import '../../../repository/teacher_repository.dart';
-import '../../../utils/text_utils.dart';
 import 'app_bar_info_teacher_cubit.dart';
 
 class TeacherProfileCubit extends Cubit<int> {
@@ -29,15 +26,12 @@ class TeacherProfileCubit extends Cubit<int> {
   List<Map<String, dynamic>>? listPassWordField;
 
   load(BuildContext context) async {
-    UserRepository userRepository = UserRepository.fromContext(context);
-    TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
     SharedPreferences localData = await SharedPreferences.getInstance();
-    profileTeacher = await teacherRepository
-        .getTeacher(localData.getString(PrefKeyConfigs.code).toString());
+    profileTeacher = await FireBaseProvider.instance
+        .getTeacherByTeacherCode(localData.getString(PrefKeyConfigs.code).toString());
     debugPrint('=>>>>>>>profileTeacher: ${profileTeacher!.name}');
     passTeacher = localData.getString(PrefKeyConfigs.password).toString();
-    userModel = await userRepository.getUserById(profileTeacher!.userId);
+    userModel = await FireBaseProvider.instance.getUserById(profileTeacher!.userId);
     listInfoTextField = [];
     isEditBaseInfo = false;
     isEditPassLogin = false;
@@ -157,15 +151,13 @@ class TeacherProfileCubit extends Cubit<int> {
   }
 
   void updateProfile(BuildContext context) async {
-    TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
     final controllerName =
         listInfoTextField?[0]['controller'] as TextEditingController;
     final controllerPhone =
         listInfoTextField?[1]['controller'] as TextEditingController;
     profileTeacher = profileTeacher!
         .copyWith(name: controllerName.text, phone: controllerPhone.text);
-    await teacherRepository.updateProfileTeacher(
+    await FireBaseProvider.instance.updateProfileTeacher(
         profileTeacher!.userId.toString(), profileTeacher!);
     Fluttertoast.showToast(msg: 'Cập nhật thông tin thành công');
     context.read<AppBarInfoTeacherCubit>().update(profileTeacher!);
@@ -173,13 +165,11 @@ class TeacherProfileCubit extends Cubit<int> {
   }
 
   void changeAvatar(BuildContext context, Uint8List img) async {
-    TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
     final url =
-        await teacherRepository.uploadImageAndGetUrl(img, 'teacher_avatar');
+        await FireBaseProvider.instance.uploadImageAndGetUrl(img, 'teacher_avatar');
     debugPrint('==============>url: $url');
     profileTeacher = profileTeacher!.copyWith(url: url);
-    await teacherRepository.updateProfileTeacher(
+    await FireBaseProvider.instance.updateProfileTeacher(
         profileTeacher!.userId.toString(), profileTeacher!);
     Fluttertoast.showToast(msg: 'Bạn đã đổi avatar');
     context.read<AppBarInfoTeacherCubit>().update(profileTeacher!);
@@ -204,10 +194,8 @@ class TeacherProfileCubit extends Cubit<int> {
 
 
   void changePassWord(BuildContext context) async {
-    TeacherRepository teacherRepository =
-    TeacherRepository.fromContext(context);
     final newPass = (listPassWordField![1]['controller'] as TextEditingController).text;
-    final res = await teacherRepository.changePassword(userModel!.email, passTeacher, newPass);
+    final res = await FireBaseProvider.instance.changePassword(userModel!.email, passTeacher, newPass);
     debugPrint('=>>>>>>>>> resaaaaaaaaa: $res');
     SharedPreferences sharedPreferences =
     await SharedPreferences.getInstance();

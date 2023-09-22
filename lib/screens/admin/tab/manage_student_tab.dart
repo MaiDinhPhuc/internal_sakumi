@@ -8,7 +8,7 @@ import 'package:internal_sakumi/features/admin/manage_general/list_student/alert
 import 'package:internal_sakumi/features/admin/manage_student/student_item_row_layout.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/model/student_model.dart';
-import 'package:internal_sakumi/repository/admin_repository.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -208,15 +208,13 @@ class LoadListStudentCubit extends Cubit<List<StudentModel>> {
   LoadListStudentCubit() : super([]);
 
   load(context) async {
-    AdminRepository adminRepository = AdminRepository.fromContext(context);
-    List<StudentModel> list = await adminRepository.getAllStudent();
+    List<StudentModel> list = await FireBaseProvider.instance.getAllStudent();
     emit(list);
   }
 
   update(context)async{
     emit([]);
-    AdminRepository adminRepository = AdminRepository.fromContext(context);
-    List<StudentModel> list = await adminRepository.getAllStudent();
+    List<StudentModel> list = await FireBaseProvider.instance.getAllStudent();
     emit(list);
   }
 }

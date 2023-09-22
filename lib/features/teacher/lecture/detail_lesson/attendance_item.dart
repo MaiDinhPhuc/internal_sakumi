@@ -5,7 +5,7 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/session_cubit.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
-import 'package:internal_sakumi/repository/teacher_repository.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
@@ -59,7 +59,6 @@ class AttendanceItem extends StatelessWidget {
                                       items: items,
                                     onPressed: (v) async {
                                       await addStudentLesson(
-                                          context,
                                           StudentLessonModel(
                                               grammar: -2,
                                               hw: -2,
@@ -90,9 +89,8 @@ class AttendanceItem extends StatelessWidget {
                   ),
                 )));
   }
-  addStudentLesson(context, StudentLessonModel model) async {
-    TeacherRepository teacherRepository = TeacherRepository.fromContext(context);
-    var check = await teacherRepository.addStudentLesson(model);
+  addStudentLesson(StudentLessonModel model) async {
+    var check = await FireBaseProvider.instance.addStudentLesson(model);
 
     debugPrint('===================> check addStudentLesson $check');
   }
@@ -151,23 +149,17 @@ class DropdownAttendanceCubit extends Cubit<int> {
   DropdownAttendanceCubit(this.userId) : super(userId);
 
   updateAttendance(int attendId, int id, context) async {
-    TeacherRepository teacherRepository =
-        TeacherRepository.fromContext(context);
-    await teacherRepository.updateTimekeeping(
+    await FireBaseProvider.instance.updateTimekeeping(
         id,
         int.parse(TextUtils.getName()),
         int.parse(TextUtils.getName(position: 2)),
         attendId);
     emit(attendId);
-    debugPrint(
-        '=============> attendId : $id === $attendId === ${userId}');
   }
 
-  updateStudentStatus(String type, int point, int id, context)async{
-    TeacherRepository teacherRepository =
-    TeacherRepository.fromContext(context);
+  updateStudentStatus(String type, int point, int id)async{
 
-    await teacherRepository.updateStudentStatus(id, int.parse(TextUtils.getName(position: 2)), point, type);
+    await FireBaseProvider.instance.updateStudentStatus(id, int.parse(TextUtils.getName(position: 2)), point, type);
 
     emit(point);
   }

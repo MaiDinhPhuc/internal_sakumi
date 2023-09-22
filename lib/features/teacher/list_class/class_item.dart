@@ -23,15 +23,10 @@ class ClassItem extends StatelessWidget {
                   widget: ClassOverview(index),
                   onTap: () async {
                     await Navigator.pushNamed(context,
-                        //Routes.classScreen
-                        "${Routes.teacher}?name=${TextUtils.getName().trim()}/overview/class?id=$classId"
-                        );
+                        "${Routes.teacher}?name=${TextUtils.getName().trim()}/role?role=teacher/overview/class?id=$classId");
                   },
                   onPressed: () {
                     BlocProvider.of<DropdownCubit>(c).update();
-                    // if (BlocProvider.of<TeacherCubit>(c).listPoint == null) {
-                    //   BlocProvider.of<TeacherCubit>(c).loadStatisticClass(c);
-                    // }
                   }),
               secondChild: CardItem(
                   isExpand: true,
@@ -49,8 +44,7 @@ class ClassItem extends StatelessWidget {
                   ),
                   onTap: () async {
                     await Navigator.pushNamed(context,
-                        //"${Routes.teacher}?name=${TextUtils.getName().trim()}/class?id=$classId"
-                        "${Routes.teacher}?name=${TextUtils.getName().trim()}/overview/class?id=$classId");
+                        "${Routes.teacher}?name=${TextUtils.getName().trim()}/role?role=teacher/overview/class?id=$classId");
                   },
                   onPressed: () => BlocProvider.of<DropdownCubit>(c).update()),
               crossFadeState: state % 2 == 1
@@ -63,7 +57,8 @@ class ClassItem extends StatelessWidget {
 
 class ClassItemInAdmin extends StatelessWidget {
   final int index, classId;
-  const ClassItemInAdmin(this.index, this.classId, {Key? key}) : super(key: key);
+  const ClassItemInAdmin(this.index, this.classId, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -74,9 +69,8 @@ class ClassItemInAdmin extends StatelessWidget {
               firstChild: CardItem(
                   widget: ClassOverviewInAdmin(index),
                   onTap: () async {
-                    // await Navigator.pushNamed(context,
-                    //     "${Routes.admin}?name=${TextUtils.getName().trim()}/overview/class?id=$classId"
-                    // );
+                    await Navigator.pushNamed(context,
+                        "${Routes.admin}?name=${TextUtils.getName().trim()}/role?role=admin/overview/class?id=$classId");
                   },
                   onPressed: () {
                     BlocProvider.of<DropdownCubit>(c).update();
@@ -86,19 +80,19 @@ class ClassItemInAdmin extends StatelessWidget {
                   widget: Column(
                     children: [
                       ClassOverviewInAdmin(index),
-                      (BlocProvider.of<LoadListClassCubit>(c).listStudentInClass ==
-                          null)
+                      (BlocProvider.of<LoadListClassCubit>(c)
+                                  .listStudentInClass ==
+                              null)
                           ? Transform.scale(
-                        scale: 0.75,
-                        child: const CircularProgressIndicator(),
-                      )
+                              scale: 0.75,
+                              child: const CircularProgressIndicator(),
+                            )
                           : CharInAdminView(index)
                     ],
                   ),
                   onTap: () async {
-                    // await Navigator.pushNamed(context,
-                    //     //"${Routes.teacher}?name=${TextUtils.getName().trim()}/class?id=$classId"
-                    //     "${Routes.teacher}?name=${TextUtils.getName().trim()}/overview/class?id=$classId");
+                    await Navigator.pushNamed(context,
+                        "${Routes.admin}?name=${TextUtils.getName().trim()}/role?role=admin/overview/class?id=$classId");
                   },
                   onPressed: () => BlocProvider.of<DropdownCubit>(c).update()),
               crossFadeState: state % 2 == 1

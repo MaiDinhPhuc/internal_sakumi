@@ -21,6 +21,7 @@ class TeacherProfile extends StatelessWidget {
               index: -1,
               classId: TextUtils.getName(position: 0),
               name: name,
+              role: "teacher",
             ),
             SizedBox(
               height: Resizable.size(context, 20),

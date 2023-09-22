@@ -76,6 +76,7 @@ enum AppText {
   titleListStudent,
   titleListTeacher,
   btnAddNewClass,
+  btnManageClass,
   btnAddNewStudent,
   btnAddTeacher,
   btnAddNewTeacher,
@@ -213,16 +214,24 @@ enum AppText {
   stsRenew,
   stsRemove,
   stsUpSale, txtType, textMarked, textNotMarked,
-  txtInvalidLogin,txtConfirmChangeStatus
+  txtInvalidLogin,txtConfirmDeleteClass, btnRemoveClass,
+  txtEditClassInfo, txtClassType, txtChooseClassType,txtPleaseChooseType,
+  txtConfirmChangeStatus
 }
 
 Map<AppText, String> texts = {
-  AppText.txtConfirmChangeStatus: 'SS chắc chắn muốn thay đổi\n trạng thái của @ từ % thành #',
+  AppText.txtConfirmChangeStatus: 'SS chắc chắn muốn thay đổi\n trạng thái của @ từ % sang #',
+  AppText.txtPleaseChooseType: 'Vui lòng chọn loại lớp',
+  AppText.txtEditClassInfo: 'Chỉnh sửa thông tin lớp học',
+  AppText.txtConfirmDeleteClass: 'SS chắc chắn muốn xoá lớp @ hay không?',
   AppText.txtInvalidLogin: 'Thông tin đăng nhập không hợp lệ',
   AppText.textNotMarked: 'Chưa chấm',
   AppText.textMarked: 'Đã chấm',
+  AppText.txtChooseClassType: 'Chọn loại lớp',
+  AppText.txtClassType: 'Loại lớp',
   AppText.txtType: 'Loại bài',
   AppText.stsUpSale: 'Lên cấp',
+  AppText.btnRemoveClass: 'Xoá lớp',
   AppText.stsRemove: 'Đã xoá',
   AppText.stsRenew: 'ReNew',
   AppText.txtNotGrading: 'Chưa chấm',
@@ -298,8 +307,8 @@ Map<AppText, String> texts = {
   AppText.textCancel: 'Thoát',
   AppText.titleAdmin: 'Admin',
   AppText.titleMaster: 'Master',
-  AppText.titleManageStudent: 'Quản lý học viên',
-  AppText.titleManageClass: 'Quản lý lớp học',
+  AppText.titleManageStudent: 'Danh sách học viên',
+  AppText.titleManageClass: 'Danh sách lớp học',
   AppText.titleManageTag: 'Quản lý tag',
   AppText.titleRole: 'Vai trò',
   AppText.titleUserId: 'Mã người dùng',
@@ -327,7 +336,8 @@ Map<AppText, String> texts = {
   AppText.titleListStudent: 'Danh sách học viên',
   AppText.titleListTeacher: 'Danh sách giáo viên',
   AppText.btnAddNewClass: 'Thêm lớp học mới',
-  AppText.btnAddNewStudent: 'Thêm học viên mới',
+  AppText.btnManageClass: 'Quản lý lớp học',
+  AppText.btnAddNewStudent: 'Quản lý học viên',
   AppText.btnAddTeacher: 'Thêm giáo viên',
   AppText.btnAddNewTeacher: 'Thêm giáo viên mới',
   AppText.btnUpdate: 'Cập nhật',
@@ -453,4 +463,33 @@ extension AppTexts on AppText {
   }
 
   String get text => texts[this] ?? '--TextNotFound--';
+}
+
+String vietnameseSubText(String text){
+  switch (text) {
+    case 'Completed':
+      return "Hoàn Thành";
+    case 'Moved':
+      return "Chuyển Lớp";
+    case 'UpSale':
+      return "Lên Kỳ";
+    case 'Retained':
+      return "Bảo Lưu";
+    case 'ReNew':
+      return "Đăng Ký Lại";
+    case 'Dropped':
+      return "Nghỉ Học";
+    case 'Remove':
+      return "Xoá";
+    case 'Viewer':
+      return "Người Xem";
+    case 'InProgress':
+      return "Đang Học";
+    case 'Cancel':
+      return "Huỷ";
+    case 'Preparing':
+      return "Mới Tạo";
+    default:
+      return "error";
+  }
 }

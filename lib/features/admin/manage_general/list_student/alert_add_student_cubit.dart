@@ -4,8 +4,7 @@ import 'package:internal_sakumi/features/admin/manage_general/manage_general_cub
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
-import 'package:internal_sakumi/repository/admin_repository.dart';
-import 'package:internal_sakumi/repository/user_repository.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 class AlertAddStudentCubit extends Cubit<int> {
@@ -18,11 +17,9 @@ class AlertAddStudentCubit extends Cubit<int> {
   bool active = false;
 
   loadAllUser(BuildContext context, ManageGeneralCubit cubit) async {
-    UserRepository userRepository = UserRepository.fromContext(context);
-    AdminRepository adminRepository = AdminRepository.fromContext(context);
-    listStudentClass = await adminRepository.getAllStudentInClass();
-    listAllStudent = await adminRepository.getAllStudent();
-    allUser = await userRepository.getAllUser();
+    listStudentClass = await FireBaseProvider.instance.getAllStudentInClass();
+    listAllStudent = await FireBaseProvider.instance.getAllStudent();
+    allUser = await FireBaseProvider.instance.getAllUser();
 
     listStd = [];
     for(var i in listAllStudent!){
@@ -46,17 +43,15 @@ class AlertAddStudentCubit extends Cubit<int> {
   }
 
   addStudentToClass(BuildContext context, StudentClassModel model) async {
-    AdminRepository adminRepository = AdminRepository.fromContext(context);
-    await adminRepository.addStudentToClass(model);
+    await FireBaseProvider.instance.addStudentToClass(model);
     debugPrint('==============> addStudentToClass ${model.userId}');
   }
 
   createStudent(
       BuildContext context, StudentModel model, UserModel userModel) async {
-    UserRepository userRepository = UserRepository.fromContext(context);
     Navigator.pop(context);
     waitingDialog(context);
     checkCreate =
-        await userRepository.createNewStudent(context, model, userModel);
+        await FireBaseProvider.instance.createNewStudent(model, userModel);
   }
 }

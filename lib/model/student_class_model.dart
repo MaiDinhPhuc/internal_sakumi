@@ -27,11 +27,11 @@ class StudentClassModel {
     switch (status) {
       case 'Completed':
       case 'Moved':
-      case 'UpSale':
         return const Color(0xffF57F17);
       case 'Retained':
-      case 'Renew':
+      case 'UpSale':
         return const Color(0xffE65100);
+      case 'ReNew':
       case 'Dropped':
       case 'Remove':
         return const Color(0xffB71C1C);
@@ -55,6 +55,10 @@ class StudentClassModel {
         return 'dropped';
       case 'Viewer':
         return 'viewer';
+      case 'UpSale':
+        return 'up_sale';
+      case 'ReNew':
+        return 're_new';
       default:
         return 'in_progress';
     }
@@ -72,7 +76,7 @@ class StudentClassModel {
         return AppText.stsDropped.text;
       case 'Viewer':
         return AppText.stsViewer.text;
-      case 'Renew':
+      case 'ReNew':
         return AppText.stsRenew.text;
       case 'Remove':
         return AppText.stsRemove.text;

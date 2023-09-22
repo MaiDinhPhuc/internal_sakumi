@@ -87,7 +87,7 @@ class InputDropdown extends StatelessWidget {
                   ))
               .toList(),
           validator: (value) {
-            if (value == null) {
+            if (value == null && !items.contains(hint)) {
               return errorText;
             }
             return null;

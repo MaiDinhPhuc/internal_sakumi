@@ -93,13 +93,13 @@ class _ClassScreenState extends State<ClassScreen> {
                       Column(
                         children: [
                           Text('ahihi'),
-                          TextButton(onPressed: () => Navigator.pushNamed(context, Routes.master), child: Text('Press'))
+                          //TextButton(onPressed: () => Navigator.pushNamed(context, Routes.master), child: Text('Press'))
                         ],
                       ),
                       //Text('ahahah')
 
                       //ClassOverViewTab('name'),
-                      ListLessonTab('name', '0'),
+                      //ListLessonTab('name', '0'),
                     ],
                   ))
                 ],

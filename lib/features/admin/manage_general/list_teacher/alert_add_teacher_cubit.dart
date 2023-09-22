@@ -4,8 +4,7 @@ import 'package:internal_sakumi/features/admin/manage_general/manage_general_cub
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
-import 'package:internal_sakumi/repository/admin_repository.dart';
-import 'package:internal_sakumi/repository/user_repository.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 
@@ -18,11 +17,9 @@ class AlertAddTeacherCubit extends Cubit<int> {
   bool? checkCreate, checkAdd;
 
   loadAllUser(BuildContext context, ManageGeneralCubit cubit) async {
-    UserRepository userRepository = UserRepository.fromContext(context);
-    AdminRepository adminRepository = AdminRepository.fromContext(context);
-    listTeacherClass = await adminRepository.getAllTeacherInClass();
-    listAllTeacher = await adminRepository.getAllTeacher();
-    allUser = await userRepository.getAllUser();
+    listTeacherClass = await FireBaseProvider.instance.getAllTeacherInClass();
+    listAllTeacher = await FireBaseProvider.instance.getAllTeacher();
+    allUser = await FireBaseProvider.instance.getAllUser();
 
     listSensei = [];
     for(var i in listAllTeacher!){
@@ -41,17 +38,15 @@ class AlertAddTeacherCubit extends Cubit<int> {
   }
 
   addTeacherToClass(BuildContext context, TeacherClassModel model) async {
-    AdminRepository adminRepository = AdminRepository.fromContext(context);
-    await adminRepository.addTeacherToClass(model);
+    await FireBaseProvider.instance.addTeacherToClass(model);
     debugPrint('==============> addStudentToClass ${model.userId}');
   }
 
   createTeacher(
       BuildContext context, TeacherModel model, UserModel userModel) async {
-    UserRepository userRepository = UserRepository.fromContext(context);
     Navigator.pop(context);
     waitingDialog(context);
     checkCreate =
-    await userRepository.createNewTeacher(context, model, userModel);
+    await FireBaseProvider.instance.createNewTeacher(model, userModel);
   }
 }

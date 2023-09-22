@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/features/teacher/list_class/teacher_cubit.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/custom_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,17 +28,7 @@ class LogOutDialog extends StatelessWidget {
         }, bgColor: Colors.white, foreColor: Colors.black, text: AppText.txtBack.text),
 
         CustomButton(onPress: () async{
-          final _auth = FirebaseAuth.instance;
-          await _auth.signOut();
-          SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-          sharedPreferences.setString(
-              PrefKeyConfigs.code, '');
-          sharedPreferences.setString(PrefKeyConfigs.password, '');
-          sharedPreferences.setInt(PrefKeyConfigs.userId, -1);
-          sharedPreferences.setString(PrefKeyConfigs.name, '');
-          sharedPreferences.setString(PrefKeyConfigs.email, '');
-          Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+          FireBaseProvider.instance.logOutUser(context);
         }, bgColor: primaryColor.shade500, foreColor: Colors.white, text: AppText.txtAgree.text),
       ],
     );

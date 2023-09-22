@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
-import 'package:internal_sakumi/model/teacher_class_model.dart';
-import 'package:internal_sakumi/repository/admin_repository.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/textfield_widget.dart';
 import 'package:intl/intl.dart';
@@ -42,12 +41,10 @@ class AddUserToClassScreen extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    AdminRepository adminRepository =
-                        AdminRepository.fromContext(context);
                     // List<TeacherClassModel> listTeacherClass =
                     //     await adminRepository.getAllTeacherInClass();
                     List<StudentClassModel> listStudentClass =
-                        await adminRepository.getAllStudentInClass();
+                        await FireBaseProvider.instance.getAllStudentInClass();
                     await FirebaseFirestore.instance
                         .collection('student_class')
                         .doc("student_${controller.text}_class_$classId")

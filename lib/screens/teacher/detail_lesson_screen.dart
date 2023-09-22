@@ -26,14 +26,14 @@ class DetailLessonScreen extends StatelessWidget {
                 index: 1,
                 classId: TextUtils.getName(position: 2),
                 name: name,
+                role: 'teacher',
               ),
               Expanded(
                   //key: Key('${cubit.state?.status}'),
                   child: SingleChildScrollView(
                       child: BlocProvider(
                           create: (context) => DetailLessonCubit()
-                            ..checkLessonResult(
-                                context),
+                            ..checkLessonResult(),
                           child: BlocBuilder<DetailLessonCubit,
                               LessonResultModel?>(
                             builder: (cc, s) {
@@ -64,7 +64,7 @@ class DetailLessonScreen extends StatelessWidget {
                                     LessonPendingView(BlocProvider.of<DetailLessonCubit>(
                                         cc)),
                                   if (s.status == 'Teaching')
-                                    LessonTeachingView(),
+                                    const LessonTeachingView(),
                                   if (s.status == 'Complete')
                                     LessonCompleteView(BlocProvider.of<DetailLessonCubit>(
                                         cc)),
