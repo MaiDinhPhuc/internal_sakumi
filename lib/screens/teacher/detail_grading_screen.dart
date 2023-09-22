@@ -27,7 +27,7 @@ class DetailGradingScreen extends StatelessWidget {
             children: [
               HeaderTeacher(
                   index: 3,
-                  classId: TextUtils.getName(position: 2),
+                  classId: TextUtils.getName(position: 3),
                   name: name, role: 'teacher',),
               Expanded(child: BlocBuilder<DetailGradingCubit, int>(builder: (c, s) {
                 var cubit = BlocProvider.of<DetailGradingCubit>(c);

@@ -153,7 +153,7 @@ class ListLessonTab extends StatelessWidget {
                                                                   await Navigator
                                                                       .pushNamed(
                                                                           c,
-                                                                          "/teacher?name=$name/lesson/class?id=${cubit.classModel!.classId}/lesson?id=${e.lessonId}");
+                                                                          "/teacher?name=$name/role?role=teacher/lesson/class?id=${cubit.classModel!.classId}/lesson?id=${e.lessonId}");
                                                                 } else if (cubit
                                                                         .lessonResults![cubit
                                                                             .lessons!
@@ -163,12 +163,12 @@ class ListLessonTab extends StatelessWidget {
                                                                 await Navigator
                                                                       .pushNamed(
                                                                           c,
-                                                                          "/teacher?name=$name/lesson/class?id=${cubit.classModel!.classId}/lesson?id=${e.lessonId}");
+                                                                          "/teacher?name=$name/role?role=teacher/lesson/class?id=${cubit.classModel!.classId}/lesson?id=${e.lessonId}");
                                                                 } else {
                                                                   await Navigator
                                                                       .pushNamed(
                                                                       c,
-                                                                      "/teacher?name=$name/grading/class?id=${cubit.classModel!.classId}/type?type=btvn/lesson?id=${e.lessonId}");
+                                                                      "/teacher?name=$name/role?role=teacher/grading/class?id=${cubit.classModel!.classId}/type?type=btvn/lesson?id=${e.lessonId}");
                                                                 }
                                                                 if (c.mounted) {
                                                                   await cubit

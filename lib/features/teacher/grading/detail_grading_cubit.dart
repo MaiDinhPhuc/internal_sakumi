@@ -61,7 +61,7 @@ class DetailGradingCubit extends Cubit<int> {
       .toList();
 
   loadFirst(context, String type) async {
-    classModel = await FireBaseProvider.instance.getClassById(int.parse(TextUtils.getName(position: 2)));
+    classModel = await FireBaseProvider.instance.getClassById(int.parse(TextUtils.getName(position: 3)));
     courseModel = await FireBaseProvider.instance.getCourseById(classModel!.courseId);
     token = courseModel!.token;
     if(type == "test"){
@@ -74,13 +74,13 @@ class DetailGradingCubit extends Cubit<int> {
 
     listAnswer = await FireBaseProvider.instance.getListAnswer(
         int.parse(TextUtils.getName()),
-        int.parse(TextUtils.getName(position: 2)));
+        int.parse(TextUtils.getName(position: 3)));
 
     if (listAnswer!.isEmpty) {
       emit(0);
     } else {
       List<StudentClassModel> listStudentClass = await FireBaseProvider.instance
-          .getStudentClassInClass(int.parse(TextUtils.getName(position: 2)));
+          .getStudentClassInClass(int.parse(TextUtils.getName(position: 3)));
       listStudent = [];
       for (var i in listStudentClass) {
         for (var j in listAnswer!) {

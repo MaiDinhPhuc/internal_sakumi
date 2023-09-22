@@ -111,7 +111,7 @@ class SessionCubit extends Cubit<int> {
   loadStudentInClass(context) async {
     List<StudentModel> listAllStudent = await FireBaseProvider.instance.getAllStudent();
 
-    List<StudentClassModel>? list = await  FireBaseProvider.instance.getStudentClassInClass(int.parse(TextUtils.getName(position: 2)));
+    List<StudentClassModel>? list = await  FireBaseProvider.instance.getStudentClassInClass(int.parse(TextUtils.getName(position: 3)));
 
     listStudentClass = [];
     listStudentClass!.addAll(list);
@@ -132,7 +132,7 @@ class SessionCubit extends Cubit<int> {
   loadStudentLesson(context) async {
 
     var list = await FireBaseProvider.instance.getAllStudentLessonInLesson(
-        int.parse(TextUtils.getName(position: 2)),
+        int.parse(TextUtils.getName(position: 3)),
         int.parse(TextUtils.getName()));
 
     debugPrint(
