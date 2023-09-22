@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
+import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
@@ -145,4 +146,8 @@ abstract class NetworkProvider {
   Future<bool> addStudentToClass(StudentClassModel model);
 
   Future<bool> addTeacherToClass(TeacherClassModel model);
+
+  Future<void> changeClassStatus(ClassModel classModel,String newStatus,ManageGeneralCubit cubit, BuildContext context);
+
+  Future<void> updateClassInfo(ClassModel classModel);
 }

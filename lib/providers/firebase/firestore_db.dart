@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/Material.dart';
+import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
@@ -185,9 +186,12 @@ class FireStoreDb {
 
   Future<List<CourseModel>> getAllCourse() async {
     final snapshot = await db.collection("courses").get();
+    debugPrint("==========>get db from \"courses\"");
+    if(snapshot.docs.isEmpty){
+      return [];
+    }
     final courses =
     snapshot.docs.map((e) => CourseModel.fromSnapshot(e)).toList();
-    debugPrint("==========>get db from \"courses\"");
     return courses;
   }
 
@@ -751,5 +755,35 @@ class FireStoreDb {
     } else {
       return false;
     }
+  }
+
+  Future<void> changeClassStatus(ClassModel classModel, String newStatus, ManageGeneralCubit cubit, BuildContext context) async {
+    FirebaseFirestore.instance
+        .collection('class')
+        .doc('class_${classModel.classId}_course_${classModel.courseId}')
+        .update({
+      'class_status': newStatus
+    }).whenComplete(() {
+      debugPrint("==========>update db for \"class\"");
+      cubit.loadAfterChangeClassStatus(classModel, newStatus, context);
+      Navigator.pop(context);
+    });
+  }
+
+  Future<void> updateClassInfo(ClassModel model) async {
+    FirebaseFirestore.instance
+        .collection('class')
+        .doc('class_${model.classId}_course_${model.courseId}')
+        .update({
+      'class_id': model.classId,
+      'course_id': model.courseId,
+      'description': model.description,
+      'end_time': model.endTime,
+      'start_time': model.startTime,
+      'note': model.note,
+      'class_code': model.classCode,
+      'class_status': model.classStatus,
+      'class_type' : model.classType
+    });
   }
 }

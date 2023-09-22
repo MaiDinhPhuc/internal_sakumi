@@ -28,7 +28,7 @@ class InputDate extends StatelessWidget {
                   fontSize: Resizable.font(context, 18),
                   color: const Color(0xff757575))),
           BlocProvider(
-              create: (context) => DateTimeCubit(),
+              create: (context) => DateTimeCubit()..selectedDate(isStartDate ? DateTimeCubit.startDay : DateTimeCubit.endDay),
               child: BlocBuilder<DateTimeCubit, DateTime>(
                 builder: (c, date) => Padding(
                     padding: EdgeInsets.symmetric(

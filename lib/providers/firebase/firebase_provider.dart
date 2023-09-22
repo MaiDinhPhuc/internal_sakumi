@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/Material.dart';
+import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
@@ -331,6 +332,16 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<bool> addTeacherToClass(TeacherClassModel model) async {
     return await FireStoreDb.instance.addTeacherToClass(model);
+  }
+
+  @override
+  Future<void> changeClassStatus(ClassModel classModel, String newStatus, ManageGeneralCubit cubit, BuildContext context) async {
+    await FireStoreDb.instance.changeClassStatus(classModel,newStatus,cubit, context);
+  }
+
+  @override
+  Future<void> updateClassInfo(ClassModel classModel) async {
+    await FireStoreDb.instance.updateClassInfo(classModel);
   }
 
 

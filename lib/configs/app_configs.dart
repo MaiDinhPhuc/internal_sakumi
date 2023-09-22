@@ -4,6 +4,8 @@ class AppConfigs{
 
   static const bool endpointFirebaseDebug = true;
 
+  static const bool isRunningDebug = true;
+
 
   static String getDataUrl(String file, String token){
     return "https://noibo.sakumi.edu.vn/files/$token/$file";

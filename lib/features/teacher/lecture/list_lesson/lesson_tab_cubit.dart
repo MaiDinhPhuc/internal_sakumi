@@ -149,7 +149,6 @@ class LessonTabCubit extends Cubit<int> {
       List<StudentLessonModel> listStdLessonInLesson = list.fold(
           <StudentLessonModel>[],
           (pre, e) => [...pre, if (e.lessonId == lesson.lessonId) e]).toList();
-      print("======>length : ${listStdLessonInLesson.length}");
 
       if(listStdLessonInLesson.isNotEmpty){
         for (var std in listStdClass!) {

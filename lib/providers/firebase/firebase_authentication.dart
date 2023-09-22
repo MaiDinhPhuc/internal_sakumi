@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/Material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
@@ -87,23 +88,35 @@ class FirebaseAuthentication {
       if (context.mounted) {
         Navigator.pop(context);
       }
-      print("code : ${e.code}");
-      print("message : ${e.message}");
-      RegExp regex = RegExp(r'\((.*?)\)');
+      debugPrint("code : ${e.code}");
+      debugPrint("message : ${e.message}");
+      if(AppConfigs.isRunningDebug){
+        RegExp regex = RegExp(r'\((.*?)\)');
 
-      Match? match = regex.firstMatch(e.message!);
+        Match? match = regex.firstMatch(e.message!);
 
-      if (match != null) {
-        String result = match.group(1)!;
-        if(result == 'auth/user-not-found'){
+        if (match != null) {
+          String result = match.group(1)!;
+          if(result == 'auth/user-not-found'){
+            cubit.changeError(AppText.txtWrongAccount.text);
+          }else if(result == 'auth/wrong-password'){
+            cubit.changeError(AppText.txtWrongPassword.text);
+            passwordController.clear();
+          }else{
+            cubit.changeError(AppText.txtInvalidLogin.text);
+          }
+        }
+      }else{
+        if(e.code == 'user-not-found'){
           cubit.changeError(AppText.txtWrongAccount.text);
-        }else if(result == 'auth/wrong-password'){
+        }else if(e.code == 'wrong-password'){
           cubit.changeError(AppText.txtWrongPassword.text);
           passwordController.clear();
         }else{
           cubit.changeError(AppText.txtInvalidLogin.text);
         }
       }
+
       return false;
     }
   }
