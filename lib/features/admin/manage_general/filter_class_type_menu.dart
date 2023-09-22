@@ -7,33 +7,34 @@ import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'manage_general_cubit.dart';
 
-class FilterClassStatusMenu extends StatelessWidget {
-  const FilterClassStatusMenu({super.key, required this.cubit});
+class FilterClassTypeMenu extends StatelessWidget {
+  const FilterClassTypeMenu({super.key, required this.cubit});
   final ManageGeneralCubit cubit;
   @override
   Widget build(BuildContext context) {
     return Container(
+        margin: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 10)),
         alignment: Alignment.centerRight, width: Resizable.size(context, 120),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(24),
           child: Material(
             color: Colors.transparent,
             child: PopupMenuButton(
-                onCanceled: () {
+                onCanceled: (){
                   cubit.filterClass();
                 },
                 itemBuilder: (context) => [
-                  ...cubit.listClassStatusMenu.map((e) => PopupMenuItem(
+                  ...cubit.listClassTypeMenu.map((e) => PopupMenuItem(
                       padding: EdgeInsets.zero,
-                      child: BlocProvider(create: (c)=>CheckBoxFilterCubit(cubit.listStateClassStatus[cubit.listClassStatusMenu.indexOf(e)]),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
+                      child: BlocProvider(create: (c)=>CheckBoxFilterCubit(cubit.listClassType[cubit.listClassTypeMenu.indexOf(e)]),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
                         return CheckboxListTile(
                           controlAffinity: ListTileControlAffinity.leading,
-                          title: Text(vietnameseSubText(e)),
+                          title: Text(e),
                           value: state,
                           onChanged: (newValue) {
-                            cubit.listStateClassStatus[cubit.listClassStatusMenu.indexOf(e)] = newValue!;
-                            if(cubit.listStateClassStatus.every((element) => element == false)){
-                              cubit.listStateClassStatus[cubit.listClassStatusMenu.indexOf(e)] = !newValue;
+                            cubit.listClassType[cubit.listClassTypeMenu.indexOf(e)] = newValue!;
+                            if(cubit.listClassType.every((element) => element == false)){
+                              cubit.listClassType[cubit.listClassTypeMenu.indexOf(e)] = !newValue;
                             }else{
                               BlocProvider.of<CheckBoxFilterCubit>(cc).update();
                             }
@@ -43,9 +44,9 @@ class FilterClassStatusMenu extends StatelessWidget {
                   ))
                 ],
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(Resizable.size(context, 10)),
-                  ),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(Resizable.size(context, 10)),
+                    )
                 ),
                 child: Container(
                   decoration: BoxDecoration(
@@ -62,7 +63,7 @@ class FilterClassStatusMenu extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Expanded(child: Center(
-                          child: Text(AppText.titleStatus.text,
+                          child: Text(AppText.txtClassType.text,
                               style: TextStyle(
                                   fontSize: Resizable.font(context, 18),
                                   fontWeight: FontWeight.w500))

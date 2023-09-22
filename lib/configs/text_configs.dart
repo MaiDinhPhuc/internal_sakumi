@@ -214,16 +214,20 @@ enum AppText {
   stsRenew,
   stsRemove,
   stsUpSale, txtType, textMarked, textNotMarked,
-  txtInvalidLogin,txtConfirmChangeStatus, btnRemoveClass,
-  txtEditClassInfo, txtClassType
+  txtInvalidLogin,txtConfirmDeleteClass, btnRemoveClass,
+  txtEditClassInfo, txtClassType, txtChooseClassType,txtPleaseChooseType,
+  txtConfirmChangeStatus
 }
 
 Map<AppText, String> texts = {
+  AppText.txtConfirmChangeStatus: 'SS chắc chắn muốn thay đổi\n trạng thái của @ từ % sang #',
+  AppText.txtPleaseChooseType: 'Vui lòng chọn loại lớp',
   AppText.txtEditClassInfo: 'Chỉnh sửa thông tin lớp học',
-  AppText.txtConfirmChangeStatus: 'SS chắc chắn muốn xoá lớp @ hay không?',
+  AppText.txtConfirmDeleteClass: 'SS chắc chắn muốn xoá lớp @ hay không?',
   AppText.txtInvalidLogin: 'Thông tin đăng nhập không hợp lệ',
   AppText.textNotMarked: 'Chưa chấm',
   AppText.textMarked: 'Đã chấm',
+  AppText.txtChooseClassType: 'Chọn loại lớp',
   AppText.txtClassType: 'Loại lớp',
   AppText.txtType: 'Loại bài',
   AppText.stsUpSale: 'Lên cấp',

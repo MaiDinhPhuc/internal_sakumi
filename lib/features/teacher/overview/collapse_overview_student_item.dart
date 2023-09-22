@@ -24,7 +24,7 @@ class CollapseOverviewStudentItem extends StatelessWidget {
           right: Resizable.padding(context, 15),
         ),
         child: OverviewItemRowLayout(
-            icon: BlocProvider(
+            icon: role == "admin" ? BlocProvider(
               create: (context)=>MenuPopupCubit(),
               child: BlocBuilder<MenuPopupCubit, int>(
                 builder: (c, s){
@@ -113,6 +113,24 @@ class CollapseOverviewStudentItem extends StatelessWidget {
                         )),
                   );
                 },
+              ),
+            ) : AspectRatio(
+              aspectRatio: 1,
+              child: Container(
+                padding: EdgeInsets.all(Resizable.padding(context, 10)),
+                decoration: BoxDecoration(
+                    color: cubit.listStdClass[index].color,
+                    borderRadius:
+                    BlocProvider.of<DropdownCubit>(context).state % 2 ==
+                        0
+                        ? BorderRadius.horizontal(
+                        left: Radius.circular(
+                            Resizable.padding(context, 5)))
+                        : BorderRadius.only(
+                        topLeft: Radius.circular(
+                            Resizable.padding(context, 5)))),
+                child: Image.asset(
+                    'assets/images/ic_${cubit.listStdClass[index].icon}.png'),
               ),
             ),
             name: Text(cubit.students![index].name,

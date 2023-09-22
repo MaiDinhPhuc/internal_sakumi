@@ -131,79 +131,85 @@ class TeacherScreen extends StatelessWidget {
                             children: [
                               Container(
                                 alignment: Alignment.centerRight, width: Resizable.size(context, 120),
-                                child: PopupMenuButton(
-                                    onCanceled: () async{
-                                      if(cubit.isListInProgress != cubit.isListInProgressOld || cubit.isListDone != cubit.isListDoneOld){
-                                        cubit.isChange = true;
-                                      }
-                                      if(cubit.isChange){
-                                        waitingDialog(context);
-                                        await cubit.loadListClassOfTeacher(context);
-                                        if (context.mounted) {
-                                          Navigator.pop(context);
-                                          cubit.isChange = false;
-                                          cubit.isListInProgressOld = cubit.isListInProgress;
-                                          cubit.isListDoneOld = cubit.isListDone;
-                                        }
-                                      }
-                                    },
-                                    itemBuilder: (context) => [
-                                  ...listFilter.map((e) => PopupMenuItem(
-                                      padding: EdgeInsets.zero,
-                                      child: BlocProvider(create: (c)=>CheckBoxFilterCubit(e == AppText.optInProgress.text ? cubit.isListInProgress : cubit.isListDone),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
-                                        return CheckboxListTile(
-                                          controlAffinity: ListTileControlAffinity.leading,
-                                          title: Text(e),
-                                          value: state,
-                                          onChanged: (newValue) {
-                                            if(e == AppText.optInProgress.text){
-                                              cubit.isListInProgress = newValue!;
-                                            }else{
-                                              cubit.isListDone = newValue!;
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(24),
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: PopupMenuButton(
+                                        onCanceled: () async{
+                                          if(cubit.isListInProgress != cubit.isListInProgressOld || cubit.isListDone != cubit.isListDoneOld){
+                                            cubit.isChange = true;
+                                          }
+                                          if(cubit.isChange){
+                                            waitingDialog(context);
+                                            await cubit.loadListClassOfTeacher(context);
+                                            if (context.mounted) {
+                                              Navigator.pop(context);
+                                              cubit.isChange = false;
+                                              cubit.isListInProgressOld = cubit.isListInProgress;
+                                              cubit.isListDoneOld = cubit.isListDone;
                                             }
-                                            if(cubit.isListInProgress == false && cubit.isListDone == false){
-                                              if(e == AppText.optInProgress.text){
-                                                cubit.isListInProgress = !newValue;
-                                              }else{
-                                                cubit.isListDone = !newValue;
-                                              }
-                                            }else{
-                                              BlocProvider.of<CheckBoxFilterCubit>(cc).update();
-                                            }
-                                          },
-                                        );
-                                      }))
-                                  ))
-                                ],
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(Resizable.size(context, 10)),
-                                      ),
-                                    ),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                                blurRadius: Resizable.size(context, 2),
-                                                color: greyColor.shade100)
-                                          ],
-                                          border: Border.all(
-                                              color: greyColor.shade100),
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.circular(1000)),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          Expanded(child: Center(
-                                              child: Text(AppText.txtFilter.text,
-                                                  style: TextStyle(
-                                                      fontSize: Resizable.font(context, 18),
-                                                      fontWeight: FontWeight.w500))
-                                          )),
-                                          const Icon(Icons.keyboard_arrow_down)
+                                          }
+                                        },
+                                        itemBuilder: (context) => [
+                                          ...listFilter.map((e) => PopupMenuItem(
+                                              padding: EdgeInsets.zero,
+                                              child: BlocProvider(create: (c)=>CheckBoxFilterCubit(e == AppText.optInProgress.text ? cubit.isListInProgress : cubit.isListDone),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
+                                                return CheckboxListTile(
+                                                  controlAffinity: ListTileControlAffinity.leading,
+                                                  title: Text(e),
+                                                  value: state,
+                                                  onChanged: (newValue) {
+                                                    if(e == AppText.optInProgress.text){
+                                                      cubit.isListInProgress = newValue!;
+                                                    }else{
+                                                      cubit.isListDone = newValue!;
+                                                    }
+                                                    if(cubit.isListInProgress == false && cubit.isListDone == false){
+                                                      if(e == AppText.optInProgress.text){
+                                                        cubit.isListInProgress = !newValue;
+                                                      }else{
+                                                        cubit.isListDone = !newValue;
+                                                      }
+                                                    }else{
+                                                      BlocProvider.of<CheckBoxFilterCubit>(cc).update();
+                                                    }
+                                                  },
+                                                );
+                                              }))
+                                          ))
                                         ],
-                                      ),
-                                    )
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(Resizable.size(context, 10)),
+                                          ),
+                                        ),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    blurRadius: Resizable.size(context, 2),
+                                                    color: greyColor.shade100)
+                                              ],
+                                              border: Border.all(
+                                                  color: greyColor.shade100),
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.circular(1000)),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              Expanded(child: Center(
+                                                  child: Text(AppText.txtFilter.text,
+                                                      style: TextStyle(
+                                                          fontSize: Resizable.font(context, 18),
+                                                          fontWeight: FontWeight.w500))
+                                              )),
+                                              const Icon(Icons.keyboard_arrow_down)
+                                            ],
+                                          ),
+                                        )
+                                    ),
+                                  ),
                                 )
                               ),
                               ClassItemRowLayout(

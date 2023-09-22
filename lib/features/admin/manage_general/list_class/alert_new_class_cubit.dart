@@ -15,7 +15,9 @@ class AlertNewClassCubit extends Cubit<int> {
   String? selector;
   bool? check;
   List<String> listClassType = ['Lớp chung','Lớp 1-1'];
-  int classType = 0;
+  List<String> listClassStatusMenu = ["Preparing", "InProgress", "Completed", "Cancel"];
+  int? classType ;
+  String? classStatus;
 
   loadCourse() async {
     listClass = await FireBaseProvider.instance.getAllClass();
@@ -29,13 +31,39 @@ class AlertNewClassCubit extends Cubit<int> {
     await getCourseId(selector!);
   }
 
-  chooseType(String? text) async {
+  int chooseType(String? text) {
     if(text == listClassType[0]){
-      classType = 0;
-    }else{
-      classType = 1;
+      emit(state + 1);
+      return 0;
     }
-    emit(state + 1);
+    return 1;
+  }
+
+  String chooseStatus(String? text) {
+    switch (text) {
+      case 'Hoàn Thành':
+        emit(state + 1);
+        return "Completed";
+      case 'Đang Học':
+        emit(state + 1);
+        return "InProgress";
+      case 'Huỷ':
+        emit(state + 1);
+        return "Cancel";
+      case 'Mới Tạo':
+        emit(state + 1);
+        return "Preparing";
+      default:
+        emit(state + 1);
+        return "error";
+    }
+  }
+
+  String findClassType(int classType){
+    if(classType == 0){
+      return listClassType[0];
+    }
+    return listClassType[1];
   }
 
   String findCourse(int courseId)  {
@@ -45,6 +73,10 @@ class AlertNewClassCubit extends Cubit<int> {
       }
     }
     return AppText.textChooseCourse.text;
+  }
+
+  String findStatus(String status){
+    return vietnameseSubText(status);
   }
 
   getCourseId(String text) async {

@@ -18,11 +18,13 @@ class ManageGeneralCubit extends Cubit<int> {
   int selector = 0;
   List<bool> listStateCourse = [];
   List<bool> listStateClassStatus = [true,true,true,true];
+  List<bool> listClassType = [true,true];
   bool canAdd = true;
 
   List<String> listStudentStatusMenu = ["Completed","InProgress","Viewer","ReNew","UpSale","Moved","Retained","Dropped","Remove"];
   List<String> listClassStatusMenu = ["Preparing", "InProgress", "Completed", "Cancel"];
   List<String> listAllClassStatusMenu = ["Preparing", "InProgress", "Completed", "Cancel", "Remove"];
+  List<String> listClassTypeMenu = ["Lớp Chung","Lớp 1-1"];
 
   loadAllClass(context) async {
     listAllClass = await FireBaseProvider.instance.getListClassNotRemove();
@@ -48,7 +50,7 @@ class ManageGeneralCubit extends Cubit<int> {
     loadStudentInClass(context, selector);
   }
 
-  loadAfterChangeClassStatus(ClassModel classModel, String newStatus, context)async{
+  loadAfterChangeClassStatus()async{
     listAllClass = await FireBaseProvider.instance.getListClassNotRemove();
     filterClass();
     emit(state+2);
@@ -89,14 +91,29 @@ class ManageGeneralCubit extends Cubit<int> {
         }
       }
     }
-
+    List<ClassModel> listTemp2 = [];
     for(var i in listTemp1){
       for(var j in listCLassStatus){
         if(i.classStatus == j){
+          listTemp2.add(i);
+        }
+      }
+    }
+    List<int> listType = [];
+    if(listClassType[0] == true){
+      listType.add(0);
+    }
+    if(listClassType[1] == true){
+      listType.add(1);
+    }
+    for(var i in listTemp2){
+      for(var j in listType){
+        if(i.classType == j){
           listClassNow!.add(i);
         }
       }
     }
+
     bool change = true;
     for(var i in listClassNow!){
       if(i.classId == selector){

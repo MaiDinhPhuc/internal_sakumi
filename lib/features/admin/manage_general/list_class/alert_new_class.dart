@@ -50,7 +50,9 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel, Ma
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Container(
+                              Expanded(
+                                  flex: 1,
+                                  child: Container(
                                 alignment: Alignment.topLeft,
                                 margin: EdgeInsets.only(
                                     bottom: Resizable.padding(context, 20)),
@@ -60,132 +62,250 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel, Ma
                                       fontWeight: FontWeight.w700,
                                       fontSize: Resizable.font(context, 20)),
                                 ),
-                              ),
-                              Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: Resizable.padding(context, 5)),
-                                  child: IntrinsicHeight(
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                            flex: 5,
-                                            child: Column(
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                              children: [
-                                                Text(AppText.txtCourse.text,
+                              )),
+                              Expanded(
+                                  flex: 10,
+                                  child: SingleChildScrollView(child: Column(children: [
+                                Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: Resizable.padding(context, 5)),
+                                    child: IntrinsicHeight(
+                                      child: Row(
+                                        children: [
+                                          if(!isEdit)
+                                            Expanded(
+                                              flex: 5,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(AppText.txtCourse.text,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                          FontWeight.w600,
+                                                          fontSize:
+                                                          Resizable.font(
+                                                              context, 18),
+                                                          color: const Color(
+                                                              0xff757575))),
+                                                  InputDropdown(
+                                                      title:
+                                                      AppText.txtCourse.text,
+                                                      hint: cubit.findCourse(classModel == null ? -1 : classModel.courseId),
+                                                      errorText: AppText
+                                                          .txtPleaseChooseCourse
+                                                          .text,
+                                                      onChanged: (v) {
+                                                        cubit.courseId =
+                                                            cubit.chooseCourse(v);
+                                                      },
+                                                      items: List.generate(
+                                                          cubit.listCourse!
+                                                              .length,
+                                                              (index) =>
+                                                          ('${cubit.listCourse![index].title} ${cubit.listCourse![index].termName}'))
+                                                          .toList())
+                                                ],
+                                              )),
+                                          if(isEdit)
+                                            Expanded(
+                                                flex: 5,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(AppText.txtCourse.text,
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                            FontWeight.w600,
+                                                            fontSize:
+                                                            Resizable.font(
+                                                                context, 18),
+                                                            color: const Color(
+                                                                0xff757575))),
+                                                Padding(
+                                                  padding: EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
+                                                  child: TextFormField(
+                                                    enabled: false,
                                                     style: TextStyle(
-                                                        fontWeight:
-                                                        FontWeight.w600,
-                                                        fontSize:
-                                                        Resizable.font(
-                                                            context, 18),
-                                                        color: const Color(
-                                                            0xff757575))),
-                                                InputDropdown(
-                                                    title:
-                                                    AppText.txtCourse.text,
-                                                    hint: cubit.findCourse(classModel == null ? -1 : classModel.courseId),
-                                                    errorText: AppText
-                                                        .txtPleaseChooseCourse
-                                                        .text,
-                                                    onChanged: (v) {
-                                                      cubit.courseId =
-                                                          cubit.chooseCourse(v);
-                                                    },
-                                                    items: List.generate(
-                                                        cubit.listCourse!
-                                                            .length,
-                                                            (index) =>
-                                                        ('${cubit.listCourse![index].title} ${cubit.listCourse![index].termName}'))
-                                                        .toList())
-                                              ],
-                                            )),
-                                        SizedBox(
-                                            width: Resizable.size(context, 20)),
-                                        Expanded(
-                                            flex: 3,
-                                            child: Column(
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                              children: [
-                                                Text(AppText.txtClassCode.text,
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                        FontWeight.w600,
-                                                        fontSize:
-                                                        Resizable.font(
-                                                            context, 18),
-                                                        color: const Color(
-                                                            0xff757575))),
-                                                InputField(
-                                                    controller: codeCon,
-                                                    errorText: AppText
-                                                        .txtPleaseInputClassCode
-                                                        .text)
-                                              ],
-                                            )),
-                                      ],
-                                    ),
-                                  )),
-                              if(isEdit == false)
-                                Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                                children: [
-                                  Text(AppText.txtClassType.text,
-                                      style: TextStyle(
-                                          fontWeight:
-                                          FontWeight.w600,
-                                          fontSize:
-                                          Resizable.font(
-                                              context, 18),
-                                          color: const Color(
-                                              0xff757575))),
-                                  InputDropdown(
-                                      title:
-                                      AppText.txtClassType.text,
-                                      hint: cubit.findCourse(classModel == null ? -1 : classModel.courseId),
-                                      errorText: AppText
-                                          .txtPleaseChooseCourse
-                                          .text,
-                                      onChanged: (v) {
-                                        cubit.classType =
-                                            cubit.chooseType(v);
-                                      },
-                                      items: List.generate(
-                                          cubit.listClassType
-                                              .length,
-                                              (index) =>
-                                          (cubit.listClassType[index]))
-                                          .toList())
-                                ],
-                              ),
-                              InputItem(
-                                  title: AppText.txtDescription.text,
-                                  controller: noteCon,
-                                  isExpand: true),
-                              Row(
-                                children: [
-                                  Expanded(
-                                      child: InputDate(
-                                          title: AppText.txtStartDate.text,
-                                          errorText:
-                                          AppText.txtErrorStartDate.text)),
-                                  SizedBox(width: Resizable.size(context, 20)),
-                                  Expanded(
-                                      child: InputDate(
-                                          title: AppText.txtEndDate.text,
-                                          isStartDate: false,
-                                          errorText:
-                                          AppText.txtErrorEndDate.text))
-                                ],
-                              ),
-                              InputItem(
-                                  controller: desCon,
-                                  title: AppText.txtNote.text,
-                                  isExpand: true),
-                              Container(
+                                                        fontSize: Resizable.font(context, 18), fontWeight: FontWeight.w500),
+                                                    initialValue: cubit.findCourse(classModel == null ? -1 : classModel.courseId),
+                                                    decoration: InputDecoration(
+                                                      isDense: true,
+                                                      fillColor: Colors.white,
+                                                      hoverColor: Colors.transparent,
+                                                      enabledBorder: OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: const Color(0xffE0E0E0),
+                                                            width: Resizable.size(context, 0.5)),
+                                                        borderRadius: BorderRadius.circular(Resizable.padding(context, 5)),
+                                                      ),
+                                                      filled: true,
+                                                      border: OutlineInputBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(Resizable.padding(context, 5)),
+                                                          borderSide: BorderSide(
+                                                              color: const Color(0xffE0E0E0),
+                                                              width: Resizable.size(context, 0.5))),
+                                                    ),
+                                                  ),
+                                                )],
+                                                )),
+                                          SizedBox(
+                                              width: Resizable.size(context, 20)),
+                                          Expanded(
+                                              flex: 3,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(AppText.txtClassCode.text,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                          FontWeight.w600,
+                                                          fontSize:
+                                                          Resizable.font(
+                                                              context, 18),
+                                                          color: const Color(
+                                                              0xff757575))),
+                                                  InputField(
+                                                      controller: codeCon,
+                                                      errorText: AppText
+                                                          .txtPleaseInputClassCode
+                                                          .text)
+                                                ],
+                                              )),
+                                        ],
+                                      ),
+                                    )),
+                                if(isEdit == false)
+                                  Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Text(AppText.txtClassType.text,
+                                          style: TextStyle(
+                                              fontWeight:
+                                              FontWeight.w600,
+                                              fontSize:
+                                              Resizable.font(
+                                                  context, 18),
+                                              color: const Color(
+                                                  0xff757575))),
+                                      InputDropdown(
+                                          title:
+                                          AppText.txtClassType.text,
+                                          hint: AppText.txtChooseClassType.text,
+                                          errorText: AppText
+                                              .txtPleaseChooseType
+                                              .text,
+                                          onChanged: (v) {
+                                            cubit.classType =
+                                                cubit.chooseType(v);
+                                          },
+                                          items: List.generate(
+                                              cubit.listClassType
+                                                  .length,
+                                                  (index) =>
+                                              (cubit.listClassType[index]))
+                                              .toList())
+                                    ],
+                                  ),
+                                if(isEdit)
+                                  Row(children: [
+                                    Expanded(
+                                        flex: 5,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Text(AppText.txtClassType.text,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                    FontWeight.w600,
+                                                    fontSize:
+                                                    Resizable.font(
+                                                        context, 18),
+                                                    color: const Color(
+                                                        0xff757575))),
+                                            InputDropdown(
+                                                title:
+                                                AppText.txtClassType.text,
+                                                hint: cubit.findClassType(classModel!.classType),
+                                                onChanged: (v) {
+                                                  cubit.classType =
+                                                      cubit.chooseType(v);
+                                                },
+                                                items: List.generate(
+                                                    cubit.listClassType
+                                                        .length,
+                                                        (index) =>
+                                                    (cubit.listClassType[index]))
+                                                    .toList())
+                                          ],
+                                        )),
+                                    SizedBox(
+                                        width: Resizable.size(context, 20)),
+                                    Expanded(
+                                        flex: 3,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Text(AppText.titleStatus.text,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                    FontWeight.w600,
+                                                    fontSize:
+                                                    Resizable.font(
+                                                        context, 18),
+                                                    color: const Color(
+                                                        0xff757575))),
+                                            InputDropdown(
+                                                title:
+                                                AppText.titleStatus.text,
+                                                hint: cubit.findStatus(classModel.classStatus),
+                                                onChanged: (v) {
+                                                  cubit.classStatus =
+                                                      cubit.chooseStatus(v);
+                                                },
+                                                items: List.generate(
+                                                    cubit.listClassStatusMenu
+                                                        .length,
+                                                        (index) =>
+                                                    (vietnameseSubText(cubit.listClassStatusMenu[index])))
+                                                    .toList())
+                                          ],
+                                        )),
+                                  ]),
+                                InputItem(
+                                    title: AppText.txtDescription.text,
+                                    controller: noteCon,
+                                    isExpand: true),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        child: InputDate(
+                                            title: AppText.txtStartDate.text,
+                                            errorText:
+                                            AppText.txtErrorStartDate.text)),
+                                    SizedBox(width: Resizable.size(context, 20)),
+                                    Expanded(
+                                        child: InputDate(
+                                            title: AppText.txtEndDate.text,
+                                            isStartDate: false,
+                                            errorText:
+                                            AppText.txtErrorEndDate.text))
+                                  ],
+                                ),
+                                InputItem(
+                                    controller: desCon,
+                                    title: AppText.txtNote.text,
+                                    isExpand: true)
+                              ]))),
+                              Expanded(
+                                  flex: 1,
+                                  child: Container(
                                 margin: EdgeInsets.only(
                                     top: Resizable.padding(context, 20)),
                                 child: Row(
@@ -228,44 +348,74 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel, Ma
                                               Resizable.size(context, 100)),
                                           child: SubmitButton(
                                               onPressed: () async {
-                                                // if (formKey.currentState!
-                                                //     .validate()) {
-                                                //   await cubit.addNewClass(
-                                                //       c,
-                                                //       ClassModel(
-                                                //           classId: cubit
-                                                //               .listClass!.length,
-                                                //           courseId: cubit.courseId!,
-                                                //           description: desCon.text,
-                                                //           endTime: DateFormat(
-                                                //               'dd/MM/yyyy')
-                                                //               .format(DateTimeCubit
-                                                //               .endDay),
-                                                //           startTime: DateFormat(
-                                                //               'dd/MM/yyyy')
-                                                //               .format(DateTimeCubit
-                                                //               .startDay),
-                                                //           note: noteCon.text,
-                                                //           classCode: codeCon.text,classStatus: 'Preparing',classType: 0));
-                                                //   if (context.mounted) {
-                                                //     Navigator.pop(context);
-                                                //     if (cubit.check == true) {
-                                                //       await BlocProvider.of<
-                                                //           ManageGeneralCubit>(
-                                                //           context)
-                                                //           .loadAfterAddClass(cubit
-                                                //           .listClass!.length,context);
-                                                //     } else {
-                                                //       notificationDialog(
-                                                //           context,
-                                                //           AppText
-                                                //               .txtPleaseCheckListClass
-                                                //               .text);
-                                                //     }
-                                                //   }
-                                                // } else {
-                                                //   print('Form is invalid');
-                                                // }
+                                                if (formKey.currentState!
+                                                    .validate()) {
+                                                  if(!isEdit){
+                                                    await cubit.addNewClass(
+                                                        c,
+                                                        ClassModel(
+                                                            classId: cubit
+                                                                .listClass!.length,
+                                                            courseId: cubit.courseId!,
+                                                            description: desCon.text,
+                                                            endTime: DateFormat(
+                                                                'dd/MM/yyyy')
+                                                                .format(DateTimeCubit
+                                                                .endDay),
+                                                            startTime: DateFormat(
+                                                                'dd/MM/yyyy')
+                                                                .format(DateTimeCubit
+                                                                .startDay),
+                                                            note: noteCon.text,
+                                                            classCode: codeCon.text,classStatus: 'Preparing',classType: cubit.classType!));
+                                                    if (context.mounted) {
+                                                      Navigator.pop(context);
+                                                      if (cubit.check == true) {
+                                                        await BlocProvider.of<
+                                                            ManageGeneralCubit>(
+                                                            context)
+                                                            .loadAfterAddClass(cubit
+                                                            .listClass!.length,context);
+                                                      } else {
+                                                        notificationDialog(
+                                                            context,
+                                                            AppText
+                                                                .txtPleaseCheckListClass
+                                                                .text);
+                                                      }
+                                                    }
+                                                  }else{
+
+                                                    cubit.classStatus ??= classModel!.classStatus;
+                                                    cubit.classType ??= classModel!.classType;
+
+                                                    await cubit.updateClass(
+                                                        c,
+                                                        ClassModel(
+                                                            classId: classModel!.classId,
+                                                            courseId: classModel.courseId,
+                                                            description: desCon.text,
+                                                            endTime: DateFormat(
+                                                                'dd/MM/yyyy')
+                                                                .format(DateTimeCubit
+                                                                .endDay),
+                                                            startTime: DateFormat(
+                                                                'dd/MM/yyyy')
+                                                                .format(DateTimeCubit
+                                                                .startDay),
+                                                            note: noteCon.text,
+                                                            classCode: codeCon.text,classStatus: cubit.classStatus!,classType: cubit.classType!));
+                                                    if(context.mounted){
+                                                      Navigator.pop(context);
+                                                      await BlocProvider.of<
+                                                          ManageGeneralCubit>(
+                                                          context)
+                                                          .loadAfterChangeClassStatus();
+                                                    }
+                                                  }
+                                                } else {
+                                                  print('Form is invalid');
+                                                }
                                               },
                                               title: isEdit ? AppText.btnUpdate.text : AppText.btnAdd.text),
                                         ),
@@ -273,7 +423,7 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel, Ma
                                     )
                                   ],
                                 ),
-                              )
+                              ))
                             ],
                           ),
                         )));

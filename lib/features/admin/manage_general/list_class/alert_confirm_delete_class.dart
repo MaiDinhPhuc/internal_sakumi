@@ -13,7 +13,7 @@ class ConfirmDeleteClass extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(AppText.txtConfirmChangeStatus.text.replaceAll("@", classModel.classCode), style: const TextStyle(
+      title: Text(AppText.txtConfirmDeleteClass.text.replaceAll("@", classModel.classCode), style: const TextStyle(
           fontWeight: FontWeight.bold
       ),),
       titlePadding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 50)),

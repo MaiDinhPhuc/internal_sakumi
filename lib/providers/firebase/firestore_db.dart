@@ -765,18 +765,19 @@ class FireStoreDb {
       'class_status': newStatus
     }).whenComplete(() {
       debugPrint("==========>update db for \"class\"");
-      cubit.loadAfterChangeClassStatus(classModel, newStatus, context);
+      cubit.loadAfterChangeClassStatus();
       Navigator.pop(context);
     });
   }
 
   Future<void> updateClassInfo(ClassModel model) async {
+    print('class_${model.classId}_course_${model.courseId}');
+    print(model.classType);
+    print(model.classStatus);
     FirebaseFirestore.instance
         .collection('class')
         .doc('class_${model.classId}_course_${model.courseId}')
         .update({
-      'class_id': model.classId,
-      'course_id': model.courseId,
       'description': model.description,
       'end_time': model.endTime,
       'start_time': model.startTime,
@@ -785,5 +786,6 @@ class FireStoreDb {
       'class_status': model.classStatus,
       'class_type' : model.classType
     });
+    debugPrint("==========>update db for \"class\"");
   }
 }
