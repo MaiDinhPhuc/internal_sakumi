@@ -85,8 +85,6 @@ class Routes {
     //     handler: detailClassHandler, transitionType: TransitionType.fadeIn);
     router.define(addUserToClass,
         handler: addUserToClassHandler, transitionType: TransitionType.fadeIn);
-
-
   }
 }
 

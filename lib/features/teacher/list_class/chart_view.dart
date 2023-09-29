@@ -17,15 +17,16 @@ class ChartView extends StatelessWidget {
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<TeacherCubit>(context);
     return
-        cubit.listPoint!.isEmpty ||
-        cubit.listSubmit!.isEmpty ||
-        cubit.listAttendance!.isEmpty
-        ? Center(
-          child: Transform.scale(
-            scale: 0.75,
-            child: const CircularProgressIndicator(),
-          ),
-        ) : Container(
+        // cubit.listPoint!.isEmpty ||
+        // cubit.listSubmit!.isEmpty ||
+        // cubit.listAttendance!.isEmpty
+        // ? Center(
+        //   child: Transform.scale(
+        //     scale: 0.75,
+        //     child: const CircularProgressIndicator(),
+        //   ),
+        // ) :
+        Container(
       margin: EdgeInsets.only(top: Resizable.size(context, 10)),
       height: Resizable.size(context, 130),
       child: Row(
@@ -37,9 +38,9 @@ class ChartView extends StatelessWidget {
           Expanded(
               flex: 8,
               child: CustomLineChart(
-                attendances: cubit.listAttendance![index],
-                hws: cubit.listSubmit![index],
-                points: cubit.listPoint![index],
+                attendances: cubit.rateAttendanceChart![index],
+                hws: cubit.rateSubmitChart![index],
+                points: []//cubit.listPoint![index],
               )),
           Expanded(flex: 4, child: Container()),
         ],

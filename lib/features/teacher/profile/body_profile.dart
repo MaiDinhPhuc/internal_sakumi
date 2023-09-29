@@ -25,9 +25,7 @@ class BodyProfile extends StatelessWidget {
       child: BlocBuilder<TeacherProfileCubit, int>(
         builder: (context, state) {
           if (state == 0) return const CircularProgressIndicator();
-
           final profileCubit = context.read<TeacherProfileCubit>();
-          final listInfo = profileCubit.listInfoTextField!;
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

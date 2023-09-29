@@ -22,13 +22,13 @@ class ClassOverViewTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => ClassOverviewCubit()..init(context),
+        create: (context) => ClassOverviewCubit()..loadFirst(),
         child: Scaffold(
           body: Column(
             children: [
               HeaderTeacher(
                 index: 0,
-                classId: role == "teacher"?TextUtils.getName(position: 3):TextUtils.getName(),
+                classId: role == "teacher" ? TextUtils.getName(position: 3):TextUtils.getName(),
                 name: name,role: role
               ),
               BlocBuilder<ClassOverviewCubit, int>(builder: (c, _) {

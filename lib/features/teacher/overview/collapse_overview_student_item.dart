@@ -63,7 +63,6 @@ class CollapseOverviewStudentItem extends StatelessWidget {
                                 )
                             ),
                           );
-
                         }))
                     ))
                   ],
@@ -138,40 +137,29 @@ class CollapseOverviewStudentItem extends StatelessWidget {
                     fontSize: Resizable.font(context, 20),
                     color: const Color(0xff131111),
                     fontWeight: FontWeight.w500)),
-            attend: cubit.stdAttends == null || cubit.stdAttends!.isEmpty
-                ? Transform.scale(
-                    scale: 0.75,
-                    child: const Center(child: CircularProgressIndicator()))
-                : CircleProgress(
+            attend: CircleProgress(
                     title:
-                        '${(cubit.stdAttends![index] * 100).toStringAsFixed(0)} %',
+                        '${(cubit.listStdDetail![index]["attendancePercent"] * 100).toStringAsFixed(0)} %',
                     lineWidth: Resizable.size(context, 3),
-                    percent: cubit.stdAttends![index],
+                    percent: cubit.listStdDetail![index]["attendancePercent"],
                     radius: Resizable.size(context, 16),
                     fontSize: Resizable.font(context, 14),
                   ),
-            submit: cubit.stdHomeworks == null
-                ? Transform.scale(
-                    scale: 0.75,
-                    child: const Center(child: CircularProgressIndicator()))
-                : CircleProgress(
+            submit:CircleProgress(
                     title:
-                        '${(cubit.stdHomeworks![index] * 100).toStringAsFixed(0)} %',
+                        '${(cubit.listStdDetail![index]["hwPercent"] * 100).toStringAsFixed(0)} %',
                     lineWidth: Resizable.size(context, 3),
-                    percent: cubit.stdHomeworks![index],
+                    percent: cubit.listStdDetail![index]["hwPercent"],
                     radius: Resizable.size(context, 16),
                     fontSize: Resizable.font(context, 14),
                   ),
-            point: cubit.stdPoints == null
-                ? Transform.scale(
-                    scale: 0.75,
-                    child: const Center(child: CircularProgressIndicator()))
-                : cubit.stdPoints![index] == 0
-                    ? Container()
-                    : CircleAvatar(
-                        radius: Resizable.size(context, 16),
-                        child: Text(cubit.stdPoints![index].toStringAsFixed(1)),
-                      ),
+            point: Container(),
+            // cubit.stdPoints![index] == 0
+            //         ? Container()
+            //         : CircleAvatar(
+            //             radius: Resizable.size(context, 16),
+            //             child: Text(cubit.stdPoints![index].toStringAsFixed(1)),
+            //           ),
             dropdown: IconButton(
                 onPressed: () {
                   BlocProvider.of<DropdownCubit>(context).update();

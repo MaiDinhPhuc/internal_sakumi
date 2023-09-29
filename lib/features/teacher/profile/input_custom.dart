@@ -55,20 +55,21 @@ class InputCustom extends StatelessWidget {
           height: Resizable.size(context, 5),
         ),
         Container(
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            boxShadow: (isEdit && isFocus)
-                ? [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.3),
-                      spreadRadius: 2,
-                      blurRadius: 4,
-                      offset: const Offset(
-                          0, 4), // changes the position of the shadow
-                    ),
-                  ]
-                : null,
-          ),
+          color: Colors.transparent,
+          // decoration: BoxDecoration(
+          //
+          //   // boxShadow: (isEdit && isFocus)
+          //   //     ? [
+          //   //         BoxShadow(
+          //   //           color: Colors.black.withOpacity(0.3),
+          //   //           spreadRadius: 2,
+          //   //           blurRadius: 4,
+          //   //           offset: const Offset(
+          //   //               0, 4), // changes the position of the shadow
+          //   //         ),
+          //   //       ]
+          //   //     : null,
+          // ),
           child: TextFormField(
             decoration: InputDecoration(
               border: const OutlineInputBorder(),

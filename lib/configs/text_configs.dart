@@ -437,7 +437,7 @@ Map<AppText, String> texts = {
   AppText.txtTeacherProfile: 'Profile Giáo viên',
   AppText.txtChangeImage: 'Đổi ảnh mới',
   AppText.txtBaseInfo: 'Thông tin cơ bản',
-  AppText.txtPassLogin: 'Mật khẩu đăng nhập',
+  AppText.txtPassLogin: 'Thay đổi mật khẩu',
   AppText.txtCurrentPass: 'Mật khẩu hiện tại',
   AppText.txtNewPass: 'Mật khẩu mới',
   AppText.txtAgainNewPass: 'Nhập lại mật khẩu mới',
@@ -489,6 +489,10 @@ String vietnameseSubText(String text){
       return "Huỷ";
     case 'Preparing':
       return "Mới Tạo";
+    case "Deposit":
+      return "Bỏ cọc";
+    case "Force":
+      return "Bắt buộc lên kỳ";
     default:
       return "error";
   }

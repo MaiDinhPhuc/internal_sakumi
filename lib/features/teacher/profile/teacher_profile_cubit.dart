@@ -20,17 +20,13 @@ class TeacherProfileCubit extends Cubit<int> {
   bool isEditPassLogin = false;
   bool isUpdate = false;
 
-
-  String passTeacher = '';
   List<Map<String, dynamic>>? listInfoTextField;
   List<Map<String, dynamic>>? listPassWordField;
 
   load(BuildContext context) async {
-    SharedPreferences localData = await SharedPreferences.getInstance();
-    profileTeacher = await FireBaseProvider.instance
-        .getTeacherByTeacherCode(localData.getString(PrefKeyConfigs.code).toString());
+    await context.read<AppBarInfoTeacherCubit>().load(context);
+    profileTeacher = context.read<AppBarInfoTeacherCubit>().state;
     debugPrint('=>>>>>>>profileTeacher: ${profileTeacher!.name}');
-    passTeacher = localData.getString(PrefKeyConfigs.password).toString();
     userModel = await FireBaseProvider.instance.getUserById(profileTeacher!.userId);
     listInfoTextField = [];
     isEditBaseInfo = false;
@@ -68,10 +64,10 @@ class TeacherProfileCubit extends Cubit<int> {
     listPassWordField?.add({
       'title': '${AppText.txtCurrentPass.text}:',
       'focusNode': FocusNode(),
-      'isEdit': false,
-      'isFocus': false,
+      'isEdit': true,
+      'isFocus': true,
       'isShowPass': false,
-      'controller': TextEditingController(text: passTeacher),
+      'controller': TextEditingController(),
     });
     listPassWordField?.add({
       'title': '${AppText.txtNewPass.text}:',
@@ -103,7 +99,7 @@ class TeacherProfileCubit extends Cubit<int> {
       listInfoTextField?[index]['isFocus'] = value;
     }
     else {
-      if (!isEditPassLogin || index == 0) return;
+      if (!isEditPassLogin ) return;
       listPassWordField?[index]['isFocus'] = value;
 
     }
@@ -138,12 +134,16 @@ class TeacherProfileCubit extends Cubit<int> {
       editInfo();
     }
    else {
+      final controllerOldPass =
+      listPassWordField?[0]['controller'] as TextEditingController;
       final controllerNewPass =
       listPassWordField?[1]['controller'] as TextEditingController;
       final controllerAgainNewPass =
       listPassWordField?[2]['controller'] as TextEditingController;
+      controllerOldPass.text = '';
       controllerNewPass.text = '';
       controllerAgainNewPass.text = '';
+      listPassWordField?[0]['isShowPass'] = false;
       listPassWordField?[1]['isShowPass'] = false;
       listPassWordField?[2]['isShowPass'] = false;
       editPass();
@@ -194,13 +194,11 @@ class TeacherProfileCubit extends Cubit<int> {
 
 
   void changePassWord(BuildContext context) async {
+    final oldPass = (listPassWordField![0]['controller'] as TextEditingController).text;
     final newPass = (listPassWordField![1]['controller'] as TextEditingController).text;
-    final res = await FireBaseProvider.instance.changePassword(userModel!.email, passTeacher, newPass);
+    final res = await FireBaseProvider.instance.changePassword(userModel!.email, oldPass, newPass);
     debugPrint('=>>>>>>>>> resaaaaaaaaa: $res');
-    SharedPreferences sharedPreferences =
-    await SharedPreferences.getInstance();
     if(res) {
-      await sharedPreferences.setString(PrefKeyConfigs.password, newPass);
       load(context);
     }
 

@@ -17,11 +17,11 @@ class ManageGeneralCubit extends Cubit<int> {
   List<CourseModel>? listAllCourse;
   int selector = 0;
   List<bool> listStateCourse = [];
-  List<bool> listStateClassStatus = [true,true,true,true];
+  List<bool> listStateClassStatus = [true,true,false,false];
   List<bool> listClassType = [true,true];
   bool canAdd = true;
 
-  List<String> listStudentStatusMenu = ["Completed","InProgress","Viewer","ReNew","UpSale","Moved","Retained","Dropped","Remove"];
+  List<String> listStudentStatusMenu = ["Completed","InProgress","Viewer","ReNew","UpSale","Moved","Retained","Dropped","Deposit","Force","Remove"];
   List<String> listClassStatusMenu = ["Preparing", "InProgress", "Completed", "Cancel"];
   List<String> listAllClassStatusMenu = ["Preparing", "InProgress", "Completed", "Cancel", "Remove"];
   List<String> listClassTypeMenu = ["Lớp Chung","Lớp 1-1"];
@@ -33,6 +33,7 @@ class ManageGeneralCubit extends Cubit<int> {
     for(int i = 0; i < listAllCourse!.length ;i++){
       listStateCourse.add(true);
     }
+    filterClass();
     emit(listAllClass!.first.classId);
     selector = listAllClass!.first.classId;
     loadTeacherInClass(context, selector);

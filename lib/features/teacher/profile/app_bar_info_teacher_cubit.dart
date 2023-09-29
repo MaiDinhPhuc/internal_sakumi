@@ -8,11 +8,14 @@ import '../../../configs/prefKey_configs.dart';
 class AppBarInfoTeacherCubit extends Cubit<TeacherModel?> {
   AppBarInfoTeacherCubit() : super(null);
 
+  TeacherModel? teacherModel;
+
   load(context) async {
     emit(null);
     SharedPreferences localData = await SharedPreferences.getInstance();
     var profileTeacher = await FireBaseProvider.instance
         .getTeacherByTeacherCode(localData.getString(PrefKeyConfigs.code).toString());
+    teacherModel = profileTeacher;
     emit(profileTeacher);
   }
 

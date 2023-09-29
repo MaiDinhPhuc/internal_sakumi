@@ -19,14 +19,13 @@ class TeacherProfile extends StatelessWidget {
           children: [
             HeaderTeacher(
               index: -1,
-              classId: TextUtils.getName(position: 0),
+              classId: "empty",
               name: name,
               role: "teacher",
             ),
             SizedBox(
               height: Resizable.size(context, 20),
             ),
-
             Text(AppText.txtTeacherProfile.text.toUpperCase() , style:
               TextStyle(
                 fontSize: Resizable.font(context, 30),
