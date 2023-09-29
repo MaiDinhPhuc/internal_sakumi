@@ -3,10 +3,12 @@ import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/Material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/teacher/profile/app_bar_info_teacher_cubit.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
@@ -39,7 +41,6 @@ class FirebaseAuthentication {
 
           sharedPreferences.setString(
               PrefKeyConfigs.code, adminModel.adminCode);
-          sharedPreferences.setString(PrefKeyConfigs.password, passwordController.text);
           sharedPreferences.setInt(PrefKeyConfigs.userId, adminModel.userId);
           sharedPreferences.setString(PrefKeyConfigs.name, adminModel.name);
           sharedPreferences.setString(PrefKeyConfigs.email, emailController.text);
@@ -54,13 +55,13 @@ class FirebaseAuthentication {
               await FireBaseProvider.instance.getTeacherById(user.id);
           sharedPreferences.setString(
               PrefKeyConfigs.code, teacherModel.teacherCode);
-          sharedPreferences.setString(PrefKeyConfigs.password, passwordController.text);
           sharedPreferences.setInt(PrefKeyConfigs.userId, teacherModel.userId);
           sharedPreferences.setString(PrefKeyConfigs.name, teacherModel.name);
           sharedPreferences.setString(PrefKeyConfigs.email, emailController.text);
           if (context.mounted) {
             Navigator.pop(context);
           }
+          await context.read<AppBarInfoTeacherCubit>().load(context);
           Navigator.pushReplacementNamed(context,
               "${Routes.teacher}?name=${teacherModel.teacherCode.trim()}");
         }
@@ -128,7 +129,6 @@ class FirebaseAuthentication {
     await SharedPreferences.getInstance();
     sharedPreferences.setString(
         PrefKeyConfigs.code, '');
-    sharedPreferences.setString(PrefKeyConfigs.password, '');
     sharedPreferences.setInt(PrefKeyConfigs.userId, -1);
     sharedPreferences.setString(PrefKeyConfigs.name, '');
     sharedPreferences.setString(PrefKeyConfigs.email, '');
@@ -180,7 +180,7 @@ class FirebaseAuthentication {
       res = true;
     } catch (error) {
       debugPrint('=>>>>>>>>>>>>>error: $error');
-      Fluttertoast.showToast(msg: 'Có lỗi xảy ra! Thử lại');
+      Fluttertoast.showToast(msg: 'Mật khẩu cũ không chính xác! Thử lại');
     }
     return res;
   }

@@ -27,8 +27,9 @@ class AlertNewClassCubit extends Cubit<int> {
 
   chooseCourse(String? text) async {
     selector = text;
-    emit(state + 1);
     await getCourseId(selector!);
+    emit(state + 1);
+
   }
 
   int chooseType(String? text) {
@@ -83,7 +84,7 @@ class AlertNewClassCubit extends Cubit<int> {
     var title = text.split('Kỳ').first.trim();
     var term = text.split(title).last.trim();
     var course = await FireBaseProvider.instance.getCourseByName(title, term);
-
+    print("=====>courseId: ${course.courseId}");
     courseId = course.courseId;
   }
 

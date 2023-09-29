@@ -15,11 +15,7 @@ class ExpandedOverviewStudentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<ClassOverviewCubit>(context);
-    return cubit.listStdLesson == null
-        ? Transform.scale(
-            scale: 0.75,
-            child: const Center(child: CircularProgressIndicator()))
-        : Column(
+    return Column(
             children: [
               Container(
                 height: Resizable.size(context, 0.5),
@@ -27,70 +23,59 @@ class ExpandedOverviewStudentItem extends StatelessWidget {
                 color: const Color(0xffE0E0E0),
               ),
               SizedBox(height: Resizable.size(context, 20)),
-              ...cubit.listStdLesson![index]
-                  .map((e) =>
-              cubit.listStdLesson![index]
-                              [cubit.listStdLesson![index].indexOf(e)] ==
-                          null
-                      ? Container()
-                      : BlocProvider(
-                          create: (context) => DropdownCubit(),
-                          child: BlocBuilder<DropdownCubit, int>(
-                            builder: (c, state) => Container(
-                                margin: EdgeInsets.only(
-                                    left: Resizable.padding(context, 25),
-                                    right: Resizable.padding(context, 25),
-                                    bottom: Resizable.padding(context, 10)),
-                                alignment: Alignment.centerLeft,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: Resizable.padding(context, 15),
-                                    vertical: Resizable.padding(context, 5)),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: Resizable.size(context, 0.5),
-                                        color: state % 2 == 0
-                                            ? greyColor.shade100
-                                            : Colors.black),
-                                    borderRadius: BorderRadius.circular(
-                                        Resizable.size(context, 5))),
-                                child: AnimatedCrossFade(
-                                    firstChild: CollapseLearnedLesson(cubit.listStdLesson![index].indexOf(e)+1, cubit.listStdLesson![index]
-                                    [cubit.listStdLesson![index].indexOf(e)]!.attendColor, cubit.listStdLesson![index]
-                                    [cubit.listStdLesson![index].indexOf(e)]!
-                                        .attendTitle, cubit.listStdLesson![index]
-                                    [cubit.listStdLesson![index].indexOf(e)]!.hwTitle,cubit.listStdLesson![index]
-                                    [cubit.listStdLesson![index].indexOf(e)]!.hwColor ),
-                                    secondChild: Column(
-                                      children: [
-                                        CollapseLearnedLesson(cubit.listStdLesson![index].indexOf(e)+1, cubit.listStdLesson![index]
-                                        [cubit.listStdLesson![index].indexOf(e)]!.attendColor, cubit.listStdLesson![index]
-                                        [cubit.listStdLesson![index].indexOf(e)]!
-                                            .attendTitle, cubit.listStdLesson![index]
-                                        [cubit.listStdLesson![index].indexOf(e)]!.hwTitle,cubit.listStdLesson![index]
-                                        [cubit.listStdLesson![index].indexOf(e)]!.hwColor),
-                                        ExpandLearnedLesson(cubit.listStdLesson![index]
-                                        [cubit.listStdLesson![index].indexOf(e)]!)
-                                      ],
-                                    ),
-                                    crossFadeState: state % 2 == 1
-                                        ? CrossFadeState.showSecond
-                                        : CrossFadeState.showFirst,
-                                    duration:
-                                        const Duration(milliseconds: 100))),
-                          )))
-                  .toList()
+              for (int i = 0; i<cubit.listStdDetail![index]["attendance"].length; i++)
+                BlocProvider(
+                    create: (context) => DropdownCubit(),
+                    child: BlocBuilder<DropdownCubit, int>(
+                      builder: (c, state) => Container(
+                          margin: EdgeInsets.only(
+                              left: Resizable.padding(context, 25),
+                              right: Resizable.padding(context, 25),
+                              bottom: Resizable.padding(context, 10)),
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: Resizable.padding(context, 15),
+                              vertical: Resizable.padding(context, 5)),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: Resizable.size(context, 0.5),
+                                  color: state % 2 == 0
+                                      ? greyColor.shade100
+                                      : Colors.black),
+                              borderRadius: BorderRadius.circular(
+                                  Resizable.size(context, 5))),
+                          child: AnimatedCrossFade(
+                              firstChild: CollapseLearnedLesson(cubit.listStdDetail![index]["title"][i], cubit.listStdDetail![index]["attendance"][i], cubit.listStdDetail![index]["hw"][i]),
+                              secondChild: Column(
+                                children: [
+                                  CollapseLearnedLesson(cubit.listStdDetail![index]["title"][i], cubit.listStdDetail![index]["attendance"][i], cubit.listStdDetail![index]["hw"][i]),
+                                  ExpandLearnedLesson(cubit.listStdDetail![index]["spNote"][i], cubit.listStdDetail![index]["teacherNote"][i])
+                                ],
+                              ),
+                              crossFadeState: state % 2 == 1
+                                  ? CrossFadeState.showSecond
+                                  : CrossFadeState.showFirst,
+                              duration:
+                              const Duration(milliseconds: 100))),
+                    ))
+              // ...listAttendance
+              //     .map((e) => )
+              //     .toList()
             ],
           );
   }
 }
 
 class CollapseLearnedLesson extends StatelessWidget {
-  final int numberOfLesson;
-  final String attendTitle;
-  final Color attendColor;
-  final String hwTitle;
-  final Color hwColor;
-  const CollapseLearnedLesson(this.numberOfLesson, this.attendColor, this.attendTitle, this.hwTitle, this.hwColor, {Key? key}) : super(key: key);
+  final String title;
+  final int attend;
+  final int hw;
+
+  // final String attendTitle;
+  // final Color attendColor;
+  // final String hwTitle;
+  // final Color hwColor;
+  const CollapseLearnedLesson(this.title, this.attend,this.hw, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +84,7 @@ class CollapseLearnedLesson extends StatelessWidget {
         Expanded(
             flex: 6,
             child: Text(
-            '${AppText.txtLesson.text} $numberOfLesson',
+            title,
             style: TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: Resizable.font(
@@ -116,7 +101,7 @@ class CollapseLearnedLesson extends StatelessWidget {
                   minWidth: Resizable.size(context, 100)
               ),
               decoration: BoxDecoration(
-                  color: attendColor,
+                  color: attend == 5 ? const Color(0xffF57F17) : attend == 6? const Color(0xffB71C1C) : const Color(0xff33691E),
                   borderRadius:
                   BorderRadius.circular(
                       1000)),
@@ -127,7 +112,7 @@ class CollapseLearnedLesson extends StatelessWidget {
                   vertical: Resizable.padding(
                       context, 3)),
               child: Text(
-                  attendTitle,
+                  attend == 5 ? AppText.txtPermitted.text : attend == 6? AppText.txtAbsent.text : AppText.txtPresent.text,
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight:
@@ -143,7 +128,7 @@ class CollapseLearnedLesson extends StatelessWidget {
                   minWidth: Resizable.size(context, 100)
               ),
               decoration: BoxDecoration(
-                  color: hwColor,
+                  color: hw == -2 ? const Color(0xffB71C1C) : hw == -1 ? const Color(0xffF57F17) : const Color(0xff33691E),
                   borderRadius:
                   BorderRadius.circular(
                       1000)),
@@ -154,7 +139,7 @@ class CollapseLearnedLesson extends StatelessWidget {
                   vertical: Resizable.padding(
                       context, 3)),
               child: Text(
-                  hwTitle,
+                  hw == -2 ? AppText.txtNotSubmit.text : hw == -1 ? AppText.txtSubmitted.text : hw.toString(),
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight:
@@ -190,8 +175,9 @@ class CollapseLearnedLesson extends StatelessWidget {
 }
 
 class ExpandLearnedLesson extends StatelessWidget {
-  final StudentLessonModel model;
-  const ExpandLearnedLesson(this.model, {Key? key}) : super(key: key);
+  final String spNote;
+  final String ssNote;
+  const ExpandLearnedLesson(this.spNote,this.ssNote, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -223,7 +209,7 @@ class ExpandLearnedLesson extends StatelessWidget {
               borderRadius:
               BorderRadius.circular(Resizable.padding(context, 5))),
           child: Text(
-            model.teacherNote, style: TextStyle(
+            ssNote, style: TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: Resizable.font(context, 19))
           )
@@ -245,7 +231,7 @@ class ExpandLearnedLesson extends StatelessWidget {
                 borderRadius:
                 BorderRadius.circular(Resizable.padding(context, 5))),
             child: Text(
-                model.supportNote, style: TextStyle(
+                spNote, style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: Resizable.font(context, 19))
             )

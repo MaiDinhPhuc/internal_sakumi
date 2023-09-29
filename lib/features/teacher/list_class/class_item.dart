@@ -33,13 +33,14 @@ class ClassItem extends StatelessWidget {
                   widget: Column(
                     children: [
                       ClassOverview(index),
-                      (BlocProvider.of<TeacherCubit>(c).listStudentInClass ==
-                              null)
-                          ? Transform.scale(
-                              scale: 0.75,
-                              child: const CircularProgressIndicator(),
-                            )
-                          : ChartView(index)
+                      // (BlocProvider.of<TeacherCubit>(c).listStudentInClass ==
+                      //         null)
+                      //     ? Transform.scale(
+                      //         scale: 0.75,
+                      //         child: const CircularProgressIndicator(),
+                      //       )
+                      //     :
+                      ChartView(index)
                     ],
                   ),
                   onTap: () async {

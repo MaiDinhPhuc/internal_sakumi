@@ -272,15 +272,9 @@ class HeaderTeacher extends StatelessWidget {
                                 ),
                                 duration: 0,
                                 onTap: () {
-                                  var uri =
-                                      Uri.dataFromString(window.location.href)
-                                          .toString();
                                   var profileUri =
                                       '${Routes.teacher}?name=$name/profile';
-                                  if (uri.contains(profileUri)) {
-                                    Navigator.pushReplacementNamed(
-                                        context, profileUri);
-                                  } else {
+                                  if(classId!="empty"){
                                     Navigator.pushNamed(context, profileUri);
                                   }
                                 },

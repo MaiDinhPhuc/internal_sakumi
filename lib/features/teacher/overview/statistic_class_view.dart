@@ -108,7 +108,7 @@ class StatisticClassView extends StatelessWidget {
                                 child: const CircularProgressIndicator(),
                               ),
                             )
-                          : Text('${cubit.percentHw.toStringAsFixed(0)} %',
+                          : Text('${cubit.percentHw!.toStringAsFixed(0)} %',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w600,
@@ -129,63 +129,63 @@ class StatisticClassView extends StatelessWidget {
             ],
           ),
         )),
-        if (cubit.averagePts != 0)
-          SizedBox(width: Resizable.size(context, 20)),
-        if (cubit.averagePts != 0)
-          Expanded(
-              child: Container(
-            height: Resizable.size(context, 85),
-            padding: EdgeInsets.only(
-                top: Resizable.padding(context, 10),
-                left: Resizable.padding(context, 10)),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Resizable.size(context, 5)),
-                border: Border.all(
-                  color: const Color(0xffE0E0E0),
-                  width: Resizable.size(context, 0.5),
-                )),
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(AppText.txtPointOfTest.text,
-                      style: TextStyle(
-                          color: const Color(0xff757575),
-                          fontWeight: FontWeight.w600,
-                          fontSize: Resizable.font(context, 20))),
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Expanded(
-                        child: cubit.listPoints == null
-                            ? Align(
-                                alignment: Alignment.centerLeft,
-                                child: Transform.scale(
-                                  scale: 0.5,
-                                  child: const CircularProgressIndicator(),
-                                ),
-                              )
-                            : Text(cubit.averagePts.toStringAsFixed(1),
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: Resizable.font(context, 40)))),
-                    Expanded(
-                        child: cubit.listPoints == null
-                            ? Align(
-                                alignment: Alignment.centerRight,
-                                child: Transform.scale(
-                                  scale: 0.5,
-                                  child: const CircularProgressIndicator(),
-                                ),
-                              )
-                            : OverviewChart(points: cubit.listPoints!))
-                  ],
-                )
-              ],
-            ),
-          )),
+        // if (cubit.averagePts != 0)
+        //   SizedBox(width: Resizable.size(context, 20)),
+        // if (cubit.averagePts != 0)
+        //   Expanded(
+        //       child: Container(
+        //     height: Resizable.size(context, 85),
+        //     padding: EdgeInsets.only(
+        //         top: Resizable.padding(context, 10),
+        //         left: Resizable.padding(context, 10)),
+        //     decoration: BoxDecoration(
+        //         borderRadius: BorderRadius.circular(Resizable.size(context, 5)),
+        //         border: Border.all(
+        //           color: const Color(0xffE0E0E0),
+        //           width: Resizable.size(context, 0.5),
+        //         )),
+        //     child: Column(
+        //       children: [
+        //         Align(
+        //           alignment: Alignment.topLeft,
+        //           child: Text(AppText.txtPointOfTest.text,
+        //               style: TextStyle(
+        //                   color: const Color(0xff757575),
+        //                   fontWeight: FontWeight.w600,
+        //                   fontSize: Resizable.font(context, 20))),
+        //         ),
+        //         Row(
+        //           mainAxisSize: MainAxisSize.max,
+        //           children: [
+        //             Expanded(
+        //                 child: cubit.listPoints == null
+        //                     ? Align(
+        //                         alignment: Alignment.centerLeft,
+        //                         child: Transform.scale(
+        //                           scale: 0.5,
+        //                           child: const CircularProgressIndicator(),
+        //                         ),
+        //                       )
+        //                     : Text(cubit.averagePts.toStringAsFixed(1),
+        //                         style: TextStyle(
+        //                             color: Colors.black,
+        //                             fontWeight: FontWeight.w600,
+        //                             fontSize: Resizable.font(context, 40)))),
+        //             Expanded(
+        //                 child: cubit.listPoints == null
+        //                     ? Align(
+        //                         alignment: Alignment.centerRight,
+        //                         child: Transform.scale(
+        //                           scale: 0.5,
+        //                           child: const CircularProgressIndicator(),
+        //                         ),
+        //                       )
+        //                     : OverviewChart(points: cubit.listPoints!))
+        //           ],
+        //         )
+        //       ],
+        //     ),
+        //   )),
         SizedBox(width: Resizable.size(context, 20)),
         Expanded(
             child: Container(

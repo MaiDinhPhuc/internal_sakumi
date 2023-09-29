@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 
 class StudentClassModel {
@@ -37,6 +38,10 @@ class StudentClassModel {
         return const Color(0xffB71C1C);
       case 'Viewer':
         return const Color(0xff757575);
+      case 'Deposit':
+        return Colors.black;
+      case 'Force':
+        return Colors.blue;
       default:
         return const Color(0xff33691e);
     }
@@ -51,11 +56,13 @@ class StudentClassModel {
       case 'Retained':
         return 'retained';
       case 'Dropped':
+      case 'Deposit':
       case 'Remove':
         return 'dropped';
       case 'Viewer':
         return 'viewer';
       case 'UpSale':
+      case "Force":
         return 'up_sale';
       case 'ReNew':
         return 're_new';
@@ -64,28 +71,6 @@ class StudentClassModel {
     }
   }
 
-  String get title {
-    switch (status) {
-      case 'Completed':
-        return AppText.stsCompleted.text;
-      case 'Moved':
-        return AppText.stsMoved.text;
-      case 'Retained':
-        return AppText.stsRetained.text;
-      case 'Dropped':
-        return AppText.stsDropped.text;
-      case 'Viewer':
-        return AppText.stsViewer.text;
-      case 'ReNew':
-        return AppText.stsRenew.text;
-      case 'Remove':
-        return AppText.stsRemove.text;
-      case 'UpSale':
-        return AppText.stsUpSale.text;
-      default:
-        return AppText.stsInProgress.text;
-    }
-  }
 
   factory StudentClassModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {

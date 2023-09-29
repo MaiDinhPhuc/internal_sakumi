@@ -5,6 +5,7 @@ import 'package:internal_sakumi/features/admin/manage_general/manage_general_cub
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
+import 'package:internal_sakumi/model/class_overview_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
@@ -15,6 +16,7 @@ import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/model/tag_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
+import 'package:internal_sakumi/model/teacher_home_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
@@ -119,6 +121,16 @@ abstract class NetworkProvider {
   Future<List<StudentTestModel>> getAllStudentTest(int classId);
 
   Future<List<TestResultModel>> getListTestResult(int classId);
+
+  Future<TeacherHomeClass> getDataForTeacherHomeScreen(int teacherId);
+
+  Future<ClassOverViewModel> getDataForClassOverViewTab(int classId);
+
+  Future<List<StudentModel>> getAllStudentInFoInClass(List<int> listStdId);
+
+  Future<List<LessonModel>> getLessonsByLessonId(List<int> ids);
+
+  Future<List<StudentClassModel>> getStudentClassInClassNotRemove(int classId);
 
   //admin
   Future<List<ClassModel>> getListClassNotRemove();
