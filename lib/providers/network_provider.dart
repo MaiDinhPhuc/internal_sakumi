@@ -9,6 +9,7 @@ import 'package:internal_sakumi/model/class_overview_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
+import 'package:internal_sakumi/model/list_lesson_data_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
@@ -132,6 +133,11 @@ abstract class NetworkProvider {
 
   Future<List<StudentClassModel>> getStudentClassInClassNotRemove(int classId);
 
+  Future<ListLessonDataModel> getDataForLessonTab(int classId);
+
+  Future<List<TeacherModel>> getListTeacherByListId(List<int> teacherIds);
+
+  Future<List<StudentLessonModel>> getStudentClassAvailable(int classId, List<int> studentIds);
   //admin
   Future<List<ClassModel>> getListClassNotRemove();
 

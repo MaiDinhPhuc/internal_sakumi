@@ -25,7 +25,7 @@ class NoteWidget extends StatelessWidget {
 
 class TrackingItem extends StatelessWidget {
   final bool isSubmit;
-  final int condition;
+  final int? condition;
   const TrackingItem(this.condition, {this.isSubmit = false, Key? key})
       : super(key: key);
 
@@ -37,26 +37,30 @@ class TrackingItem extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(1000),
           color: isSubmit
-              ? condition < -2
+              ? condition == null
                   ? const Color(0xff9E9E9E)
-                  : condition > -2
-                      ? const Color(0xff33691E)
-                      : const Color(0xffB71C1C)
-              : condition < 1
+                  : condition! == -1
+                      ? const Color(0xffF57F17)
+                      : condition! > -1
+                          ? const Color(0xff33691E)
+                          : const Color(0xffB71C1C)
+              : condition == null || condition == 0
                   ? const Color(0xff9E9E9E)
-                  : (condition > 0 && condition < 6)
+                  : (condition! > 0 && condition! < 6)
                       ? const Color(0xff33691E)
                       : const Color(0xffB71C1C)),
       child: Text(
         (isSubmit
-                ? condition < -2
+                ? condition == null
                     ? AppText.txtWaiting.text
-                    : condition > -2
-                        ? AppText.txtSubmitted.text
-                        : AppText.txtNotSubmit.text
-                : condition < 1
+                    : condition! == -1
+                        ? AppText.textNotMarked.text
+                        : condition! > -1
+                            ? condition.toString()
+                            : AppText.txtNotSubmit.text
+                : condition == null || condition == 0
                     ? AppText.txtWaiting.text
-                    : (condition > 0 && condition < 6)
+                    : (condition! > 0 && condition! < 6)
                         ? AppText.txtPresent.text
                         : AppText.txtNotPresent.text)
             .toUpperCase(),

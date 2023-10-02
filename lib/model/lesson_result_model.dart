@@ -24,7 +24,7 @@ class LessonResultModel {
         teacherId: data['teacher_id'],
         status: data['status'],
         date: data['date'],
-        noteForStudent: data['student note'],
+        noteForStudent: data['student_note'],
         noteForSupport: data['support_note'],
         noteForTeacher: data['teacher_note']);
   }

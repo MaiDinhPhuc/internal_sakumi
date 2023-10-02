@@ -4,7 +4,7 @@ class AppConfigs{
 
   static const bool endpointFirebaseDebug = false;
 
-  static const bool isRunningDebug = false;
+  static const bool isRunningDebug = true;
 
 
   static String getDataUrl(String file, String token){

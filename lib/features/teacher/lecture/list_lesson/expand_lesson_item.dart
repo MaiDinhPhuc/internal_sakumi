@@ -22,12 +22,12 @@ class ExpandLessonItem extends StatelessWidget {
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 19))),
-        NoteWidget(cubit.lessonResults![index] == null ? '' : cubit.lessonResults![index]!.noteForSupport.toString()),
+        NoteWidget(cubit.listSpNote![index]!.toString()),
           Text(AppText.titleNoteFromAnotherTeacher.text,
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 19))),
-          NoteWidget(cubit.lessonResults![index] == null ? '' :cubit.lessonResults![index]!.noteForTeacher.toString()),
+          NoteWidget(cubit.listTeacherNote![index]!.toString()),
           Container(
             height: Resizable.size(context, 1),
             margin:
@@ -63,52 +63,26 @@ class ExpandLessonItem extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     fontSize: Resizable.font(context, 17)),
               )),
-          cubit.students == null
-              ? Center(
-                  child: Transform.scale(
-                    scale: 0.75,
-                    child: const CircularProgressIndicator(),
-                  ),
-                )
-              : Padding(
+          Padding(
                   padding: EdgeInsets.symmetric(
                       vertical: Resizable.padding(context, 8)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ...cubit.students!
-                          .map((e) => TrackStudentItemRowLayout(
+                      for(int i = 0; i<cubit.listDetailLesson![index]!['names'].length; i++ )
+                       TrackStudentItemRowLayout(
                               name: Text(
-                                e.name,
+                                cubit.listDetailLesson![index]!['names'][i],
                                 style: TextStyle(
                                     fontSize: Resizable.font(context, 20),
                                     fontWeight: FontWeight.w500),
                               ),
-                              attendance: cubit.listAttendance == null ? Transform.scale(
-                                scale: 0.5,
-                                child: const Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              ): TrackingItem(
-                                  cubit.listAttendance![index]
-                                      [cubit.students!.indexOf(e)]),
-                              submit: cubit.listSubmit == null ? Transform.scale(
-                      scale: 0.5,
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      ) : TrackingItem(
-                                  cubit.listSubmit![index]
-                                      [cubit.students!.indexOf(e)],
+                              attendance: TrackingItem(
+                                  cubit.listDetailLesson![index]!['attendance'][i]),
+                              submit:  TrackingItem(
+                                  cubit.listDetailLesson![index]!['hw'][i],
                                   isSubmit: true),
-                              note: cubit.listNote == null ? Transform.scale(
-                                scale: 0.5,
-                                child: const Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              ) : NoteWidget(cubit.listNote![index]
-                                  [cubit.students!.indexOf(e)])))
-                          .toList(),
+                              note:  NoteWidget(cubit.listDetailLesson![index]!['note'][i]))
                     ],
                   ),
                 )

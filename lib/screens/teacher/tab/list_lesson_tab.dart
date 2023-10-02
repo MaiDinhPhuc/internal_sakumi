@@ -21,7 +21,7 @@ class ListLessonTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => LessonTabCubit()..init(context),
+        create: (context) => LessonTabCubit()..load(),
         child: Scaffold(
           body: Column(
             children: [
@@ -50,13 +50,7 @@ class ListLessonTab extends StatelessWidget {
                                         fontWeight: FontWeight.w800,
                                         fontSize: Resizable.font(context, 30))),
                               ),
-                              cubit.lessons == null || cubit
-                                  .lessonResults == null
-                                  ? Transform.scale(
-                                      scale: 0.75,
-                                      child: const CircularProgressIndicator(),
-                                    )
-                                  : Column(
+                              Column(
                                       children: [
                                         Container(
                                             padding: EdgeInsets.symmetric(
@@ -82,7 +76,7 @@ class ListLessonTab extends StatelessWidget {
                                                 submit: Text(AppText.txtRateOfSubmitHomework.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17))),
                                                 mark: Text(AppText.titleStatus.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17))),
                                                 dropdown: Container())),
-                                        ...cubit.lessons!.map((e) => Container(
+                                        ...cubit.listLessonInfo!.map((e) => Container(
                                               margin: EdgeInsets.symmetric(
                                                   horizontal: Resizable.padding(
                                                       context, 150),
@@ -117,21 +111,15 @@ class ListLessonTab extends StatelessWidget {
                                                                             .black),
                                                                 borderRadius:
                                                                     BorderRadius.circular(Resizable.size(context, 5))),
-                                                            child: cubit.lessons == null || cubit.lessons!.isEmpty
-                                                                ? Transform.scale(
-                                                                    scale: 0.75,
-                                                                    child:
-                                                                        const CircularProgressIndicator(),
-                                                                  )
-                                                                : AnimatedCrossFade(
-                                                                    firstChild: CollapseLessonItem(cubit.lessons!.indexOf(e), e.title),
+                                                            child: AnimatedCrossFade(
+                                                                    firstChild: CollapseLessonItem(cubit.listLessonInfo!.indexOf(e), e['title']),
                                                                     secondChild: Column(
                                                                       children: [
                                                                         CollapseLessonItem(
-                                                                            cubit.lessons!.indexOf(e),
-                                                                            e.title),
+                                                                            cubit.listLessonInfo!.indexOf(e),
+                                                                            e['title']),
                                                                         ExpandLessonItem(cubit
-                                                                            .lessons!
+                                                                            .listLessonInfo!
                                                                             .indexOf(e))
                                                                       ],
                                                                     ),
@@ -149,38 +137,37 @@ class ListLessonTab extends StatelessWidget {
                                                                 // debugPrint(
                                                                 //     '===========> 000000 ${cubit.lessons!.indexOf(e)} == ${cubit.listLessonResult!.length - 1}');
                                                                 if (cubit
-                                                                        .lessonResults![cubit.lessons!.indexOf(e)] == null) {
+                                                                        .listStatus![cubit.listLessonInfo!.indexOf(e)] == "Pending") {
                                                                   await Navigator
                                                                       .pushNamed(
                                                                           c,
-                                                                          "/teacher?name=$name/role?role=teacher/lesson/class?id=${cubit.classModel!.classId}/lesson?id=${e.lessonId}");
+                                                                          "/teacher?name=$name/role?role=teacher/lesson/class?id=${cubit.classModel!.classId}/lesson?id=${cubit.listLessonInfo![cubit.listLessonInfo!.indexOf(e)]['id']}");
                                                                 } else if (cubit
-                                                                        .lessonResults![cubit
-                                                                            .lessons!
-                                                                            .indexOf(e)]!
-                                                                        .status !=
+                                                                        .listStatus![cubit
+                                                                            .listLessonInfo!
+                                                                            .indexOf(e)] !=
                                                                     'Complete') {
                                                                 await Navigator
                                                                       .pushNamed(
                                                                           c,
-                                                                          "/teacher?name=$name/role?role=teacher/lesson/class?id=${cubit.classModel!.classId}/lesson?id=${e.lessonId}");
+                                                                          "/teacher?name=$name/role?role=teacher/lesson/class?id=${cubit.classModel!.classId}/lesson?id=${cubit.listLessonInfo![cubit.listLessonInfo!.indexOf(e)]['id']}");
                                                                 } else {
                                                                   await Navigator
                                                                       .pushNamed(
                                                                       c,
-                                                                      "/teacher?name=$name/role?role=teacher/grading/class?id=${cubit.classModel!.classId}/type?type=btvn/lesson?id=${e.lessonId}");
+                                                                      "/teacher?name=$name/role?role=teacher/grading/class?id=${cubit.classModel!.classId}/type?type=btvn/lesson?id=${cubit.listLessonInfo![cubit.listLessonInfo!.indexOf(e)]['id']}");
                                                                 }
-                                                                if (c.mounted) {
-                                                                  await cubit
-                                                                      .loadLessonResult(
-                                                                      context);
-                                                                  if (c
-                                                                      .mounted) {
-                                                                    await cubit
-                                                                        .loadStatistic(
-                                                                        c);
-                                                                  }
-                                                                }
+                                                                // if (c.mounted) {
+                                                                //   await cubit
+                                                                //       .loadLessonResult(
+                                                                //       context);
+                                                                //   if (c
+                                                                //       .mounted) {
+                                                                //     await cubit
+                                                                //         .loadStatistic(
+                                                                //         c);
+                                                                //   }
+                                                                // }
                                                               },
                                                               borderRadius:
                                                                   BorderRadius.circular(
@@ -201,19 +188,7 @@ class ListLessonTab extends StatelessWidget {
                                                               name: Container(),
                                                               attend: Container(),
                                                               submit: Container(),
-                                                              sensei: cubit
-                                                                  .infoTeachers ==
-                                                                  null
-                                                                  ? Transform
-                                                                  .scale(
-                                                                scale: 0.75,
-                                                                child:
-                                                                const Center(
-                                                                  child:
-                                                                  CircularProgressIndicator(),
-                                                                ),
-                                                              )
-                                                                  : cubit.infoTeachers![cubit.lessons!.indexOf(e)] ==
+                                                              sensei: cubit.listTeacher![cubit.listLessonInfo!.indexOf(e)] ==
                                                                   null
                                                                   ? Container()
                                                                   : Tooltip(
@@ -241,8 +216,8 @@ class ListLessonTab extends StatelessWidget {
                                                                                 color: Colors.white70.withOpacity(0.5)),
                                                                             children: <TextSpan>[
                                                                               TextSpan(text: cubit
-                                                                                  .infoTeachers![cubit
-                                                                                  .lessons!
+                                                                                  .listTeacher![cubit
+                                                                                  .listLessonInfo!
                                                                                   .indexOf(
                                                                                   e)]!.name, style: TextStyle(color: Colors.white,
                                                                                   fontSize: Resizable.font(context, 18), fontWeight: FontWeight.w500)),
@@ -262,8 +237,8 @@ class ListLessonTab extends StatelessWidget {
                                                                                 color: Colors.white70.withOpacity(0.5)),
                                                                             children: <TextSpan>[
                                                                               TextSpan(text: cubit
-                                                                                  .infoTeachers![cubit
-                                                                                  .lessons!
+                                                                                  .listTeacher![cubit
+                                                                                  .listLessonInfo!
                                                                                   .indexOf(
                                                                                   e)]!.phone, style: TextStyle(color: Colors.white,
                                                                                   fontSize: Resizable.font(context, 18), fontWeight: FontWeight.w500)),
@@ -274,15 +249,15 @@ class ListLessonTab extends StatelessWidget {
                                                                     )
                                                                 ),
                                                                 child: SmallAvatar(cubit
-                                                                    .infoTeachers![cubit
-                                                                    .lessons!
+                                                                    .listTeacher![cubit
+                                                                    .listLessonInfo!
                                                                     .indexOf(
                                                                     e)]!
                                                                     .url),
                                                               ),
                                                               mark: Container(),
                                                               dropdown: cubit
-                                                                  .lessonResults![cubit.lessons!.indexOf(e)] == null ? Container() :
+                                                                  .listTeacher![cubit.listLessonInfo!.indexOf(e)] == null ? Container() :
                                                               IconButton(
                                                                   onPressed:
                                                                       () {
