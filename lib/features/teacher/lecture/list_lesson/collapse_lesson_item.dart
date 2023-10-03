@@ -41,42 +41,21 @@ class CollapseLessonItem extends StatelessWidget {
           ),
         ),
       ),
-      attend: cubit.listRateAttend == null
-          ? Transform.scale(
-              scale: 0.75,
-              child: const Center(
-                child: CircularProgressIndicator(),
-              ),
-            )
-          : cubit.lessonResults![index] == null ? Container(): CircleProgress(
-        title: '${(cubit.listRateAttend![index]*100).toStringAsFixed(0)} %',
+      attend: cubit.listAttendance![index] == null ? Container(): CircleProgress(
+        title: '${(cubit.listAttendance![index]!*100).toStringAsFixed(0)} %',
         lineWidth: Resizable.size(context, 3),
-        percent: cubit.listRateAttend![index],
+        percent: cubit.listAttendance![index]!,
         radius: Resizable.size(context, 16),
         fontSize: Resizable.font(context, 14),
       ),
-      submit: cubit.listRateSubmit == null
-          ? Transform.scale(
-              scale: 0.75,
-              child: const Center(
-                child: CircularProgressIndicator(),
-              ),
-            )
-          : cubit.lessonResults![index] == null ? Container() :CircleProgress(
-        title: '${(cubit.listRateSubmit![index]*100).toStringAsFixed(0)} %',
+      submit:cubit.listHw![index] == null ? Container() :CircleProgress(
+        title: '${(cubit.listHw![index]!*100).toStringAsFixed(0)} %',
         lineWidth: Resizable.size(context, 3),
-        percent: cubit.listRateSubmit![index],
+        percent: cubit.listHw![index]!,
         radius: Resizable.size(context, 16),
         fontSize: Resizable.font(context, 14),
       ),//Text(cubit.listRateSubmit![index].toStringAsFixed(2).toString()),
-      mark: cubit.listMarked == null
-          ? Transform.scale(
-              scale: 0.75,
-              child: const Center(
-                child: CircularProgressIndicator(),
-              ),
-            )
-          : cubit.lessonResults![index] == null
+      mark:cubit.listHwStatus![index] == null
               ? Container()
               : Container(
                   padding: EdgeInsets.symmetric(
@@ -84,11 +63,11 @@ class CollapseLessonItem extends StatelessWidget {
                       horizontal: Resizable.padding(context, 10)),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10000),
-                      color: cubit.listMarked![index] == true
+                      color: cubit.listHwStatus![index] == true
                           ? greenColor
                           : redColor),
                   child: Text(
-                    (cubit.listMarked![index] == true
+                    (cubit.listHwStatus![index] == true
                             ? AppText.txtMarked.text
                             : AppText.txtNotMark.text)
                         .toUpperCase(),

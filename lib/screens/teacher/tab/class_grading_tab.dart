@@ -16,7 +16,7 @@ class ClassGradingTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => GradingCubit()..init(context),
+      create: (context) => GradingCubit()..init(),
       child: Scaffold(
         body: Column(
           children: [

@@ -92,14 +92,21 @@ class FireStoreDb {
     return list;
   }
 
-  Future<List<LessonModel>> getLessonsByCourseId(int id) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getLessonsByCourseId(int id) async {
     final snapshot =
         await db.collection("lessons").where('course_id', isEqualTo: id).get();
-    final lessons =
-        snapshot.docs.map((e) => LessonModel.fromSnapshot(e)).toList();
-    lessons.sort((a, b) => a.lessonId.compareTo(b.lessonId));
     debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
-    return lessons;
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getListTeacherByListId(List<int> teacherIds) async {
+    final snapshot =
+      await db
+        .collection("teacher")
+        .where("user_id", whereIn: teacherIds)
+        .get();
+    debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
+    return snapshot;
   }
 
   Future<List<LessonModel>> getAllLesson() async {
@@ -113,47 +120,33 @@ class FireStoreDb {
   Future<QuerySnapshot<Map<String, dynamic>>> getClassById(int id) async{
     final snapshot =
     await db.collection("class").where('class_id', isEqualTo: id).get();
-    final result = snapshot.docs
-        .map((e) => ClassModel.fromSnapshot(e))
-        .single;
     debugPrint("==========>get db from \"class\" : ${snapshot.docs.length}");
     return snapshot;
   }
 
-  Future<CourseModel> getCourseById(int id) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getCourseById(int id) async {
     final snapshot =
     await db.collection("courses").where("course_id", isEqualTo: id).get();
-    final course =
-        snapshot.docs
-            .map((e) => CourseModel.fromSnapshot(e))
-            .single;
     debugPrint("==========>get db from \"courses\" : ${snapshot.docs.length}");
-    return course;
+    return snapshot;
   }
 
-  Future<List<CourseModel>> getCourseByListId(List<int> ids) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getCourseByListId(List<int> ids) async {
     final snapshot =
     await db.collection("courses").where("course_id", whereIn: ids).get();
-    final courses =
-        snapshot.docs
-            .map((e) => CourseModel.fromSnapshot(e))
-            .toList();
     debugPrint("==========>get db from \"courses\" : ${snapshot.docs.length}");
-    return courses;
+    return snapshot;
   }
 
-  Future<List<LessonResultModel>> getLessonResultByClassId(int id) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getLessonResultByClassId(int id) async {
     final snapshot = await db
         .collection('lesson_result')
         .where('class_id', isEqualTo: id)
         .get();
 
-    final list =
-    snapshot.docs.map((e) => LessonResultModel.fromSnapshot(e)).toList();
     debugPrint("==========>get db from \"lesson_result\" : ${snapshot.docs.length}");
-    //list.sort((a, b) => a.lessonId.compareTo(b.lessonId));
 
-    return list;
+    return snapshot;
   }
 
   Future<List<LessonResultModel>> getAllLessonResult() async {
@@ -165,20 +158,16 @@ class FireStoreDb {
     return list;
   }
 
-  Future<List<StudentLessonModel>> getAllStudentLessonInLesson(int classId, int lessonId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentLessonInLesson(int classId, int lessonId) async {
 
     final snapshot = await db
         .collection('student_lesson')
         .where('class_id', isEqualTo: classId)
         .where('lesson_id', isEqualTo: lessonId)
         .get();
-
-    final list =
-    snapshot.docs.map((e) => StudentLessonModel.fromSnapshot(e)).toList();
     debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
-    //list.sort((a, b) => a.studentId.compareTo(b.studentId));
 
-    return list;
+    return snapshot;
   }
 
   Future<LessonResultModel> getLessonResultByLessonId(int id, int classId) async {
@@ -226,43 +215,47 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<List<StudentLessonModel>> getAllStudentLessonsInListClassId(List<int> classId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentLessonsInListClassId(List<int> classId) async {
     final snapshot = await db
         .collection('student_lesson')
         .where('class_id', whereIn: classId)
         .get();
-
-    final list =
-    snapshot.docs.map((e) => StudentLessonModel.fromSnapshot(e)).toList();
     debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
     //list.sort((a, b) => a.studentId.compareTo(b.studentId));
 
-    return list;
+    return snapshot;
   }
-  Future<List<StudentLessonModel>> getAllStudentLessonsInClass(int classId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentLessonsInClass(int classId) async {
     final snapshot = await db
         .collection('student_lesson')
         .where('class_id', isEqualTo: classId)
         .get();
-
-    final list =
-    snapshot.docs.map((e) => StudentLessonModel.fromSnapshot(e)).toList();
     debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
-    //list.sort((a, b) => a.studentId.compareTo(b.studentId));
 
-    return list;
+    return snapshot;
   }
 
-  Future<List<AnswerModel>> getListAnswer(int id, int classId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getStudentClassAvailable(int classId, List<int> studentIds) async {
+    final snapshot = await db
+        .collection('student_lesson')
+        .where('class_id', isEqualTo: classId)
+        .where('student_id', whereIn: studentIds)
+        .get();
+    debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getListAnswer(int id, int classId) async {
     final snapshot = await db
         .collection('answer')
         .where('parent_id', isEqualTo: id)
         .where('class_id', isEqualTo: classId)
         .get();
 
-    final list = snapshot.docs.map((e) => AnswerModel.fromSnapshot(e)).toList();
+
     debugPrint("==========>get db from \"answer\" : ${snapshot.docs.length}");
-    return list;
+    return snapshot;
   }
 
   Future<List<StudentLessonModel>> getAllStudentLessons() async {
@@ -276,19 +269,15 @@ class FireStoreDb {
     return list;
   }
 
-  Future<LessonModel> getLesson(int courseId, int lessonId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getLesson(int courseId, int lessonId) async {
     final snapshot = await db
         .collection('lessons')
         .where('course_id', isEqualTo: courseId)
         .where('lesson_id', isEqualTo: lessonId)
         .get();
-
-    final lesson = snapshot.docs
-        .map((e) => LessonModel.fromSnapshot(e))
-        .single;
     debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
 
-    return lesson;
+    return snapshot;
   }
 
   Future<void> updateTimekeeping(int userId, int lessonId, int classId, int attendId) async{
@@ -405,19 +394,15 @@ class FireStoreDb {
     }
   }
 
-  Future<bool> checkLessonResult(int lessonId, int classId) async {
+  Future<DocumentSnapshot<Map<String, dynamic>>> checkLessonResult(int lessonId, int classId) async {
 
     final temp = await db
         .collection("lesson_result")
         .doc("lesson_${lessonId}_class_$classId")
         .get();
-
     debugPrint("==========>get db from \"lesson_result\" : 1");
-    if (temp.exists == false) {
-      return false;
-    } else {
-      return true;
-    }
+
+    return temp;
   }
 
   Future<bool> addLessonResult(LessonResultModel model) async {
@@ -481,25 +466,22 @@ class FireStoreDb {
     final list = snapshot.docs.map((e) => StudentTestModel.fromSnapshot(e)).toList();
     return list;
   }
-  Future<List<StudentTestModel>> getAllStudentTest(int classId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentTest(int classId) async {
     final snapshot = await db
         .collection('student_test')
         .where('class_id', isEqualTo: classId)
         .get();
 
-    final list =
-    snapshot.docs.map((e) => StudentTestModel.fromSnapshot(e)).toList();
     debugPrint("==========>get db from \"student_test\": ${snapshot.docs.length}");
-    return list;
+    return snapshot;
   }
 
-  Future<List<TestResultModel>> getListTestResult(int classId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getListTestResult(int classId) async {
     final snapshot =
     await db.collection("test_result").where("class_id", isEqualTo: classId).get();
-    final list = snapshot.docs.map((e) => TestResultModel.fromSnapshot(e)).toList();
     debugPrint("==========>get db from \"test_result\": ${snapshot.docs.length}");
-    list.sort((a, b) => a.testId.compareTo(b.testId));
-    return list;
+
+    return snapshot;
   }
 
   Future<StudentModel> getStudentInfo(int userId) async {
@@ -844,6 +826,13 @@ class FireStoreDb {
     final snapshot =
     await db.collection("lessons").where("lesson_id", whereIn: ids).get();
     debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getStudentTestByIds(List<int> ids) async {
+    final snapshot =
+    await db.collection("student_test").where("test_id", whereIn: ids).get();
+    debugPrint("==========>get db from \"student_test\" : ${snapshot.docs.length}");
     return snapshot;
   }
 }

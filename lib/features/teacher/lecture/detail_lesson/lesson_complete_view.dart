@@ -96,7 +96,7 @@ class LessonCompleteView extends StatelessWidget {
                           }
                           SharedPreferences localData = await SharedPreferences.getInstance();
                           if(context.mounted){
-                            Navigator.popUntil(context, ModalRoute.withName("${Routes.teacher}?name=${localData.getString(PrefKeyConfigs.code).toString()}/lesson/class?id=${int.parse(TextUtils.getName(position: 3))}"));
+                            Navigator.popUntil(context, ModalRoute.withName("${Routes.teacher}?name=${localData.getString(PrefKeyConfigs.code).toString()}/role?role=teacher/lesson/class?id=${int.parse(TextUtils.getName(position: 3))}"));
                           }
                         }
                       },

@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/class_model.dart';
+import 'package:internal_sakumi/model/grading_tab_data_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
@@ -11,6 +12,8 @@ import 'package:internal_sakumi/utils/text_utils.dart';
 
 class GradingCubit extends Cubit<int> {
   GradingCubit() : super(0);
+
+  GradingTabDataModel? data;
 
   ClassModel? classModel;
 
@@ -26,37 +29,18 @@ class GradingCubit extends Cubit<int> {
   bool isNotGrading = true;
 
 
-  init(context) async {
-    await loadClass(context);
-    await loadBTVN(context);
-    await loadTest(context);
-  }
+  init() async {
+    data = await FireBaseProvider.instance.getDataForGradingTab(int.parse(TextUtils.getName()));
 
-  loadClass(context) async {
+    classModel = data!.classModel;
+    lessons = data!.lessons;
+    listStudentLessons = data!.listStudentLessons;
+    listLessonResult = data!.listLessonResult;
+    listTestResult = data!.listTestResult;
+    listStudentTests = data!.listStudentTests;
+    tests = data!.tests;
 
-    classModel =
-        await FireBaseProvider.instance.getClassById(int.parse(TextUtils.getName()));
-
-    emit(state + 2);
-  }
-
-  loadBTVN(context) async {
-    listLessonResult = await FireBaseProvider.instance
-        .getLessonResultByClassId(int.parse(TextUtils.getName()));
-    lessons =
-        await FireBaseProvider.instance.getLessonsByCourseId(classModel!.courseId);
-    listStudentLessons = await FireBaseProvider.instance
-        .getAllStudentLessonsInClass(int.parse(TextUtils.getName()));
-    emit(state + 2);
-  }
-
-  loadTest(context) async {
-    tests = await FireBaseProvider.instance.getListTestByCourseId(classModel!.courseId);
-    listTestResult = await FireBaseProvider.instance
-        .getListTestResult(int.parse(TextUtils.getName()));
-    listStudentTests = await FireBaseProvider.instance
-        .getAllStudentTest(int.parse(TextUtils.getName()));
-    emit(state + 1);
+    emit(state+1);
   }
 
   update(){
