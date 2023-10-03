@@ -21,7 +21,7 @@ class DetailGradingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => DetailGradingCubit()..init(context, type),
+        create: (context) => DetailGradingCubit()..init(type),
         child: Scaffold(
           body: Column(
             children: [

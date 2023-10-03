@@ -18,7 +18,7 @@ class ClassTestTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TestCubit()..init(context),
+      create: (context) => TestCubit()..load(),
       child: Scaffold(
         body: Column(
           children: [

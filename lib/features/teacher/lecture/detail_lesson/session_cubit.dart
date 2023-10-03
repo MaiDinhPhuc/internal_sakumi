@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/model/class_model.dart';
+import 'package:internal_sakumi/model/session_data_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
@@ -11,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SessionCubit extends Cubit<int> {
   SessionCubit() : super(0);
-
+  SessionDataModel? data;
   List<StudentModel>? listStudent;
   List<StudentLessonModel>? listStudentLesson;
   List<StudentClassModel>? listStudentClass;
@@ -27,17 +28,22 @@ class SessionCubit extends Cubit<int> {
   static SessionCubit fromContext(BuildContext context) =>
       BlocProvider.of<SessionCubit>(context);
 
-  init(context) async {
+  init() async {
     await getTeacherId();
     debugPrint('===============> init session $teacherId');
-    await loadStudentInClass(context);
-    await loadStudentLesson(context);
+    data = await FireBaseProvider.instance.getDataForSessionCubit(
+        int.parse(TextUtils.getName(position: 3)),
+        int.parse(TextUtils.getName()));
+    listStudent = data!.listStudent;
+    listStudentLesson = data!.listStudentLesson;
+    listStudentClass = data!.listStudentClass;
     totalAttendance = listStudentLesson!
         .fold(0, (pre, e) => e.timekeeping > 0 ? (pre + 1) : pre);
+    emit(state+1);
   }
 
-  updateUI(){
-    emit(state+1);
+  updateUI() {
+    emit(state + 1);
   }
 
   getTeacherId() async {
@@ -46,19 +52,19 @@ class SessionCubit extends Cubit<int> {
     teacherId = int.parse(localData.getInt(PrefKeyConfigs.userId).toString());
   }
 
-  inputStudent(String text){
+  inputStudent(String text) {
     noteStudent = text;
-    emit(state+1);
+    emit(state + 1);
   }
 
-  inputSupport(String text){
+  inputSupport(String text) {
     noteSupport = text;
-    emit(state+1);
+    emit(state + 1);
   }
 
-  inputSensei(String text){
+  inputSensei(String text) {
     noteSensei = text;
-    emit(state+1);
+    emit(state + 1);
   }
 
   checkNoteStudent() {
@@ -96,52 +102,17 @@ class SessionCubit extends Cubit<int> {
   }
 
   updateTimekeeping(int attendId) {
-    debugPrint('============> totalAttendance000 $totalAttendance -- $attendId');
+    debugPrint(
+        '============> totalAttendance000 $totalAttendance -- $attendId');
     if (attendId > 0 && totalAttendance < listStudent!.length) {
       totalAttendance++;
     }
-    if(attendId <= 0 && totalAttendance > 0) {
+    if (attendId <= 0 && totalAttendance > 0) {
       totalAttendance--;
     }
 
-    debugPrint('============> totalAttendance1111 $totalAttendance -- $attendId');
-    emit(state + 1);
-  }
-
-  loadStudentInClass(context) async {
-    List<StudentModel> listAllStudent = await FireBaseProvider.instance.getAllStudent();
-
-    List<StudentClassModel>? list = await  FireBaseProvider.instance.getStudentClassInClass(int.parse(TextUtils.getName(position: 3)));
-
-    listStudentClass = [];
-    listStudentClass!.addAll(list);
-
-    listStudent = [];
-    for (var i in listAllStudent) {
-      for (var j in listStudentClass!) {
-        if (i.userId == j.userId) {
-          listStudent!.add(i);
-          break;
-        }
-      }
-    }
-    debugPrint('================> listStudent ${listStudent!.length}');
-    emit(state + 1);
-  }
-
-  loadStudentLesson(context) async {
-
-    var list = await FireBaseProvider.instance.getAllStudentLessonInLesson(
-        int.parse(TextUtils.getName(position: 3)),
-        int.parse(TextUtils.getName()));
-
     debugPrint(
-        '=============> loadStudentLesson loadStudentLesson ${list.length}');
-    listStudentLesson = [];
-    listStudentLesson!.addAll(list);
-
-    debugPrint(
-        '=============> loadStudentLesson loadStudentLesson loadStudentLesson');
+        '============> totalAttendance1111 $totalAttendance -- $attendId');
     emit(state + 1);
   }
 }

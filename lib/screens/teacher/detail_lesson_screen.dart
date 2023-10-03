@@ -18,7 +18,7 @@ class DetailLessonScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => SessionCubit()..init(context),
+        create: (context) => SessionCubit()..init(),
         child: Scaffold(
           body: Column(
             children: [

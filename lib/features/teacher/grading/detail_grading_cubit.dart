@@ -3,6 +3,7 @@ import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
+import 'package:internal_sakumi/model/detail_grading_data_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
@@ -12,22 +13,43 @@ import 'package:internal_sakumi/utils/text_utils.dart';
 class DetailGradingCubit extends Cubit<int> {
   DetailGradingCubit() : super(-1);
 
+  DetailGradingDataModel? data;
+
   List<QuestionModel>? listQuestions;
-  QuestionModel? question;
   List<AnswerModel>? listAnswer;
   List<StudentModel>? listStudent;
   ClassModel? classModel;
   CourseModel? courseModel;
   int now = 0;
-  List<int> listChecked = [];
   bool isShowName = true;
   bool isGeneralComment = false;
   List<int>? listStudentId;
   List<bool>? listState;
   String token = "";
 
-  init(context,String type) async {
-    await loadFirst(context, type);
+  init(String type) async {
+
+    data = await FireBaseProvider.instance.getDataForDetailGrading(int.parse(TextUtils.getName(position: 3)),
+        int.parse(TextUtils.getName()), type);
+    listQuestions = data!.listQuestions;
+    classModel = data!.classModel;
+    courseModel = data!.courseModel;
+    listAnswer = data!.listAnswer;
+
+    if(listAnswer!.isEmpty){
+      emit(0);
+    }else{
+      listState = data!.listState;
+      listStudentId = data!.listStudentId;
+      listStudent = data!.listStudent;
+      checkDone(true);
+      if (listQuestions!.isNotEmpty) {
+        now = listQuestions!.first.id;
+        emit(listQuestions!.first.id);
+      } else {
+        emit(0);
+      }
+    }
   }
 
   String getStudentName(AnswerModel answerModel) {
@@ -60,51 +82,6 @@ class DetailGradingCubit extends Cubit<int> {
           listStudentId!.contains(answer.studentId))
       .toList();
 
-  loadFirst(context, String type) async {
-    classModel = await FireBaseProvider.instance.getClassById(int.parse(TextUtils.getName(position: 3)));
-    courseModel = await FireBaseProvider.instance.getCourseById(classModel!.courseId);
-    token = courseModel!.token;
-    if(type == "test"){
-      listQuestions =
-      await FireBaseProvider.instance.getQuestionByUrl(AppConfigs.getDataUrl("test_${TextUtils.getName()}.json",token));
-    }else{
-      listQuestions =
-      await FireBaseProvider.instance.getQuestionByUrl(AppConfigs.getDataUrl("btvn_${TextUtils.getName()}.json",token));
-    }
-
-    listAnswer = await FireBaseProvider.instance.getListAnswer(
-        int.parse(TextUtils.getName()),
-        int.parse(TextUtils.getName(position: 3)));
-
-    if (listAnswer!.isEmpty) {
-      emit(0);
-    } else {
-      List<StudentClassModel> listStudentClass = await FireBaseProvider.instance
-          .getStudentClassInClass(int.parse(TextUtils.getName(position: 3)));
-      listStudent = [];
-      for (var i in listStudentClass) {
-        for (var j in listAnswer!) {
-          if (i.userId == j.studentId && i.classStatus != "Remove") {
-            listStudent!.add(await FireBaseProvider.instance.getStudentInfo(i.userId));
-            break;
-          }
-        }
-      }
-      listStudentId = [];
-      for (var i in listStudent!) {
-        listStudentId!.add(i.userId);
-      }
-      listState = [];
-      checkDone(true);
-      if (listQuestions!.isNotEmpty) {
-        now = listQuestions!.first.id;
-        emit(listQuestions!.first.id);
-      } else {
-        emit(0);
-      }
-    }
-  }
-
   bool checkDone(bool isFirst) {
     if (isFirst) {
       for (var i in listQuestions!) {
@@ -132,12 +109,6 @@ class DetailGradingCubit extends Cubit<int> {
   }
 
   change(int questionId, context) async {
-    for (var i in listQuestions!) {
-      if (i.id == questionId) {
-        question = i;
-        break;
-      }
-    }
     now = questionId;
     emit(questionId);
   }

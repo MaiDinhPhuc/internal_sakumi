@@ -7,10 +7,14 @@ import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/class_overview_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
+import 'package:internal_sakumi/model/detail_grading_data_model.dart';
+import 'package:internal_sakumi/model/grading_tab_data_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/list_lesson_data_model.dart';
+import 'package:internal_sakumi/model/list_test_data_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
+import 'package:internal_sakumi/model/session_data_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
@@ -138,6 +142,20 @@ abstract class NetworkProvider {
   Future<List<TeacherModel>> getListTeacherByListId(List<int> teacherIds);
 
   Future<List<StudentLessonModel>> getStudentClassAvailable(int classId, List<int> studentIds);
+
+  Future<ListTestDataModel> getDataForTestTab(int classId);
+
+  Future<GradingTabDataModel> getDataForGradingTab(int classId);
+
+  Future<SessionDataModel> getDataForSessionCubit(int classId, int lessonId);
+
+  Future<DetailGradingDataModel> getDataForDetailGrading(int classId, int lessonId, String type);
+
+  Future<List<StudentTestModel>> getListStudentTestByIDs(int classId, List<int> listTestIds);
+
+  Future<List<CourseModel>> getCourseByListId(List<int> listCourseIds);
+
+  Future<List<StudentLessonModel>> getAllStudentLessonsInListClassId(List<int> listClassId);
   //admin
   Future<List<ClassModel>> getListClassNotRemove();
 
