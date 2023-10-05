@@ -21,7 +21,6 @@ class AlertAddTeacherCubit extends Cubit<int> {
     listTeacherClass = await FireBaseProvider.instance.getAllTeacherInClass();
     listAllTeacher = await FireBaseProvider.instance.getAllTeacher();
     userCount = (await FireStoreDb.instance.getCount("user")).count;
-
     listSensei = [];
     for(var i in listAllTeacher!){
       var count = 0;
@@ -35,6 +34,45 @@ class AlertAddTeacherCubit extends Cubit<int> {
       }
     }
     emit(state + 1);
+  }
+  search(String text, ManageGeneralCubit cubit){
+    if(text!=""){
+      listSensei = [];
+      for(var i in listAllTeacher!){
+        var count = 0;
+        for(var j in cubit.listStudent!){
+          if(i.userId != j.userId){
+            count++;
+          }
+        }
+        if(count == cubit.listStudent!.length){
+          listSensei!.add(i);
+        }
+      }
+      List<TeacherModel> listTemp = [];
+      for(var i in listSensei!){
+        if(i.name.toUpperCase().contains(text.toUpperCase()) || i.teacherCode.toUpperCase().contains(text.toUpperCase())){
+          listTemp.add(i);
+        }
+      }
+      listSensei = null;
+      listSensei = listTemp;
+      emit(state + 1);
+    }else{
+      listSensei = [];
+      for(var i in listAllTeacher!){
+        var count = 0;
+        for(var j in cubit.listStudent!){
+          if(i.userId != j.userId){
+            count++;
+          }
+        }
+        if(count == cubit.listStudent!.length){
+          listSensei!.add(i);
+        }
+      }
+      emit(state + 1);
+    }
   }
 
   addTeacherToClass(BuildContext context, TeacherClassModel model) async {
