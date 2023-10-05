@@ -96,14 +96,13 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel, Ma
                                                           .txtPleaseChooseCourse
                                                           .text,
                                                       onChanged: (v) {
-                                                        cubit.courseId =
-                                                            cubit.chooseCourse(v);
+                                                        cubit.chooseCourse(v);
                                                       },
                                                       items: List.generate(
                                                           cubit.listCourse!
                                                               .length,
                                                               (index) =>
-                                                          ('${cubit.listCourse![index].title} ${cubit.listCourse![index].termName}'))
+                                                          ('${cubit.listCourse![index].title} ${cubit.listCourse![index].termName} ${cubit.listCourse![index].code}'))
                                                           .toList())
                                                 ],
                                               )),
@@ -355,7 +354,7 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel, Ma
                                                         c,
                                                         ClassModel(
                                                             classId: cubit
-                                                                .listClass!.length,
+                                                                .classCount!,
                                                             courseId: cubit.courseId!,
                                                             description: desCon.text,
                                                             endTime: DateFormat(
@@ -374,8 +373,7 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel, Ma
                                                         await BlocProvider.of<
                                                             ManageGeneralCubit>(
                                                             context)
-                                                            .loadAfterAddClass(cubit
-                                                            .listClass!.length,context);
+                                                            .loadAfterAddClass(cubit.classCount!);
                                                       } else {
                                                         notificationDialog(
                                                             context,

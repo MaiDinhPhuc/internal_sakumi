@@ -18,7 +18,7 @@ class ManageGeneralScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => ManageGeneralCubit()..loadAllClass(context),
+        create: (context) => ManageGeneralCubit()..loadAllClass(),
         child: Scaffold(
             body: Padding(
           padding:

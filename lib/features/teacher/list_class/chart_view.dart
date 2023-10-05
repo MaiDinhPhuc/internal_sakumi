@@ -56,16 +56,7 @@ class CharInAdminView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<LoadListClassCubit>(context);
-    return
-      cubit.listPoint!.isEmpty ||
-          cubit.listSubmit!.isEmpty ||
-          cubit.listAttendance!.isEmpty
-          ? Center(
-        child: Transform.scale(
-          scale: 0.75,
-          child: const CircularProgressIndicator(),
-        ),
-      ) : Container(
+    return Container(
         margin: EdgeInsets.only(top: Resizable.size(context, 10)),
         height: Resizable.size(context, 130),
         child: Row(
@@ -77,9 +68,9 @@ class CharInAdminView extends StatelessWidget {
             Expanded(
                 flex: 8,
                 child: CustomLineChart(
-                  attendances: cubit.listAttendance![index],
-                  hws: cubit.listSubmit![index],
-                  points: cubit.listPoint![index],
+                  attendances: cubit.rateAttendanceChart![index],
+                  hws: cubit.rateAttendanceChart![index],
+                  points: [],
                 )),
             Expanded(flex: 4, child: Container()),
           ],

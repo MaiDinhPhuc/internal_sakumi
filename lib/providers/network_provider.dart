@@ -42,7 +42,6 @@ abstract class NetworkProvider {
 
   Future<String> uploadImageAndGetUrl(Uint8List data, String folder);
 
-  Future<StudentModel> getStudentInfo(int userId);
 
   Future<UserModel> getUser(String email);
 
@@ -121,8 +120,6 @@ abstract class NetworkProvider {
 
   Future<List<TestModel>> getListTestByCourseId(int courseId);
 
-  Future<List<StudentTestModel>> getListStudentTest(int classId, int testId);
-
   Future<List<StudentTestModel>> getAllStudentTest(int classId);
 
   Future<List<TestResultModel>> getListTestResult(int classId);
@@ -156,12 +153,11 @@ abstract class NetworkProvider {
   Future<List<CourseModel>> getCourseByListId(List<int> listCourseIds);
 
   Future<List<StudentLessonModel>> getAllStudentLessonsInListClassId(List<int> listClassId);
+
+
   //admin
   Future<List<ClassModel>> getListClassNotRemove();
 
-  Future<List<ClassModel>> getAllClass();
-
-  Future<List<StudentClassModel>> getAllStudentInClass();
 
   Future<List<TeacherClassModel>> getAllTeacherInClass();
 
@@ -169,13 +165,17 @@ abstract class NetworkProvider {
 
   Future<List<StudentModel>> getAllStudent();
 
+  Future<List<StudentModel>> get10StudentFirst();
+
+  Future<List<StudentModel>> get10Student(int lastId);
+
+  Future<int> getTotalPage(String tableName);
+
   Future<List<TeacherModel>> getAllTeacher();
 
   Future<List<TagModel>> getTags();
 
   Future<AdminModel> getAdminById(int id);
-
-  Future<CourseModel> getCourseByName(String title, String term);
 
   Future<bool> createNewClass(ClassModel model);
 
@@ -186,4 +186,6 @@ abstract class NetworkProvider {
   Future<void> changeClassStatus(ClassModel classModel,String newStatus,ManageGeneralCubit cubit, BuildContext context);
 
   Future<void> updateClassInfo(ClassModel classModel);
+
+  Future<TeacherHomeClass> getDataForManageClassTab();
 }

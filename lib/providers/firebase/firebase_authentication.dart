@@ -61,7 +61,7 @@ class FirebaseAuthentication {
           if (context.mounted) {
             Navigator.pop(context);
           }
-          await context.read<AppBarInfoTeacherCubit>().load(context);
+          await context.read<AppBarInfoTeacherCubit>().load();
           Navigator.pushReplacementNamed(context,
               "${Routes.teacher}?name=${teacherModel.teacherCode.trim()}");
         }

@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
-import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
@@ -18,7 +17,6 @@ import 'package:internal_sakumi/model/tag_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
-import 'package:internal_sakumi/model/test_result_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/providers/api/api_provider.dart';
 
@@ -35,6 +33,9 @@ class FireStoreDb {
         .get(url);
 
     if (response.statusCode == 200) {
+      if(response.json is String){
+        return [];
+      }
       return (response.json as List).map((e) => QuestionModel.fromMap(e)).toList();
     } else {
       debugPrint("=======>error ${response.statusCode}");
@@ -184,15 +185,10 @@ class FireStoreDb {
     return result;
   }
 
-  Future<List<CourseModel>> getAllCourse() async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllCourse() async {
     final snapshot = await db.collection("courses").get();
     debugPrint("==========>get db from \"courses\" : ${snapshot.docs.length}");
-    if(snapshot.docs.isEmpty){
-      return [];
-    }
-    final courses =
-    snapshot.docs.map((e) => CourseModel.fromSnapshot(e)).toList();
-    return courses;
+    return snapshot;
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getStudentClassInClass(int classId) async {
@@ -360,6 +356,8 @@ class FireStoreDb {
     debugPrint("==========>update db from \"lesson_result\"");
   }
 
+
+
   Future<bool> addStudentLesson(StudentLessonModel model) async {
     final temp = await db
         .collection("student_lesson")
@@ -405,32 +403,22 @@ class FireStoreDb {
     return temp;
   }
 
-  Future<bool> addLessonResult(LessonResultModel model) async {
-    final temp = await db
-        .collection("lesson_result").doc(
-        "lesson_${model.lessonId}_class_${model.classId}")
-        .get();
-
-    if (!temp.exists) {
-      await db
-          .collection("lesson_result")
-          .doc("lesson_${model.lessonId}_class_${model.classId}")
-          .set({
-        'class_id': model.classId,
-        'date': model.date,
-        'id': model.id,
-        'lesson_id': model.lessonId,
-        'status': model.status,
-        'student_note': model.noteForStudent,
-        'support_note': model.noteForSupport,
-        'teacher_id': model.teacherId,
-        'teacher_note': model.noteForTeacher,
-      });
-      debugPrint("==========>get and add db from \"lesson_result\"");
-      return true;
-    } else {
-      return false;
-    }
+  Future<void> addLessonResult(LessonResultModel model) async {
+    await db
+        .collection("lesson_result")
+        .doc("lesson_${model.lessonId}_class_${model.classId}")
+        .set({
+      'class_id': model.classId,
+      'date': model.date,
+      'id': model.id,
+      'lesson_id': model.lessonId,
+      'status': model.status,
+      'student_note': model.noteForStudent,
+      'support_note': model.noteForSupport,
+      'teacher_id': model.teacherId,
+      'teacher_note': model.noteForTeacher,
+    });
+    debugPrint("==========>get and add db from \"lesson_result\"");
   }
 
   Future<void> updateProfileTeacher(String id, TeacherModel model) async {
@@ -447,13 +435,11 @@ class FireStoreDb {
     debugPrint("==========>update db from \"teacher\"");
   }
 
-  Future<List<TestModel>> getListTestByCourseId(int courseId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getListTestByCourseId(int courseId) async {
     final snapshot =
     await db.collection("test").where("course_id", isEqualTo: courseId).get();
     debugPrint("==========>get db from \"test\": ${snapshot.docs.length}");
-    final test = snapshot.docs.map((e) => TestModel.fromSnapshot(e)).toList();
-    test.sort((a, b) => a.id.compareTo(b.id));
-    return test;
+    return snapshot;
   }
 
   Future<List<StudentTestModel>> getListStudentTest(int classId, int testId) async {
@@ -495,20 +481,20 @@ class FireStoreDb {
     return studentInfo;
   }
 
-  Future<UserModel> getUser(String email) async {
-    final snapshot =
-    await db.collection("users").where("email", isEqualTo: email).get();
-    debugPrint("==========>get db from \"users\": ${snapshot.docs.length}");
-    final user = snapshot.docs.map((e) => UserModel.fromSnapshot(e)).single;
-    return user;
-  }
+  // Future<UserModel> getUser(String email) async {
+  //   final snapshot =
+  //   await db.collection("users").where("email", isEqualTo: email).get();
+  //   debugPrint("==========>get db from \"users\": ${snapshot.docs.length}");
+  //   final user = snapshot.docs.map((e) => UserModel.fromSnapshot(e)).single;
+  //   return user;
+  // }
 
-  Future<UserModel> getUserById(int id) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getUserById(int id) async {
     final snapshot =
     await db.collection("users").where("user_id", isEqualTo: id).get();
     debugPrint("==========>get db from \"users\" : ${snapshot.docs.length}");
-    final user = snapshot.docs.map((e) => UserModel.fromSnapshot(e)).single;
-    return user;
+
+    return snapshot;
   }
 
   Future<void> saveUser(String email, String role, int uid) async {
@@ -520,80 +506,78 @@ class FireStoreDb {
     debugPrint("==========>add db from \"users\"");
   }
 
-  Future<List<UserModel>> getAllUser() async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllUser() async {
     final snapshot = await db.collection("users").get();
     debugPrint("==========>get db from \"users\": ${snapshot.docs.length}");
-    final lists =
-    snapshot.docs.map((e) => UserModel.fromSnapshot(e)).toList();
-    return lists;
+
+    return snapshot;
   }
 
-  Future<bool> createNewStudent(StudentModel model, UserModel user) async {
-    final temp = await db
+  Future<void> createNewStudent(StudentModel model, UserModel user) async {
+    await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: user.email, password: "abc12345");
+    await FirebaseAuth.instance.currentUser!.updatePassword("abc12345");
+    await FirebaseAuth.instance.currentUser!.updateEmail(user.email);
+    await db
+        .collection('students')
+        .doc("student_user_${user.id}")
+        .set({
+      'in_jp': model.inJapan,
+      'name': model.name,
+      'note': model.note,
+      'phone': model.phone,
+      'student_code': model.studentCode,
+      'url': model.url,
+      'user_id': model.userId,
+      'status': model.studentCode});
+    debugPrint("==========>add db for \"students\"");
+
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getUserByEmail(String email) async {
+    final snapshot = await db
         .collection("users")
-        .where('email', isEqualTo: user.email)
+        .where('email', isEqualTo: email)
         .get();
     debugPrint("==========>get db from \"users\"");
-    if(temp.docs.isEmpty){
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: user.email, password: "abc12345");
-      await FirebaseAuth.instance.currentUser!.updatePassword("abc12345");
-      await FirebaseAuth.instance.currentUser!.updateEmail(user.email);
-      await FireBaseProvider.instance.saveUser(user.email, user.role, model.userId);
-      await db
-          .collection('students')
-          .doc("student_user_${user.id}")
-          .set({
-        'in_jp': model.inJapan,
-        'name': model.name,
-        'note': model.note,
-        'phone': model.phone,
-        'student_code': model.studentCode,
-        'url': model.url,
-        'user_id': model.userId,
-        'status': model.studentCode});
-      debugPrint("==========>add db for \"students\"");
-      return true;
-    } else{
-      return false;
-    }
+
+    return snapshot;
   }
 
-  Future<bool> createNewTeacher(TeacherModel model, UserModel user) async {
-    final temp = await db
-        .collection("users")
-        .where('email', isEqualTo: user.email)
-        .get();
-    debugPrint("==========>get db from \"users\"");
-    if(temp.docs.isEmpty){
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: user.email, password: "abc12345");
-      await FirebaseAuth.instance.currentUser!.updatePassword("abc12345");
-      await FirebaseAuth.instance.currentUser!.updateEmail(user.email);
-      await FireBaseProvider.instance.saveUser(user.email, user.role, model.userId);
-      await db
-          .collection('teacher')
-          .doc("teacher_user_${user.id}")
-          .set({
-        'name': model.name,
-        'note': model.note,
-        'phone': model.phone,
-        'status': model.status,
-        'teacher_code': model.teacherCode,
-        'url': model.url,
-        'user_id': model.userId,
-      });
-      debugPrint("==========>add db for \"teacher\"");
-      return true;
-    } else{
-      return false;
-    }
+  Future<void> createNewTeacher(TeacherModel model, UserModel user) async {
+    await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: user.email, password: "abc12345");
+    await FirebaseAuth.instance.currentUser!.updatePassword("abc12345");
+    await FirebaseAuth.instance.currentUser!.updateEmail(user.email);
+
+    await db
+        .collection('teacher')
+        .doc("teacher_user_${user.id}")
+        .set({
+      'name': model.name,
+      'note': model.note,
+      'phone': model.phone,
+      'status': model.status,
+      'teacher_code': model.teacherCode,
+      'url': model.url,
+      'user_id': model.userId,
+    });
+    debugPrint("==========>add db for \"teacher\"");
   }
 
-  Future<List<ClassModel>> getListClassNotRemove() async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getListClassNotRemove() async {
     final snapshot = await db
         .collection("class")
         .where("class_status", isNotEqualTo: "Remove")
+        .get();
+    debugPrint("==========>get db from \"class\": ${snapshot.docs.length}");
+    return snapshot;
+  }
+
+  Future<List<ClassModel>> getListClassAvailableForTeacher() async {
+    final snapshot = await db
+        .collection("class")
+        .where("class_status", whereIn: ["InProgress", "Completed","Preparing"])
         .get();
     debugPrint("==========>get db from \"class\": ${snapshot.docs.length}");
     final listClass =
@@ -602,10 +586,10 @@ class FireStoreDb {
     return listClass;
   }
 
-  Future<List<ClassModel>> getListClassAvailableForTeacher() async {
+  Future<List<ClassModel>> getAllClassAvailable() async {
     final snapshot = await db
         .collection("class")
-        .where("class_status", whereIn: ["InProgress", "Completed"])
+        .where("class_status", isNotEqualTo: "Remove")
         .get();
     debugPrint("==========>get db from \"class\": ${snapshot.docs.length}");
     final listClass =
@@ -633,39 +617,54 @@ class FireStoreDb {
     return listStudent;
   }
 
-  Future<List<TeacherClassModel>> getAllTeacherInClass() async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllTeacherInClass() async {
     final snapshot = await db.collection("teacher_class").get();
     debugPrint("==========>get db from \"teacher_class\": ${snapshot.docs.length}");
-    final listSensei =
-    snapshot.docs.map((e) => TeacherClassModel.fromSnapshot(e)).toList();
-    return listSensei;
+
+    return snapshot;
   }
 
-  Future<List<TeacherClassModel>> getAllTeacherInClassByClassId(int classId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllTeacherInClassByClassId(int classId) async {
     final snapshot = await db
         .collection("teacher_class")
         .where('class_id', isEqualTo: classId)
         .get();
     debugPrint("==========>get db from \"teacher_class\": ${snapshot.docs.length}");
-    final listTeacher =
-    snapshot.docs.map((e) => TeacherClassModel.fromSnapshot(e)).toList();
-    return listTeacher;
+    return snapshot;
   }
 
-  Future<List<StudentModel>> getAllStudent() async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudent() async {
     final snapshot = await db.collection("students").get();
     debugPrint("==========>get db from \"students\": ${snapshot.docs.length}");
-    final lists =
-    snapshot.docs.map((e) => StudentModel.fromSnapshot(e)).toList();
-    return lists;
+    return snapshot;
   }
 
-  Future<List<TeacherModel>> getAllTeacher() async {
+  Future<QuerySnapshot<Map<String, dynamic>>> get10StudentFirst() async {
+    final snapshot = await db.collection("students").orderBy('user_id', descending: true)
+        .limit(10)
+        .get();
+    debugPrint("==========>get db from \"students\": ${snapshot.docs.length}");
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> get10Student(int lastId) async {
+    final snapshot = await db.collection("students").orderBy('user_id', descending: true)
+        .startAfter([lastId])
+        .limit(10)
+        .get();
+    debugPrint("==========>get db from \"students\": ${snapshot.docs.length}");
+    return snapshot;
+  }
+
+  Future<AggregateQuerySnapshot> getCount(String tableName) async {
+    final count = await db.collection(tableName).count().get();
+    return count;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllTeacher() async {
     final snapshot = await db.collection("teacher").get();
     debugPrint("==========>get db from \"teacher\": ${snapshot.docs.length}");
-    final lists =
-    snapshot.docs.map((e) => TeacherModel.fromSnapshot(e)).toList();
-    return lists;
+    return snapshot;
   }
 
   Future<List<TagModel>> getTags() async {
@@ -675,12 +674,12 @@ class FireStoreDb {
     return tags;
   }
 
-  Future<AdminModel> getAdminById(int id) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getAdminById(int id) async {
     final snapshot =
     await db.collection("admin").where("user_id", isEqualTo: id).get();
     debugPrint("==========>get db from \"admin\": ${snapshot.docs.length}");
-    final admin = snapshot.docs.map((e) => AdminModel.fromSnapshot(e)).single;
-    return admin;
+
+    return snapshot;
   }
 
   Future<CourseModel> getCourseByName(String title, String term) async {
@@ -694,70 +693,66 @@ class FireStoreDb {
     return course;
   }
 
-  Future<bool> createNewClass(ClassModel model) async {
-
+  Future<QuerySnapshot<Map<String, dynamic>>> getClassByClassCode(String classCode)async{
     final temp = await db
         .collection("class")
-        .where('class_code', isEqualTo: model.classCode)
+        .where('class_code', isEqualTo: classCode)
         .get();
     debugPrint("==========>get db from \"class\"");
-    if (temp.docs.isEmpty) {
-      debugPrint('===============> check var ${model.classCode}');
-      await db
-          .collection("class")
-          .doc("class_${model.classId}_course_${model.courseId}")
-          .set({
-        'class_id': model.classId,
-        'course_id': model.courseId,
-        'description': model.description,
-        'end_time': model.endTime,
-        'start_time': model.startTime,
-        'note': model.note,
-        'class_code': model.classCode,
-        'class_status': model.classStatus,
-        'class_type' : model.classType
-      });
-      debugPrint("==========>add db for \"class\"");
-      return true;
-    } else {
-      debugPrint('===============> check var 000 ${model.classCode}');
-      return false;
-    }
+    return temp;
   }
 
-  Future<bool> addStudentToClass(StudentClassModel model) async {
+  Future<void> createNewClass(ClassModel model) async {
+    await db
+        .collection("class")
+        .doc("class_${model.classId}_course_${model.courseId}")
+        .set({
+      'class_id': model.classId,
+      'course_id': model.courseId,
+      'description': model.description,
+      'end_time': model.endTime,
+      'start_time': model.startTime,
+      'note': model.note,
+      'class_code': model.classCode,
+      'class_status': model.classStatus,
+      'class_type' : model.classType
+    });
+    debugPrint("==========>add db for \"class\"");
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getStudentClassByDoc(String doc)async{
     final temp = await db
         .collection("student_class")
-        .doc("student_${model.userId}_class_${model.classId}")
+          .doc(doc)
         .get();
 
     debugPrint("==========>get db from \"student_class\"");
+    return temp;
+  }
 
-    if (!temp.exists) {
-      await db
-          .collection("student_class")
-          .doc("student_${model.userId}_class_${model.classId}")
-          .set({
-        'active_status': model.activeStatus,
-        'class_id': model.classId,
-        'class_status': model.classStatus,
-        'date': model.date,
-        'id': model.id,
-        'learning_status': model.learningStatus,
-        'move_to': model.moveTo,
-        'user_id': model.userId,
-      });
-      debugPrint("==========>add db for \"student_class\"");
-      return true;
-    } else {
-      await db
-          .collection("student_class")
-          .doc("student_${model.userId}_class_${model.classId}").update({
-        'class_status': "InProgress"
-      });
-      debugPrint("==========>update db for \"student_class\"");
-      return false;
-    }
+  Future<void> addStudentToClass(StudentClassModel model) async {
+    await db
+        .collection("student_class")
+        .doc("student_${model.userId}_class_${model.classId}")
+        .set({
+      'active_status': model.activeStatus,
+      'class_id': model.classId,
+      'class_status': model.classStatus,
+      'date': model.date,
+      'id': model.id,
+      'learning_status': model.learningStatus,
+      'move_to': model.moveTo,
+      'user_id': model.userId,
+    });
+    debugPrint("==========>add db for \"student_class\"");
+  }
+  Future<void> updateStudentToClass(StudentClassModel model) async {
+    await db
+        .collection("student_class")
+        .doc("student_${model.userId}_class_${model.classId}").update({
+      'class_status': "InProgress"
+    });
+    debugPrint("==========>update db for \"student_class\"");
   }
 
   Future<bool> addTeacherToClass(TeacherClassModel model) async {

@@ -150,7 +150,10 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<CourseModel> getCourseById(int id) async {
-    return (await FireStoreDb.instance.getCourseById(id)).docs.map((e) => CourseModel.fromSnapshot(e)).single;
+    return (await FireStoreDb.instance.getCourseById(id))
+        .docs
+        .map((e) => CourseModel.fromSnapshot(e))
+        .single;
   }
 
   @override
@@ -184,7 +187,13 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<List<CourseModel>> getAllCourse() async {
-    return await FireStoreDb.instance.getAllCourse();
+    var snapshot = await FireStoreDb.instance.getAllCourse();
+    if (snapshot.docs.isEmpty) {
+      return [];
+    }
+    final courses =
+        snapshot.docs.map((e) => CourseModel.fromSnapshot(e)).toList();
+    return courses;
   }
 
   @override
@@ -310,7 +319,13 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<bool> addLessonResult(LessonResultModel model) async {
-    return await FireStoreDb.instance.addLessonResult(model);
+
+    var temp = await FireStoreDb.instance.checkLessonResult(model.lessonId, model.classId);
+    if (!temp.exists) {
+      await FireStoreDb.instance.addLessonResult(model);
+      return true;
+    }
+    return false;
   }
 
   @override
@@ -320,14 +335,11 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<List<TestModel>> getListTestByCourseId(int courseId) async {
-    return await FireStoreDb.instance.getListTestByCourseId(courseId);
+    final test = (await FireStoreDb.instance.getListTestByCourseId(courseId)).docs.map((e) => TestModel.fromSnapshot(e)).toList();
+    test.sort((a, b) => a.id.compareTo(b.id));
+    return test;
   }
 
-  @override
-  Future<List<StudentTestModel>> getListStudentTest(
-      int classId, int testId) async {
-    return await FireStoreDb.instance.getListStudentTest(classId, testId);
-  }
 
   @override
   Future<List<StudentTestModel>> getAllStudentTest(int classId) async {
@@ -349,18 +361,14 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<StudentModel> getStudentInfo(int userId) async {
-    return await FireStoreDb.instance.getStudentInfo(userId);
-  }
-
-  @override
   Future<UserModel> getUser(String email) async {
-    return await FireStoreDb.instance.getUser(email);
+    return (await FireStoreDb.instance.getUserByEmail(email)).docs.map((e) => UserModel.fromSnapshot(e)).single;
   }
 
   @override
   Future<UserModel> getUserById(int id) async {
-    return await FireStoreDb.instance.getUserById(id);
+    final user = (await FireStoreDb.instance.getUserById(id)).docs.map((e) => UserModel.fromSnapshot(e)).single;
+    return user;
   }
 
   @override
@@ -370,53 +378,81 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<List<UserModel>> getAllUser() async {
-    return await FireStoreDb.instance.getAllUser();
+    final lists =
+    (await FireStoreDb.instance.getAllUser()).docs.map((e) => UserModel.fromSnapshot(e)).toList();
+    return lists;
   }
 
   @override
   Future<bool> createNewStudent(StudentModel model, UserModel user) async {
-    return await FireStoreDb.instance.createNewStudent(model, user);
+
+    var temp = await FireStoreDb.instance.getUserByEmail(user.email);
+    if(temp.docs.isEmpty){
+      await FireStoreDb.instance.createNewStudent(model, user);
+      await FireBaseProvider.instance.saveUser(user.email, user.role, model.userId);
+      return true;
+    } else{
+      return false;
+    }
   }
 
   @override
   Future<bool> createNewTeacher(TeacherModel model, UserModel user) async {
-    return await FireStoreDb.instance.createNewTeacher(model, user);
+
+    var temp = await FireStoreDb.instance.getUserByEmail(user.email);
+
+    if(temp.docs.isEmpty){
+      await FireStoreDb.instance.createNewTeacher(model, user);
+      await FireBaseProvider.instance.saveUser(user.email, user.role, model.userId);
+      return true;
+    }
+
+    return false;
   }
 
   @override
   Future<List<ClassModel>> getListClassNotRemove() async {
-    return await FireStoreDb.instance.getListClassNotRemove();
-  }
-
-  @override
-  Future<List<ClassModel>> getAllClass() async {
-    return await FireStoreDb.instance.getAllClass();
-  }
-
-  @override
-  Future<List<StudentClassModel>> getAllStudentInClass() async {
-    return await FireStoreDb.instance.getAllStudentInClass();
+    final listClass = (await FireStoreDb.instance.getListClassNotRemove())
+        .docs
+        .map((e) => ClassModel.fromSnapshot(e))
+        .toList();
+    listClass.sort((a, b) => a.classId.compareTo(b.classId));
+    return listClass;
   }
 
   @override
   Future<List<TeacherClassModel>> getAllTeacherInClass() async {
-    return await FireStoreDb.instance.getAllTeacherInClass();
+    final listSensei =
+    (await FireStoreDb.instance.getAllTeacherInClass()).docs.map((e) => TeacherClassModel.fromSnapshot(e)).toList();
+    return listSensei;
   }
 
   @override
   Future<List<TeacherClassModel>> getAllTeacherInClassByClassId(
       int classId) async {
-    return await FireStoreDb.instance.getAllTeacherInClassByClassId(classId);
+    final listTeacher =
+        (await FireStoreDb.instance.getAllTeacherInClassByClassId(classId))
+            .docs
+            .map((e) => TeacherClassModel.fromSnapshot(e))
+            .toList();
+    return listTeacher;
   }
 
   @override
   Future<List<StudentModel>> getAllStudent() async {
-    return await FireStoreDb.instance.getAllStudent();
+    return (await FireStoreDb.instance.getAllStudent())
+        .docs
+        .map((e) => StudentModel.fromSnapshot(e))
+        .toList();
   }
 
   @override
   Future<List<TeacherModel>> getAllTeacher() async {
-    return await FireStoreDb.instance.getAllTeacher();
+    final lists = (await FireStoreDb.instance.getAllTeacher())
+        .docs
+        .map((e) => TeacherModel.fromSnapshot(e))
+        .toList();
+    return lists;
   }
 
   @override
@@ -426,22 +462,32 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<AdminModel> getAdminById(int id) async {
-    return await FireStoreDb.instance.getAdminById(id);
+    final admin = (await FireStoreDb.instance.getAdminById(id)).docs.map((e) => AdminModel.fromSnapshot(e)).single;
+    return admin;
   }
 
-  @override
-  Future<CourseModel> getCourseByName(String title, String term) async {
-    return await FireStoreDb.instance.getCourseByName(title, term);
-  }
 
   @override
   Future<bool> createNewClass(ClassModel model) async {
-    return await FireStoreDb.instance.createNewClass(model);
+    var temp = await FireStoreDb.instance.getClassByClassCode(model.classCode);
+    if (temp.docs.isEmpty) {
+      debugPrint('===============> check var ${model.classCode}');
+      await FireStoreDb.instance.createNewClass(model);
+      return true;
+    }
+    debugPrint('===============> check var 000 ${model.classCode}');
+    return false;
   }
 
   @override
   Future<bool> addStudentToClass(StudentClassModel model) async {
-    return await FireStoreDb.instance.addStudentToClass(model);
+    var temp = await FireStoreDb.instance.getStudentClassByDoc("student_${model.userId}_class_${model.classId}");
+    if (!temp.exists) {
+      await FireStoreDb.instance.addStudentToClass(model);
+      return true;
+    }
+    await FireStoreDb.instance.updateStudentToClass(model);
+    return false;
   }
 
   @override
@@ -478,7 +524,8 @@ class FireBaseProvider extends NetworkProvider {
         if (i.classId == j.classId) {
           listClassIds.add(i.classId);
           listClassCodes.add(i.classCode);
-          listClassStatus.add(i.classStatus);
+          listClassStatus
+              .add(i.classStatus == "Preparing" ? "InProgress" : i.classStatus);
           listClassType.add(i.classType);
           listCourseIds.add(i.courseId);
         }
@@ -496,6 +543,7 @@ class FireBaseProvider extends NetworkProvider {
           if (i.classId == j.classId && i.courseId == k.courseId) {
             listBigTitle.add("${k.name} ${k.level} ${k.termName}");
             listLessonCount.add(k.lessonCount);
+            break;
           }
         }
       }
@@ -556,7 +604,6 @@ class FireBaseProvider extends NetworkProvider {
       listClassCodes: listClassCodes,
       listClassStatus: listClassStatus,
       listClassType: listClassType,
-      listCourseIds: listCourseIds,
       listBigTitle: listBigTitle,
       rateAttendance: rateAttendance,
       rateSubmit: rateSubmit,
@@ -564,6 +611,7 @@ class FireBaseProvider extends NetworkProvider {
       rateSubmitChart: rateSubmitChart,
       listLessonCount: listLessonCount,
       listLessonAvailable: listLessonAvailable,
+      listCourse: [],
     );
   }
 
@@ -899,6 +947,9 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<List<TeacherModel>> getListTeacherByListId(
       List<int> teacherIds) async {
+    if (teacherIds.isEmpty) {
+      return [];
+    }
     return (await FireStoreDb.instance.getListTeacherByListId(teacherIds))
         .docs
         .map((e) => TeacherModel.fromSnapshot(e))
@@ -1152,21 +1203,23 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<DetailGradingDataModel> getDataForDetailGrading(
       int classId, int lessonId, String type) async {
-
-    ClassModel classModel = await FireBaseProvider.instance.getClassById(classId);
-    CourseModel courseModel = await FireBaseProvider.instance.getCourseById(classModel.courseId);
+    ClassModel classModel =
+        await FireBaseProvider.instance.getClassById(classId);
+    CourseModel courseModel =
+        await FireBaseProvider.instance.getCourseById(classModel.courseId);
     String token = courseModel.token;
     List<QuestionModel> listQuestions = [];
-    if(type == "test"){
-      listQuestions =
-      await FireBaseProvider.instance.getQuestionByUrl(AppConfigs.getDataUrl("test_$lessonId.json",token));
-    }else{
-      listQuestions =
-      await FireBaseProvider.instance.getQuestionByUrl(AppConfigs.getDataUrl("btvn_$lessonId.json",token));
+    if (type == "test") {
+      listQuestions = await FireBaseProvider.instance.getQuestionByUrl(
+          AppConfigs.getDataUrl("test_$lessonId.json", token));
+    } else {
+      listQuestions = await FireBaseProvider.instance.getQuestionByUrl(
+          AppConfigs.getDataUrl("btvn_$lessonId.json", token));
     }
-    List<AnswerModel> listAnswer = await FireBaseProvider.instance.getListAnswer(lessonId, classId);
+    List<AnswerModel> listAnswer =
+        await FireBaseProvider.instance.getListAnswer(lessonId, classId);
 
-    if(listAnswer.isEmpty){
+    if (listAnswer.isEmpty) {
       return DetailGradingDataModel(
           classModel: classModel,
           listQuestions: listQuestions,
@@ -1177,21 +1230,24 @@ class FireBaseProvider extends NetworkProvider {
           listState: []);
     }
 
-    List<StudentClassModel> listStudentClass = await FireBaseProvider.instance
-        .getStudentClassInClass(classId);
+    List<StudentClassModel> listStudentClass =
+        await FireBaseProvider.instance.getStudentClassInClass(classId);
 
     List<int> listStudentId = [];
 
-    for(var j in listStudentClass){
-      for(var i in listAnswer){
-        if(j.userId == i.studentId && j.classStatus != "Remove" && j.classStatus != "Dropped"){
+    for (var j in listStudentClass) {
+      for (var i in listAnswer) {
+        if (j.userId == i.studentId &&
+            j.classStatus != "Remove" &&
+            j.classStatus != "Dropped") {
           listStudentId.add(j.userId);
           break;
         }
       }
     }
 
-    List<StudentModel> listStudent = await FireBaseProvider.instance.getAllStudentInFoInClass(listStudentId);
+    List<StudentModel> listStudent =
+        await FireBaseProvider.instance.getAllStudentInFoInClass(listStudentId);
 
     return DetailGradingDataModel(
         classModel: classModel,
@@ -1201,5 +1257,141 @@ class FireBaseProvider extends NetworkProvider {
         courseModel: courseModel,
         listStudentId: listStudentId,
         listState: []);
+  }
+
+  @override
+  Future<List<StudentModel>> get10Student(int lastId) async {
+    return (await FireStoreDb.instance.get10Student(lastId))
+        .docs
+        .map((e) => StudentModel.fromSnapshot(e))
+        .toList();
+  }
+
+  @override
+  Future<List<StudentModel>> get10StudentFirst() async {
+    return (await FireStoreDb.instance.get10StudentFirst())
+        .docs
+        .map((e) => StudentModel.fromSnapshot(e))
+        .toList();
+  }
+
+  @override
+  Future<int> getTotalPage(String tableName) async {
+    int count = (await FireStoreDb.instance.getCount(tableName)).count;
+
+    if (count <= 10) {
+      return 1;
+    }
+
+    int length = count ~/ 10;
+
+    int check = count % 10;
+
+    if (check != 0) {
+      length++;
+    }
+
+    return length;
+  }
+
+  @override
+  Future<TeacherHomeClass> getDataForManageClassTab() async {
+    final List<ClassModel> allClassNotRemove =
+        await FireStoreDb.instance.getAllClassAvailable();
+
+    List<int> listClassIds = [];
+    List<String> listClassCodes = [];
+    List<String> listClassStatus = [];
+    List<int> listClassType = [];
+    List<int> listCourseIds = [];
+    for (var i in allClassNotRemove) {
+      listClassIds.add(i.classId);
+      listClassCodes.add(i.classCode);
+      listClassStatus.add(i.classStatus);
+      listClassType.add(i.classType);
+      if (!listCourseIds.contains(i.courseId)) {
+        listCourseIds.add(i.courseId);
+      }
+    }
+
+    final List<CourseModel> listCourses =
+        await FireBaseProvider.instance.getCourseByListId(listCourseIds);
+    List<String> listBigTitle = [];
+    List<int> listLessonCount = [];
+    List<int> listLessonAvailable = [];
+    for (var i in allClassNotRemove) {
+      for (var k in listCourses) {
+        if (i.courseId == k.courseId) {
+          listBigTitle.add("${k.name} ${k.level} ${k.termName}");
+          listLessonCount.add(k.lessonCount);
+          break;
+        }
+      }
+    }
+    List<double> rateAttendance = [];
+    List<double> rateSubmit = [];
+    List<List<int>> rateAttendanceChart = [];
+    List<List<int>> rateSubmitChart = [];
+    List<StudentLessonModel> listStdLesson = await FireBaseProvider.instance
+        .getAllStudentLessonsInListClassId(listClassIds);
+    for (var i in listClassIds) {
+      final List<StudentLessonModel> list =
+          listStdLesson.where((e) => e.classId == i).toList();
+      int temp1 = 0;
+      int temp2 = 0;
+      List<int> listLessonIds = [];
+      for (var j in list) {
+        if (j.timekeeping != 6) {
+          temp1++;
+        }
+        if (j.hw != -2) {
+          temp2++;
+        }
+        if (!listLessonIds.contains(j.lessonId)) {
+          listLessonIds.add(j.lessonId);
+        }
+      }
+      rateAttendance.add(temp1 / (list.isNotEmpty ? list.length : 1));
+      rateSubmit.add(temp2 / (list.isNotEmpty ? list.length : 1));
+      listLessonAvailable.add(listLessonIds.length);
+
+      List<int> attendances = [], submits = [];
+      for (var j in listLessonIds) {
+        int att = list.fold(
+            0,
+            (pre, e) =>
+                pre +
+                ((e.classId == i &&
+                        e.lessonId == j &&
+                        e.timekeeping > 0 &&
+                        e.timekeeping < 5)
+                    ? 1
+                    : 0));
+        int sub = list.fold(
+            0,
+            (pre, e) =>
+                pre +
+                ((e.classId == i && e.lessonId == j && e.hw > -2) ? 1 : 0));
+        attendances.add(att);
+        submits.add(sub);
+      }
+      rateAttendanceChart.add(attendances);
+      rateSubmitChart.add(submits);
+    }
+
+    return TeacherHomeClass(
+      listClassIds: listClassIds,
+      listClassCodes: listClassCodes,
+      listClassStatus: listClassStatus,
+      listClassType: listClassType,
+      listBigTitle: listBigTitle,
+      rateAttendance: rateAttendance,
+      rateSubmit: rateSubmit,
+      rateAttendanceChart: rateAttendanceChart,
+      rateSubmitChart: rateSubmitChart,
+      listLessonCount: listLessonCount,
+      listLessonAvailable: listLessonAvailable,
+      listCourse: listCourses,
+    );
   }
 }

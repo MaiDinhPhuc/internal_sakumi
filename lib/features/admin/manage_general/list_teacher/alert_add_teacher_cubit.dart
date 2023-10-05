@@ -5,22 +5,22 @@ import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
+import 'package:internal_sakumi/providers/firebase/firestore_db.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 
 class AlertAddTeacherCubit extends Cubit<int> {
   AlertAddTeacherCubit() : super(0);
 
-  List<UserModel>? allUser;
-  List<TeacherClassModel>? listTeacherClass;
+  int? userCount;
+  int? teacherClassCount;
   List<TeacherModel>? listAllTeacher, listSensei, listSelectedTeacher = [];
   bool? checkCreate, checkAdd;
 
   loadAllUser(BuildContext context, ManageGeneralCubit cubit) async {
-    listTeacherClass = await FireBaseProvider.instance.getAllTeacherInClass();
+    teacherClassCount = (await FireStoreDb.instance.getCount("teacher_class")).count;
     listAllTeacher = await FireBaseProvider.instance.getAllTeacher();
-    allUser = await FireBaseProvider.instance.getAllUser();
-
+    userCount = (await FireStoreDb.instance.getCount("user")).count;
     listSensei = [];
     for(var i in listAllTeacher!){
       var count = 0;
@@ -33,8 +33,46 @@ class AlertAddTeacherCubit extends Cubit<int> {
         listSensei!.add(i);
       }
     }
-    debugPrint('============> loadAllUser 3 ${listSensei!.length}');
     emit(state + 1);
+  }
+  search(String text, ManageGeneralCubit cubit){
+    if(text!=""){
+      listSensei = [];
+      for(var i in listAllTeacher!){
+        var count = 0;
+        for(var j in cubit.listStudent!){
+          if(i.userId != j.userId){
+            count++;
+          }
+        }
+        if(count == cubit.listStudent!.length){
+          listSensei!.add(i);
+        }
+      }
+      List<TeacherModel> listTemp = [];
+      for(var i in listSensei!){
+        if(i.name.toUpperCase().contains(text.toUpperCase()) || i.teacherCode.toUpperCase().contains(text.toUpperCase())){
+          listTemp.add(i);
+        }
+      }
+      listSensei = null;
+      listSensei = listTemp;
+      emit(state + 1);
+    }else{
+      listSensei = [];
+      for(var i in listAllTeacher!){
+        var count = 0;
+        for(var j in cubit.listStudent!){
+          if(i.userId != j.userId){
+            count++;
+          }
+        }
+        if(count == cubit.listStudent!.length){
+          listSensei!.add(i);
+        }
+      }
+      emit(state + 1);
+    }
   }
 
   addTeacherToClass(BuildContext context, TeacherClassModel model) async {

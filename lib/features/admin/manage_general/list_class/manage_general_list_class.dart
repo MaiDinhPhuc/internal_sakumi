@@ -54,7 +54,7 @@ class ManageGeneralListClass extends StatelessWidget {
                                         cubit.listStudent == null)
                                     ? () {}
                                     : () {
-                                        cubit.selectedClass(e.classId, context);
+                                        cubit.selectedClass(e.classId);
                                       },
                                 child: Padding(
                                     padding: EdgeInsets.symmetric(

@@ -29,7 +29,7 @@ void alertNewStudent(
       builder: (_) {
         return BlocProvider(
             create: (context) => AlertAddStudentCubit()
-              ..loadAllUser(context, manageGeneralCubit),
+              ..loadAllUser(manageGeneralCubit),
             child: BlocBuilder<AlertAddStudentCubit, int>(
               builder: (c, _) {
                 var cubit = BlocProvider.of<AlertAddStudentCubit>(c);
@@ -194,7 +194,7 @@ void alertNewStudent(
                                                       url: '',
                                                       note: noteCon.text,
                                                       userId:
-                                                          cubit.allUser!.length,
+                                                          cubit.userCount!,
                                                       inJapan: cubit.active,
                                                       phone: phoneCon.text,
                                                       studentCode:
@@ -204,22 +204,20 @@ void alertNewStudent(
                                                       email: emailCon.text,
                                                       role: AppText
                                                           .selectorStudent.text,
-                                                      id: cubit
-                                                          .allUser!.length));
+                                                      id: cubit.userCount!));
                                               if (context.mounted) {
                                                 Navigator.pop(context);
                                                 if (cubit.checkCreate == true) {
                                                   debugPrint(
-                                                      '===========> listStudentClass ${cubit.listStudentClass!.length + 1}');
+                                                      '===========> listStudentClass ${cubit.studentClassCount! + 1}');
                                                   debugPrint(
-                                                      '===========> userId ${cubit.allUser!.length + 1}');
+                                                      '===========> userId ${cubit.userCount! + 1}');
 
                                                   await cubit.addStudentToClass(
                                                       context,
                                                       StudentClassModel(
                                                           id: cubit
-                                                                  .listStudentClass!
-                                                                  .length +
+                                                                  .studentClassCount! +
                                                               1,
                                                           classId:
                                                               manageGeneralCubit
@@ -227,8 +225,7 @@ void alertNewStudent(
                                                           activeStatus: 0,
                                                           learningStatus: 0,
                                                           moveTo: 0,
-                                                          userId: cubit.allUser!
-                                                                  .length,
+                                                          userId: cubit.userCount!,
                                                           classStatus:
                                                               AppText.statusInProgress.text,
                                                           date: DateFormat(
@@ -238,7 +235,6 @@ void alertNewStudent(
                                                   if (context.mounted) {
                                                     manageGeneralCubit
                                                         .loadStudentInClass(
-                                                            context,
                                                             manageGeneralCubit
                                                                 .selector);
                                                   }

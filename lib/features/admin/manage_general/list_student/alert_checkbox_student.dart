@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_student/alert_add_student_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
@@ -17,15 +18,13 @@ void alertCheckBoxStudent(
       builder: (_) {
         return BlocProvider(
             create: (context) => AlertAddStudentCubit()
-              ..loadAllUser(context, manageGeneralCubit),
+              ..loadAllUser(manageGeneralCubit),
             child: BlocBuilder<AlertAddStudentCubit, int>(
               builder: (c, _) {
                 var cubit = BlocProvider.of<AlertAddStudentCubit>(c);
                 return cubit.listStd == null
                     ? const WaitingAlert()
-                    : cubit.listStd!.isEmpty
-                        ? NotifyAlert(AppText.txtNoStudent.text)
-                        : Dialog(
+                    : Dialog(
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width / 3,
                               child: Stack(
@@ -40,6 +39,25 @@ void alertCheckBoxStudent(
                                                 Resizable.padding(context, 20),
                                             vertical:
                                                 Resizable.padding(context, 10)),
+                                        decoration: const BoxDecoration(
+                                            color: Colors.white,
+                                        ),
+                                        child: Text(
+                                          AppText.btnAddStudent.text
+                                              .toUpperCase(),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize:
+                                                  Resizable.font(context, 20)),
+                                        ),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.topLeft,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal:
+                                            Resizable.padding(context, 20),
+                                            vertical:
+                                            Resizable.padding(context, 10)),
                                         decoration: BoxDecoration(
                                             color: Colors.white,
                                             boxShadow: [
@@ -52,14 +70,58 @@ void alertCheckBoxStudent(
                                                       Resizable.size(
                                                           context, 1)))
                                             ]),
-                                        child: Text(
-                                          AppText.btnAddStudent.text
-                                              .toUpperCase(),
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize:
-                                                  Resizable.font(context, 20)),
-                                        ),
+                                        child: Card(
+                                          elevation: 5,
+                                          shadowColor: primaryColor.withAlpha(100),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(100),
+                                              side: const BorderSide(color: primaryColor, width: 1)),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
+                                                width: 320,
+                                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                                child: TextFormField(
+                                                  onChanged: (value){
+                                                    cubit.search(value, manageGeneralCubit);
+                                                  },
+                                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                                  decoration:  InputDecoration(
+                                                    focusedBorder: InputBorder.none,
+                                                    border: InputBorder.none,
+                                                    disabledBorder: InputBorder.none,
+                                                    enabledBorder: InputBorder.none,
+                                                    errorBorder: InputBorder.none,
+                                                    focusedErrorBorder: InputBorder.none,
+                                                    hintText: AppText.txtSearch.text,
+                                                    hintStyle: const TextStyle(
+                                                      color: Color(0xff9a9a9a),
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Material(
+                                                color: primaryColor,
+                                                borderRadius:
+                                                const BorderRadius.horizontal(right: Radius.circular(100)),
+                                                child: InkWell(
+                                                    borderRadius:
+                                                    const BorderRadius.horizontal(right: Radius.circular(100)),
+                                                    onTap: () {},
+                                                    child: const Padding(
+                                                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                                                      child: Icon(
+                                                        Icons.search,
+                                                        color: Colors.white,
+                                                        size: 30,
+                                                      ),
+                                                    )),
+                                              )
+                                            ],
+                                          ),
+                                        )
                                       ),
                                       Expanded(
                                           child: SingleChildScrollView(
@@ -155,8 +217,7 @@ void alertCheckBoxStudent(
                                                       context,
                                                       StudentClassModel(
                                                           id: cubit
-                                                                  .listStudentClass!
-                                                                  .length +
+                                                                  .studentClassCount! +
                                                               1,
                                                           classId:
                                                               manageGeneralCubit
@@ -181,7 +242,6 @@ void alertCheckBoxStudent(
                                                   Navigator.pop(context);
                                                   manageGeneralCubit
                                                       .loadStudentInClass(
-                                                          context,
                                                           manageGeneralCubit
                                                               .selector);
                                                 }

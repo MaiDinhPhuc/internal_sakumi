@@ -106,7 +106,7 @@ void alertNewTeacher(
                                                       url: '',
                                                       note: noteCon.text,
                                                       userId:
-                                                      cubit.allUser!.length,
+                                                      cubit.userCount!,
                                                       phone: phoneCon.text,
                                                       teacherCode:
                                                       senseiCodeCon.text,
@@ -115,8 +115,7 @@ void alertNewTeacher(
                                                       email: emailCon.text,
                                                       role: AppText
                                                           .selectorTeacher.text,
-                                                      id: cubit
-                                                          .allUser!.length));
+                                                      id:cubit.userCount!));
                                               if (context.mounted) {
                                                 Navigator.pop(context);
                                                 if (cubit.checkCreate == true) {
@@ -124,14 +123,12 @@ void alertNewTeacher(
                                                       context,
                                                       TeacherClassModel(
                                                           id: cubit
-                                                              .listTeacherClass!
-                                                              .length +
+                                                              .teacherClassCount! +
                                                               1,
                                                           classId:
                                                           manageGeneralCubit
                                                               .selector,
-                                                          userId: cubit.allUser!
-                                                              .length,
+                                                          userId: cubit.userCount!,
                                                           classStatus:
                                                           AppText.statusInProgress.text,
                                                           date: DateFormat(
@@ -141,7 +138,6 @@ void alertNewTeacher(
                                                   if (context.mounted) {
                                                     manageGeneralCubit
                                                         .loadTeacherInClass(
-                                                        context,
                                                         manageGeneralCubit
                                                             .selector);
                                                   }

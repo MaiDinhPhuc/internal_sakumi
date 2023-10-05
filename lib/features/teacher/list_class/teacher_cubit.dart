@@ -10,7 +10,6 @@ class TeacherCubit extends Cubit<int> {
   TeacherHomeClass? data;
 
   List<int>? listClassIds,
-      listCourseIds,
       listClassType,
       listLessonCount,
       listLessonAvailable;
@@ -33,7 +32,6 @@ class TeacherCubit extends Cubit<int> {
 
     if(listFilter.every((element) => element == true)){
       listClassIds = data!.listClassIds;
-      listCourseIds = data!.listCourseIds;
       listClassType = data!.listClassType;
       listLessonCount = data!.listLessonCount;
       listClassCodes = data!.listClassCodes;
@@ -44,9 +42,10 @@ class TeacherCubit extends Cubit<int> {
       rateAttendanceChart = data!.rateAttendanceChart;
       rateSubmitChart = data!.rateSubmitChart;
       listLessonAvailable = data!.listLessonAvailable;
+
+
     }else{
       listClassIds = [];
-      listCourseIds = [];
       listClassType = [];
       listLessonCount = [];
       listClassCodes = [];
@@ -73,7 +72,6 @@ class TeacherCubit extends Cubit<int> {
       }
       for(var i in listIndex){
         listClassIds!.add(data!.listClassIds[i]);
-        listCourseIds!.add(data!.listCourseIds[i]);
         listClassType!.add(data!.listClassType[i]);
         listLessonCount!.add(data!.listLessonCount[i]);
         listClassCodes!.add(data!.listClassCodes[i]);

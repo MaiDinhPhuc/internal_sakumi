@@ -1,29 +1,29 @@
+import 'course_model.dart';
+
 class TeacherHomeClass {
   final List<int> listClassIds,
-      listCourseIds,
       listClassType,
       listLessonCount,
       listLessonAvailable;
   final List<String> listClassCodes, listClassStatus, listBigTitle;
   final List<double> rateAttendance, rateSubmit;
   final List<List<int>> rateAttendanceChart, rateSubmitChart;
+  final List<CourseModel> listCourse;
 
   const TeacherHomeClass(
       {required this.listClassIds,
       required this.listClassCodes,
       required this.listClassStatus,
       required this.listClassType,
-      required this.listCourseIds,
       required this.listBigTitle,
       required this.rateAttendance,
       required this.rateSubmit,
       required this.rateAttendanceChart,
       required this.rateSubmitChart,
       required this.listLessonCount,
-      required this.listLessonAvailable});
+      required this.listLessonAvailable, required this.listCourse});
   factory TeacherHomeClass.fromData(
       List<int> listClassIds,
-      List<int> listCourseIds,
       List<String> listClassCodes,
       List<String> listClassStatus,
       List<int> listClassType,
@@ -33,19 +33,18 @@ class TeacherHomeClass {
       List<List<int>> rateAttendanceChart,
       List<List<int>> rateSubmitChart,
       List<int> listLessonCount,
-      List<int> listLessonAvailable) {
+      List<int> listLessonAvailable, List<CourseModel> listCourse) {
     return TeacherHomeClass(
         listClassIds: listClassIds,
         listClassCodes: listClassCodes,
         listClassStatus: listClassStatus,
         listClassType: listClassType,
-        listCourseIds: listCourseIds,
         listBigTitle: listBigTitle,
         rateAttendance: rateAttendance,
         rateSubmit: rateSubmit,
         rateAttendanceChart: rateAttendanceChart,
         rateSubmitChart: rateSubmitChart,
         listLessonCount: listLessonCount,
-        listLessonAvailable: listLessonAvailable);
+        listLessonAvailable: listLessonAvailable, listCourse: listCourse);
   }
 }

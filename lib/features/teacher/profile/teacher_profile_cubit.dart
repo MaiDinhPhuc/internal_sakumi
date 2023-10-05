@@ -6,9 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../configs/prefKey_configs.dart';
 import '../../../model/teacher_model.dart';
 import 'app_bar_info_teacher_cubit.dart';
 
@@ -24,7 +22,7 @@ class TeacherProfileCubit extends Cubit<int> {
   List<Map<String, dynamic>>? listPassWordField;
 
   load(BuildContext context) async {
-    await context.read<AppBarInfoTeacherCubit>().load(context);
+    await context.read<AppBarInfoTeacherCubit>().load();
     profileTeacher = context.read<AppBarInfoTeacherCubit>().state;
     debugPrint('=>>>>>>>profileTeacher: ${profileTeacher!.name}');
     userModel = await FireBaseProvider.instance.getUserById(profileTeacher!.userId);

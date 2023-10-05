@@ -43,21 +43,21 @@ class AddUserToClassScreen extends StatelessWidget {
                   onPressed: () async {
                     // List<TeacherClassModel> listTeacherClass =
                     //     await adminRepository.getAllTeacherInClass();
-                    List<StudentClassModel> listStudentClass =
-                        await FireBaseProvider.instance.getAllStudentInClass();
-                    await FirebaseFirestore.instance
-                        .collection('student_class')
-                        .doc("student_${controller.text}_class_$classId")
-                        .set({
-                      'class_id': classId,
-                      'user_id': int.parse(controller.text),
-                      'active_status': 5,
-                      'learning_status': 5,
-                      'class_status': AppText.statusInProgress.text,
-                      'date': DateFormat('dd/MM/yyyy').format(DateTime.now()),
-                      'move_to': 0,
-                      'id': listStudentClass.length + 1,
-                    });
+                    // List<StudentClassModel> listStudentClass =
+                    //     await FireBaseProvider.instance.getAllStudentInClass();
+                    // await FirebaseFirestore.instance
+                    //     .collection('student_class')
+                    //     .doc("student_${controller.text}_class_$classId")
+                    //     .set({
+                    //   'class_id': classId,
+                    //   'user_id': int.parse(controller.text),
+                    //   'active_status': 5,
+                    //   'learning_status': 5,
+                    //   'class_status': AppText.statusInProgress.text,
+                    //   'date': DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                    //   'move_to': 0,
+                    //   'id': listStudentClass.length + 1,
+                    // });
                     // isStudent
                     //     ? await FirebaseFirestore.instance
                     //         .collection('student_class')
