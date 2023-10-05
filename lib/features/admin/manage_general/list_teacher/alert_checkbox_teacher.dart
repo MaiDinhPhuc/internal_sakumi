@@ -217,9 +217,7 @@ void alertCheckBoxTeacher(
                                                   await cubit.addTeacherToClass(
                                                       context,
                                                       TeacherClassModel(
-                                                          id: cubit
-                                                                  .listTeacherClass!
-                                                                  .length +
+                                                          id: cubit.teacherClassCount! +
                                                               1,
                                                           classId:
                                                               manageGeneralCubit

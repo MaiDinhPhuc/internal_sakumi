@@ -13,12 +13,12 @@ class AlertAddTeacherCubit extends Cubit<int> {
   AlertAddTeacherCubit() : super(0);
 
   int? userCount;
-  List<TeacherClassModel>? listTeacherClass;
+  int? teacherClassCount;
   List<TeacherModel>? listAllTeacher, listSensei, listSelectedTeacher = [];
   bool? checkCreate, checkAdd;
 
   loadAllUser(BuildContext context, ManageGeneralCubit cubit) async {
-    listTeacherClass = await FireBaseProvider.instance.getAllTeacherInClass();
+    teacherClassCount = (await FireStoreDb.instance.getCount("teacher_class")).count;
     listAllTeacher = await FireBaseProvider.instance.getAllTeacher();
     userCount = (await FireStoreDb.instance.getCount("user")).count;
     listSensei = [];

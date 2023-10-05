@@ -123,8 +123,7 @@ void alertNewTeacher(
                                                       context,
                                                       TeacherClassModel(
                                                           id: cubit
-                                                              .listTeacherClass!
-                                                              .length +
+                                                              .teacherClassCount! +
                                                               1,
                                                           classId:
                                                           manageGeneralCubit
