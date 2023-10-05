@@ -3,11 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/admin/manage_class/filter_by_class_status.dart';
 import 'package:internal_sakumi/features/admin/manage_class/list_class_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
 import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,28 +20,35 @@ class ManageClassTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => LoadListClassCubit()..init(),
-      child: BlocBuilder<LoadListClassCubit, int>(
-          builder: (c, list) {
-            var cubit = BlocProvider.of<LoadListClassCubit>(c);
-            return cubit.listClass == null
-                ? Transform.scale(scale: 0.75, child: const Center(
-              child: CircularProgressIndicator(),
-            ))
-                : SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      child: BlocBuilder<LoadListClassCubit, int>(builder: (c, list) {
+        var cubit = BlocProvider.of<LoadListClassCubit>(c);
+        return cubit.data == null
+            ? Transform.scale(
+                scale: 0.75,
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ))
+            : SingleChildScrollView(
+                child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
                     alignment: Alignment.center,
                     margin: EdgeInsets.symmetric(
                         vertical: Resizable.padding(context, 20)),
-                    child: Text(
-                        AppText.titleListClass.text.toUpperCase(),
+                    child: Text(AppText.titleListClass.text.toUpperCase(),
                         style: TextStyle(
                           fontSize: Resizable.font(context, 30),
                           fontWeight: FontWeight.w800,
                         )),
                   ),
+                  Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: Resizable.padding(context, 150)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [FilterByClassStatusAdmin(cubit)],
+                      )),
                   Container(
                     margin: EdgeInsets.symmetric(
                         horizontal: Resizable.padding(context, 150)),
@@ -57,8 +66,7 @@ class ManageClassTab extends StatelessWidget {
                                   fontWeight: FontWeight.w600,
                                   fontSize: Resizable.font(context, 17),
                                   color: greyColor.shade600)),
-                          widgetLessons: Text(
-                              AppText.txtNumberOfLessons.text,
+                          widgetLessons: Text(AppText.txtNumberOfLessons.text,
                               style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: Resizable.font(context, 17),
@@ -82,26 +90,28 @@ class ManageClassTab extends StatelessWidget {
                                   color: greyColor.shade600)),
                         ),
                         SizedBox(height: Resizable.size(context, 10)),
-                        (cubit.listClass!.isNotEmpty)
+                        (cubit.listClassIds!.isNotEmpty)
                             ? Column(children: [
-                          ...cubit.listClass!
-                              .map((e) => ClassItemInAdmin(
-                              cubit.listClass!.indexOf(e),
-                              e.classId))
-                              .toList(),
-                        ])
+                                ...cubit.listClassIds!
+                                    .map((e) => ClassItemInAdmin(
+                                        cubit.listClassIds!.indexOf(e), e))
+                                    .toList(),
+                              ])
                             : Center(
-                          child: Text(AppText.txtNoClass.text),
-                        )
+                                child: Text(AppText.txtNoClass.text),
+                              )
                       ],
                     ),
                   ),
                   SizedBox(height: Resizable.size(context, 5)),
-                  Padding(padding: EdgeInsets.symmetric(horizontal:  Resizable.padding(context, 150)),child: DottedBorderButton(
-                      AppText.btnManageClass.text.toUpperCase(),
-                      onPressed: () async {
+                  Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: Resizable.padding(context, 150)),
+                      child: DottedBorderButton(
+                          AppText.btnManageClass.text.toUpperCase(),
+                          onPressed: () async {
                         SharedPreferences localData =
-                        await SharedPreferences.getInstance();
+                            await SharedPreferences.getInstance();
                         if (c.mounted) {
                           Navigator.pushNamed(context,
                               '${Routes.admin}?name=${localData.getString(PrefKeyConfigs.code)!}/${Routes.manageGeneral}');
@@ -109,11 +119,8 @@ class ManageClassTab extends StatelessWidget {
                       })),
                   SizedBox(height: Resizable.size(context, 50)),
                 ],
-              )
-            );
-          }),
+              ));
+      }),
     );
   }
 }
-
-

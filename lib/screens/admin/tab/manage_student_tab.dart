@@ -9,8 +9,10 @@ import 'package:internal_sakumi/features/admin/manage_student/student_item_row_l
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
+import 'package:internal_sakumi/providers/firebase/firestore_db.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:internal_sakumi/widget/custom_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ManageStudentTab extends StatelessWidget {
@@ -19,11 +21,11 @@ class ManageStudentTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoadListStudentCubit()..load(context),
-      child: BlocBuilder<LoadListStudentCubit, List<StudentModel>>(
-          key: Key("${LoadListStudentCubit().state.length}"),
-          builder: (c, list) {
-            return list.isEmpty
+      create: (context) => LoadListStudentCubit()..loadFirst(),
+      child: BlocBuilder<LoadListStudentCubit, int>(
+          builder: (c, s) {
+            var cubit = BlocProvider.of<LoadListStudentCubit>(c);
+            return s == 0
                 ? Transform.scale(
                     scale: 0.75,
                     child: const CircularProgressIndicator(),
@@ -33,7 +35,7 @@ class ManageStudentTab extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           horizontal: Resizable.padding(context, 150)),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
                             alignment: Alignment.center,
@@ -57,7 +59,7 @@ class ManageStudentTab extends StatelessWidget {
                                 code: AppText.txtStudentCode.text),
                           ),
                           ...List.generate(
-                              list.length,
+                              cubit.listData.length,
                               (index) => Container(
                                     margin: EdgeInsets.symmetric(
                                         vertical:
@@ -81,13 +83,7 @@ class ManageStudentTab extends StatelessWidget {
                                                       borderRadius: BorderRadius.circular(
                                                           Resizable.size(
                                                               context, 5))),
-                                                  child: list == null
-                                                      ? Transform.scale(
-                                                          scale: 0.75,
-                                                          child:
-                                                              const CircularProgressIndicator(),
-                                                        )
-                                                      : AnimatedCrossFade(
+                                                  child: AnimatedCrossFade(
                                                           firstChild: Padding(
                                                             padding: EdgeInsets.symmetric(
                                                                 horizontal: Resizable
@@ -100,12 +96,12 @@ class ManageStudentTab extends StatelessWidget {
                                                                         15)),
                                                             child: StudentItemRowLayout(
                                                                 name:
-                                                                    list[index]
+                                                                cubit.listData[index]
                                                                         .name,
                                                                 phone:
-                                                                    list[index]
+                                                                cubit.listData[index]
                                                                         .phone,
-                                                                code: list[
+                                                                code: cubit.listData[
                                                                         index]
                                                                     .studentCode),
                                                           ),
@@ -125,13 +121,13 @@ class ManageStudentTab extends StatelessWidget {
                                                                             context,
                                                                             15)),
                                                                 child: StudentItemRowLayout(
-                                                                    name: list[
+                                                                    name: cubit.listData[
                                                                             index]
                                                                         .name,
-                                                                    phone: list[
+                                                                    phone: cubit.listData[
                                                                             index]
                                                                         .phone,
-                                                                    code: list[
+                                                                    code: cubit.listData[
                                                                             index]
                                                                         .studentCode),
                                                               ),
@@ -149,7 +145,7 @@ class ManageStudentTab extends StatelessWidget {
                                                   child: Material(
                                                 color: Colors.transparent,
                                                 child: InkWell(
-                                                    onTap: () =>alertEditStudentProfile(c,list[index]),
+                                                    onTap: () =>alertEditStudentProfile(c,cubit.listData[index], index),
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             Resizable.size(
@@ -194,7 +190,12 @@ class ManageStudentTab extends StatelessWidget {
                                       '${Routes.admin}?name=${localData.getString(PrefKeyConfigs.code)!}/${Routes.manageGeneral}');
                                 }
                               }),
-                          SizedBox(height: Resizable.size(context, 50)),
+                          SizedBox(height: Resizable.size(context, 10)),
+                          if(cubit.listData.length<cubit.totalCount!)
+                            CustomButton(onPress: () {
+                            cubit.loadMore();
+                          }, bgColor: primaryColor, foreColor: Colors.white, text: AppText.txtLoadMore.text),
+                          SizedBox(height: Resizable.size(context, 40)),
                         ],
                       ),
                     ),
@@ -204,17 +205,32 @@ class ManageStudentTab extends StatelessWidget {
   }
 }
 
-class LoadListStudentCubit extends Cubit<List<StudentModel>> {
-  LoadListStudentCubit() : super([]);
+class LoadListStudentCubit extends Cubit<int> {
+  LoadListStudentCubit() : super(0);
 
-  load(context) async {
-    List<StudentModel> list = await FireBaseProvider.instance.getAllStudent();
-    emit(list);
+  List<StudentModel> listData = [];
+
+  int? totalCount;
+  int? lastId;
+
+
+  loadFirst() async {
+    List<StudentModel> list = await FireBaseProvider.instance.get10StudentFirst();
+    totalCount = (await FireStoreDb.instance.getCount("students")).count;
+    listData.addAll(list);
+    lastId = list.last.userId;
+    emit(state+1);
   }
 
-  update(context)async{
-    emit([]);
-    List<StudentModel> list = await FireBaseProvider.instance.getAllStudent();
-    emit(list);
+  loadMore() async{
+    List<StudentModel> list = await FireBaseProvider.instance.get10Student(lastId!);
+    listData.addAll(list);
+    lastId = list.last.userId;
+    emit(state+1);
+  }
+
+  update(int index, StudentModel student)async{
+    listData[index] = student;
+    emit(state+1);
   }
 }

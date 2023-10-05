@@ -22,6 +22,7 @@ class EditStudentProfileCubit extends Cubit<int>{
     note = studentModel.note;
     userModel = await FireBaseProvider.instance.getUserById(studentModel.userId);
     email = userModel!.email;
+    active = studentModel.inJapan;
     emit(state+1);
   }
 

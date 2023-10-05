@@ -24,7 +24,7 @@ class ClassItemRowLayout extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-            flex: 2,
+            flex: 3,
             child: Container(
               alignment: Alignment.center,
               child: widgetClassCode,

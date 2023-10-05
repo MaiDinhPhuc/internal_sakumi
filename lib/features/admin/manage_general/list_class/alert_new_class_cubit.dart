@@ -4,13 +4,14 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
+import 'package:internal_sakumi/providers/firebase/firestore_db.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 class AlertNewClassCubit extends Cubit<int> {
   AlertNewClassCubit() : super(0);
 
   List<CourseModel>? listCourse;
-  List<ClassModel>? listClass;
+  int? classCount;
   int? courseId;
   String? selector;
   bool? check;
@@ -20,7 +21,7 @@ class AlertNewClassCubit extends Cubit<int> {
   String? classStatus;
 
   loadCourse() async {
-    listClass = await FireBaseProvider.instance.getAllClass();
+    classCount = (await FireStoreDb.instance.getCount("class")).count;
     listCourse = await FireBaseProvider.instance.getAllCourse();
     emit(state + 1);
   }
@@ -81,10 +82,7 @@ class AlertNewClassCubit extends Cubit<int> {
   }
 
   getCourseId(String text) async {
-    var title = text.split('Kỳ').first.trim();
-    var term = text.split(title).last.trim();
-    var course = await FireBaseProvider.instance.getCourseByName(title, term);
-    print("=====>courseId: ${course.courseId}");
+    CourseModel course = listCourse!.singleWhere((element) => '${element.title} ${element.termName} ${element.code}' == text);
     courseId = course.courseId;
   }
 

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
@@ -17,20 +18,8 @@ class ClassOverview extends StatelessWidget {
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<TeacherCubit>(context);
     return
-        //   cubit.rateSubmit == null ||
-        //         cubit.rateAttendance == null ||
-        //         cubit.listPoint == null ||
-        //         cubit.listSubmit == null ||
-        //         cubit.listAttendance == null
-        //     ? Center(
-        //   child: Transform.scale(
-        //     scale: 0.75,
-        //     child: const CircularProgressIndicator(),
-        //   ),
-        // )
-        //     :
         ClassItemRowLayout(
-            widgetClassCode: Text(cubit.listClassCodes![index].toUpperCase(),
+            widgetClassCode: AutoSizeText(cubit.listClassCodes![index].toUpperCase(),
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: Resizable.font(context, 20))),
@@ -125,26 +114,13 @@ class ClassOverviewInAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<LoadListClassCubit>(context);
-    return cubit.rateSubmit == null ||
-            cubit.rateAttendance == null ||
-            cubit.listPoint == null ||
-            cubit.listSubmit == null ||
-            cubit.listAttendance == null
-        ? Center(
-            child: Transform.scale(
-              scale: 0.75,
-              child: const CircularProgressIndicator(),
-            ),
-          )
-        : ClassItemRowLayout(
-            widgetClassCode: Text(
-                cubit.listClass![index].classCode.toUpperCase(),
+    return ClassItemRowLayout(
+            widgetClassCode:AutoSizeText(cubit.listClassCodes![index].toUpperCase(),
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: Resizable.font(context, 20))),
             widgetCourse: Text(
-                '${cubit.courses![index].name} ${cubit.courses![index].level} ${cubit.courses![index].termName}'
-                    .toUpperCase(),
+                cubit.listBigTitle![index].toUpperCase(),
                 style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: Resizable.font(context, 16))),
@@ -158,10 +134,10 @@ class ClassOverviewInAdmin extends StatelessWidget {
                   animation: true,
                   lineHeight: Resizable.size(context, 6),
                   animationDuration: 2000,
-                  percent: cubit.listStatus![index] <= 0
+                  percent: cubit.listLessonAvailable![index] <= 0
                       ? 0
-                      : cubit.listStatus![index].toDouble() /
-                          cubit.courses![index].lessonCount,
+                      : cubit.listLessonAvailable![index] /
+                      cubit.listLessonCount![index],
                   center: const SizedBox(),
                   barRadius: const Radius.circular(10000),
                   backgroundColor: greyColor.shade100,
@@ -172,7 +148,7 @@ class ClassOverviewInAdmin extends StatelessWidget {
                   constraints:
                       BoxConstraints(minWidth: Resizable.size(context, 50)),
                   child: Text(
-                      '${cubit.listStatus![index]}/${cubit.courses![index].lessonCount} ${AppText.txtLesson.text.toLowerCase()}',
+                      '${cubit.listLessonAvailable![index]}/${cubit.listLessonCount![index]} ${AppText.txtLesson.text.toLowerCase()}',
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: Resizable.font(context, 16))),

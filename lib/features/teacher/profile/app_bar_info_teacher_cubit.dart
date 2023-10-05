@@ -10,7 +10,7 @@ class AppBarInfoTeacherCubit extends Cubit<TeacherModel?> {
 
   TeacherModel? teacherModel;
 
-  load(context) async {
+  load() async {
     emit(null);
     SharedPreferences localData = await SharedPreferences.getInstance();
     var profileTeacher = await FireBaseProvider.instance

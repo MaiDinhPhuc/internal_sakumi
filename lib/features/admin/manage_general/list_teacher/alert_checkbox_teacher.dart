@@ -180,7 +180,6 @@ void alertCheckBoxTeacher(
                                                   Navigator.pop(context);
                                                   manageGeneralCubit
                                                       .loadTeacherInClass(
-                                                      context,
                                                       manageGeneralCubit
                                                           .selector);
                                                 }

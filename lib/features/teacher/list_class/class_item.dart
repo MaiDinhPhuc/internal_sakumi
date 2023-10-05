@@ -33,13 +33,6 @@ class ClassItem extends StatelessWidget {
                   widget: Column(
                     children: [
                       ClassOverview(index),
-                      // (BlocProvider.of<TeacherCubit>(c).listStudentInClass ==
-                      //         null)
-                      //     ? Transform.scale(
-                      //         scale: 0.75,
-                      //         child: const CircularProgressIndicator(),
-                      //       )
-                      //     :
                       ChartView(index)
                     ],
                   ),
@@ -81,14 +74,7 @@ class ClassItemInAdmin extends StatelessWidget {
                   widget: Column(
                     children: [
                       ClassOverviewInAdmin(index),
-                      (BlocProvider.of<LoadListClassCubit>(c)
-                                  .listStudentInClass ==
-                              null)
-                          ? Transform.scale(
-                              scale: 0.75,
-                              child: const CircularProgressIndicator(),
-                            )
-                          : CharInAdminView(index)
+                      CharInAdminView(index)
                     ],
                   ),
                   onTap: () async {

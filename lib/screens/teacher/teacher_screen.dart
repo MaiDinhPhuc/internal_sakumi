@@ -4,19 +4,15 @@ import 'package:image_network/image_network.dart';
 import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/admin/manage_general/input_form/input_dropdown.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
 import 'package:internal_sakumi/features/teacher/list_class/teacher_cubit.dart';
 import 'package:internal_sakumi/features/teacher/profile/app_bar_info_teacher_cubit.dart';
-import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
-import '../../routes.dart';
 import '../../utils/text_utils.dart';
 import 'detail_grading_screen.dart';
 
@@ -28,7 +24,7 @@ class TeacherScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppBarInfoTeacherCubit, TeacherModel?>(
-      bloc: context.read<AppBarInfoTeacherCubit>()..load(context),
+      bloc: context.read<AppBarInfoTeacherCubit>()..load(),
       builder: (context, s) {
         return Scaffold(
             body: Column(

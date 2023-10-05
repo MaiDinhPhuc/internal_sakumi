@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/class_model.dart';
@@ -15,179 +16,188 @@ class ManageGeneralCubit extends Cubit<int> {
   List<StudentModel>? listStudent;
   List<StudentClassModel>? listStudentClass;
   List<CourseModel>? listAllCourse;
-  int selector = 0;
+  int selector = -1;
   List<bool> listStateCourse = [];
-  List<bool> listStateClassStatus = [true,true,false,false];
-  List<bool> listClassType = [true,true];
+  List<bool> listStateClassStatus = [true, true, false, false];
+  List<bool> listClassType = [true, true];
   bool canAdd = true;
 
-  List<String> listStudentStatusMenu = ["Completed","InProgress","Viewer","ReNew","UpSale","Moved","Retained","Dropped","Deposit","Force","Remove"];
-  List<String> listClassStatusMenu = ["Preparing", "InProgress", "Completed", "Cancel"];
-  List<String> listAllClassStatusMenu = ["Preparing", "InProgress", "Completed", "Cancel", "Remove"];
-  List<String> listClassTypeMenu = ["Lớp Chung","Lớp 1-1"];
+  List<String> listStudentStatusMenu = [
+    "Completed",
+    "InProgress",
+    "Viewer",
+    "ReNew",
+    "UpSale",
+    "Moved",
+    "Retained",
+    "Dropped",
+    "Deposit",
+    "Force",
+    "Remove"
+  ];
+  List<String> listClassStatusMenu = [
+    "Preparing",
+    "InProgress",
+    "Completed",
+    "Cancel"
+  ];
+  List<String> listAllClassStatusMenu = [
+    "Preparing",
+    "InProgress",
+    "Completed",
+    "Cancel",
+    "Remove"
+  ];
+  List<String> listClassTypeMenu = ["Lớp Chung", "Lớp 1-1"];
 
-  loadAllClass(context) async {
+  loadAllClass() async {
     listAllClass = await FireBaseProvider.instance.getListClassNotRemove();
     listAllCourse = await FireBaseProvider.instance.getAllCourse();
     listClassNow = listAllClass;
-    for(int i = 0; i < listAllCourse!.length ;i++){
-      listStateCourse.add(true);
+    for (int i = 0; i < listAllCourse!.length; i++) {
+      listStateCourse.add(false);
     }
     filterClass();
     emit(listAllClass!.first.classId);
-    selector = listAllClass!.first.classId;
-    loadTeacherInClass(context, selector);
-    loadStudentInClass(context, selector);
   }
 
-  loadAfterAddClass(int index,context) async {
+  loadAfterAddClass(int index) async {
     listAllClass = await FireBaseProvider.instance.getListClassNotRemove();
     listAllCourse = await FireBaseProvider.instance.getAllCourse();
     listClassNow = listAllClass;
     selector = index;
     canAdd = true;
     emit(selector);
-    loadTeacherInClass(context, selector);
-    loadStudentInClass(context, selector);
+    loadTeacherInClass(selector);
+    loadStudentInClass(selector);
   }
 
-  loadAfterChangeClassStatus()async{
+  loadAfterChangeClassStatus() async {
     listAllClass = await FireBaseProvider.instance.getListClassNotRemove();
     filterClass();
-    emit(state+2);
+    emit(state + 2);
   }
 
-  selectedClass(int index, context) {
+  selectedClass(int index) {
     selector = index;
     canAdd = true;
     emit(selector);
-    loadTeacherInClass(context, index);
-    loadStudentInClass(context, index);
+    loadTeacherInClass(index);
+    loadStudentInClass(index);
   }
 
-  filterClass(){
+  filterClass() {
     listClassNow = [];
 
     List<int> listCourseNow = [];
-    for(int i = 0; i<listStateCourse.length; i++){
-      if(listStateCourse[i] == true){
+    if (listStateCourse.every((element) => element == false)) {
+      for (int i = 0; i < listStateCourse.length; i++) {
         listCourseNow.add(listAllCourse![i].courseId);
       }
+    } else {
+      for (int i = 0; i < listStateCourse.length; i++) {
+        if (listStateCourse[i] == true) {
+          listCourseNow.add(listAllCourse![i].courseId);
+        }
+      }
     }
-
     List<String> listCLassStatus = [];
-    for(int i = 0; i<listStateClassStatus.length; i++){
-      if(listStateClassStatus[i] == true){
+    for (int i = 0; i < listStateClassStatus.length; i++) {
+      if (listStateClassStatus[i] == true) {
         listCLassStatus.add(listClassStatusMenu[i]);
       }
     }
 
     List<ClassModel> listTemp1 = [];
 
-    for(var i in listAllClass!){
-      for(var j in listCourseNow){
-        if(i.courseId == j){
+    for (var i in listAllClass!) {
+      for (var j in listCourseNow) {
+        if (i.courseId == j) {
           listTemp1.add(i);
           break;
         }
       }
     }
     List<ClassModel> listTemp2 = [];
-    for(var i in listTemp1){
-      for(var j in listCLassStatus){
-        if(i.classStatus == j){
+    for (var i in listTemp1) {
+      for (var j in listCLassStatus) {
+        if (i.classStatus == j) {
           listTemp2.add(i);
         }
       }
     }
     List<int> listType = [];
-    if(listClassType[0] == true){
+    if (listClassType[0] == true) {
       listType.add(0);
     }
-    if(listClassType[1] == true){
+    if (listClassType[1] == true) {
       listType.add(1);
     }
-    for(var i in listTemp2){
-      for(var j in listType){
-        if(i.classType == j){
+    for (var i in listTemp2) {
+      for (var j in listType) {
+        if (i.classType == j) {
           listClassNow!.add(i);
         }
       }
     }
 
     bool change = true;
-    for(var i in listClassNow!){
-      if(i.classId == selector){
+    for (var i in listClassNow!) {
+      if (i.classId == selector) {
         change = false;
         break;
       }
     }
-    if(change){
+    if (change) {
       listTeacher = [];
       listStudent = [];
+      selector = -1;
       canAdd = false;
     }
 
-    emit(state+2);
+    emit(state + 2);
   }
 
-
-
-  loadTeacherInClass(BuildContext context, int selector)async{
+  loadTeacherInClass(int selector) async {
     listTeacher = null;
-    var listAllTeacher = await FireBaseProvider.instance.getAllTeacher();
-    var listAllTeacherInClass = await FireBaseProvider.instance.getAllTeacherInClassByClassId(selector);
-    debugPrint('============> loadTeacherInClass ${listAllTeacherInClass.length}');
-    listTeacher = [];
-    for(var i in listAllTeacher){
-      for(var j in listAllTeacherInClass){
-        if(i.userId == j.userId){
-          listTeacher!.add(i);
-        }
-      }
+    var listAllTeacherInClass =
+        await FireBaseProvider.instance.getAllTeacherInClassByClassId(selector);
+    List<int> listTeacherId = [];
+    for(var i in listAllTeacherInClass){
+      listTeacherId.add(i.userId);
     }
-    emit(state+2);
+    listTeacher = await FireBaseProvider.instance.getListTeacherByListId(listTeacherId);
+    emit(state + 2);
   }
 
-  loadAfterRemoveStudent(StudentModel student){
-    for(int i= 0; i<listStudent!.length; i++){
-      if(student.userId == listStudent![i].userId){
+  loadAfterRemoveStudent(StudentModel student) {
+    for (int i = 0; i < listStudent!.length; i++) {
+      if (student.userId == listStudent![i].userId) {
         listStudent!.remove(listStudent![i]);
         break;
       }
     }
-    emit(state+2);
+    emit(state + 2);
   }
 
-  loadStudentInClass(context, int selector)async{
+  loadStudentInClass(int selector) async {
     listStudent = null;
     listStudentClass = null;
-    debugPrint('============> loadStudentInClass 1');
-    debugPrint('============> loadStudentInClass 2');
-    var listAllStudent = await FireBaseProvider.instance.getAllStudent();
-    debugPrint('============> loadStudentInClass 3 $selector');
-    List<StudentClassModel> listAllStudentInClass = await FireBaseProvider.instance.getStudentClassInClass(selector);
-    debugPrint('============> loadStudentInClass 4');
-    listStudent = [];
-    listStudentClass = listAllStudentInClass;
-    for(var i in listAllStudent){
-      debugPrint('============> loadStudentInClass 5');
-      for(var j in listAllStudentInClass){
-        if(i.userId == j.userId && j.classStatus != "Remove"){
-          listStudent!.add(i);
-        }
-      }
-      debugPrint('============> loadStudentInClass 6');
+    List<StudentClassModel> listAllStudentInClass =
+        await FireBaseProvider.instance.getStudentClassInClass(selector);
+    List<int> listStudentId = [];
+    for(var i in listAllStudentInClass){
+      listStudentId.add(i.userId);
     }
-    debugPrint('============> loadStudentInClass ${listStudent!.length}');
-    emit(state+2);
+    listStudent = await FireBaseProvider.instance.getAllStudentInFoInClass(listStudentId);
+    listStudentClass = listAllStudentInClass;
+    emit(state + 2);
   }
 
-
-  StudentClassModel getStudentClass(int studentId){
+  StudentClassModel getStudentClass(int studentId) {
     StudentClassModel? studentClassModel;
-    for(var i in listStudentClass!){
-      if(i.userId == studentId){
+    for (var i in listStudentClass!) {
+      if (i.userId == studentId) {
         studentClassModel = i;
         break;
       }
@@ -196,10 +206,10 @@ class ManageGeneralCubit extends Cubit<int> {
   }
 }
 
-class MenuPopupCubit extends Cubit<int>{
-  MenuPopupCubit():super(0);
+class MenuPopupCubit extends Cubit<int> {
+  MenuPopupCubit() : super(0);
 
-  update(){
-    emit(state+1);
+  update() {
+    emit(state + 1);
   }
 }

@@ -5,13 +5,14 @@ import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
+import 'package:internal_sakumi/providers/firebase/firestore_db.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 
 class AlertAddTeacherCubit extends Cubit<int> {
   AlertAddTeacherCubit() : super(0);
 
-  List<UserModel>? allUser;
+  int? userCount;
   List<TeacherClassModel>? listTeacherClass;
   List<TeacherModel>? listAllTeacher, listSensei, listSelectedTeacher = [];
   bool? checkCreate, checkAdd;
@@ -19,7 +20,7 @@ class AlertAddTeacherCubit extends Cubit<int> {
   loadAllUser(BuildContext context, ManageGeneralCubit cubit) async {
     listTeacherClass = await FireBaseProvider.instance.getAllTeacherInClass();
     listAllTeacher = await FireBaseProvider.instance.getAllTeacher();
-    allUser = await FireBaseProvider.instance.getAllUser();
+    userCount = (await FireStoreDb.instance.getCount("user")).count;
 
     listSensei = [];
     for(var i in listAllTeacher!){
@@ -33,7 +34,6 @@ class AlertAddTeacherCubit extends Cubit<int> {
         listSensei!.add(i);
       }
     }
-    debugPrint('============> loadAllUser 3 ${listSensei!.length}');
     emit(state + 1);
   }
 
