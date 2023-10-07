@@ -4,6 +4,8 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_class/filter_by_class_status.dart';
+import 'package:internal_sakumi/features/admin/manage_class/filter_by_class_type.dart';
+import 'package:internal_sakumi/features/admin/manage_class/filter_by_course.dart';
 import 'package:internal_sakumi/features/admin/manage_class/list_class_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item.dart';
@@ -47,7 +49,10 @@ class ManageClassTab extends StatelessWidget {
                           horizontal: Resizable.padding(context, 150)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
-                        children: [FilterByClassStatusAdmin(cubit)],
+                        children: [
+                          FilterClassTypeMenuAdmin(cubit),
+                          FilterCourseMenuAdmin(cubit),
+                          FilterByClassStatusAdmin(cubit)],
                       )),
                   Container(
                     margin: EdgeInsets.symmetric(

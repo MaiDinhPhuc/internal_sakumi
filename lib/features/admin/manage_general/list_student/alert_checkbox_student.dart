@@ -134,10 +134,11 @@ void alertCheckBoxStudent(
                                               ...List.generate(
                                                   cubit.listStd!.length,
                                                   (index) => BlocProvider(
+                                                    key: Key("${cubit.listStd![index].userId}"),
                                                       create: (c) =>
-                                                          CheckBoxCubit(),
+                                                          CheckBoxCubit()..load(cubit.listSelectedStudent!.contains(cubit.listStd![index])),
                                                       child: BlocBuilder<
-                                                          CheckBoxCubit, bool>(
+                                                          CheckBoxCubit, bool?>(
                                                         builder: (cc, state) =>
                                                             CheckboxListTile(
                                                                 contentPadding: EdgeInsets.symmetric(
@@ -148,16 +149,25 @@ void alertCheckBoxStudent(
                                                                 controlAffinity:
                                                                     ListTileControlAffinity
                                                                         .leading,
-                                                                value: state,
+                                                                value: state ?? false,
                                                                 onChanged: (v) {
+                                                                  if(v! == true){
+                                                                    cubit
+                                                                        .listSelectedStudent!
+                                                                        .add(cubit
+                                                                        .listStd![
+                                                                    index]);
+                                                                  }else{
+                                                                    cubit
+                                                                        .listSelectedStudent!
+                                                                        .remove(cubit
+                                                                        .listStd![
+                                                                    index]);
+                                                                  }
+
                                                                   BlocProvider.of<
-                                                                          CheckBoxCubit>(cc)
-                                                                      .update();
-                                                                  cubit
-                                                                      .listSelectedStudent!
-                                                                      .add(cubit
-                                                                              .listStd![
-                                                                          index]);
+                                                                      CheckBoxCubit>(cc)
+                                                                      .update(v);
                                                                 },
                                                                 title: Text(
                                                                     "${cubit.listStd![index].name} ${cubit.listStd![index].studentCode}")),
@@ -260,10 +270,14 @@ void alertCheckBoxStudent(
       });
 }
 
-class CheckBoxCubit extends Cubit<bool> {
-  CheckBoxCubit() : super(false);
+class CheckBoxCubit extends Cubit<bool?> {
+  CheckBoxCubit() : super(null);
 
-  update() {
-    emit(!state);
+  load(bool state){
+    emit(state);
+  }
+
+  update(bool state) {
+    emit(state);
   }
 }

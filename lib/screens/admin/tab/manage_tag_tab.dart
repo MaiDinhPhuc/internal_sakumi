@@ -193,6 +193,7 @@ class LoadListTagCubit extends Cubit<List<TagModel>?> {
   LoadListTagCubit() : super(null);
 
   load() async {
-    emit(await FireBaseProvider.instance.getTags());
+    emit([]);
+    //emit(await FireBaseProvider.instance.getTags());
   }
 }

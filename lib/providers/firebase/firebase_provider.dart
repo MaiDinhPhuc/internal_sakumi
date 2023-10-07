@@ -1,9 +1,14 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/Material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/app_configs.dart';
+import 'package:internal_sakumi/configs/prefKey_configs.dart';
+import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
+import 'package:internal_sakumi/features/teacher/profile/app_bar_info_teacher_cubit.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
@@ -29,8 +34,11 @@ import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/providers/network_provider.dart';
+import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
+import 'package:internal_sakumi/widget/waiting_dialog.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_authentication.dart';
 import 'firestore_db.dart';
 
@@ -40,23 +48,149 @@ class FireBaseProvider extends NetworkProvider {
   static final FireBaseProvider instance =
       FireBaseProvider._privateConstructor();
   @override
-  Future<bool> logInUser(
+  Future<void> logInUser(
       TextEditingController email,
       TextEditingController password,
       BuildContext context,
       ErrorCubit cubit) async {
-    return await FirebaseAuthentication.instance
-        .logInUser(email, password, context, cubit);
+    waitingDialog(context);
+    final String check = await FirebaseAuthentication.instance
+        .logInUser(email.text, password.text);
+
+    if(check =="true"){
+      UserModel user = await FireBaseProvider.instance.getUser(email.text);
+
+      if (user.role == "admin" ||
+          user.role == "master" ||
+          user.role == "teacher") {
+        debugPrint("======== ${user.role} ==========");
+        SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+
+        if (user.role == "admin") {
+          AdminModel adminModel = await FireBaseProvider.instance.getAdminById(user.id);
+
+          sharedPreferences.setString(
+              PrefKeyConfigs.code, adminModel.adminCode);
+          sharedPreferences.setInt(PrefKeyConfigs.userId, adminModel.userId);
+          sharedPreferences.setString(PrefKeyConfigs.name, adminModel.name);
+          sharedPreferences.setString(PrefKeyConfigs.email, email.text);
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
+          Navigator.pushReplacementNamed(
+              context, "${Routes.admin}?name=${adminModel.adminCode.trim()}");
+        }
+        if (user.role == "teacher") {
+          TeacherModel teacherModel =
+          await FireBaseProvider.instance.getTeacherById(user.id);
+          sharedPreferences.setString(
+              PrefKeyConfigs.code, teacherModel.teacherCode);
+          sharedPreferences.setInt(PrefKeyConfigs.userId, teacherModel.userId);
+          sharedPreferences.setString(PrefKeyConfigs.name, teacherModel.name);
+          sharedPreferences.setString(PrefKeyConfigs.email, email.text);
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
+          await context.read<AppBarInfoTeacherCubit>().load();
+          Navigator.pushReplacementNamed(context,
+              "${Routes.teacher}?name=${teacherModel.teacherCode.trim()}");
+        }
+        if (user.role == "master") {
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
+          Navigator.pushReplacementNamed(context, Routes.master);
+        }
+        email.clear();
+        password.clear();
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('You are Logged in ${user.role}')));
+      } else {
+        FirebaseAuth.instance.signOut().then((value) {
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('You don\'t have permission to access ')));
+        });
+      }
+    }else{
+      if (context.mounted) {
+        Navigator.pop(context);
+      }
+      if(AppConfigs.isRunningDebug){
+        RegExp regex = RegExp(r'\((.*?)\)');
+
+        Match? match = regex.firstMatch(check);
+
+        if (match != null) {
+          String result = match.group(1)!;
+          if(result == 'auth/user-not-found'){
+            cubit.changeError(AppText.txtWrongAccount.text);
+          }else if(result == 'auth/wrong-password'){
+            cubit.changeError(AppText.txtWrongPassword.text);
+            password.clear();
+          }else{
+            cubit.changeError(AppText.txtInvalidLogin.text);
+          }
+        }
+      }else{
+        if(check == 'user-not-found'){
+          cubit.changeError(AppText.txtWrongAccount.text);
+        }else if(check == 'wrong-password'){
+          cubit.changeError(AppText.txtWrongPassword.text);
+          password.clear();
+        }else{
+          cubit.changeError(AppText.txtInvalidLogin.text);
+        }
+      }
+    }
+
+
   }
 
   @override
-  Future<bool> logOutUser(BuildContext context) async {
-    return await FirebaseAuthentication.instance.logOutUser(context);
+  Future<void> logOutUser(BuildContext context) async {
+    await FirebaseAuthentication.instance.logOutUser(context);
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString(PrefKeyConfigs.code, '');
+    sharedPreferences.setInt(PrefKeyConfigs.userId, -1);
+    sharedPreferences.setString(PrefKeyConfigs.name, '');
+    sharedPreferences.setString(PrefKeyConfigs.email, '');
+    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
   }
 
   @override
   Future<bool> autoLogInUser(String email, BuildContext context) async {
-    return await FirebaseAuthentication.instance.autoLogInUser(email, context);
+    try {
+      UserModel user = await FireBaseProvider.instance.getUser(email);
+
+      if (user.role == "admin" ||
+          user.role == "master" ||
+          user.role == "teacher") {
+        debugPrint("======== ${user.role} ==========");
+        if (user.role == "admin") {
+          AdminModel adminModel =
+          await FireBaseProvider.instance.getAdminById(user.id);
+          Navigator.pushReplacementNamed(
+              context, "${Routes.admin}?name=${adminModel.adminCode.trim()}");
+        }
+        if (user.role == "teacher") {
+          TeacherModel teacherModel =
+          await FireBaseProvider.instance.getTeacherById(user.id);
+          Navigator.pushReplacementNamed(context,
+              "${Routes.teacher}?name=${teacherModel.teacherCode.trim()}");
+        }
+        if (user.role == "master") {
+          Navigator.pushReplacementNamed(context, Routes.master);
+        }
+      }
+      return true;
+    } on FirebaseAuthException catch (e) {
+      debugPrint("==========>login Error");
+      return false;
+    }
   }
 
   @override
@@ -74,25 +208,24 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<TeacherModel> getTeacherByTeacherCode(String teacherCode) async {
-    return await FireStoreDb.instance.getTeacherByTeacherCode(teacherCode);
+    final teacher =
+        (await FireStoreDb.instance.getTeacherByTeacherCode(teacherCode)).docs.map((e) => TeacherModel.fromSnapshot(e)).single;
+    return teacher;
   }
 
   @override
   Future<TeacherModel> getTeacherById(int id) async {
-    return await FireStoreDb.instance.getTeacherById(id);
+    final teacher =
+        (await FireStoreDb.instance.getTeacherById(id)).docs.map((e) => TeacherModel.fromSnapshot(e)).single;
+    return teacher;
   }
 
   @override
   Future<List<TeacherClassModel>> getTeacherClassById(
       String string, int id) async {
-    return await FireStoreDb.instance.getTeacherClassById(string, id);
+    return (await FireStoreDb.instance.getTeacherClassById(string, id)).docs.map((e) => TeacherClassModel.fromSnapshot(e)).toList();
   }
 
-  @override
-  Future<List<TeacherClassModel>> getTeacherClassByStatus(
-      int id, String status) async {
-    return await FireStoreDb.instance.getTeacherClassByStatus(id, status);
-  }
 
   @override
   Future<List<LessonModel>> getLessonsByCourseId(int id) async {
@@ -135,10 +268,7 @@ class FireBaseProvider extends NetworkProvider {
     return list;
   }
 
-  @override
-  Future<List<LessonModel>> getAllLesson() async {
-    return await FireStoreDb.instance.getAllLesson();
-  }
+
 
   @override
   Future<ClassModel> getClassById(int id) async {
@@ -164,10 +294,6 @@ class FireBaseProvider extends NetworkProvider {
         .toList();
   }
 
-  @override
-  Future<List<LessonResultModel>> getAllLessonResult() async {
-    return await FireStoreDb.instance.getAllLessonResult();
-  }
 
   @override
   Future<List<StudentLessonModel>> getAllStudentLessonInLesson(
@@ -182,7 +308,11 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<LessonResultModel> getLessonResultByLessonId(
       int id, int classId) async {
-    return await FireStoreDb.instance.getLessonResultByLessonId(id, classId);
+    final result =
+        (await FireStoreDb.instance.getLessonResultByLessonId(id, classId)).docs
+            .map((e) => LessonResultModel.fromSnapshot(e))
+            .single;
+    return result;
   }
 
   @override
@@ -233,11 +363,6 @@ class FireBaseProvider extends NetworkProvider {
         .docs
         .map((e) => AnswerModel.fromSnapshot(e))
         .toList();
-  }
-
-  @override
-  Future<List<StudentLessonModel>> getAllStudentLessons() async {
-    return await FireStoreDb.instance.getAllStudentLessons();
   }
 
   @override
@@ -302,7 +427,14 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<bool> addStudentLesson(StudentLessonModel model) async {
-    return await FireStoreDb.instance.addStudentLesson(model);
+
+    final temp = await FireStoreDb.instance.getStudentLessonByDocs("student_${model.studentId}_lesson_${model.lessonId}_class_${model.classId}");
+    if (!temp.exists) {
+      await FireStoreDb.instance.addStudentLesson(model);
+      return true;
+    }
+
+    return false;
   }
 
   @override
@@ -385,7 +517,6 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<bool> createNewStudent(StudentModel model, UserModel user) async {
-
     var temp = await FireStoreDb.instance.getUserByEmail(user.email);
     if(temp.docs.isEmpty){
       await FireStoreDb.instance.createNewStudent(model, user);
@@ -455,10 +586,10 @@ class FireBaseProvider extends NetworkProvider {
     return lists;
   }
 
-  @override
-  Future<List<TagModel>> getTags() async {
-    return await FireStoreDb.instance.getTags();
-  }
+  // @override
+  // Future<List<TagModel>> getTags() async {
+  //   return await FireStoreDb.instance.getTags();
+  // }
 
   @override
   Future<AdminModel> getAdminById(int id) async {
@@ -510,9 +641,10 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<TeacherHomeClass> getDataForTeacherHomeScreen(int teacherId) async {
     final List<TeacherClassModel> listTeacherClass =
-        await FireStoreDb.instance.getTeacherClassById('user_id', teacherId);
+    (await FireStoreDb.instance.getTeacherClassById('user_id', teacherId)).docs.map((e) => TeacherClassModel.fromSnapshot(e)).toList();
     final List<ClassModel> allClassNotRemove =
-        await FireStoreDb.instance.getListClassAvailableForTeacher();
+    (await FireStoreDb.instance.getListClassAvailableForTeacher()).docs.map((e) => ClassModel.fromSnapshot(e)).toList();
+    allClassNotRemove.sort((a, b) => a.classId.compareTo(b.classId));
 
     List<int> listClassIds = [];
     List<String> listClassCodes = [];
@@ -817,6 +949,14 @@ class FireBaseProvider extends NetworkProvider {
                   element.lessonId == listLessonResultTemp[i]!.lessonId)
               .title
         });
+        LessonModel temp = lessons
+            .firstWhere((element) =>
+        element.lessonId == listLessonResultTemp[i]!.lessonId);
+        lessons.remove(lessons
+            .firstWhere((element) =>
+        element.lessonId == listLessonResultTemp[i]!.lessonId));
+        lessons.insert(i, temp);
+
       } else {
         listSpNote.add("");
         listTeacherNote.add("");
@@ -824,6 +964,7 @@ class FireBaseProvider extends NetworkProvider {
         listLessonInfo
             .add({'id': lessons[i].lessonId, 'title': lessons[i].title});
       }
+
     }
     List<int> listTeacherId = [];
     for (var i in listLessonResult) {
@@ -1183,7 +1324,7 @@ class FireBaseProvider extends NetworkProvider {
         await FireBaseProvider.instance.getStudentClassInClass(classId);
     List<int> listStudentId = [];
     for (var i in listStudentClass) {
-      if (i.classStatus != "Remove" && i.classStatus != "Dropped") {
+      if (i.classStatus != "Remove" && i.classStatus != "Dropped" && i.classStatus != "Deposit" && i.classStatus != "Retained" && i.classStatus != "Moved") {
         listStudentId.add(i.userId);
       }
     }
@@ -1297,7 +1438,8 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<TeacherHomeClass> getDataForManageClassTab() async {
     final List<ClassModel> allClassNotRemove =
-        await FireStoreDb.instance.getAllClassAvailable();
+    (await FireStoreDb.instance.getAllClassAvailable()).docs.map((e) => ClassModel.fromSnapshot(e)).toList();
+    allClassNotRemove.sort((a, b) => a.classId.compareTo(b.classId));
 
     List<int> listClassIds = [];
     List<String> listClassCodes = [];
@@ -1313,7 +1455,7 @@ class FireBaseProvider extends NetworkProvider {
         listCourseIds.add(i.courseId);
       }
     }
-
+    final List<CourseModel>  listAllCourse = await FireBaseProvider.instance.getAllCourse();
     final List<CourseModel> listCourses =
         await FireBaseProvider.instance.getCourseByListId(listCourseIds);
     List<String> listBigTitle = [];
@@ -1391,7 +1533,7 @@ class FireBaseProvider extends NetworkProvider {
       rateSubmitChart: rateSubmitChart,
       listLessonCount: listLessonCount,
       listLessonAvailable: listLessonAvailable,
-      listCourse: listCourses,
+      listCourse: listAllCourse,
     );
   }
 }

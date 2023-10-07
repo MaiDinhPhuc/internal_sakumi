@@ -135,10 +135,11 @@ void alertCheckBoxTeacher(
                                               ...List.generate(
                                                   cubit.listSensei!.length,
                                                   (index) => BlocProvider(
+                                                      key: Key("${cubit.listSensei![index].userId}"),
                                                       create: (c) =>
-                                                          CheckBoxCubit(),
+                                                          CheckBoxCubit()..load(cubit.listSelectedTeacher!.contains(cubit.listSensei![index])),
                                                       child: BlocBuilder<
-                                                          CheckBoxCubit, bool>(
+                                                          CheckBoxCubit, bool?>(
                                                         builder: (cc, state) =>
                                                             CheckboxListTile(
                                                                 contentPadding: EdgeInsets.symmetric(
@@ -149,16 +150,25 @@ void alertCheckBoxTeacher(
                                                                 controlAffinity:
                                                                     ListTileControlAffinity
                                                                         .leading,
-                                                                value: state,
+                                                                value: state ?? false,
                                                                 onChanged: (v) {
+                                                                  if(v! == true){
+                                                                    cubit
+                                                                        .listSelectedTeacher!
+                                                                        .add(cubit
+                                                                        .listSensei![
+                                                                    index]);
+                                                                  }else{
+                                                                    cubit
+                                                                        .listSelectedTeacher!
+                                                                        .remove(cubit
+                                                                        .listSensei![
+                                                                    index]);
+                                                                  }
                                                                   BlocProvider.of<
                                                                           CheckBoxCubit>(cc)
-                                                                      .update();
-                                                                  cubit
-                                                                      .listSelectedTeacher!
-                                                                      .add(cubit
-                                                                              .listSensei![
-                                                                          index]);
+                                                                      .update(v);
+
                                                                 },
                                                                 title: Text(
                                                                     "${cubit.listSensei![index].name} ${cubit.listSensei![index].teacherCode}")),

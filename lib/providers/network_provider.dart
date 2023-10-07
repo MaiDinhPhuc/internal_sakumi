@@ -31,10 +31,10 @@ import 'package:internal_sakumi/screens/login_screen.dart';
 abstract class NetworkProvider {
 
   //user
-  Future<bool> logInUser(TextEditingController email,
+  Future<void> logInUser(TextEditingController email,
       TextEditingController password, BuildContext context, ErrorCubit cubit);
 
-  Future<bool> logOutUser(BuildContext context);
+  Future<void> logOutUser(BuildContext context);
 
   Future<bool> autoLogInUser(String email, BuildContext context);
 
@@ -62,19 +62,14 @@ abstract class NetworkProvider {
 
   Future<List<TeacherClassModel>> getTeacherClassById(String string, int id);
 
-  Future<List<TeacherClassModel>> getTeacherClassByStatus(int id, String status);
 
   Future<List<LessonModel>> getLessonsByCourseId(int id);
-
-  Future<List<LessonModel>> getAllLesson();
 
   Future<ClassModel> getClassById(int id);
 
   Future<CourseModel> getCourseById(int id);
 
   Future<List<LessonResultModel>> getLessonResultByClassId(int id);
-
-  Future<List<LessonResultModel>> getAllLessonResult();
 
   Future<List<StudentLessonModel>> getAllStudentLessonInLesson(int classId, int lessonId);
 
@@ -90,7 +85,6 @@ abstract class NetworkProvider {
 
   Future<List<AnswerModel>> getListAnswer(int id, int classId);
 
-  Future<List<StudentLessonModel>> getAllStudentLessons();
 
   Future<LessonModel> getLesson(int courseId, int lessonId);
 
@@ -173,7 +167,7 @@ abstract class NetworkProvider {
 
   Future<List<TeacherModel>> getAllTeacher();
 
-  Future<List<TagModel>> getTags();
+  // Future<List<TagModel>> getTags();
 
   Future<AdminModel> getAdminById(int id);
 

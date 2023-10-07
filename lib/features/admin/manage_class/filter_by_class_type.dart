@@ -7,33 +7,34 @@ import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'list_class_cubit.dart';
 
-class FilterByClassStatusAdmin extends StatelessWidget {
-  const FilterByClassStatusAdmin(this.cubit,{super.key});
+class FilterClassTypeMenuAdmin extends StatelessWidget {
+  const FilterClassTypeMenuAdmin(this.cubit,{super.key});
   final LoadListClassCubit cubit;
   @override
   Widget build(BuildContext context) {
     return Container(
+        margin: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 10)),
         alignment: Alignment.centerRight, width: Resizable.size(context, 120),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(24),
           child: Material(
             color: Colors.transparent,
             child: PopupMenuButton(
-                onCanceled: () async{
-                  await cubit.filter();
+                onCanceled: (){
+                  cubit.filter();
                 },
                 itemBuilder: (context) => [
-                  ...cubit.listClassStatusMenu.map((e) => PopupMenuItem(
+                  ...cubit.listClassTypeMenu.map((e) => PopupMenuItem(
                       padding: EdgeInsets.zero,
-                      child: BlocProvider(create: (c)=>CheckBoxFilterCubit(cubit.listClassStatusFilter[cubit.listClassStatusMenu.indexOf(e)]),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
+                      child: BlocProvider(create: (c)=>CheckBoxFilterCubit(cubit.listClassTypeFilter[cubit.listClassTypeMenu.indexOf(e)]),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
                         return CheckboxListTile(
                           controlAffinity: ListTileControlAffinity.leading,
-                          title: Text(vietnameseSubText(e)),
+                          title: Text(e),
                           value: state,
                           onChanged: (newValue) {
-                            cubit.listClassStatusFilter[cubit.listClassStatusMenu.indexOf(e)] = newValue!;
-                            if(cubit.listClassStatusFilter.every((element) => element == false)){
-                              cubit.listClassStatusFilter[cubit.listClassStatusMenu.indexOf(e)] = !newValue;
+                            cubit.listClassTypeFilter[cubit.listClassTypeMenu.indexOf(e)] = newValue!;
+                            if(cubit.listClassTypeFilter.every((element) => element == false)){
+                              cubit.listClassTypeFilter[cubit.listClassTypeMenu.indexOf(e)] = !newValue;
                             }else{
                               BlocProvider.of<CheckBoxFilterCubit>(cc).update();
                             }
@@ -43,9 +44,9 @@ class FilterByClassStatusAdmin extends StatelessWidget {
                   ))
                 ],
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(Resizable.size(context, 10)),
-                  ),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(Resizable.size(context, 10)),
+                    )
                 ),
                 child: Container(
                   decoration: BoxDecoration(
@@ -62,7 +63,7 @@ class FilterByClassStatusAdmin extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Expanded(child: Center(
-                          child: Text(AppText.titleStatus.text,
+                          child: Text(AppText.txtClassType.text,
                               style: TextStyle(
                                   fontSize: Resizable.font(context, 18),
                                   fontWeight: FontWeight.w500))
