@@ -34,6 +34,7 @@ class DetailGradingCubit extends Cubit<int> {
     listQuestions = data!.listQuestions;
     classModel = data!.classModel;
     courseModel = data!.courseModel;
+    token = courseModel!.token;
     listAnswer = data!.listAnswer;
 
     if(listAnswer!.isEmpty){
