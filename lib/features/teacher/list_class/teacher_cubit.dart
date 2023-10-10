@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/model/teacher_home_model.dart';
@@ -26,6 +29,34 @@ class TeacherCubit extends Cubit<int> {
         await FireBaseProvider.instance.getDataForTeacherHomeScreen(teacherId);
     filter();
     emit(state + 1);
+  }
+
+  Color getColor(String status){
+    switch (status) {
+      case 'InProgress':
+        return const Color(0xff33691e);
+      case 'Cancel':
+        return const Color(0xffB71C1C);
+      case 'Completed':
+      case 'Preparing':
+        return const Color(0xff757575);
+      default:
+        return const Color(0xff33691e);
+    }
+  }
+
+  String getIcon(String status){
+    switch (status) {
+      case 'InProgress':
+      case 'Preparing':
+        return "in_progress";
+      case 'Cancel':
+        return "dropped";
+      case 'Completed':
+        return "check";
+      default:
+        return "in_progress";
+    }
   }
 
   filter() {

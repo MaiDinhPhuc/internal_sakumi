@@ -113,25 +113,50 @@ class CollapseOverviewStudentItem extends StatelessWidget {
                   );
                 },
               ),
-            ) : AspectRatio(
-              aspectRatio: 1,
-              child: Container(
+            ) : Tooltip(
                 padding: EdgeInsets.all(Resizable.padding(context, 10)),
                 decoration: BoxDecoration(
-                    color: cubit.listStdClass[index].color,
+                    color: Colors.black,
+                    border: Border.all(
+                        color: Colors.black, width: Resizable.size(context, 1)),
                     borderRadius:
-                    BlocProvider.of<DropdownCubit>(context).state % 2 ==
-                        0
-                        ? BorderRadius.horizontal(
-                        left: Radius.circular(
-                            Resizable.padding(context, 5)))
-                        : BorderRadius.only(
-                        topLeft: Radius.circular(
-                            Resizable.padding(context, 5)))),
-                child: Image.asset(
-                    'assets/images/ic_${cubit.listStdClass[index].icon}.png'),
-              ),
-            ),
+                    BorderRadius.circular(Resizable.padding(context, 5))),
+                richMessage: WidgetSpan(
+                    alignment: PlaceholderAlignment.baseline,
+                    baseline: TextBaseline.alphabetic,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            text: vietnameseSubText(cubit.listStdClass[index].status),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 18),
+                                color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    )),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Container(
+                    padding: EdgeInsets.all(Resizable.padding(context, 10)),
+                    decoration: BoxDecoration(
+                        color: cubit.listStdClass[index].color,
+                        borderRadius:
+                        BlocProvider.of<DropdownCubit>(context).state % 2 ==
+                            0
+                            ? BorderRadius.horizontal(
+                            left: Radius.circular(
+                                Resizable.padding(context, 5)))
+                            : BorderRadius.only(
+                            topLeft: Radius.circular(
+                                Resizable.padding(context, 5)))),
+                    child: Image.asset(
+                        'assets/images/ic_${cubit.listStdClass[index].icon}.png'),
+                  ),
+                )),
             name: Text(cubit.students![index].name,
                 style: TextStyle(
                     fontSize: Resizable.font(context, 20),

@@ -259,7 +259,7 @@ class FireStoreDb {
         .where('parent_id', isEqualTo: id)
         .where('class_id', isEqualTo: classId)
         .get();
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassAvailable $id $classId ${snapshot.size}");
+    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListAnswer $id $classId ${snapshot.size}");
 
     // debugPrint("==========>get db from \"answer\" : ${snapshot.docs.length}");
     return snapshot;
@@ -272,7 +272,7 @@ class FireStoreDb {
         .where('lesson_id', isEqualTo: lessonId)
         .get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassAvailable $courseId $lessonId ${snapshot.size}");
+    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLesson $courseId $lessonId ${snapshot.size}");
 
     // debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
 
@@ -445,7 +445,7 @@ class FireStoreDb {
     await db.collection("test").where("course_id", isEqualTo: courseId).get();
     debugPrint("==========>get db from \"test\": ${snapshot.docs.length}");
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> checkLessonResult $courseId ${snapshot.size}");
+    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListTestByCourseId $courseId ${snapshot.size}");
 
 
     return snapshot;
@@ -468,7 +468,7 @@ class FireStoreDb {
     await db.collection("test_result").where("class_id", isEqualTo: classId).get();
     debugPrint("==========>get db from \"test_result\": ${snapshot.docs.length}");
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentTest $classId ${snapshot.size}");
+    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListTestResult $classId ${snapshot.size}");
 
     return snapshot;
   }
@@ -495,7 +495,7 @@ class FireStoreDb {
     await FirebaseFirestore.instance
         .collection('users')
         .doc("user_${uid}_$role")
-        .set({'email': email, 'roles': role, 'user_id': uid});
+        .set({'email': email.toLowerCase(), 'roles': role, 'user_id': uid});
 
     debugPrint("==========>add db from \"users\"");
   }
@@ -659,7 +659,7 @@ class FireStoreDb {
     final count = await db.collection(tableName).count().get();
     debugPrint("==========>get count db from \"$tableName\"");
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> get10Student $tableName");
+    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCount $tableName");
 
     return count;
   }
@@ -774,28 +774,31 @@ class FireStoreDb {
     debugPrint("==========>update db for \"student_class\"");
   }
 
-  Future<bool> addTeacherToClass(TeacherClassModel model) async {
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getTeacherClassByDocs(String docs) async {
     final temp = await db
         .collection("teacher_class")
-        .doc("teacher_${model.userId}_class_${model.classId}")
+        .doc(docs)
         .get();
-    debugPrint("==========>get db from \"teacher_class\"");
-    if (!temp.exists) {
-      await db
-          .collection("teacher_class")
-          .doc("teacher_${model.userId}_class_${model.classId}")
-          .set({
-        'class_id': model.classId,
-        'class_status': model.classStatus,
-        'date': model.date,
-        'id': model.id,
-        'user_id': model.userId,
-      });
-      debugPrint("==========>add db for \"teacher_class\"");
-      return true;
-    } else {
-      return false;
-    }
+
+    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTeacherClassByDocs $docs ${temp.exists}");
+
+    return temp;
+  }
+
+  Future<void> addTeacherToClass(TeacherClassModel model) async {
+    await db
+        .collection("teacher_class")
+        .doc("teacher_${model.userId}_class_${model.classId}")
+        .set({
+      'class_id': model.classId,
+      'class_status': model.classStatus,
+      'date': model.date,
+      'id': model.id,
+      'user_id': model.userId,
+    });
+    debugPrint("==========>add db for \"teacher_class\"");
+
   }
 
   Future<void> changeClassStatus(ClassModel classModel, String newStatus, ManageGeneralCubit cubit, BuildContext context) async {

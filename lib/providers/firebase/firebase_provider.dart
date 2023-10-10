@@ -623,7 +623,13 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<bool> addTeacherToClass(TeacherClassModel model) async {
-    return await FireStoreDb.instance.addTeacherToClass(model);
+    final temp = await FireStoreDb.instance.getTeacherClassByDocs("teacher_${model.userId}_class_${model.classId}");
+    if (!temp.exists) {
+      await FireStoreDb.instance.addTeacherToClass(model);
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override
@@ -744,6 +750,7 @@ class FireBaseProvider extends NetworkProvider {
       listLessonCount: listLessonCount,
       listLessonAvailable: listLessonAvailable,
       listCourse: [],
+      listCourseId: []
     );
   }
 
@@ -1027,7 +1034,7 @@ class FireBaseProvider extends NetworkProvider {
           if (j.hw != -2) {
             tempHw++;
           }
-          if (j.hw == -1 || j.hw == -2) {
+          if (j.hw == -1) {
             status = false;
           }
         }
@@ -1071,6 +1078,7 @@ class FireBaseProvider extends NetworkProvider {
         });
       }
     }
+    print(listHwStatus);
 
     return ListLessonDataModel(
         classModel: classModel,
@@ -1446,6 +1454,7 @@ class FireBaseProvider extends NetworkProvider {
     List<String> listClassStatus = [];
     List<int> listClassType = [];
     List<int> listCourseIds = [];
+    List<int> courseIds = [];
     for (var i in allClassNotRemove) {
       listClassIds.add(i.classId);
       listClassCodes.add(i.classCode);
@@ -1454,6 +1463,7 @@ class FireBaseProvider extends NetworkProvider {
       if (!listCourseIds.contains(i.courseId)) {
         listCourseIds.add(i.courseId);
       }
+      courseIds.add(i.courseId);
     }
     final List<CourseModel>  listAllCourse = await FireBaseProvider.instance.getAllCourse();
     final List<CourseModel> listCourses =
@@ -1533,7 +1543,7 @@ class FireBaseProvider extends NetworkProvider {
       rateSubmitChart: rateSubmitChart,
       listLessonCount: listLessonCount,
       listLessonAvailable: listLessonAvailable,
-      listCourse: listAllCourse,
+      listCourse: listAllCourse, listCourseId: courseIds,
     );
   }
 }

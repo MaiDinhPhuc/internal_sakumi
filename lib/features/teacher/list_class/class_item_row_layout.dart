@@ -8,7 +8,8 @@ class ClassItemRowLayout extends StatelessWidget {
       widgetLessons,
       widgetAttendance,
       widgetSubmit,
-      widgetEvaluate;
+      widgetEvaluate,
+      widgetStatus;
   const ClassItemRowLayout(
       {required this.widgetClassCode,
       required this.widgetCourse,
@@ -16,6 +17,7 @@ class ClassItemRowLayout extends StatelessWidget {
       required this.widgetAttendance,
       required this.widgetSubmit,
       required this.widgetEvaluate,
+      required this.widgetStatus,
       Key? key})
       : super(key: key);
 
@@ -24,42 +26,56 @@ class ClassItemRowLayout extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-            flex: 3,
+          flex: 2,
             child: Container(
-              alignment: Alignment.center,
-              child: widgetClassCode,
-            )),
+                alignment: Alignment.center, child: widgetStatus)),
         Expanded(
-            flex: 5,
-            child: Container(alignment: Alignment.centerLeft, margin: EdgeInsets.only(left: Resizable.padding(context, 10)),child: widgetCourse)),
-        Expanded(
-            flex: 5,
-            child:
+            flex: 21,
+            child: Row(
+          children: [
+            Expanded(
+                flex: 3,
+                child: Container(
+                  alignment: Alignment.center,
+                  child: widgetClassCode,
+                )),
+            Expanded(
+                flex: 5,
+                child: Container(
+                    alignment: Alignment.centerLeft,
+                    margin: EdgeInsets.only(left: Resizable.padding(context, 10)),
+                    child: widgetCourse)),
+            Expanded(
+                flex: 5,
+                child:
                 Container(alignment: Alignment.center, child: widgetLessons)),
-        Expanded(
-            flex: 2,
-            child: Container(
-                alignment: Alignment.center, child: widgetAttendance)),
-        Expanded(
-            flex: 3,
-            child: Container(alignment: Alignment.center, child: widgetSubmit)),
-        Expanded(
-            flex: 1,
-            child: Container(alignment: Alignment.center, child: Opacity(
-              opacity: 0,
-              child: CircleProgress(
-                title:
-                '%',
-                lineWidth: Resizable.size(context, 3),
-                percent: 0,
-                radius: Resizable.size(context, 15),
-                fontSize: Resizable.font(context, 14),
-              ),
-            ))),
-        Expanded(
-            flex: 2,
-            child:
+            Expanded(
+                flex: 2,
+                child: Container(
+                    alignment: Alignment.center, child: widgetAttendance)),
+            Expanded(
+                flex: 3,
+                child: Container(alignment: Alignment.center, child: widgetSubmit)),
+            Expanded(
+                flex: 1,
+                child: Container(
+                    alignment: Alignment.center,
+                    child: Opacity(
+                      opacity: 0,
+                      child: CircleProgress(
+                        title: '%',
+                        lineWidth: Resizable.size(context, 3),
+                        percent: 0,
+                        radius: Resizable.size(context, 15),
+                        fontSize: Resizable.font(context, 14),
+                      ),
+                    ))),
+            Expanded(
+                flex: 2,
+                child:
                 Container(alignment: Alignment.center, child: widgetEvaluate)),
+          ],
+        ))
       ],
     );
   }

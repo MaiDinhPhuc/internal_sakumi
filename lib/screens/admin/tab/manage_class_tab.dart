@@ -52,7 +52,8 @@ class ManageClassTab extends StatelessWidget {
                         children: [
                           FilterClassTypeMenuAdmin(cubit),
                           FilterCourseMenuAdmin(cubit),
-                          FilterByClassStatusAdmin(cubit)],
+                          FilterByClassStatusAdmin(cubit)
+                        ],
                       )),
                   Container(
                     margin: EdgeInsets.symmetric(
@@ -89,6 +90,11 @@ class ManageClassTab extends StatelessWidget {
                                   fontSize: Resizable.font(context, 17),
                                   color: greyColor.shade600)),
                           widgetEvaluate: Text(AppText.txtEvaluate.text,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: Resizable.font(context, 17),
+                                  color: greyColor.shade600)),
+                          widgetStatus: Text(AppText.titleStatus.text,
                               style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: Resizable.font(context, 17),

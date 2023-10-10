@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
@@ -10,7 +12,7 @@ class LoadListClassCubit extends Cubit<int> {
   LoadListClassCubit() : super(0);
 
   TeacherHomeClass? data;
-  List<int>? listClassIds, listClassType, listLessonCount, listLessonAvailable;
+  List<int>? listClassIds, listClassType, listLessonCount, listLessonAvailable, listCourseIds;
   List<String>? listClassCodes, listClassStatus, listBigTitle;
   List<double>? rateAttendance, rateSubmit;
   List<CourseModel>? listAllCourse;
@@ -26,6 +28,34 @@ class LoadListClassCubit extends Cubit<int> {
   List<bool> listClassTypeFilter = [true, true];
   List<String> listClassTypeMenu = ["Lớp Chung", "Lớp 1-1"];
 
+  Color getColor(String status){
+    switch (status) {
+      case 'InProgress':
+        return const Color(0xff33691e);
+      case 'Cancel':
+        return const Color(0xffB71C1C);
+      case 'Completed':
+      case 'Preparing':
+        return const Color(0xff757575);
+      default:
+        return const Color(0xff33691e);
+    }
+  }
+
+  String getIcon(String status){
+    switch (status) {
+      case 'InProgress':
+      case 'Preparing':
+        return "in_progress";
+      case 'Cancel':
+        return "dropped";
+      case 'Completed':
+        return "check";
+      default:
+        return "in_progress";
+    }
+  }
+
   init() async {
     data = await FireBaseProvider.instance.getDataForManageClassTab();
     listAllCourse = data!.listCourse;
@@ -34,6 +64,11 @@ class LoadListClassCubit extends Cubit<int> {
     }
     filter();
     emit(state + 1);
+  }
+
+
+  updateData()async{
+    data = await FireBaseProvider.instance.getDataForManageClassTab();
   }
 
   filter() {
@@ -93,6 +128,7 @@ class LoadListClassCubit extends Cubit<int> {
     rateAttendanceChart = [];
     rateSubmitChart = [];
     listLessonAvailable = [];
+    listCourseIds = [];
 
     for (var i in listIndex) {
       listClassIds!.add(data!.listClassIds[i]);
@@ -106,6 +142,7 @@ class LoadListClassCubit extends Cubit<int> {
       rateAttendanceChart!.add(data!.rateAttendanceChart[i]);
       rateSubmitChart!.add(data!.rateSubmitChart[i]);
       listLessonAvailable!.add(data!.listLessonAvailable[i]);
+      listCourseIds!.add(data!.listCourseId[i]);
     }
 
     emit(state + 1);

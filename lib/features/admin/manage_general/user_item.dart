@@ -152,14 +152,45 @@ class StudentItem extends StatelessWidget {
                             Radius.circular(Resizable.size(context, 10)),
                           ),
                         ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: cubit.getStudentClass(student.userId).color,
-                              borderRadius: BorderRadius.circular(1000)),
-                          child: Center(
-                            child: Image.asset('assets/images/ic_${cubit.getStudentClass(student.userId).icon}.png',scale: 50,),
-                          ),
-                        )
+                        child:
+                        Tooltip(
+                            padding: EdgeInsets.all(Resizable.padding(context, 10)),
+                            decoration: BoxDecoration(
+                                color: Colors.black,
+                                border: Border.all(
+                                    color: Colors.black, width: Resizable.size(context, 1)),
+                                borderRadius:
+                                BorderRadius.circular(Resizable.padding(context, 5))),
+                            richMessage: WidgetSpan(
+                                alignment: PlaceholderAlignment.baseline,
+                                baseline: TextBaseline.alphabetic,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    RichText(
+                                      text: TextSpan(
+                                        text: vietnameseSubText(cubit.getStudentClass(student.userId).status),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: Resizable.font(context, 18),
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: cubit.getStudentClass(student.userId).color,
+                                    borderRadius: BorderRadius.circular(1000)),
+                                child: Center(
+                                  child: Image.asset('assets/images/ic_${cubit.getStudentClass(student.userId).icon}.png',scale: 50,),
+                                ),
+                              ),
+                            ))
+
+
                     )
                 ),
               );

@@ -53,7 +53,7 @@ class HeaderTeacher extends StatelessWidget {
                           ? MainAxisAlignment.spaceBetween
                           : MainAxisAlignment.center,
                       children: [
-                        index == -1
+                        index == -1 || role =="admin"
                             ? const CustomBackButton()
                             : Container(
                                 height: 30,
@@ -101,7 +101,7 @@ class HeaderTeacher extends StatelessWidget {
                                             if (context.mounted) {
                                               Navigator.pushReplacementNamed(
                                                   context,
-                                                  "${role == "teacher" ? Routes.teacher : Routes.admin}?name=$name");
+                                                  "${Routes.teacher}?name=$name");
                                             }
                                           },
                                           child: Container(
