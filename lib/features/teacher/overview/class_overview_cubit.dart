@@ -15,10 +15,11 @@ class ClassOverviewCubit extends Cubit<int> {
   ClassOverViewModel? data;
 
   ClassModel? classModel;
-  List<StudentClassModel> listStdClass = [];
+  List<StudentClassModel>? listStdClass;
   List<StudentModel>? students;
   List<double>? listAttendance, listHomework;
   List<Map<String, dynamic>>? listStdDetail;
+  int countAvailable = 0;
   double? percentHw;
   List<String> listStudentStatusMenu = ["Completed","InProgress","Viewer","ReNew","UpSale","Moved","Retained","Dropped","Deposit","Force","Remove"];
   
@@ -43,6 +44,11 @@ class ClassOverviewCubit extends Cubit<int> {
     listHomework = data!.listHomework;
     listStdDetail = data!.listStdDetail;
     percentHw = data!.percentHw;
+    for(var i in listStdClass!){
+      if (i.classStatus != "Remove" && i.classStatus != "Dropped" && i.classStatus != "Deposit" && i.classStatus != "Retained" && i.classStatus != "Moved") {
+        countAvailable++;
+      }
+    }
     emit(state+1);
   }
   //

@@ -52,9 +52,7 @@ class ConfirmChangeClassStatus extends StatelessWidget {
                   .update({'class_status': newStatus}).whenComplete(() {
                 cubit.listClassStatus![index] = newStatus;
                 popupCubit.update();
-                Navigator.pop(context);
-                waitingDialog(context);
-                cubit.updateData();
+                cubit.changeStatus(classId, newStatus);
                 Navigator.pop(context);
               });
             },

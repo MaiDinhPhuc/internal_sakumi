@@ -56,6 +56,11 @@ class LoadListClassCubit extends Cubit<int> {
     }
   }
 
+  changeStatus(int id, String status){
+    int index = data!.listClassIds.indexOf(id);
+    data!.listClassStatus[index] = status;
+  }
+
   init() async {
     data = await FireBaseProvider.instance.getDataForManageClassTab();
     listAllCourse = data!.listCourse;

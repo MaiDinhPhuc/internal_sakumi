@@ -52,7 +52,7 @@ class StatisticClassView extends StatelessWidget {
                                   child: const CircularProgressIndicator(),
                                 ),
                               )
-                            : Text(cubit.students!.length.toString(),
+                            : Text("${cubit.countAvailable}/${cubit.students!.length.toString()}",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w600,

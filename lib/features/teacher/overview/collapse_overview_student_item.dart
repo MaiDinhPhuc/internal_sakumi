@@ -32,14 +32,14 @@ class CollapseOverviewStudentItem extends StatelessWidget {
                   return PopupMenuButton(itemBuilder: (context) => [
                     ...cubit.listStudentStatusMenu.map((e) => PopupMenuItem(
                         padding: EdgeInsets.zero,
-                        child: BlocProvider(create: (context)=>CheckBoxFilterCubit(cubit.listStdClass[index].status == e),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (c,state){
+                        child: BlocProvider(create: (context)=>CheckBoxFilterCubit(cubit.listStdClass![index].status == e),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (c,state){
                           return InkWell(
                             onTap: (){
                               Navigator.pop(context);
-                              if(cubit.listStdClass[index].status != e){
+                              if(cubit.listStdClass![index].status != e){
                                 showDialog(
                                     context: context,
-                                    builder: (context) => ConfirmChangeStudentStatusOverView(e,cubit.listStdClass[index],cubit.students![index],cubit,popupCubit));
+                                    builder: (context) => ConfirmChangeStudentStatusOverView(e,cubit.listStdClass![index],cubit.students![index],cubit,popupCubit));
                               }
                             },
                             child: Container(
@@ -82,7 +82,7 @@ class CollapseOverviewStudentItem extends StatelessWidget {
                               children: [
                                 RichText(
                                   text: TextSpan(
-                                    text: vietnameseSubText(cubit.listStdClass[index].status),
+                                    text: vietnameseSubText(cubit.listStdClass![index].status),
                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: Resizable.font(context, 18),
@@ -96,7 +96,7 @@ class CollapseOverviewStudentItem extends StatelessWidget {
                           child: Container(
                             padding: EdgeInsets.all(Resizable.padding(context, 10)),
                             decoration: BoxDecoration(
-                                color: cubit.listStdClass[index].color,
+                                color: cubit.listStdClass![index].color,
                                 borderRadius:
                                 BlocProvider.of<DropdownCubit>(context).state % 2 ==
                                     0
@@ -107,7 +107,7 @@ class CollapseOverviewStudentItem extends StatelessWidget {
                                     topLeft: Radius.circular(
                                         Resizable.padding(context, 5)))),
                             child: Image.asset(
-                                'assets/images/ic_${cubit.listStdClass[index].icon}.png'),
+                                'assets/images/ic_${cubit.listStdClass![index].icon}.png'),
                           ),
                         )),
                   );
@@ -129,7 +129,7 @@ class CollapseOverviewStudentItem extends StatelessWidget {
                       children: [
                         RichText(
                           text: TextSpan(
-                            text: vietnameseSubText(cubit.listStdClass[index].status),
+                            text: vietnameseSubText(cubit.listStdClass![index].status),
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: Resizable.font(context, 18),
@@ -143,7 +143,7 @@ class CollapseOverviewStudentItem extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.all(Resizable.padding(context, 10)),
                     decoration: BoxDecoration(
-                        color: cubit.listStdClass[index].color,
+                        color: cubit.listStdClass![index].color,
                         borderRadius:
                         BlocProvider.of<DropdownCubit>(context).state % 2 ==
                             0
@@ -154,7 +154,7 @@ class CollapseOverviewStudentItem extends StatelessWidget {
                             topLeft: Radius.circular(
                                 Resizable.padding(context, 5)))),
                     child: Image.asset(
-                        'assets/images/ic_${cubit.listStdClass[index].icon}.png'),
+                        'assets/images/ic_${cubit.listStdClass![index].icon}.png'),
                   ),
                 )),
             name: Text(cubit.students![index].name,
