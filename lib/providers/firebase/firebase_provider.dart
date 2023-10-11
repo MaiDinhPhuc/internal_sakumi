@@ -79,7 +79,7 @@ class FireBaseProvider extends NetworkProvider {
             Navigator.pop(context);
           }
           Navigator.pushReplacementNamed(
-              context, "${Routes.admin}?name=${adminModel.adminCode.trim()}");
+              context, Routes.admin);
         }
         if (user.role == "teacher") {
           TeacherModel teacherModel =
@@ -94,7 +94,7 @@ class FireBaseProvider extends NetworkProvider {
           }
           await context.read<AppBarInfoTeacherCubit>().load();
           Navigator.pushReplacementNamed(context,
-              "${Routes.teacher}?name=${teacherModel.teacherCode.trim()}");
+              Routes.teacher);
         }
         if (user.role == "master") {
           if (context.mounted) {
@@ -171,16 +171,12 @@ class FireBaseProvider extends NetworkProvider {
           user.role == "teacher") {
         debugPrint("======== ${user.role} ==========");
         if (user.role == "admin") {
-          AdminModel adminModel =
-          await FireBaseProvider.instance.getAdminById(user.id);
           Navigator.pushReplacementNamed(
-              context, "${Routes.admin}?name=${adminModel.adminCode.trim()}");
+              context, Routes.admin);
         }
         if (user.role == "teacher") {
-          TeacherModel teacherModel =
-          await FireBaseProvider.instance.getTeacherById(user.id);
           Navigator.pushReplacementNamed(context,
-              "${Routes.teacher}?name=${teacherModel.teacherCode.trim()}");
+              Routes.teacher);
         }
         if (user.role == "master") {
           Navigator.pushReplacementNamed(context, Routes.master);

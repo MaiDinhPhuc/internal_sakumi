@@ -32,7 +32,7 @@ class SessionCubit extends Cubit<int> {
     await getTeacherId();
     debugPrint('===============> init session $teacherId');
     data = await FireBaseProvider.instance.getDataForSessionCubit(
-        int.parse(TextUtils.getName(position: 3)),
+        int.parse(TextUtils.getName(position: 1)),
         int.parse(TextUtils.getName()));
     listStudent = data!.listStudent;
     listStudentLesson = data!.listStudentLesson;

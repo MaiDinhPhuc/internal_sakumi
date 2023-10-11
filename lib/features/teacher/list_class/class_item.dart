@@ -26,7 +26,7 @@ class ClassItem extends StatelessWidget {
                   widget: ClassOverview(index),
                   onTap: () async {
                     await Navigator.pushNamed(context,
-                        "${Routes.teacher}?name=${TextUtils.getName().trim()}/role?role=teacher/overview/class?id=$classId");
+                        "${Routes.teacher}/overview/class=$classId");
                   },
                   onPressed: () {
                     BlocProvider.of<DropdownCubit>(c).update();
@@ -39,7 +39,7 @@ class ClassItem extends StatelessWidget {
                 ),
                 onTap: () async {
                   await Navigator.pushNamed(context,
-                      "${Routes.teacher}?name=${TextUtils.getName().trim()}/role?role=teacher/overview/class?id=$classId");
+                      "${Routes.teacher}/overview/class=$classId");
                 },
                 onPressed: () => BlocProvider.of<DropdownCubit>(c).update(),
                 widgetStatus: StatusClassItem(index: index),
@@ -67,7 +67,7 @@ class ClassItemInAdmin extends StatelessWidget {
                 widget: ClassOverviewInAdmin(index),
                 onTap: () async {
                   await Navigator.pushNamed(context,
-                      "${Routes.admin}?name=${TextUtils.getName().trim()}/role?role=admin/overview/class?id=$classId");
+                      "${Routes.admin}/overview/class=$classId");
                 },
                 onPressed: () {
                   BlocProvider.of<DropdownCubit>(c).update();
@@ -84,7 +84,7 @@ class ClassItemInAdmin extends StatelessWidget {
                 ),
                 onTap: () async {
                   await Navigator.pushNamed(context,
-                      "${Routes.admin}?name=${TextUtils.getName().trim()}/role?role=admin/overview/class?id=$classId");
+                      "${Routes.admin}/overview/class=$classId");
                 },
                 onPressed: () => BlocProvider.of<DropdownCubit>(c).update(),
                 widgetStatus: StatusClassItemAdmin(index: index),

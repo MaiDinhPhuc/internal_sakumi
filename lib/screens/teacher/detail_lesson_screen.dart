@@ -8,11 +8,11 @@ import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/lesson_te
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/session_cubit.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:internal_sakumi/utils/text_utils.dart';
+
+import '../../utils/text_utils.dart';
 
 class DetailLessonScreen extends StatelessWidget {
-  final String name, classId, lessonId;
-  const DetailLessonScreen(this.name, this.classId, this.lessonId, {Key? key})
+  const DetailLessonScreen({Key? key})
       : super(key: key);
 
   @override
@@ -24,8 +24,7 @@ class DetailLessonScreen extends StatelessWidget {
             children: [
               HeaderTeacher(
                 index: 1,
-                classId: TextUtils.getName(position: 3),
-                name: name,
+                classId: TextUtils.getName(position: 1),
                 role: 'teacher',
               ),
               Expanded(

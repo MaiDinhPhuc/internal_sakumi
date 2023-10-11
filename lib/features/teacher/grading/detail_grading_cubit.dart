@@ -29,7 +29,7 @@ class DetailGradingCubit extends Cubit<int> {
 
   init(String type) async {
 
-    data = await FireBaseProvider.instance.getDataForDetailGrading(int.parse(TextUtils.getName(position: 3)),
+    data = await FireBaseProvider.instance.getDataForDetailGrading(int.parse(TextUtils.getName(position: 1)),
         int.parse(TextUtils.getName()), type);
     listQuestions = data!.listQuestions;
     classModel = data!.classModel;

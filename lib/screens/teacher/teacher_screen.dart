@@ -17,9 +17,8 @@ import '../../utils/text_utils.dart';
 import 'detail_grading_screen.dart';
 
 class TeacherScreen extends StatelessWidget {
-  final String name;
 
-  const TeacherScreen(this.name, {Key? key}) : super(key: key);
+  const TeacherScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +75,7 @@ class TeacherScreen extends StatelessWidget {
                                           duration: 100,
                                           onTap: () {
                                             Navigator.pushNamed(context,
-                                                '${Routes.teacher}?name=${TextUtils.getName().trim()}/profile');
+                                                '${Routes.teacher}/profile');
                                           },
                                         ),
                                 )),

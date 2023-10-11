@@ -34,6 +34,7 @@ class ClassOverviewCubit extends Cubit<int> {
 
 
   loadFirst() async {
+    print("=======>classId: ${int.parse(TextUtils.getName())}");
     data =
         await FireBaseProvider.instance.getDataForClassOverViewTab(int.parse(TextUtils.getName()));
 

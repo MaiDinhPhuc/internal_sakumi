@@ -94,9 +94,8 @@ class LessonCompleteView extends StatelessWidget {
                           for(var std in cubit.listStudent!){
                             await updateTeacherNote(std.userId, listController[cubit.listStudent!.indexOf(std)].text);
                           }
-                          SharedPreferences localData = await SharedPreferences.getInstance();
                           if(context.mounted){
-                            Navigator.popUntil(context, ModalRoute.withName("${Routes.teacher}?name=${localData.getString(PrefKeyConfigs.code).toString()}/role?role=teacher/lesson/class?id=${int.parse(TextUtils.getName(position: 3))}"));
+                            Navigator.popUntil(context, ModalRoute.withName("${Routes.teacher}/lesson/class=${int.parse(TextUtils.getName(position: 1))}"));
                           }
                         }
                       },
@@ -114,6 +113,6 @@ class LessonCompleteView extends StatelessWidget {
   }
 
   updateTeacherNote(int userId, String note)async{
-    await FireBaseProvider.instance.updateTeacherNote(userId, int.parse(TextUtils.getName()), int.parse(TextUtils.getName(position: 3)), note);
+    await FireBaseProvider.instance.updateTeacherNote(userId, int.parse(TextUtils.getName()), int.parse(TextUtils.getName(position: 1)), note);
   }
 }

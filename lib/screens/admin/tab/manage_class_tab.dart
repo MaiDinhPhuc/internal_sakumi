@@ -121,11 +121,9 @@ class ManageClassTab extends StatelessWidget {
                       child: DottedBorderButton(
                           AppText.btnManageClass.text.toUpperCase(),
                           onPressed: () async {
-                        SharedPreferences localData =
-                            await SharedPreferences.getInstance();
                         if (c.mounted) {
                           Navigator.pushNamed(context,
-                              '${Routes.admin}?name=${localData.getString(PrefKeyConfigs.code)!}/${Routes.manageGeneral}');
+                              '${Routes.admin}/${Routes.manageGeneral}');
                         }
                       })),
                   SizedBox(height: Resizable.size(context, 50)),

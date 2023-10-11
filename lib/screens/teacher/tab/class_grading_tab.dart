@@ -11,8 +11,7 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
 class ClassGradingTab extends StatelessWidget {
-  const ClassGradingTab(this.name, {super.key});
-  final String name;
+  const ClassGradingTab({super.key});
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -21,7 +20,7 @@ class ClassGradingTab extends StatelessWidget {
         body: Column(
           children: [
             HeaderTeacher(
-                index: 3, classId: TextUtils.getName(position: 3), name: name, role: 'teacher'),
+                index: 3, classId: TextUtils.getName(), role: 'teacher'),
             BlocBuilder<GradingCubit, int>(builder: (c, s) {
               var cubit = BlocProvider.of<GradingCubit>(c);
               if(cubit.classModel == null){
@@ -180,7 +179,7 @@ class ClassGradingTab extends StatelessWidget {
                                             ElevatedButton(
                                               onPressed: ()async{
                                                 await Navigator.pushNamed(context,
-                                                    "${Routes.teacher}?name=$name/role?role=teacher/grading/class?id=${TextUtils.getName(position: 3)}/type?type=btvn/parent?id=${e.lessonId}");
+                                                    "${Routes.teacher}/grading/class=${TextUtils.getName()}/type=btvn/parent=${e.lessonId}");
                                               },
                                               style: ButtonStyle(
                                                   shadowColor: MaterialStateProperty.all(
@@ -274,7 +273,7 @@ class ClassGradingTab extends StatelessWidget {
                                             ElevatedButton(
                                               onPressed: ()async{
                                                   await Navigator.pushNamed(context,
-                                                      "${Routes.teacher}?name=$name/grading/class?id=${TextUtils.getName(position: 3)}/type?type=test/parent?id=${e.testId}");
+                                                      "${Routes.teacher}/grading/class=${TextUtils.getName()}/type=test/parent=${e.testId}");
                                               },
                                               style: ButtonStyle(
                                                   shadowColor: MaterialStateProperty.all(

@@ -47,39 +47,41 @@ class Routes {
 
   static const empty = '/empty';
 
-
   static void configureRoutes(FluroRouter router) {
     router.notFoundHandler = Handler(
         handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
-      print("ROUTE WAS NOT FOUND !!!");
+      debugPrint("ROUTE WAS NOT FOUND !!!");
       return;
     });
-    router.define(login, handler: loginScreenHandler, transitionType: TransitionType.fadeIn);
-    router.define(classScreen, handler: classScreenHandler, transitionType: TransitionType.fadeIn);
-    router.define(splash, handler: splashScreenHandler, transitionType: TransitionType.fadeIn);
+    router.define(login,
+        handler: loginScreenHandler, transitionType: TransitionType.fadeIn);
+    router.define(classScreen,
+        handler: classScreenHandler, transitionType: TransitionType.fadeIn);
+    router.define(splash,
+        handler: splashScreenHandler, transitionType: TransitionType.fadeIn);
     router.define(teacher,
         handler: teacherHandler, transitionType: TransitionType.fadeIn);
     router.define(admin,
         handler: adminHandler, transitionType: TransitionType.fadeIn);
     router.define(master,
         handler: masterHandler, transitionType: TransitionType.fadeIn);
-    router.define('/:name/manageGeneral',
+    router.define('$admin/manageGeneral',
         handler: manageGeneralHandler, transitionType: TransitionType.fadeIn);
-    router.define('/:name/profile',
+    router.define('$teacher/profile',
         handler: profileTeacherHandler, transitionType: TransitionType.fadeIn);
     router.define(addTeacher,
         handler: addTeacherHandler, transitionType: TransitionType.fadeIn);
-    router.define('/:name/:role/grading/:classId',
-        handler: gradingHandler, transitionType: TransitionType.fadeIn);
-    router.define('/:name/:role/overview/:classId',
+    router.define('/:role/overview/:classId',
         handler: overViewHandler, transitionType: TransitionType.fadeIn);
-    router.define('/:name/:role/lesson/:classId',
+    router.define('/:role/grading/:classId',
+        handler: gradingHandler, transitionType: TransitionType.fadeIn);
+    router.define('/:role/lesson/:classId',
         handler: lessonsHandler, transitionType: TransitionType.fadeIn);
-    router.define('/:name/:role/:test/:classId',
+    router.define('/:role/:test/:classId',
         handler: testHandler, transitionType: TransitionType.fadeIn);
-    router.define('/:name/:role/grading/:classId/:type/:parentId',
+    router.define('/:role/grading/:classId/:type/:parentId',
         handler: detailGradingHandler, transitionType: TransitionType.fadeIn);
-    router.define('/:name/:role/lesson/:classId/:lessonId',
+    router.define('/:role/lesson/:classId/:lessonId',
         handler: detailLessonHandler, transitionType: TransitionType.fadeIn);
     // router.define('$admin/:classId',
     //     handler: detailClassHandler, transitionType: TransitionType.fadeIn);
@@ -94,21 +96,21 @@ var emptyHandler =
 });
 
 var classScreenHandler =
-Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return const ClassScreen();
 });
 var splashScreenHandler =
-Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return const SplashScreen();
 });
 var loginScreenHandler =
-Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return LogInScreen();
 });
 
 var teacherHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return TeacherScreen(params['name']?.first);
+  return const TeacherScreen();
 });
 
 var adminHandler =
@@ -131,24 +133,24 @@ var addTeacherHandler =
   return AddTeacherScreen();
 });
 var manageGeneralHandler =
-Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return ManageGeneralScreen();
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return const ManageGeneralScreen();
 });
 var lessonsHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return ListLessonTab(params['name'][0], params['classId'][0], params['role'][0]);
+  return ListLessonTab(params['role'][0]);
 });
 var overViewHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return ClassOverViewTab(params['name'][0], params['role'][0]);
+  return ClassOverViewTab(params['role']?.first);
 });
 var gradingHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return ClassGradingTab(params['name'][0]);
+  return const ClassGradingTab();
 });
 var testHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return ClassTestTab(params['name'][0],params['role'][0]);
+  return ClassTestTab(params['role'][0]);
 });
 var detailClassHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
@@ -156,13 +158,13 @@ var detailClassHandler =
 });
 var detailGradingHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return DetailGradingScreen(params['name'][0], params['type'][0]);
+  return DetailGradingScreen(params['type'][0]);
 });
 var detailLessonHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return DetailLessonScreen(
-      params['name'][0], params['classId'][0], params['lessonId'][0]);
+  return const DetailLessonScreen();
 });
-var profileTeacherHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return TeacherProfile(params['name'][0]);
+var profileTeacherHandler =
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return const TeacherProfile();
 });

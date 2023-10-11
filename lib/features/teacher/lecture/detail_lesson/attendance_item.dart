@@ -64,7 +64,7 @@ class AttendanceItem extends StatelessWidget {
                                               hw: -2,
                                               id: 10000,
                                               classId:
-                                              int.parse(TextUtils.getName(position: 3)),
+                                              int.parse(TextUtils.getName(position: 1)),
                                               kanji: -2,
                                               lessonId: int.parse(TextUtils.getName()),
                                               listening: -2,
@@ -152,14 +152,14 @@ class DropdownAttendanceCubit extends Cubit<int> {
     await FireBaseProvider.instance.updateTimekeeping(
         id,
         int.parse(TextUtils.getName()),
-        int.parse(TextUtils.getName(position: 3)),
+        int.parse(TextUtils.getName(position: 1)),
         attendId);
     emit(attendId);
   }
 
   updateStudentStatus(String type, int point, int id)async{
 
-    await FireBaseProvider.instance.updateStudentStatus(id, int.parse(TextUtils.getName(position: 3)), point, type);
+    await FireBaseProvider.instance.updateStudentStatus(id, int.parse(TextUtils.getName(position: 1)), point, type);
 
     emit(point);
   }

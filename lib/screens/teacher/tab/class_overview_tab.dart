@@ -15,8 +15,7 @@ import 'package:internal_sakumi/widget/circle_progress.dart';
 import '../../../utils/text_utils.dart';
 
 class ClassOverViewTab extends StatelessWidget {
-  const ClassOverViewTab(this.name,this.role, {super.key});
-  final String name;
+  const ClassOverViewTab(this.role, {super.key});
   final String role;
 
   @override
@@ -27,10 +26,9 @@ class ClassOverViewTab extends StatelessWidget {
           body: Column(
             children: [
               HeaderTeacher(
-                index: 0,
-                classId: role == "teacher" ? TextUtils.getName(position: 3):TextUtils.getName(),
-                name: name,role: role
-              ),
+                  index: 0,
+                  classId: TextUtils.getName(),
+                  role: role),
               BlocBuilder<ClassOverviewCubit, int>(builder: (c, _) {
                 var cubit = BlocProvider.of<ClassOverviewCubit>(c);
                 return cubit.classModel == null
@@ -54,90 +52,102 @@ class ClassOverViewTab extends StatelessWidget {
                                       fontWeight: FontWeight.w800,
                                       fontSize: Resizable.font(context, 30))),
                             ),
-                            StatisticClassView(cubit, key: const Key('mmmmmmm')),
+                            StatisticClassView(cubit,
+                                key: const Key('mmmmmmm')),
                             Container(
-                              margin: EdgeInsets.only(top: Resizable.padding(context, 30)),
-                                padding: EdgeInsets.only(right: Resizable.padding(
-                                    context, 15)),child: OverviewItemRowLayout(
-                                icon: Container(),
-                                name: Text(AppText.txtName.text,
-                                    style: TextStyle(
-                                        color: const Color(0xff757575),
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: Resizable.font(context, 17))),
-                                attend: Text(AppText.txtRateOfAttendance.text,
-                                    style: TextStyle(
-                                        color: const Color(0xff757575),
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: Resizable.font(context, 17))),
-                                submit: Text(
-                                    AppText.txtRateOfSubmitHomework.text,
-                                    style: TextStyle(
-                                        color: const Color(0xff757575),
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: Resizable.font(context, 17))),
-                                point: Text(AppText.txtAveragePoint.text,
-                                    style: TextStyle(
-                                        color: const Color(0xff757575),
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: Resizable.font(context, 17))),
-                                dropdown: Opacity(
-                                  opacity: 0,
-                                  child: CircleProgress(
-                                    title: '%',
-                                    lineWidth: Resizable.size(context, 3),
-                                    percent: 0,
-                                    radius: Resizable.size(context, 15),
-                                    fontSize: Resizable.font(context, 14),
-                                  ),
-                                ),
-                                evaluate: Text(AppText.txtEvaluate.text,
-                                    style: TextStyle(
-                                        color: const Color(0xff757575),
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: Resizable.font(context, 17))))),
-                            cubit.students == null ? Transform.scale(
-                              scale: 0.75,
-                              child: const CircularProgressIndicator(),
-                            ) : Column(
-                              children: [
-                                ...cubit.students!.map((e) => Container(
-                                  margin: EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
-                                  child: BlocProvider(
-                                      create: (context) =>
-                                          DropdownCubit(),
-                                      child: BlocBuilder<
-                                          DropdownCubit, int>(
-                                        builder: (c, state) => Container(
-                                                alignment: Alignment
-                                                    .centerLeft,
-                                                decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        width: Resizable.size(
-                                                            context, 1),
-                                                        color: state % 2 == 0
-                                                            ? greyColor
-                                                            .shade100
-                                                            : Colors
-                                                            .black),
-                                                    borderRadius:
-                                                    BorderRadius.circular(Resizable.size(context, 5))),
-                                                child: AnimatedCrossFade(
-                                                    firstChild: CollapseOverviewStudentItem(cubit.students!.indexOf(e), role),
-                                                    secondChild: Column(
-                                                      children: [
-                                                        CollapseOverviewStudentItem(cubit.students!.indexOf(e), role),
-                                                        ExpandedOverviewStudentItem(cubit.students!.indexOf(e))
-                                                      ],
-                                                    ),
-                                                    crossFadeState: state % 2 == 1 ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                                                    duration: const Duration(milliseconds: 100)))
-                                      )),
-                                )).toList(),
-                                SizedBox(
-                                    height: Resizable.size(context, 50))
-                              ],
-                            )
+                                margin: EdgeInsets.only(
+                                    top: Resizable.padding(context, 30)),
+                                padding: EdgeInsets.only(
+                                    right: Resizable.padding(context, 15)),
+                                child: OverviewItemRowLayout(
+                                    icon: Container(),
+                                    name: Text(AppText.txtName.text,
+                                        style: TextStyle(
+                                            color: const Color(0xff757575),
+                                            fontWeight: FontWeight.w600,
+                                            fontSize:
+                                                Resizable.font(context, 17))),
+                                    attend: Text(
+                                        AppText.txtRateOfAttendance.text,
+                                        style: TextStyle(
+                                            color: const Color(0xff757575),
+                                            fontWeight: FontWeight.w600,
+                                            fontSize:
+                                                Resizable.font(context, 17))),
+                                    submit: Text(
+                                        AppText.txtRateOfSubmitHomework.text,
+                                        style: TextStyle(
+                                            color: const Color(0xff757575),
+                                            fontWeight: FontWeight.w600,
+                                            fontSize:
+                                                Resizable.font(context, 17))),
+                                    point: Text(AppText.txtAveragePoint.text,
+                                        style: TextStyle(
+                                            color: const Color(0xff757575),
+                                            fontWeight: FontWeight.w600,
+                                            fontSize:
+                                                Resizable.font(context, 17))),
+                                    dropdown: Opacity(
+                                      opacity: 0,
+                                      child: CircleProgress(
+                                        title: '%',
+                                        lineWidth: Resizable.size(context, 3),
+                                        percent: 0,
+                                        radius: Resizable.size(context, 15),
+                                        fontSize: Resizable.font(context, 14),
+                                      ),
+                                    ),
+                                    evaluate: Text(AppText.txtEvaluate.text,
+                                        style: TextStyle(color: const Color(0xff757575), fontWeight: FontWeight.w600, fontSize: Resizable.font(context, 17))))),
+                            cubit.students == null
+                                ? Transform.scale(
+                                    scale: 0.75,
+                                    child: const CircularProgressIndicator(),
+                                  )
+                                : Column(
+                                    children: [
+                                      ...cubit.students!
+                                          .map((e) => Container(
+                                                margin: EdgeInsets.symmetric(
+                                                    vertical: Resizable.padding(
+                                                        context, 5)),
+                                                child: BlocProvider(
+                                                    create: (context) =>
+                                                        DropdownCubit(),
+                                                    child: BlocBuilder<
+                                                            DropdownCubit, int>(
+                                                        builder: (c, state) =>
+                                                            Container(
+                                                                alignment: Alignment
+                                                                    .centerLeft,
+                                                                decoration: BoxDecoration(
+                                                                    border: Border.all(
+                                                                        width: Resizable.size(
+                                                                            context, 1),
+                                                                        color: state % 2 == 0
+                                                                            ? greyColor.shade100
+                                                                            : Colors.black),
+                                                                    borderRadius: BorderRadius.circular(Resizable.size(context, 5))),
+                                                                child: AnimatedCrossFade(
+                                                                    firstChild: CollapseOverviewStudentItem(cubit.students!.indexOf(e), role),
+                                                                    secondChild: Column(
+                                                                      children: [
+                                                                        CollapseOverviewStudentItem(
+                                                                            cubit.students!.indexOf(e),
+                                                                            role),
+                                                                        ExpandedOverviewStudentItem(cubit
+                                                                            .students!
+                                                                            .indexOf(e))
+                                                                      ],
+                                                                    ),
+                                                                    crossFadeState: state % 2 == 1 ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                                                                    duration: const Duration(milliseconds: 100))))),
+                                              ))
+                                          .toList(),
+                                      SizedBox(
+                                          height: Resizable.size(context, 50))
+                                    ],
+                                  )
                           ],
                         ),
                       )));

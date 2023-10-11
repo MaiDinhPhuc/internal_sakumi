@@ -27,20 +27,20 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
     SharedPreferences localData = await SharedPreferences.getInstance();
     teacherId = int.parse(localData.getInt(PrefKeyConfigs.userId).toString());
     var classModel = await FireBaseProvider.instance
-        .getClassById(int.parse(TextUtils.getName(position: 3)));
+        .getClassById(int.parse(TextUtils.getName(position: 1)));
     var lessonModel = await FireBaseProvider.instance.getLesson(
         classModel.courseId, int.parse(TextUtils.getName()));
     title = lessonModel.title;
 
     check = await FireBaseProvider.instance.checkLessonResult(int.parse(TextUtils.getName()), int.parse(
-        TextUtils.getName(position: 3)));
+        TextUtils.getName(position: 1)));
 
     debugPrint('=============> addLessonResult $check');
     if(check == false) {
       emit(
         LessonResultModel(
             id: 1000,
-            classId: int.parse(TextUtils.getName(position: 3)),
+            classId: int.parse(TextUtils.getName(position: 1)),
             lessonId: int.parse(TextUtils.getName()),
             teacherId: teacherId!,
             status: 'Pending',
@@ -54,7 +54,7 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
     if(check == true){
       emit(await FireBaseProvider.instance.getLessonResultByLessonId(
           int.parse(TextUtils.getName()),
-          int.parse(TextUtils.getName(position: 3))));
+          int.parse(TextUtils.getName(position: 1))));
     }
   }
 
@@ -67,7 +67,7 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
 
   updateStatus(String status) async {
     await FireBaseProvider.instance.changeStatusLesson(int.parse(TextUtils.getName()),
-        int.parse(TextUtils.getName(position: 3)), status);
+        int.parse(TextUtils.getName(position: 1)), status);
 
     emit(LessonResultModel(
         id: state!.id,
@@ -84,11 +84,11 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
   noteForStudents(String note) async {
     await FireBaseProvider.instance.noteForAllStudentInClass(
         int.parse(TextUtils.getName()),
-        int.parse(TextUtils.getName(position: 3)),
+        int.parse(TextUtils.getName(position: 1)),
         note);
     await FireBaseProvider.instance.updateTeacherInLessonResult(
         int.parse(TextUtils.getName()),
-        int.parse(TextUtils.getName(position: 3)),teacherId!
+        int.parse(TextUtils.getName(position: 1)),teacherId!
         );
     emit(LessonResultModel(
         id: state!.id,
@@ -106,7 +106,7 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
 
     await FireBaseProvider.instance.noteForSupport(
         int.parse(TextUtils.getName()),
-        int.parse(TextUtils.getName(position: 3)),
+        int.parse(TextUtils.getName(position: 1)),
         note);
     emit(LessonResultModel(
         id: state!.id,
@@ -124,7 +124,7 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
 
     await FireBaseProvider.instance.noteForAnotherSensei(
         int.parse(TextUtils.getName()),
-        int.parse(TextUtils.getName(position: 3)),
+        int.parse(TextUtils.getName(position: 1)),
         note);
     emit(LessonResultModel(
         id: state!.id,

@@ -52,15 +52,15 @@ class TrackingItem extends StatelessWidget {
       child: Text(
         (isSubmit
                 ? condition == null
-                    ? AppText.txtWaiting.text
+                    ? AppText.txtNotAttendance.text
                     : condition! == -1
                         ? AppText.textNotMarked.text
                         : condition! > -1
                             ? condition.toString()
                             : AppText.txtNotSubmit.text
                 : condition == null || condition == 0
-                    ? AppText.txtWaiting.text
-                    : (condition! > 0 && condition! < 6)
+                    ? AppText.txtNotAttendance.text
+                    : (condition! > 0 && condition! < 5)
                         ? AppText.txtPresent.text
                         : AppText.txtNotPresent.text)
             .toUpperCase(),

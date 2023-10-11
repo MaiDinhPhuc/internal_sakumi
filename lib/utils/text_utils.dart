@@ -16,7 +16,7 @@ class TextUtils {
           .replaceAll(RegExp(r'[^0-9]'), '');
     }
 
-    print("============> getName() $temp");
+    debugPrint("============> getName() $temp");
     return temp.trim();
   }
 

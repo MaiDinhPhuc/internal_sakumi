@@ -13,10 +13,10 @@ import 'collapse_test_item.dart';
 import 'expand_test_item.dart';
 
 class TestAlreadyView extends StatelessWidget {
-  const TestAlreadyView({super.key, required this.e, required this.cubit, required this.name, required this.role});
+  const TestAlreadyView({super.key, required this.e, required this.cubit, required this.role});
   final TestModel e;
   final TestCubit cubit;
-  final String name, role;
+  final String role;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +74,7 @@ class TestAlreadyView extends StatelessWidget {
                   child: InkWell(
                       onTap: () async {
                         await Navigator.pushNamed(context,
-                            "${Routes.teacher}?name=$name/grading/class?id=${TextUtils.getName()}/type?type=test/parent?id=${e.id}");
+                            "${Routes.teacher}/grading/class=${TextUtils.getName()}/type=test/parent=${e.id}");
                       },
                       borderRadius:
                           BorderRadius.circular(Resizable.size(context, 5))),

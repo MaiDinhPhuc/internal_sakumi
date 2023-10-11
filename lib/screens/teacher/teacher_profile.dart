@@ -8,8 +8,7 @@ import '../../features/class_appbar.dart';
 import '../../utils/text_utils.dart';
 
 class TeacherProfile extends StatelessWidget {
-  const TeacherProfile(this.name ,{Key? key}) : super(key: key);
-  final String name;
+  const TeacherProfile({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
 
@@ -17,10 +16,9 @@ class TeacherProfile extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            HeaderTeacher(
+            const HeaderTeacher(
               index: -1,
               classId: "empty",
-              name: name,
               role: "teacher",
             ),
             SizedBox(

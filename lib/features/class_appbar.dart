@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,13 +17,12 @@ import 'teacher/profile/app_bar_info_teacher_cubit.dart';
 
 class HeaderTeacher extends StatelessWidget {
   final int index;
-  final String classId, name, role;
+  final String classId, role;
 
   const HeaderTeacher(
       {Key? key,
       required this.index,
       required this.classId,
-      required this.name,
       required this.role})
       : super(key: key);
 
@@ -92,16 +89,10 @@ class HeaderTeacher extends StatelessWidget {
                                               MaterialStateProperty.all(
                                                   primaryColor.withAlpha(30)),
                                           onTap: () async {
-                                            SharedPreferences localData =
-                                                await SharedPreferences
-                                                    .getInstance();
-                                            String name = localData
-                                                .getString(PrefKeyConfigs.code)
-                                                .toString();
                                             if (context.mounted) {
                                               Navigator.pushReplacementNamed(
                                                   context,
-                                                  "${Routes.teacher}?name=$name");
+                                                  Routes.teacher);
                                             }
                                           },
                                           child: Container(
@@ -180,28 +171,28 @@ class HeaderTeacher extends StatelessWidget {
                                                               "========${e.button}======");
                                                           await Navigator.pushNamed(
                                                               context,
-                                                              "${role == "teacher" ? Routes.teacher : Routes.admin}?name=$name/role?role=$role/overview/class?id=$classId");
+                                                              "${role == "teacher" ? Routes.teacher : Routes.admin}/overview/class=$classId");
                                                           break;
                                                         case 1:
                                                           debugPrint(
                                                               "========${e.button}======");
                                                           await Navigator.pushNamed(
                                                               context,
-                                                              "${role == "teacher" ? Routes.teacher : Routes.admin}?name=$name/role?role=$role/lesson/class?id=$classId");
+                                                              "${role == "teacher" ? Routes.teacher : Routes.admin}/lesson/class=$classId");
                                                           break;
                                                         case 2:
                                                           debugPrint(
                                                               "========${e.button}======");
                                                           await Navigator.pushNamed(
                                                               context,
-                                                              "${role == "teacher" ? Routes.teacher : Routes.admin}?name=$name/role?role=$role/test/class?id=$classId");
+                                                              "${role == "teacher" ? Routes.teacher : Routes.admin}/test/class=$classId");
                                                           break;
                                                         case 3:
                                                           debugPrint(
                                                               "========${e.button}======");
                                                           await Navigator.pushNamed(
                                                               context,
-                                                              "${Routes.teacher}?name=$name/role?role=$role/grading/class?id=$classId");
+                                                              "${Routes.teacher}/grading/class=$classId");
                                                           break;
                                                       }
                                                     },
@@ -273,7 +264,7 @@ class HeaderTeacher extends StatelessWidget {
                                 duration: 0,
                                 onTap: () {
                                   var profileUri =
-                                      '${Routes.teacher}?name=$name/profile';
+                                      '${Routes.teacher}/profile';
                                   if(classId!="empty"){
                                     Navigator.pushNamed(context, profileUri);
                                   }

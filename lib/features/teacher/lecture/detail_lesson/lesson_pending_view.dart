@@ -137,7 +137,7 @@ class LessonPendingView extends StatelessWidget {
               await cubit.addLessonResult(
                   LessonResultModel(
                       id: 1000,
-                      classId: int.parse(TextUtils.getName(position: 3)),
+                      classId: int.parse(TextUtils.getName(position: 1)),
                       lessonId: int.parse(TextUtils.getName()),
                       teacherId: cubit.teacherId!,
                       status: 'Teaching',

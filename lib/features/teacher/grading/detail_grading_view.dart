@@ -124,7 +124,7 @@ Future<void> submit(DetailGradingCubit cubit, context, CheckActiveCubit checkCub
     FirebaseFirestore.instance
         .collection('answer')
         .doc(
-            type == "test"? 'student_${i.studentId}_test_question_${i.questionId}_class_${TextUtils.getName(position: 3)}' :'student_${i.studentId}_homework_question_${i.questionId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 3)}')
+            type == "test"? 'student_${i.studentId}_test_question_${i.questionId}_class_${TextUtils.getName(position: 1)}' :'student_${i.studentId}_homework_question_${i.questionId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}')
         .update({
       'score': cubit.listAnswer![cubit.listAnswer!.indexOf(i)].newScore,
       'teacher_note':
@@ -165,7 +165,7 @@ Future<void> submit(DetailGradingCubit cubit, context, CheckActiveCubit checkCub
         FirebaseFirestore.instance
             .collection('student_test')
             .doc(
-            'student_${i.userId}_test_${TextUtils.getName()}_class_${TextUtils.getName(position: 3)}')
+            'student_${i.userId}_test_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}')
             .update({
           'score': temp == 0 ? -1 : submitScore,
         });
@@ -173,7 +173,7 @@ Future<void> submit(DetailGradingCubit cubit, context, CheckActiveCubit checkCub
         FirebaseFirestore.instance
             .collection('student_lesson')
             .doc(
-            'student_${i.userId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 3)}')
+            'student_${i.userId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}')
             .update({
           'hw': temp == 0 ? -1 : submitScore,
         });
