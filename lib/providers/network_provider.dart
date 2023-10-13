@@ -181,5 +181,23 @@ abstract class NetworkProvider {
 
   Future<void> updateClassInfo(ClassModel classModel);
 
+  Future<void> updateCourseState(CourseModel courseModel);
+
+  Future<void> updateCourseInfo(CourseModel courseModel);
+
   Future<TeacherHomeClass> getDataForManageClassTab();
+
+
+  //master
+
+  Future<List<CourseModel>> getAllCourseEnable();
+
+  Future<bool> addNewCourse(CourseModel model);
+
+  Future<void> addCourseFromJson(String json);
+
+  Future<void> addLessonFromJson(String json);
+
+  Future<void> addTestFromJson(String json);
+
 }

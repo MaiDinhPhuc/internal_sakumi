@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/Material.dart';
@@ -26,7 +26,6 @@ import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
-import 'package:internal_sakumi/model/tag_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_home_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
@@ -97,6 +96,7 @@ class FireBaseProvider extends NetworkProvider {
               Routes.teacher);
         }
         if (user.role == "master") {
+          sharedPreferences.setInt(PrefKeyConfigs.userId, user.id);
           if (context.mounted) {
             Navigator.pop(context);
           }
@@ -641,6 +641,11 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<void> updateCourseInfo(CourseModel courseModel) async {
+    await FireStoreDb.instance.updateCourseInfo(courseModel);
+  }
+
+  @override
   Future<TeacherHomeClass> getDataForTeacherHomeScreen(int teacherId) async {
     final List<TeacherClassModel> listTeacherClass =
     (await FireStoreDb.instance.getTeacherClassById('user_id', teacherId)).docs.map((e) => TeacherClassModel.fromSnapshot(e)).toList();
@@ -1074,7 +1079,6 @@ class FireBaseProvider extends NetworkProvider {
         });
       }
     }
-    print(listHwStatus);
 
     return ListLessonDataModel(
         classModel: classModel,
@@ -1354,7 +1358,7 @@ class FireBaseProvider extends NetworkProvider {
         await FireBaseProvider.instance.getCourseById(classModel.courseId);
     String token = courseModel.token;
     List<QuestionModel> listQuestions = [];
-    if (type == "test") {
+    if (type == "type=test") {
       listQuestions = await FireBaseProvider.instance.getQuestionByUrl(
           AppConfigs.getDataUrl("test_$lessonId.json", token));
     } else {
@@ -1541,5 +1545,71 @@ class FireBaseProvider extends NetworkProvider {
       listLessonAvailable: listLessonAvailable,
       listCourse: listAllCourse, listCourseId: courseIds,
     );
+  }
+
+  @override
+  Future<List<CourseModel>> getAllCourseEnable() async{
+      var snapshot = await FireStoreDb.instance.getAllCourseEnable();
+      if (snapshot.docs.isEmpty) {
+        return [];
+      }
+      final courses =
+      snapshot.docs.map((e) => CourseModel.fromSnapshot(e)).toList();
+      return courses;
+  }
+
+  @override
+  Future<bool> addNewCourse(CourseModel model) async {
+    final temp = await FireStoreDb.instance.getCourseByDocs("course_${model.courseId}");
+    if (!temp.exists) {
+      await FireStoreDb.instance.addCourse(model);
+      return true;
+    }
+    return false;
+  }
+
+  @override
+  Future<void> updateCourseState(CourseModel courseModel) async {
+    await FireStoreDb.instance.updateCourseState(courseModel);
+  }
+
+  @override
+  Future<void> addCourseFromJson(String jsonData) async {
+    final data = json.decode(jsonData);
+    final FirebaseFirestore db = FirebaseFirestore.instance;
+    for (final temp in data) {
+      try{
+        await db.collection('courses').doc('course_${temp['course_id']}').set(temp);
+      }
+      catch ( e) {
+        debugPrint('=>>>>>error: $e');
+      }
+    }
+  }
+  @override
+  Future<void> addLessonFromJson(String jsonData) async {
+    final data = json.decode(jsonData);
+    final FirebaseFirestore db = FirebaseFirestore.instance;
+    for (final temp in data) {
+      try{
+        await db.collection('lessons').doc('lesson_${temp['lesson_id']}_course_${temp['course_id']}').set(temp);
+      }
+      catch ( e) {
+        debugPrint('=>>>>>error: $e');
+      }
+    }
+  }
+  @override
+  Future<void> addTestFromJson(String jsonData) async {
+    final data = json.decode(jsonData);
+    final FirebaseFirestore db = FirebaseFirestore.instance;
+    for (final temp in data) {
+      try{
+        await db.collection('test').doc('test_${temp['id']}_course_${temp['course_id']}').set(temp);
+      }
+      catch ( e) {
+        debugPrint('=>>>>>error: $e');
+      }
+    }
   }
 }

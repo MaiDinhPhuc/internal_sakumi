@@ -26,8 +26,14 @@ class DetailGradingCubit extends Cubit<int> {
   List<int>? listStudentId;
   List<bool>? listState;
   String token = "";
+  String gradingType = "";
 
   init(String type) async {
+    if(type == "type=test"){
+      gradingType = "test";
+    }else{
+      gradingType = "btvn";
+    }
 
     data = await FireBaseProvider.instance.getDataForDetailGrading(int.parse(TextUtils.getName(position: 1)),
         int.parse(TextUtils.getName()), type);

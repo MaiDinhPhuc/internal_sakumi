@@ -52,7 +52,7 @@ class StudentAnswerView extends StatelessWidget {
                     : (answerModel.questionType == 4 ||
                             answerModel.questionType == 2 ||
                             answerModel.questionType == 11)
-                        ? ImageView(answer: answerModel)
+                        ? ImageView(answer: answerModel, token: cubit.token, type: cubit.gradingType)
                         : SoundView(
                             answer: answerModel, soundCubit: soundCubit)),
         Expanded(

@@ -113,6 +113,16 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllCourseEnable() async{
+    final snapshot =
+    await db.collection("courses").where('enable', isEqualTo: true).get();
+    // debugPrint("==========>get db from \"class\" : ${snapshot.docs.length}");
+
+    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllCourseEnable ${snapshot.size}");
+
+    return snapshot;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getCourseById(int id) async {
     final snapshot =
     await db.collection("courses").where("course_id", isEqualTo: id).get();
@@ -309,6 +319,16 @@ class FireStoreDb {
     debugPrint("==========>update db from \"student_class\"");
   }
 
+  Future<void> updateCourseState(CourseModel model) async {
+    await db
+        .collection('courses')
+        .doc("course_${model.courseId}")
+        .update({
+      "enable": false,
+    });
+    debugPrint("==========>update db from \"student_class\"");
+  }
+
   Future<void> changeStatusLesson(int lessonId, int classId, String status) async {
     await db
         .collection('lesson_result')
@@ -359,6 +379,16 @@ class FireStoreDb {
     debugPrint("==========>update db from \"lesson_result\"");
   }
 
+  Future<DocumentSnapshot<Map<String, dynamic>>> getCourseByDocs(String docs) async {
+    final temp = await db
+        .collection("courses")
+        .doc(docs)
+        .get();
+
+    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCourseByDocs $docs ${temp.exists}");
+
+    return temp;
+  }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getStudentLessonByDocs(String docs) async {
     final temp = await db
@@ -392,6 +422,51 @@ class FireStoreDb {
       'vocabulary': model.vocabulary
     });
     debugPrint("==========>get and add db from \"student_lesson\"");
+
+  }
+
+  Future<void> addCourse(CourseModel model) async {
+
+    await db
+        .collection("courses")
+        .doc(
+        "course_${model.courseId}")
+        .set({
+      'code': model.code,
+      'course_id': model.courseId,
+      'description': model.description,
+      'enable': true,
+      'lesson_count': model.lessonCount,
+      'level': model.level,
+      'term_id': model.termId,
+      'term_name': model.termName,
+      'title': model.title,
+      'token': model.token,
+      'type': model.type
+    });
+    debugPrint("==========> add db from \"courses\"");
+
+  }
+
+  Future<void> updateCourseInfo(CourseModel model) async {
+
+    await db
+        .collection("courses")
+        .doc(
+        "course_${model.courseId}")
+        .update({
+      'code': model.code,
+      'course_id': model.courseId,
+      'description': model.description,
+      'lesson_count': model.lessonCount,
+      'level': model.level,
+      'term_id': model.termId,
+      'term_name': model.termName,
+      'title': model.title,
+      'token': model.token,
+      'type': model.type
+    });
+    debugPrint("==========> add db from \"courses\"");
 
   }
 

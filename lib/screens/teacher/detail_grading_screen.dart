@@ -112,7 +112,7 @@ class DetailGradingScreen extends StatelessWidget {
                                                                               .listQuestions!
                                                                               .indexOf(e)],
                                                                           token:
-                                                                              cubit.token,
+                                                                              cubit.token, type: cubit.gradingType,
                                                                         ),
                                                                       ))
                                                                   .toList(),

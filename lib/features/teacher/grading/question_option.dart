@@ -15,13 +15,14 @@ class QuestionOptionItem extends StatelessWidget {
       required this.onTap,
       required this.soundCubit,
       required this.isDone,
-      required this.token});
+      required this.token, required this.type});
   final int id, index, now;
   final QuestionModel questionModel;
   final Function() onTap;
   final SoundCubit soundCubit;
   final bool isDone;
   final String token;
+  final String type;
   @override
   Widget build(BuildContext context) {
     String question = questionModel.convertQuestion;
@@ -97,7 +98,7 @@ class QuestionOptionItem extends StatelessWidget {
                               Expanded(
                                 child: Sounder(
                                   AppConfigs.getDataUrl(
-                                      "btvn_${TextUtils.getName()}_${questionModel.listSound.first}",
+                                      "${type}_${TextUtils.getName()}_${questionModel.listSound.first}",
                                       token),
                                   "network",
                                   0,
@@ -130,7 +131,7 @@ class QuestionOptionItem extends StatelessWidget {
                                             image: DecorationImage(
                                                 image: NetworkImage(
                                                     AppConfigs.getDataUrl(
-                                                        "btvn_${TextUtils.getName()}_${questionModel.listImage[i]}",
+                                                        "${type}_${TextUtils.getName()}_${questionModel.listImage[i]}",
                                                         token)),
                                                 fit: BoxFit.fill),
                                             border: Border.all(
@@ -173,7 +174,7 @@ class QuestionOptionItem extends StatelessWidget {
                                               image: DecorationImage(
                                                   image: NetworkImage(
                                                       AppConfigs.getDataUrl(
-                                                          "btvn_${TextUtils.getName()}_$item",
+                                                          "${type}_${TextUtils.getName()}_$item",
                                                           token)),
                                                   fit: BoxFit.fill),
                                               border: Border.all(
@@ -205,7 +206,7 @@ class QuestionOptionItem extends StatelessWidget {
                                               image: DecorationImage(
                                                   image: NetworkImage(
                                                       AppConfigs.getDataUrl(
-                                                          "btvn_${TextUtils.getName()}_$item",
+                                                          "${type}_${TextUtils.getName()}_$item",
                                                           token)),
                                                   fit: BoxFit.fill),
                                               border: Border.all(

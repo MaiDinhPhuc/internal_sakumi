@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:image_network/image_network.dart';
+import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
@@ -9,8 +10,10 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
 class ImageView extends StatelessWidget {
-  const ImageView({super.key, required this.answer});
+  const ImageView({super.key, required this.answer, required this.token, required this.type});
   final AnswerModel answer;
+  final String token;
+  final String type;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,7 @@ class ImageView extends StatelessWidget {
             fontWeight: FontWeight.w700,
           ),
         )),
-        answer.questionType == 11
+        answer.questionType != 11
             ? SizedBox(
           height: Resizable.size(context, 200),
           child: ListView.builder(
@@ -40,10 +43,6 @@ class ImageView extends StatelessWidget {
                 height: Resizable.size(context, 200),
                 width: Resizable.size(context, 200),
                 decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(
-                          'assets/practice/${TextUtils.getName()}/${answer.convertAnswer.first}'),
-                      fit: BoxFit.fill),
                   border: Border.all(
                       width: 0,
                       color: secondaryColor),
@@ -51,6 +50,14 @@ class ImageView extends StatelessWidget {
                       Radius.circular(
                           Resizable.size(
                               context, 5))),
+                ),
+                child: ClipRRect(
+                  borderRadius:
+                  BorderRadius.all(
+                      Radius.circular(Resizable.size(context, 10))),
+                  child: ImageNetwork(
+                      fitWeb: answer.questionType == 4 ? BoxFitWeb.contain : BoxFitWeb.fill,
+                      image: answer.convertAnswer.first , height: Resizable.size(context, 200), width: Resizable.size(context, 200)),
                 ),
               )),
         )
@@ -66,7 +73,9 @@ class ImageView extends StatelessWidget {
                       Radius.circular(Resizable.size(context, 10))),
                   child: ImageNetwork(
                       fitWeb: answer.questionType == 4 ? BoxFitWeb.contain : BoxFitWeb.fill,
-                      image: answer.convertAnswer.first, height: Resizable.size(context, 200), width: Resizable.size(context, 200)),
+                      image: AppConfigs.getDataUrl(
+                          "${type}_${TextUtils.getName()}_${answer.convertAnswer.first}",
+                          token), height: Resizable.size(context, 200), width: Resizable.size(context, 200)),
                 )),
             if(answer.answer.length == 2)
               Padding(
