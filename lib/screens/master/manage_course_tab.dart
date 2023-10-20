@@ -1,6 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/master/filter_course_state.dart';
 import 'package:internal_sakumi/features/master/manage_course_cubit.dart';
 import 'package:internal_sakumi/features/master/manage_list_course.dart';
 import 'package:internal_sakumi/features/master/manage_list_lesson.dart';
@@ -26,7 +27,9 @@ class ManageCourseTab extends StatelessWidget {
                   );
                 }
                 return Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
+                    Padding(padding: EdgeInsets.symmetric(vertical:  Resizable.padding(context, 10)),child: FilterCourseState(cubit)),
                     Expanded(child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

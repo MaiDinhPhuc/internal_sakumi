@@ -18,56 +18,27 @@ class ChartView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<TeacherCubit>(context);
-    return Column(
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: Resizable.size(context, 10)),
-          height: Resizable.size(context, 190),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(flex: 4, child: Container()),
-              Expanded(
-                  flex: 8, child: ColumnChart(listStd: cubit.colStd![index])),
-              Expanded(child: Container()),
-              Expanded(
-                  flex: 8,
-                  child: CustomLineChart(
-                      attendances: cubit.rateAttendanceChart![index],
-                      hws: cubit.rateSubmitChart![index],
-                      points: [] //cubit.listPoint![index],
-                      )),
-              Expanded(flex: 4, child: Container()),
-            ],
-          ),
-        ),
-        Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: Resizable.padding(context, 15)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: Resizable.size(context, 1),
-                margin: EdgeInsets.symmetric(
-                    vertical: Resizable.padding(context, 15)),
-                color: const Color(0xffD9D9D9),
-              ),
-              Text(AppText.titleClassDes.text,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: Resizable.font(context, 19))),
-              NoteWidget(cubit.listClassDes![index]),
-              Text(AppText.titleClassNote.text,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: Resizable.font(context, 19))),
-              NoteWidget(cubit.listClassNote![index])
-            ],
-          ),
-        )
-      ],
+    return Container(
+      margin: EdgeInsets.only(top: Resizable.size(context, 10)),
+      height: Resizable.size(context, 190),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(flex: 4, child: Container()),
+          Expanded(
+              flex: 8, child: ColumnChart(listStd: cubit.colStd![index])),
+          Expanded(child: Container()),
+          Expanded(
+              flex: 8,
+              child: CustomLineChart(
+                  attendances: cubit.rateAttendanceChart![index],
+                  hws: cubit.rateSubmitChart![index],
+                  points: [] //cubit.listPoint![index],
+              )),
+          Expanded(flex: 4, child: Container()),
+        ],
+      ),
     );
   }
 }

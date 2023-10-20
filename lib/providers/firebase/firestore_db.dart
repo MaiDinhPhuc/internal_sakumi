@@ -328,12 +328,12 @@ class FireStoreDb {
     debugPrint("==========>update db from \"student_class\"");
   }
 
-  Future<void> updateCourseState(CourseModel model) async {
+  Future<void> updateCourseState(CourseModel model, bool state) async {
     await db
         .collection('courses')
         .doc("course_${model.courseId}")
         .update({
-      "enable": false,
+      "enable": state,
     });
     debugPrint("==========>update db from \"student_class\"");
   }

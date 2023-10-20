@@ -124,7 +124,7 @@ class LoadListClassCubit extends Cubit<int> {
     for(var i in data!.listClassIds){
       listLastLessonTitle.add(null);
     }
-    listAllCourse = data!.listCourse;
+    listAllCourse = data!.listCourse.where((element) => element.enable == true).toList();
     for (var i in listAllCourse!) {
       listStateCourseFilter.add(false);
     }

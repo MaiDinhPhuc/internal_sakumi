@@ -1652,6 +1652,20 @@ class FireBaseProvider extends NetworkProvider {
       listLessonException.add(i.lessonId);
     }
 
+    final List<CourseModel> listAllCourse = await FireBaseProvider.instance.getAllCourse();
+
+    // final List<CourseModel> listAllCourse = await FireBaseProvider.instance.getAllCourseEnable();
+    // List<int> courseIdsTemp = [];
+    // for(var i in listAllCourse){
+    //   courseIdsTemp.add(i.courseId);
+    // }
+    // List<ClassModel> listClassEnable = [];
+    // for(var i in allClassNotRemove){
+    //   if(courseIdsTemp.contains(i.courseId)){
+    //     listClassEnable.add(i);
+    //   }
+    // }
+
     List<int> listClassIds = [];
     List<String> listClassCodes = [];
     List<String> listClassStatus = [];
@@ -1668,8 +1682,7 @@ class FireBaseProvider extends NetworkProvider {
       listClassDes.add(i.description);
       listClassNote.add(i.note);
     }
-    final List<CourseModel> listAllCourse =
-        await FireBaseProvider.instance.getAllCourseEnable();
+
     List<String> listBigTitle = [];
     List<int> listLessonCount = [];
     List<int> listLessonAvailable = [];
@@ -1840,8 +1853,8 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<void> updateCourseState(CourseModel courseModel) async {
-    await FireStoreDb.instance.updateCourseState(courseModel);
+  Future<void> updateCourseState(CourseModel courseModel, bool state) async {
+    await FireStoreDb.instance.updateCourseState(courseModel, state);
   }
 
   @override

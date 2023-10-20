@@ -252,10 +252,14 @@ enum AppText {
   txtNoAttendance,
   txtNull,
   txtLastLesson,
-  txtLastLessonEmpty
+  txtLastLessonEmpty,
+  txtCourseState,
+  txtDataVersion
 }
 
 Map<AppText, String> texts = {
+  AppText.txtDataVersion: 'Data Version',
+  AppText.txtCourseState: 'Tình trạng khoá học',
   AppText.txtLastLessonEmpty: 'Lớp chưa mở bài học nào!',
   AppText.txtLastLesson: 'Bài học gần đây:',
   AppText.txtNull: 'Null',

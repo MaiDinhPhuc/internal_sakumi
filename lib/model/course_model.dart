@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 
 class CourseModel {
-  final int courseId, lessonCount, termId;
+  final int courseId, lessonCount, termId, version;
   final String description, level, termName, title, type, token, code;
   final bool enable;
 
@@ -17,7 +17,7 @@ class CourseModel {
       required this.type,
       required this.token,
       required this.code,
-      required this.enable});
+      required this.enable, required this.version});
 
   String get name {
     switch (type) {
@@ -44,6 +44,6 @@ class CourseModel {
         token: data['token'],
         type: data['type'],
         code: data['code'],
-        enable: data['enable']??true);
+        enable: data['enable']??true, version: data['dataversion'] ?? 1);
   }
 }

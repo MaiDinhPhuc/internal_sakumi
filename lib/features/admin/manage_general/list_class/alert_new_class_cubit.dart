@@ -22,7 +22,7 @@ class AlertNewClassCubit extends Cubit<int> {
 
   loadCourse() async {
     classCount = (await FireStoreDb.instance.getCount("class")).count;
-    listCourse = await FireBaseProvider.instance.getAllCourse();
+    listCourse = await FireBaseProvider.instance.getAllCourseEnable();
     emit(state + 1);
   }
 

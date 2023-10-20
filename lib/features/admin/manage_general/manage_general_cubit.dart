@@ -51,8 +51,19 @@ class ManageGeneralCubit extends Cubit<int> {
   List<String> listClassTypeMenu = ["Lớp Chung", "Lớp 1-1"];
 
   loadAllClass() async {
-    listAllClass = await FireBaseProvider.instance.getListClassNotRemove();
-    listAllCourse = await FireBaseProvider.instance.getAllCourse();
+    final List<ClassModel> list = await FireBaseProvider.instance.getListClassNotRemove();
+    listAllCourse = await FireBaseProvider.instance.getAllCourseEnable();
+    List<int> courseIdsTemp = [];
+    for(var i in listAllCourse!){
+      courseIdsTemp.add(i.courseId);
+    }
+    List<ClassModel> listClassEnable = [];
+    for(var i in list){
+      if(courseIdsTemp.contains(i.courseId)){
+        listClassEnable.add(i);
+      }
+    }
+    listAllClass = listClassEnable;
     listClassNow = listAllClass;
     for (int i = 0; i < listAllCourse!.length; i++) {
       listStateCourse.add(false);
@@ -62,8 +73,25 @@ class ManageGeneralCubit extends Cubit<int> {
   }
 
   loadAfterAddClass(int index) async {
-    listAllClass = await FireBaseProvider.instance.getListClassNotRemove();
-    listAllCourse = await FireBaseProvider.instance.getAllCourse();
+    // listAllClass = await FireBaseProvider.instance.getListClassNotRemove();
+    // listAllCourse = await FireBaseProvider.instance.getAllCourseEnable();
+    final List<ClassModel> list = await FireBaseProvider.instance.getListClassNotRemove();
+    listAllCourse = await FireBaseProvider.instance.getAllCourseEnable();
+    List<int> courseIdsTemp = [];
+    for(var i in listAllCourse!){
+      courseIdsTemp.add(i.courseId);
+    }
+    List<ClassModel> listClassEnable = [];
+    for(var i in list){
+      if(courseIdsTemp.contains(i.courseId)){
+        listClassEnable.add(i);
+      }
+    }
+    listAllClass = listClassEnable;
+    listClassNow = listAllClass;
+    for (int i = 0; i < listAllCourse!.length; i++) {
+      listStateCourse.add(false);
+    }
     listClassNow = listAllClass;
     selector = index;
     canAdd = true;
@@ -73,7 +101,20 @@ class ManageGeneralCubit extends Cubit<int> {
   }
 
   loadAfterChangeClassStatus() async {
-    listAllClass = await FireBaseProvider.instance.getListClassNotRemove();
+    final List<ClassModel> list = await FireBaseProvider.instance.getListClassNotRemove();
+    listAllCourse = await FireBaseProvider.instance.getAllCourseEnable();
+    List<int> courseIdsTemp = [];
+    for(var i in listAllCourse!){
+      courseIdsTemp.add(i.courseId);
+    }
+    List<ClassModel> listClassEnable = [];
+    for(var i in list){
+      if(courseIdsTemp.contains(i.courseId)){
+        listClassEnable.add(i);
+      }
+    }
+    listAllClass = listClassEnable;
+    listClassNow = listAllClass;
     filterClass();
     emit(state + 2);
   }

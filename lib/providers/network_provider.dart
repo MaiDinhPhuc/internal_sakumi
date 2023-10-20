@@ -185,7 +185,7 @@ abstract class NetworkProvider {
 
   Future<void> updateClassInfo(ClassModel classModel);
 
-  Future<void> updateCourseState(CourseModel courseModel);
+  Future<void> updateCourseState(CourseModel courseModel, bool state);
 
   Future<void> updateCourseInfo(CourseModel courseModel);
 
