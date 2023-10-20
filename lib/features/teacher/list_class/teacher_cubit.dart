@@ -16,9 +16,11 @@ class TeacherCubit extends Cubit<int> {
       listClassType,
       listLessonCount,
       listLessonAvailable;
-  List<String>? listClassCodes, listClassStatus, listBigTitle;
+  List<String>? listClassCodes, listClassStatus, listBigTitle, listLastLessonTitle, listClassNote, listClassDes;
   List<double>? rateAttendance, rateSubmit;
   List<List<int>>? rateAttendanceChart, rateSubmitChart;
+  List<List<double>>? colStd;
+
   List<bool> listFilter = [true, false];
   List<String> listClassStatusMenu = ["InProgress", "Completed"];
   loadFirst() async {
@@ -73,8 +75,9 @@ class TeacherCubit extends Cubit<int> {
       rateAttendanceChart = data!.rateAttendanceChart;
       rateSubmitChart = data!.rateSubmitChart;
       listLessonAvailable = data!.listLessonAvailable;
-
-
+      colStd = data!.colStd;
+      listClassNote = data!.listClassNote;
+      listClassDes = data!.listClassDes;
     }else{
       listClassIds = [];
       listClassType = [];
@@ -87,6 +90,9 @@ class TeacherCubit extends Cubit<int> {
       rateAttendanceChart = [];
       rateSubmitChart = [];
       listLessonAvailable = [];
+      colStd = [];
+      listClassNote = [];
+      listClassDes = [];
       List<int> listIndex = [];
       if(listFilter[0]){
         for(int i = 0; i<data!.listClassStatus.length; i++){
@@ -113,6 +119,9 @@ class TeacherCubit extends Cubit<int> {
         rateAttendanceChart!.add(data!.rateAttendanceChart[i]);
         rateSubmitChart!.add(data!.rateSubmitChart[i]);
         listLessonAvailable!.add(data!.listLessonAvailable[i]);
+        colStd!.add(data!.colStd[i]);
+        listClassNote!.add(data!.listClassNote[i]);
+        listClassDes!.add(data!.listClassDes[i]);
       }
     }
     emit(state + 1);

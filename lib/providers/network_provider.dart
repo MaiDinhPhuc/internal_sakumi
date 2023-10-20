@@ -81,6 +81,8 @@ abstract class NetworkProvider {
 
   Future<List<StudentClassModel>> getStudentClassInClass(int classId);
 
+  Future<List<StudentClassModel>> getStudentClassByListId(List<int> ids);
+
   Future<List<StudentLessonModel>> getAllStudentLessonsInClass(int classId);
 
   Future<List<AnswerModel>> getListAnswer(int id, int classId);
@@ -132,7 +134,7 @@ abstract class NetworkProvider {
 
   Future<List<TeacherModel>> getListTeacherByListId(List<int> teacherIds);
 
-  Future<List<StudentLessonModel>> getStudentClassAvailable(int classId, List<int> studentIds);
+  Future<List<StudentLessonModel>> getStudentLessons(int classId, List<int> studentIds);
 
   Future<ListTestDataModel> getDataForTestTab(int classId);
 
@@ -142,16 +144,18 @@ abstract class NetworkProvider {
 
   Future<DetailGradingDataModel> getDataForDetailGrading(int classId, int lessonId, String type);
 
-  Future<List<StudentTestModel>> getListStudentTestByIDs(int classId, List<int> listTestIds);
+  Future<List<StudentTestModel>> getListStudentTestByIDs( List<int> listTestIds);
 
   Future<List<CourseModel>> getCourseByListId(List<int> listCourseIds);
 
   Future<List<StudentLessonModel>> getAllStudentLessonsInListClassId(List<int> listClassId);
 
+  Future<List<ClassModel>> getListClassForTeacher(List<int> ids);
 
   //admin
   Future<List<ClassModel>> getListClassNotRemove();
 
+  Future<List<LessonModel>> getListLessonNotBTVN();
 
   Future<List<TeacherClassModel>> getAllTeacherInClass();
 

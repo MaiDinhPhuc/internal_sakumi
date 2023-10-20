@@ -46,13 +46,13 @@ class TrackingItem extends StatelessWidget {
                           : const Color(0xffB71C1C)
               : condition == null || condition == 0
                   ? const Color(0xff9E9E9E)
-                  : (condition! > 0 && condition! < 6)
+                  : (condition! > 0 && condition! < 5)
                       ? const Color(0xff33691E)
                       : const Color(0xffB71C1C)),
       child: Text(
         (isSubmit
                 ? condition == null
-                    ? AppText.txtNotAttendance.text
+                    ? AppText.txtNull.text
                     : condition! == -1
                         ? AppText.textNotMarked.text
                         : condition! > -1

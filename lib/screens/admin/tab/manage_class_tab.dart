@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
-import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_class/filter_by_class_status.dart';
 import 'package:internal_sakumi/features/admin/manage_class/filter_by_class_type.dart';
@@ -11,9 +10,7 @@ import 'package:internal_sakumi/features/admin/manage_general/dotted_border_butt
 import 'package:internal_sakumi/features/teacher/list_class/class_item.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
 import 'package:internal_sakumi/routes.dart';
-import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ManageClassTab extends StatelessWidget {
   const ManageClassTab({Key? key}) : super(key: key);

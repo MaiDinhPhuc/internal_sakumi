@@ -8,6 +8,7 @@ import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/custom_button.dart';
+import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 class ConfirmChangeStudentStatus extends StatelessWidget {
   const ConfirmChangeStudentStatus(this.newStatus, this.studentClassModel,
@@ -113,7 +114,9 @@ class ConfirmChangeStudentStatusOverView extends StatelessWidget {
                       'student_${student.userId}_class_${studentClassModel.classId}')
                   .update({'class_status': newStatus}).whenComplete(() {
                 if (newStatus == "Remove") {
-                  cubit.loadAfterRemove(student.userId);
+                  Navigator.pop(context);
+                  waitingDialog(context);
+                  cubit.loadAfterRemove();
                 } else {
                   studentClassModel.status = newStatus;
                   popupCubit.update();

@@ -4,10 +4,17 @@ class TeacherHomeClass {
   final List<int> listClassIds,
       listClassType,
       listLessonCount,
-      listLessonAvailable, listCourseId;
-  final List<String> listClassCodes, listClassStatus, listBigTitle;
+      listLessonAvailable,
+      listCourseId;
+  final List<String> listClassCodes,
+      listClassStatus,
+      listBigTitle,
+      listLastLessonTitle,
+      listClassNote,
+      listClassDes;
   final List<double> rateAttendance, rateSubmit;
   final List<List<int>> rateAttendanceChart, rateSubmitChart;
+  final List<List<double>> colStd;
   final List<CourseModel> listCourse;
 
   const TeacherHomeClass(
@@ -21,7 +28,13 @@ class TeacherHomeClass {
       required this.rateAttendanceChart,
       required this.rateSubmitChart,
       required this.listLessonCount,
-      required this.listLessonAvailable, required this.listCourse, required this.listCourseId});
+      required this.listLessonAvailable,
+      required this.listCourse,
+      required this.listCourseId,
+      required this.colStd,
+      required this.listClassDes,
+      required this.listClassNote,
+      required this.listLastLessonTitle});
   factory TeacherHomeClass.fromData(
       List<int> listClassIds,
       List<String> listClassCodes,
@@ -33,7 +46,13 @@ class TeacherHomeClass {
       List<List<int>> rateAttendanceChart,
       List<List<int>> rateSubmitChart,
       List<int> listLessonCount,
-      List<int> listLessonAvailable, List<CourseModel> listCourse, List<int> listCourseIds) {
+      List<int> listLessonAvailable,
+      List<CourseModel> listCourse,
+      List<int> listCourseIds,
+      List<List<double>> colStd,
+      List<String> listClassDes,
+      List<String> listClassNote,
+      List<String> listLastLessonTitle) {
     return TeacherHomeClass(
         listClassIds: listClassIds,
         listClassCodes: listClassCodes,
@@ -45,6 +64,12 @@ class TeacherHomeClass {
         rateAttendanceChart: rateAttendanceChart,
         rateSubmitChart: rateSubmitChart,
         listLessonCount: listLessonCount,
-        listLessonAvailable: listLessonAvailable, listCourse: listCourse, listCourseId: listCourseIds);
+        listLessonAvailable: listLessonAvailable,
+        listCourse: listCourse,
+        listCourseId: listCourseIds,
+        colStd: colStd,
+        listClassDes: listClassDes,
+        listClassNote: listClassNote,
+        listLastLessonTitle: listLastLessonTitle);
   }
 }

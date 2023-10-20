@@ -69,7 +69,7 @@ class ExpandedOverviewStudentItem extends StatelessWidget {
 class CollapseLearnedLesson extends StatelessWidget {
   final String title;
   final int attend;
-  final int hw;
+  final int? hw;
 
   // final String attendTitle;
   // final Color attendColor;
@@ -101,7 +101,7 @@ class CollapseLearnedLesson extends StatelessWidget {
                   minWidth: Resizable.size(context, 100)
               ),
               decoration: BoxDecoration(
-                  color: attend == 5 ? const Color(0xffF57F17) : attend == 6? const Color(0xffB71C1C) : const Color(0xff33691E),
+                  color: attend == 5 ? const Color(0xffF57F17) : attend == 6? const Color(0xffB71C1C) : attend == 0 ? const Color(0xff757575) : const Color(0xff33691E),
                   borderRadius:
                   BorderRadius.circular(
                       1000)),
@@ -112,7 +112,7 @@ class CollapseLearnedLesson extends StatelessWidget {
                   vertical: Resizable.padding(
                       context, 3)),
               child: Text(
-                  attend == 5 ? AppText.txtPermitted.text : attend == 6? AppText.txtAbsent.text : AppText.txtPresent.text,
+                  attend == 5 ? AppText.txtPermitted.text : attend == 6? AppText.txtAbsent.text : attend == 0 ? AppText.txtNoAttendance.text : AppText.txtPresent.text,
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight:
@@ -128,7 +128,7 @@ class CollapseLearnedLesson extends StatelessWidget {
                   minWidth: Resizable.size(context, 100)
               ),
               decoration: BoxDecoration(
-                  color: hw == -2 ? const Color(0xffB71C1C) : hw == -1 ? const Color(0xffF57F17) : const Color(0xff33691E),
+                  color: hw == -2 ? const Color(0xffB71C1C) : hw == -1 ? const Color(0xffF57F17) : hw == null ? const Color(0xff757575) : const Color(0xff33691E),
                   borderRadius:
                   BorderRadius.circular(
                       1000)),
@@ -139,7 +139,7 @@ class CollapseLearnedLesson extends StatelessWidget {
                   vertical: Resizable.padding(
                       context, 3)),
               child: Text(
-                  hw == -2 ? AppText.txtNotSubmit.text : hw == -1 ? AppText.txtSubmitted.text : hw.toString(),
+                  hw == -2 ? AppText.txtNotSubmit.text : hw == -1 ?  AppText.textNotMarked.text: hw == null ? AppText.txtNull.text : hw.toString(),
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight:

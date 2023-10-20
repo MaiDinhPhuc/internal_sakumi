@@ -25,8 +25,8 @@ class ClassItem extends StatelessWidget {
               firstChild: CardItem(
                   widget: ClassOverview(index),
                   onTap: () async {
-                    await Navigator.pushNamed(context,
-                        "${Routes.teacher}/overview/class=$classId");
+                    await Navigator.pushNamed(
+                        context, "${Routes.teacher}/overview/class=$classId");
                   },
                   onPressed: () {
                     BlocProvider.of<DropdownCubit>(c).update();
@@ -38,8 +38,8 @@ class ClassItem extends StatelessWidget {
                   children: [ClassOverview(index), ChartView(index)],
                 ),
                 onTap: () async {
-                  await Navigator.pushNamed(context,
-                      "${Routes.teacher}/overview/class=$classId");
+                  await Navigator.pushNamed(
+                      context, "${Routes.teacher}/overview/class=$classId");
                 },
                 onPressed: () => BlocProvider.of<DropdownCubit>(c).update(),
                 widgetStatus: StatusClassItem(index: index),
@@ -59,6 +59,7 @@ class ClassItemInAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var cubit = BlocProvider.of<LoadListClassCubit>(context);
     return BlocProvider(
         create: (context) => DropdownCubit(),
         child: BlocBuilder<DropdownCubit, int>(
@@ -66,10 +67,14 @@ class ClassItemInAdmin extends StatelessWidget {
               firstChild: CardItem(
                 widget: ClassOverviewInAdmin(index),
                 onTap: () async {
-                  await Navigator.pushNamed(context,
-                      "${Routes.admin}/overview/class=$classId");
+                  await Navigator.pushNamed(
+                      context, "${Routes.admin}/overview/class=$classId");
                 },
                 onPressed: () {
+                  if (cubit.listLastLessonTitleNow[index] == null) {
+                    cubit.loadLastLessonTitle(
+                        classId, cubit.listCourseIds![index], index);
+                  }
                   BlocProvider.of<DropdownCubit>(c).update();
                 },
                 widgetStatus: StatusClassItemAdmin(index: index),
@@ -83,8 +88,8 @@ class ClassItemInAdmin extends StatelessWidget {
                   ],
                 ),
                 onTap: () async {
-                  await Navigator.pushNamed(context,
-                      "${Routes.admin}/overview/class=$classId");
+                  await Navigator.pushNamed(
+                      context, "${Routes.admin}/overview/class=$classId");
                 },
                 onPressed: () => BlocProvider.of<DropdownCubit>(c).update(),
                 widgetStatus: StatusClassItemAdmin(index: index),

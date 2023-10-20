@@ -56,7 +56,7 @@ class FireBaseProvider extends NetworkProvider {
     final String check = await FirebaseAuthentication.instance
         .logInUser(email.text, password.text);
 
-    if(check =="true"){
+    if (check == "true") {
       UserModel user = await FireBaseProvider.instance.getUser(email.text);
 
       if (user.role == "admin" ||
@@ -64,10 +64,11 @@ class FireBaseProvider extends NetworkProvider {
           user.role == "teacher") {
         debugPrint("======== ${user.role} ==========");
         SharedPreferences sharedPreferences =
-        await SharedPreferences.getInstance();
+            await SharedPreferences.getInstance();
 
         if (user.role == "admin") {
-          AdminModel adminModel = await FireBaseProvider.instance.getAdminById(user.id);
+          AdminModel adminModel =
+              await FireBaseProvider.instance.getAdminById(user.id);
 
           sharedPreferences.setString(
               PrefKeyConfigs.code, adminModel.adminCode);
@@ -77,12 +78,11 @@ class FireBaseProvider extends NetworkProvider {
           if (context.mounted) {
             Navigator.pop(context);
           }
-          Navigator.pushReplacementNamed(
-              context, Routes.admin);
+          Navigator.pushReplacementNamed(context, Routes.admin);
         }
         if (user.role == "teacher") {
           TeacherModel teacherModel =
-          await FireBaseProvider.instance.getTeacherById(user.id);
+              await FireBaseProvider.instance.getTeacherById(user.id);
           sharedPreferences.setString(
               PrefKeyConfigs.code, teacherModel.teacherCode);
           sharedPreferences.setInt(PrefKeyConfigs.userId, teacherModel.userId);
@@ -92,8 +92,7 @@ class FireBaseProvider extends NetworkProvider {
             Navigator.pop(context);
           }
           await context.read<AppBarInfoTeacherCubit>().load();
-          Navigator.pushReplacementNamed(context,
-              Routes.teacher);
+          Navigator.pushReplacementNamed(context, Routes.teacher);
         }
         if (user.role == "master") {
           sharedPreferences.setInt(PrefKeyConfigs.userId, user.id);
@@ -115,39 +114,37 @@ class FireBaseProvider extends NetworkProvider {
               content: Text('You don\'t have permission to access ')));
         });
       }
-    }else{
+    } else {
       if (context.mounted) {
         Navigator.pop(context);
       }
-      if(AppConfigs.isRunningDebug){
+      if (AppConfigs.isRunningDebug) {
         RegExp regex = RegExp(r'\((.*?)\)');
 
         Match? match = regex.firstMatch(check);
 
         if (match != null) {
           String result = match.group(1)!;
-          if(result == 'auth/user-not-found'){
+          if (result == 'auth/user-not-found') {
             cubit.changeError(AppText.txtWrongAccount.text);
-          }else if(result == 'auth/wrong-password'){
+          } else if (result == 'auth/wrong-password') {
             cubit.changeError(AppText.txtWrongPassword.text);
             password.clear();
-          }else{
+          } else {
             cubit.changeError(AppText.txtInvalidLogin.text);
           }
         }
-      }else{
-        if(check == 'user-not-found'){
+      } else {
+        if (check == 'user-not-found') {
           cubit.changeError(AppText.txtWrongAccount.text);
-        }else if(check == 'wrong-password'){
+        } else if (check == 'wrong-password') {
           cubit.changeError(AppText.txtWrongPassword.text);
           password.clear();
-        }else{
+        } else {
           cubit.changeError(AppText.txtInvalidLogin.text);
         }
       }
     }
-
-
   }
 
   @override
@@ -171,12 +168,10 @@ class FireBaseProvider extends NetworkProvider {
           user.role == "teacher") {
         debugPrint("======== ${user.role} ==========");
         if (user.role == "admin") {
-          Navigator.pushReplacementNamed(
-              context, Routes.admin);
+          Navigator.pushReplacementNamed(context, Routes.admin);
         }
         if (user.role == "teacher") {
-          Navigator.pushReplacementNamed(context,
-              Routes.teacher);
+          Navigator.pushReplacementNamed(context, Routes.teacher);
         }
         if (user.role == "master") {
           Navigator.pushReplacementNamed(context, Routes.master);
@@ -205,23 +200,30 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<TeacherModel> getTeacherByTeacherCode(String teacherCode) async {
     final teacher =
-        (await FireStoreDb.instance.getTeacherByTeacherCode(teacherCode)).docs.map((e) => TeacherModel.fromSnapshot(e)).single;
+        (await FireStoreDb.instance.getTeacherByTeacherCode(teacherCode))
+            .docs
+            .map((e) => TeacherModel.fromSnapshot(e))
+            .single;
     return teacher;
   }
 
   @override
   Future<TeacherModel> getTeacherById(int id) async {
-    final teacher =
-        (await FireStoreDb.instance.getTeacherById(id)).docs.map((e) => TeacherModel.fromSnapshot(e)).single;
+    final teacher = (await FireStoreDb.instance.getTeacherById(id))
+        .docs
+        .map((e) => TeacherModel.fromSnapshot(e))
+        .single;
     return teacher;
   }
 
   @override
   Future<List<TeacherClassModel>> getTeacherClassById(
       String string, int id) async {
-    return (await FireStoreDb.instance.getTeacherClassById(string, id)).docs.map((e) => TeacherClassModel.fromSnapshot(e)).toList();
+    return (await FireStoreDb.instance.getTeacherClassById(string, id))
+        .docs
+        .map((e) => TeacherClassModel.fromSnapshot(e))
+        .toList();
   }
-
 
   @override
   Future<List<LessonModel>> getLessonsByCourseId(int id) async {
@@ -264,8 +266,6 @@ class FireBaseProvider extends NetworkProvider {
     return list;
   }
 
-
-
   @override
   Future<ClassModel> getClassById(int id) async {
     return (await FireStoreDb.instance.getClassById(id))
@@ -290,7 +290,6 @@ class FireBaseProvider extends NetworkProvider {
         .toList();
   }
 
-
   @override
   Future<List<StudentLessonModel>> getAllStudentLessonInLesson(
       int classId, int lessonId) async {
@@ -305,7 +304,8 @@ class FireBaseProvider extends NetworkProvider {
   Future<LessonResultModel> getLessonResultByLessonId(
       int id, int classId) async {
     final result =
-        (await FireStoreDb.instance.getLessonResultByLessonId(id, classId)).docs
+        (await FireStoreDb.instance.getLessonResultByLessonId(id, classId))
+            .docs
             .map((e) => LessonResultModel.fromSnapshot(e))
             .single;
     return result;
@@ -423,8 +423,8 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<bool> addStudentLesson(StudentLessonModel model) async {
-
-    final temp = await FireStoreDb.instance.getStudentLessonByDocs("student_${model.studentId}_lesson_${model.lessonId}_class_${model.classId}");
+    final temp = await FireStoreDb.instance.getStudentLessonByDocs(
+        "student_${model.studentId}_lesson_${model.lessonId}_class_${model.classId}");
     if (!temp.exists) {
       await FireStoreDb.instance.addStudentLesson(model);
       return true;
@@ -447,8 +447,8 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<bool> addLessonResult(LessonResultModel model) async {
-
-    var temp = await FireStoreDb.instance.checkLessonResult(model.lessonId, model.classId);
+    var temp = await FireStoreDb.instance
+        .checkLessonResult(model.lessonId, model.classId);
     if (!temp.exists) {
       await FireStoreDb.instance.addLessonResult(model);
       return true;
@@ -463,11 +463,13 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<List<TestModel>> getListTestByCourseId(int courseId) async {
-    final test = (await FireStoreDb.instance.getListTestByCourseId(courseId)).docs.map((e) => TestModel.fromSnapshot(e)).toList();
+    final test = (await FireStoreDb.instance.getListTestByCourseId(courseId))
+        .docs
+        .map((e) => TestModel.fromSnapshot(e))
+        .toList();
     test.sort((a, b) => a.id.compareTo(b.id));
     return test;
   }
-
 
   @override
   Future<List<StudentTestModel>> getAllStudentTest(int classId) async {
@@ -490,12 +492,18 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<UserModel> getUser(String email) async {
-    return (await FireStoreDb.instance.getUserByEmail(email)).docs.map((e) => UserModel.fromSnapshot(e)).single;
+    return (await FireStoreDb.instance.getUserByEmail(email))
+        .docs
+        .map((e) => UserModel.fromSnapshot(e))
+        .single;
   }
 
   @override
   Future<UserModel> getUserById(int id) async {
-    final user = (await FireStoreDb.instance.getUserById(id)).docs.map((e) => UserModel.fromSnapshot(e)).single;
+    final user = (await FireStoreDb.instance.getUserById(id))
+        .docs
+        .map((e) => UserModel.fromSnapshot(e))
+        .single;
     return user;
   }
 
@@ -506,31 +514,34 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<List<UserModel>> getAllUser() async {
-    final lists =
-    (await FireStoreDb.instance.getAllUser()).docs.map((e) => UserModel.fromSnapshot(e)).toList();
+    final lists = (await FireStoreDb.instance.getAllUser())
+        .docs
+        .map((e) => UserModel.fromSnapshot(e))
+        .toList();
     return lists;
   }
 
   @override
   Future<bool> createNewStudent(StudentModel model, UserModel user) async {
     var temp = await FireStoreDb.instance.getUserByEmail(user.email);
-    if(temp.docs.isEmpty){
+    if (temp.docs.isEmpty) {
       await FireStoreDb.instance.createNewStudent(model, user);
-      await FireBaseProvider.instance.saveUser(user.email, user.role, model.userId);
+      await FireBaseProvider.instance
+          .saveUser(user.email, user.role, model.userId);
       return true;
-    } else{
+    } else {
       return false;
     }
   }
 
   @override
   Future<bool> createNewTeacher(TeacherModel model, UserModel user) async {
-
     var temp = await FireStoreDb.instance.getUserByEmail(user.email);
 
-    if(temp.docs.isEmpty){
+    if (temp.docs.isEmpty) {
       await FireStoreDb.instance.createNewTeacher(model, user);
-      await FireBaseProvider.instance.saveUser(user.email, user.role, model.userId);
+      await FireBaseProvider.instance
+          .saveUser(user.email, user.role, model.userId);
       return true;
     }
 
@@ -549,8 +560,10 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<List<TeacherClassModel>> getAllTeacherInClass() async {
-    final listSensei =
-    (await FireStoreDb.instance.getAllTeacherInClass()).docs.map((e) => TeacherClassModel.fromSnapshot(e)).toList();
+    final listSensei = (await FireStoreDb.instance.getAllTeacherInClass())
+        .docs
+        .map((e) => TeacherClassModel.fromSnapshot(e))
+        .toList();
     return listSensei;
   }
 
@@ -589,10 +602,12 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<AdminModel> getAdminById(int id) async {
-    final admin = (await FireStoreDb.instance.getAdminById(id)).docs.map((e) => AdminModel.fromSnapshot(e)).single;
+    final admin = (await FireStoreDb.instance.getAdminById(id))
+        .docs
+        .map((e) => AdminModel.fromSnapshot(e))
+        .single;
     return admin;
   }
-
 
   @override
   Future<bool> createNewClass(ClassModel model) async {
@@ -608,7 +623,8 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<bool> addStudentToClass(StudentClassModel model) async {
-    var temp = await FireStoreDb.instance.getStudentClassByDoc("student_${model.userId}_class_${model.classId}");
+    var temp = await FireStoreDb.instance
+        .getStudentClassByDoc("student_${model.userId}_class_${model.classId}");
     if (!temp.exists) {
       await FireStoreDb.instance.addStudentToClass(model);
       return true;
@@ -619,7 +635,8 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<bool> addTeacherToClass(TeacherClassModel model) async {
-    final temp = await FireStoreDb.instance.getTeacherClassByDocs("teacher_${model.userId}_class_${model.classId}");
+    final temp = await FireStoreDb.instance.getTeacherClassByDocs(
+        "teacher_${model.userId}_class_${model.classId}");
     if (!temp.exists) {
       await FireStoreDb.instance.addTeacherToClass(model);
       return true;
@@ -648,27 +665,42 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<TeacherHomeClass> getDataForTeacherHomeScreen(int teacherId) async {
     final List<TeacherClassModel> listTeacherClass =
-    (await FireStoreDb.instance.getTeacherClassById('user_id', teacherId)).docs.map((e) => TeacherClassModel.fromSnapshot(e)).toList();
+        (await FireStoreDb.instance.getTeacherClassById('user_id', teacherId))
+            .docs
+            .map((e) => TeacherClassModel.fromSnapshot(e))
+            .toList();
+    List<int> listIds = [];
+    for (var i in listTeacherClass) {
+      listIds.add(i.classId);
+    }
     final List<ClassModel> allClassNotRemove =
-    (await FireStoreDb.instance.getListClassAvailableForTeacher()).docs.map((e) => ClassModel.fromSnapshot(e)).toList();
+        await FireBaseProvider.instance.getListClassForTeacher(listIds);
     allClassNotRemove.sort((a, b) => a.classId.compareTo(b.classId));
+
+    final List<LessonModel> allLessonNotBTVN = await FireBaseProvider.instance.getListLessonNotBTVN();
+
+    List<int> listLessonException = [];
+
+    for(var i in allLessonNotBTVN){
+      listLessonException.add(i.lessonId);
+    }
 
     List<int> listClassIds = [];
     List<String> listClassCodes = [];
     List<String> listClassStatus = [];
     List<int> listClassType = [];
     List<int> listCourseIds = [];
+    List<String> listClassDes = [];
+    List<String> listClassNote = [];
     for (var i in allClassNotRemove) {
-      for (var j in listTeacherClass) {
-        if (i.classId == j.classId) {
-          listClassIds.add(i.classId);
-          listClassCodes.add(i.classCode);
-          listClassStatus
-              .add(i.classStatus == "Preparing" ? "InProgress" : i.classStatus);
-          listClassType.add(i.classType);
-          listCourseIds.add(i.courseId);
-        }
-      }
+      listClassIds.add(i.classId);
+      listClassCodes.add(i.classCode);
+      listClassStatus
+          .add(i.classStatus == "Preparing" ? "InProgress" : i.classStatus);
+      listClassType.add(i.classType);
+      listCourseIds.add(i.courseId);
+      listClassDes.add(i.description);
+      listClassNote.add(i.note);
     }
 
     final List<CourseModel> listCourses =
@@ -676,14 +708,13 @@ class FireBaseProvider extends NetworkProvider {
     List<String> listBigTitle = [];
     List<int> listLessonCount = [];
     List<int> listLessonAvailable = [];
-    for (var i in allClassNotRemove) {
-      for (var j in listTeacherClass) {
-        for (var k in listCourses) {
-          if (i.classId == j.classId && i.courseId == k.courseId) {
-            listBigTitle.add("${k.name} ${k.level} ${k.termName}");
-            listLessonCount.add(k.lessonCount);
-            break;
-          }
+
+    for (var i in listCourseIds) {
+      for (var k in listCourses) {
+        if (i == k.courseId) {
+          listBigTitle.add("${k.name} ${k.level} ${k.termName}");
+          listLessonCount.add(k.lessonCount);
+          break;
         }
       }
     }
@@ -691,68 +722,135 @@ class FireBaseProvider extends NetworkProvider {
     List<double> rateSubmit = [];
     List<List<int>> rateAttendanceChart = [];
     List<List<int>> rateSubmitChart = [];
+    List<List<double>> colStd = [];
     List<StudentLessonModel> listStdLesson = await FireBaseProvider.instance
         .getAllStudentLessonsInListClassId(listClassIds);
+    List<StudentClassModel> listStdClass =
+        await FireBaseProvider.instance.getStudentClassByListId(listClassIds);
     for (var i in listClassIds) {
       final List<StudentLessonModel> list =
           listStdLesson.where((e) => e.classId == i).toList();
+
+      final List<StudentClassModel> listStdCol =
+          listStdClass.where((element) => element.classId == i).toList();
+      double col1 = 0;
+      double col2 = 0;
+      double col3 = 0;
+      double col4 = 0;
+      double col5 = 0;
+      for (var j in listStdCol) {
+        if (j.classStatus == "Completed" ||
+            j.classStatus == "InProgress" ||
+            j.classStatus == "ReNew") {
+          col1++;
+        }
+        if (j.classStatus == "Viewer") {
+          col2++;
+        }
+        if (j.classStatus == "UpSale" || j.classStatus == "Force") {
+          col4++;
+        }
+        if (j.classStatus == "Moved") {
+          col3++;
+        }
+        if (j.classStatus == "Retained" ||
+            j.classStatus == "Dropped" ||
+            j.classStatus == "Deposit") {
+          col5++;
+        }
+      }
+
+      colStd.add([col1, col2, col3, col4, col5]);
+
+      final List<StudentClassModel> listStd = listStdClass
+          .where((element) =>
+      element.classId == i &&
+          (element.classStatus != "Remove" &&
+              element.classStatus != "Moved" &&
+              element.classStatus != "Retained" &&
+              element.classStatus != "Dropped" &&
+              element.classStatus != "Deposit" && element.classStatus != "Viewer"))
+          .toList();
+      List<int> listStdId = [];
+      for (var k in listStd) {
+        listStdId.add(k.userId);
+      }
       int temp1 = 0;
       int temp2 = 0;
       List<int> listLessonIds = [];
-      for (var j in list) {
-        if (j.timekeeping != 6) {
+
+      final List<StudentLessonModel> listStdLessonTemp =
+      list.where((e) => listStdId.contains(e.studentId)).toList();
+
+      for (var j in listStdLessonTemp) {
+        if (j.timekeeping < 5 && j.timekeeping != 0) {
           temp1++;
         }
-        if (j.hw != -2) {
+        if (j.hw != -2 && j.timekeeping != 0) {
           temp2++;
         }
         if (!listLessonIds.contains(j.lessonId)) {
           listLessonIds.add(j.lessonId);
         }
       }
-      rateAttendance.add(temp1 / (list.isNotEmpty ? list.length : 1));
-      rateSubmit.add(temp2 / (list.isNotEmpty ? list.length : 1));
+      var listTemp1 = listStdLessonTemp
+          .where((element) =>
+      element.timekeeping != 0 && listStdId.contains(element.studentId))
+          .toList();
+      var listTemp2 = listStdLessonTemp
+          .where((element) => element.timekeeping != 0 && listStdId.contains(element.studentId) && !listLessonException.contains(element.lessonId))
+          .toList();
+      rateAttendance.add(temp1 / (listTemp1.isNotEmpty ? listTemp1.length : 1));
+      rateSubmit.add(temp2 / (listTemp2.isNotEmpty ? listTemp2.length : 1));
       listLessonAvailable.add(listLessonIds.length);
 
       List<int> attendances = [], submits = [];
       for (var j in listLessonIds) {
-        int att = list.fold(
+        int att = listTemp1.fold(
             0,
-            (pre, e) =>
-                pre +
+                (pre, e) =>
+            pre +
                 ((e.classId == i &&
-                        e.lessonId == j &&
-                        e.timekeeping > 0 &&
-                        e.timekeeping < 5)
+                    e.lessonId == j &&
+                    e.timekeeping > 0 &&
+                    e.timekeeping < 5)
                     ? 1
                     : 0));
-        int sub = list.fold(
+        int sub = listTemp2.fold(
             0,
-            (pre, e) =>
-                pre +
+                (pre, e) =>
+            pre +
                 ((e.classId == i && e.lessonId == j && e.hw > -2) ? 1 : 0));
         attendances.add(att);
-        submits.add(sub);
+        if(listLessonException.contains(j)){
+          submits.add(0);
+        }
+        else{
+          submits.add(sub);
+        }
       }
       rateAttendanceChart.add(attendances);
       rateSubmitChart.add(submits);
     }
 
     return TeacherHomeClass(
-      listClassIds: listClassIds,
-      listClassCodes: listClassCodes,
-      listClassStatus: listClassStatus,
-      listClassType: listClassType,
-      listBigTitle: listBigTitle,
-      rateAttendance: rateAttendance,
-      rateSubmit: rateSubmit,
-      rateAttendanceChart: rateAttendanceChart,
-      rateSubmitChart: rateSubmitChart,
-      listLessonCount: listLessonCount,
-      listLessonAvailable: listLessonAvailable,
-      listCourse: [],
-      listCourseId: []
-    );
+        listClassIds: listClassIds,
+        listClassCodes: listClassCodes,
+        listClassStatus: listClassStatus,
+        listClassType: listClassType,
+        listBigTitle: listBigTitle,
+        rateAttendance: rateAttendance,
+        rateSubmit: rateSubmit,
+        rateAttendanceChart: rateAttendanceChart,
+        rateSubmitChart: rateSubmitChart,
+        listLessonCount: listLessonCount,
+        listLessonAvailable: listLessonAvailable,
+        listCourse: [],
+        listCourseId: [],
+        colStd: colStd,
+        listClassDes: listClassDes,
+        listClassNote: listClassNote,
+        listLastLessonTitle: []);
   }
 
   @override
@@ -777,6 +875,14 @@ class FireBaseProvider extends NetworkProvider {
 
     List<LessonModel> lessons =
         await FireBaseProvider.instance.getLessonsByLessonId(listLessonId);
+
+    List<LessonModel> lessonTemp = lessons.where((element) => element.btvn == 0).toList();
+    List<int> lessonExceptionIds = [];
+    for(var i in lessonTemp){
+      lessonExceptionIds.add(i.lessonId);
+    }
+
+
     List<StudentModel> students =
         await FireBaseProvider.instance.getAllStudentInFoInClass(listStudentId);
     students.sort((a, b) => a.userId.compareTo(b.userId));
@@ -788,19 +894,31 @@ class FireBaseProvider extends NetworkProvider {
 
     for (var i in listLessonId) {
       List<StudentLessonModel> stdLesson =
-          stdLessonsInClass.where((element) => element.lessonId == i).toList();
+          stdLessonsInClass.where((element) => element.lessonId == i && element.timekeeping != 0).toList();
       double tempAtt = 0;
       double tempHw = 0;
       for (var j in stdLesson) {
-        if (j.timekeeping != 6) {
+        if (j.timekeeping != 6 && j.timekeeping != 5) {
           tempAtt++;
         }
         if (j.hw != -2) {
           tempHw++;
         }
       }
+
       listAttendance.add(tempAtt);
       listHomework.add(tempHw);
+    }
+
+    int countStudent = 0;
+    for(var i in listStdClass){
+      if(i.classStatus != "Remove" &&
+          i.classStatus != "Dropped" &&
+          i.classStatus != "Deposit" &&
+          i.classStatus != "Retained" &&
+          i.classStatus != "Moved" && i.classStatus != "Viewer"){
+        countStudent++;
+      }
     }
 
     for (var i in listStdClass) {
@@ -808,13 +926,17 @@ class FireBaseProvider extends NetworkProvider {
           .where((element) => element.studentId == i.userId)
           .toList();
       List<int> listAttendance = [];
-      List<int> listHw = [];
+      List<int?> listHw = [];
       List<String> title = [];
       List<String> senseiNote = [];
       List<String> spNote = [];
       for (var j in stdLesson) {
         listAttendance.add(j.timekeeping);
-        listHw.add(j.hw);
+        if(lessonExceptionIds.contains(j.lessonId)){
+          listHw.add(null);
+        }else{
+          listHw.add(j.hw);
+        }
         title.add(lessons
             .where((element) => element.lessonId == j.lessonId)
             .single
@@ -824,19 +946,26 @@ class FireBaseProvider extends NetworkProvider {
       }
       int tempAttendance = 0;
       int tempHw = 0;
-      for (var j in listAttendance) {
-        if (j != 6) {
+      int countHw = 0;
+      for(int j = 0; j<listAttendance.length; j++){
+        if (listAttendance[j] != 6 && listAttendance[j] != 5 && listAttendance[j]!=0 ) {
           tempAttendance++;
         }
-      }
-      for (var j in listHw) {
-        if (j != -2) {
-          tempHw++;
+        if(listAttendance[j]!=0){
+          if (listHw[j] != -2 && listHw[j] != null) {
+            tempHw++;
+          }
+          if(listHw[j] != null){
+            countHw++;
+          }
         }
       }
 
+      int count = listAttendance.where((element) => element != 0).length;
+
       if (stdLesson.isEmpty) {
         listStdDetail.add({
+          'status': i.classStatus,
           'attendance': listAttendance,
           'title': title,
           'hw': listHw,
@@ -847,11 +976,12 @@ class FireBaseProvider extends NetworkProvider {
         });
       } else {
         listStdDetail.add({
+          'status': i.classStatus,
           'attendance': listAttendance,
           'title': title,
           'hw': listHw,
-          'attendancePercent': tempAttendance / listAttendance.length,
-          'hwPercent': tempHw / listHw.length,
+          'attendancePercent': tempAttendance / count,
+          'hwPercent': tempHw / countHw,
           'teacherNote': senseiNote,
           'spNote': spNote
         });
@@ -861,9 +991,15 @@ class FireBaseProvider extends NetworkProvider {
     double temp = 0;
 
     for (var i in listStdDetail) {
-      temp += i["hwPercent"];
+      if(i["status"] != "Remove" &&
+          i["status"] != "Dropped" &&
+          i["status"] != "Deposit" &&
+          i["status"] != "Retained" &&
+          i["status"] != "Moved"&&i["status"] != "Viewer"){
+        temp += i["hwPercent"];
+      }
     }
-    double percentHw = (temp / listStdDetail.length) * 100;
+    double percentHw = (temp / countStudent) * 100;
     return ClassOverViewModel(
         classModel: classModel,
         percentHw: percentHw,
@@ -909,8 +1045,16 @@ class FireBaseProvider extends NetworkProvider {
   Future<ListLessonDataModel> getDataForLessonTab(int classId) async {
     ClassModel classModel =
         await FireBaseProvider.instance.getClassById(classId);
+
     List<LessonModel> lessons = await FireBaseProvider.instance
         .getLessonsByCourseId(classModel.courseId);
+
+    List<LessonModel> lessonNotBTVN = lessons.where((element) => element.btvn == 0).toList();
+
+    List<int> lessonNotBTVNIds = [];
+    for(var i in lessonNotBTVN){
+      lessonNotBTVNIds.add(i.lessonId);
+    }
 
     List<LessonResultModel> listLessonResult =
         await FireBaseProvider.instance.getLessonResultByClassId(classId);
@@ -957,14 +1101,11 @@ class FireBaseProvider extends NetworkProvider {
                   element.lessonId == listLessonResultTemp[i]!.lessonId)
               .title
         });
-        LessonModel temp = lessons
-            .firstWhere((element) =>
-        element.lessonId == listLessonResultTemp[i]!.lessonId);
-        lessons.remove(lessons
-            .firstWhere((element) =>
-        element.lessonId == listLessonResultTemp[i]!.lessonId));
+        LessonModel temp = lessons.firstWhere(
+            (element) => element.lessonId == listLessonResultTemp[i]!.lessonId);
+        lessons.remove(lessons.firstWhere((element) =>
+            element.lessonId == listLessonResultTemp[i]!.lessonId));
         lessons.insert(i, temp);
-
       } else {
         listSpNote.add("");
         listTeacherNote.add("");
@@ -972,7 +1113,6 @@ class FireBaseProvider extends NetworkProvider {
         listLessonInfo
             .add({'id': lessons[i].lessonId, 'title': lessons[i].title});
       }
-
     }
     List<int> listTeacherId = [];
     for (var i in listLessonResult) {
@@ -995,9 +1135,22 @@ class FireBaseProvider extends NetworkProvider {
 
     List<StudentClassModel> listStdClass = await FireBaseProvider.instance
         .getStudentClassInClassNotRemove(classId);
+    List<StudentClassModel> listStdClassTemp = listStdClass.where((i) => i.classStatus != "Remove" &&
+        i.classStatus != "Dropped" &&
+        i.classStatus != "Deposit" &&
+        i.classStatus != "Retained" &&
+        i.classStatus != "Moved" && i.classStatus == "Viewer").toList();
+    List<int> sdtIdsTemp = [];
+    for(var i in listStdClassTemp){
+      sdtIdsTemp.add(i.userId);
+    }
     List<int> studentIds = [];
     for (var i in listStdClass) {
-      if (i.classStatus != "Remove") {
+      if (i.classStatus != "Remove" &&
+          i.classStatus != "Dropped" &&
+          i.classStatus != "Deposit" &&
+          i.classStatus != "Retained" &&
+          i.classStatus != "Moved") {
         studentIds.add(i.userId);
       }
     }
@@ -1009,8 +1162,8 @@ class FireBaseProvider extends NetworkProvider {
     for (var i in students) {
       names.add(i.name);
     }
-    List<StudentLessonModel> listStdLesson = await FireBaseProvider.instance
-        .getStudentClassAvailable(classId, studentIds);
+    List<StudentLessonModel> listStdLesson =
+        await FireBaseProvider.instance.getStudentLessons(classId, studentIds);
     List<double?> listAttendance = [];
     List<double?> listHw = [];
     List<bool?> listHwStatus = [];
@@ -1025,51 +1178,80 @@ class FireBaseProvider extends NetworkProvider {
         List<StudentLessonModel> list = listStdLesson
             .where((element) => element.lessonId == i.lessonId)
             .toList();
+        List<StudentLessonModel> tempList = listStdLesson
+            .where((element) => element.lessonId == i.lessonId && element.timekeeping !=0 && !sdtIdsTemp.contains(element.studentId))
+            .toList();
         double tempAttendance = 0;
         double tempHw = 0;
-        bool status = true;
-        for (var j in list) {
-          if (j.timekeeping < 6 && j.timekeeping > 0) {
+        bool? status;
+        for (var j in tempList) {
+          if (j.timekeeping < 5 && j.timekeeping > 0) {
             tempAttendance++;
           }
           if (j.hw != -2) {
             tempHw++;
           }
-          if (j.hw == -1) {
+        }
+
+        if (tempList.isEmpty) {
+          status = null;
+        }else{
+          int submitCount = 0;
+          int checkCount = 0;
+          int notSubmitCount = 0;
+          for(var k in tempList){
+            if(k.hw != -2){
+              submitCount++;
+            }
+            if(k.hw >-1){
+              checkCount++;
+            }
+            if(k.hw == -2){
+              notSubmitCount++;
+            }
+          }
+          if(checkCount == submitCount){
+            status = true;
+          }else{
             status = false;
           }
-        }
-        if (list.isEmpty) {
-          status = false;
+          if(notSubmitCount == tempList.length){
+            status = null;
+          }
         }
         List<int?> attendanceDetail = [];
         List<int?> hwDetail = [];
         List<String> noteDetail = [];
-        for (var i in students) {
+        for (var k in students) {
           bool check = false;
           for (var j in list) {
-            if (i.userId == j.studentId) {
+            if (k.userId == j.studentId) {
               check = true;
             }
           }
           if (check) {
             attendanceDetail.add(list
-                .firstWhere((element) => element.studentId == i.userId)
+                .firstWhere((element) => element.studentId == k.userId)
                 .timekeeping);
-            hwDetail.add(
-                list.firstWhere((element) => element.studentId == i.userId).hw);
+            hwDetail.add(lessonNotBTVNIds.contains(i.lessonId)?null:
+                list.firstWhere((element) => element.studentId == k.userId).hw);
             noteDetail.add(list
-                .firstWhere((element) => element.studentId == i.userId)
+                .firstWhere((element) => element.studentId == k.userId)
                 .teacherNote);
           } else {
             attendanceDetail.add(null);
-            hwDetail.add(-2);
+            hwDetail.add(lessonNotBTVNIds.contains(i.lessonId)?null:-2);
             noteDetail.add("");
           }
         }
 
-        listAttendance.add(tempAttendance / (list.isEmpty ? 1 : list.length));
-        listHw.add(tempHw / students.length);
+        listAttendance.add(tempAttendance / (tempList.isEmpty ? 1 : tempList.length));
+        if(lessonNotBTVNIds.contains(i.lessonId)){
+          listHw.add(null);
+        }else{
+          listHw.add(tempHw / (tempList.isEmpty ? 1 : tempList.length));
+        }
+
         listHwStatus.add(status);
         listDetailLesson.add({
           'names': names,
@@ -1106,14 +1288,13 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<StudentLessonModel>> getStudentClassAvailable(
+  Future<List<StudentLessonModel>> getStudentLessons(
       int classId, List<int> studentIds) async {
     if (studentIds.isEmpty) {
       return [];
     }
     if (studentIds.length <= 10) {
-      return (await FireStoreDb.instance
-              .getStudentClassAvailable(classId, studentIds))
+      return (await FireStoreDb.instance.getStudentLesson(classId, studentIds))
           .docs
           .map((e) => StudentLessonModel.fromSnapshot(e))
           .toList();
@@ -1128,8 +1309,7 @@ class FireBaseProvider extends NetworkProvider {
     List<StudentLessonModel> list = [];
     for (int i = 0; i < subLists.length; i++) {
       list = list +
-          (await FireStoreDb.instance
-                  .getStudentClassAvailable(classId, subLists[i]))
+          (await FireStoreDb.instance.getStudentLesson(classId, subLists[i]))
               .docs
               .map((e) => StudentLessonModel.fromSnapshot(e))
               .toList();
@@ -1152,24 +1332,32 @@ class FireBaseProvider extends NetworkProvider {
     }
 
     List<StudentTestModel> listStudentTest = await FireBaseProvider.instance
-        .getListStudentTestByIDs(classId, listTestIds);
+        .getListStudentTestByIDs(listTestIds);
+
+
+    List<StudentTestModel> listStdTest = listStudentTest.where((element) => element.classId == classId).toList();
     List<List<StudentTestModel>> listTestState = [];
     for (var i in listTestIds) {
       List<StudentTestModel> listTemp =
-          listStudentTest.where((element) => element.testID == i).toList();
+        listStdTest.where((element) => element.testID == i).toList();
       listTestState.add(listTemp);
     }
     List<StudentClassModel> listStudentClass =
         await FireBaseProvider.instance.getStudentClassInClass(classId);
     List<int> listStudentIds = [];
-    for (var i in listStudentClass) {
-      if (i.classStatus != "Remove") {
-        listStudentIds.add(i.userId);
+    for (var element in listStudentClass) {
+      if (element.classStatus != "Remove" &&
+          element.classStatus != "Moved" &&
+          element.classStatus != "Retained" &&
+          element.classStatus != "Dropped" &&
+          element.classStatus != "Deposit" && element.classStatus != "Viewer") {
+        listStudentIds.add(element.userId);
       }
     }
 
     List<StudentModel> listStudents = await FireBaseProvider.instance
         .getAllStudentInFoInClass(listStudentIds);
+
 
     List<double> listSubmit = [];
     List<double> listGPA = [];
@@ -1206,7 +1394,7 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<List<StudentTestModel>> getListStudentTestByIDs(
-      int classId, List<int> listTestIds) async {
+       List<int> listTestIds) async {
     if (listTestIds.isEmpty) {
       return [];
     }
@@ -1332,7 +1520,11 @@ class FireBaseProvider extends NetworkProvider {
         await FireBaseProvider.instance.getStudentClassInClass(classId);
     List<int> listStudentId = [];
     for (var i in listStudentClass) {
-      if (i.classStatus != "Remove" && i.classStatus != "Dropped" && i.classStatus != "Deposit" && i.classStatus != "Retained" && i.classStatus != "Moved") {
+      if (i.classStatus != "Remove" &&
+          i.classStatus != "Dropped" &&
+          i.classStatus != "Deposit" &&
+          i.classStatus != "Retained" &&
+          i.classStatus != "Moved") {
         listStudentId.add(i.userId);
       }
     }
@@ -1446,34 +1638,44 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<TeacherHomeClass> getDataForManageClassTab() async {
     final List<ClassModel> allClassNotRemove =
-    (await FireStoreDb.instance.getAllClassAvailable()).docs.map((e) => ClassModel.fromSnapshot(e)).toList();
+        (await FireStoreDb.instance.getListClassNotRemove())
+            .docs
+            .map((e) => ClassModel.fromSnapshot(e))
+            .toList();
     allClassNotRemove.sort((a, b) => a.classId.compareTo(b.classId));
+
+    final List<LessonModel> allLessonNotBTVN = await FireBaseProvider.instance.getListLessonNotBTVN();
+
+    List<int> listLessonException = [];
+
+    for(var i in allLessonNotBTVN){
+      listLessonException.add(i.lessonId);
+    }
 
     List<int> listClassIds = [];
     List<String> listClassCodes = [];
     List<String> listClassStatus = [];
     List<int> listClassType = [];
-    List<int> listCourseIds = [];
     List<int> courseIds = [];
+    List<String> listClassDes = [];
+    List<String> listClassNote = [];
     for (var i in allClassNotRemove) {
       listClassIds.add(i.classId);
       listClassCodes.add(i.classCode);
       listClassStatus.add(i.classStatus);
       listClassType.add(i.classType);
-      if (!listCourseIds.contains(i.courseId)) {
-        listCourseIds.add(i.courseId);
-      }
       courseIds.add(i.courseId);
+      listClassDes.add(i.description);
+      listClassNote.add(i.note);
     }
-    final List<CourseModel>  listAllCourse = await FireBaseProvider.instance.getAllCourse();
-    final List<CourseModel> listCourses =
-        await FireBaseProvider.instance.getCourseByListId(listCourseIds);
+    final List<CourseModel> listAllCourse =
+        await FireBaseProvider.instance.getAllCourseEnable();
     List<String> listBigTitle = [];
     List<int> listLessonCount = [];
     List<int> listLessonAvailable = [];
-    for (var i in allClassNotRemove) {
-      for (var k in listCourses) {
-        if (i.courseId == k.courseId) {
+    for (var i in courseIds) {
+      for (var k in listAllCourse) {
+        if (i == k.courseId) {
           listBigTitle.add("${k.name} ${k.level} ${k.termName}");
           listLessonCount.add(k.lessonCount);
           break;
@@ -1484,32 +1686,91 @@ class FireBaseProvider extends NetworkProvider {
     List<double> rateSubmit = [];
     List<List<int>> rateAttendanceChart = [];
     List<List<int>> rateSubmitChart = [];
+    List<List<double>> colStd = [];
     List<StudentLessonModel> listStdLesson = await FireBaseProvider.instance
         .getAllStudentLessonsInListClassId(listClassIds);
+    List<StudentClassModel> listStdClass =
+        await FireBaseProvider.instance.getStudentClassByListId(listClassIds);
     for (var i in listClassIds) {
       final List<StudentLessonModel> list =
           listStdLesson.where((e) => e.classId == i).toList();
+
+      final List<StudentClassModel> listStdCol =
+          listStdClass.where((element) => element.classId == i).toList();
+      double col1 = 0;
+      double col2 = 0;
+      double col3 = 0;
+      double col4 = 0;
+      double col5 = 0;
+      for (var j in listStdCol) {
+        if (j.classStatus == "Completed" ||
+            j.classStatus == "InProgress" ||
+            j.classStatus == "ReNew") {
+          col1++;
+        }
+        if (j.classStatus == "Viewer") {
+          col2++;
+        }
+        if (j.classStatus == "UpSale" || j.classStatus == "Force") {
+          col4++;
+        }
+        if (j.classStatus == "Moved") {
+          col3++;
+        }
+        if (j.classStatus == "Retained" ||
+            j.classStatus == "Dropped" ||
+            j.classStatus == "Deposit") {
+          col5++;
+        }
+      }
+
+      colStd.add([col1, col2, col3, col4, col5]);
+
+      final List<StudentClassModel> listStd = listStdClass
+          .where((element) =>
+              element.classId == i &&
+              (element.classStatus != "Remove" &&
+                  element.classStatus != "Moved" &&
+                  element.classStatus != "Retained" &&
+                  element.classStatus != "Dropped" &&
+                  element.classStatus != "Deposit" && element.classStatus != "Viewer"))
+          .toList();
+      List<int> listStdId = [];
+      for (var k in listStd) {
+        listStdId.add(k.userId);
+      }
       int temp1 = 0;
       int temp2 = 0;
       List<int> listLessonIds = [];
-      for (var j in list) {
-        if (j.timekeeping != 6) {
+
+      final List<StudentLessonModel> listStdLessonTemp =
+      list.where((e) => listStdId.contains(e.studentId)).toList();
+
+      for (var j in listStdLessonTemp) {
+        if (j.timekeeping < 5 && j.timekeeping != 0) {
           temp1++;
         }
-        if (j.hw != -2) {
+        if (j.hw != -2 && j.timekeeping != 0) {
           temp2++;
         }
         if (!listLessonIds.contains(j.lessonId)) {
           listLessonIds.add(j.lessonId);
         }
       }
-      rateAttendance.add(temp1 / (list.isNotEmpty ? list.length : 1));
-      rateSubmit.add(temp2 / (list.isNotEmpty ? list.length : 1));
+      var listTemp1 = listStdLessonTemp
+          .where((element) =>
+              element.timekeeping != 0 && listStdId.contains(element.studentId))
+          .toList();
+      var listTemp2 = listStdLessonTemp
+          .where((element) => element.timekeeping != 0 && listStdId.contains(element.studentId) && !listLessonException.contains(element.lessonId))
+          .toList();
+      rateAttendance.add(temp1 / (listTemp1.isNotEmpty ? listTemp1.length : 1));
+      rateSubmit.add(temp2 / (listTemp2.isNotEmpty ? listTemp2.length : 1));
       listLessonAvailable.add(listLessonIds.length);
 
       List<int> attendances = [], submits = [];
       for (var j in listLessonIds) {
-        int att = list.fold(
+        int att = listTemp1.fold(
             0,
             (pre, e) =>
                 pre +
@@ -1519,48 +1780,58 @@ class FireBaseProvider extends NetworkProvider {
                         e.timekeeping < 5)
                     ? 1
                     : 0));
-        int sub = list.fold(
+        int sub = listTemp2.fold(
             0,
             (pre, e) =>
                 pre +
                 ((e.classId == i && e.lessonId == j && e.hw > -2) ? 1 : 0));
         attendances.add(att);
-        submits.add(sub);
+        if(listLessonException.contains(j)){
+          submits.add(0);
+        }
+        else{
+          submits.add(sub);
+        }
       }
       rateAttendanceChart.add(attendances);
       rateSubmitChart.add(submits);
     }
 
     return TeacherHomeClass(
-      listClassIds: listClassIds,
-      listClassCodes: listClassCodes,
-      listClassStatus: listClassStatus,
-      listClassType: listClassType,
-      listBigTitle: listBigTitle,
-      rateAttendance: rateAttendance,
-      rateSubmit: rateSubmit,
-      rateAttendanceChart: rateAttendanceChart,
-      rateSubmitChart: rateSubmitChart,
-      listLessonCount: listLessonCount,
-      listLessonAvailable: listLessonAvailable,
-      listCourse: listAllCourse, listCourseId: courseIds,
-    );
+        listClassIds: listClassIds,
+        listClassCodes: listClassCodes,
+        listClassStatus: listClassStatus,
+        listClassType: listClassType,
+        listBigTitle: listBigTitle,
+        rateAttendance: rateAttendance,
+        rateSubmit: rateSubmit,
+        rateAttendanceChart: rateAttendanceChart,
+        rateSubmitChart: rateSubmitChart,
+        listLessonCount: listLessonCount,
+        listLessonAvailable: listLessonAvailable,
+        listCourse: listAllCourse,
+        listCourseId: courseIds,
+        colStd: colStd,
+        listClassDes: listClassDes,
+        listClassNote: listClassNote,
+        listLastLessonTitle: []);
   }
 
   @override
-  Future<List<CourseModel>> getAllCourseEnable() async{
-      var snapshot = await FireStoreDb.instance.getAllCourseEnable();
-      if (snapshot.docs.isEmpty) {
-        return [];
-      }
-      final courses =
-      snapshot.docs.map((e) => CourseModel.fromSnapshot(e)).toList();
-      return courses;
+  Future<List<CourseModel>> getAllCourseEnable() async {
+    var snapshot = await FireStoreDb.instance.getAllCourseEnable();
+    if (snapshot.docs.isEmpty) {
+      return [];
+    }
+    final courses =
+        snapshot.docs.map((e) => CourseModel.fromSnapshot(e)).toList();
+    return courses;
   }
 
   @override
   Future<bool> addNewCourse(CourseModel model) async {
-    final temp = await FireStoreDb.instance.getCourseByDocs("course_${model.courseId}");
+    final temp =
+        await FireStoreDb.instance.getCourseByDocs("course_${model.courseId}");
     if (!temp.exists) {
       await FireStoreDb.instance.addCourse(model);
       return true;
@@ -1578,38 +1849,125 @@ class FireBaseProvider extends NetworkProvider {
     final data = json.decode(jsonData);
     final FirebaseFirestore db = FirebaseFirestore.instance;
     for (final temp in data) {
-      try{
-        await db.collection('courses').doc('course_${temp['course_id']}').set(temp);
-      }
-      catch ( e) {
+      try {
+        await db
+            .collection('courses')
+            .doc('course_${temp['course_id']}')
+            .set(temp);
+      } catch (e) {
         debugPrint('=>>>>>error: $e');
       }
     }
   }
+
   @override
   Future<void> addLessonFromJson(String jsonData) async {
     final data = json.decode(jsonData);
     final FirebaseFirestore db = FirebaseFirestore.instance;
     for (final temp in data) {
-      try{
-        await db.collection('lessons').doc('lesson_${temp['lesson_id']}_course_${temp['course_id']}').set(temp);
-      }
-      catch ( e) {
+      try {
+        await db
+            .collection('lessons')
+            .doc('lesson_${temp['lesson_id']}_course_${temp['course_id']}')
+            .set(temp);
+      } catch (e) {
         debugPrint('=>>>>>error: $e');
       }
     }
   }
+
   @override
   Future<void> addTestFromJson(String jsonData) async {
     final data = json.decode(jsonData);
     final FirebaseFirestore db = FirebaseFirestore.instance;
     for (final temp in data) {
-      try{
-        await db.collection('test').doc('test_${temp['id']}_course_${temp['course_id']}').set(temp);
-      }
-      catch ( e) {
+      try {
+        await db
+            .collection('test')
+            .doc('test_${temp['id']}_course_${temp['course_id']}')
+            .set(temp);
+      } catch (e) {
         debugPrint('=>>>>>error: $e');
       }
     }
+  }
+
+  @override
+  Future<List<StudentClassModel>> getStudentClassByListId(List<int> ids) async {
+    if (ids.isEmpty) {
+      return [];
+    }
+    if (ids.length <= 10) {
+      return (await FireStoreDb.instance.getAllStudentClassByListIds(ids))
+          .docs
+          .map((e) => StudentClassModel.fromSnapshot(e))
+          .toList();
+    }
+    List<List<int>> subLists = [];
+    for (int i = 0; i < ids.length; i += 10) {
+      List<int> subList =
+          ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
+      subLists.add(subList);
+    }
+
+    List<StudentClassModel> list = [];
+    for (int i = 0; i < subLists.length; i++) {
+      list = list +
+          (await FireStoreDb.instance.getAllStudentClassByListIds(subLists[i]))
+              .docs
+              .map((e) => StudentClassModel.fromSnapshot(e))
+              .toList();
+    }
+
+    return list;
+  }
+
+  @override
+  Future<List<ClassModel>> getListClassForTeacher(List<int> ids) async {
+    if (ids.isEmpty) {
+      return [];
+    }
+    if (ids.length <= 10) {
+      return (await FireStoreDb.instance.getListClassAvailableForTeacher(ids))
+          .docs
+          .map((e) => ClassModel.fromSnapshot(e))
+          .toList();
+    }
+    List<List<int>> subLists = [];
+    for (int i = 0; i < ids.length; i += 10) {
+      List<int> subList =
+          ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
+      subLists.add(subList);
+    }
+
+    List<ClassModel> temp = [];
+    for (int i = 0; i < subLists.length; i++) {
+      temp = temp +
+          (await FireStoreDb.instance
+                  .getListClassAvailableForTeacher(subLists[i]))
+              .docs
+              .map((e) => ClassModel.fromSnapshot(e))
+              .toList();
+    }
+    List<ClassModel> list = [];
+    for (var i in temp) {
+      if (i.classStatus == "InProgress" ||
+          i.classStatus == "Completed" ||
+          i.classStatus == "Preparing") {
+        list.add(i);
+      }
+    }
+
+    return list;
+  }
+
+  @override
+  Future<List<LessonModel>> getListLessonNotBTVN() async {
+    final listLesson =
+    (await FireStoreDb.instance.getAllLessonNotBTVN())
+        .docs
+        .map((e) => LessonModel.fromSnapshot(e))
+        .toList();
+    return listLesson;
   }
 }
