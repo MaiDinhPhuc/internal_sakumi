@@ -27,6 +27,7 @@ import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
+import 'package:internal_sakumi/screens/teacher/teacher_screen2.dart';
 
 abstract class NetworkProvider {
 
@@ -44,6 +45,7 @@ abstract class NetworkProvider {
 
 
   Future<UserModel> getUser(String email);
+  Future<List<ClassModel2>> getClassByTeacherId(int teacherId);
 
   Future<UserModel> getUserById(int id);
 

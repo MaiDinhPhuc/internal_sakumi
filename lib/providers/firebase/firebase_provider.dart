@@ -35,6 +35,7 @@ import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/providers/network_provider.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
+import 'package:internal_sakumi/screens/teacher/teacher_screen2.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -46,6 +47,7 @@ class FireBaseProvider extends NetworkProvider {
 
   static final FireBaseProvider instance =
       FireBaseProvider._privateConstructor();
+
   @override
   Future<void> logInUser(
       TextEditingController email,
@@ -677,11 +679,12 @@ class FireBaseProvider extends NetworkProvider {
         await FireBaseProvider.instance.getListClassForTeacher(listIds);
     allClassNotRemove.sort((a, b) => a.classId.compareTo(b.classId));
 
-    final List<LessonModel> allLessonNotBTVN = await FireBaseProvider.instance.getListLessonNotBTVN();
+    final List<LessonModel> allLessonNotBTVN =
+        await FireBaseProvider.instance.getListLessonNotBTVN();
 
     List<int> listLessonException = [];
 
-    for(var i in allLessonNotBTVN){
+    for (var i in allLessonNotBTVN) {
       listLessonException.add(i.lessonId);
     }
 
@@ -764,12 +767,13 @@ class FireBaseProvider extends NetworkProvider {
 
       final List<StudentClassModel> listStd = listStdClass
           .where((element) =>
-      element.classId == i &&
-          (element.classStatus != "Remove" &&
-              element.classStatus != "Moved" &&
-              element.classStatus != "Retained" &&
-              element.classStatus != "Dropped" &&
-              element.classStatus != "Deposit" && element.classStatus != "Viewer"))
+              element.classId == i &&
+              (element.classStatus != "Remove" &&
+                  element.classStatus != "Moved" &&
+                  element.classStatus != "Retained" &&
+                  element.classStatus != "Dropped" &&
+                  element.classStatus != "Deposit" &&
+                  element.classStatus != "Viewer"))
           .toList();
       List<int> listStdId = [];
       for (var k in listStd) {
@@ -780,7 +784,7 @@ class FireBaseProvider extends NetworkProvider {
       List<int> listLessonIds = [];
 
       final List<StudentLessonModel> listStdLessonTemp =
-      list.where((e) => listStdId.contains(e.studentId)).toList();
+          list.where((e) => listStdId.contains(e.studentId)).toList();
 
       for (var j in listStdLessonTemp) {
         if (j.timekeeping < 5 && j.timekeeping != 0) {
@@ -795,10 +799,13 @@ class FireBaseProvider extends NetworkProvider {
       }
       var listTemp1 = listStdLessonTemp
           .where((element) =>
-      element.timekeeping != 0 && listStdId.contains(element.studentId))
+              element.timekeeping != 0 && listStdId.contains(element.studentId))
           .toList();
       var listTemp2 = listStdLessonTemp
-          .where((element) => element.timekeeping != 0 && listStdId.contains(element.studentId) && !listLessonException.contains(element.lessonId))
+          .where((element) =>
+              element.timekeeping != 0 &&
+              listStdId.contains(element.studentId) &&
+              !listLessonException.contains(element.lessonId))
           .toList();
       rateAttendance.add(temp1 / (listTemp1.isNotEmpty ? listTemp1.length : 1));
       rateSubmit.add(temp2 / (listTemp2.isNotEmpty ? listTemp2.length : 1));
@@ -808,24 +815,23 @@ class FireBaseProvider extends NetworkProvider {
       for (var j in listLessonIds) {
         int att = listTemp1.fold(
             0,
-                (pre, e) =>
-            pre +
+            (pre, e) =>
+                pre +
                 ((e.classId == i &&
-                    e.lessonId == j &&
-                    e.timekeeping > 0 &&
-                    e.timekeeping < 5)
+                        e.lessonId == j &&
+                        e.timekeeping > 0 &&
+                        e.timekeeping < 5)
                     ? 1
                     : 0));
         int sub = listTemp2.fold(
             0,
-                (pre, e) =>
-            pre +
+            (pre, e) =>
+                pre +
                 ((e.classId == i && e.lessonId == j && e.hw > -2) ? 1 : 0));
         attendances.add(att);
-        if(listLessonException.contains(j)){
+        if (listLessonException.contains(j)) {
           submits.add(0);
-        }
-        else{
+        } else {
           submits.add(sub);
         }
       }
@@ -876,12 +882,12 @@ class FireBaseProvider extends NetworkProvider {
     List<LessonModel> lessons =
         await FireBaseProvider.instance.getLessonsByLessonId(listLessonId);
 
-    List<LessonModel> lessonTemp = lessons.where((element) => element.btvn == 0).toList();
+    List<LessonModel> lessonTemp =
+        lessons.where((element) => element.btvn == 0).toList();
     List<int> lessonExceptionIds = [];
-    for(var i in lessonTemp){
+    for (var i in lessonTemp) {
       lessonExceptionIds.add(i.lessonId);
     }
-
 
     List<StudentModel> students =
         await FireBaseProvider.instance.getAllStudentInFoInClass(listStudentId);
@@ -893,8 +899,9 @@ class FireBaseProvider extends NetworkProvider {
     List<double> listHomework = [];
 
     for (var i in listLessonId) {
-      List<StudentLessonModel> stdLesson =
-          stdLessonsInClass.where((element) => element.lessonId == i && element.timekeeping != 0).toList();
+      List<StudentLessonModel> stdLesson = stdLessonsInClass
+          .where((element) => element.lessonId == i && element.timekeeping != 0)
+          .toList();
       double tempAtt = 0;
       double tempHw = 0;
       for (var j in stdLesson) {
@@ -911,12 +918,13 @@ class FireBaseProvider extends NetworkProvider {
     }
 
     int countStudent = 0;
-    for(var i in listStdClass){
-      if(i.classStatus != "Remove" &&
+    for (var i in listStdClass) {
+      if (i.classStatus != "Remove" &&
           i.classStatus != "Dropped" &&
           i.classStatus != "Deposit" &&
           i.classStatus != "Retained" &&
-          i.classStatus != "Moved" && i.classStatus != "Viewer"){
+          i.classStatus != "Moved" &&
+          i.classStatus != "Viewer") {
         countStudent++;
       }
     }
@@ -932,9 +940,9 @@ class FireBaseProvider extends NetworkProvider {
       List<String> spNote = [];
       for (var j in stdLesson) {
         listAttendance.add(j.timekeeping);
-        if(lessonExceptionIds.contains(j.lessonId)){
+        if (lessonExceptionIds.contains(j.lessonId)) {
           listHw.add(null);
-        }else{
+        } else {
           listHw.add(j.hw);
         }
         title.add(lessons
@@ -947,15 +955,17 @@ class FireBaseProvider extends NetworkProvider {
       int tempAttendance = 0;
       int tempHw = 0;
       int countHw = 0;
-      for(int j = 0; j<listAttendance.length; j++){
-        if (listAttendance[j] != 6 && listAttendance[j] != 5 && listAttendance[j]!=0 ) {
+      for (int j = 0; j < listAttendance.length; j++) {
+        if (listAttendance[j] != 6 &&
+            listAttendance[j] != 5 &&
+            listAttendance[j] != 0) {
           tempAttendance++;
         }
-        if(listAttendance[j]!=0){
+        if (listAttendance[j] != 0) {
           if (listHw[j] != -2 && listHw[j] != null) {
             tempHw++;
           }
-          if(listHw[j] != null){
+          if (listHw[j] != null) {
             countHw++;
           }
         }
@@ -991,11 +1001,12 @@ class FireBaseProvider extends NetworkProvider {
     double temp = 0;
 
     for (var i in listStdDetail) {
-      if(i["status"] != "Remove" &&
+      if (i["status"] != "Remove" &&
           i["status"] != "Dropped" &&
           i["status"] != "Deposit" &&
           i["status"] != "Retained" &&
-          i["status"] != "Moved"&&i["status"] != "Viewer"){
+          i["status"] != "Moved" &&
+          i["status"] != "Viewer") {
         temp += i["hwPercent"];
       }
     }
@@ -1008,6 +1019,26 @@ class FireBaseProvider extends NetworkProvider {
         listAttendance: listAttendance,
         listHomework: listHomework,
         listStdDetail: listStdDetail);
+  }
+
+  @override
+  Future<List<ClassModel2>> getClassByTeacherId(int teacherId) async {
+    var teacherClassIDs =
+        (await FireStoreDb.instance.getTeacherClassById('user_id', teacherId))
+            .docs
+            .map((e) => e.data()['class_id'] as int)
+            .toList();
+    var classes =
+        await FireBaseProvider.instance.getListClassForTeacher(teacherClassIDs);
+    debugPrint("ClassListCubit loading ===> ${DateFormat('yyyy-MM-dd hh:mm:ss.SSS').format(DateTime.now())}");
+
+    // var courses =
+    // await FireBaseProvider.instance.getCourseByListId(classes.map((e) => e.courseId).toList());
+
+
+    return ClassModel2.make(classes, []);
+
+
   }
 
   @override
@@ -1049,10 +1080,11 @@ class FireBaseProvider extends NetworkProvider {
     List<LessonModel> lessons = await FireBaseProvider.instance
         .getLessonsByCourseId(classModel.courseId);
 
-    List<LessonModel> lessonNotBTVN = lessons.where((element) => element.btvn == 0).toList();
+    List<LessonModel> lessonNotBTVN =
+        lessons.where((element) => element.btvn == 0).toList();
 
     List<int> lessonNotBTVNIds = [];
-    for(var i in lessonNotBTVN){
+    for (var i in lessonNotBTVN) {
       lessonNotBTVNIds.add(i.lessonId);
     }
 
@@ -1135,13 +1167,17 @@ class FireBaseProvider extends NetworkProvider {
 
     List<StudentClassModel> listStdClass = await FireBaseProvider.instance
         .getStudentClassInClassNotRemove(classId);
-    List<StudentClassModel> listStdClassTemp = listStdClass.where((i) => i.classStatus != "Remove" &&
-        i.classStatus != "Dropped" &&
-        i.classStatus != "Deposit" &&
-        i.classStatus != "Retained" &&
-        i.classStatus != "Moved" && i.classStatus == "Viewer").toList();
+    List<StudentClassModel> listStdClassTemp = listStdClass
+        .where((i) =>
+            i.classStatus != "Remove" &&
+            i.classStatus != "Dropped" &&
+            i.classStatus != "Deposit" &&
+            i.classStatus != "Retained" &&
+            i.classStatus != "Moved" &&
+            i.classStatus == "Viewer")
+        .toList();
     List<int> sdtIdsTemp = [];
-    for(var i in listStdClassTemp){
+    for (var i in listStdClassTemp) {
       sdtIdsTemp.add(i.userId);
     }
     List<int> studentIds = [];
@@ -1179,7 +1215,10 @@ class FireBaseProvider extends NetworkProvider {
             .where((element) => element.lessonId == i.lessonId)
             .toList();
         List<StudentLessonModel> tempList = listStdLesson
-            .where((element) => element.lessonId == i.lessonId && element.timekeeping !=0 && !sdtIdsTemp.contains(element.studentId))
+            .where((element) =>
+                element.lessonId == i.lessonId &&
+                element.timekeeping != 0 &&
+                !sdtIdsTemp.contains(element.studentId))
             .toList();
         double tempAttendance = 0;
         double tempHw = 0;
@@ -1195,27 +1234,27 @@ class FireBaseProvider extends NetworkProvider {
 
         if (tempList.isEmpty) {
           status = null;
-        }else{
+        } else {
           int submitCount = 0;
           int checkCount = 0;
           int notSubmitCount = 0;
-          for(var k in tempList){
-            if(k.hw != -2){
+          for (var k in tempList) {
+            if (k.hw != -2) {
               submitCount++;
             }
-            if(k.hw >-1){
+            if (k.hw > -1) {
               checkCount++;
             }
-            if(k.hw == -2){
+            if (k.hw == -2) {
               notSubmitCount++;
             }
           }
-          if(checkCount == submitCount){
+          if (checkCount == submitCount) {
             status = true;
-          }else{
+          } else {
             status = false;
           }
-          if(notSubmitCount == tempList.length){
+          if (notSubmitCount == tempList.length) {
             status = null;
           }
         }
@@ -1233,22 +1272,26 @@ class FireBaseProvider extends NetworkProvider {
             attendanceDetail.add(list
                 .firstWhere((element) => element.studentId == k.userId)
                 .timekeeping);
-            hwDetail.add(lessonNotBTVNIds.contains(i.lessonId)?null:
-                list.firstWhere((element) => element.studentId == k.userId).hw);
+            hwDetail.add(lessonNotBTVNIds.contains(i.lessonId)
+                ? null
+                : list
+                    .firstWhere((element) => element.studentId == k.userId)
+                    .hw);
             noteDetail.add(list
                 .firstWhere((element) => element.studentId == k.userId)
                 .teacherNote);
           } else {
             attendanceDetail.add(null);
-            hwDetail.add(lessonNotBTVNIds.contains(i.lessonId)?null:-2);
+            hwDetail.add(lessonNotBTVNIds.contains(i.lessonId) ? null : -2);
             noteDetail.add("");
           }
         }
 
-        listAttendance.add(tempAttendance / (tempList.isEmpty ? 1 : tempList.length));
-        if(lessonNotBTVNIds.contains(i.lessonId)){
+        listAttendance
+            .add(tempAttendance / (tempList.isEmpty ? 1 : tempList.length));
+        if (lessonNotBTVNIds.contains(i.lessonId)) {
           listHw.add(null);
-        }else{
+        } else {
           listHw.add(tempHw / (tempList.isEmpty ? 1 : tempList.length));
         }
 
@@ -1331,15 +1374,15 @@ class FireBaseProvider extends NetworkProvider {
       listTestIds.add(i.id);
     }
 
-    List<StudentTestModel> listStudentTest = await FireBaseProvider.instance
-        .getListStudentTestByIDs(listTestIds);
+    List<StudentTestModel> listStudentTest =
+        await FireBaseProvider.instance.getListStudentTestByIDs(listTestIds);
 
-
-    List<StudentTestModel> listStdTest = listStudentTest.where((element) => element.classId == classId).toList();
+    List<StudentTestModel> listStdTest =
+        listStudentTest.where((element) => element.classId == classId).toList();
     List<List<StudentTestModel>> listTestState = [];
     for (var i in listTestIds) {
       List<StudentTestModel> listTemp =
-        listStdTest.where((element) => element.testID == i).toList();
+          listStdTest.where((element) => element.testID == i).toList();
       listTestState.add(listTemp);
     }
     List<StudentClassModel> listStudentClass =
@@ -1350,14 +1393,14 @@ class FireBaseProvider extends NetworkProvider {
           element.classStatus != "Moved" &&
           element.classStatus != "Retained" &&
           element.classStatus != "Dropped" &&
-          element.classStatus != "Deposit" && element.classStatus != "Viewer") {
+          element.classStatus != "Deposit" &&
+          element.classStatus != "Viewer") {
         listStudentIds.add(element.userId);
       }
     }
 
     List<StudentModel> listStudents = await FireBaseProvider.instance
         .getAllStudentInFoInClass(listStudentIds);
-
 
     List<double> listSubmit = [];
     List<double> listGPA = [];
@@ -1394,7 +1437,7 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<List<StudentTestModel>> getListStudentTestByIDs(
-       List<int> listTestIds) async {
+      List<int> listTestIds) async {
     if (listTestIds.isEmpty) {
       return [];
     }
@@ -1644,15 +1687,17 @@ class FireBaseProvider extends NetworkProvider {
             .toList();
     allClassNotRemove.sort((a, b) => a.classId.compareTo(b.classId));
 
-    final List<LessonModel> allLessonNotBTVN = await FireBaseProvider.instance.getListLessonNotBTVN();
+    final List<LessonModel> allLessonNotBTVN =
+        await FireBaseProvider.instance.getListLessonNotBTVN();
 
     List<int> listLessonException = [];
 
-    for(var i in allLessonNotBTVN){
+    for (var i in allLessonNotBTVN) {
       listLessonException.add(i.lessonId);
     }
 
-    final List<CourseModel> listAllCourse = await FireBaseProvider.instance.getAllCourse();
+    final List<CourseModel> listAllCourse =
+        await FireBaseProvider.instance.getAllCourse();
 
     // final List<CourseModel> listAllCourse = await FireBaseProvider.instance.getAllCourseEnable();
     // List<int> courseIdsTemp = [];
@@ -1746,7 +1791,8 @@ class FireBaseProvider extends NetworkProvider {
                   element.classStatus != "Moved" &&
                   element.classStatus != "Retained" &&
                   element.classStatus != "Dropped" &&
-                  element.classStatus != "Deposit" && element.classStatus != "Viewer"))
+                  element.classStatus != "Deposit" &&
+                  element.classStatus != "Viewer"))
           .toList();
       List<int> listStdId = [];
       for (var k in listStd) {
@@ -1757,7 +1803,7 @@ class FireBaseProvider extends NetworkProvider {
       List<int> listLessonIds = [];
 
       final List<StudentLessonModel> listStdLessonTemp =
-      list.where((e) => listStdId.contains(e.studentId)).toList();
+          list.where((e) => listStdId.contains(e.studentId)).toList();
 
       for (var j in listStdLessonTemp) {
         if (j.timekeeping < 5 && j.timekeeping != 0) {
@@ -1775,7 +1821,10 @@ class FireBaseProvider extends NetworkProvider {
               element.timekeeping != 0 && listStdId.contains(element.studentId))
           .toList();
       var listTemp2 = listStdLessonTemp
-          .where((element) => element.timekeeping != 0 && listStdId.contains(element.studentId) && !listLessonException.contains(element.lessonId))
+          .where((element) =>
+              element.timekeeping != 0 &&
+              listStdId.contains(element.studentId) &&
+              !listLessonException.contains(element.lessonId))
           .toList();
       rateAttendance.add(temp1 / (listTemp1.isNotEmpty ? listTemp1.length : 1));
       rateSubmit.add(temp2 / (listTemp2.isNotEmpty ? listTemp2.length : 1));
@@ -1799,10 +1848,9 @@ class FireBaseProvider extends NetworkProvider {
                 pre +
                 ((e.classId == i && e.lessonId == j && e.hw > -2) ? 1 : 0));
         attendances.add(att);
-        if(listLessonException.contains(j)){
+        if (listLessonException.contains(j)) {
           submits.add(0);
-        }
-        else{
+        } else {
           submits.add(sub);
         }
       }
@@ -1976,8 +2024,7 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<List<LessonModel>> getListLessonNotBTVN() async {
-    final listLesson =
-    (await FireStoreDb.instance.getAllLessonNotBTVN())
+    final listLesson = (await FireStoreDb.instance.getAllLessonNotBTVN())
         .docs
         .map((e) => LessonModel.fromSnapshot(e))
         .toList();

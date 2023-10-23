@@ -17,6 +17,7 @@ import 'package:internal_sakumi/screens/teacher/detail_lesson_screen.dart';
 import 'package:internal_sakumi/screens/teacher/tab/class_grading_tab.dart';
 import 'package:internal_sakumi/screens/teacher/tab/list_lesson_tab.dart';
 import 'package:internal_sakumi/screens/teacher/teacher_screen.dart';
+import 'package:internal_sakumi/screens/teacher/teacher_screen2.dart';
 
 import 'screens/teacher/teacher_profile.dart';
 
@@ -110,7 +111,7 @@ var loginScreenHandler =
 
 var teacherHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return const TeacherScreen();
+  return  TeacherScreen2();
 });
 
 var adminHandler =

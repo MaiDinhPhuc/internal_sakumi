@@ -22,6 +22,9 @@ class TeacherScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint("=============> TeacherScreen build ");
+
     return BlocBuilder<AppBarInfoTeacherCubit, TeacherModel?>(
       bloc: context.read<AppBarInfoTeacherCubit>()..load(),
       builder: (context, s) {
