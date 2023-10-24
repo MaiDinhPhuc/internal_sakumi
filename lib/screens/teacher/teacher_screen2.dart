@@ -9,6 +9,7 @@ import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layou
 import 'package:internal_sakumi/features/teacher/list_class/teacher_cubit.dart';
 import 'package:internal_sakumi/features/teacher/profile/app_bar_info_teacher_cubit.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/welcome_teacher_appbar.dart';
+import 'package:internal_sakumi/main.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/home_teacher/class_statistic_model.dart';
@@ -65,14 +66,17 @@ class OverViewCubit extends Cubit<int> {
 }
 
 class TeacherScreen2 extends StatelessWidget {
-  TeacherScreen2({Key? key})
-      : cubit = ClassListCubit(),
+  const TeacherScreen2({Key? key}):
+      // : cubit = ClassListCubit(),
         super(key: key);
 
-  final ClassListCubit cubit;
+  // final ClassListCubit cubit;
 
   @override
   Widget build(BuildContext context) {
+
+    var dataController = BlocProvider.of<TeacherDataCubit>(context);
+
     return Scaffold(
         body: Column(
       children: [
@@ -122,15 +126,14 @@ class TeacherScreen2 extends StatelessWidget {
                             fontSize: Resizable.font(context, 17),
                             color: greyColor.shade600)),
                   )),
-              BlocBuilder<ClassListCubit, List<ClassModel2>?>(
-                  bloc: cubit,
-                  builder: (context, classes) => classes == null
+              BlocBuilder<TeacherDataCubit, int>(
+                  builder: (context, _) => dataController.classes == null
                       ? const Center(
                           child: CircularProgressIndicator(),
                         )
-                      : classes.isNotEmpty
+                      : dataController.classes!.isNotEmpty
                           ? Column(children: [
-                              ...classes
+                              ...dataController.classes!
                                   .map((e) => Padding(
                                       padding: EdgeInsets.symmetric(
                                           horizontal:

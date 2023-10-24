@@ -102,7 +102,7 @@ var classScreenHandler =
 });
 var splashScreenHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return const SplashScreen();
+  return  SplashScreen();
 });
 var loginScreenHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {

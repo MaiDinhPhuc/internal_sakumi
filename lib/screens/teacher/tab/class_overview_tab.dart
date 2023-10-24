@@ -9,6 +9,7 @@ import 'package:internal_sakumi/features/teacher/overview/collapse_overview_stud
 import 'package:internal_sakumi/features/teacher/overview/expanded_overview_student_item.dart';
 import 'package:internal_sakumi/features/teacher/overview/overview_chart.dart';
 import 'package:internal_sakumi/features/teacher/overview/statistic_class_view.dart';
+import 'package:internal_sakumi/main.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
 
@@ -20,6 +21,13 @@ class ClassOverViewTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    var dataController = BlocProvider.of<TeacherDataCubit>(context);
+
+
+    debugPrint("===============================> ${dataController.classes?.length}");
+
+
     return BlocProvider(
         create: (context) => ClassOverviewCubit()..loadFirst(),
         child: Scaffold(

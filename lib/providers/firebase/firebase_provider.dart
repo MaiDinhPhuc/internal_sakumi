@@ -9,6 +9,7 @@ import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/features/teacher/profile/app_bar_info_teacher_cubit.dart';
+import 'package:internal_sakumi/main.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
@@ -96,6 +97,10 @@ class FireBaseProvider extends NetworkProvider {
             Navigator.pop(context);
           }
           await context.read<AppBarInfoTeacherCubit>().load();
+          // if (context.mounted) {
+          //   BlocProvider.of<TeacherDataCubit>(context).loadClass();
+          // }
+
           Navigator.pushReplacementNamed(context, Routes.teacher);
         }
         if (user.role == "master") {
@@ -175,6 +180,7 @@ class FireBaseProvider extends NetworkProvider {
           Navigator.pushReplacementNamed(context, Routes.admin);
         }
         if (user.role == "teacher") {
+
           Navigator.pushReplacementNamed(context, Routes.teacher);
         }
         if (user.role == "master") {
@@ -338,7 +344,6 @@ class FireBaseProvider extends NetworkProvider {
         .map((e) => StudentClassModel.fromSnapshot(e))
         .toList();
   }
-
 
   @override
   Future<List<StudentLessonModel>> getAllStudentLessonsInClass(
@@ -859,8 +864,8 @@ class FireBaseProvider extends NetworkProvider {
         await FireBaseProvider.instance.getClassById(classId);
     List<StudentLessonModel> stdLessonsInClass =
         await FireBaseProvider.instance.getAllStudentLessonsInClass(classId);
-    List<StudentClassModel> listStdClass = await FireBaseProvider.instance
-        .getStudentClassInClass(classId);
+    List<StudentClassModel> listStdClass =
+        await FireBaseProvider.instance.getStudentClassInClass(classId);
     listStdClass.sort((a, b) => a.userId.compareTo(b.userId));
     List<int> listLessonId = [];
     List<int> listStudentId = [];
@@ -1024,7 +1029,8 @@ class FireBaseProvider extends NetworkProvider {
             .toList();
     var classes =
         await FireBaseProvider.instance.getListClassForTeacher(teacherClassIDs);
-    debugPrint("ClassListCubit loading ===> ${DateFormat('yyyy-MM-dd hh:mm:ss.SSS').format(DateTime.now())}");
+    debugPrint(
+        "ClassListCubit loading ===> ${DateFormat('yyyy-MM-dd hh:mm:ss.SSS').format(DateTime.now())}");
 
     return ClassModel2.make(classes);
   }
@@ -1153,8 +1159,8 @@ class FireBaseProvider extends NetworkProvider {
       }
     }
 
-    List<StudentClassModel> listStdClass = await FireBaseProvider.instance
-        .getStudentClassInClass(classId);
+    List<StudentClassModel> listStdClass =
+        await FireBaseProvider.instance.getStudentClassInClass(classId);
     List<StudentClassModel> listStdClassTemp = listStdClass
         .where((i) =>
             i.classStatus != "Remove" &&
@@ -1667,12 +1673,13 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<int> getCountWithCondition(String tableName, String field, dynamic condition) async {
-    int count = (await FireStoreDb.instance.getCountWithCondition(tableName, field,condition)).count;
+  Future<int> getCountWithCondition(
+      String tableName, String field, dynamic condition) async {
+    int count = (await FireStoreDb.instance
+            .getCountWithCondition(tableName, field, condition))
+        .count;
     return count;
   }
-
-
 
   @override
   Future<TeacherHomeClass> getDataForManageClassTab() async {
@@ -2029,18 +2036,19 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<ClassStatisticModel> getClassStatistic(int classId) async {
-    var stds =
-    (await FireStoreDb.instance.getStudentClassValid(classId))
+    var stds = (await FireStoreDb.instance.getStudentClassValid(classId))
         .docs
         .map((e) => e.data()['user_id'] as int)
         .toList();
     var stdLessons =
-    await FireBaseProvider.instance.getStudentLessons(classId, stds);
-    var listStatus = (await FireStoreDb.instance.getStudentClassInClass(classId))
-        .docs
-        .map((e) => e.data()['class_status'] as String)
-        .toList();
-    List<LessonResultModel> listLessonResult = (await FireBaseProvider.instance.getLessonResultByClassId(classId));
+        await FireBaseProvider.instance.getStudentLessons(classId, stds);
+    var listStatus =
+        (await FireStoreDb.instance.getStudentClassInClass(classId))
+            .docs
+            .map((e) => e.data()['class_status'] as String)
+            .toList();
+    List<LessonResultModel> listLessonResult =
+        (await FireBaseProvider.instance.getLessonResultByClassId(classId));
     listLessonResult.sort((a, b) {
       DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm:ss');
       var tempA = a.date;
@@ -2057,12 +2065,13 @@ class FireBaseProvider extends NetworkProvider {
     });
 
     List<int> listLessonId = [];
-    for(var i in listLessonResult){
-      if(listLessonId.contains(i.lessonId) == false){
+    for (var i in listLessonResult) {
+      if (listLessonId.contains(i.lessonId) == false) {
         listLessonId.add(i.lessonId);
       }
     }
 
-    return ClassStatisticModel.make(stdLessons,listStatus, classId, listLessonId);
+    return ClassStatisticModel.make(
+        stdLessons, listStatus, classId, listLessonId);
   }
 }

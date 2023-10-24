@@ -8,11 +8,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/resizable.dart';
 
 class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
+  bool isInitialized = false;
+
+  SplashScreen({super.key}) {
+    debugPrint("=================================================> SplashScreen");
+
+  }
 
   @override
   Widget build(BuildContext context) {
-    applicationInitialize(context);
+
+
+    if (!isInitialized) {
+      isInitialized = true;
+      applicationInitialize(context);
+    }
     return Scaffold(
         backgroundColor: Colors.white,
         body: Center(
@@ -43,25 +53,23 @@ class SplashScreen extends StatelessWidget {
       }
     }
   }
-
 }
-extension NavigatorStateExtension on NavigatorState {
 
-  void pushNamedIfNotCurrent( String routeName, { Object? arguments} ) {
+extension NavigatorStateExtension on NavigatorState {
+  void pushNamedIfNotCurrent(String routeName, {Object? arguments}) {
     if (!isCurrent(routeName)) {
-      pushNamed( routeName, arguments: arguments );
+      pushNamed(routeName, arguments: arguments);
     }
   }
 
-  bool isCurrent( String routeName ) {
+  bool isCurrent(String routeName) {
     bool isCurrent = false;
-    popUntil( (route) {
+    popUntil((route) {
       if (route.settings.name == routeName) {
         isCurrent = true;
       }
       return true;
-    } );
+    });
     return isCurrent;
   }
-
 }
