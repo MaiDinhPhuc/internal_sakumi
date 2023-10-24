@@ -204,14 +204,14 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getStudentClassInClassNotRemove(int classId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getStudentClassValid(int classId) async {
     final snapshot = await db
         .collection("student_class")
         .where('class_id', isEqualTo: classId)
-        .where("class_status", isNotEqualTo: "Remove")
+        .where("class_status", whereNotIn: ["Remove","Dropped","Deposit","Retained","Moved","Viewer"])
         .get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassInClassNotRemove $classId ${snapshot.size}");
+    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassValid $classId ${snapshot.size}");
 
     // debugPrint("==========>get db from \"student_class\" : ${snapshot.docs.length}");
     return snapshot;
@@ -657,7 +657,7 @@ class FireStoreDb {
     final snapshot = await db
         .collection("class")
         .where("class_id", whereIn: listIds)
-        //.where("class_status", whereIn: ["InProgress", "Completed","Preparing"])
+        .where("class_status", isNotEqualTo: "Remove")
         .get();
     // debugPrint("==========>get db from \"class\": ${snapshot.docs.length}");
 
@@ -740,6 +740,14 @@ class FireStoreDb {
     debugPrint("==========>get count db from \"$tableName\"");
 
     debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCount $tableName");
+
+    return count;
+  }
+
+
+  Future<AggregateQuerySnapshot> getCountWithCondition(String tableName, String field, dynamic condition) async {
+    final count = await db.collection(tableName).where(field, isEqualTo: condition).count().get();
+    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========>get count db from \"$tableName\" with $field equal ${condition.toString()}");
 
     return count;
   }

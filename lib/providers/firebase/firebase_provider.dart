@@ -16,6 +16,8 @@ import 'package:internal_sakumi/model/class_overview_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/detail_grading_data_model.dart';
 import 'package:internal_sakumi/model/grading_tab_data_model.dart';
+import 'package:internal_sakumi/model/home_teacher/class_statistic_model.dart';
+import 'package:internal_sakumi/model/home_teacher/class_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/list_lesson_data_model.dart';
@@ -337,14 +339,6 @@ class FireBaseProvider extends NetworkProvider {
         .toList();
   }
 
-  @override
-  Future<List<StudentClassModel>> getStudentClassInClassNotRemove(
-      int classId) async {
-    return (await FireStoreDb.instance.getStudentClassInClassNotRemove(classId))
-        .docs
-        .map((e) => StudentClassModel.fromSnapshot(e))
-        .toList();
-  }
 
   @override
   Future<List<StudentLessonModel>> getAllStudentLessonsInClass(
@@ -866,7 +860,7 @@ class FireBaseProvider extends NetworkProvider {
     List<StudentLessonModel> stdLessonsInClass =
         await FireBaseProvider.instance.getAllStudentLessonsInClass(classId);
     List<StudentClassModel> listStdClass = await FireBaseProvider.instance
-        .getStudentClassInClassNotRemove(classId);
+        .getStudentClassInClass(classId);
     listStdClass.sort((a, b) => a.userId.compareTo(b.userId));
     List<int> listLessonId = [];
     List<int> listStudentId = [];
@@ -1032,13 +1026,7 @@ class FireBaseProvider extends NetworkProvider {
         await FireBaseProvider.instance.getListClassForTeacher(teacherClassIDs);
     debugPrint("ClassListCubit loading ===> ${DateFormat('yyyy-MM-dd hh:mm:ss.SSS').format(DateTime.now())}");
 
-    // var courses =
-    // await FireBaseProvider.instance.getCourseByListId(classes.map((e) => e.courseId).toList());
-
-
-    return ClassModel2.make(classes, []);
-
-
+    return ClassModel2.make(classes);
   }
 
   @override
@@ -1166,7 +1154,7 @@ class FireBaseProvider extends NetworkProvider {
     }
 
     List<StudentClassModel> listStdClass = await FireBaseProvider.instance
-        .getStudentClassInClassNotRemove(classId);
+        .getStudentClassInClass(classId);
     List<StudentClassModel> listStdClassTemp = listStdClass
         .where((i) =>
             i.classStatus != "Remove" &&
@@ -1679,6 +1667,14 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<int> getCountWithCondition(String tableName, String field, dynamic condition) async {
+    int count = (await FireStoreDb.instance.getCountWithCondition(tableName, field,condition)).count;
+    return count;
+  }
+
+
+
+  @override
   Future<TeacherHomeClass> getDataForManageClassTab() async {
     final List<ClassModel> allClassNotRemove =
         (await FireStoreDb.instance.getListClassNotRemove())
@@ -2029,5 +2025,44 @@ class FireBaseProvider extends NetworkProvider {
         .map((e) => LessonModel.fromSnapshot(e))
         .toList();
     return listLesson;
+  }
+
+  @override
+  Future<ClassStatisticModel> getClassStatistic(int classId) async {
+    var stds =
+    (await FireStoreDb.instance.getStudentClassValid(classId))
+        .docs
+        .map((e) => e.data()['user_id'] as int)
+        .toList();
+    var stdLessons =
+    await FireBaseProvider.instance.getStudentLessons(classId, stds);
+    var listStatus = (await FireStoreDb.instance.getStudentClassInClass(classId))
+        .docs
+        .map((e) => e.data()['class_status'] as String)
+        .toList();
+    List<LessonResultModel> listLessonResult = (await FireBaseProvider.instance.getLessonResultByClassId(classId));
+    listLessonResult.sort((a, b) {
+      DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm:ss');
+      var tempA = a.date;
+      var tempB = b.date;
+      if (tempA!.length == 10) {
+        tempA += ' 00:00:00';
+      }
+      if (tempB!.length == 10) {
+        tempB += ' 00:00:00';
+      }
+      final dateA = dateFormat.parse(tempA);
+      final dateB = dateFormat.parse(tempB);
+      return dateA.compareTo(dateB);
+    });
+
+    List<int> listLessonId = [];
+    for(var i in listLessonResult){
+      if(listLessonId.contains(i.lessonId) == false){
+        listLessonId.add(i.lessonId);
+      }
+    }
+
+    return ClassStatisticModel.make(stdLessons,listStatus, classId, listLessonId);
   }
 }

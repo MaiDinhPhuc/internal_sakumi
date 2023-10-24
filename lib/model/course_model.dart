@@ -35,7 +35,7 @@ class CourseModel {
     final data = document.data()!;
     return CourseModel(
         courseId: data['course_id'],
-        description: data['description'],
+        description: data['description']??"",
         lessonCount: data['lesson_count'],
         level: data['level'],
         termId: data['term_id'],

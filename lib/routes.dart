@@ -111,7 +111,7 @@ var loginScreenHandler =
 
 var teacherHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return  TeacherScreen2();
+  return TeacherScreen2();
 });
 
 var adminHandler =
