@@ -5,6 +5,7 @@ import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/teacher/cubit/teacher_data_cubit.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
 import 'package:internal_sakumi/features/teacher/list_class/teacher_cubit.dart';
 import 'package:internal_sakumi/features/teacher/profile/app_bar_info_teacher_cubit.dart';
@@ -66,11 +67,7 @@ class OverViewCubit extends Cubit<int> {
 }
 
 class TeacherScreen2 extends StatelessWidget {
-  const TeacherScreen2({Key? key}):
-      // : cubit = ClassListCubit(),
-        super(key: key);
-
-  // final ClassListCubit cubit;
+  const TeacherScreen2({Key? key}):super(key: key);
 
   @override
   Widget build(BuildContext context) {
