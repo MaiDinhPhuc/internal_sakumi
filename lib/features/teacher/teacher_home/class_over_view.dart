@@ -5,14 +5,14 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
 import 'package:internal_sakumi/model/course_model.dart';
-import 'package:internal_sakumi/model/home_teacher/class_model.dart';
+import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/screens/teacher/teacher_screen2.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class ClassOverview extends StatelessWidget {
-  final ClassModel2 classModel;
+  final ClassModel2 model;
   final String courseTitle;
   final double? lessonPercent;
   final String lessonCountTitle;
@@ -20,7 +20,7 @@ class ClassOverview extends StatelessWidget {
 
   const ClassOverview(
       {super.key,
-      required this.classModel,
+      required this.model,
       required this.courseTitle,
       required this.lessonPercent,
       required this.lessonCountTitle,
@@ -30,7 +30,7 @@ class ClassOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClassItemRowLayout(
-        widgetClassCode: AutoSizeText(classModel.classCode.toUpperCase(),
+        widgetClassCode: AutoSizeText(model.classModel.classCode.toUpperCase(),
             style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: Resizable.font(context, 20))),

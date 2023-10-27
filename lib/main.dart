@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
-import 'package:internal_sakumi/model/home_teacher/class_model.dart';
+import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';

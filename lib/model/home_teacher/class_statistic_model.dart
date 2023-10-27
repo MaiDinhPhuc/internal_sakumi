@@ -7,23 +7,27 @@ class ClassStatisticModel {
   final List<int> attChart, hwChart;
 
   static make(List<StudentLessonModel> stdLessons, List<String> listStatus,
-      int classId, List<int> listLessonId) {
+      int classId, List<int> listLessonId, List<int> listLessonException) {
     double attendancePercent = 0;
     double hwPercent = 0;
     int count =
         stdLessons.where((element) => element.timekeeping != 0).toList().length;
+    int countHw = 0;
     double attendanceTemp = 0;
     double hwPercentTemp = 0;
     for (var i in stdLessons) {
-      if (i.timekeeping < 5 && i.timekeeping > 0) {
+      if (i.timekeeping < 5) {
         attendanceTemp++;
+      }
+      if(listLessonException.contains(i.lessonId) == false){
+        countHw++;
         if (i.hw != -2) {
           hwPercentTemp++;
         }
       }
     }
     attendancePercent = attendanceTemp / (count == 0 ? 1 : count);
-    hwPercent = hwPercentTemp / (count == 0 ? 1 : count);
+    hwPercent = hwPercentTemp / (countHw == 0 ? 1 : countHw);
 
     double col1 = 0;
     double col2 = 0;
@@ -55,17 +59,16 @@ class ClassStatisticModel {
 
     List<int> attChart = [];
     List<int> hwChart = [];
-
     for(var i in listLessonId){
-      List<StudentLessonModel> listTemp = stdLessons.where((e) => e.lessonId == i).toList();
+      List<StudentLessonModel> listTemp = stdLessons.where((e) => e.lessonId == i && e.timekeeping != 0).toList();
       int att = 0;
       int hw = 0;
-      for(var j in listTemp){
-        if(j.timekeeping < 5 && j.timekeeping>0){
+      for (var j in listTemp) {
+        if (j.timekeeping < 5) {
           att++;
-          if(j.hw!=-2){
-            hw++;
-          }
+        }
+        if (j.hw != -2) {
+          hw++;
         }
       }
       attChart.add(att);

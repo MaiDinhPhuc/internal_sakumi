@@ -137,6 +137,16 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getLessonsResultsByListClassIds(List<int> ids) async {
+    final snapshot =
+    await db.collection("lesson_result").where("class_id", whereIn: ids).get();
+    // debugPrint("==========>get db from \"courses\" : ${snapshot.docs.length}");
+
+    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsResultsByListClassIds $ids ${snapshot.size}");
+
+
+    return snapshot;
+  }
   Future<QuerySnapshot<Map<String, dynamic>>> getLessonResultByClassId(int id) async {
     final snapshot = await db
         .collection('lesson_result')
@@ -934,6 +944,16 @@ class FireStoreDb {
     // debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
 
     debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsByLessonId $ids ${snapshot.size}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getLessonsByListCourseId(List<int> ids) async {
+    final snapshot =
+    await db.collection("lessons").where("course_id", whereIn: ids).get();
+    // debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
+
+    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsByListCourseId $ids ${snapshot.size}");
 
     return snapshot;
   }

@@ -14,10 +14,6 @@ class LessonTeachingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    // var cubit = BlocProvider.of<SessionCubit>(context);
-    // debugPrint('===============> LessonTeachingView 1${cubit.listStudent == null }');
-    // debugPrint('===============> LessonTeachingView 2${ cubit.listStudentLesson == null}');
     return BlocBuilder<SessionCubit, int>(builder: (c, _){
       var cubit = BlocProvider.of<SessionCubit>(c);
       return cubit.listStudent == null || cubit.listStudentLesson == null

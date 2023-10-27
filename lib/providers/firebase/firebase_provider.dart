@@ -18,7 +18,7 @@ import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/detail_grading_data_model.dart';
 import 'package:internal_sakumi/model/grading_tab_data_model.dart';
 import 'package:internal_sakumi/model/home_teacher/class_statistic_model.dart';
-import 'package:internal_sakumi/model/home_teacher/class_model.dart';
+import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/list_lesson_data_model.dart';
@@ -180,7 +180,6 @@ class FireBaseProvider extends NetworkProvider {
           Navigator.pushReplacementNamed(context, Routes.admin);
         }
         if (user.role == "teacher") {
-
           Navigator.pushReplacementNamed(context, Routes.teacher);
         }
         if (user.role == "master") {
@@ -270,6 +269,70 @@ class FireBaseProvider extends NetworkProvider {
           (await FireStoreDb.instance.getLessonsByLessonId(subLists[i]))
               .docs
               .map((e) => LessonModel.fromSnapshot(e))
+              .toList();
+    }
+
+    return list;
+  }
+
+  @override
+  Future<List<LessonModel>> getLessonsByListCourseId(List<int> ids) async {
+    if (ids.isEmpty) {
+      return [];
+    }
+    if (ids.length <= 10) {
+      return (await FireStoreDb.instance.getLessonsByListCourseId(ids))
+          .docs
+          .map((e) => LessonModel.fromSnapshot(e))
+          .toList();
+    }
+
+    List<List<int>> subLists = [];
+    for (int i = 0; i < ids.length; i += 10) {
+      List<int> subList =
+          ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
+      subLists.add(subList);
+    }
+
+    List<LessonModel> list = [];
+    for (int i = 0; i < subLists.length; i++) {
+      list = list +
+          (await FireStoreDb.instance.getLessonsByListCourseId(subLists[i]))
+              .docs
+              .map((e) => LessonModel.fromSnapshot(e))
+              .toList();
+    }
+
+    return list;
+  }
+
+  @override
+  Future<List<LessonResultModel>> getLessonsResultsByListClassIds(
+      List<int> ids) async {
+    if (ids.isEmpty) {
+      return [];
+    }
+    if (ids.length <= 10) {
+      return (await FireStoreDb.instance.getLessonsResultsByListClassIds(ids))
+          .docs
+          .map((e) => LessonResultModel.fromSnapshot(e))
+          .toList();
+    }
+
+    List<List<int>> subLists = [];
+    for (int i = 0; i < ids.length; i += 10) {
+      List<int> subList =
+          ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
+      subLists.add(subList);
+    }
+
+    List<LessonResultModel> list = [];
+    for (int i = 0; i < subLists.length; i++) {
+      list = list +
+          (await FireStoreDb.instance
+                  .getLessonsResultsByListClassIds(subLists[i]))
+              .docs
+              .map((e) => LessonResultModel.fromSnapshot(e))
               .toList();
     }
 
@@ -1029,10 +1092,56 @@ class FireBaseProvider extends NetworkProvider {
             .toList();
     var classes =
         await FireBaseProvider.instance.getListClassForTeacher(teacherClassIDs);
-    debugPrint(
-        "ClassListCubit loading ===> ${DateFormat('yyyy-MM-dd hh:mm:ss.SSS').format(DateTime.now())}");
 
-    return ClassModel2.make(classes);
+    List<int> listCourseIds = [];
+
+    for (var i in classes) {
+      if (listCourseIds.contains(i.courseId) == false) {
+        listCourseIds.add(i.courseId);
+      }
+    }
+
+    var courses =
+        await FireBaseProvider.instance.getCourseByListId(listCourseIds);
+    var lessons =
+        await FireBaseProvider.instance.getLessonsByListCourseId(listCourseIds);
+    var stdClasses =
+        await FireBaseProvider.instance.getStudentClassByListId(teacherClassIDs);
+    List<LessonResultModel> lessonResults = await FireBaseProvider.instance
+        .getLessonsResultsByListClassIds(teacherClassIDs);
+    List<StudentLessonModel> stdLessons = await FireBaseProvider.instance
+        .getAllStudentLessonsInListClassId(teacherClassIDs);
+    return ClassModel2.make(
+        classes, courses, lessons, stdClasses, lessonResults, stdLessons);
+  }
+
+  @override
+  Future<List<ClassModel2>> getClassByAdmin() async {
+    var classes =
+    await FireBaseProvider.instance.getListClassNotRemove();
+
+    List<int> teacherClassIDs = classes.map((e) => e.classId).toList();
+
+    List<int> listCourseIds = [];
+
+    for (var i in classes) {
+      if (listCourseIds.contains(i.courseId) == false) {
+        listCourseIds.add(i.courseId);
+      }
+    }
+
+    var courses =
+    await FireBaseProvider.instance.getCourseByListId(listCourseIds);
+    var lessons =
+    await FireBaseProvider.instance.getLessonsByListCourseId(listCourseIds);
+    var stdClasses =
+    await FireBaseProvider.instance.getStudentClassByListId(teacherClassIDs);
+    List<LessonResultModel> lessonResults = await FireBaseProvider.instance
+        .getLessonsResultsByListClassIds(teacherClassIDs);
+    List<StudentLessonModel> stdLessons = await FireBaseProvider.instance
+        .getAllStudentLessonsInListClassId(teacherClassIDs);
+    return ClassModel2.make(
+        classes, courses, lessons, stdClasses, lessonResults, stdLessons);
   }
 
   @override
@@ -2034,44 +2143,4 @@ class FireBaseProvider extends NetworkProvider {
     return listLesson;
   }
 
-  @override
-  Future<ClassStatisticModel> getClassStatistic(int classId) async {
-    var stds = (await FireStoreDb.instance.getStudentClassValid(classId))
-        .docs
-        .map((e) => e.data()['user_id'] as int)
-        .toList();
-    var stdLessons =
-        await FireBaseProvider.instance.getStudentLessons(classId, stds);
-    var listStatus =
-        (await FireStoreDb.instance.getStudentClassInClass(classId))
-            .docs
-            .map((e) => e.data()['class_status'] as String)
-            .toList();
-    List<LessonResultModel> listLessonResult =
-        (await FireBaseProvider.instance.getLessonResultByClassId(classId));
-    listLessonResult.sort((a, b) {
-      DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm:ss');
-      var tempA = a.date;
-      var tempB = b.date;
-      if (tempA!.length == 10) {
-        tempA += ' 00:00:00';
-      }
-      if (tempB!.length == 10) {
-        tempB += ' 00:00:00';
-      }
-      final dateA = dateFormat.parse(tempA);
-      final dateB = dateFormat.parse(tempB);
-      return dateA.compareTo(dateB);
-    });
-
-    List<int> listLessonId = [];
-    for (var i in listLessonResult) {
-      if (listLessonId.contains(i.lessonId) == false) {
-        listLessonId.add(i.lessonId);
-      }
-    }
-
-    return ClassStatisticModel.make(
-        stdLessons, listStatus, classId, listLessonId);
-  }
 }

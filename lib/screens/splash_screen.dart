@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
@@ -10,15 +8,10 @@ import '../utils/resizable.dart';
 class SplashScreen extends StatelessWidget {
   bool isInitialized = false;
 
-  SplashScreen({super.key}) {
-    debugPrint("=================================================> SplashScreen");
-
-  }
+  SplashScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
-
     if (!isInitialized) {
       isInitialized = true;
       applicationInitialize(context);
@@ -41,11 +34,12 @@ class SplashScreen extends StatelessWidget {
   }
 
   void applicationInitialize(BuildContext context) async {
-    dynamic uri = Uri.dataFromString(window.location.href).toString();
     SharedPreferences localData = await SharedPreferences.getInstance();
     String userId = localData.getInt(PrefKeyConfigs.userId).toString();
     if (userId == "null" || userId == "-1") {
-      Navigator.pushReplacementNamed(context, "/login");
+      if(context.mounted){
+        Navigator.pushReplacementNamed(context, "/login");
+      }
     } else {
       if (Navigator.of(context).isCurrent("/")) {
         String userEmail = localData.getString(PrefKeyConfigs.email).toString();

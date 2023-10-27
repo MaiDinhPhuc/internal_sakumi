@@ -1,7 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
-import 'package:internal_sakumi/model/home_teacher/class_model.dart';
+import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,14 +14,19 @@ class TeacherDataCubit extends Cubit<int> {
 
   loadClass() async {
     SharedPreferences localData = await SharedPreferences.getInstance();
-    var teaId = localData.getInt(PrefKeyConfigs.userId);
-    if(teaId == null) return;
+    var userId = localData.getInt(PrefKeyConfigs.userId);
 
-    var user = await FireBaseProvider.instance.getUserById(teaId);
+    if (userId == null) return;
 
-    if(user.role != 'teacher') return;
+    var user = await FireBaseProvider.instance.getUserById(userId);
 
-    classes = await FireBaseProvider.instance.getClassByTeacherId(teaId);
+    if (user.role != 'teacher') return;
+    classes = await FireBaseProvider.instance.getClassByTeacherId(userId);
+    // if (user.role == 'teacher') {
+    //   classes = await FireBaseProvider.instance.getClassByTeacherId(userId);
+    // } else if (user.role == 'admin') {
+    //   classes = await FireBaseProvider.instance.getClassByAdmin();
+    // }
 
     debugPrint("======================> loadClass");
 

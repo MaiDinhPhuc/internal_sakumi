@@ -12,13 +12,14 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
 
 class CollapseOverviewStudentItem extends StatelessWidget {
-  final int index;
   final String role;
-  const CollapseOverviewStudentItem(this.index,this.role, {Key? key}) : super(key: key);
+  final int stdId;
+  const CollapseOverviewStudentItem(this.stdId,this.role, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<ClassOverviewCubit>(context);
+    int index = cubit.listStdClass!.indexOf(cubit.listStdClass!.firstWhere((e) => e.userId == stdId));
     return Container(
         padding: EdgeInsets.only(
           right: Resizable.padding(context, 15),
@@ -157,24 +158,24 @@ class CollapseOverviewStudentItem extends StatelessWidget {
                         'assets/images/ic_${cubit.listStdClass![index].icon}.png'),
                   ),
                 )),
-            name: Text(cubit.students![index].name,
+            name: Text(cubit.students!.firstWhere((e) => e.userId == stdId).name,
                 style: TextStyle(
                     fontSize: Resizable.font(context, 20),
                     color: const Color(0xff131111),
                     fontWeight: FontWeight.w500)),
             attend: CircleProgress(
                     title:
-                        '${(cubit.listStdDetail![index]["attendancePercent"] * 100).toStringAsFixed(0)} %',
+                        '${(cubit.listStdDetail[index]["attendancePercent"] * 100).toStringAsFixed(0)} %',
                     lineWidth: Resizable.size(context, 3),
-                    percent: cubit.listStdDetail![index]["attendancePercent"],
+                    percent: cubit.listStdDetail[index]["attendancePercent"],
                     radius: Resizable.size(context, 16),
                     fontSize: Resizable.font(context, 14),
                   ),
             submit:CircleProgress(
                     title:
-                        '${(cubit.listStdDetail![index]["hwPercent"] * 100).toStringAsFixed(0)} %',
+                        '${(cubit.listStdDetail[index]["hwPercent"] * 100).toStringAsFixed(0)} %',
                     lineWidth: Resizable.size(context, 3),
-                    percent: cubit.listStdDetail![index]["hwPercent"],
+                    percent: cubit.listStdDetail[index]["hwPercent"],
                     radius: Resizable.size(context, 16),
                     fontSize: Resizable.font(context, 14),
                   ),

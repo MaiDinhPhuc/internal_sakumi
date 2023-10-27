@@ -27,6 +27,7 @@ class StudentAnswerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      key: Key(answerModel.questionId.toString()),
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         answerModel.answer.isEmpty

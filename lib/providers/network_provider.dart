@@ -10,7 +10,7 @@ import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/detail_grading_data_model.dart';
 import 'package:internal_sakumi/model/grading_tab_data_model.dart';
 import 'package:internal_sakumi/model/home_teacher/class_statistic_model.dart';
-import 'package:internal_sakumi/model/home_teacher/class_model.dart';
+import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/list_lesson_data_model.dart';
@@ -47,10 +47,13 @@ abstract class NetworkProvider {
 
   Future<int> getCountWithCondition(String tableName, String field, dynamic condition);
 
-  Future<ClassStatisticModel> getClassStatistic(int classId);
+  Future<List<ClassModel2>> getClassByAdmin();
 
   Future<UserModel> getUser(String email);
+
   Future<List<ClassModel2>> getClassByTeacherId(int teacherId);
+
+  Future<List<LessonResultModel>> getLessonsResultsByListClassIds(List<int> ids);
 
   Future<UserModel> getUserById(int id);
 
@@ -135,6 +138,7 @@ abstract class NetworkProvider {
 
   Future<List<LessonModel>> getLessonsByLessonId(List<int> ids);
 
+  Future<List<LessonModel>> getLessonsByListCourseId(List<int> ids);
 
   Future<ListLessonDataModel> getDataForLessonTab(int classId);
 
