@@ -22,7 +22,7 @@ class TestItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(test.title,
+            Text("${test.id} - ${test.title}",
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: Resizable.font(context, 20),

@@ -73,7 +73,7 @@ class ManageListCourse extends StatelessWidget {
                                   MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "${e.title} ${e.termName} ${e.code}",
+                                      "${e.courseId} - ${e.title} ${e.termName} ${e.code}",
                                       style: TextStyle(
                                           fontWeight: FontWeight.w700,
                                           fontSize:

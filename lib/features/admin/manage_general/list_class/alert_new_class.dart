@@ -279,7 +279,7 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel, Ma
                                   ]),
                                 InputItem(
                                     title: AppText.txtDescription.text,
-                                    controller: noteCon,
+                                    controller: desCon,
                                     isExpand: true),
                                 Row(
                                   children: [
@@ -298,7 +298,7 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel, Ma
                                   ],
                                 ),
                                 InputItem(
-                                    controller: desCon,
+                                    controller: noteCon,
                                     title: AppText.txtNote.text,
                                     isExpand: true)
                               ]))),

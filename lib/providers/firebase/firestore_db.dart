@@ -461,7 +461,8 @@ class FireStoreDb {
       'term_name': model.termName,
       'title': model.title,
       'token': model.token,
-      'type': model.type
+      'type': model.type,
+      'dataversion' : model.version
     });
     debugPrint("==========> add db from \"courses\"");
 
@@ -483,9 +484,10 @@ class FireStoreDb {
       'term_name': model.termName,
       'title': model.title,
       'token': model.token,
-      'type': model.type
+      'type': model.type,
+      'dataversion' : model.version
     });
-    debugPrint("==========> add db from \"courses\"");
+    debugPrint("==========> update db from \"courses\"");
 
   }
 

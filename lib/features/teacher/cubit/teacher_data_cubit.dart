@@ -16,17 +16,19 @@ class TeacherDataCubit extends Cubit<int> {
     SharedPreferences localData = await SharedPreferences.getInstance();
     var userId = localData.getInt(PrefKeyConfigs.userId);
 
+    print(userId);
+
     if (userId == null) return;
 
     var user = await FireBaseProvider.instance.getUserById(userId);
 
-    if (user.role != 'teacher') return;
-    classes = await FireBaseProvider.instance.getClassByTeacherId(userId);
-    // if (user.role == 'teacher') {
-    //   classes = await FireBaseProvider.instance.getClassByTeacherId(userId);
-    // } else if (user.role == 'admin') {
-    //   classes = await FireBaseProvider.instance.getClassByAdmin();
-    // }
+    if (user.role == 'master') return;
+
+    if (user.role == 'teacher') {
+      classes = await FireBaseProvider.instance.getClassByTeacherId(userId);
+    } else {
+      classes = await FireBaseProvider.instance.getClassByAdmin();
+    }
 
     debugPrint("======================> loadClass");
 

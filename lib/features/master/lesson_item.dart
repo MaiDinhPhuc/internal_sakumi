@@ -23,7 +23,7 @@ class LessonItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(lesson.title,
+          Text("${lesson.lessonId} - ${lesson.title}",
               style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: Resizable.font(context, 20),
