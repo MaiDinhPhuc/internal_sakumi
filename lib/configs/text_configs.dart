@@ -254,10 +254,24 @@ enum AppText {
   txtLastLesson,
   txtLastLessonEmpty,
   txtCourseState,
-  txtDataVersion
+  txtDataVersion,
+  txtLessonExist,
+  txtCourseExist,
+  txtTestExist,
+  txtEditLessonInfo,
+  txtLessonId,
+  txtContent,
+  txtPleaseCheckListLesson
 }
 
 Map<AppText, String> texts = {
+  AppText.txtPleaseCheckListLesson: 'Bài học đã tồn tại, vui lòng kiểm tra lại!',
+  AppText.txtContent: 'Nội dung',
+  AppText.txtLessonId: 'Mã bài học',
+  AppText.txtEditLessonInfo: 'Chỉnh sửa thông tin bài học',
+  AppText.txtLessonExist: 'File có lesson Id đã tồn tại',
+  AppText.txtCourseExist: 'File có course Id đã tồn tại',
+  AppText.txtTestExist: 'File có test Id đã tồn tại',
   AppText.txtDataVersion: 'Data Version',
   AppText.txtCourseState: 'Tình trạng khoá học',
   AppText.txtLastLessonEmpty: 'Lớp chưa mở bài học nào!',

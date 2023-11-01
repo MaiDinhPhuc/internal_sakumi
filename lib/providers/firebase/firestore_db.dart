@@ -4,6 +4,7 @@ import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
+import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
 import 'package:internal_sakumi/model/response_model.dart';
@@ -15,7 +16,6 @@ import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/providers/api/api_provider.dart';
 
-
 class FireStoreDb {
   FireStoreDb._privateConstructor();
 
@@ -23,26 +23,29 @@ class FireStoreDb {
   final db = FirebaseFirestore.instance;
 
   Future<List<QuestionModel>> getQuestionByUrl(String url) async {
-    APIResponseModel response = await APIProvider.instance
-        .get(url);
+    APIResponseModel response = await APIProvider.instance.get(url);
 
     if (response.statusCode == 200) {
-      if(response.json is String){
+      if (response.json is String) {
         return [];
       }
-      return (response.json as List).map((e) => QuestionModel.fromMap(e)).toList();
+      return (response.json as List)
+          .map((e) => QuestionModel.fromMap(e))
+          .toList();
     } else {
       debugPrint("=======>error ${response.statusCode}");
       return [];
     }
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getTeacherByTeacherCode(String teacherCode) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getTeacherByTeacherCode(
+      String teacherCode) async {
     final snapshot = await db
         .collection("teacher")
         .where("teacher_code", isEqualTo: teacherCode)
         .get();
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTeacherByTeacherCode $teacherCode ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTeacherByTeacherCode $teacherCode ${snapshot.size}");
 
     // debugPrint("==========>get db from \"teacher\" : ${snapshot.docs.length}");
 
@@ -53,7 +56,8 @@ class FireStoreDb {
     final snapshot =
         await db.collection("teacher").where("user_id", isEqualTo: id).get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTeacherById $id ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTeacherById $id ${snapshot.size}");
 
     // debugPrint("==========>get db from \"teacher\" : ${snapshot.docs.length}");
 
@@ -62,130 +66,143 @@ class FireStoreDb {
 
   Future<QuerySnapshot<Map<String, dynamic>>> getTeacherClassById(
       String string, int id) async {
-    final snapshot =
-        await db.collection("teacher_class").where(string, isEqualTo: id).where("class_status", isNotEqualTo: "Remove").get();
+    final snapshot = await db
+        .collection("teacher_class")
+        .where(string, isEqualTo: id)
+        .where("class_status", isNotEqualTo: "Remove")
+        .get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTeacherClassById $string $id ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTeacherClassById $string $id ${snapshot.size}");
 
     // debugPrint("==========>get db from \"teacher_class\" : ${snapshot.docs.length}");
 
     return snapshot;
   }
 
-
-  Future<QuerySnapshot<Map<String, dynamic>>> getLessonsByCourseId(int id) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getLessonsByCourseId(
+      int id) async {
     final snapshot =
         await db.collection("lessons").where('course_id', isEqualTo: id).get();
     // debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsByCourseId $id ${snapshot.size}");
-
-
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsByCourseId $id ${snapshot.size}");
 
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getListTeacherByListId(List<int> teacherIds) async {
-    final snapshot =
-      await db
+  Future<QuerySnapshot<Map<String, dynamic>>> getListTeacherByListId(
+      List<int> teacherIds) async {
+    final snapshot = await db
         .collection("teacher")
         .where("user_id", whereIn: teacherIds)
         .get();
     // debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListTeacherByListId $teacherIds ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListTeacherByListId $teacherIds ${snapshot.size}");
 
     return snapshot;
   }
 
-
-  Future<QuerySnapshot<Map<String, dynamic>>> getClassById(int id) async{
+  Future<QuerySnapshot<Map<String, dynamic>>> getClassById(int id) async {
     final snapshot =
-    await db.collection("class").where('class_id', isEqualTo: id).get();
+        await db.collection("class").where('class_id', isEqualTo: id).get();
     // debugPrint("==========>get db from \"class\" : ${snapshot.docs.length}");
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getClassById $id ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getClassById $id ${snapshot.size}");
 
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getAllCourseEnable() async{
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllCourseEnable() async {
     final snapshot =
-    await db.collection("courses").where('enable', isEqualTo: true).get();
+        await db.collection("courses").where('enable', isEqualTo: true).get();
     // debugPrint("==========>get db from \"class\" : ${snapshot.docs.length}");
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllCourseEnable ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllCourseEnable ${snapshot.size}");
 
     return snapshot;
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getCourseById(int id) async {
     final snapshot =
-    await db.collection("courses").where("course_id", isEqualTo: id).get();
+        await db.collection("courses").where("course_id", isEqualTo: id).get();
     // debugPrint("==========>get db from \"courses\" : ${snapshot.docs.length}");
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCourseById $id ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCourseById $id ${snapshot.size}");
 
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getCourseByListId(List<int> ids) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getCourseByListId(
+      List<int> ids) async {
     final snapshot =
-    await db.collection("courses").where("course_id", whereIn: ids).get();
+        await db.collection("courses").where("course_id", whereIn: ids).get();
     // debugPrint("==========>get db from \"courses\" : ${snapshot.docs.length}");
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCourseByListId $ids ${snapshot.size}");
-
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCourseByListId $ids ${snapshot.size}");
 
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getLessonsResultsByListClassIds(List<int> ids) async {
-    final snapshot =
-    await db.collection("lesson_result").where("class_id", whereIn: ids).get();
+  Future<QuerySnapshot<Map<String, dynamic>>> getLessonsResultsByListClassIds(
+      List<int> ids) async {
+    final snapshot = await db
+        .collection("lesson_result")
+        .where("class_id", whereIn: ids)
+        .get();
     // debugPrint("==========>get db from \"courses\" : ${snapshot.docs.length}");
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsResultsByListClassIds $ids ${snapshot.size}");
-
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsResultsByListClassIds $ids ${snapshot.size}");
 
     return snapshot;
   }
-  Future<QuerySnapshot<Map<String, dynamic>>> getLessonResultByClassId(int id) async {
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getLessonResultByClassId(
+      int id) async {
     final snapshot = await db
         .collection('lesson_result')
         .where('class_id', isEqualTo: id)
         .get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonResultByClassId $id ${snapshot.size}");
-
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonResultByClassId $id ${snapshot.size}");
 
     // debugPrint("==========>get db from \"lesson_result\" : ${snapshot.docs.length}");
 
     return snapshot;
   }
 
-
-  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentLessonInLesson(int classId, int lessonId) async {
-
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentLessonInLesson(
+      int classId, int lessonId) async {
     final snapshot = await db
         .collection('student_lesson')
         .where('class_id', isEqualTo: classId)
         .where('lesson_id', isEqualTo: lessonId)
         .get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentLessonInLesson $classId $lessonId ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentLessonInLesson $classId $lessonId ${snapshot.size}");
 
     // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
 
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getLessonResultByLessonId(int id, int classId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getLessonResultByLessonId(
+      int id, int classId) async {
     final snapshot = await db
         .collection("lesson_result")
         .where('class_id', isEqualTo: classId)
         .where('lesson_id', isEqualTo: id)
         .get();
 
-
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonResultByLessonId $id $classId ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonResultByLessonId $id $classId ${snapshot.size}");
 
     // debugPrint("==========>get db from \"lesson_result\" : ${snapshot.docs.length}");
     return snapshot;
@@ -195,80 +212,96 @@ class FireStoreDb {
     final snapshot = await db.collection("courses").get();
     // debugPrint("==========>get db from \"courses\" : ${snapshot.docs.length}");
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllCourse ${snapshot.size}");
-
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllCourse ${snapshot.size}");
 
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getStudentClassInClass(int classId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getStudentClassInClass(
+      int classId) async {
     final snapshot = await db
         .collection("student_class")
         .where('class_id', isEqualTo: classId)
         .where("class_status", isNotEqualTo: "Remove")
         .get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassInClass $classId ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassInClass $classId ${snapshot.size}");
 
     // debugPrint("==========>get db from \"student_class\" : ${snapshot.docs.length}");
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getStudentClassValid(int classId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getStudentClassValid(
+      int classId) async {
     final snapshot = await db
         .collection("student_class")
         .where('class_id', isEqualTo: classId)
-        .where("class_status", whereNotIn: ["Remove","Dropped","Deposit","Retained","Moved","Viewer"])
-        .get();
+        .where("class_status", whereNotIn: [
+      "Remove",
+      "Dropped",
+      "Deposit",
+      "Retained",
+      "Moved",
+      "Viewer"
+    ]).get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassValid $classId ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassValid $classId ${snapshot.size}");
 
     // debugPrint("==========>get db from \"student_class\" : ${snapshot.docs.length}");
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentLessonsInListClassId(List<int> classIds) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentLessonsInListClassId(
+      List<int> classIds) async {
     final snapshot = await db
         .collection('student_lesson')
         .where('class_id', whereIn: classIds)
         .get();
     // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentLessonsInListClassId $classIds ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentLessonsInListClassId $classIds ${snapshot.size}");
 
     //list.sort((a, b) => a.studentId.compareTo(b.studentId));
 
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentClassByListIds(List<int> classIds) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentClassByListIds(
+      List<int> classIds) async {
     final snapshot = await db
         .collection('student_class')
         .where('class_id', whereIn: classIds)
         .get();
     // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentClassByListIds $classIds ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentClassByListIds $classIds ${snapshot.size}");
 
     //list.sort((a, b) => a.studentId.compareTo(b.studentId));
 
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentLessonsInClass(int classId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentLessonsInClass(
+      int classId) async {
     final snapshot = await db
         .collection('student_lesson')
         .where('class_id', isEqualTo: classId)
         .get();
     // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentLessonsInClass $classId ${snapshot.size}");
-
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentLessonsInClass $classId ${snapshot.size}");
 
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getStudentLesson(int classId, List<int> studentIds) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getStudentLesson(
+      int classId, List<int> studentIds) async {
     final snapshot = await db
         .collection('student_lesson')
         .where('class_id', isEqualTo: classId)
@@ -276,39 +309,44 @@ class FireStoreDb {
         .get();
     // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassAvailable $classId $studentIds ${snapshot.size}");
-
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassAvailable $classId $studentIds ${snapshot.size}");
 
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getListAnswer(int id, int classId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getListAnswer(
+      int id, int classId) async {
     final snapshot = await db
         .collection('answer')
         .where('parent_id', isEqualTo: id)
         .where('class_id', isEqualTo: classId)
         .get();
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListAnswer $id $classId ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListAnswer $id $classId ${snapshot.size}");
 
     // debugPrint("==========>get db from \"answer\" : ${snapshot.docs.length}");
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getLesson(int courseId, int lessonId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getLesson(
+      int courseId, int lessonId) async {
     final snapshot = await db
         .collection('lessons')
         .where('course_id', isEqualTo: courseId)
         .where('lesson_id', isEqualTo: lessonId)
         .get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLesson $courseId $lessonId ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLesson $courseId $lessonId ${snapshot.size}");
 
     // debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
 
     return snapshot;
   }
 
-  Future<void> updateTimekeeping(int userId, int lessonId, int classId, int attendId) async{
+  Future<void> updateTimekeeping(
+      int userId, int lessonId, int classId, int attendId) async {
     await db
         .collection('student_lesson')
         .doc("student_${userId}_lesson_${lessonId}_class_$classId")
@@ -318,7 +356,8 @@ class FireStoreDb {
     debugPrint("==========>update db from \"student_lesson\"");
   }
 
-  Future<void> updateTeacherNote(int userId, int lessonId, int classId, String note) async {
+  Future<void> updateTeacherNote(
+      int userId, int lessonId, int classId, String note) async {
     await db
         .collection('student_lesson')
         .doc("student_${userId}_lesson_${lessonId}_class_$classId")
@@ -328,7 +367,8 @@ class FireStoreDb {
     debugPrint("==========>update db from \"student_lesson\"");
   }
 
-  Future<void> updateStudentStatus(int userId, int classId, int point, String type) async {
+  Future<void> updateStudentStatus(
+      int userId, int classId, int point, String type) async {
     await db
         .collection('student_class')
         .doc("student_${userId}_class_$classId")
@@ -339,26 +379,25 @@ class FireStoreDb {
   }
 
   Future<void> updateCourseState(CourseModel model, bool state) async {
-    await db
-        .collection('courses')
-        .doc("course_${model.courseId}")
-        .update({
+    await db.collection('courses').doc("course_${model.courseId}").update({
       "enable": state,
     });
     debugPrint("==========>update db from \"student_class\"");
   }
 
-  Future<void> changeStatusLesson(int lessonId, int classId, String status) async {
+  Future<void> changeStatusLesson(
+      int lessonId, int classId, String status) async {
     await db
         .collection('lesson_result')
         .doc("lesson_${lessonId}_class_$classId")
         .update({
       'status': status,
-    } );
+    });
     debugPrint("==========>update db from \"lesson_result\"");
   }
 
-  Future<void> noteForAllStudentInClass(int lessonId, int classId, String note) async {
+  Future<void> noteForAllStudentInClass(
+      int lessonId, int classId, String note) async {
     await db
         .collection('lesson_result')
         .doc("lesson_${lessonId}_class_$classId")
@@ -368,7 +407,8 @@ class FireStoreDb {
     debugPrint("==========>update db from \"lesson_result\"");
   }
 
-  Future<void> updateTeacherInLessonResult(int lessonId, int classId, int studentId) async {
+  Future<void> updateTeacherInLessonResult(
+      int lessonId, int classId, int studentId) async {
     await db
         .collection('lesson_result')
         .doc("lesson_${lessonId}_class_$classId")
@@ -388,7 +428,8 @@ class FireStoreDb {
     debugPrint("==========>update db from \"lesson_result\"");
   }
 
-  Future<void> noteForAnotherSensei(int lessonId, int classId, String note) async {
+  Future<void> noteForAnotherSensei(
+      int lessonId, int classId, String note) async {
     await db
         .collection('lesson_result')
         .doc("lesson_${lessonId}_class_$classId")
@@ -398,35 +439,41 @@ class FireStoreDb {
     debugPrint("==========>update db from \"lesson_result\"");
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getCourseByDocs(String docs) async {
-    final temp = await db
-        .collection("courses")
-        .doc(docs)
-        .get();
+  Future<DocumentSnapshot<Map<String, dynamic>>> getCourseByDocs(
+      String docs) async {
+    final temp = await db.collection("courses").doc(docs).get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCourseByDocs $docs ${temp.exists}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCourseByDocs $docs ${temp.exists}");
 
     return temp;
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getStudentLessonByDocs(String docs) async {
-    final temp = await db
-        .collection("student_lesson")
-        .doc(docs)
-        .get();
+  Future<DocumentSnapshot<Map<String, dynamic>>> getLessonByDocs(
+      String docs) async {
+    final temp = await db.collection("lessons").doc(docs).get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentLessonByDocs $docs ${temp.exists}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonByDocs $docs ${temp.exists}");
+
+    return temp;
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getStudentLessonByDocs(
+      String docs) async {
+    final temp = await db.collection("student_lesson").doc(docs).get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentLessonByDocs $docs ${temp.exists}");
 
     return temp;
   }
 
   Future<void> addStudentLesson(StudentLessonModel model) async {
-
     await db
         .collection("student_lesson")
         .doc(
-        "student_${model.studentId}_lesson_${model.lessonId}_class_${model
-            .classId}")
+            "student_${model.studentId}_lesson_${model.lessonId}_class_${model.classId}")
         .set({
       'class_id': model.classId,
       'grammar': model.grammar,
@@ -441,16 +488,10 @@ class FireStoreDb {
       'vocabulary': model.vocabulary
     });
     debugPrint("==========>get and add db from \"student_lesson\"");
-
   }
 
   Future<void> addCourse(CourseModel model) async {
-
-    await db
-        .collection("courses")
-        .doc(
-        "course_${model.courseId}")
-        .set({
+    await db.collection("courses").doc("course_${model.courseId}").set({
       'code': model.code,
       'course_id': model.courseId,
       'description': model.description,
@@ -462,19 +503,35 @@ class FireStoreDb {
       'title': model.title,
       'token': model.token,
       'type': model.type,
-      'dataversion' : model.version
+      'dataversion': model.version
     });
-    debugPrint("==========> add db from \"courses\"");
+    debugPrint("==========> add db for \"courses\"");
+  }
 
+  Future<void> addLesson(LessonModel model) async {
+    await db
+        .collection("lessons")
+        .doc("lesson_${model.lessonId}_course_${model.courseId}")
+        .set({
+      "alphabet": model.alphabet,
+      "btvn": model.btvn,
+      "content": model.content,
+      "course_id": model.courseId,
+      "description": model.description,
+      "flashcard": model.flashcard,
+      "grammar": model.grammar,
+      "kanji": model.kanji,
+      "lesson_id": model.lessonId,
+      "listening": model.listening,
+      "order": model.order,
+      "title": model.title,
+      "vocabulary": model.vocabulary
+    });
+    debugPrint("==========> add db for \"lessons\"");
   }
 
   Future<void> updateCourseInfo(CourseModel model) async {
-
-    await db
-        .collection("courses")
-        .doc(
-        "course_${model.courseId}")
-        .update({
+    await db.collection("courses").doc("course_${model.courseId}").update({
       'code': model.code,
       'course_id': model.courseId,
       'description': model.description,
@@ -485,20 +542,40 @@ class FireStoreDb {
       'title': model.title,
       'token': model.token,
       'type': model.type,
-      'dataversion' : model.version
+      'dataversion': model.version
     });
     debugPrint("==========> update db from \"courses\"");
-
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> checkLessonResult(int lessonId, int classId) async {
 
+  Future<void> updateLessonInfo(LessonModel model) async {
+    await db.collection("lessons").doc("lesson_${model.lessonId}_course_${model.courseId}").update({
+      "alphabet": model.alphabet,
+      "btvn": model.btvn,
+      "content": model.content,
+      "course_id": model.courseId,
+      "description": model.description,
+      "flashcard": model.flashcard,
+      "grammar": model.grammar,
+      "kanji": model.kanji,
+      "lesson_id": model.lessonId,
+      "listening": model.listening,
+      "order": model.order,
+      "title": model.title,
+      "vocabulary": model.vocabulary
+    });
+    debugPrint("==========> update db from \"lessons\"");
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> checkLessonResult(
+      int lessonId, int classId) async {
     final temp = await db
         .collection("lesson_result")
         .doc("lesson_${lessonId}_class_$classId")
         .get();
     // debugPrint("==========>get db from \"lesson_result\" : 1");
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> checkLessonResult $lessonId $classId ${temp.exists}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> checkLessonResult $lessonId $classId ${temp.exists}");
 
     return temp;
   }
@@ -523,7 +600,6 @@ class FireStoreDb {
   }
 
   Future<void> updateProfileTeacher(String id, TeacherModel model) async {
-
     await db.collection('teacher').doc("teacher_user_$id").update({
       'name': model.name,
       'note': model.note,
@@ -536,37 +612,45 @@ class FireStoreDb {
     debugPrint("==========>update db from \"teacher\"");
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getListTestByCourseId(int courseId) async {
-    final snapshot =
-    await db.collection("test").where("course_id", isEqualTo: courseId).get();
+  Future<QuerySnapshot<Map<String, dynamic>>> getListTestByCourseId(
+      int courseId) async {
+    final snapshot = await db
+        .collection("test")
+        .where("course_id", isEqualTo: courseId)
+        .get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListTestByCourseId $courseId ${snapshot.size}");
-
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListTestByCourseId $courseId ${snapshot.size}");
 
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentTest(int classId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentTest(
+      int classId) async {
     final snapshot = await db
         .collection('student_test')
         .where('class_id', isEqualTo: classId)
         .get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentTest $classId ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentTest $classId ${snapshot.size}");
 
     // debugPrint("==========>get db from \"student_test\": ${snapshot.docs.length}");
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getListTestResult(int classId) async {
-    final snapshot =
-    await db.collection("test_result").where("class_id", isEqualTo: classId).get();
+  Future<QuerySnapshot<Map<String, dynamic>>> getListTestResult(
+      int classId) async {
+    final snapshot = await db
+        .collection("test_result")
+        .where("class_id", isEqualTo: classId)
+        .get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListTestResult $classId ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListTestResult $classId ${snapshot.size}");
 
     return snapshot;
   }
-
 
   // Future<UserModel> getUser(String email) async {
   //   final snapshot =
@@ -578,9 +662,10 @@ class FireStoreDb {
 
   Future<QuerySnapshot<Map<String, dynamic>>> getUserById(int id) async {
     final snapshot =
-    await db.collection("users").where("user_id", isEqualTo: id).get();
+        await db.collection("users").where("user_id", isEqualTo: id).get();
     // debugPrint("==========>get db from \"users\" : ${snapshot.docs.length}");
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getUserById $id ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getUserById $id ${snapshot.size}");
 
     return snapshot;
   }
@@ -597,20 +682,18 @@ class FireStoreDb {
   Future<QuerySnapshot<Map<String, dynamic>>> getAllUser() async {
     final snapshot = await db.collection("users").get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllUser ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllUser ${snapshot.size}");
 
     return snapshot;
   }
 
   Future<void> createNewStudent(StudentModel model, UserModel user) async {
-    await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: user.email, password: "abc12345");
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: user.email, password: "abc12345");
     await FirebaseAuth.instance.currentUser!.updatePassword("abc12345");
     await FirebaseAuth.instance.currentUser!.updateEmail(user.email);
-    await db
-        .collection('students')
-        .doc("student_user_${user.id}")
-        .set({
+    await db.collection('students').doc("student_user_${user.id}").set({
       'in_jp': model.inJapan,
       'name': model.name,
       'note': model.note,
@@ -618,31 +701,28 @@ class FireStoreDb {
       'student_code': model.studentCode,
       'url': model.url,
       'user_id': model.userId,
-      'status': model.studentCode});
+      'status': model.studentCode
+    });
     debugPrint("==========>add db for \"students\"");
-
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getUserByEmail(String email) async {
-    final snapshot = await db
-        .collection("users")
-        .where('email', isEqualTo: email)
-        .get();
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getUserByEmail $email ${snapshot.size}");
+  Future<QuerySnapshot<Map<String, dynamic>>> getUserByEmail(
+      String email) async {
+    final snapshot =
+        await db.collection("users").where('email', isEqualTo: email).get();
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getUserByEmail $email ${snapshot.size}");
 
     return snapshot;
   }
 
   Future<void> createNewTeacher(TeacherModel model, UserModel user) async {
-    await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: user.email, password: "abc12345");
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: user.email, password: "abc12345");
     await FirebaseAuth.instance.currentUser!.updatePassword("abc12345");
     await FirebaseAuth.instance.currentUser!.updateEmail(user.email);
 
-    await db
-        .collection('teacher')
-        .doc("teacher_user_${user.id}")
-        .set({
+    await db.collection('teacher').doc("teacher_user_${user.id}").set({
       'name': model.name,
       'note': model.note,
       'phone': model.phone,
@@ -660,12 +740,14 @@ class FireStoreDb {
         .where("class_status", isNotEqualTo: "Remove")
         .get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListClassNotRemove ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListClassNotRemove ${snapshot.size}");
 
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getListClassAvailableForTeacher(List<int> listIds) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getListClassAvailableForTeacher(
+      List<int> listIds) async {
     final snapshot = await db
         .collection("class")
         .where("class_id", whereIn: listIds)
@@ -673,41 +755,42 @@ class FireStoreDb {
         .get();
     // debugPrint("==========>get db from \"class\": ${snapshot.docs.length}");
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListClassAvailableForTeacher ${snapshot.size}");
-
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListClassAvailableForTeacher ${snapshot.size}");
 
     return snapshot;
   }
-
 
   Future<QuerySnapshot<Map<String, dynamic>>> getAllTeacherInClass() async {
     final snapshot = await db.collection("teacher_class").get();
     // debugPrint("==========>get db from \"teacher_class\": ${snapshot.docs.length}");
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllTeacherInClass ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllTeacherInClass ${snapshot.size}");
 
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getAllTeacherInClassByClassId(int classId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllTeacherInClassByClassId(
+      int classId) async {
     final snapshot = await db
         .collection("teacher_class")
         .where('class_id', isEqualTo: classId)
         .get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllTeacherInClassByClassId $classId ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllTeacherInClassByClassId $classId ${snapshot.size}");
 
     // debugPrint("==========>get db from \"teacher_class\": ${snapshot.docs.length}");
     return snapshot;
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getAllLessonNotBTVN() async {
-    final snapshot = await db
-        .collection("lessons")
-        .where('btvn', isEqualTo: 0)
-        .get();
+    final snapshot =
+        await db.collection("lessons").where('btvn', isEqualTo: 0).get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllLessonNotBTVN ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllLessonNotBTVN ${snapshot.size}");
 
     // debugPrint("==========>get db from \"teacher_class\": ${snapshot.docs.length}");
     return snapshot;
@@ -717,31 +800,36 @@ class FireStoreDb {
     final snapshot = await db.collection("students").get();
     // debugPrint("==========>get db from \"students\": ${snapshot.docs.length}");
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudent ${snapshot.size}");
-
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudent ${snapshot.size}");
 
     return snapshot;
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> get10StudentFirst() async {
-    final snapshot = await db.collection("students").orderBy('user_id', descending: true)
+    final snapshot = await db
+        .collection("students")
+        .orderBy('user_id', descending: true)
         .limit(10)
         .get();
     // debugPrint("==========>get db from \"students\": ${snapshot.docs.length}");
 
-
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> get10StudentFirst ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> get10StudentFirst ${snapshot.size}");
 
     return snapshot;
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> get10Student(int lastId) async {
-    final snapshot = await db.collection("students").orderBy('user_id', descending: true)
+    final snapshot = await db
+        .collection("students")
+        .orderBy('user_id', descending: true)
         .startAfter([lastId])
         .limit(10)
         .get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> get10Student $lastId ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> get10Student $lastId ${snapshot.size}");
 
     // debugPrint("==========>get db from \"students\": ${snapshot.docs.length}");
     return snapshot;
@@ -751,15 +839,21 @@ class FireStoreDb {
     final count = await db.collection(tableName).count().get();
     debugPrint("==========>get count db from \"$tableName\"");
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCount $tableName");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCount $tableName");
 
     return count;
   }
 
-
-  Future<AggregateQuerySnapshot> getCountWithCondition(String tableName, String field, dynamic condition) async {
-    final count = await db.collection(tableName).where(field, isEqualTo: condition).count().get();
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========>get count db from \"$tableName\" with $field equal ${condition.toString()}");
+  Future<AggregateQuerySnapshot> getCountWithCondition(
+      String tableName, String field, dynamic condition) async {
+    final count = await db
+        .collection(tableName)
+        .where(field, isEqualTo: condition)
+        .count()
+        .get();
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========>get count db from \"$tableName\" with $field equal ${condition.toString()}");
 
     return count;
   }
@@ -767,7 +861,8 @@ class FireStoreDb {
   Future<QuerySnapshot<Map<String, dynamic>>> getAllTeacher() async {
     final snapshot = await db.collection("teacher").get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllTeacher ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllTeacher ${snapshot.size}");
 
     return snapshot;
   }
@@ -781,9 +876,10 @@ class FireStoreDb {
 
   Future<QuerySnapshot<Map<String, dynamic>>> getAdminById(int id) async {
     final snapshot =
-    await db.collection("admin").where("user_id", isEqualTo: id).get();
+        await db.collection("admin").where("user_id", isEqualTo: id).get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAdminById $id ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAdminById $id ${snapshot.size}");
 
     return snapshot;
   }
@@ -795,22 +891,23 @@ class FireStoreDb {
         .where('term_name', isEqualTo: term)
         .get();
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCourseByName $title $term ${snapshot.size}");
-
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCourseByName $title $term ${snapshot.size}");
 
     // debugPrint("==========>get db from \"courses\": ${snapshot.docs.length}");
     final course = snapshot.docs.map((e) => CourseModel.fromSnapshot(e)).single;
     return course;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getClassByClassCode(String classCode)async{
+  Future<QuerySnapshot<Map<String, dynamic>>> getClassByClassCode(
+      String classCode) async {
     final temp = await db
         .collection("class")
         .where('class_code', isEqualTo: classCode)
         .get();
 
-
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getClassByClassCode $classCode ${temp.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getClassByClassCode $classCode ${temp.size}");
 
     // debugPrint("==========>get db from \"class\"");
     return temp;
@@ -829,20 +926,19 @@ class FireStoreDb {
       'note': model.note,
       'class_code': model.classCode,
       'class_status': model.classStatus,
-      'class_type' : model.classType
+      'class_type': model.classType
     });
     debugPrint("==========>add db for \"class\"");
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getStudentClassByDoc(String doc)async{
-    final temp = await db
-        .collection("student_class")
-          .doc(doc)
-        .get();
+  Future<DocumentSnapshot<Map<String, dynamic>>> getStudentClassByDoc(
+      String doc) async {
+    final temp = await db.collection("student_class").doc(doc).get();
 
     // debugPrint("==========>get db from \"student_class\"");
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassByDoc $doc ${temp.exists}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassByDoc $doc ${temp.exists}");
 
     return temp;
   }
@@ -863,23 +959,21 @@ class FireStoreDb {
     });
     debugPrint("==========>add db for \"student_class\"");
   }
+
   Future<void> updateStudentToClass(StudentClassModel model) async {
     await db
         .collection("student_class")
-        .doc("student_${model.userId}_class_${model.classId}").update({
-      'class_status': "InProgress"
-    });
+        .doc("student_${model.userId}_class_${model.classId}")
+        .update({'class_status': "InProgress"});
     debugPrint("==========>update db for \"student_class\"");
   }
 
+  Future<DocumentSnapshot<Map<String, dynamic>>> getTeacherClassByDocs(
+      String docs) async {
+    final temp = await db.collection("teacher_class").doc(docs).get();
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getTeacherClassByDocs(String docs) async {
-    final temp = await db
-        .collection("teacher_class")
-        .doc(docs)
-        .get();
-
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTeacherClassByDocs $docs ${temp.exists}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTeacherClassByDocs $docs ${temp.exists}");
 
     return temp;
   }
@@ -896,16 +990,14 @@ class FireStoreDb {
       'user_id': model.userId,
     });
     debugPrint("==========>add db for \"teacher_class\"");
-
   }
 
-  Future<void> changeClassStatus(ClassModel classModel, String newStatus, ManageGeneralCubit cubit, BuildContext context) async {
+  Future<void> changeClassStatus(ClassModel classModel, String newStatus,
+      ManageGeneralCubit cubit, BuildContext context) async {
     FirebaseFirestore.instance
         .collection('class')
         .doc('class_${classModel.classId}_course_${classModel.courseId}')
-        .update({
-      'class_status': newStatus
-    }).whenComplete(() {
+        .update({'class_status': newStatus}).whenComplete(() {
       debugPrint("==========>update db for \"class\"");
       cubit.loadAfterChangeClassStatus();
       Navigator.pop(context);
@@ -923,49 +1015,59 @@ class FireStoreDb {
       'note': model.note,
       'class_code': model.classCode,
       'class_status': model.classStatus,
-      'class_type' : model.classType
+      'class_type': model.classType
     });
     debugPrint("==========>update db for \"class\"");
   }
 
-
-
-  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentInFoInClass(List<int> listStdId) async {
-    final snapshot =
-    await db.collection("students").where("user_id", whereIn: listStdId).get();
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentInFoInClass(
+      List<int> listStdId) async {
+    final snapshot = await db
+        .collection("students")
+        .where("user_id", whereIn: listStdId)
+        .get();
     // debugPrint("==========>get db from \"students\" : ${snapshot.docs.length}");
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentInFoInClass $listStdId ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentInFoInClass $listStdId ${snapshot.size}");
 
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getLessonsByLessonId(List<int> ids) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getLessonsByLessonId(
+      List<int> ids) async {
     final snapshot =
-    await db.collection("lessons").where("lesson_id", whereIn: ids).get();
+        await db.collection("lessons").where("lesson_id", whereIn: ids).get();
     // debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsByLessonId $ids ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsByLessonId $ids ${snapshot.size}");
 
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getLessonsByListCourseId(List<int> ids) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getLessonsByListCourseId(
+      List<int> ids) async {
     final snapshot =
-    await db.collection("lessons").where("course_id", whereIn: ids).get();
+        await db.collection("lessons").where("course_id", whereIn: ids).get();
     // debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsByListCourseId $ids ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsByListCourseId $ids ${snapshot.size}");
 
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getStudentTestByIds(List<int> ids) async {
-    final snapshot =
-    await db.collection("student_test").where("test_id", whereIn: ids).get();
+  Future<QuerySnapshot<Map<String, dynamic>>> getStudentTestByIds(
+      List<int> ids) async {
+    final snapshot = await db
+        .collection("student_test")
+        .where("test_id", whereIn: ids)
+        .get();
     // debugPrint("==========>get db from \"student_test\" : ${snapshot.docs.length}");
 
-    debugPrint("FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentTestByIds $ids ${snapshot.size}");
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentTestByIds $ids ${snapshot.size}");
 
     return snapshot;
   }

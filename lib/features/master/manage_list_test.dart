@@ -6,10 +6,12 @@ import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
 import 'package:internal_sakumi/features/master/test_item.dart';
+import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
+import 'alert_item_exist.dart';
 import 'manage_course_cubit.dart';
 
 class ManageListTest extends StatelessWidget {
@@ -35,7 +37,6 @@ class ManageListTest extends StatelessWidget {
                   isManageGeneral: true, onPressed: () async {
                 selectionDialog(context, AppText.txtAddManual.text, AppText.txtAddFromJson.text, () {
                   Navigator.pop(context);
-                  //alertCheckBoxTeacher(context, cubit);
                 }, () async {
                   Navigator.pop(context);
                   FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -44,10 +45,16 @@ class ManageListTest extends StatelessWidget {
                     Uint8List uInt8list = Uint8List.fromList(result.files.single.bytes!.toList());
                     const utf8Decoder = Utf8Decoder(allowMalformed: true);
                     final decodedBytes = utf8Decoder.convert(uInt8list);
-                    await FireBaseProvider.instance.addTestFromJson(decodedBytes);
+                    bool check = await TestModel.check(decodedBytes);
+                    if(check){
+                      await FireBaseProvider.instance.addTestFromJson(decodedBytes);
+                      Navigator.pop(context);
+                      cubit.loadTestInCourse(cubit.selector);
+                    }else{
+                      Navigator.pop(context);
+                      alertItemExist(context, AppText.txtTestExist.text);
+                    }
                   }
-                  Navigator.pop(context);
-                  cubit.loadTestInCourse(cubit.selector);
                 });
               })),
       ],

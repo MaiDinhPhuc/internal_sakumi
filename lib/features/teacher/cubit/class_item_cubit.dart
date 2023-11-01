@@ -3,8 +3,6 @@ import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/home_teacher/class_statistic_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
-import 'package:intl/intl.dart';
 
 class ClassItemCubit extends Cubit<int> {
   final ClassModel2 classModel;
@@ -14,7 +12,7 @@ class ClassItemCubit extends Cubit<int> {
   double? lessonPercent;
   ClassStatisticModel? classStatistic;
   load() async {
-    lessonPercent = classModel.lessonCount / classModel.course.lessonCount;
+    lessonPercent =  (classModel.lessonCount==null?0:classModel.lessonCount!) / (classModel.course == null ? 1 : classModel.course!.lessonCount);
     emit(state + 1);
     loadInfoStatistic();
   }
@@ -23,7 +21,7 @@ class ClassItemCubit extends Cubit<int> {
 
     List<int> listStdIdsEnable = [];
 
-    for(var element in classModel.stdClasses){
+    for(var element in classModel.stdClasses!){
       if(element.classStatus != "Remove" &&
           element.classStatus != "Moved" &&
           element.classStatus != "Retained" &&
@@ -34,9 +32,9 @@ class ClassItemCubit extends Cubit<int> {
       }
     }
 
-    var stdLessons = classModel.stdLessons.where((e) => listStdIdsEnable.contains(e.studentId) && e.timekeeping!= 0).toList();
-    var listStatus = classModel.stdClasses.map((e) => e.classStatus).toList();
-    List<LessonResultModel> listLessonResult = classModel.lessonResults;
+    var stdLessons = classModel.stdLessons!.where((e) => listStdIdsEnable.contains(e.studentId) && e.timekeeping!= 0).toList();
+    var listStatus = classModel.stdClasses!.map((e) => e.classStatus).toList();
+    List<LessonResultModel> listLessonResult = classModel.lessonResults!;
 
     List<int> listLessonId = [];
     for (var i in listLessonResult) {
@@ -45,7 +43,7 @@ class ClassItemCubit extends Cubit<int> {
       }
     }
     List<LessonModel> lessonTemp =
-    classModel.listLesson.where((element) => element.btvn == 0).toList();
+    classModel.listLesson!.where((element) => element.btvn == 0).toList();
     List<int> lessonExceptionIds = [];
     for (var i in lessonTemp) {
       lessonExceptionIds.add(i.lessonId);

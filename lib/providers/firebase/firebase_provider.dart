@@ -8,6 +8,7 @@ import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
+import 'package:internal_sakumi/features/teacher/cubit/teacher_data_cubit.dart';
 import 'package:internal_sakumi/features/teacher/profile/app_bar_info_teacher_cubit.dart';
 import 'package:internal_sakumi/main.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
@@ -82,6 +83,11 @@ class FireBaseProvider extends NetworkProvider {
           sharedPreferences.setString(PrefKeyConfigs.email, email.text);
           if (context.mounted) {
             Navigator.pop(context);
+            var logoutYet =
+                sharedPreferences.getString(PrefKeyConfigs.logoutYet);
+            if (logoutYet == "true") {
+              BlocProvider.of<TeacherDataCubit>(context).loadClass();
+            }
           }
           Navigator.pushReplacementNamed(context, Routes.admin);
         }
@@ -95,16 +101,18 @@ class FireBaseProvider extends NetworkProvider {
           sharedPreferences.setString(PrefKeyConfigs.email, email.text);
           if (context.mounted) {
             Navigator.pop(context);
+            var logoutYet =
+                sharedPreferences.getString(PrefKeyConfigs.logoutYet);
+            if (logoutYet == "true") {
+              BlocProvider.of<TeacherDataCubit>(context).loadClass();
+            }
           }
           await context.read<AppBarInfoTeacherCubit>().load();
-          // if (context.mounted) {
-          //   BlocProvider.of<TeacherDataCubit>(context).loadClass();
-          // }
-
           Navigator.pushReplacementNamed(context, Routes.teacher);
         }
         if (user.role == "master") {
           sharedPreferences.setInt(PrefKeyConfigs.userId, user.id);
+          sharedPreferences.setString(PrefKeyConfigs.email, email.text);
           if (context.mounted) {
             Navigator.pop(context);
           }
@@ -164,6 +172,8 @@ class FireBaseProvider extends NetworkProvider {
     sharedPreferences.setInt(PrefKeyConfigs.userId, -1);
     sharedPreferences.setString(PrefKeyConfigs.name, '');
     sharedPreferences.setString(PrefKeyConfigs.email, '');
+    sharedPreferences.setString(PrefKeyConfigs.logoutYet, 'true');
+    BlocProvider.of<TeacherDataCubit>(context).loadClass();
     Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
   }
 
@@ -727,6 +737,11 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<void> updateLessonInfo(LessonModel lessonModel) async {
+    await FireStoreDb.instance.updateLessonInfo(lessonModel);
+  }
+
+  @override
   Future<TeacherHomeClass> getDataForTeacherHomeScreen(int teacherId) async {
     final List<TeacherClassModel> listTeacherClass =
         (await FireStoreDb.instance.getTeacherClassById('user_id', teacherId))
@@ -1093,32 +1108,30 @@ class FireBaseProvider extends NetworkProvider {
     var classes =
         await FireBaseProvider.instance.getListClassForTeacher(teacherClassIDs);
 
-    List<int> listCourseIds = [];
-
-    for (var i in classes) {
-      if (listCourseIds.contains(i.courseId) == false) {
-        listCourseIds.add(i.courseId);
-      }
-    }
-
-    var courses =
-        await FireBaseProvider.instance.getCourseByListId(listCourseIds);
-    var lessons =
-        await FireBaseProvider.instance.getLessonsByListCourseId(listCourseIds);
-    var stdClasses =
-        await FireBaseProvider.instance.getStudentClassByListId(teacherClassIDs);
-    List<LessonResultModel> lessonResults = await FireBaseProvider.instance
-        .getLessonsResultsByListClassIds(teacherClassIDs);
-    List<StudentLessonModel> stdLessons = await FireBaseProvider.instance
-        .getAllStudentLessonsInListClassId(teacherClassIDs);
-    return ClassModel2.make(
-        classes, courses, lessons, stdClasses, lessonResults, stdLessons);
+    // List<int> listCourseIds = [];
+    //
+    // for (var i in classes) {
+    //   if (listCourseIds.contains(i.courseId) == false) {
+    //     listCourseIds.add(i.courseId);
+    //   }
+    // }
+    //
+    // var courses =
+    //     await FireBaseProvider.instance.getCourseByListId(listCourseIds);
+    // var lessons =
+    //     await FireBaseProvider.instance.getLessonsByListCourseId(listCourseIds);
+    // var stdClasses =
+    //     await FireBaseProvider.instance.getStudentClassByListId(teacherClassIDs);
+    // List<LessonResultModel> lessonResults = await FireBaseProvider.instance
+    //     .getLessonsResultsByListClassIds(teacherClassIDs);
+    // List<StudentLessonModel> stdLessons = await FireBaseProvider.instance
+    //     .getAllStudentLessonsInListClassId(teacherClassIDs);
+    return ClassModel2.load1(classes);
   }
 
   @override
   Future<List<ClassModel2>> getClassByAdmin() async {
-    var classes =
-    await FireBaseProvider.instance.getListClassNotRemove();
+    var classes = await FireBaseProvider.instance.getListClassNotRemove();
 
     List<int> teacherClassIDs = classes.map((e) => e.classId).toList();
 
@@ -1131,17 +1144,16 @@ class FireBaseProvider extends NetworkProvider {
     }
 
     var courses =
-    await FireBaseProvider.instance.getCourseByListId(listCourseIds);
+        await FireBaseProvider.instance.getCourseByListId(listCourseIds);
     var lessons =
-    await FireBaseProvider.instance.getLessonsByListCourseId(listCourseIds);
-    var stdClasses =
-    await FireBaseProvider.instance.getStudentClassByListId(teacherClassIDs);
+        await FireBaseProvider.instance.getLessonsByListCourseId(listCourseIds);
+    var stdClasses = await FireBaseProvider.instance
+        .getStudentClassByListId(teacherClassIDs);
     List<LessonResultModel> lessonResults = await FireBaseProvider.instance
         .getLessonsResultsByListClassIds(teacherClassIDs);
     List<StudentLessonModel> stdLessons = await FireBaseProvider.instance
         .getAllStudentLessonsInListClassId(teacherClassIDs);
-    return ClassModel2.make(
-        classes, courses, lessons, stdClasses, lessonResults, stdLessons);
+    return ClassModel2.load1(classes);
   }
 
   @override
@@ -2013,6 +2025,17 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<bool> addNewLesson(LessonModel model) async {
+    final temp = await FireStoreDb.instance
+        .getLessonByDocs("lesson_${model.lessonId}_course_${model.courseId}");
+    if (!temp.exists) {
+      await FireStoreDb.instance.addLesson(model);
+      return true;
+    }
+    return false;
+  }
+
+  @override
   Future<void> updateCourseState(CourseModel courseModel, bool state) async {
     await FireStoreDb.instance.updateCourseState(courseModel, state);
   }
@@ -2142,5 +2165,4 @@ class FireBaseProvider extends NetworkProvider {
         .toList();
     return listLesson;
   }
-
 }

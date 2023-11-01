@@ -127,7 +127,6 @@ class ListLessonTab extends StatelessWidget {
                                                           ),
                                                           crossFadeState: state % 2 == 1 ? CrossFadeState.showSecond : CrossFadeState.showFirst,
                                                           duration: const Duration(milliseconds: 100))),
-                                                  if (role == "teacher")
                                                     Positioned.fill(
                                                         child: Material(
                                                       color: Colors.transparent,
@@ -155,21 +154,12 @@ class ListLessonTab extends StatelessWidget {
                                                                   .pushNamed(c,
                                                                       "/teacher/lesson/class=${cubit.classModel!.classId}/lesson=${cubit.listLessonInfo![cubit.listLessonInfo!.indexOf(e)]['id']}");
                                                             } else {
-                                                              await Navigator
-                                                                  .pushNamed(c,
-                                                                      "/teacher/grading/class=${cubit.classModel!.classId}/type=btvn/lesson=${cubit.listLessonInfo![cubit.listLessonInfo!.indexOf(e)]['id']}");
+                                                              if (role == "teacher"){
+                                                                await Navigator
+                                                                    .pushNamed(c,
+                                                                    "/teacher/grading/class=${cubit.classModel!.classId}/type=btvn/lesson=${cubit.listLessonInfo![cubit.listLessonInfo!.indexOf(e)]['id']}");
+                                                              }
                                                             }
-                                                            // if (c.mounted) {
-                                                            //   await cubit
-                                                            //       .loadLessonResult(
-                                                            //       context);
-                                                            //   if (c
-                                                            //       .mounted) {
-                                                            //     await cubit
-                                                            //         .loadStatistic(
-                                                            //         c);
-                                                            //   }
-                                                            // }
                                                           },
                                                           borderRadius:
                                                               BorderRadius.circular(

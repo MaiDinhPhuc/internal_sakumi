@@ -7,12 +7,14 @@ import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
+import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/title_widget.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 import 'alert_add_new_course.dart';
+import 'alert_item_exist.dart';
 import 'manage_course_cubit.dart';
 
 class ManageListCourse extends StatelessWidget {
@@ -106,7 +108,6 @@ class ManageListCourse extends StatelessWidget {
                 selectionDialog(context, AppText.txtAddManual.text, AppText.txtAddFromJson.text, () {
                   Navigator.pop(context);
                   alertAddNewCourse(context,null,false, cubit);
-                  //alertCheckBoxTeacher(context, cubit);
                 }, () async {
                   Navigator.pop(context);
                   FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -115,10 +116,16 @@ class ManageListCourse extends StatelessWidget {
                     Uint8List uInt8list = Uint8List.fromList(result.files.single.bytes!.toList());
                     const utf8Decoder = Utf8Decoder(allowMalformed: true);
                     final decodedBytes = utf8Decoder.convert(uInt8list);
-                    await FireBaseProvider.instance.addCourseFromJson(decodedBytes);
+                    bool check = await CourseModel.check(decodedBytes);
+                    if(check){
+                      await FireBaseProvider.instance.addCourseFromJson(decodedBytes);
+                      Navigator.pop(context);
+                      cubit.loadAfterAddCourseFromJson();
+                    }else{
+                      Navigator.pop(context);
+                      alertItemExist(context, AppText.txtCourseExist.text);
+                    }
                   }
-                  Navigator.pop(context);
-                  cubit.loadAfterAddCourseFromJson();
                 });
               })),
           SizedBox(height: Resizable.size(context, 50))

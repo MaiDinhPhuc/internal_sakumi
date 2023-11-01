@@ -183,6 +183,10 @@ abstract class NetworkProvider {
 
   // Future<List<TagModel>> getTags();
 
+  Future<bool> addNewLesson(LessonModel model);
+
+  Future<void> updateLessonInfo(LessonModel lessonModel);
+
   Future<AdminModel> getAdminById(int id);
 
   Future<bool> createNewClass(ClassModel model);

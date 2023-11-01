@@ -13,25 +13,50 @@ class TeacherDataCubit extends Cubit<int> {
   }
 
   loadClass() async {
+    classes = null;
     SharedPreferences localData = await SharedPreferences.getInstance();
     var userId = localData.getInt(PrefKeyConfigs.userId);
 
-    print(userId);
-
-    if (userId == null) return;
+    if (userId == null || userId == -1) return;
 
     var user = await FireBaseProvider.instance.getUserById(userId);
 
     if (user.role == 'master') return;
 
     if (user.role == 'teacher') {
-      classes = await FireBaseProvider.instance.getClassByTeacherId(userId);
+      loadClassForTeacherRole(userId);
     } else {
-      classes = await FireBaseProvider.instance.getClassByAdmin();
+      loadClassForAdminRole();
     }
 
     debugPrint("======================> loadClass");
+  }
 
+  loadClassForTeacherRole(int userId) async {
+    classes = await FireBaseProvider.instance.getClassByTeacherId(userId);
+    emit(state + 1);
+    List<int> listCourseIds = [];
+    for (var i in classes!) {
+      if (listCourseIds.contains(i.classModel.courseId) == false) {
+        listCourseIds.add(i.classModel.courseId);
+      }
+      var lessonCount = await FireBaseProvider.instance.getCountWithCondition(
+          "lesson_result", "class_id", i.classModel.classId);
+      classes![classes!.indexOf(i)] = i.copyWith(null, null, lessonCount, null, null, null, null);
+      emit(state + 1);
+    }
+    var courses =
+        await FireBaseProvider.instance.getCourseByListId(listCourseIds);
+    for (var i in classes!) {
+      var course =
+          courses.firstWhere((e) => e.courseId == i.classModel.courseId);
+      classes![classes!.indexOf(i)] = i.copyWith(null, course, null, null, null, null, null);
+      emit(state + 1);
+    }
+  }
+
+  loadClassForAdminRole() async {
+    classes = await FireBaseProvider.instance.getClassByAdmin();
     emit(state + 1);
   }
 }

@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class CourseModel {
   final int courseId, lessonCount, termId, version;
@@ -28,6 +31,22 @@ class CourseModel {
       default:
         return AppText.textGeneral.text;
     }
+  }
+
+  String get bigTitle{
+    return "$name $level $termName";
+  }
+
+  static Future<bool> check(String jsonData)async{
+    final data = json.decode(jsonData);
+    for(var i in data){
+      int courseCount = await FireBaseProvider.instance.getCountWithCondition(
+          "courses", "course_id", i['course_id']);
+      if(courseCount != 0){
+        return false;
+      }
+    }
+    return true;
   }
 
   factory CourseModel.fromSnapshot(

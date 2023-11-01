@@ -92,7 +92,7 @@ class TeacherScreen2 extends StatelessWidget {
                                       padding: EdgeInsets.symmetric(
                                           horizontal:
                                               Resizable.size(context, 150)),
-                                      child: ClassItem(model: e, classItemCubit: ClassItemCubit(e),)))
+                                      child: ClassItem(classModel: e, classItemCubit: ClassItemCubit(e),)))
                                   .toList(),
                               SizedBox(height: Resizable.size(context, 50))
                             ])

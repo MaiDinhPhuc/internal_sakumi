@@ -43,6 +43,7 @@ class SplashScreen extends StatelessWidget {
     } else {
       if (Navigator.of(context).isCurrent("/")) {
         String userEmail = localData.getString(PrefKeyConfigs.email).toString();
+        print("==============>email: $userEmail");
         FireBaseProvider.instance.autoLogInUser(userEmail, context);
       }
     }

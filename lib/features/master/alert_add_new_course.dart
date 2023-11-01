@@ -460,8 +460,8 @@ void alertAddNewCourse(BuildContext context, CourseModel? courseModel,
                                                         type: typeCon.text,
                                                         token: tokenCon.text,
                                                         code: codeCon.text,
-                                                        enable: true, version: int.parse(verCon.text)),
-                                                    courseModel!.courseId);
+                                                        enable: courseModel!.enable, version: int.parse(verCon.text)),
+                                                    courseModel.courseId);
                                               }
                                             }
                                           } else {
