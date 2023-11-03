@@ -21,7 +21,6 @@ class AlertAddStudentCubit extends Cubit<int> {
     studentClassCount = (await FireStoreDb.instance.getCount("student_class")).count;
     listAllStudent = await FireBaseProvider.instance.getAllStudent();
     userCount = (await FireStoreDb.instance.getCount("users")).count;
-
     listStd = [];
     for(var i in listAllStudent!){
      var count = 0;

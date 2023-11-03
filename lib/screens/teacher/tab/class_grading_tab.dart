@@ -3,33 +3,50 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/class_appbar.dart';
+import 'package:internal_sakumi/features/teacher/cubit/teacher_data_cubit.dart';
 import 'package:internal_sakumi/features/teacher/grading/detail_grading_view.dart';
 import 'package:internal_sakumi/features/teacher/grading/drop_down_grading_widget.dart';
 import 'package:internal_sakumi/features/teacher/grading/grading_cubit.dart';
+import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ClassGradingTab extends StatelessWidget {
-  const ClassGradingTab({super.key});
+  ClassGradingTab({super.key}) : cubit = GradingCubit();
+  final GradingCubit cubit;
+
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GradingCubit()..init(),
-      child: Scaffold(
+    var dataController = BlocProvider.of<DataCubit>(context);
+    final shimmerList = List.generate(10, (index) => index);
+    return BlocBuilder<DataCubit, int>(builder: (c, classes){
+      return Scaffold(
         body: Column(
           children: [
             HeaderTeacher(
                 index: 3, classId: TextUtils.getName(), role: 'teacher'),
-            BlocBuilder<GradingCubit, int>(builder: (c, s) {
-              var cubit = BlocProvider.of<GradingCubit>(c);
-              if(cubit.classModel == null){
-                return Transform.scale(
-                  scale: 0.75,
-                  child: const CircularProgressIndicator(),
-                );
-              }
-              return Expanded(child: SingleChildScrollView(
+            dataController.classes == null
+                ? Center(
+              child: Transform.scale(
+                scale: 0.75,
+                child: const CircularProgressIndicator(),
+              ),
+            )
+                :BlocBuilder<GradingCubit, int>(
+                bloc: cubit
+                  ..load(dataController.classes!.firstWhere((e) =>
+                  e.classModel.classId ==
+                      int.parse(TextUtils.getName()))),
+                builder: (c, s) {
+              return cubit.classModel == null
+                  ? Transform.scale(
+                scale: 0.75,
+                child: const CircularProgressIndicator(),
+              )
+                  :  Expanded(child: SingleChildScrollView(
                 child: Column(
                   children: [
                     Container(
@@ -41,10 +58,27 @@ class ClassGradingTab extends StatelessWidget {
                               fontWeight: FontWeight.w800,
                               fontSize: Resizable.font(context, 30))),
                     ),
-                    s % 2 == 0 ? Transform.scale(
-                      scale: 0.75,
-                      child: const CircularProgressIndicator(),
-                    ) : Column(
+                    cubit.listLessonResult == null
+                        ? Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor:
+                      Colors.grey[100]!,
+                      child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              ...shimmerList.map((e) => Padding(
+                                  padding: EdgeInsets
+                                      .symmetric(
+                                      horizontal: Resizable
+                                          .padding(
+                                          context,
+                                          150)),
+                                  child:
+                                  const ItemShimmer()))
+                            ],
+                          )),
+                    )
+                        :Column(
                       children: [
                         Padding(padding: EdgeInsets.symmetric(horizontal: Resizable.padding(
                             context, 80)),child: Row(
@@ -272,8 +306,8 @@ class ClassGradingTab extends StatelessWidget {
                                           children: [
                                             ElevatedButton(
                                               onPressed: ()async{
-                                                  await Navigator.pushNamed(context,
-                                                      "${Routes.teacher}/grading/class=${TextUtils.getName()}/type=test/parent=${e.testId}");
+                                                await Navigator.pushNamed(context,
+                                                    "${Routes.teacher}/grading/class=${TextUtils.getName()}/type=test/parent=${e.testId}");
                                               },
                                               style: ButtonStyle(
                                                   shadowColor: MaterialStateProperty.all(
@@ -306,7 +340,7 @@ class ClassGradingTab extends StatelessWidget {
             }),
           ],
         ),
-      ),
-    );
+      );
+    });
   }
 }

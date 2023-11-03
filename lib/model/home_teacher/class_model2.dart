@@ -6,6 +6,9 @@ import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
+import 'package:internal_sakumi/model/student_test_model.dart';
+import 'package:internal_sakumi/model/test_model.dart';
+import 'package:internal_sakumi/model/test_result_model.dart';
 
 class ClassModel2 {
   final ClassModel classModel;
@@ -15,6 +18,9 @@ class ClassModel2 {
   final List<StudentClassModel>? stdClasses;
   final List<LessonResultModel>? lessonResults;
   final List<StudentLessonModel>? stdLessons;
+  final List<StudentTestModel>? stdTests;
+  final List<TestModel>? listTest;
+  final List<TestResultModel>? testResults;
 
   ClassModel2 copyWith(
       ClassModel? classModel,
@@ -23,7 +29,10 @@ class ClassModel2 {
       List<LessonModel>? listLesson,
       List<StudentClassModel>? stdClasses,
       List<LessonResultModel>? lessonResults,
-      List<StudentLessonModel>? stdLessons) {
+      List<StudentLessonModel>? stdLessons,
+      List<StudentTestModel>? stdTests,
+      List<TestModel>? listTest,
+      List<TestResultModel>? testResults) {
     return ClassModel2(
         course: course ?? this.course,
         listLesson: listLesson ?? this.listLesson,
@@ -31,44 +40,18 @@ class ClassModel2 {
         lessonResults: lessonResults ?? this.lessonResults,
         stdLessons: stdLessons ?? this.stdLessons,
         classModel: classModel ?? this.classModel,
-        lessonCount: lessonCount ?? this.lessonCount);
+        lessonCount: lessonCount ?? this.lessonCount,
+        listTest: listTest ?? this.listTest,
+        stdTests: stdTests ?? this.stdTests,
+        testResults: testResults ?? this.testResults);
   }
 
-  static Future<List<ClassModel2>> load1(
-      List<ClassModel> classes,
-      // List<CourseModel> courses,
-      // List<LessonModel>? lessons,
-      // List<StudentClassModel>? stdClasses,
-      // List<LessonResultModel>? lessonResults,
-      // List<StudentLessonModel>? stdLessons
-      ) async {
+  static Future<List<ClassModel2>> loadClass(
+    List<ClassModel> classes,
+  ) async {
     List<ClassModel2> results = [];
 
     for (var classModel in classes) {
-      //var course = courses.firstWhere((e) => e.courseId == classModel.courseId);
-      // var listLesson =
-      //     lessons.where((e) => e.courseId == classModel.courseId).toList();
-      // var listStdClass =
-      //     stdClasses.where((e) => e.classId == classModel.classId).toList();
-      // var lesResults =
-      //     lessonResults.where((e) => e.classId == classModel.classId).toList();
-      // lesResults.sort((a, b) {
-      //   DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm:ss');
-      //   var tempA = a.date;
-      //   var tempB = b.date;
-      //   if (tempA!.length == 10) {
-      //     tempA += ' 00:00:00';
-      //   }
-      //   if (tempB!.length == 10) {
-      //     tempB += ' 00:00:00';
-      //   }
-      //   final dateA = dateFormat.parse(tempA);
-      //   final dateB = dateFormat.parse(tempB);
-      //   return dateA.compareTo(dateB);
-      // });
-      // var listStdLesson =
-      //     stdLessons.where((e) => e.classId == classModel.classId).toList();
-
       results.add(ClassModel2(
         course: null,
         listLesson: null,
@@ -77,6 +60,9 @@ class ClassModel2 {
         stdLessons: null,
         lessonCount: null,
         classModel: classModel,
+        listTest: null,
+        stdTests: null,
+        testResults: null,
       ));
     }
 
@@ -118,5 +104,8 @@ class ClassModel2 {
       required this.lessonResults,
       required this.stdLessons,
       required this.classModel,
-      required this.lessonCount});
+      required this.lessonCount,
+      required this.listTest,
+      required this.stdTests,
+      required this.testResults});
 }

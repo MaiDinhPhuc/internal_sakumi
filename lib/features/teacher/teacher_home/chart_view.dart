@@ -1,13 +1,14 @@
 import 'package:flutter/Material.dart';
-import 'package:internal_sakumi/features/teacher/list_class/chart_view.dart';
+import 'package:internal_sakumi/features/teacher/list_class/chart_view_admin.dart';
+import 'package:internal_sakumi/features/teacher/list_class/column_chart.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class ChartView extends StatelessWidget {
 
-  List<double> stds;
-  List<int>? attendances;
-  List<int>? hws;
-  ChartView({Key? key, required this.attendances, required this.hws, required this.stds}) : super(key: key);
+  final List<double> stds;
+  final List<int>? attendances;
+  final List<int>? hws;
+  const ChartView({Key? key, required this.attendances, required this.hws, required this.stds}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -13,7 +13,7 @@ class AdminScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var dataController = BlocProvider.of<TeacherDataCubit>(context);
+    var dataController = BlocProvider.of<DataCubit>(context);
     return DefaultTabController(
         length: 4,
         child: Scaffold(

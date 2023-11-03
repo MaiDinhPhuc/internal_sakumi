@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
@@ -10,12 +9,13 @@ import 'package:internal_sakumi/widget/circle_progress.dart';
 class CollapseLessonItem extends StatelessWidget {
   final int index;
   final String title;
-  const CollapseLessonItem(this.index, this.title, {Key? key})
+  final LessonTabCubit cubit;
+  const CollapseLessonItem(this.index, this.title,
+      {Key? key, required this.cubit})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var cubit = BlocProvider.of<LessonTabCubit>(context);
     return LessonItemRowLayout(
       lesson: Text(
           '${AppText.txtLesson.text} ${index + 1 < 10 ? '0${index + 1}' : '${index + 1}'}'
@@ -41,41 +41,46 @@ class CollapseLessonItem extends StatelessWidget {
           ),
         ),
       ),
-      attend: cubit.listAttendance![index] == null ? Container(): CircleProgress(
-        title: '${(cubit.listAttendance![index]!*100).toStringAsFixed(0)} %',
-        lineWidth: Resizable.size(context, 3),
-        percent: cubit.listAttendance![index]!,
-        radius: Resizable.size(context, 16),
-        fontSize: Resizable.font(context, 14),
-      ),
-      submit:cubit.listHw![index] == null ? Container() :CircleProgress(
-        title: '${(cubit.listHw![index]!*100).toStringAsFixed(0)} %',
-        lineWidth: Resizable.size(context, 3),
-        percent: cubit.listHw![index]!,
-        radius: Resizable.size(context, 16),
-        fontSize: Resizable.font(context, 14),
-      ),//Text(cubit.listRateSubmit![index].toStringAsFixed(2).toString()),
-      mark:cubit.listHwStatus![index] == null
-              ? Container()
-              : Container(
-                  padding: EdgeInsets.symmetric(
-                      vertical: Resizable.padding(context, 4),
-                      horizontal: Resizable.padding(context, 10)),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10000),
-                      color: cubit.listHwStatus![index] == true
-                          ? greenColor
-                          : redColor),
-                  child: Text(
-                    (cubit.listHwStatus![index] == true
-                            ? AppText.txtMarked.text
-                            : AppText.txtNotMark.text)
-                        .toUpperCase(),
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: Resizable.font(context, 14),
-                        fontWeight: FontWeight.w800),
-                  )),
+      attend: cubit.listAttendance![index] == null
+          ? Container()
+          : CircleProgress(
+              title:
+                  '${(cubit.listAttendance![index]! * 100).toStringAsFixed(0)} %',
+              lineWidth: Resizable.size(context, 3),
+              percent: cubit.listAttendance![index]!,
+              radius: Resizable.size(context, 16),
+              fontSize: Resizable.font(context, 14),
+            ),
+      submit: cubit.listHw![index] == null
+          ? Container()
+          : CircleProgress(
+              title: '${(cubit.listHw![index]! * 100).toStringAsFixed(0)} %',
+              lineWidth: Resizable.size(context, 3),
+              percent: cubit.listHw![index]!,
+              radius: Resizable.size(context, 16),
+              fontSize: Resizable.font(context, 14),
+            ), //Text(cubit.listRateSubmit![index].toStringAsFixed(2).toString()),
+      mark: cubit.listHwStatus![index] == null
+          ? Container()
+          : Container(
+              padding: EdgeInsets.symmetric(
+                  vertical: Resizable.padding(context, 4),
+                  horizontal: Resizable.padding(context, 10)),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10000),
+                  color: cubit.listHwStatus![index] == true
+                      ? greenColor
+                      : redColor),
+              child: Text(
+                (cubit.listHwStatus![index] == true
+                        ? AppText.txtMarked.text
+                        : AppText.txtNotMark.text)
+                    .toUpperCase(),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: Resizable.font(context, 14),
+                    fontWeight: FontWeight.w800),
+              )),
       dropdown: Container(),
     );
   }

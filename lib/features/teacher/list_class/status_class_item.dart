@@ -6,62 +6,8 @@ import 'package:internal_sakumi/features/admin/manage_class/list_class_cubit.dar
 import 'package:internal_sakumi/features/admin/manage_general/list_class/alert_confirm_change_class_status.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
-import 'package:internal_sakumi/features/teacher/list_class/teacher_cubit.dart';
 import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-
-class StatusClassItem extends StatelessWidget {
-  const StatusClassItem({super.key, required this.index});
-  final int index;
-
-  @override
-  Widget build(BuildContext context) {
-    var cubit = BlocProvider.of<TeacherCubit>(context);
-    return Tooltip(
-        decoration: BoxDecoration(
-            color: Colors.black,
-            border: Border.all(
-                color: Colors.black, width: Resizable.size(context, 1)),
-            borderRadius: BorderRadius.circular(Resizable.size(context, 5))),
-        richMessage: WidgetSpan(
-            alignment: PlaceholderAlignment.baseline,
-            baseline: TextBaseline.alphabetic,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                RichText(
-                  text: TextSpan(
-                    text: vietnameseSubText(cubit.listClassStatus![index]),
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: Resizable.font(context, 18),
-                        color: Colors.white),
-                  ),
-                ),
-              ],
-            )),
-        child: AspectRatio(
-          aspectRatio: 1,
-          child: Container(
-            height: Resizable.size(context, 20),
-            width: Resizable.size(context, 20),
-            padding: EdgeInsets.all(Resizable.padding(context, 10)),
-            decoration: BoxDecoration(
-                color: cubit.getColor(cubit.listClassStatus![index]),
-                borderRadius: BlocProvider.of<DropdownCubit>(context).state %
-                            2 ==
-                        0
-                    ? BorderRadius.horizontal(
-                        left: Radius.circular(Resizable.padding(context, 5)))
-                    : BorderRadius.only(
-                        topLeft:
-                            Radius.circular(Resizable.padding(context, 5)))),
-            child: Image.asset(
-                'assets/images/ic_${cubit.getIcon(cubit.listClassStatus![index])}.png'),
-          ),
-        ));
-  }
-}
 
 class StatusClassItemAdmin extends StatelessWidget {
   const StatusClassItemAdmin({super.key, required this.index});

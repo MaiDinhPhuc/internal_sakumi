@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/alert_view.dart';
+import 'package:internal_sakumi/features/teacher/cubit/teacher_data_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/attendance_item.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/session_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/note_for_team_card.dart';
@@ -9,9 +10,9 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 
 class LessonTeachingView extends StatelessWidget {
-  const LessonTeachingView({Key? key})
+  const LessonTeachingView({Key? key, required this.dataCubit})
       : super(key: key);
-
+  final DataCubit dataCubit;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SessionCubit, int>(builder: (c, _){
@@ -35,7 +36,7 @@ class LessonTeachingView extends StatelessWidget {
                 '${AppText.txtInLate.text} + ${AppText.txtOutSoon.text}',
                 AppText.txtPermitted.text,
                 AppText.txtAbsent.text,
-              ])),
+              ], dataCubit: dataCubit)),
           NoteForTeamCard(cubit.isNoteStudent,
               hintText: AppText.txtHintNoteForStudent.text,
               noNote: AppText.txtNoNoteForStudent.text, onChanged: (v) {
@@ -53,7 +54,7 @@ class LessonTeachingView extends StatelessWidget {
                   context,
                   cubit.noteStudent.isNotEmpty
                       ? cubit.noteStudent
-                      : ''),
+                      : '',dataCubit),
               title: AppText.txtFinishLesson.text,
               isActive:
               cubit.totalAttendance == cubit.listStudent!.length &&

@@ -119,7 +119,7 @@ class LoadListClassCubit extends Cubit<int> {
 
   }
 
-  init() async {
+  load() async {
     data = await FireBaseProvider.instance.getDataForManageClassTab();
     for(var i in data!.listClassIds){
       listLastLessonTitle.add(null);

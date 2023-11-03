@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/grading_tab_data_model.dart';
+import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
@@ -13,7 +14,6 @@ import 'package:internal_sakumi/utils/text_utils.dart';
 class GradingCubit extends Cubit<int> {
   GradingCubit() : super(0);
 
-  GradingTabDataModel? data;
 
   ClassModel? classModel;
 
@@ -29,18 +29,21 @@ class GradingCubit extends Cubit<int> {
   bool isNotGrading = true;
 
 
-  init() async {
-    data = await FireBaseProvider.instance.getDataForGradingTab(int.parse(TextUtils.getName()));
-
-    classModel = data!.classModel;
-    lessons = data!.lessons;
-    listStudentLessons = data!.listStudentLessons;
-    listLessonResult = data!.listLessonResult;
-    listTestResult = data!.listTestResult;
-    listStudentTests = data!.listStudentTests;
-    tests = data!.tests;
-
-    emit(state+1);
+  load(ClassModel2 model) async {
+    if(model.stdTests == null){
+      classModel = model.classModel;
+      emit(state+1);
+    }else{
+      classModel = model.classModel;
+      emit(state+1);
+      lessons = model.listLesson;
+      listStudentLessons = model.stdLessons;
+      listLessonResult = model.lessonResults;
+      listTestResult = model.testResults;
+      listStudentTests = model.stdTests;
+      tests = model.listTest;
+      emit(state+1);
+    }
   }
 
   update(){

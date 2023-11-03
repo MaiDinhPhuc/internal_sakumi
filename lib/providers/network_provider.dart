@@ -9,11 +9,9 @@ import 'package:internal_sakumi/model/class_overview_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/detail_grading_data_model.dart';
 import 'package:internal_sakumi/model/grading_tab_data_model.dart';
-import 'package:internal_sakumi/model/home_teacher/class_statistic_model.dart';
 import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
-import 'package:internal_sakumi/model/list_lesson_data_model.dart';
 import 'package:internal_sakumi/model/list_test_data_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
 import 'package:internal_sakumi/model/session_data_model.dart';
@@ -21,7 +19,6 @@ import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
-import 'package:internal_sakumi/model/tag_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_home_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
@@ -29,7 +26,6 @@ import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
-import 'package:internal_sakumi/screens/teacher/teacher_screen2.dart';
 
 abstract class NetworkProvider {
 
@@ -130,25 +126,15 @@ abstract class NetworkProvider {
 
   Future<List<TestResultModel>> getListTestResult(int classId);
 
-  Future<TeacherHomeClass> getDataForTeacherHomeScreen(int teacherId);
-
-  Future<ClassOverViewModel> getDataForClassOverViewTab(int classId);
-
   Future<List<StudentModel>> getAllStudentInFoInClass(List<int> listStdId);
 
   Future<List<LessonModel>> getLessonsByLessonId(List<int> ids);
 
   Future<List<LessonModel>> getLessonsByListCourseId(List<int> ids);
 
-  Future<ListLessonDataModel> getDataForLessonTab(int classId);
-
   Future<List<TeacherModel>> getListTeacherByListId(List<int> teacherIds);
 
   Future<List<StudentLessonModel>> getStudentLessons(int classId, List<int> studentIds);
-
-  Future<ListTestDataModel> getDataForTestTab(int classId);
-
-  Future<GradingTabDataModel> getDataForGradingTab(int classId);
 
   Future<SessionDataModel> getDataForSessionCubit(int classId, int lessonId);
 

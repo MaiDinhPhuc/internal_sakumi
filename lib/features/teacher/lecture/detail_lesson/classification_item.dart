@@ -6,6 +6,8 @@ import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/attendanc
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
+import 'drop_down_widget.dart';
+
 class ClassificationItem extends StatelessWidget {
   final int index;
   final TextEditingController controller;

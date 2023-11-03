@@ -9,7 +9,6 @@ import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class ClassOverviewCubit extends Cubit<int> {
   ClassOverviewCubit() : super(0);
-
   ClassModel? classModel;
   List<StudentClassModel>? listStdClass;
   List<StudentModel>? students;
@@ -31,16 +30,18 @@ class ClassOverviewCubit extends Cubit<int> {
     "Remove"
   ];
 
-  loadFirst(ClassModel2? model) async {
-
-    if(model == null){
-      classModel == null;
-      emit(state+1);
+  loadFirst(ClassModel2 classModel2) async {
+    if(classModel2.stdLessons == null){
+      classModel = classModel2.classModel;
+      emit(state + 1);
     }else{
-      classModel = model.classModel;
-      emit(state+1);
+      countAvailable = 0;
+      listAttendance = [];
+      listHomework = [];
+      classModel = classModel2.classModel;
+      emit(state + 1);
       List<int> listStdIds = [];
-      for (var i in model.stdClasses!) {
+      for (var i in classModel2.stdClasses!) {
         if (i.classStatus != "Remove" &&
             i.classStatus != "Dropped" &&
             i.classStatus != "Deposit" &&
@@ -51,13 +52,13 @@ class ClassOverviewCubit extends Cubit<int> {
         listStdIds.add(i.userId);
       }
       List<int> listLessonIds = [];
-      for (var i in model.lessonResults!) {
+      for (var i in classModel2.lessonResults!) {
         if (listLessonIds.contains(i.lessonId) == false) {
           listLessonIds.add(i.lessonId);
         }
       }
       List<int> listStdIdsEnable = [];
-      for (var element in model.stdClasses!) {
+      for (var element in classModel2.stdClasses!) {
         if (element.classStatus != "Remove" &&
             element.classStatus != "Moved" &&
             element.classStatus != "Retained" &&
@@ -69,7 +70,7 @@ class ClassOverviewCubit extends Cubit<int> {
       }
 
       for (var i in listLessonIds) {
-        List<StudentLessonModel> listTemp = model.stdLessons!
+        List<StudentLessonModel> listTemp = classModel2.stdLessons!
             .where((e) =>
         e.lessonId == i &&
             e.timekeeping != 0 &&
@@ -90,15 +91,16 @@ class ClassOverviewCubit extends Cubit<int> {
         listHomework.add(tempHw);
       }
       emit(state + 1);
-      students = await FireBaseProvider.instance.getAllStudentInFoInClass(listStdIds);
+      students =
+      await FireBaseProvider.instance.getAllStudentInFoInClass(listStdIds);
       List<LessonModel> lessonTemp =
-      model.listLesson!.where((element) => element.btvn == 0).toList();
+      classModel2.listLesson!.where((element) => element.btvn == 0).toList();
       List<int> lessonExceptionIds = [];
       for (var i in lessonTemp) {
         lessonExceptionIds.add(i.lessonId);
       }
-      for (var i in model.stdClasses!) {
-        List<StudentLessonModel> stdLesson = model.stdLessons!
+      for (var i in classModel2.stdClasses!) {
+        List<StudentLessonModel> stdLesson = classModel2.stdLessons!
             .where((element) => element.studentId == i.userId)
             .toList();
         List<int> listAttendance = [];
@@ -113,7 +115,7 @@ class ClassOverviewCubit extends Cubit<int> {
           } else {
             listHw.add(j.hw);
           }
-          title.add(model.listLesson!
+          title.add(classModel2.listLesson!
               .where((element) => element.lessonId == j.lessonId)
               .single
               .title);
@@ -143,7 +145,7 @@ class ClassOverviewCubit extends Cubit<int> {
 
         if (stdLesson.isEmpty) {
           listStdDetail.add({
-            'id' : i.userId,
+            'id': i.userId,
             'status': i.classStatus,
             'attendance': listAttendance,
             'title': title,
@@ -155,7 +157,7 @@ class ClassOverviewCubit extends Cubit<int> {
           });
         } else {
           listStdDetail.add({
-            'id' : i.userId,
+            'id': i.userId,
             'status': i.classStatus,
             'attendance': listAttendance,
             'title': title,
@@ -169,9 +171,9 @@ class ClassOverviewCubit extends Cubit<int> {
       }
       double count1 = 0;
       double total1 = 0;
-      for (var i in model.stdLessons!) {
+      for (var i in classModel2.stdLessons!) {
         if (listStdIdsEnable.contains(i.studentId) && i.timekeeping != 0) {
-          if(lessonExceptionIds.contains(i.lessonId) == false){
+          if (lessonExceptionIds.contains(i.lessonId) == false) {
             total1++;
             if (i.hw != -2) {
               count1++;
@@ -180,7 +182,7 @@ class ClassOverviewCubit extends Cubit<int> {
         }
       }
       percentHw = count1 / (total1 == 0 ? 1 : total1);
-      listStdClass = model.stdClasses;
+      listStdClass = classModel2.stdClasses;
       emit(state + 1);
     }
   }

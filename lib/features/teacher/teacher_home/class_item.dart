@@ -1,7 +1,6 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/features/teacher/cubit/class_item_cubit.dart';
-import 'package:internal_sakumi/features/teacher/cubit/teacher_data_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/chart_view.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/class_over_view.dart';
@@ -29,7 +28,7 @@ class ClassItem extends StatelessWidget {
                         widget: ClassOverview(
                           model: classItemCubit.classModel,
                           courseTitle:classItemCubit.classModel.course == null ? "" : classItemCubit.classModel.course!.bigTitle,
-                          lessonPercent: classItemCubit.lessonPercent,
+                          lessonPercent: classItemCubit.lessonPercent == null ? 0 : classItemCubit.lessonPercent!,
                           lessonCountTitle:classItemCubit.classModel.course == null ? "" : "${classItemCubit.classModel.lessonCount}/${classItemCubit.classModel.course!.lessonCount}",
                           attendancePercent: classItemCubit.classStatistic ==
                               null
@@ -57,7 +56,7 @@ class ClassItem extends StatelessWidget {
                           ClassOverview(
                             model: classItemCubit.classModel,
                             courseTitle:classItemCubit.classModel.course == null ? "" : classItemCubit.classModel.course!.bigTitle,
-                            lessonPercent: classItemCubit.lessonPercent,
+                            lessonPercent: classItemCubit.lessonPercent == null ? 0 : classItemCubit.lessonPercent!,
                             lessonCountTitle:classItemCubit.classModel.course == null ? "" : "${classItemCubit.classModel.lessonCount}/${classItemCubit.classModel.course!.lessonCount}",
                             attendancePercent: classItemCubit.classStatistic ==
                                 null

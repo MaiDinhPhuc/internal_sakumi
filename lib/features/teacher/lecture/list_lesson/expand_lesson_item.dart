@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_tab_cubit.dart';
@@ -8,11 +7,11 @@ import 'package:internal_sakumi/widget/note_widget.dart';
 
 class ExpandLessonItem extends StatelessWidget {
   final int index;
-  const ExpandLessonItem(this.index, {Key? key}) : super(key: key);
+  final LessonTabCubit cubit;
+  const ExpandLessonItem(this.index, {Key? key, required this.cubit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var cubit = BlocProvider.of<LessonTabCubit>(context);
     return Container(
       margin: EdgeInsets.symmetric(vertical: Resizable.padding(context, 10)),
       child: Column(

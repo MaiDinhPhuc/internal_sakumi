@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => AppBarInfoTeacherCubit()),
-          BlocProvider<TeacherDataCubit>(create: (context) => TeacherDataCubit()),
+          BlocProvider<DataCubit>(create: (context) => DataCubit()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

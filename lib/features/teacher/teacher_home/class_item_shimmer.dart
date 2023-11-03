@@ -1,8 +1,8 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
-class ClassItemShimmer extends StatelessWidget {
-  const ClassItemShimmer({super.key});
+class ItemShimmer extends StatelessWidget {
+  const ItemShimmer({super.key});
 
   @override
   Widget build(BuildContext context) {

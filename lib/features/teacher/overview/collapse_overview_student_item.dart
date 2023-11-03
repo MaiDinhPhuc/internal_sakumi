@@ -14,11 +14,11 @@ import 'package:internal_sakumi/widget/circle_progress.dart';
 class CollapseOverviewStudentItem extends StatelessWidget {
   final String role;
   final int stdId;
-  const CollapseOverviewStudentItem(this.stdId,this.role, {Key? key}) : super(key: key);
-
+  const CollapseOverviewStudentItem(this.stdId,this.role, {Key? key, required this.cubit}) : super(key: key);
+  final ClassOverviewCubit cubit;
   @override
   Widget build(BuildContext context) {
-    var cubit = BlocProvider.of<ClassOverviewCubit>(context);
+
     int index = cubit.listStdClass!.indexOf(cubit.listStdClass!.firstWhere((e) => e.userId == stdId));
     return Container(
         padding: EdgeInsets.only(

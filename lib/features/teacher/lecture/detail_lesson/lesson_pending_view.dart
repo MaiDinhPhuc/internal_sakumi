@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/teacher/cubit/teacher_data_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -11,8 +12,9 @@ import 'package:intl/intl.dart';
 
 class LessonPendingView extends StatelessWidget {
   final DetailLessonCubit cubit;
-  const LessonPendingView(this.cubit, {Key? key}) : super(key: key);
-
+  const LessonPendingView(this.cubit, this.dataCubit, {Key? key})
+      : super(key: key);
+  final DataCubit dataCubit;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -134,14 +136,27 @@ class LessonPendingView extends StatelessWidget {
         SubmitButton(
             onPressed: () async {
               waitingDialog(context);
-              await cubit.addLessonResult(
+              await cubit.addLessonResult(LessonResultModel(
+                  id: 1000,
+                  classId: int.parse(TextUtils.getName(position: 1)),
+                  lessonId: int.parse(TextUtils.getName()),
+                  teacherId: cubit.teacherId!,
+                  status: 'Teaching',
+                  date:
+                      DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now()),
+                  noteForStudent: '',
+                  noteForSupport: '',
+                  noteForTeacher: ''));
+              dataCubit.updateLessonResults(
+                  int.parse(TextUtils.getName(position: 1)),
                   LessonResultModel(
                       id: 1000,
                       classId: int.parse(TextUtils.getName(position: 1)),
                       lessonId: int.parse(TextUtils.getName()),
                       teacherId: cubit.teacherId!,
                       status: 'Teaching',
-                      date: DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now()),
+                      date: DateFormat('dd/MM/yyyy HH:mm:ss')
+                          .format(DateTime.now()),
                       noteForStudent: '',
                       noteForSupport: '',
                       noteForTeacher: ''));

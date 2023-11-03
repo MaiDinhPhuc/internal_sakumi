@@ -7,7 +7,7 @@ import 'package:internal_sakumi/features/admin/manage_class/filter_by_class_type
 import 'package:internal_sakumi/features/admin/manage_class/filter_by_course.dart';
 import 'package:internal_sakumi/features/admin/manage_class/list_class_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
-import 'package:internal_sakumi/features/teacher/list_class/class_item.dart';
+import 'package:internal_sakumi/features/teacher/list_class/class_item_for_admin.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -18,7 +18,7 @@ class ManageClassTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoadListClassCubit()..init(),
+      create: (context) => LoadListClassCubit()..load(),
       child: BlocBuilder<LoadListClassCubit, int>(builder: (c, list) {
         var cubit = BlocProvider.of<LoadListClassCubit>(c);
         return cubit.data == null

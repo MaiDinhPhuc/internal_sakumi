@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/teacher/cubit/teacher_data_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 
-void alertView(BuildContext context, String note) {
+void alertView(BuildContext context, String note, DataCubit dataCubit) {
   showDialog(
       context: context,
       builder: (_) {
@@ -72,9 +73,9 @@ void alertView(BuildContext context, String note) {
                       SubmitButton(
                           onPressed: () {
                             BlocProvider.of<DetailLessonCubit>(context)
-                                .updateStatus('Complete');
+                                .updateStatus('Complete',dataCubit);
                             BlocProvider.of<DetailLessonCubit>(context)
-                                .noteForStudents(note);
+                                .noteForStudents(note,dataCubit);
                             Navigator.pop(context);
                           },
                           title: AppText.txtAgree.text)

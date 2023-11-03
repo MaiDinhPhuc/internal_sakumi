@@ -12,27 +12,33 @@ class ClassItemCubit extends Cubit<int> {
   double? lessonPercent;
   ClassStatisticModel? classStatistic;
   load() async {
-    lessonPercent =  (classModel.lessonCount==null?0:classModel.lessonCount!) / (classModel.course == null ? 1 : classModel.course!.lessonCount);
+    lessonPercent = classModel.lessonCount == null || classModel.course == null
+        ? 0
+        : (classModel.lessonCount! / classModel.course!.lessonCount);
     emit(state + 1);
-    loadInfoStatistic();
+    if(classModel.stdLessons != null){
+      loadInfoStatistic();
+    }
   }
 
   loadInfoStatistic() async {
-
     List<int> listStdIdsEnable = [];
 
-    for(var element in classModel.stdClasses!){
-      if(element.classStatus != "Remove" &&
+    for (var element in classModel.stdClasses!) {
+      if (element.classStatus != "Remove" &&
           element.classStatus != "Moved" &&
           element.classStatus != "Retained" &&
           element.classStatus != "Dropped" &&
           element.classStatus != "Deposit" &&
-          element.classStatus != "Viewer"){
+          element.classStatus != "Viewer") {
         listStdIdsEnable.add(element.userId);
       }
     }
 
-    var stdLessons = classModel.stdLessons!.where((e) => listStdIdsEnable.contains(e.studentId) && e.timekeeping!= 0).toList();
+    var stdLessons = classModel.stdLessons!
+        .where(
+            (e) => listStdIdsEnable.contains(e.studentId) && e.timekeeping != 0)
+        .toList();
     var listStatus = classModel.stdClasses!.map((e) => e.classStatus).toList();
     List<LessonResultModel> listLessonResult = classModel.lessonResults!;
 
@@ -43,13 +49,13 @@ class ClassItemCubit extends Cubit<int> {
       }
     }
     List<LessonModel> lessonTemp =
-    classModel.listLesson!.where((element) => element.btvn == 0).toList();
+        classModel.listLesson!.where((element) => element.btvn == 0).toList();
     List<int> lessonExceptionIds = [];
     for (var i in lessonTemp) {
       lessonExceptionIds.add(i.lessonId);
     }
-    classStatistic =  ClassStatisticModel.make(
-        stdLessons, listStatus, classModel.classModel.classId, listLessonId,lessonExceptionIds);
-    emit(state+1);
+    classStatistic = ClassStatisticModel.make(stdLessons, listStatus,
+        classModel.classModel.classId, listLessonId, lessonExceptionIds);
+    emit(state + 1);
   }
 }

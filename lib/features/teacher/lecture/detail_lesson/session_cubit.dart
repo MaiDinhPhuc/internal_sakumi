@@ -28,7 +28,7 @@ class SessionCubit extends Cubit<int> {
   static SessionCubit fromContext(BuildContext context) =>
       BlocProvider.of<SessionCubit>(context);
 
-  init() async {
+  load() async {
     await getTeacherId();
     debugPrint('===============> init session $teacherId');
     data = await FireBaseProvider.instance.getDataForSessionCubit(

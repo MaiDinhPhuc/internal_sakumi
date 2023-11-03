@@ -10,11 +10,10 @@ import 'package:screenshot/screenshot.dart';
 
 class ExpandedOverviewStudentItem extends StatelessWidget {
   final int index;
-  const ExpandedOverviewStudentItem(this.index, {Key? key}) : super(key: key);
-
+  const ExpandedOverviewStudentItem(this.index, {Key? key, required this.cubit}) : super(key: key);
+  final ClassOverviewCubit cubit;
   @override
   Widget build(BuildContext context) {
-    var cubit = BlocProvider.of<ClassOverviewCubit>(context);
     return Column(
             children: [
               Container(
@@ -23,7 +22,7 @@ class ExpandedOverviewStudentItem extends StatelessWidget {
                 color: const Color(0xffE0E0E0),
               ),
               SizedBox(height: Resizable.size(context, 20)),
-              for (int i = 0; i<cubit.listStdDetail![index]["attendance"].length; i++)
+              for (int i = 0; i<cubit.listStdDetail[index]["attendance"].length; i++)
                 BlocProvider(
                     create: (context) => DropdownCubit(),
                     child: BlocBuilder<DropdownCubit, int>(
@@ -70,11 +69,6 @@ class CollapseLearnedLesson extends StatelessWidget {
   final String title;
   final int attend;
   final int? hw;
-
-  // final String attendTitle;
-  // final Color attendColor;
-  // final String hwTitle;
-  // final Color hwColor;
   const CollapseLearnedLesson(this.title, this.attend,this.hw, {Key? key}) : super(key: key);
 
   @override

@@ -17,7 +17,6 @@ import 'package:internal_sakumi/screens/teacher/detail_lesson_screen.dart';
 import 'package:internal_sakumi/screens/teacher/tab/class_grading_tab.dart';
 import 'package:internal_sakumi/screens/teacher/tab/list_lesson_tab.dart';
 import 'package:internal_sakumi/screens/teacher/teacher_screen.dart';
-import 'package:internal_sakumi/screens/teacher/teacher_screen2.dart';
 
 import 'screens/teacher/teacher_profile.dart';
 
@@ -147,7 +146,7 @@ var overViewHandler =
 });
 var gradingHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return const ClassGradingTab();
+  return ClassGradingTab();
 });
 var testHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
@@ -163,7 +162,7 @@ var detailGradingHandler =
 });
 var detailLessonHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return const DetailLessonScreen();
+  return DetailLessonScreen();
 });
 var profileTeacherHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
