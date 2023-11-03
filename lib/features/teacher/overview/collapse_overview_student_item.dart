@@ -4,6 +4,7 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_student/alert_confirm_change_student_status.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
+import 'package:internal_sakumi/features/teacher/cubit/teacher_data_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/features/teacher/overview/class_overview_cubit.dart';
 import 'package:internal_sakumi/features/teacher/overview/overview_chart.dart';
@@ -14,11 +15,11 @@ import 'package:internal_sakumi/widget/circle_progress.dart';
 class CollapseOverviewStudentItem extends StatelessWidget {
   final String role;
   final int stdId;
-  const CollapseOverviewStudentItem(this.stdId,this.role, {Key? key, required this.cubit}) : super(key: key);
+  const CollapseOverviewStudentItem(this.stdId,this.role, {Key? key, required this.cubit, required this.dataCubit}) : super(key: key);
   final ClassOverviewCubit cubit;
+  final DataCubit dataCubit;
   @override
   Widget build(BuildContext context) {
-
     int index = cubit.listStdClass!.indexOf(cubit.listStdClass!.firstWhere((e) => e.userId == stdId));
     return Container(
         padding: EdgeInsets.only(
@@ -40,7 +41,7 @@ class CollapseOverviewStudentItem extends StatelessWidget {
                               if(cubit.listStdClass![index].status != e){
                                 showDialog(
                                     context: context,
-                                    builder: (context) => ConfirmChangeStudentStatusOverView(e,cubit.listStdClass![index],cubit.students![index],cubit,popupCubit));
+                                    builder: (context) => ConfirmChangeStudentStatusOverView(e,cubit.listStdClass![index],cubit.students![index],cubit,popupCubit, dataCubit: dataCubit,));
                               }
                             },
                             child: Container(

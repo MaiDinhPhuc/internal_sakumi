@@ -152,10 +152,10 @@ class ClassOverViewTab extends StatelessWidget {
                                                                 Border.all(width: Resizable.size(context, 1), color: state % 2 == 0 ? greyColor.shade100 : Colors.black),
                                                                 borderRadius: BorderRadius.circular(Resizable.size(context, 5))),
                                                             child: AnimatedCrossFade(
-                                                                firstChild: CollapseOverviewStudentItem(e.userId, role, cubit: cubit),
+                                                                firstChild: CollapseOverviewStudentItem(e.userId, role, cubit: cubit, dataCubit: dataController),
                                                                 secondChild: Column(
                                                                   children: [
-                                                                    CollapseOverviewStudentItem(e.userId, role, cubit: cubit),
+                                                                    CollapseOverviewStudentItem(e.userId, role, cubit: cubit, dataCubit: dataController),
                                                                     ExpandedOverviewStudentItem(cubit.listStdClass!.indexOf(e), cubit: cubit)
                                                                   ],
                                                                 ),

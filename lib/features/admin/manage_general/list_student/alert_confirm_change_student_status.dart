@@ -3,6 +3,7 @@ import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
+import 'package:internal_sakumi/features/teacher/cubit/teacher_data_cubit.dart';
 import 'package:internal_sakumi/features/teacher/overview/class_overview_cubit.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
@@ -73,13 +74,14 @@ class ConfirmChangeStudentStatus extends StatelessWidget {
 class ConfirmChangeStudentStatusOverView extends StatelessWidget {
   const ConfirmChangeStudentStatusOverView(this.newStatus,
       this.studentClassModel, this.student, this.cubit, this.popupCubit,
-      {Key? key})
+      {Key? key, required this.dataCubit})
       : super(key: key);
   final String newStatus;
   final StudentClassModel studentClassModel;
   final StudentModel student;
   final ClassOverviewCubit cubit;
   final MenuPopupCubit popupCubit;
+  final DataCubit dataCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +121,17 @@ class ConfirmChangeStudentStatusOverView extends StatelessWidget {
                   cubit.loadAfterRemove();
                 } else {
                   studentClassModel.status = newStatus;
+                  dataCubit.updateStudentClass(
+                      studentClassModel.classId,
+                      StudentClassModel(
+                          id: studentClassModel.id,
+                          classId: studentClassModel.classId,
+                          activeStatus: studentClassModel.activeStatus,
+                          learningStatus: studentClassModel.learningStatus,
+                          moveTo: studentClassModel.moveTo,
+                          userId: studentClassModel.userId,
+                          classStatus: newStatus,
+                          date: studentClassModel.date));
                   popupCubit.update();
                 }
                 Navigator.pop(context);

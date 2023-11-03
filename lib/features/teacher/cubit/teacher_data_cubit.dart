@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
+import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -194,6 +195,15 @@ class DataCubit extends Cubit<int> {
     }
     classes![index] = classes![index].copyWith(null, null, null, null,
         null, null, stdLessons, null, null, null);
+  }
 
+  updateStudentClass(int classId, StudentClassModel studentClassModel){
+    var index = classes!.indexOf(classes!.firstWhere((e) => e.classModel.classId == classId));
+    List<StudentClassModel> stdClasses = classes![index].stdClasses!;
+
+    var i = stdClasses.indexOf(stdClasses.firstWhere((e) => e.userId == studentClassModel.userId));
+    stdClasses[i] = studentClassModel;
+    classes![index] = classes![index].copyWith(null, null, null, null,
+        stdClasses, null, null, null, null, null);
   }
 }
