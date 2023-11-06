@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/features/teacher/cubit/teacher_data_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
@@ -23,10 +24,11 @@ class LessonTabCubit extends Cubit<int> {
   List<String>? listStatus;
   List<Map<String, dynamic>>? listLessonInfo;
 
-  load(ClassModel2 classModel2)async{
+  load(ClassModel2 classModel2, DataCubit dataCubit)async{
     if(classModel2.stdLessons == null){
       classModel = classModel2.classModel;
       emit(state + 1);
+      dataCubit.loadLessonInfoOfClass(classModel2.classModel);
     }{
       classModel = classModel2.classModel;
       emit(state + 1);

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
+import 'package:internal_sakumi/features/teacher/cubit/teacher_data_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
-import 'package:internal_sakumi/model/session_data_model.dart';
+import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
@@ -12,7 +13,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SessionCubit extends Cubit<int> {
   SessionCubit() : super(0);
-  SessionDataModel? data;
   List<StudentModel>? listStudent;
   List<StudentLessonModel>? listStudentLesson;
   List<StudentClassModel>? listStudentClass;
@@ -28,18 +28,31 @@ class SessionCubit extends Cubit<int> {
   static SessionCubit fromContext(BuildContext context) =>
       BlocProvider.of<SessionCubit>(context);
 
-  load() async {
+  load(ClassModel2 classModel, DataCubit dataCubit) async {
     await getTeacherId();
     debugPrint('===============> init session $teacherId');
-    data = await FireBaseProvider.instance.getDataForSessionCubit(
-        int.parse(TextUtils.getName(position: 1)),
-        int.parse(TextUtils.getName()));
-    listStudent = data!.listStudent;
-    listStudentLesson = data!.listStudentLesson;
-    listStudentClass = data!.listStudentClass;
-    totalAttendance = listStudentLesson!
-        .fold(0, (pre, e) => e.timekeeping > 0 ? (pre + 1) : pre);
-    emit(state+1);
+    totalAttendance = 0;
+    if(classModel.stdClasses == null){
+      dataCubit.loadLessonInfoOfClass(classModel.classModel);
+      emit(state+1);
+    }else{
+      listStudentClass = classModel.stdClasses;
+      List<int> listStudentId = [];
+      for (var i in listStudentClass!) {
+        if (i.classStatus != "Remove" &&
+            i.classStatus != "Dropped" &&
+            i.classStatus != "Deposit" &&
+            i.classStatus != "Retained" &&
+            i.classStatus != "Moved") {
+          listStudentId.add(i.userId);
+        }
+      }
+      listStudent = await FireBaseProvider.instance.getAllStudentInFoInClass(listStudentId);
+      listStudentLesson = classModel.stdLessons!.where((e) => e.lessonId == int.parse(TextUtils.getName())).toList();
+      totalAttendance = listStudentLesson!
+          .fold(0, (pre, e) => e.timekeeping > 0 ? (pre + 1) : pre);
+      emit(state+1);
+    }
   }
 
   updateUI() {

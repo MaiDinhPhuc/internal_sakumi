@@ -5,16 +5,12 @@ import 'package:internal_sakumi/features/admin/manage_general/manage_general_cub
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
-import 'package:internal_sakumi/model/class_overview_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/detail_grading_data_model.dart';
-import 'package:internal_sakumi/model/grading_tab_data_model.dart';
 import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
-import 'package:internal_sakumi/model/list_test_data_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
-import 'package:internal_sakumi/model/session_data_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
@@ -136,7 +132,6 @@ abstract class NetworkProvider {
 
   Future<List<StudentLessonModel>> getStudentLessons(int classId, List<int> studentIds);
 
-  Future<SessionDataModel> getDataForSessionCubit(int classId, int lessonId);
 
   Future<DetailGradingDataModel> getDataForDetailGrading(int classId, int lessonId, String type);
 

@@ -23,16 +23,16 @@ class ClassModel2 {
   final List<TestResultModel>? testResults;
 
   ClassModel2 copyWith(
-      ClassModel? classModel,
-      CourseModel? course,
-      int? lessonCount,
-      List<LessonModel>? listLesson,
-      List<StudentClassModel>? stdClasses,
-      List<LessonResultModel>? lessonResults,
-      List<StudentLessonModel>? stdLessons,
-      List<StudentTestModel>? stdTests,
-      List<TestModel>? listTest,
-      List<TestResultModel>? testResults) {
+  {ClassModel? classModel,
+    CourseModel? course,
+    int? lessonCount,
+    List<LessonModel>? listLesson,
+    List<StudentClassModel>? stdClasses,
+    List<LessonResultModel>? lessonResults,
+    List<StudentLessonModel>? stdLessons,
+    List<StudentTestModel>? stdTests,
+    List<TestModel>? listTest,
+    List<TestResultModel>? testResults}) {
     return ClassModel2(
         course: course ?? this.course,
         listLesson: listLesson ?? this.listLesson,
@@ -46,11 +46,10 @@ class ClassModel2 {
         testResults: testResults ?? this.testResults);
   }
 
-  static Future<List<ClassModel2>> loadClass(
+  static Future<List<ClassModel2>> loadClass (
     List<ClassModel> classes,
   ) async {
     List<ClassModel2> results = [];
-
     for (var classModel in classes) {
       results.add(ClassModel2(
         course: null,

@@ -24,45 +24,38 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
   bool? check;
   int? teacherId;
 
-  checkLessonResult(ClassModel2 model) async {
+  checkLessonResult(ClassModel2 model, DataCubit dataCubit) async {
+    if(model.lessonResults == null){
+      dataCubit.loadLessonInfoOfClass(model.classModel);
+    }else{
+      SharedPreferences localData = await SharedPreferences.getInstance();
+      teacherId = int.parse(localData.getInt(PrefKeyConfigs.userId).toString());
 
-    SharedPreferences localData = await SharedPreferences.getInstance();
-    teacherId = int.parse(localData.getInt(PrefKeyConfigs.userId).toString());
-    // var classModel = await FireBaseProvider.instance
-    //     .getClassById(int.parse(TextUtils.getName(position: 1)));
-    // var lessonModel = await FireBaseProvider.instance.getLesson(
-    //     classModel.courseId, int.parse(TextUtils.getName()));
+      var lessonModel = model.listLesson!.firstWhere((e) => e.lessonId ==  int.parse(TextUtils.getName()));
+      title = lessonModel.title;
 
-    var lessonModel = model.listLesson!.firstWhere((e) => e.lessonId ==  int.parse(TextUtils.getName()));
-    title = lessonModel.title;
+      check = model.lessonResults!.any((e) => e.lessonId == int.parse(TextUtils.getName()));
 
-    check = model.lessonResults!.any((e) => e.lessonId == int.parse(TextUtils.getName()));
 
-    // await FireBaseProvider.instance.checkLessonResult(int.parse(TextUtils.getName()), int.parse(
-    //     TextUtils.getName(position: 1)));
-
-    debugPrint('=============> addLessonResult $check');
-    if(check == false) {
-      emit(
-        LessonResultModel(
-            id: 1000,
-            classId: int.parse(TextUtils.getName(position: 1)),
-            lessonId: int.parse(TextUtils.getName()),
-            teacherId: teacherId!,
-            status: 'Pending',
-            date: DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now()),
-            noteForStudent: '',
-            noteForSupport: '',
-            noteForTeacher: '')
-    );
-    }
-
-    if(check == true){
-      var lessonResult = model.lessonResults!.firstWhere((e) => e.lessonId == int.parse(TextUtils.getName()));
-      // emit(await FireBaseProvider.instance.getLessonResultByLessonId(
-      //     int.parse(TextUtils.getName()),
-      //     int.parse(TextUtils.getName(position: 1))));
-      emit(lessonResult);
+      debugPrint('=============> addLessonResult $check');
+      if(check == false) {
+        emit(
+            LessonResultModel(
+                id: 1000,
+                classId: int.parse(TextUtils.getName(position: 1)),
+                lessonId: int.parse(TextUtils.getName()),
+                teacherId: teacherId!,
+                status: 'Pending',
+                date: DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now()),
+                noteForStudent: '',
+                noteForSupport: '',
+                noteForTeacher: '')
+        );
+      }
+      if(check == true){
+        var lessonResult = model.lessonResults!.firstWhere((e) => e.lessonId == int.parse(TextUtils.getName()));
+        emit(lessonResult);
+      }
     }
   }
 

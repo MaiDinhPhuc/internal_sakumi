@@ -15,25 +15,27 @@ import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 class LessonCompleteView extends StatelessWidget {
   final DetailLessonCubit detailCubit;
-  const LessonCompleteView(this.detailCubit, this.dataCubit, {Key? key})
+  const LessonCompleteView(this.detailCubit, this.dataCubit, this.sessionCubit,
+      {Key? key})
       : super(key: key);
   final DataCubit dataCubit;
+  final SessionCubit sessionCubit;
 
   @override
   Widget build(BuildContext context) {
-    var cubit = BlocProvider.of<SessionCubit>(context);
     List<TextEditingController> listController = List.generate(
-        cubit.listStudent == null ? 0 : cubit.listStudent!.length,
+        sessionCubit.listStudent == null ? 0 : sessionCubit.listStudent!.length,
         (index) => TextEditingController()).toList();
     return Column(
       children: [
         SizedBox(height: Resizable.padding(context, 10)),
-        ...cubit.listStudent!
+        ...sessionCubit.listStudent!
             .map((e) => ClassificationItem(
                     e,
-                    cubit.listStudentClass![cubit.listStudent!.indexOf(e)]
+                    sessionCubit
+                        .listStudentClass![sessionCubit.listStudent!.indexOf(e)]
                         .activeStatus,
-                    listController[cubit.listStudent!.indexOf(e)],
+                    listController[sessionCubit.listStudent!.indexOf(e)],
                     firstItems: [
                       AppText.txtActiveStatus.text.toUpperCase(),
                       'A',
@@ -51,58 +53,81 @@ class LessonCompleteView extends StatelessWidget {
                       'E'
                     ]))
             .toList(),
-        BlocBuilder<SessionCubit, int>(builder: (c, s) {
-          return Column(
-            children: [
-              NoteForTeamCard(cubit.isNoteSupport,
-                  hintText: AppText.txtHintNoteForSupport.text,
-                  noNote: AppText.txtNoNoteForSupport.text, onChanged: (v) {
-                cubit.isNoteSupport = v.isNotEmpty ? null : true;
-                cubit.inputSupport(v);
-                cubit.checkNoteSupport();
-              }, onPressed: () {
-                cubit.checkNoteSupport();
-              }),
-              NoteForTeamCard(cubit.isNoteSensei,
-                  hintText: AppText.txtHintNoteForTeacher.text,
-                  noNote: AppText.txtNoNoteForTeacher.text, onChanged: (v) {
-                cubit.isNoteSensei = v.isNotEmpty ? null : true;
-                cubit.inputSensei(v);
-                cubit.checkNoteSensei();
-              }, onPressed: () {
-                cubit.checkNoteSensei();
-              }),
-              SizedBox(height: Resizable.size(context, 40)),
-              SubmitButton(
-                onPressed: () async {
-                  waitingDialog(context);
-                  await detailCubit.noteForSupport(
-                      cubit.noteSupport.isNotEmpty ? cubit.noteSupport : '',
-                      dataCubit);
-                  if (context.mounted) {
-                    await detailCubit.noteForAnotherSensei(
-                        cubit.noteSupport.isNotEmpty ? cubit.noteSensei : '',
-                        dataCubit);
-                  }
-                  if (context.mounted) {
-                    for (var std in cubit.listStudent!) {
-                      await updateTeacherNote(std.userId,
-                          listController[cubit.listStudent!.indexOf(std)].text);
-                    }
-                    if (context.mounted) {
-                      Navigator.pushNamed(
-                          context,
-                          "${Routes.teacher}/lesson/class=${int.parse(TextUtils.getName(position: 1))}");
-                    }
-                  }
-                },
-                isActive:
-                    cubit.isNoteSupport != false && cubit.isNoteSensei != false,
-                title: AppText.txtCompleteLesson.text,
-              ),
-            ],
-          );
-        }),
+        BlocBuilder<SessionCubit, int>(
+            bloc: sessionCubit
+              ..load(
+                  dataCubit.classes!.firstWhere((e) =>
+                      e.classModel.classId ==
+                      int.parse(TextUtils.getName(position: 1))),
+                  dataCubit),
+            builder: (c, s) {
+              return Column(
+                children: [
+                  NoteForTeamCard(
+                    sessionCubit.isNoteSupport,
+                    hintText: AppText.txtHintNoteForSupport.text,
+                    noNote: AppText.txtNoNoteForSupport.text,
+                    onChanged: (v) {
+                      sessionCubit.isNoteSupport = v.isNotEmpty ? null : true;
+                      sessionCubit.inputSupport(v);
+                      sessionCubit.checkNoteSupport();
+                    },
+                    onPressed: () {
+                      sessionCubit.checkNoteSupport();
+                    },
+                    sessionCubit: sessionCubit,
+                  ),
+                  NoteForTeamCard(
+                    sessionCubit.isNoteSensei,
+                    hintText: AppText.txtHintNoteForTeacher.text,
+                    noNote: AppText.txtNoNoteForTeacher.text,
+                    onChanged: (v) {
+                      sessionCubit.isNoteSensei = v.isNotEmpty ? null : true;
+                      sessionCubit.inputSensei(v);
+                      sessionCubit.checkNoteSensei();
+                    },
+                    onPressed: () {
+                      sessionCubit.checkNoteSensei();
+                    },
+                    sessionCubit: sessionCubit,
+                  ),
+                  SizedBox(height: Resizable.size(context, 40)),
+                  SubmitButton(
+                    onPressed: () async {
+                      waitingDialog(context);
+                      await detailCubit.noteForSupport(
+                          sessionCubit.noteSupport.isNotEmpty
+                              ? sessionCubit.noteSupport
+                              : '',
+                          dataCubit);
+                      if (context.mounted) {
+                        await detailCubit.noteForAnotherSensei(
+                            sessionCubit.noteSupport.isNotEmpty
+                                ? sessionCubit.noteSensei
+                                : '',
+                            dataCubit);
+                      }
+                      if (context.mounted) {
+                        for (var std in sessionCubit.listStudent!) {
+                          await updateTeacherNote(
+                              std.userId,
+                              listController[
+                                      sessionCubit.listStudent!.indexOf(std)]
+                                  .text);
+                        }
+                        if (context.mounted) {
+                          Navigator.pushNamed(context,
+                              "${Routes.teacher}/lesson/class=${int.parse(TextUtils.getName(position: 1))}");
+                        }
+                      }
+                    },
+                    isActive: sessionCubit.isNoteSupport != false &&
+                        sessionCubit.isNoteSensei != false,
+                    title: AppText.txtCompleteLesson.text,
+                  ),
+                ],
+              );
+            }),
         SizedBox(height: Resizable.size(context, 100)),
       ],
     );

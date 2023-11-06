@@ -6,23 +6,23 @@ import 'package:internal_sakumi/utils/resizable.dart';
 
 class NoteForTeamCard extends StatelessWidget {
   final String hintText, noNote;
-  final SessionCubit cubit;
+  final SessionCubit sessionCubit;
   final Function() onPressed;
   final Function(String v) onChanged;
   final bool? active;
-  NoteForTeamCard(this.active,
+  const NoteForTeamCard(this.active,
       {required this.hintText,
       required this.noNote,
       required this.onChanged,
       required this.onPressed,
+      required this.sessionCubit,
       Key? key})
-      : cubit = SessionCubit(),
-        super(key: key);
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SessionCubit, int>(
-        bloc: cubit,
+        bloc: sessionCubit,
         builder: (c, _) => Container(
               margin: EdgeInsets.only(
                   top: Resizable.padding(context, 10),

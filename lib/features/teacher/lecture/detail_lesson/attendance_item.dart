@@ -17,9 +17,10 @@ class AttendanceItem extends StatelessWidget {
   final int attendId;
   final List<String> items;
   const AttendanceItem(this.studentModel, this.attendId,
-      {required this.items, Key? key, required this.dataCubit})
+      {required this.items, Key? key, required this.dataCubit, required this.sessionCubit})
       : super(key: key);
   final DataCubit dataCubit;
+  final SessionCubit sessionCubit;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -107,7 +108,7 @@ class AttendanceItem extends StatelessWidget {
                                             teacherNote: '', supportNote: ''));
                                       }
                                       if (items.length == 7 && c.mounted) {
-                                        BlocProvider.of<SessionCubit>(c).updateTimekeeping(s);
+                                        sessionCubit.updateTimekeeping(s);
                                       }
                                     },
                                   ))

@@ -13,16 +13,12 @@ import 'package:internal_sakumi/features/teacher/profile/app_bar_info_teacher_cu
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
-import 'package:internal_sakumi/model/class_overview_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/detail_grading_data_model.dart';
-import 'package:internal_sakumi/model/grading_tab_data_model.dart';
 import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
-import 'package:internal_sakumi/model/list_test_data_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
-import 'package:internal_sakumi/model/session_data_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
@@ -939,33 +935,6 @@ class FireBaseProvider extends NetworkProvider {
     return list;
   }
 
-  @override
-  Future<SessionDataModel> getDataForSessionCubit(
-      int classId, int lessonId) async {
-    List<StudentClassModel> listStudentClass =
-        await FireBaseProvider.instance.getStudentClassInClass(classId);
-    List<int> listStudentId = [];
-    for (var i in listStudentClass) {
-      if (i.classStatus != "Remove" &&
-          i.classStatus != "Dropped" &&
-          i.classStatus != "Deposit" &&
-          i.classStatus != "Retained" &&
-          i.classStatus != "Moved") {
-        listStudentId.add(i.userId);
-      }
-    }
-
-    List<StudentModel> listStudent =
-        await FireBaseProvider.instance.getAllStudentInFoInClass(listStudentId);
-
-    List<StudentLessonModel> listStudentLesson = await FireBaseProvider.instance
-        .getAllStudentLessonInLesson(classId, lessonId);
-
-    return SessionDataModel(
-        listStudent: listStudent,
-        listStudentLesson: listStudentLesson,
-        listStudentClass: listStudentClass);
-  }
 
   @override
   Future<DetailGradingDataModel> getDataForDetailGrading(

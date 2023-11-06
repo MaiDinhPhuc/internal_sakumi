@@ -13,83 +13,85 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import '../../utils/text_utils.dart';
 
 class DetailLessonScreen extends StatelessWidget {
-  DetailLessonScreen({Key? key}) : cubit = DetailLessonCubit(), super(key: key);
+  DetailLessonScreen({Key? key})
+      : cubit = DetailLessonCubit(),
+        sessionCubit = SessionCubit(),
+        super(key: key);
   final DetailLessonCubit cubit;
+  final SessionCubit sessionCubit;
   @override
   Widget build(BuildContext context) {
     var dataController = BlocProvider.of<DataCubit>(context);
     return BlocBuilder<DataCubit, int>(builder: (c, classes) {
-      return BlocProvider(
-          create: (context) => SessionCubit()..load(),
-          child: Scaffold(
-            body: Column(
-              children: [
-                HeaderTeacher(
-                  index: 1,
-                  classId: TextUtils.getName(position: 1),
-                  role: 'teacher',
-                ),
-                dataController.classes == null
-                    ? Transform.scale(
-                        scale: 0.75,
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      )
-                    : Expanded(
-                        //key: Key('${cubit.state?.status}'),
-                        child: SingleChildScrollView(
-                            child: BlocProvider.value(value: cubit,child: BlocBuilder<DetailLessonCubit,
-                                LessonResultModel?>(
-                              bloc: cubit..checkLessonResult(dataController.classes!
-                                  .firstWhere((e) =>
-                              e.classModel.classId ==
-                                  int.parse(
-                                      TextUtils.getName(position: 1)))),
-                              builder: (cc, s) {
-                                return s == null
-                                    ? Transform.scale(
-                                  scale: 0.75,
-                                  child: const Center(
-                                    child:
-                                    CircularProgressIndicator(),
-                                  ),
-                                )
-                                    : Column(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          vertical: Resizable.padding(
-                                              context, 20)),
-                                      child: Text(
-                                          '${BlocProvider.of<DetailLessonCubit>(cc).title}',
-                                          style: TextStyle(
-                                              fontWeight:
-                                              FontWeight.w800,
-                                              fontSize:
-                                              Resizable.font(
-                                                  context, 30))),
-                                    ),
-                                    if (s.status == 'Pending')
-                                      LessonPendingView(
-                                          BlocProvider.of<
-                                              DetailLessonCubit>(cc),
-                                          dataController),
-                                    if (s.status == 'Teaching')
-                                      LessonTeachingView(
-                                          dataCubit: dataController),
-                                    if (s.status == 'Complete')
-                                      LessonCompleteView(
-                                          BlocProvider.of<
-                                              DetailLessonCubit>(cc),
-                                          dataController),
-                                  ],
-                                );
-                              },
-                            ),)))
-              ],
+      return Scaffold(
+        body: Column(
+          children: [
+            HeaderTeacher(
+              index: 1,
+              classId: TextUtils.getName(position: 1),
+              role: 'teacher',
             ),
-          ));
+            dataController.classes == null
+                ? Transform.scale(
+                    scale: 0.75,
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : Expanded(
+                    //key: Key('${cubit.state?.status}'),
+                    child: SingleChildScrollView(
+                        child: BlocProvider.value(
+                    value: cubit,
+                    child: BlocBuilder<DetailLessonCubit, LessonResultModel?>(
+                      bloc: cubit
+                        ..checkLessonResult(
+                            dataController.classes!.firstWhere((e) =>
+                                e.classModel.classId ==
+                                int.parse(TextUtils.getName(position: 1))),
+                            dataController),
+                      builder: (cc, s) {
+                        return s == null
+                            ? Transform.scale(
+                                scale: 0.75,
+                                child: const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              )
+                            : Column(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical:
+                                            Resizable.padding(context, 20)),
+                                    child: Text(
+                                        '${BlocProvider.of<DetailLessonCubit>(cc).title}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w800,
+                                            fontSize:
+                                                Resizable.font(context, 30))),
+                                  ),
+                                  if (s.status == 'Pending')
+                                    LessonPendingView(
+                                        BlocProvider.of<DetailLessonCubit>(cc),
+                                        dataController),
+                                  if (s.status == 'Teaching')
+                                    LessonTeachingView(
+                                      dataCubit: dataController,
+                                      sessionCubit: sessionCubit,
+                                    ),
+                                  if (s.status == 'Complete')
+                                    LessonCompleteView(
+                                        BlocProvider.of<DetailLessonCubit>(cc),
+                                        dataController,sessionCubit),
+                                ],
+                              );
+                      },
+                    ),
+                  )))
+          ],
+        ),
+      );
     });
   }
 }

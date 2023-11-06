@@ -7,126 +7,128 @@ import 'package:internal_sakumi/features/admin/manage_class/filter_by_class_type
 import 'package:internal_sakumi/features/admin/manage_class/filter_by_course.dart';
 import 'package:internal_sakumi/features/admin/manage_class/list_class_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
+import 'package:internal_sakumi/features/teacher/cubit/teacher_data_cubit.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_for_admin.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class ManageClassTab extends StatelessWidget {
-  const ManageClassTab({Key? key}) : super(key: key);
-
+  ManageClassTab({Key? key}) : cubit = LoadListClassCubit(), super(key: key);
+  final LoadListClassCubit cubit;
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LoadListClassCubit()..load(),
-      child: BlocBuilder<LoadListClassCubit, int>(builder: (c, list) {
-        var cubit = BlocProvider.of<LoadListClassCubit>(c);
-        return cubit.data == null
+    var dataController = BlocProvider.of<DataCubit>(context);
+    return BlocBuilder<DataCubit, int>(builder: (c,classes){
+      return BlocBuilder<LoadListClassCubit, int>(
+          bloc: cubit..load(),
+          builder: (c, list) {
+        return dataController.classes == null
             ? Transform.scale(
-                scale: 0.75,
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                ))
+            scale: 0.75,
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ))
             : SingleChildScrollView(
-                child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(
-                        vertical: Resizable.padding(context, 20)),
-                    child: Text(AppText.titleListClass.text.toUpperCase(),
-                        style: TextStyle(
-                          fontSize: Resizable.font(context, 30),
-                          fontWeight: FontWeight.w800,
-                        )),
-                  ),
-                  Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: Resizable.padding(context, 150)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          FilterClassTypeMenuAdmin(cubit),
-                          FilterCourseMenuAdmin(cubit),
-                          FilterByClassStatusAdmin(cubit)
-                        ],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.symmetric(
+                      vertical: Resizable.padding(context, 20)),
+                  child: Text(AppText.titleListClass.text.toUpperCase(),
+                      style: TextStyle(
+                        fontSize: Resizable.font(context, 30),
+                        fontWeight: FontWeight.w800,
                       )),
-                  Container(
-                    margin: EdgeInsets.symmetric(
+                ),
+                Padding(
+                    padding: EdgeInsets.symmetric(
                         horizontal: Resizable.padding(context, 150)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        ClassItemRowLayout(
-                          widgetClassCode: Text(AppText.txtClassCode.text,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: Resizable.font(context, 17),
-                                  color: greyColor.shade600)),
-                          widgetCourse: Text(AppText.txtCourse.text,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: Resizable.font(context, 17),
-                                  color: greyColor.shade600)),
-                          widgetLessons: Text(AppText.txtNumberOfLessons.text,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: Resizable.font(context, 17),
-                                  color: greyColor.shade600)),
-                          widgetAttendance: Text(
-                              AppText.txtRateOfAttendance.text,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: Resizable.font(context, 17),
-                                  color: greyColor.shade600)),
-                          widgetSubmit: Text(
-                              AppText.txtRateOfSubmitHomework.text,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: Resizable.font(context, 17),
-                                  color: greyColor.shade600)),
-                          widgetEvaluate: Text(AppText.txtEvaluate.text,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: Resizable.font(context, 17),
-                                  color: greyColor.shade600)),
-                          widgetStatus: Text(AppText.titleStatus.text,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: Resizable.font(context, 17),
-                                  color: greyColor.shade600)),
-                        ),
-                        SizedBox(height: Resizable.size(context, 10)),
-                        (cubit.listClassIds!.isNotEmpty)
-                            ? Column(children: [
-                                ...cubit.listClassIds!
-                                    .map((e) => ClassItemInAdmin(
-                                        cubit.listClassIds!.indexOf(e), e))
-                                    .toList(),
-                              ])
-                            : Center(
-                                child: Text(AppText.txtNoClass.text),
-                              )
+                        FilterClassTypeMenuAdmin(cubit),
+                        FilterCourseMenuAdmin(cubit),
+                        FilterByClassStatusAdmin(cubit)
                       ],
-                    ),
+                    )),
+                Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: Resizable.padding(context, 150)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      ClassItemRowLayout(
+                        widgetClassCode: Text(AppText.txtClassCode.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetCourse: Text(AppText.txtCourse.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetLessons: Text(AppText.txtNumberOfLessons.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetAttendance: Text(
+                            AppText.txtRateOfAttendance.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetSubmit: Text(
+                            AppText.txtRateOfSubmitHomework.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetEvaluate: Text(AppText.txtEvaluate.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetStatus: Text(AppText.titleStatus.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                      ),
+                      SizedBox(height: Resizable.size(context, 10)),
+                      (cubit.listClassIds!.isNotEmpty)
+                          ? Column(children: [
+                        ...cubit.listClassIds!
+                            .map((e) => ClassItemInAdmin(
+                            cubit.listClassIds!.indexOf(e), e))
+                            .toList(),
+                      ])
+                          : Center(
+                        child: Text(AppText.txtNoClass.text),
+                      )
+                    ],
                   ),
-                  SizedBox(height: Resizable.size(context, 5)),
-                  Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: Resizable.padding(context, 150)),
-                      child: DottedBorderButton(
-                          AppText.btnManageClass.text.toUpperCase(),
-                          onPressed: () async {
-                        if (c.mounted) {
-                          Navigator.pushNamed(context,
-                              '${Routes.admin}/${Routes.manageGeneral}');
-                        }
-                      })),
-                  SizedBox(height: Resizable.size(context, 50)),
-                ],
-              ));
-      }),
-    );
+                ),
+                SizedBox(height: Resizable.size(context, 5)),
+                Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: Resizable.padding(context, 150)),
+                    child: DottedBorderButton(
+                        AppText.btnManageClass.text.toUpperCase(),
+                        onPressed: () async {
+                          if (c.mounted) {
+                            Navigator.pushNamed(context,
+                                '${Routes.admin}/${Routes.manageGeneral}');
+                          }
+                        })),
+                SizedBox(height: Resizable.size(context, 50)),
+              ],
+            ));
+      });
+    });
   }
 }

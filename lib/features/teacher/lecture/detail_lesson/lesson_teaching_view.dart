@@ -7,61 +7,87 @@ import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/attendanc
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/session_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/note_for_team_card.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 
 class LessonTeachingView extends StatelessWidget {
-  const LessonTeachingView({Key? key, required this.dataCubit})
+  const LessonTeachingView(
+      {Key? key, required this.dataCubit, required this.sessionCubit})
       : super(key: key);
   final DataCubit dataCubit;
+  final SessionCubit sessionCubit;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SessionCubit, int>(builder: (c, _){
-      var cubit = BlocProvider.of<SessionCubit>(c);
-      return cubit.listStudent == null || cubit.listStudentLesson == null
-          ? Transform.scale(
-        scale: 0.75,
-        child: const CircularProgressIndicator(),
-      )
-          : Column(
-        children: [
-          ...cubit.listStudent!.map((e) => AttendanceItem(
-              e,
-              cubit.listStudent!.indexOf(e) > cubit.listStudentLesson!.length - 1 ? 0 :cubit.listStudentLesson![cubit.listStudent!.indexOf(e)]//cubit.listStudent!.indexOf(e)
-                  .timekeeping,
-              items: [
-                AppText.txtNotTimeKeeping.text,
-                AppText.txtPresent.text,
-                AppText.txtInLate.text,
-                AppText.txtOutSoon.text,
-                '${AppText.txtInLate.text} + ${AppText.txtOutSoon.text}',
-                AppText.txtPermitted.text,
-                AppText.txtAbsent.text,
-              ], dataCubit: dataCubit)),
-          NoteForTeamCard(cubit.isNoteStudent,
-              hintText: AppText.txtHintNoteForStudent.text,
-              noNote: AppText.txtNoNoteForStudent.text, onChanged: (v) {
-                cubit.inputStudent(v);
-                //debugPrint('============= controller ${controller.text}');
-                cubit.isNoteStudent = v.isNotEmpty ? null : true;
-                cubit.checkNoteStudent();
-              }, onPressed: () {
-                cubit.checkNoteStudent();
-                debugPrint('============= totalAttendance ${cubit.totalAttendance}');
-              }),
-          SizedBox(height: Resizable.size(context, 40)),
-          SubmitButton(
-              onPressed: () => alertView(
-                  context,
-                  cubit.noteStudent.isNotEmpty
-                      ? cubit.noteStudent
-                      : '',dataCubit),
-              title: AppText.txtFinishLesson.text,
-              isActive:
-              cubit.totalAttendance == cubit.listStudent!.length &&
-                  cubit.isNoteStudent != false),
-          SizedBox(height: Resizable.size(context, 100)),
-        ],
-      );
-    });
+    return BlocBuilder<SessionCubit, int>(
+        bloc: sessionCubit
+          ..load(
+              dataCubit.classes!.firstWhere((e) =>
+                  e.classModel.classId ==
+                  int.parse(TextUtils.getName(position: 1))),
+              dataCubit),
+        builder: (cc, s) {
+          return sessionCubit.listStudent == null ||
+                  sessionCubit.listStudentLesson == null
+              ? Transform.scale(
+                  scale: 0.75,
+                  child: const CircularProgressIndicator(),
+                )
+              : Column(
+                  children: [
+                    ...sessionCubit.listStudent!.map((e) => AttendanceItem(
+                          e,
+                          sessionCubit.listStudent!.indexOf(e) >
+                                  sessionCubit.listStudentLesson!.length - 1
+                              ? 0
+                              : sessionCubit
+                                  .listStudentLesson![sessionCubit.listStudent!
+                                      .indexOf(
+                                          e)] //cubit.listStudent!.indexOf(e)
+                                  .timekeeping,
+                          items: [
+                            AppText.txtNotTimeKeeping.text,
+                            AppText.txtPresent.text,
+                            AppText.txtInLate.text,
+                            AppText.txtOutSoon.text,
+                            '${AppText.txtInLate.text} + ${AppText.txtOutSoon.text}',
+                            AppText.txtPermitted.text,
+                            AppText.txtAbsent.text,
+                          ],
+                          dataCubit: dataCubit,
+                          sessionCubit: sessionCubit,
+                        )),
+                    NoteForTeamCard(
+                      sessionCubit.isNoteStudent,
+                      hintText: AppText.txtHintNoteForStudent.text,
+                      noNote: AppText.txtNoNoteForStudent.text,
+                      onChanged: (v) {
+                        sessionCubit.inputStudent(v);
+                        //debugPrint('============= controller ${controller.text}');
+                        sessionCubit.isNoteStudent = v.isNotEmpty ? null : true;
+                        sessionCubit.checkNoteStudent();
+                      },
+                      onPressed: () {
+                        sessionCubit.checkNoteStudent();
+                        debugPrint(
+                            '============= totalAttendance ${sessionCubit.totalAttendance}');
+                      },
+                      sessionCubit: sessionCubit,
+                    ),
+                    SizedBox(height: Resizable.size(context, 40)),
+                    SubmitButton(
+                        onPressed: () => alertView(
+                            context,
+                            sessionCubit.noteStudent.isNotEmpty
+                                ? sessionCubit.noteStudent
+                                : '',
+                            dataCubit),
+                        title: AppText.txtFinishLesson.text,
+                        isActive: sessionCubit.totalAttendance ==
+                                sessionCubit.listStudent!.length &&
+                            sessionCubit.isNoteStudent != false),
+                    SizedBox(height: Resizable.size(context, 100)),
+                  ],
+                );
+        });
   }
 }

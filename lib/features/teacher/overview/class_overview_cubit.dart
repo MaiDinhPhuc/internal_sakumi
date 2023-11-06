@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/features/teacher/cubit/teacher_data_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
@@ -30,10 +31,11 @@ class ClassOverviewCubit extends Cubit<int> {
     "Remove"
   ];
 
-  loadFirst(ClassModel2 classModel2) async {
+  loadFirst(ClassModel2 classModel2, DataCubit dataCubit) async {
     if(classModel2.stdLessons == null){
       classModel = classModel2.classModel;
       emit(state + 1);
+      dataCubit.loadLessonInfoOfClass(classModel2.classModel);
     }else{
       countAvailable = 0;
       listAttendance = [];

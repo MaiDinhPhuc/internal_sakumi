@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/features/teacher/cubit/teacher_data_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
-import 'package:internal_sakumi/model/grading_tab_data_model.dart';
 import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
@@ -8,8 +8,6 @@ import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
-import 'package:internal_sakumi/utils/text_utils.dart';
 
 class GradingCubit extends Cubit<int> {
   GradingCubit() : super(0);
@@ -29,10 +27,11 @@ class GradingCubit extends Cubit<int> {
   bool isNotGrading = true;
 
 
-  load(ClassModel2 model) async {
+  load(ClassModel2 model, DataCubit dataCubit) async {
     if(model.stdTests == null){
       classModel = model.classModel;
       emit(state+1);
+      dataCubit.loadDataForGradingTab(model.classModel);
     }else{
       classModel = model.classModel;
       emit(state+1);
