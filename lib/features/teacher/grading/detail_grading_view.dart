@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
 import 'package:internal_sakumi/features/teacher/grading/sound/sound_cubit.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -15,13 +16,14 @@ import 'detail_grading_cubit.dart';
 
 class DetailGradingView extends StatelessWidget {
   DetailGradingView(this.cubit, this.soundCubit,
-      {super.key, required this.checkActiveCubit, required this.type})
+      {super.key, required this.checkActiveCubit, required this.type, required this.dataCubit})
       : imageCubit = ImagePickerCubit();
   final DetailGradingCubit cubit;
   final SoundCubit soundCubit;
   final ImagePickerCubit imageCubit;
   final CheckActiveCubit checkActiveCubit;
   final String type;
+  final DataCubit dataCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +86,7 @@ class DetailGradingView extends StatelessWidget {
                     child: SubmitButton(
                         isActive: s,
                         onPressed: () async {
-                          await submit(cubit, context, checkActiveCubit, type);
+                          await submit(cubit, context, checkActiveCubit, type, dataCubit);
                         },
                         title: AppText.btnUpdate.text.toUpperCase()));
               })
@@ -103,7 +105,7 @@ class CheckActiveCubit extends Cubit<bool> {
   }
 }
 
-Future<void> submit(DetailGradingCubit cubit, context, CheckActiveCubit checkCubit, String type) async {
+Future<void> submit(DetailGradingCubit cubit, context, CheckActiveCubit checkCubit, String type, DataCubit dataCubit) async {
   cubit.loadingState();
   for(var i in cubit.answers){
     if(i.listImagePicker.isNotEmpty){

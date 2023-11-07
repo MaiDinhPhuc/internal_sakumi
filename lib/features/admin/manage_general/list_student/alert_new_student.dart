@@ -49,7 +49,7 @@ void alertNewStudent(
                                 margin: EdgeInsets.only(
                                     bottom: Resizable.padding(context, 10)),
                                 child: Text(
-                                  AppText.btnAddNewStudent.text.toUpperCase(),
+                                  AppText.btnManageStudent.text.toUpperCase(),
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: Resizable.font(context, 20)),

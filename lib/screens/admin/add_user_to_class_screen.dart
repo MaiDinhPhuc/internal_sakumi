@@ -90,7 +90,7 @@ class AddUserToClassScreen extends StatelessWidget {
                           horizontal: Resizable.padding(context, 30)))),
                   child: Text(//isStudent
                       // ?
-                      AppText.btnAddNewStudent.text
+                      AppText.btnManageStudent.text
                       //:
                       //AppText.btnAddTeacher.text
                       ),

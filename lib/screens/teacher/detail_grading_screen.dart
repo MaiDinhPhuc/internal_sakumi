@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
 import 'package:internal_sakumi/features/teacher/grading/detail_grading_view.dart';
 import 'package:internal_sakumi/features/teacher/grading/question_option.dart';
 import 'package:internal_sakumi/features/class_appbar.dart';
@@ -21,6 +22,7 @@ class DetailGradingScreen extends StatelessWidget {
   final CheckActiveCubit checkActiveCubit;
   @override
   Widget build(BuildContext context) {
+    var dataController = BlocProvider.of<DataCubit>(context);
     return BlocProvider(
         create: (context) => DetailGradingCubit()..init(type),
         child: Scaffold(
@@ -112,7 +114,9 @@ class DetailGradingScreen extends StatelessWidget {
                                                                               .listQuestions!
                                                                               .indexOf(e)],
                                                                           token:
-                                                                              cubit.token, type: cubit.gradingType,
+                                                                              cubit.token,
+                                                                          type:
+                                                                              cubit.gradingType,
                                                                         ),
                                                                       ))
                                                                   .toList(),
@@ -358,6 +362,7 @@ class DetailGradingScreen extends StatelessWidget {
                                                   checkActiveCubit:
                                                       checkActiveCubit,
                                                   type: type,
+                                                  dataCubit: dataController,
                                                 ),
                                               ))
                                             ],

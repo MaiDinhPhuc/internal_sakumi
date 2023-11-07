@@ -1124,7 +1124,7 @@ class FireBaseProvider extends NetworkProvider {
       for (var j in listStdCol) {
         if (j.classStatus == "Completed" ||
             j.classStatus == "InProgress" ||
-            j.classStatus == "ReNew") {
+            j.classStatus == "ReNew" || j.classStatus == "UpSale" || j.classStatus == "Force") {
           col1++;
         }
         if (j.classStatus == "Viewer") {

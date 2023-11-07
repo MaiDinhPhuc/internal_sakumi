@@ -6,6 +6,7 @@ import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_le
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/lesson_complete_view.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/lesson_pending_view.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/lesson_teaching_view.dart';
+import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/pending_view_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/session_cubit.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -16,9 +17,11 @@ class DetailLessonScreen extends StatelessWidget {
   DetailLessonScreen({Key? key})
       : cubit = DetailLessonCubit(),
         sessionCubit = SessionCubit(),
+        pendingViewCubit = PendingViewCubit(),
         super(key: key);
   final DetailLessonCubit cubit;
   final SessionCubit sessionCubit;
+  final PendingViewCubit pendingViewCubit;
   @override
   Widget build(BuildContext context) {
     var dataController = BlocProvider.of<DataCubit>(context);
@@ -74,7 +77,7 @@ class DetailLessonScreen extends StatelessWidget {
                                   if (s.status == 'Pending')
                                     LessonPendingView(
                                         BlocProvider.of<DetailLessonCubit>(cc),
-                                        dataController),
+                                        dataController, pendingViewCubit),
                                   if (s.status == 'Teaching')
                                     LessonTeachingView(
                                       dataCubit: dataController,

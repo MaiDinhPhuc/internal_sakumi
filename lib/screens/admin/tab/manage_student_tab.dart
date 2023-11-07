@@ -181,7 +181,7 @@ class ManageStudentTab extends StatelessWidget {
                                   )).toList(),
                           SizedBox(height: Resizable.size(context, 5)),
                           DottedBorderButton(
-                              AppText.btnAddNewStudent.text.toUpperCase(),
+                              AppText.btnManageStudent.text.toUpperCase(),
                               onPressed: () async {
                                 SharedPreferences localData =
                                 await SharedPreferences.getInstance();

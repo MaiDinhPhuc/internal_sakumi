@@ -49,7 +49,7 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
                 date: DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now()),
                 noteForStudent: '',
                 noteForSupport: '',
-                noteForTeacher: '')
+                noteForTeacher: '', supportNoteForTeacher: '')
         );
       }
       if(check == true){
@@ -78,7 +78,7 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
         date: state!.date,
         noteForStudent: state!.noteForStudent,
         noteForSupport: state!.noteForSupport,
-        noteForTeacher: state!.noteForTeacher));
+        noteForTeacher: state!.noteForTeacher,supportNoteForTeacher: state!.supportNoteForTeacher));
     emit(LessonResultModel(
         id: state!.id,
         classId: state!.classId,
@@ -88,7 +88,7 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
         date: state!.date,
         noteForStudent: state!.noteForStudent,
         noteForSupport: state!.noteForSupport,
-        noteForTeacher: state!.noteForTeacher));
+        noteForTeacher: state!.noteForTeacher,supportNoteForTeacher: state!.supportNoteForTeacher));
   }
 
   noteForStudents(String note, DataCubit dataCubit) async {
@@ -109,7 +109,7 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
         date: state!.date,
         noteForStudent: note,
         noteForSupport: state!.noteForSupport,
-        noteForTeacher: state!.noteForTeacher));
+        noteForTeacher: state!.noteForTeacher,supportNoteForTeacher: state!.supportNoteForTeacher));
     emit(LessonResultModel(
         id: state!.id,
         classId: state!.classId,
@@ -119,7 +119,7 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
         date: state!.date,
         noteForStudent: note,
         noteForSupport: state!.noteForSupport,
-        noteForTeacher: state!.noteForTeacher));
+        noteForTeacher: state!.noteForTeacher,supportNoteForTeacher: state!.supportNoteForTeacher));
   }
 
   noteForSupport(String note, DataCubit dataCubit) async {
@@ -136,7 +136,7 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
         date: state!.date,
         noteForStudent: state!.noteForStudent,
         noteForSupport: note,
-        noteForTeacher: state!.noteForTeacher));
+        noteForTeacher: state!.noteForTeacher,supportNoteForTeacher: state!.supportNoteForTeacher));
     emit(LessonResultModel(
         id: state!.id,
         classId: state!.classId,
@@ -146,7 +146,7 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
         date: state!.date,
         noteForStudent: state!.noteForStudent,
         noteForSupport: note,
-        noteForTeacher: state!.noteForTeacher));
+        noteForTeacher: state!.noteForTeacher,supportNoteForTeacher: state!.supportNoteForTeacher));
   }
 
   noteForAnotherSensei(String note, DataCubit dataCubit) async {
@@ -164,7 +164,7 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
         date: state!.date,
         noteForStudent: state!.noteForStudent,
         noteForSupport: state!.noteForSupport,
-        noteForTeacher: note));
+        noteForTeacher: note,supportNoteForTeacher: state!.supportNoteForTeacher));
     emit(LessonResultModel(
         id: state!.id,
         classId: state!.classId,
@@ -174,6 +174,6 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
         date: state!.date,
         noteForStudent: state!.noteForStudent,
         noteForSupport: state!.noteForSupport,
-        noteForTeacher: note));
+        noteForTeacher: note,supportNoteForTeacher: state!.supportNoteForTeacher));
   }
 }

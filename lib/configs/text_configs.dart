@@ -77,6 +77,7 @@ enum AppText {
   titleListTeacher,
   btnAddNewClass,
   btnManageClass,
+  btnManageStudent,
   btnAddNewStudent,
   btnAddTeacher,
   btnAddNewTeacher,
@@ -261,10 +262,13 @@ enum AppText {
   txtEditLessonInfo,
   txtLessonId,
   txtContent,
-  txtPleaseCheckListLesson
+  txtPleaseCheckListLesson,
+  txtRead
 }
 
 Map<AppText, String> texts = {
+  AppText.txtRead: 'Tôi đã đọc ghi chú',
+  AppText.btnAddNewStudent: 'Thêm học viên mới',
   AppText.txtPleaseCheckListLesson: 'Bài học đã tồn tại, vui lòng kiểm tra lại!',
   AppText.txtContent: 'Nội dung',
   AppText.txtLessonId: 'Mã bài học',
@@ -427,7 +431,7 @@ Map<AppText, String> texts = {
   AppText.titleListTeacher: 'Danh sách giáo viên',
   AppText.btnAddNewClass: 'Thêm lớp học mới',
   AppText.btnManageClass: 'Quản lý lớp học',
-  AppText.btnAddNewStudent: 'Quản lý học viên',
+  AppText.btnManageStudent: 'Quản lý học viên',
   AppText.btnAddTeacher: 'Thêm giáo viên',
   AppText.btnAddNewTeacher: 'Thêm giáo viên mới',
   AppText.btnUpdate: 'Cập nhật',
