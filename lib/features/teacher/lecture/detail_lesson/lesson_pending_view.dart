@@ -30,15 +30,15 @@ class LessonPendingView extends StatelessWidget {
         builder: (c, s) {
           return Padding(padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 150)),child: Column(
             children: [
-              NoteInPendingCard(pendingViewCubit.check1 ,onPressed: () {
+              NoteInPendingCard(pendingViewCubit.check1,"",onPressed: () {
                 pendingViewCubit.updateCheck1();
               }, title: AppText.titleNoteBeforeTeaching.text, isHardCode: true),
               if(pendingViewCubit.supportNote != "")
-                NoteInPendingCard(pendingViewCubit.check2 ,onPressed: () {
+                NoteInPendingCard(pendingViewCubit.check2,pendingViewCubit.supportNote! ,onPressed: () {
                   pendingViewCubit.updateCheck2();
                 }, title: AppText.titleNoteFromSupport.text, isHardCode: false),
               if(pendingViewCubit.teacherNote != "")
-                NoteInPendingCard(pendingViewCubit.check3 ,onPressed: () {
+                NoteInPendingCard(pendingViewCubit.check3 ,pendingViewCubit.teacherNote!,onPressed: () {
                   pendingViewCubit.updateCheck3();
                 }, title: AppText.titleNoteFromAnotherTeacher.text, isHardCode: false),
               SizedBox(height: Resizable.size(context, 20)),

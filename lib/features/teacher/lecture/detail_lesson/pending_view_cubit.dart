@@ -5,17 +5,17 @@ class PendingViewCubit extends Cubit<int>{
   PendingViewCubit():super(0);
 
   bool check1 = false;
-  bool check2 = true;
-  bool check3 = true;
+  bool check2 = false;
+  bool check3 = false;
   String? teacherNote;
   String? supportNote;
   load(ClassModel2 classModel){
-    teacherNote = classModel.lessonResults!.last.noteForTeacher;
-    if(teacherNote == ""){
-      check2 = true;
-    }
     supportNote = classModel.lessonResults!.last.supportNoteForTeacher;
     if(supportNote == ""){
+      check2 = true;
+    }
+    teacherNote = classModel.lessonResults!.last.noteForTeacher;
+    if(teacherNote == ""){
       check3 = true;
     }
     emit(state+1);

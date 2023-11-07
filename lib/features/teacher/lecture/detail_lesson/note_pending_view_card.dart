@@ -4,11 +4,12 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class NoteInPendingCard extends StatelessWidget {
-  const NoteInPendingCard(this.active,
+  const NoteInPendingCard(this.active,this.note,
       {super.key, required this.onPressed, required this.title, required this.isHardCode});
   final Function() onPressed;
   final bool isHardCode;
   final bool? active;
+  final String note;
   final String title;
   @override
   Widget build(BuildContext context) {
@@ -34,97 +35,94 @@ class NoteInPendingCard extends StatelessWidget {
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: Resizable.font(context, 27))),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ...listNoteBeforeLesson.map((e) => Padding(
-                  padding: EdgeInsets.only(
-                      top: Resizable.padding(context, 10),
-                      right: Resizable.padding(context, 15)),
-                  child: Row(
-                    children: [
-                      Transform.translate(offset: Offset(0,-Resizable.padding(context, 8)),child: Container(
-                        width: Resizable.size(context, 15),
-                        height: Resizable.size(context, 15),
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: primaryColor,
-                        ),
-                        child: Center(
-                          child: Text(
-                            "${listNoteBeforeLesson.indexOf(e) + 1}",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: Resizable.font(context, 15),
-                              fontWeight: FontWeight.bold,
+          if(isHardCode == true)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ...listNoteBeforeLesson.map((e) => Padding(
+                    padding: EdgeInsets.only(
+                        top: Resizable.padding(context, 10),
+                        right: Resizable.padding(context, 15)),
+                    child: Row(
+                      children: [
+                        Transform.translate(offset: Offset(0,-Resizable.padding(context, 8)),child: Container(
+                          width: Resizable.size(context, 15),
+                          height: Resizable.size(context, 15),
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: primaryColor,
+                          ),
+                          child: Center(
+                            child: Text(
+                              "${listNoteBeforeLesson.indexOf(e) + 1}",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: Resizable.font(context, 15),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        )),
+                        Expanded(
+                            child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: Resizable.padding(context, 10)),
+                                child: Text(e,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: Resizable.font(context, 23)))))
+                      ],
+                    ))),
+                Padding(
+                    padding: EdgeInsets.only(
+                        top: Resizable.padding(context, 10),
+                        right: Resizable.padding(context, 15)),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: Resizable.size(context, 15),
+                          height: Resizable.size(context, 15),
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: primaryColor,
+                          ),
+                          child: Center(
+                            child: Text(
+                              "5",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: Resizable.font(context, 15),
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
-                      )),
-                      Expanded(
-                          child: Padding(
+                        Expanded(
+                            child: Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: Resizable.padding(context, 10)),
-                              child: Text(e,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: Resizable.font(context, 23)))))
-                    ],
-                  ))),
-              Padding(
-                  padding: EdgeInsets.only(
-                      top: Resizable.padding(context, 10),
-                      right: Resizable.padding(context, 15)),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: Resizable.size(context, 15),
-                        height: Resizable.size(context, 15),
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: primaryColor,
-                        ),
-                        child: Center(
-                          child: Text(
-                            "5",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: Resizable.font(context, 15),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                          child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: Resizable.padding(context, 10)),
-                        child: RichText(
-                          text: TextSpan(
-                            text: "[LÀM NGAY]",
-                            style: TextStyle(fontSize: Resizable.font(context, 23), fontWeight: FontWeight.w700,color: primaryColor),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: ' Sensei nhớ bấm record + note link meet lên sheet. ',
-                                style: TextStyle(fontSize: Resizable.font(context, 23), fontWeight: FontWeight.w400, color: Colors.black),
+                              child: RichText(
+                                text: TextSpan(
+                                  text: "[LÀM NGAY]",
+                                  style: TextStyle(fontSize: Resizable.font(context, 23), fontWeight: FontWeight.w700,color: primaryColor),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: ' Sensei nhớ bấm record + note link meet lên sheet. ',
+                                      style: TextStyle(fontSize: Resizable.font(context, 23), fontWeight: FontWeight.w400, color: Colors.black),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ))
-                    ],
-                  )),
-              // if(isHardCode == false)
-              //   Padding(
-              //       padding: EdgeInsets.symmetric(
-              //           horizontal: Resizable.padding(context, 10)),
-              //       child: Text(,
-              //           style: TextStyle(
-              //               fontWeight: FontWeight.w400,
-              //               fontSize: Resizable.font(context, 23))))
-            ],
-          ),
-
+                            ))
+                      ],
+                    )),
+              ],
+            ),
+          if(isHardCode == false)
+            Text(note,
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: Resizable.font(context, 23))),
           Padding(
             padding: EdgeInsets.only(right: Resizable.padding(context, 10)),
             child: (active != null)
