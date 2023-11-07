@@ -2,7 +2,7 @@ import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/teacher/cubit/teacher_data_cubit.dart';
+import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
 import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
@@ -21,7 +21,7 @@ class TeacherHomeFilter extends StatelessWidget {
             color: Colors.transparent,
             child: PopupMenuButton(
                 onCanceled: () async {
-                  await cubit.filter();
+                  await cubit.filterInTeacher();
                 },
                 itemBuilder: (context) => [
                       ...listFilter.map((e) => PopupMenuItem(

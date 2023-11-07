@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
+import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/teacher_home_model.dart';
@@ -15,8 +16,16 @@ class LoadListClassCubit extends Cubit<int> {
   LoadListClassCubit() : super(0);
 
   TeacherHomeClass? data;
-  List<int>? listClassIds, listClassType, listLessonCount, listLessonAvailable, listCourseIds;
-  List<String>? listClassCodes, listClassStatus, listBigTitle, listClassNote, listClassDes;
+  List<int>? listClassIds,
+      listClassType,
+      listLessonCount,
+      listLessonAvailable,
+      listCourseIds;
+  List<String>? listClassCodes,
+      listClassStatus,
+      listBigTitle,
+      listClassNote,
+      listClassDes;
   List<double>? rateAttendance, rateSubmit;
   List<CourseModel>? listAllCourse;
   List<List<int>>? rateAttendanceChart, rateSubmitChart;
@@ -35,7 +44,7 @@ class LoadListClassCubit extends Cubit<int> {
   List<String?> listLastLessonTitleNow = [];
   List<LessonModel> listLastLesson = [];
 
-  Color getColor(String status){
+  Color getColor(String status) {
     switch (status) {
       case 'InProgress':
         return const Color(0xff33691e);
@@ -49,7 +58,7 @@ class LoadListClassCubit extends Cubit<int> {
     }
   }
 
-  String getIcon(String status){
+  String getIcon(String status) {
     switch (status) {
       case 'InProgress':
       case 'Preparing':
@@ -63,18 +72,20 @@ class LoadListClassCubit extends Cubit<int> {
     }
   }
 
-  changeStatus(int id, String status){
+  changeStatus(int id, String status) {
     int index = data!.listClassIds.indexOf(id);
     data!.listClassStatus[index] = status;
   }
 
-  loadLastLessonTitle(int classId,int courseId, int index) async {
-    List<LessonResultModel> listLessonResult = await FireBaseProvider.instance.getLessonResultByClassId(classId);
+  loadLastLessonTitle(int classId, int courseId, int index) async {
+    List<LessonResultModel> listLessonResult =
+        await FireBaseProvider.instance.getLessonResultByClassId(classId);
 
-    if(listLessonResult.isEmpty){
-      listLastLessonTitle[data!.listClassIds.indexOf(classId)] = AppText.txtLastLessonEmpty.text;
+    if (listLessonResult.isEmpty) {
+      listLastLessonTitle[data!.listClassIds.indexOf(classId)] =
+          AppText.txtLastLessonEmpty.text;
       listLastLessonTitleNow[index] = AppText.txtLastLessonEmpty.text;
-    }else{
+    } else {
       listLessonResult.sort((a, b) {
         DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm:ss');
         var tempA = a.date;
@@ -90,41 +101,52 @@ class LoadListClassCubit extends Cubit<int> {
         return dateA.compareTo(dateB);
       });
 
-      if(listLastLesson.isEmpty){
-        LessonModel lastLesson = await FireBaseProvider.instance.getLesson(courseId, listLessonResult.last.lessonId);
+      if (listLastLesson.isEmpty) {
+        LessonModel lastLesson = await FireBaseProvider.instance
+            .getLesson(courseId, listLessonResult.last.lessonId);
         listLastLesson.add(lastLesson);
-        listLastLessonTitle[data!.listClassIds.indexOf(classId)] = lastLesson.title;
+        listLastLessonTitle[data!.listClassIds.indexOf(classId)] =
+            lastLesson.title;
         listLastLessonTitleNow[index] = lastLesson.title;
-      }else{
+      } else {
         bool check = false;
-        for(var i in listLastLesson){
-          if(i.lessonId == listLessonResult.last.lessonId){
+        for (var i in listLastLesson) {
+          if (i.lessonId == listLessonResult.last.lessonId) {
             check = true;
             break;
           }
         }
-        if(check == false){
-          LessonModel lastLesson = await FireBaseProvider.instance.getLesson(courseId, listLessonResult.last.lessonId);
+        if (check == false) {
+          LessonModel lastLesson = await FireBaseProvider.instance
+              .getLesson(courseId, listLessonResult.last.lessonId);
           listLastLesson.add(lastLesson);
-          listLastLessonTitle[data!.listClassIds.indexOf(classId)] = lastLesson.title;
+          listLastLessonTitle[data!.listClassIds.indexOf(classId)] =
+              lastLesson.title;
           listLastLessonTitleNow[index] = lastLesson.title;
-        }else{
-          listLastLessonTitle[data!.listClassIds.indexOf(classId)] = listLastLesson.firstWhere((element) => element.lessonId == listLessonResult.last.lessonId).title;
-          listLastLessonTitleNow[index] = listLastLesson.firstWhere((element) => element.lessonId == listLessonResult.last.lessonId).title;
+        } else {
+          listLastLessonTitle[data!.listClassIds.indexOf(classId)] =
+              listLastLesson
+                  .firstWhere((element) =>
+                      element.lessonId == listLessonResult.last.lessonId)
+                  .title;
+          listLastLessonTitleNow[index] = listLastLesson
+              .firstWhere((element) =>
+                  element.lessonId == listLessonResult.last.lessonId)
+              .title;
         }
       }
     }
 
-    emit(state+1);
-
+    emit(state + 1);
   }
 
   load() async {
     data = await FireBaseProvider.instance.getDataForManageClassTab();
-    for(var i in data!.listClassIds){
+    for (var i in data!.listClassIds) {
       listLastLessonTitle.add(null);
     }
-    listAllCourse = data!.listCourse.where((element) => element.enable == true).toList();
+    listAllCourse =
+        data!.listCourse.where((element) => element.enable == true).toList();
     for (var i in listAllCourse!) {
       listStateCourseFilter.add(false);
     }
@@ -135,45 +157,46 @@ class LoadListClassCubit extends Cubit<int> {
   filter() {
     List<int> listIndex = [];
     List<int> listIndexTemp1 = [];
-    for(int i = 0; i<listStateCourseFilter.length; i++ ){
-      if(listStateCourseFilter[i] == true){
-        for(int j = 0; j<data!.listBigTitle.length; j++){
-          if("${listAllCourse![i].name} ${listAllCourse![i].level} ${listAllCourse![i].termName}" == data!.listBigTitle[j]){
+    for (int i = 0; i < listStateCourseFilter.length; i++) {
+      if (listStateCourseFilter[i] == true) {
+        for (int j = 0; j < data!.listBigTitle.length; j++) {
+          if ("${listAllCourse![i].name} ${listAllCourse![i].level} ${listAllCourse![i].termName}" ==
+              data!.listBigTitle[j]) {
             listIndexTemp1.add(j);
           }
         }
       }
     }
-    if(listIndexTemp1.isEmpty){
-      for(int j = 0; j< data!.listBigTitle.length; j++){
+    if (listIndexTemp1.isEmpty) {
+      for (int j = 0; j < data!.listBigTitle.length; j++) {
         listIndexTemp1.add(j);
       }
     }
     List<int> listIndexTemp2 = [];
-    for(var i in listIndexTemp1){
-      if(listClassTypeFilter[0] && !listClassTypeFilter[1]){
-        if(data!.listClassType[i] == 0){
+    for (var i in listIndexTemp1) {
+      if (listClassTypeFilter[0] && !listClassTypeFilter[1]) {
+        if (data!.listClassType[i] == 0) {
           listIndexTemp2.add(i);
         }
       }
-      if(!listClassTypeFilter[0] && listClassTypeFilter[1]){
-        if(data!.listClassType[i] == 1){
+      if (!listClassTypeFilter[0] && listClassTypeFilter[1]) {
+        if (data!.listClassType[i] == 1) {
           listIndexTemp2.add(i);
         }
       }
-      if(listClassTypeFilter[0] && listClassTypeFilter[1]){
+      if (listClassTypeFilter[0] && listClassTypeFilter[1]) {
         listIndexTemp2.add(i);
       }
     }
 
     List<String> listStatusTemp = [];
-    for(int i= 0; i<listClassStatusFilter.length; i++){
-      if(listClassStatusFilter[i]){
+    for (int i = 0; i < listClassStatusFilter.length; i++) {
+      if (listClassStatusFilter[i]) {
         listStatusTemp.add(listClassStatusMenu[i]);
       }
     }
-    for(var i in listIndexTemp2){
-      if(listStatusTemp.contains(data!.listClassStatus[i])){
+    for (var i in listIndexTemp2) {
+      if (listStatusTemp.contains(data!.listClassStatus[i])) {
         listIndex.add(i);
       }
     }

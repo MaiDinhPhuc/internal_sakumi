@@ -81,7 +81,7 @@ class StudentItem extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(student.name,
+                  Text("${student.name} ${student.studentCode}",
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: Resizable.font(context, 20),

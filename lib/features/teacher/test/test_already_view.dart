@@ -51,16 +51,16 @@ class TestAlreadyView extends StatelessWidget {
                             firstChild: CollapseTestItem(
                               index: cubit.listTest!.indexOf(e),
                               title: e.title,
-                              testId: e.id,
+                              testId: e.id, cubit: cubit,
                             ),
                             secondChild: Column(
                               children: [
                                 CollapseTestItem(
                                   index: cubit.listTest!.indexOf(e),
                                   title: e.title,
-                                  testId: e.id,
+                                  testId: e.id, cubit: cubit,
                                 ),
-                                ExpandTestItem(testId: e.id,)
+                                ExpandTestItem(testId: e.id, cubit: cubit)
                               ],
                             ),
                             crossFadeState: state % 2 == 1

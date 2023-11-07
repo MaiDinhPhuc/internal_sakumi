@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_dashboard_tab.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_class_tab.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_student_tab.dart';
@@ -11,6 +13,7 @@ class AdminScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var dataController = BlocProvider.of<DataCubit>(context);
     return DefaultTabController(
         length: 4,
         child: Scaffold(
@@ -21,7 +24,7 @@ class AdminScreen extends StatelessWidget {
             AppText.titleManageTag.text
           ], widgets: [
             const ManageStudentTab(),
-            ManageClassTab(),
+            ManageClassTab(dataCubit: dataController),
             const ManageDashboardTab(),
             ManageTagTab(),
           ]),

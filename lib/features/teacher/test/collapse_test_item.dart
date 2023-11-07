@@ -12,13 +12,13 @@ class CollapseTestItem extends StatelessWidget {
       {super.key,
       required this.index,
       required this.title,
-      required this.testId});
+      required this.testId, required this.cubit});
   final int index, testId;
   final String title;
+  final TestCubit cubit;
 
   @override
   Widget build(BuildContext context) {
-    var cubit = BlocProvider.of<TestCubit>(context);
     return TestItemRowLayout(
       test: Padding(
           padding: EdgeInsets.only(left: Resizable.padding(context, 10)),

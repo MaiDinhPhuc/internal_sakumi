@@ -8,12 +8,12 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import '../lecture/list_lesson/lesson_item_row_layout.dart';
 
 class ExpandTestItem extends StatelessWidget {
-  const ExpandTestItem({super.key, required this.testId});
+  const ExpandTestItem({super.key, required this.testId, required this.cubit});
   final int testId;
+  final TestCubit cubit;
 
   @override
   Widget build(BuildContext context) {
-    var cubit = BlocProvider.of<TestCubit>(context);
     return Column(
       children: [
         ...cubit.listStudents!.map((e) => Padding(

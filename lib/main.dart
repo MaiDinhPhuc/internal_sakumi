@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 import 'configs/color_configs.dart';
-import 'features/teacher/cubit/teacher_data_cubit.dart';
+import 'features/teacher/cubit/data_cubit.dart';
 import 'features/teacher/profile/app_bar_info_teacher_cubit.dart';
 import 'firebase_options.dart';
 
