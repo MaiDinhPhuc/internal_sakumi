@@ -10,11 +10,18 @@ class PendingViewCubit extends Cubit<int>{
   String? teacherNote;
   String? supportNote;
   load(ClassModel2 classModel){
-    supportNote = classModel.lessonResults!.last.supportNoteForTeacher;
+    if(classModel.lessonResults!.isEmpty){
+      supportNote = "";
+      teacherNote = "";
+    }else{
+      supportNote = classModel.lessonResults!.last.supportNoteForTeacher;
+      teacherNote = classModel.lessonResults!.last.noteForTeacher;
+    }
+
     if(supportNote == ""){
       check2 = true;
     }
-    teacherNote = classModel.lessonResults!.last.noteForTeacher;
+
     if(teacherNote == ""){
       check3 = true;
     }
