@@ -232,8 +232,8 @@ void alertCheckBoxStudent(
                                                           classId:
                                                               manageGeneralCubit
                                                                   .selector,
-                                                          activeStatus: 5,
-                                                          learningStatus: 5,
+                                                          activeStatus: 1,
+                                                          learningStatus: 1,
                                                           moveTo: 0,
                                                           userId: cubit
                                                               .listSelectedStudent![cubit

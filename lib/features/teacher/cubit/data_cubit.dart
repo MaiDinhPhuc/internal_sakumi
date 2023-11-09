@@ -6,6 +6,7 @@ import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
+import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -211,7 +212,7 @@ class DataCubit extends Cubit<int> {
             courses.firstWhere((e) => e.courseId == i.classModel.courseId);
         classes![classes!.indexOf(i)] = i.copyWith(course: course);
       }
-      emit(state+1);
+      emit(state + 1);
     }
     for (var i in classes!) {
       if (classes![classes!.indexOf(i)].stdLessons == null) {
@@ -229,7 +230,7 @@ class DataCubit extends Cubit<int> {
             lessonResults: lessonResults,
             stdLessons: stdLessons);
       }
-      emit(state+1);
+      emit(state + 1);
     }
     for (var i in classes!) {
       if (classes![classes!.indexOf(i)].stdTests == null) {
@@ -246,7 +247,7 @@ class DataCubit extends Cubit<int> {
         classes![classes!.indexOf(i)] = i.copyWith(
             stdTests: stdTests, listTest: listTest, testResults: testResults);
       }
-      emit(state+1);
+      emit(state + 1);
     }
   }
 
@@ -284,6 +285,72 @@ class DataCubit extends Cubit<int> {
       stdLessons[i] = stdLesson;
     }
     classes![index] = classes![index].copyWith(stdLessons: stdLessons);
+  }
+
+  updateStudentLessonAfterGrading(int classId, int lessonId, int studentId, int hw) {
+    var index = classes!
+        .indexOf(classes!.firstWhere((e) => e.classModel.classId == classId));
+    List<StudentLessonModel> stdLessons = classes![index].stdLessons!;
+
+    var stdLesson = stdLessons.firstWhere((e) => e.lessonId == lessonId && e.studentId == studentId);
+
+    var check = stdLessons.any(
+        (e) => e.lessonId == lessonId && e.studentId == stdLesson.studentId);
+
+    if (check == false) {
+      stdLessons.add(StudentLessonModel(
+          grammar: stdLesson.grammar,
+          hw: hw,
+          id: stdLesson.id,
+          classId: classId,
+          kanji: stdLesson.kanji,
+          lessonId: lessonId,
+          listening: stdLesson.listening,
+          studentId: studentId,
+          timekeeping: stdLesson.timekeeping,
+          vocabulary: stdLesson.vocabulary,
+          teacherNote: stdLesson.teacherNote,
+          supportNote: stdLesson.supportNote));
+    } else {
+      var i = stdLessons.indexOf(stdLessons.firstWhere((e) =>
+          e.lessonId == stdLesson.lessonId &&
+          e.studentId == stdLesson.studentId));
+      stdLessons[i] = StudentLessonModel(
+          grammar: stdLesson.grammar,
+          hw: hw,
+          id: stdLesson.id,
+          classId: classId,
+          kanji: stdLesson.kanji,
+          lessonId: lessonId,
+          listening: stdLesson.listening,
+          studentId: studentId,
+          timekeeping: stdLesson.timekeeping,
+          vocabulary: stdLesson.vocabulary,
+          teacherNote: stdLesson.teacherNote,
+          supportNote: stdLesson.supportNote);
+    }
+    classes![index] = classes![index].copyWith(stdLessons: stdLessons);
+  }
+
+  updateStudentTestAfterGrading(int classId, int testId, int studentId, int score) {
+    var index = classes!
+        .indexOf(classes!.firstWhere((e) => e.classModel.classId == classId));
+    List<StudentTestModel> stdTests = classes![index].stdTests!;
+
+    var stdTest = stdTests.firstWhere((e) => e.testID == testId && e.studentId == studentId);
+
+    var check = stdTests.any(
+            (e) => e.testID == testId && e.studentId == stdTest.studentId);
+
+    if (check == false) {
+      stdTests.add(StudentTestModel(classId: classId, score: score, studentId: studentId, testID: testId));
+    } else {
+      var i = stdTests.indexOf(stdTests.firstWhere((e) =>
+      e.testID == stdTest.testID &&
+          e.studentId == stdTest.studentId));
+      stdTests[i] = StudentTestModel(classId: classId, score: score, studentId: studentId, testID: testId);
+    }
+    classes![index] = classes![index].copyWith(stdTests: stdTests);
   }
 
   updateStudentClass(int classId, StudentClassModel studentClassModel) {

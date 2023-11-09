@@ -6,6 +6,7 @@ import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/classific
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/session_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/note_for_team_card.dart';
+import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -23,35 +24,35 @@ class LessonCompleteView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<TextEditingController> listController = List.generate(
-        sessionCubit.listStudent == null ? 0 : sessionCubit.listStudent!.length,
-        (index) => TextEditingController()).toList();
     return Column(
       children: [
         SizedBox(height: Resizable.padding(context, 10)),
         ...sessionCubit.listStudent!
             .map((e) => ClassificationItem(
-                    e,
-                    sessionCubit
-                        .listStudentClass![sessionCubit.listStudent!.indexOf(e)]
-                        .activeStatus,
-                    listController[sessionCubit.listStudent!.indexOf(e)],
-                    firstItems: [
-                      AppText.txtActiveStatus.text.toUpperCase(),
-                      'A',
-                      'B',
-                      'C',
-                      'D',
-                      'E'
-                    ],
-                    secondItems: [
-                      AppText.txtLearningStatus.text.toUpperCase(),
-                      'A',
-                      'B',
-                      'C',
-                      'D',
-                      'E'
-                    ]))
+                  e,
+                  sessionCubit
+                      .listStudentClass![sessionCubit.listStudent!.indexOf(e)]
+                      .activeStatus,
+                  firstItems: [
+                    AppText.txtActiveStatus.text.toUpperCase(),
+                    'A',
+                    'B',
+                    'C',
+                    'D',
+                    'E'
+                  ],
+                  secondItems: [
+                    AppText.txtLearningStatus.text.toUpperCase(),
+                    'A',
+                    'B',
+                    'C',
+                    'D',
+                    'E'
+                  ],
+                  onChanged: (String v) {
+                    sessionCubit.inputNoteForEachStudent(v, e.userId);
+                  },
+                ))
             .toList(),
         BlocBuilder<SessionCubit, int>(
             bloc: sessionCubit
@@ -109,11 +110,31 @@ class LessonCompleteView extends StatelessWidget {
                       }
                       if (context.mounted) {
                         for (var std in sessionCubit.listStudent!) {
-                          await updateTeacherNote(
-                              std.userId,
-                              listController[
-                                      sessionCubit.listStudent!.indexOf(std)]
-                                  .text);
+                          var tempStd = sessionCubit.listStudent!
+                              .firstWhere((e) => e.userId == std.userId);
+                          var index =
+                              sessionCubit.listStudent!.indexOf(tempStd);
+
+                          await updateTeacherNote(std.userId,
+                              sessionCubit.listNoteForEachStudent[index]);
+
+                          var stdLesson = sessionCubit.listStudentLesson!.firstWhere((e) => e.studentId == tempStd.userId);
+
+                          dataCubit.updateStudentLesson(
+                              int.parse(TextUtils.getName(position: 1)),
+                              StudentLessonModel(
+                                  grammar: stdLesson.grammar,
+                                  hw: stdLesson.hw,
+                                  id: stdLesson.id,
+                                  classId: stdLesson.classId,
+                                  kanji: stdLesson.kanji,
+                                  lessonId: stdLesson.lessonId,
+                                  listening: stdLesson.listening,
+                                  studentId: stdLesson.studentId,
+                                  timekeeping: stdLesson.timekeeping,
+                                  vocabulary: stdLesson.vocabulary,
+                                  teacherNote: sessionCubit.listNoteForEachStudent[index],
+                                  supportNote: stdLesson.supportNote));
                         }
                         if (context.mounted) {
                           Navigator.pushNamed(context,

@@ -62,8 +62,7 @@ class StudentAnswerView extends StatelessWidget {
             child: BlocProvider(
               create: (context) => DropdownGradingCubit(cubit
                           .listAnswer![cubit.listAnswer!.indexOf(answerModel)]
-                          .newScore ==
-                      -1
+                          .newScore < 0
                   ? AppText.textGradingScale.text
                   : cubit.listAnswer![cubit.listAnswer!.indexOf(answerModel)]
                       .newScore
@@ -73,6 +72,7 @@ class StudentAnswerView extends StatelessWidget {
                   return DropDownGrading(
                       items: [
                         AppText.textGradingScale.text,
+                        "0",
                         "1",
                         "2",
                         "3",

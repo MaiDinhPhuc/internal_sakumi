@@ -15,6 +15,7 @@ import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/providers/api/api_provider.dart';
+import 'package:intl/intl.dart';
 
 class FireStoreDb {
   FireStoreDb._privateConstructor();
@@ -364,7 +365,7 @@ class FireStoreDb {
         .update({
       'teacher_note': note,
     });
-    debugPrint("==========>update db from \"student_lesson\"");
+    debugPrint("==========>update db in \"student_lesson\" for student_${userId}_lesson_${lessonId}_class_$classId");
   }
 
   Future<void> updateStudentStatus(
@@ -392,6 +393,8 @@ class FireStoreDb {
         .doc("lesson_${lessonId}_class_$classId")
         .update({
       'status': status,
+      'date' : DateFormat('dd/MM/yyyy HH:mm:ss')
+          .format(DateTime.now())
     });
     debugPrint("==========>update db from \"lesson_result\"");
   }

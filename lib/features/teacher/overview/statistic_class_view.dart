@@ -59,15 +59,8 @@ class StatisticClassView extends StatelessWidget {
                                     fontWeight: FontWeight.w600,
                                     fontSize: Resizable.font(context, 40)))),
                     Expanded(
-                        child: cubit.listAttendance.isEmpty
-                            ? Align(
-                                alignment: Alignment.centerRight,
-                                child: Transform.scale(
-                                  scale: 0.5,
-                                  child: const CircularProgressIndicator(),
-                                ),
-                              )
-                            : OverviewChart(points: cubit.listAttendance))
+                        child:
+                        OverviewChart(points: cubit.listAttendance))
                   ],
                 ),
               )
@@ -115,15 +108,7 @@ class StatisticClassView extends StatelessWidget {
                                   fontWeight: FontWeight.w600,
                                   fontSize: Resizable.font(context, 40)))),
                   Expanded(
-                      child: cubit.listHomework.isEmpty
-                          ? Align(
-                              alignment: Alignment.centerRight,
-                              child: Transform.scale(
-                                scale: 0.5,
-                                child: const CircularProgressIndicator(),
-                              ),
-                            )
-                          : OverviewChart(
+                      child: OverviewChart(
                               points: cubit.listHomework, isPercent: true))
                 ],
               )

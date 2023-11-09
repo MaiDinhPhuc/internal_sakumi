@@ -263,10 +263,12 @@ enum AppText {
   txtLessonId,
   txtContent,
   txtPleaseCheckListLesson,
-  txtRead
+  txtRead,
+  txtTeachingDay
 }
 
 Map<AppText, String> texts = {
+  AppText.txtTeachingDay: 'Ngày dạy',
   AppText.txtRead: 'Tôi đã đọc ghi chú',
   AppText.btnAddNewStudent: 'Thêm học viên mới',
   AppText.txtPleaseCheckListLesson: 'Bài học đã tồn tại, vui lòng kiểm tra lại!',

@@ -10,12 +10,12 @@ import 'drop_down_widget.dart';
 
 class ClassificationItem extends StatelessWidget {
   final int index;
-  final TextEditingController controller;
   final StudentModel studentModel;
+  final Function(String v) onChanged;
   final List<String> firstItems, secondItems;
-  const ClassificationItem(this.studentModel, this.index, this.controller,
+  const ClassificationItem(this.studentModel, this.index,
       { required this.firstItems, required this.secondItems,
-      Key? key})
+      Key? key, required this.onChanged})
       : super(key: key);
 
   @override
@@ -65,7 +65,6 @@ class ClassificationItem extends StatelessWidget {
                                       items: firstItems,
                                       onPressed: (v) {
                                         s = firstItems.indexOf(v.toString());
-                                        debugPrint('==========> index $s === ${controller.text}');
                                         BlocProvider.of<DropdownAttendanceCubit>(c).updateStudentStatus('active_status', s, studentModel.userId);
                                       })))),
                       Expanded(flex: 1, child: Container()),
@@ -104,13 +103,10 @@ class ClassificationItem extends StatelessWidget {
                 color: greyColor.shade50,
                 borderRadius:
                     BorderRadius.circular(Resizable.padding(context, 5))),
-            child: TextFormField(key: Key('oooooooo'),
-              controller: controller,
+            child: TextFormField(
               autofocus: true,
               //initialValue: '',
-              onChanged: (v){
-
-              },
+              onChanged: onChanged,
               decoration: InputDecoration(
                 enabled: true,
                 hintText: AppText.txtHintNoteForStudent.text,

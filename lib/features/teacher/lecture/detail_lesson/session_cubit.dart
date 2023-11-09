@@ -24,9 +24,9 @@ class SessionCubit extends Cubit<int> {
   String noteStudent = '';
   String noteSupport = '';
   String noteSensei = '';
+  int loadCount = 0;
 
-  static SessionCubit fromContext(BuildContext context) =>
-      BlocProvider.of<SessionCubit>(context);
+  List<String> listNoteForEachStudent = [];
 
   load(ClassModel2 classModel, DataCubit dataCubit) async {
     await getTeacherId();
@@ -34,25 +34,40 @@ class SessionCubit extends Cubit<int> {
     totalAttendance = 0;
     if(classModel.stdClasses == null){
       dataCubit.loadLessonInfoOfClass(classModel.classModel);
+      loadCount++;
       emit(state+1);
     }else{
-      listStudentClass = classModel.stdClasses;
-      List<int> listStudentId = [];
-      for (var i in listStudentClass!) {
-        if (i.classStatus != "Remove" &&
-            i.classStatus != "Dropped" &&
-            i.classStatus != "Deposit" &&
-            i.classStatus != "Retained" &&
-            i.classStatus != "Moved") {
-          listStudentId.add(i.userId);
+      {
+        listStudentClass = classModel.stdClasses;
+        List<int> listStudentId = [];
+        for (var i in listStudentClass!) {
+          if (i.classStatus != "Remove" &&
+              i.classStatus != "Dropped" &&
+              i.classStatus != "Deposit" &&
+              i.classStatus != "Retained" &&
+              i.classStatus != "Moved") {
+            listStudentId.add(i.userId);
+          }
         }
+        listStudent = await FireBaseProvider.instance.getAllStudentInFoInClass(listStudentId);
+
+        for(int i = 0; i < listStudent!.length; i++){
+          listNoteForEachStudent.add("");
+        }
+
+        listStudentLesson = classModel.stdLessons!.where((e) => e.lessonId == int.parse(TextUtils.getName())).toList();
+        totalAttendance = listStudentLesson!
+            .fold(0, (pre, e) => e.timekeeping > 0 ? (pre + 1) : pre);
+        emit(state+1);
       }
-      listStudent = await FireBaseProvider.instance.getAllStudentInFoInClass(listStudentId);
-      listStudentLesson = classModel.stdLessons!.where((e) => e.lessonId == int.parse(TextUtils.getName())).toList();
-      totalAttendance = listStudentLesson!
-          .fold(0, (pre, e) => e.timekeeping > 0 ? (pre + 1) : pre);
-      emit(state+1);
     }
+  }
+
+  inputNoteForEachStudent(String text, int stdId) {
+    var std = listStudent!.firstWhere((e) => e.userId == stdId);
+    var index = listStudent!.indexOf(std);
+    listNoteForEachStudent[index] = text;
+    emit(state + 1);
   }
 
   updateUI() {

@@ -23,6 +23,7 @@ class LessonTabCubit extends Cubit<int> {
   List<bool?>? listHwStatus;
   List<String>? listStatus;
   List<Map<String, dynamic>>? listLessonInfo;
+  List<String>? listTeachingDay;
 
   load(ClassModel2 classModel2, DataCubit dataCubit)async{
     if(classModel2.stdLessons == null){
@@ -54,6 +55,7 @@ class LessonTabCubit extends Cubit<int> {
         listLessonResultTemp.add(null);
       }
       List<String> listSpNote = [];
+      List<String> listTeachingDay = [];
       List<String> listTeacherNote = [];
       List<String> listStatus = [];
       List<Map<String, dynamic>> listLessonInfo = [];
@@ -72,12 +74,14 @@ class LessonTabCubit extends Cubit<int> {
             element.lessonId == listLessonResultTemp[i]!.lessonId)
                 .title
           });
+          listTeachingDay.add(listLessonResultTemp[i]!.date!.split(" ").first);
           LessonModel temp = lessons.firstWhere(
                   (element) => element.lessonId == listLessonResultTemp[i]!.lessonId);
           lessons.remove(lessons.firstWhere((element) =>
           element.lessonId == listLessonResultTemp[i]!.lessonId));
           lessons.insert(i, temp);
         } else {
+          listTeachingDay.add("");
           listSpNote.add("");
           listTeacherNote.add("");
           listStatus.add("Pending");
@@ -250,6 +254,7 @@ class LessonTabCubit extends Cubit<int> {
       this.listHwStatus = listHwStatus;
       this.listStatus = listStatus;
       this.listLessonInfo = listLessonInfo;
+      this.listTeachingDay = listTeachingDay;
       emit(state+1);
     }
   }

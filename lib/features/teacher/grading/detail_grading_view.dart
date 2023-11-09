@@ -171,6 +171,7 @@ Future<void> submit(DetailGradingCubit cubit, context, CheckActiveCubit checkCub
             .update({
           'score': temp == 0 ? -1 : submitScore,
         });
+        dataCubit.updateStudentTestAfterGrading(int.parse(TextUtils.getName(position: 1)),int.parse(TextUtils.getName()),i.userId, temp == 0 ? -1 : submitScore);
       }else{
         FirebaseFirestore.instance
             .collection('student_lesson')
@@ -179,6 +180,7 @@ Future<void> submit(DetailGradingCubit cubit, context, CheckActiveCubit checkCub
             .update({
           'hw': temp == 0 ? -1 : submitScore,
         });
+        dataCubit.updateStudentLessonAfterGrading(int.parse(TextUtils.getName(position: 1)),int.parse(TextUtils.getName()),i.userId, temp == 0 ? -1 : submitScore);
       }
 
     }

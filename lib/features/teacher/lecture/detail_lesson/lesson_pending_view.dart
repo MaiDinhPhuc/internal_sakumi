@@ -74,7 +74,8 @@ class LessonPendingView extends StatelessWidget {
                       Navigator.pop(context);
                     }
                   },
-                  title: AppText.txtStartLesson.text)
+                  title: AppText.txtStartLesson.text),
+              SizedBox(height: Resizable.size(context, 20))
             ],
           ));
         });

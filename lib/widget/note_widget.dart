@@ -58,11 +58,7 @@ class TrackingItem extends StatelessWidget {
                         : condition! > -1
                             ? condition.toString()
                             : AppText.txtNotSubmit.text
-                : condition == null || condition == 0
-                    ? AppText.txtNotAttendance.text
-                    : (condition! > 0 && condition! < 5)
-                        ? AppText.txtPresent.text
-                        : AppText.txtNotPresent.text)
+                : getAttendance(condition))
             .toUpperCase(),
         textAlign: TextAlign.center,
         style: TextStyle(
@@ -72,4 +68,27 @@ class TrackingItem extends StatelessWidget {
       ),
     );
   }
+
+  static String getAttendance(int? s) {
+    switch (s) {
+      case 0:
+      case null:
+        return AppText.txtNotAttendance.text;
+      case 1:
+        return AppText.txtPresent.text;
+      case 2:
+        return AppText.txtInLate.text;
+      case 3:
+        return AppText.txtOutSoon.text;
+      case 4:
+        return "VT&RS";
+      case 5:
+        return AppText.txtPermitted.text;
+      case 6:
+        return AppText.txtAbsent.text;
+      default:
+        return '';
+    }
+  }
 }
+
