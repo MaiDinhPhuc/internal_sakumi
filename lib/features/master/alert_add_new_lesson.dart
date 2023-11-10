@@ -5,6 +5,7 @@ import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
+import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 import 'add_new_lesson_button.dart';
@@ -75,19 +76,21 @@ void alertAddNewLesson(BuildContext context, LessonModel? lessonModel,
                           child: SingleChildScrollView(
                               child: Column(children: [
                             Input2Field(
-                                title1: AppText.txtCourseId.text,
-                                title2: AppText.txtLessonId.text,
-                                con1: idCourseCon,
-                                con2: idLessonCon, enable:isEdit ? false : true,),
+                              title1: AppText.txtCourseId.text,
+                              title2: AppText.txtLessonId.text,
+                              con1: idCourseCon,
+                              con2: idLessonCon,
+                              enable: isEdit ? false : true,
+                            ),
                             InputItem(
-                                onChange: (String? value){
+                                onChange: (String? value) {
                                   debugPrint(value);
                                 },
                                 controller: titleCon,
                                 title: AppText.txtTitle.text,
                                 isExpand: true),
                             InputItem(
-                                onChange: (String? value){
+                                onChange: (String? value) {
                                   debugPrint(value);
                                 },
                                 controller: contCon,
@@ -114,9 +117,9 @@ void alertAddNewLesson(BuildContext context, LessonModel? lessonModel,
                                 con1: flCardCon,
                                 con2: orderCon),
                             InputItem(
-                              onChange: (String? value){
-                                debugPrint(desCon.text);
-                              },
+                                onChange: (String? value) {
+                                  debugPrint(desCon.text);
+                                },
                                 controller: desCon,
                                 title: AppText.txtDescription.text,
                                 isExpand: true),
@@ -127,69 +130,113 @@ void alertAddNewLesson(BuildContext context, LessonModel? lessonModel,
                               margin: EdgeInsets.only(
                                   top: Resizable.padding(context, 20)),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+                                mainAxisAlignment: isEdit
+                                    ? MainAxisAlignment.spaceBetween
+                                    : MainAxisAlignment.end,
                                 children: [
-                                  Container(
-                                    constraints: BoxConstraints(
-                                        minWidth: Resizable.size(context, 100)),
-                                    margin: EdgeInsets.only(
-                                        right: Resizable.padding(context, 20)),
-                                    child: DialogButton(
-                                        AppText.textCancel.text.toUpperCase(),
-                                        onPressed: () =>
-                                            Navigator.pop(context)),
-                                  ),
-                                  AddNewLessonButton( () async {
-                                    if (formKey.currentState!.validate()) {
-                                      if (!isEdit) {
-                                        final bool check =
-                                        await FireBaseProvider.instance.addNewLesson(LessonModel(
-                                            lessonId: int.parse(idLessonCon.text),
-                                            courseId: int.parse(idCourseCon.text),
-                                            description: desCon.text,
-                                            content: contCon.text,
-                                            title: titleCon.text,
-                                            btvn: int.parse(btvnCon.text),
-                                            vocabulary: int.parse(vocaCon.text),
-                                            listening: int.parse(listenCon.text),
-                                            kanji: int.parse(kanjiCon.text),
-                                            grammar: int.parse(grammarCon.text),
-                                            flashcard: int.parse(flCardCon.text),
-                                            alphabet: int.parse(alphaCon.text),
-                                            order: int.parse(orderCon.text)));
-                                        if (context.mounted) {
-                                          Navigator.pop(context);
-                                          if (check == true) {
-                                            cubit.loadLessonInCourse(cubit.selector);
+                                  if (isEdit)
+                                    DeleteButton(
+                                        onPressed: () async {
+                                          await FireBaseProvider.instance
+                                              .deleteLesson(
+                                            int.parse(idLessonCon.text),
+                                            int.parse(idCourseCon.text),
+                                          );
+                                        },
+                                        title: AppText.txtDeleteLesson.text),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Container(
+                                        constraints: BoxConstraints(
+                                            minWidth:
+                                                Resizable.size(context, 100)),
+                                        margin: EdgeInsets.only(
+                                            right:
+                                                Resizable.padding(context, 20)),
+                                        child: DialogButton(
+                                            AppText.textCancel.text
+                                                .toUpperCase(),
+                                            onPressed: () =>
+                                                Navigator.pop(context)),
+                                      ),
+                                      AddNewLessonButton(() async {
+                                        if (formKey.currentState!.validate()) {
+                                          if (!isEdit) {
+                                            final bool check = await FireBaseProvider
+                                                .instance
+                                                .addNewLesson(LessonModel(
+                                                    lessonId: int.parse(
+                                                        idLessonCon.text),
+                                                    courseId: int.parse(
+                                                        idCourseCon.text),
+                                                    description: desCon.text,
+                                                    content: contCon.text,
+                                                    title: titleCon.text,
+                                                    btvn:
+                                                        int.parse(btvnCon.text),
+                                                    vocabulary:
+                                                        int.parse(vocaCon.text),
+                                                    listening: int.parse(
+                                                        listenCon.text),
+                                                    kanji: int.parse(
+                                                        kanjiCon.text),
+                                                    grammar: int.parse(
+                                                        grammarCon.text),
+                                                    flashcard: int.parse(flCardCon.text),
+                                                    alphabet: int.parse(alphaCon.text),
+                                                    order: int.parse(orderCon.text)));
+                                            if (context.mounted) {
+                                              Navigator.pop(context);
+                                              if (check == true) {
+                                                cubit.loadLessonInCourse(
+                                                    cubit.selector);
+                                              } else {
+                                                notificationDialog(
+                                                    context,
+                                                    AppText
+                                                        .txtPleaseCheckListLesson
+                                                        .text);
+                                              }
+                                            }
                                           } else {
-                                            notificationDialog(
-                                                context, AppText.txtPleaseCheckListLesson.text);
+                                            await FireBaseProvider.instance
+                                                .updateLessonInfo(LessonModel(
+                                                    lessonId: int.parse(
+                                                        idLessonCon.text),
+                                                    courseId: int.parse(
+                                                        idCourseCon.text),
+                                                    description: desCon.text,
+                                                    content: contCon.text,
+                                                    title: titleCon.text,
+                                                    btvn:
+                                                        int.parse(btvnCon.text),
+                                                    vocabulary:
+                                                        int.parse(vocaCon.text),
+                                                    listening: int.parse(
+                                                        listenCon.text),
+                                                    kanji: int.parse(
+                                                        kanjiCon.text),
+                                                    grammar: int.parse(
+                                                        grammarCon.text),
+                                                    flashcard: int.parse(
+                                                        flCardCon.text),
+                                                    alphabet: int.parse(
+                                                        alphaCon.text),
+                                                    order:
+                                                        int.parse(orderCon.text)));
+                                            if (context.mounted) {
+                                              Navigator.pop(context);
+                                              cubit.loadLessonInCourse(
+                                                  cubit.selector);
+                                            }
                                           }
+                                        } else {
+                                          print('Form is invalid');
                                         }
-                                      } else {
-                                        await FireBaseProvider.instance.updateLessonInfo(LessonModel(
-                                            lessonId: int.parse(idLessonCon.text),
-                                            courseId: int.parse(idCourseCon.text),
-                                            description: desCon.text,
-                                            content: contCon.text,
-                                            title: titleCon.text,
-                                            btvn: int.parse(btvnCon.text),
-                                            vocabulary: int.parse(vocaCon.text),
-                                            listening: int.parse(listenCon.text),
-                                            kanji: int.parse(kanjiCon.text),
-                                            grammar: int.parse(grammarCon.text),
-                                            flashcard: int.parse(flCardCon.text),
-                                            alphabet: int.parse(alphaCon.text),
-                                            order: int.parse(orderCon.text)));
-                                        if (context.mounted) {
-                                          Navigator.pop(context);
-                                          cubit.loadLessonInCourse(cubit.selector);
-                                        }
-                                      }
-                                    } else {
-                                      print('Form is invalid');
-                                    }
-                                  },isEdit)
+                                      }, isEdit)
+                                    ],
+                                  )
                                 ],
                               )))
                     ],

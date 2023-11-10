@@ -676,7 +676,6 @@ class FireBaseProvider extends NetworkProvider {
     return lists;
   }
 
-
   @override
   Future<AdminModel> getAdminById(int id) async {
     final admin = (await FireStoreDb.instance.getAdminById(id))
@@ -744,7 +743,6 @@ class FireBaseProvider extends NetworkProvider {
     await FireStoreDb.instance.updateLessonInfo(lessonModel);
   }
 
-
   @override
   Future<List<ClassModel2>> getClassByTeacherId(int teacherId) async {
     var teacherClassIDs =
@@ -794,8 +792,6 @@ class FireBaseProvider extends NetworkProvider {
     return list;
   }
 
-
-
   @override
   Future<List<TeacherModel>> getListTeacherByListId(
       List<int> teacherIds) async {
@@ -838,7 +834,6 @@ class FireBaseProvider extends NetworkProvider {
 
     return list;
   }
-
 
   @override
   Future<List<StudentTestModel>> getListStudentTestByIDs(
@@ -934,7 +929,6 @@ class FireBaseProvider extends NetworkProvider {
 
     return list;
   }
-
 
   @override
   Future<DetailGradingDataModel> getDataForDetailGrading(
@@ -1124,7 +1118,9 @@ class FireBaseProvider extends NetworkProvider {
       for (var j in listStdCol) {
         if (j.classStatus == "Completed" ||
             j.classStatus == "InProgress" ||
-            j.classStatus == "ReNew" || j.classStatus == "UpSale" || j.classStatus == "Force") {
+            j.classStatus == "ReNew" ||
+            j.classStatus == "UpSale" ||
+            j.classStatus == "Force") {
           col1++;
         }
         if (j.classStatus == "Viewer") {
@@ -1270,6 +1266,12 @@ class FireBaseProvider extends NetworkProvider {
       return true;
     }
     return false;
+  }
+
+  @override
+  Future<void> deleteLesson(int lessonId, int courseId) async {
+    await FireStoreDb.instance
+        .deleteLessonByDocs("lesson_${lessonId}_course_$courseId");
   }
 
   @override

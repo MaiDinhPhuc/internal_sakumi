@@ -264,10 +264,12 @@ enum AppText {
   txtContent,
   txtPleaseCheckListLesson,
   txtRead,
-  txtTeachingDay
+  txtTeachingDay,
+  txtDeleteLesson
 }
 
 Map<AppText, String> texts = {
+  AppText.txtDeleteLesson: 'Xoá bài học',
   AppText.txtTeachingDay: 'Ngày dạy',
   AppText.txtRead: 'Tôi đã đọc ghi chú',
   AppText.btnAddNewStudent: 'Thêm học viên mới',
@@ -292,7 +294,7 @@ Map<AppText, String> texts = {
   AppText.txtCol4: 'Lên kỳ/Bắt buộc lên kỳ',
   AppText.txtCol5: 'Bảo lưu/Nghỉ/Bỏ cọc',
   AppText.titleStdNumber: 'Số lượng học viên',
-  AppText.btnDisableCourse: 'Xoá khoá học',
+  AppText.btnDisableCourse: 'xoá khoá học',
   AppText.txtEditCourseInfo: 'Chỉnh sửa khoá học',
   AppText.txtPleaseCheckListCourse: 'Khoá học đã tồn tại, vui lòng kiểm tra lại',
   AppText.txtPleaseInput: 'Vui lòng không để trống',

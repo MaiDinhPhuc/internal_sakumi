@@ -4,16 +4,18 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/features/teacher/overview/class_overview_cubit.dart';
+import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:screenshot/screenshot.dart';
 
 class ExpandedOverviewStudentItem extends StatelessWidget {
-  final int index;
-  const ExpandedOverviewStudentItem(this.index, {Key? key, required this.cubit}) : super(key: key);
+  final StudentClassModel stdClass;
+  const ExpandedOverviewStudentItem(this.stdClass, {Key? key, required this.cubit}) : super(key: key);
   final ClassOverviewCubit cubit;
   @override
   Widget build(BuildContext context) {
+    int index = cubit.listStdClass!.indexOf(stdClass);
     return Column(
             children: [
               Container(
@@ -44,11 +46,11 @@ class ExpandedOverviewStudentItem extends StatelessWidget {
                               borderRadius: BorderRadius.circular(
                                   Resizable.size(context, 5))),
                           child: AnimatedCrossFade(
-                              firstChild: CollapseLearnedLesson(cubit.listStdDetail![index]["title"][i], cubit.listStdDetail![index]["attendance"][i], cubit.listStdDetail![index]["hw"][i]),
+                              firstChild: CollapseLearnedLesson(cubit.listStdDetail[index]["title"][i], cubit.listStdDetail[index]["attendance"][i], cubit.listStdDetail[index]["hw"][i]),
                               secondChild: Column(
                                 children: [
-                                  CollapseLearnedLesson(cubit.listStdDetail![index]["title"][i], cubit.listStdDetail![index]["attendance"][i], cubit.listStdDetail![index]["hw"][i]),
-                                  ExpandLearnedLesson(cubit.listStdDetail![index]["spNote"][i], cubit.listStdDetail![index]["teacherNote"][i])
+                                  CollapseLearnedLesson(cubit.listStdDetail[index]["title"][i], cubit.listStdDetail[index]["attendance"][i], cubit.listStdDetail[index]["hw"][i]),
+                                  ExpandLearnedLesson(cubit.listStdDetail[index]["spNote"][i], cubit.listStdDetail[index]["teacherNote"][i])
                                 ],
                               ),
                               crossFadeState: state % 2 == 1
@@ -57,9 +59,6 @@ class ExpandedOverviewStudentItem extends StatelessWidget {
                               duration:
                               const Duration(milliseconds: 100))),
                     ))
-              // ...listAttendance
-              //     .map((e) => )
-              //     .toList()
             ],
           );
   }

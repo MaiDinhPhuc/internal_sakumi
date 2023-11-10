@@ -365,7 +365,8 @@ class FireStoreDb {
         .update({
       'teacher_note': note,
     });
-    debugPrint("==========>update db in \"student_lesson\" for student_${userId}_lesson_${lessonId}_class_$classId");
+    debugPrint(
+        "==========>update db in \"student_lesson\" for student_${userId}_lesson_${lessonId}_class_$classId");
   }
 
   Future<void> updateStudentStatus(
@@ -393,8 +394,7 @@ class FireStoreDb {
         .doc("lesson_${lessonId}_class_$classId")
         .update({
       'status': status,
-      'date' : DateFormat('dd/MM/yyyy HH:mm:ss')
-          .format(DateTime.now())
+      'date': DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now())
     });
     debugPrint("==========>update db from \"lesson_result\"");
   }
@@ -460,6 +460,13 @@ class FireStoreDb {
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonByDocs $docs ${temp.exists}");
 
     return temp;
+  }
+
+  Future<void> deleteLessonByDocs(String docs) async {
+    await db.collection("lessons").doc(docs).delete();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> deleteLessonByDocs $docs");
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getStudentLessonByDocs(
@@ -550,9 +557,11 @@ class FireStoreDb {
     debugPrint("==========> update db from \"courses\"");
   }
 
-
   Future<void> updateLessonInfo(LessonModel model) async {
-    await db.collection("lessons").doc("lesson_${model.lessonId}_course_${model.courseId}").update({
+    await db
+        .collection("lessons")
+        .doc("lesson_${model.lessonId}_course_${model.courseId}")
+        .update({
       "alphabet": model.alphabet,
       "btvn": model.btvn,
       "content": model.content,

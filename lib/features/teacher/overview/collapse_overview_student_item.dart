@@ -8,19 +8,22 @@ import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/features/teacher/overview/class_overview_cubit.dart';
 import 'package:internal_sakumi/features/teacher/overview/overview_chart.dart';
+import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
 
 class CollapseOverviewStudentItem extends StatelessWidget {
   final String role;
-  final int stdId;
-  const CollapseOverviewStudentItem(this.stdId,this.role, {Key? key, required this.cubit, required this.dataCubit}) : super(key: key);
+  final StudentClassModel stdClass;
+  const CollapseOverviewStudentItem(this.stdClass,this.role,{Key? key, required this.cubit, required this.dataCubit}) : super(key: key);
   final ClassOverviewCubit cubit;
   final DataCubit dataCubit;
+
+
   @override
   Widget build(BuildContext context) {
-    int index = cubit.listStdClass!.indexOf(cubit.listStdClass!.firstWhere((e) => e.userId == stdId));
+    int index = cubit.listStdClass!.indexOf(stdClass);
     return Container(
         padding: EdgeInsets.only(
           right: Resizable.padding(context, 15),
@@ -34,14 +37,14 @@ class CollapseOverviewStudentItem extends StatelessWidget {
                   return PopupMenuButton(itemBuilder: (context) => [
                     ...cubit.listStudentStatusMenu.map((e) => PopupMenuItem(
                         padding: EdgeInsets.zero,
-                        child: BlocProvider(create: (context)=>CheckBoxFilterCubit(cubit.listStdClass![index].status == e),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (c,state){
+                        child: BlocProvider(create: (context)=>CheckBoxFilterCubit(stdClass.status == e),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (c,state){
                           return InkWell(
                             onTap: (){
                               Navigator.pop(context);
-                              if(cubit.listStdClass![index].status != e){
+                              if(stdClass.status != e){
                                 showDialog(
                                     context: context,
-                                    builder: (context) => ConfirmChangeStudentStatusOverView(e,cubit.listStdClass![index],cubit.students![index],cubit,popupCubit, dataCubit: dataCubit,));
+                                    builder: (context) => ConfirmChangeStudentStatusOverView(e,stdClass,cubit.students!.firstWhere((e) => e.userId == stdClass.userId),cubit,popupCubit, dataCubit: dataCubit,));
                               }
                             },
                             child: Container(
@@ -84,7 +87,7 @@ class CollapseOverviewStudentItem extends StatelessWidget {
                               children: [
                                 RichText(
                                   text: TextSpan(
-                                    text: vietnameseSubText(cubit.listStdClass![index].status),
+                                    text: vietnameseSubText(stdClass.status),
                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: Resizable.font(context, 18),
@@ -98,7 +101,7 @@ class CollapseOverviewStudentItem extends StatelessWidget {
                           child: Container(
                             padding: EdgeInsets.all(Resizable.padding(context, 10)),
                             decoration: BoxDecoration(
-                                color: cubit.listStdClass![index].color,
+                                color: stdClass.color,
                                 borderRadius:
                                 BlocProvider.of<DropdownCubit>(context).state % 2 ==
                                     0
@@ -109,7 +112,7 @@ class CollapseOverviewStudentItem extends StatelessWidget {
                                     topLeft: Radius.circular(
                                         Resizable.padding(context, 5)))),
                             child: Image.asset(
-                                'assets/images/ic_${cubit.listStdClass![index].icon}.png'),
+                                'assets/images/ic_${stdClass.icon}.png'),
                           ),
                         )),
                   );
@@ -131,7 +134,7 @@ class CollapseOverviewStudentItem extends StatelessWidget {
                       children: [
                         RichText(
                           text: TextSpan(
-                            text: vietnameseSubText(cubit.listStdClass![index].status),
+                            text: vietnameseSubText(stdClass.status),
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: Resizable.font(context, 18),
@@ -145,7 +148,7 @@ class CollapseOverviewStudentItem extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.all(Resizable.padding(context, 10)),
                     decoration: BoxDecoration(
-                        color: cubit.listStdClass![index].color,
+                        color: stdClass.color,
                         borderRadius:
                         BlocProvider.of<DropdownCubit>(context).state % 2 ==
                             0
@@ -156,10 +159,10 @@ class CollapseOverviewStudentItem extends StatelessWidget {
                             topLeft: Radius.circular(
                                 Resizable.padding(context, 5)))),
                     child: Image.asset(
-                        'assets/images/ic_${cubit.listStdClass![index].icon}.png'),
+                        'assets/images/ic_${stdClass.icon}.png'),
                   ),
                 )),
-            name: Text(cubit.students!.firstWhere((e) => e.userId == stdId).name,
+            name: Text(cubit.students!.firstWhere((e) => e.userId == stdClass.userId).name,
                 style: TextStyle(
                     fontSize: Resizable.font(context, 20),
                     color: const Color(0xff131111),

@@ -199,4 +199,6 @@ abstract class NetworkProvider {
 
   Future<void> addTestFromJson(String json);
 
+  Future<void> deleteLesson(int lessonId, int courseId);
+
 }
