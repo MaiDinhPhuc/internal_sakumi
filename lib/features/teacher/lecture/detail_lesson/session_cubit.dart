@@ -45,7 +45,7 @@ class SessionCubit extends Cubit<int> {
               i.classStatus != "Dropped" &&
               i.classStatus != "Deposit" &&
               i.classStatus != "Retained" &&
-              i.classStatus != "Moved" && i.classStatus == "Viewer") {
+              i.classStatus != "Moved" && i.classStatus != "Viewer") {
             listStudentId.add(i.userId);
           }
         }

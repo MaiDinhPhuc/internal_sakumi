@@ -9,7 +9,6 @@ import 'package:internal_sakumi/screens/empty_screen.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
 import 'package:internal_sakumi/screens/master_screen.dart';
 import 'package:internal_sakumi/screens/splash_screen.dart';
-import 'package:internal_sakumi/screens/teacher/class_screen.dart';
 import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
 import 'package:internal_sakumi/screens/teacher/tab/class_overview_tab.dart';
 import 'package:internal_sakumi/screens/teacher/tab/class_test_tab.dart';
@@ -55,8 +54,6 @@ class Routes {
     });
     router.define(login,
         handler: loginScreenHandler, transitionType: TransitionType.fadeIn);
-    router.define(classScreen,
-        handler: classScreenHandler, transitionType: TransitionType.fadeIn);
     router.define(splash,
         handler: splashScreenHandler, transitionType: TransitionType.fadeIn);
     router.define(teacher,
@@ -95,10 +92,6 @@ var emptyHandler =
   return const EmptyScreen();
 });
 
-var classScreenHandler =
-    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return const ClassScreen();
-});
 var splashScreenHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return  SplashScreen();

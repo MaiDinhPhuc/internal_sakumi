@@ -5,7 +5,7 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
 import 'package:internal_sakumi/features/teacher/grading/detail_grading_view.dart';
 import 'package:internal_sakumi/features/teacher/grading/question_option.dart';
-import 'package:internal_sakumi/features/class_appbar.dart';
+import 'package:internal_sakumi/features/teacher/app_bar/class_appbar.dart';
 import 'package:internal_sakumi/features/teacher/grading/detail_grading_cubit.dart';
 import 'package:internal_sakumi/features/teacher/grading/sound/sound_cubit.dart';
 import 'package:internal_sakumi/features/teacher/grading/sound/sound_services.dart';

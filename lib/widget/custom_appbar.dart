@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/profile/log_out_dialog.dart';
-import 'package:internal_sakumi/screens/teacher/class_screen.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class CustomAppbar extends StatelessWidget {

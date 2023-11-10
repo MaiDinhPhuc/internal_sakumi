@@ -13,7 +13,8 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/back_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'teacher/profile/app_bar_info_teacher_cubit.dart';
+import '../profile/app_bar_info_teacher_cubit.dart';
+import 'appbar_item.dart';
 
 class HeaderTeacher extends StatelessWidget {
   final int index;
@@ -50,7 +51,7 @@ class HeaderTeacher extends StatelessWidget {
                           ? MainAxisAlignment.spaceBetween
                           : MainAxisAlignment.center,
                       children: [
-                        index == -1 || role =="admin"
+                        index == -1 || role == "admin"
                             ? const CustomBackButton()
                             : Container(
                                 height: 30,
@@ -91,8 +92,7 @@ class HeaderTeacher extends StatelessWidget {
                                           onTap: () async {
                                             if (context.mounted) {
                                               Navigator.pushReplacementNamed(
-                                                  context,
-                                                  Routes.teacher);
+                                                  context, Routes.teacher);
                                             }
                                           },
                                           child: Container(
@@ -115,97 +115,14 @@ class HeaderTeacher extends StatelessWidget {
                                         : role == "teacher"
                                             ? buttonTeacherList
                                             : buttonAdminList)
-                                    .map((e) => Container(
-                                          height: 30,
-                                          margin: const EdgeInsets.symmetric(
-                                              horizontal: 3),
-                                          child: Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 10),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(e.button,
-                                                        style: TextStyle(
-                                                            color: greyColor
-                                                                .shade600,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            fontSize: 16)),
-                                                  ],
-                                                ),
-                                              ),
-                                              Positioned.fill(
-                                                child: Container(
-                                                  color: index == e.id
-                                                      ? primaryColor
-                                                      : Colors.transparent,
-                                                  margin: const EdgeInsets.only(
-                                                      top: 25,
-                                                      bottom: 3,
-                                                      left: 10,
-                                                      right: 10),
-                                                ),
-                                              ),
-                                              Positioned.fill(
-                                                child: Material(
-                                                  color: Colors.transparent,
-                                                  child: InkWell(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            100),
-                                                    overlayColor:
-                                                        MaterialStateProperty
-                                                            .all(primaryColor
-                                                                .withAlpha(30)),
-                                                    onTap: () async {
-                                                      switch (e.id) {
-                                                        case 0:
-                                                          debugPrint(
-                                                              "========${e.button}======");
-                                                          await Navigator.pushNamed(
-                                                              context,
-                                                              "${role == "teacher" ? Routes.teacher : Routes.admin}/overview/class=$classId");
-                                                          break;
-                                                        case 1:
-                                                          debugPrint(
-                                                              "========${e.button}======");
-                                                          await Navigator.pushNamed(
-                                                              context,
-                                                              "${role == "teacher" ? Routes.teacher : Routes.admin}/lesson/class=$classId");
-                                                          break;
-                                                        case 2:
-                                                          debugPrint(
-                                                              "========${e.button}======");
-                                                          await Navigator.pushNamed(
-                                                              context,
-                                                              "${role == "teacher" ? Routes.teacher : Routes.admin}/test/class=$classId");
-                                                          break;
-                                                        case 3:
-                                                          debugPrint(
-                                                              "========${e.button}======");
-                                                          await Navigator.pushNamed(
-                                                              context,
-                                                              "${Routes.teacher}/grading/class=$classId");
-                                                          break;
-                                                      }
-                                                    },
-                                                    child: Container(
-                                                      margin: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 2),
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
+                                    .map((e) => AppBarItem(
+                                          title: e.button,
+                                          role: role,
+                                          color: index == e.id
+                                              ? primaryColor
+                                              : Colors.transparent,
+                                          id: e.id,
+                                          classId: classId,
                                         ))
                                     .toList()
                               ],
@@ -263,9 +180,8 @@ class HeaderTeacher extends StatelessWidget {
                                 ),
                                 duration: 0,
                                 onTap: () {
-                                  var profileUri =
-                                      '${Routes.teacher}/profile';
-                                  if(classId!="empty"){
+                                  var profileUri = '${Routes.teacher}/profile';
+                                  if (classId != "empty") {
                                     Navigator.pushNamed(context, profileUri);
                                   }
                                 },
@@ -300,6 +216,7 @@ class NameCubit extends Cubit<String?> {
     emit(await getName());
   }
 }
+
 Future<String?> getName() async {
   SharedPreferences localData = await SharedPreferences.getInstance();
   return localData.getString(PrefKeyConfigs.name);
