@@ -12,10 +12,10 @@ import 'package:internal_sakumi/features/teacher/overview/overview_chart.dart';
 import 'package:internal_sakumi/features/teacher/overview/statistic_class_view.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../utils/text_utils.dart';
 
 class ClassOverViewTab extends StatelessWidget {
   ClassOverViewTab(this.role, {super.key}) : cubit = ClassOverviewCubit();
@@ -51,50 +51,37 @@ class ClassOverViewTab extends StatelessWidget {
                             : Expanded(
                             child: SingleChildScrollView(
                                 child: Container(
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal:
-                                      Resizable.padding(context, 100)),
+                                  margin: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 100)),
                                   child: Column(
                                     children: [
                                       Container(
-                                        margin: EdgeInsets.symmetric(
-                                            vertical:
-                                            Resizable.padding(context, 20)),
+                                        margin: EdgeInsets.symmetric(vertical: Resizable.padding(context, 20)),
                                         child: Text(
                                             '${AppText.txtClassCode.text} ${cubit.classModel!.classCode}',
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w800,
-                                                fontSize:
-                                                Resizable.font(context, 30))),
+                                                fontSize: Resizable.font(context, 30))),
                                       ),
                                       StatisticClassView(cubit),
                                       Container(
-                                          margin: EdgeInsets.only(
-                                              top:
-                                              Resizable.padding(context, 30)),
-                                          padding: EdgeInsets.only(
-                                              right:
-                                              Resizable.padding(context, 15)),
+                                          margin: EdgeInsets.only(top: Resizable.padding(context, 30)),
+                                          padding: EdgeInsets.only(right: Resizable.padding(context, 15)),
                                           child: OverviewItemRowLayout(
                                               icon: Container(),
                                               name: Text(AppText.txtName.text,
                                                   style: TextStyle(
-                                                      color:
-                                                      const Color(0xff757575),
+                                                      color: const Color(0xff757575),
                                                       fontWeight: FontWeight.w600,
-                                                      fontSize: Resizable.font(
-                                                          context, 17))),
+                                                      fontSize: Resizable.font(context, 17))),
                                               attend: Text(AppText.txtRateOfAttendance.text,
                                                   style: TextStyle(
                                                       color:
                                                       const Color(0xff757575),
                                                       fontWeight: FontWeight.w600,
-                                                      fontSize: Resizable.font(
-                                                          context, 17))),
+                                                      fontSize: Resizable.font(context, 17))),
                                               submit: Text(AppText.txtRateOfSubmitHomework.text,
                                                   style: TextStyle(
-                                                      color:
-                                                      const Color(0xff757575),
+                                                      color: const Color(0xff757575),
                                                       fontWeight: FontWeight.w600,
                                                       fontSize: Resizable.font(context, 17))),
                                               point: Text(AppText.txtAveragePoint.text, style: TextStyle(color: const Color(0xff757575), fontWeight: FontWeight.w600, fontSize: Resizable.font(context, 17))),
@@ -129,27 +116,14 @@ class ClassOverViewTab extends StatelessWidget {
                                         children: [
                                           ...cubit.listStdClass!
                                               .map((e) => Container(
-                                            margin: EdgeInsets
-                                                .symmetric(
-                                                vertical: Resizable
-                                                    .padding(
-                                                    context,
-                                                    5)),
+                                            margin: EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
                                             child: BlocProvider(
-                                                create: (context) =>
-                                                    DropdownCubit(),
-                                                child: BlocBuilder<
-                                                    DropdownCubit,
-                                                    int>(
-                                                    builder: (c,
-                                                        state) =>
-                                                        Container(
-                                                            alignment:
-                                                            Alignment
-                                                                .centerLeft,
+                                                create: (context) => DropdownCubit(),
+                                                child: BlocBuilder<DropdownCubit, int>(
+                                                    builder: (c, state) => Container(
+                                                            alignment: Alignment.centerLeft,
                                                             decoration: BoxDecoration(
-                                                                border:
-                                                                Border.all(width: Resizable.size(context, 1), color: state % 2 == 0 ? greyColor.shade100 : Colors.black),
+                                                                border: Border.all(width: Resizable.size(context, 1), color: state % 2 == 0 ? greyColor.shade100 : Colors.black),
                                                                 borderRadius: BorderRadius.circular(Resizable.size(context, 5))),
                                                             child: AnimatedCrossFade(
                                                                 firstChild: CollapseOverviewStudentItem(e, role , cubit: cubit, dataCubit: dataController),
@@ -163,9 +137,7 @@ class ClassOverViewTab extends StatelessWidget {
                                                                 duration: const Duration(milliseconds: 100))))),
                                           ))
                                               .toList(),
-                                          SizedBox(
-                                              height: Resizable.size(
-                                                  context, 50))
+                                          SizedBox(height: Resizable.size(context, 50))
                                         ],
                                       )
                                     ],

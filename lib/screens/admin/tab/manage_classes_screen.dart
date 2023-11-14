@@ -2,34 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/admin/app_bar/admin_appbar.dart';
+import 'package:internal_sakumi/features/admin/manage_class/class_item_admin.dart';
 import 'package:internal_sakumi/features/admin/manage_class/filter_by_class_status.dart';
 import 'package:internal_sakumi/features/admin/manage_class/filter_by_class_type.dart';
 import 'package:internal_sakumi/features/admin/manage_class/filter_by_course.dart';
-import 'package:internal_sakumi/features/admin/manage_class/list_class_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
+import 'package:internal_sakumi/features/teacher/cubit/class_item_cubit.dart';
 import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
-import 'package:internal_sakumi/features/teacher/list_class/class_item_for_admin.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
+import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:shimmer/shimmer.dart';
 
-class ManageClassTab extends StatelessWidget {
-  const ManageClassTab({Key? key, required this.dataCubit}) : super(key: key);
-  final DataCubit dataCubit;
+class ManageClassesScreen extends StatelessWidget {
+  const ManageClassesScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LoadListClassCubit()..load(),
-      child: BlocBuilder<LoadListClassCubit, int>(builder: (c, list) {
-        var cubit = BlocProvider.of<LoadListClassCubit>(c);
-        return cubit.data == null
-            ? Transform.scale(
-                scale: 0.75,
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                ))
-            : SingleChildScrollView(
-                child: Column(
+    var dataController = BlocProvider.of<DataCubit>(context);
+    final shimmerList = List.generate(5, (index) => index);
+    return Scaffold(
+      body: Column(
+        children: [
+          const AdminAppBar(index: 1),
+          Expanded(child: SingleChildScrollView(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
@@ -48,9 +46,9 @@ class ManageClassTab extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          FilterClassTypeMenuAdmin(cubit),
-                          FilterCourseMenuAdmin(cubit),
-                          FilterByClassStatusAdmin(cubit)
+                          FilterClassTypeMenuAdmin(dataController),
+                          FilterCourseMenuAdmin(dataController),
+                          FilterByClassStatusAdmin(dataController)
                         ],
                       )),
                   Container(
@@ -99,35 +97,55 @@ class ManageClassTab extends StatelessWidget {
                                   color: greyColor.shade600)),
                         ),
                         SizedBox(height: Resizable.size(context, 10)),
-                        (cubit.listClassIds!.isNotEmpty)
-                            ? Column(children: [
-                                ...cubit.listClassIds!
-                                    .map((e) => ClassItemInAdmin(
-                                        cubit.listClassIds!.indexOf(e), e))
-                                    .toList(),
-                              ])
-                            : Center(
-                                child: Text(AppText.txtNoClass.text),
-                              )
                       ],
                     ),
                   ),
+                  BlocBuilder<DataCubit, int>(
+                      builder: (context, _) => dataController.classes == null
+                          ? Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              ...shimmerList.map((e) => Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                      Resizable.size(context, 150)),
+                                  child: const ItemShimmer()))
+                            ],
+                          ),
+                        ),
+                      )
+                          : dataController.classes!.isNotEmpty
+                          ? Column(children: [
+                        ...dataController.classNow!
+                            .map((e) => Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: Resizable.size(context, 150)),
+                            child: ClassItemAdmin(classItemCubit: ClassItemCubit(e), dataCubit: dataController)))
+                            .toList(),
+                        SizedBox(height: Resizable.size(context, 50))
+                      ])
+                          : Center(
+                        child: Text(AppText.txtNoClass.text),
+                      )),
                   SizedBox(height: Resizable.size(context, 5)),
                   Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: Resizable.padding(context, 150)),
                       child: DottedBorderButton(
                           AppText.btnManageClass.text.toUpperCase(),
-                          onPressed: () async {
-                        if (c.mounted) {
-                          Navigator.pushNamed(context,
-                              '${Routes.admin}/${Routes.manageGeneral}');
-                        }
-                      })),
+                          onPressed: ()  {
+                              Navigator.pushNamed(context,
+                                  '${Routes.admin}/${Routes.manageGeneral}');
+
+                          })),
                   SizedBox(height: Resizable.size(context, 50)),
                 ],
-              ));
-      }),
+              )))
+        ],
+      ),
     );
   }
 }

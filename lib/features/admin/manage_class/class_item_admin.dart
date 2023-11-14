@@ -1,18 +1,23 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
+import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/admin/manage_general/list_class/class_status_item_admin.dart';
 import 'package:internal_sakumi/features/teacher/cubit/class_item_cubit.dart';
+import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/chart_view.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/class_over_view.dart';
-import 'package:internal_sakumi/features/teacher/teacher_home/class_status_item.dart';
-import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/card_item.dart';
+import 'package:internal_sakumi/widget/note_widget.dart';
 
-class ClassItem extends StatelessWidget {
-  final ClassModel2 classModel;
-  const ClassItem({super.key, required this.classModel, required this.classItemCubit});
+class ClassItemAdmin extends StatelessWidget {
+  
+  const ClassItemAdmin({super.key, required this.classItemCubit, required this.dataCubit});
   final ClassItemCubit classItemCubit;
+  final DataCubit dataCubit;
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -40,15 +45,15 @@ class ClassItem extends StatelessWidget {
                         ),
                         onTap: () async {
                           await Navigator.pushNamed(context,
-                              "${Routes.teacher}/overview/class=${classModel.classModel.classId}");
+                              "${Routes.admin}/overview/class=${classItemCubit.classModel.classModel.classId}");
                         },
                         onPressed: () {
                           BlocProvider.of<DropdownCubit>(c).update();
                         },
-                        widgetStatus: StatusClassItem(
-                            status: classItemCubit.classModel.classModel.classStatus,
+                        widgetStatus: StatusClassItemAdmin(
+                            classModel: classItemCubit.classModel.classModel,
                             color: classItemCubit.classModel.getColor(),
-                            icon: classItemCubit.classModel.getIcon())),
+                            icon: classItemCubit.classModel.getIcon(), dataCubit: dataCubit,)),
                     secondChild: CardItem(
                       isExpand: true,
                       widget: Column(
@@ -79,18 +84,63 @@ class ClassItem extends StatelessWidget {
                                 null
                                 ? [1,0,0,0,0]
                                 : classItemCubit.classStatistic!.stds,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: Resizable.padding(context, 15)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  height: Resizable.size(context, 1),
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: Resizable.padding(context, 15)),
+                                  color: const Color(0xffD9D9D9),
+                                ),
+                                Row(
+                                  children: [
+                                    Text(AppText.txtLastLesson.text,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: Resizable.font(context, 19))),
+                                    SizedBox(width: Resizable.padding(context, 10)),
+                                    Text(classItemCubit.lastLesson,
+                                        style: TextStyle(
+                                            color: primaryColor,
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: Resizable.font(context, 19))),
+                                  ],
+                                ),
+                                Container(
+                                  height: Resizable.size(context, 1),
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: Resizable.padding(context, 15)),
+                                  color: const Color(0xffD9D9D9),
+                                ),
+                                Text(AppText.titleClassDes.text,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: Resizable.font(context, 19))),
+                                NoteWidget(classItemCubit.classModel.classModel.description),
+                                Text(AppText.titleClassNote.text,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: Resizable.font(context, 19))),
+                                NoteWidget(classItemCubit.classModel.classModel.note)
+                              ],
+                            ),
                           )
                         ],
                       ),
                       onTap: () async {
                         await Navigator.pushNamed(context,
-                            "${Routes.teacher}/overview/class=${classModel.classModel.classId}");
+                            "${Routes.admin}/overview/class=${classItemCubit.classModel.classModel.classId}");
                       },
                       onPressed: () => BlocProvider.of<DropdownCubit>(c).update(),
-                      widgetStatus: StatusClassItem(
-                        status: classItemCubit.classModel.classModel.classStatus,
+                      widgetStatus: StatusClassItemAdmin(
+                        classModel: classItemCubit.classModel.classModel,
                         color: classItemCubit.classModel.getColor(),
-                        icon: classItemCubit.classModel.getIcon(),
+                        icon: classItemCubit.classModel.getIcon(), dataCubit: dataCubit,
                       ),
                     ),
                     crossFadeState: state % 2 == 1

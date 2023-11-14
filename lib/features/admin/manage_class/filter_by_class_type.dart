@@ -2,14 +2,14 @@ import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
 import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
-import 'list_class_cubit.dart';
 
 class FilterClassTypeMenuAdmin extends StatelessWidget {
   const FilterClassTypeMenuAdmin(this.cubit,{super.key});
-  final LoadListClassCubit cubit;
+  final DataCubit cubit;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,7 +21,7 @@ class FilterClassTypeMenuAdmin extends StatelessWidget {
             color: Colors.transparent,
             child: PopupMenuButton(
                 onCanceled: (){
-                  cubit.filter();
+                  cubit.filterInAdmin();
                 },
                 itemBuilder: (context) => [
                   ...cubit.listClassTypeMenu.map((e) => PopupMenuItem(

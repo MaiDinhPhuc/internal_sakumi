@@ -2,9 +2,13 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:internal_sakumi/screens/admin/add_teacher_screen.dart';
 import 'package:internal_sakumi/screens/admin/add_user_to_class_screen.dart';
-import 'package:internal_sakumi/screens/admin/admin_screen.dart';
 import 'package:internal_sakumi/screens/admin/detail_class_screen.dart';
 import 'package:internal_sakumi/screens/admin/manage_general_screen.dart';
+import 'package:internal_sakumi/screens/admin/tab/manage_classes_screen.dart';
+import 'package:internal_sakumi/screens/admin/tab/manage_feedbacks_screen.dart';
+import 'package:internal_sakumi/screens/admin/tab/manage_statistics_screen.dart';
+import 'package:internal_sakumi/screens/admin/tab/manage_students_screen.dart';
+import 'package:internal_sakumi/screens/admin/tab/manage_tags_screen.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
 import 'package:internal_sakumi/screens/master_screen.dart';
@@ -58,16 +62,24 @@ class Routes {
         handler: splashScreenHandler, transitionType: TransitionType.fadeIn);
     router.define(teacher,
         handler: teacherHandler, transitionType: TransitionType.fadeIn);
-    router.define(admin,
-        handler: adminHandler, transitionType: TransitionType.fadeIn);
     router.define(master,
         handler: masterHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/manageGeneral',
         handler: manageGeneralHandler, transitionType: TransitionType.fadeIn);
     router.define('$teacher/profile',
         handler: profileTeacherHandler, transitionType: TransitionType.fadeIn);
-    router.define(addTeacher,
-        handler: addTeacherHandler, transitionType: TransitionType.fadeIn);
+    // router.define(addTeacher,
+    //     handler: addTeacherHandler, transitionType: TransitionType.fadeIn);
+    router.define('$admin/manageStudents',
+        handler: manageStudentsHandler, transitionType: TransitionType.fadeIn);
+    router.define('$admin/manageClasses',
+        handler: manageClassesHandler, transitionType: TransitionType.fadeIn);
+    router.define('$admin/manageTags',
+        handler: manageTagsHandler, transitionType: TransitionType.fadeIn);
+    router.define('$admin/manageStatistics',
+        handler: manageStatisticsHandler, transitionType: TransitionType.fadeIn);
+    router.define('$admin/manageFeedbacks',
+        handler: manageFeedbacksHandler, transitionType: TransitionType.fadeIn);
     router.define('/:role/overview/:classId',
         handler: overViewHandler, transitionType: TransitionType.fadeIn);
     router.define('/:role/grading/:classId',
@@ -103,12 +115,7 @@ var loginScreenHandler =
 
 var teacherHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return TeacherScreen2();
-});
-
-var adminHandler =
-    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return const AdminScreen();
+  return const TeacherScreen();
 });
 
 var addUserToClassHandler =
@@ -128,6 +135,26 @@ var addTeacherHandler =
 var manageGeneralHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return const ManageGeneralScreen();
+});
+var manageStudentsHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return const ManageStudentsScreen();
+});
+var manageClassesHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return const ManageClassesScreen();
+});
+var manageTagsHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return ManageTagsScreen();
+});
+var manageStatisticsHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return const ManageStatisticsScreen();
+});
+var manageFeedbacksHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return const ManageFeedBacksScreen();
 });
 var lessonsHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {

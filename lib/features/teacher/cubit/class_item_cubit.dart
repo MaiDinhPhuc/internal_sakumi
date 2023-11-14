@@ -11,6 +11,7 @@ class ClassItemCubit extends Cubit<int> {
   }
   double? lessonPercent;
   ClassStatisticModel? classStatistic;
+  String lastLesson = "";
   load() async {
     lessonPercent = classModel.lessonCount == null || classModel.course == null
         ? 0
@@ -56,6 +57,10 @@ class ClassItemCubit extends Cubit<int> {
     }
     classStatistic = ClassStatisticModel.make(stdLessons, listStatus,
         classModel.classModel.classId, listLessonId, lessonExceptionIds);
+
+    var lastLesson = classModel.listLesson!.firstWhere((e) => e.lessonId == classModel.lessonResults!.last.lessonId);
+    this.lastLesson = lastLesson.title;
+
     emit(state + 1);
   }
 }

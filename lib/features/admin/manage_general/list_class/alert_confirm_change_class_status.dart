@@ -2,31 +2,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/admin/manage_class/list_class_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
+import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
+import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/custom_button.dart';
-import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 class ConfirmChangeClassStatus extends StatelessWidget {
-  const ConfirmChangeClassStatus(this.newStatus, this.oldStatus, this.classCode,
-      this.classId, this.courseId, this.popupCubit, this.cubit, this.index,
+  const ConfirmChangeClassStatus(this.newStatus, this.classModel, this.popupCubit, this.dataCubit,
       {Key? key})
       : super(key: key);
-  final String newStatus, oldStatus;
-  final int classId, courseId, index;
-  final String classCode;
+  final String newStatus;
+  final ClassModel classModel;
   final MenuPopupCubit popupCubit;
-  final LoadListClassCubit cubit;
+  final DataCubit dataCubit;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
         AppText.txtConfirmChangeStatus.text
-            .replaceAll("@", classCode)
+            .replaceAll("@", classModel.classCode)
             .replaceAll("#", vietnameseSubText(newStatus))
-            .replaceAll("%", vietnameseSubText(oldStatus)),
+            .replaceAll("%", vietnameseSubText(classModel.classStatus)),
         style: const TextStyle(fontWeight: FontWeight.bold),
       ),
       titlePadding:
@@ -48,11 +46,19 @@ class ConfirmChangeClassStatus extends StatelessWidget {
             onPress: () async {
               FirebaseFirestore.instance
                   .collection('class')
-                  .doc('class_${classId}_course_$courseId')
+                  .doc('class_${classModel.classId}_course_${classModel.courseId}')
                   .update({'class_status': newStatus}).whenComplete(() {
-                cubit.listClassStatus![index] = newStatus;
+                dataCubit.updateClassStatus(ClassModel(
+                    classId: classModel.classId,
+                    courseId: classModel.courseId,
+                    description: classModel.description,
+                    endTime: classModel.endTime,
+                    startTime: classModel.startTime,
+                    note: classModel.note,
+                    classCode: classModel.classCode,
+                    classStatus: newStatus,
+                    classType: classModel.classType));
                 popupCubit.update();
-                cubit.changeStatus(classId, newStatus);
                 Navigator.pop(context);
               });
             },

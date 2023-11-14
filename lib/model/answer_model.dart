@@ -3,10 +3,11 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AnswerModel {
-  final int  studentId, questionId, questionType, parentId, score;
+  final int  studentId, questionId, questionType, parentId;
+  final double score;
   final String teacherNote, type;
   final List answer, images, records;
-  int? _newScore;
+  double? _newScore;
   String? _newTeacherNote;
   List<dynamic>? _listImagePicker;
   List<String>? _listImageUrl;
@@ -44,9 +45,9 @@ class AnswerModel {
   }
 
 
-  int get newScore => _newScore ?? score;
+  double get newScore => _newScore ?? score;
 
-  set newScore(int values) {
+  set newScore(double values) {
     _newScore = values;
   }
 

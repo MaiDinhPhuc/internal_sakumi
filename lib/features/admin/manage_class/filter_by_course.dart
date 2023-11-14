@@ -2,14 +2,13 @@ import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
 import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
-import 'list_class_cubit.dart';
-
 class FilterCourseMenuAdmin extends StatelessWidget {
   const FilterCourseMenuAdmin(this.cubit,{super.key});
-  final LoadListClassCubit cubit;
+  final DataCubit cubit;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,18 +20,18 @@ class FilterCourseMenuAdmin extends StatelessWidget {
             color: Colors.transparent,
             child: PopupMenuButton(
                 onCanceled: (){
-                  cubit.filter();
+                  cubit.filterInAdmin();
                 },
                 itemBuilder: (context) => [
-                  ...cubit.listAllCourse!.map((e) => PopupMenuItem(
+                  ...cubit.listCourseTypeMenuAdmin.map((e) => PopupMenuItem(
                       padding: EdgeInsets.zero,
-                      child: BlocProvider(create: (c)=>CheckBoxFilterCubit(cubit.listStateCourseFilter[cubit.listAllCourse!.indexOf(e)]),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
+                      child: BlocProvider(create: (c)=>CheckBoxFilterCubit(cubit.listCourseTypeFilter[cubit.listCourseTypeMenuAdmin.indexOf(e)]),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
                         return CheckboxListTile(
                           controlAffinity: ListTileControlAffinity.leading,
-                          title: Text("${e.title} - ${e.termName} - ${e.code}"),
+                          title: Text(e),
                           value: state,
                           onChanged: (newValue) {
-                            cubit.listStateCourseFilter[cubit.listAllCourse!.indexOf(e)] = newValue!;
+                            cubit.listCourseTypeFilter[cubit.listCourseTypeMenuAdmin.indexOf(e)] = newValue!;
                             BlocProvider.of<CheckBoxFilterCubit>(cc).update();
                           },
                         );

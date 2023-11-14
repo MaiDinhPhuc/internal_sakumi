@@ -361,7 +361,6 @@ class DetailGradingScreen extends StatelessWidget {
                                                   questionSoundCubit,
                                                   checkActiveCubit:
                                                       checkActiveCubit,
-                                                  type: type,
                                                   dataCubit: dataController,
                                                 ),
                                               ))

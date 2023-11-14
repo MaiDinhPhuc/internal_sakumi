@@ -97,7 +97,7 @@ class StudentAnswerView extends StatelessWidget {
                           cubit
                               .listAnswer![
                                   cubit.listAnswer!.indexOf(answerModel)]
-                              .newScore = int.parse(item);
+                              .newScore = double.parse(item);
                         } else {
                           BlocProvider.of<DropdownGradingCubit>(c)
                               .change(item!);

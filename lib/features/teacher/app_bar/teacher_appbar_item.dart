@@ -2,8 +2,8 @@ import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/routes.dart';
 
-class AppBarItem extends StatelessWidget {
-  const AppBarItem(
+class AppBarTeacherItem extends StatelessWidget {
+  const AppBarTeacherItem(
       {super.key,
       required this.title,
       required this.role,

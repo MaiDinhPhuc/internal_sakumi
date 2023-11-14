@@ -5,7 +5,11 @@ import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_le
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class StatusClassItem extends StatelessWidget {
-  const StatusClassItem({super.key, required this.status, required this.color, required this.icon});
+  const StatusClassItem(
+      {super.key,
+      required this.status,
+      required this.color,
+      required this.icon});
   final String status;
   final Color color;
   final String icon;
@@ -44,15 +48,14 @@ class StatusClassItem extends StatelessWidget {
             decoration: BoxDecoration(
                 color: color,
                 borderRadius: BlocProvider.of<DropdownCubit>(context).state %
-                    2 ==
-                    0
+                            2 ==
+                        0
                     ? BorderRadius.horizontal(
-                    left: Radius.circular(Resizable.padding(context, 5)))
+                        left: Radius.circular(Resizable.padding(context, 5)))
                     : BorderRadius.only(
-                    topLeft:
-                    Radius.circular(Resizable.padding(context, 5)))),
-            child: Image.asset(
-                'assets/images/ic_$icon.png'),
+                        topLeft:
+                            Radius.circular(Resizable.padding(context, 5)))),
+            child: Image.asset('assets/images/ic_$icon.png'),
           ),
         ));
   }

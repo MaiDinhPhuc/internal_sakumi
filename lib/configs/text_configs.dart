@@ -49,6 +49,7 @@ enum AppText {
   titleManageStudent,
   titleManageClass,
   titleManageTag,
+  titleManageFeedBack,
   titleRole,
   titleUserId,
   btnSignUp,
@@ -269,6 +270,7 @@ enum AppText {
 }
 
 Map<AppText, String> texts = {
+  AppText.titleManageFeedBack: 'Quản lý góp ý',
   AppText.txtDeleteLesson: 'Xoá bài học',
   AppText.txtTeachingDay: 'Ngày dạy',
   AppText.txtRead: 'Tôi đã đọc ghi chú',
@@ -315,7 +317,7 @@ Map<AppText, String> texts = {
   AppText.txtListTest: 'Danh sách bài test',
   AppText.txtListCourse: 'Danh sách khoá học',
   AppText.txtAnother: 'Tab khác',
-  AppText.txtManageCourse: 'Quản lí khoá học',
+  AppText.txtManageCourse: 'Quản lý khoá học',
   AppText.txtSearch: 'Tìm kiếm...',
   AppText.txtLoadMore: 'Xem thêm',
   AppText.txtConfirmChangeStatus: 'SS chắc chắn muốn thay đổi\n trạng thái của @ từ % sang #',

@@ -61,7 +61,7 @@ class CourseModel {
         termName: data['term_name'],
         title: data['title'],
         token: data['token'],
-        type: data['type'],
+        type: data['type'] ?? "general",
         code: data['code'],
         enable: data['enable']??true, version: data['dataversion'] ?? 1);
   }

@@ -29,8 +29,8 @@ class TeacherHomeFilter extends StatelessWidget {
                           child: BlocProvider(
                               create: (c) => CheckBoxFilterCubit(
                                   e == AppText.optInProgress.text
-                                      ? cubit.listFilter[0]
-                                      : cubit.listFilter[1]),
+                                      ? cubit.listFilterTeacher[0]
+                                      : cubit.listFilterTeacher[1]),
                               child: BlocBuilder<CheckBoxFilterCubit, bool>(
                                   builder: (cc, state) {
                                 return CheckboxListTile(
@@ -39,11 +39,11 @@ class TeacherHomeFilter extends StatelessWidget {
                                   title: Text(e),
                                   value: state,
                                   onChanged: (newValue) {
-                                    cubit.listFilter[listFilter.indexOf(e)] =
+                                    cubit.listFilterTeacher[listFilter.indexOf(e)] =
                                         newValue!;
-                                    if (cubit.listFilter
+                                    if (cubit.listFilterTeacher
                                         .every((element) => element == false)) {
-                                      cubit.listFilter[listFilter.indexOf(e)] =
+                                      cubit.listFilterTeacher[listFilter.indexOf(e)] =
                                           !newValue;
                                     } else {
                                       BlocProvider.of<CheckBoxFilterCubit>(cc)

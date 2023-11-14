@@ -16,13 +16,12 @@ import 'detail_grading_cubit.dart';
 
 class DetailGradingView extends StatelessWidget {
   DetailGradingView(this.cubit, this.soundCubit,
-      {super.key, required this.checkActiveCubit, required this.type, required this.dataCubit})
+      {super.key, required this.checkActiveCubit, required this.dataCubit})
       : imageCubit = ImagePickerCubit();
   final DetailGradingCubit cubit;
   final SoundCubit soundCubit;
   final ImagePickerCubit imageCubit;
   final CheckActiveCubit checkActiveCubit;
-  final String type;
   final DataCubit dataCubit;
 
   @override
@@ -86,7 +85,7 @@ class DetailGradingView extends StatelessWidget {
                     child: SubmitButton(
                         isActive: s,
                         onPressed: () async {
-                          await submit(cubit, context, checkActiveCubit, type, dataCubit);
+                          await submit(cubit, context, checkActiveCubit, cubit.gradingType, dataCubit);
                         },
                         title: AppText.btnUpdate.text.toUpperCase()));
               })
@@ -152,7 +151,7 @@ Future<void> submit(DetailGradingCubit cubit, context, CheckActiveCubit checkCub
   checkCubit.changeActive(false);
   if (cubit.checkDone(false)) {
     for (var i in cubit.listStudent!) {
-      int temp = 0;
+      double temp = 0;
       for (var j in cubit.listAnswer!) {
         if (i.userId == j.studentId) {
           if (j.newScore == -1) {

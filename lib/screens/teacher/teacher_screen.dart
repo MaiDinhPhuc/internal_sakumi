@@ -13,8 +13,8 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../features/teacher/teacher_home/class_item.dart';
 
-class TeacherScreen2 extends StatelessWidget {
-  const TeacherScreen2({Key? key}) : super(key: key);
+class TeacherScreen extends StatelessWidget {
+  const TeacherScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

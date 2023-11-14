@@ -15,11 +15,56 @@ class DataCubit extends Cubit<int> {
 
   List<ClassModel2>? classNow;
 
-  List<bool> listFilter = [true, false];
-  List<String> listClassStatusMenu = ["InProgress", "Completed"];
+  List<bool> listFilterTeacher = [true, false];
+  List<String> listClassStatusMenuTeacher = ["InProgress", "Completed"];
+  List<bool> listClassStatusFilter = [true, true, false, false];
+  List<String> listClassStatusMenuAdmin = [
+    "Preparing",
+    "InProgress",
+    "Completed",
+    "Cancel"
+  ];
+  List<bool> listCourseTypeFilter = [false, false, false, false, false];
+  List<String> listCourseTypeMenuAdmin = [
+    "GENERAL",
+    "KAIWA",
+    "JLPT",
+    "KID",
+    "1VS1"
+  ];
+  List<bool> listClassTypeFilter = [true, true];
+  List<String> listClassTypeMenu = ["Lớp Chung", "Lớp 1-1"];
 
   DataCubit() : super(0) {
     loadClass();
+  }
+
+  Color getColor(String status) {
+    switch (status) {
+      case 'InProgress':
+        return const Color(0xff33691e);
+      case 'Cancel':
+        return const Color(0xffB71C1C);
+      case 'Completed':
+      case 'Preparing':
+        return const Color(0xff757575);
+      default:
+        return const Color(0xff33691e);
+    }
+  }
+
+  String getIcon(String status) {
+    switch (status) {
+      case 'InProgress':
+      case 'Preparing':
+        return "in_progress";
+      case 'Cancel':
+        return "dropped";
+      case 'Completed':
+        return "check";
+      default:
+        return "in_progress";
+    }
   }
 
   loadClass() async {
@@ -50,12 +95,6 @@ class DataCubit extends Cubit<int> {
       if (listCourseIds.contains(i.classModel.courseId) == false) {
         listCourseIds.add(i.classModel.courseId);
       }
-      if (classes![classes!.indexOf(i)].lessonCount == null) {
-        var lessonCount = await FireBaseProvider.instance.getCountWithCondition(
-            "lesson_result", "class_id", i.classModel.classId);
-        classes![classes!.indexOf(i)] = i.copyWith(lessonCount: lessonCount);
-      }
-      filterInTeacher();
     }
     var courses =
         await FireBaseProvider.instance.getCourseByListId(listCourseIds);
@@ -81,7 +120,8 @@ class DataCubit extends Cubit<int> {
             listLesson: lessons,
             stdClasses: stdClasses,
             lessonResults: lessonResults,
-            stdLessons: stdLessons);
+            stdLessons: stdLessons,
+            lessonCount: lessonResults.length);
       }
       filterInTeacher();
     }
@@ -121,7 +161,8 @@ class DataCubit extends Cubit<int> {
             listLesson: lessons,
             stdClasses: stdClasses,
             lessonResults: lessonResults,
-            stdLessons: stdLessons);
+            stdLessons: stdLessons,
+            lessonCount: lessonResults.length);
     emit(state + 1);
   }
 
@@ -178,17 +219,17 @@ class DataCubit extends Cubit<int> {
 
   filterInTeacher() {
     classNow = [];
-    if (listFilter[0] == true) {
+    if (listFilterTeacher[0] == true) {
       for (var i in classes!) {
-        if (i.classModel.classStatus == listClassStatusMenu[0] ||
+        if (i.classModel.classStatus == listClassStatusMenuTeacher[0] ||
             i.classModel.classStatus == "Preparing") {
           classNow!.add(i);
         }
       }
     }
-    if (listFilter[1] == true) {
+    if (listFilterTeacher[1] == true) {
       for (var i in classes!) {
-        if (i.classModel.classStatus == listClassStatusMenu[1]) {
+        if (i.classModel.classStatus == listClassStatusMenuTeacher[1]) {
           classNow!.add(i);
         }
       }
@@ -196,16 +237,44 @@ class DataCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  loadClassForAdminRole() async {
-    classes = await FireBaseProvider.instance.getClassByAdmin();
-    List<int> listCourseIds = [];
-    for (var i in classes!) {
-      if (listCourseIds.contains(i.classModel.courseId) == false) {
-        listCourseIds.add(i.classModel.courseId);
+  filterInAdmin() {
+    var list1 = [];
+    var list2 = [];
+    var list3 = [];
+
+    for (int i = 0; i < listClassTypeFilter.length; i++) {
+      if (listClassTypeFilter[i] == true) {
+        list1.add(i);
       }
     }
-    var courses =
-        await FireBaseProvider.instance.getCourseByListId(listCourseIds);
+
+    for (int i = 0; i < listCourseTypeFilter.length; i++) {
+      if (listCourseTypeFilter[i] == true) {
+        list2.add(listCourseTypeMenuAdmin[i]);
+      }
+    }
+
+    for (int i = 0; i < listClassStatusFilter.length; i++) {
+      if (listClassStatusFilter[i] == true) {
+        list3.add(listClassStatusMenuAdmin[i]);
+      }
+    }
+
+    classNow = classes!
+        .where((e) =>
+            list3.contains(e.classModel.classStatus) &&
+            list1.contains(e.classModel.classType) &&
+            (list2.isEmpty
+                ? true
+                : list2.contains(e.course!.type.toUpperCase())))
+        .toList();
+
+    emit(state + 1);
+  }
+
+  loadClassForAdminRole() async {
+    var courses = await FireBaseProvider.instance.getAllCourse();
+    classes = await FireBaseProvider.instance.getClassByAdmin();
     for (var i in classes!) {
       if (classes![classes!.indexOf(i)].course == null) {
         var course =
@@ -214,6 +283,7 @@ class DataCubit extends Cubit<int> {
       }
       emit(state + 1);
     }
+    filterInAdmin();
     for (var i in classes!) {
       if (classes![classes!.indexOf(i)].stdLessons == null) {
         var lessons = await FireBaseProvider.instance
@@ -228,9 +298,10 @@ class DataCubit extends Cubit<int> {
             listLesson: lessons,
             stdClasses: stdClasses,
             lessonResults: lessonResults,
-            stdLessons: stdLessons);
+            stdLessons: stdLessons,
+            lessonCount: lessonResults.length);
       }
-      emit(state + 1);
+      filterInAdmin();
     }
     for (var i in classes!) {
       if (classes![classes!.indexOf(i)].stdTests == null) {
@@ -247,7 +318,7 @@ class DataCubit extends Cubit<int> {
         classes![classes!.indexOf(i)] = i.copyWith(
             stdTests: stdTests, listTest: listTest, testResults: testResults);
       }
-      emit(state + 1);
+      filterInAdmin();
     }
   }
 
@@ -287,12 +358,14 @@ class DataCubit extends Cubit<int> {
     classes![index] = classes![index].copyWith(stdLessons: stdLessons);
   }
 
-  updateStudentLessonAfterGrading(int classId, int lessonId, int studentId, int hw) {
+  updateStudentLessonAfterGrading(
+      int classId, int lessonId, int studentId, int hw) {
     var index = classes!
         .indexOf(classes!.firstWhere((e) => e.classModel.classId == classId));
     List<StudentLessonModel> stdLessons = classes![index].stdLessons!;
 
-    var stdLesson = stdLessons.firstWhere((e) => e.lessonId == lessonId && e.studentId == studentId);
+    var stdLesson = stdLessons
+        .firstWhere((e) => e.lessonId == lessonId && e.studentId == studentId);
 
     var check = stdLessons.any(
         (e) => e.lessonId == lessonId && e.studentId == stdLesson.studentId);
@@ -332,23 +405,29 @@ class DataCubit extends Cubit<int> {
     classes![index] = classes![index].copyWith(stdLessons: stdLessons);
   }
 
-  updateStudentTestAfterGrading(int classId, int testId, int studentId, int score) {
+  updateStudentTestAfterGrading(
+      int classId, int testId, int studentId, int score) {
     var index = classes!
         .indexOf(classes!.firstWhere((e) => e.classModel.classId == classId));
     List<StudentTestModel> stdTests = classes![index].stdTests!;
 
-    var stdTest = stdTests.firstWhere((e) => e.testID == testId && e.studentId == studentId);
+    var stdTest = stdTests
+        .firstWhere((e) => e.testID == testId && e.studentId == studentId);
 
-    var check = stdTests.any(
-            (e) => e.testID == testId && e.studentId == stdTest.studentId);
+    var check = stdTests
+        .any((e) => e.testID == testId && e.studentId == stdTest.studentId);
 
     if (check == false) {
-      stdTests.add(StudentTestModel(classId: classId, score: score, studentId: studentId, testID: testId));
+      stdTests.add(StudentTestModel(
+          classId: classId,
+          score: score,
+          studentId: studentId,
+          testID: testId));
     } else {
       var i = stdTests.indexOf(stdTests.firstWhere((e) =>
-      e.testID == stdTest.testID &&
-          e.studentId == stdTest.studentId));
-      stdTests[i] = StudentTestModel(classId: classId, score: score, studentId: studentId, testID: testId);
+          e.testID == stdTest.testID && e.studentId == stdTest.studentId));
+      stdTests[i] = StudentTestModel(
+          classId: classId, score: score, studentId: studentId, testID: testId);
     }
     classes![index] = classes![index].copyWith(stdTests: stdTests);
   }
@@ -362,5 +441,11 @@ class DataCubit extends Cubit<int> {
         stdClasses.firstWhere((e) => e.userId == studentClassModel.userId));
     stdClasses[i] = studentClassModel;
     classes![index] = classes![index].copyWith(stdClasses: stdClasses);
+  }
+
+  updateClassStatus(ClassModel classModel) {
+    var index = classes!
+        .indexOf(classes!.firstWhere((e) => e.classModel.classId == classModel.classId));
+    classes![index] = classes![index].copyWith(classModel:classModel);
   }
 }

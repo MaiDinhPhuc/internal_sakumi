@@ -14,7 +14,8 @@ import 'package:internal_sakumi/widget/back_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../profile/app_bar_info_teacher_cubit.dart';
-import 'appbar_item.dart';
+import 'home_teacher_button.dart';
+import 'teacher_appbar_item.dart';
 
 class HeaderTeacher extends StatelessWidget {
   final int index;
@@ -52,59 +53,8 @@ class HeaderTeacher extends StatelessWidget {
                           : MainAxisAlignment.center,
                       children: [
                         index == -1 || role == "admin"
-                            ? const CustomBackButton()
-                            : Container(
-                                height: 30,
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 3),
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Image.asset(
-                                              'assets/images/ic_home.png',
-                                              scale: 60),
-                                          SizedBox(
-                                              width: Resizable.padding(
-                                                  context, 5)),
-                                          Text(AppText.titleHome.text,
-                                              style: TextStyle(
-                                                  color: greyColor.shade600,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 16)),
-                                        ],
-                                      ),
-                                    ),
-                                    Positioned.fill(
-                                      child: Material(
-                                        color: Colors.transparent,
-                                        child: InkWell(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                          overlayColor:
-                                              MaterialStateProperty.all(
-                                                  primaryColor.withAlpha(30)),
-                                          onTap: () async {
-                                            if (context.mounted) {
-                                              Navigator.pushReplacementNamed(
-                                                  context, Routes.teacher);
-                                            }
-                                          },
-                                          child: Container(
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 2),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
+                            ? const CustomBackHomeButton()
+                            : const TeacherHomeButton(),
                         Expanded(child: Container()),
                         Expanded(
                             flex: 4,
@@ -115,7 +65,7 @@ class HeaderTeacher extends StatelessWidget {
                                         : role == "teacher"
                                             ? buttonTeacherList
                                             : buttonAdminList)
-                                    .map((e) => AppBarItem(
+                                    .map((e) => AppBarTeacherItem(
                                           title: e.button,
                                           role: role,
                                           color: index == e.id

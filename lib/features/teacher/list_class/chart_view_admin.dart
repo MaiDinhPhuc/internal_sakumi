@@ -1,9 +1,6 @@
-import 'package:d_chart/d_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/admin/manage_class/list_class_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
 import 'package:internal_sakumi/widget/note_widget.dart';
@@ -12,88 +9,87 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'column_chart.dart';
 
 
-class ChartInAdminView extends StatelessWidget {
-  final int index;
-  const ChartInAdminView(this.index, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var cubit = BlocProvider.of<LoadListClassCubit>(context);
-    return cubit.listLastLessonTitleNow[index] == null
-        ? const Center(child: CircularProgressIndicator())
-        : Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(top: Resizable.size(context, 10)),
-                height: Resizable.size(context, 190),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(flex: 4, child: Container()),
-                    Expanded(
-                        flex: 8,
-                        child: ColumnChart(listStd: cubit.colStd![index])),
-                    Expanded(child: Container()),
-                    Expanded(
-                        flex: 8,
-                        child: CustomLineChart(
-                          attendances: cubit.rateAttendanceChart![index],
-                          hws: cubit.rateSubmitChart![index],
-                          points: [],
-                        )),
-                    Expanded(flex: 4, child: Container()),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: Resizable.padding(context, 15)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: Resizable.size(context, 1),
-                      margin: EdgeInsets.symmetric(
-                          vertical: Resizable.padding(context, 15)),
-                      color: const Color(0xffD9D9D9),
-                    ),
-                    Row(
-                      children: [
-                        Text(AppText.txtLastLesson.text,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: Resizable.font(context, 19))),
-                        SizedBox(width: Resizable.padding(context, 10)),
-                        Text(cubit.listLastLessonTitleNow[index]!,
-                            style: TextStyle(
-                                color: primaryColor,
-                                fontWeight: FontWeight.w800,
-                                fontSize: Resizable.font(context, 19))),
-                      ],
-                    ),
-                    Container(
-                      height: Resizable.size(context, 1),
-                      margin: EdgeInsets.symmetric(
-                          vertical: Resizable.padding(context, 15)),
-                      color: const Color(0xffD9D9D9),
-                    ),
-                    Text(AppText.titleClassDes.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: Resizable.font(context, 19))),
-                    NoteWidget(cubit.listClassDes![index]),
-                    Text(AppText.titleClassNote.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: Resizable.font(context, 19))),
-                    NoteWidget(cubit.listClassNote![index])
-                  ],
-                ),
-              )
-            ],
-          );
-  }
-}
+// class ChartInAdminView extends StatelessWidget {
+//   final int index;
+//   const ChartInAdminView(this.index, {Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return cubit.listLastLessonTitleNow[index] == null
+//         ? const Center(child: CircularProgressIndicator())
+//         : Column(
+//             children: [
+//               Container(
+//                 margin: EdgeInsets.only(top: Resizable.size(context, 10)),
+//                 height: Resizable.size(context, 190),
+//                 child: Row(
+//                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                   children: [
+//                     Expanded(flex: 4, child: Container()),
+//                     Expanded(
+//                         flex: 8,
+//                         child: ColumnChart(listStd: cubit.colStd![index])),
+//                     Expanded(child: Container()),
+//                     Expanded(
+//                         flex: 8,
+//                         child: CustomLineChart(
+//                           attendances: cubit.rateAttendanceChart![index],
+//                           hws: cubit.rateSubmitChart![index],
+//                           points: [],
+//                         )),
+//                     Expanded(flex: 4, child: Container()),
+//                   ],
+//                 ),
+//               ),
+//               Padding(
+//                 padding: EdgeInsets.symmetric(
+//                     horizontal: Resizable.padding(context, 15)),
+//                 child: Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     Container(
+//                       height: Resizable.size(context, 1),
+//                       margin: EdgeInsets.symmetric(
+//                           vertical: Resizable.padding(context, 15)),
+//                       color: const Color(0xffD9D9D9),
+//                     ),
+//                     Row(
+//                       children: [
+//                         Text(AppText.txtLastLesson.text,
+//                             style: TextStyle(
+//                                 fontWeight: FontWeight.w700,
+//                                 fontSize: Resizable.font(context, 19))),
+//                         SizedBox(width: Resizable.padding(context, 10)),
+//                         Text(cubit.listLastLessonTitleNow[index]!,
+//                             style: TextStyle(
+//                                 color: primaryColor,
+//                                 fontWeight: FontWeight.w800,
+//                                 fontSize: Resizable.font(context, 19))),
+//                       ],
+//                     ),
+//                     Container(
+//                       height: Resizable.size(context, 1),
+//                       margin: EdgeInsets.symmetric(
+//                           vertical: Resizable.padding(context, 15)),
+//                       color: const Color(0xffD9D9D9),
+//                     ),
+//                     Text(AppText.titleClassDes.text,
+//                         style: TextStyle(
+//                             fontWeight: FontWeight.w700,
+//                             fontSize: Resizable.font(context, 19))),
+//                     NoteWidget(cubit.listClassDes![index]),
+//                     Text(AppText.titleClassNote.text,
+//                         style: TextStyle(
+//                             fontWeight: FontWeight.w700,
+//                             fontSize: Resizable.font(context, 19))),
+//                     NoteWidget(cubit.listClassNote![index])
+//                   ],
+//                 ),
+//               )
+//             ],
+//           );
+//   }
+// }
 
 class AveragePointView extends StatelessWidget {
   final double point;
