@@ -32,6 +32,14 @@ class DataCubit extends Cubit<int> {
     "KID",
     "1VS1"
   ];
+  List<bool> levelFilter = [true, false, false, false, false];
+  List<String> listLevelMenu = [
+    "N5",
+    "N4",
+    "N3",
+    "N2",
+    "N1"
+  ];
   List<bool> listClassTypeFilter = [true, true];
   List<String> listClassTypeMenu = ["Lớp Chung", "Lớp 1-1"];
 
@@ -247,6 +255,7 @@ class DataCubit extends Cubit<int> {
     var list1 = [];
     var list2 = [];
     var list3 = [];
+    var list4 = [];
 
     for (int i = 0; i < listClassTypeFilter.length; i++) {
       if (listClassTypeFilter[i] == true) {
@@ -266,13 +275,19 @@ class DataCubit extends Cubit<int> {
       }
     }
 
+    for (int i = 0; i < levelFilter.length; i++) {
+      if (levelFilter[i] == true) {
+        list4.add(listLevelMenu[i]);
+      }
+    }
+
     classNow = classes!
         .where((e) =>
             list3.contains(e.classModel.classStatus) &&
             list1.contains(e.classModel.classType) &&
             (list2.isEmpty
                 ? true
-                : list2.contains(e.course!.type.toUpperCase())))
+                : list2.contains(e.course!.type.toUpperCase())) && (list4.isEmpty ? true : list4.contains(e.course!.level.toUpperCase())))
         .toList();
 
     emit(state + 1);

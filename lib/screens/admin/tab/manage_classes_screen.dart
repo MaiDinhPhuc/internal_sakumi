@@ -7,6 +7,7 @@ import 'package:internal_sakumi/features/admin/manage_class/class_item_admin.dar
 import 'package:internal_sakumi/features/admin/manage_class/filter_by_class_status.dart';
 import 'package:internal_sakumi/features/admin/manage_class/filter_by_class_type.dart';
 import 'package:internal_sakumi/features/admin/manage_class/filter_by_course.dart';
+import 'package:internal_sakumi/features/admin/manage_class/filter_by_level.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
 import 'package:internal_sakumi/features/teacher/cubit/class_item_cubit.dart';
 import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
@@ -48,6 +49,7 @@ class ManageClassesScreen extends StatelessWidget {
                         children: [
                           FilterClassTypeMenuAdmin(dataController),
                           FilterCourseMenuAdmin(dataController),
+                          FilterByLevel(dataController),
                           FilterByClassStatusAdmin(dataController)
                         ],
                       )),
