@@ -26,7 +26,7 @@ class TestCubit extends Cubit<int> {
   List<StudentModel>? listStudents;
 
   load(ClassModel2 model, DataCubit dataCubit) async {
-    if (model.stdTests == null) {
+    if (model.students == null) {
       classModel = model.classModel;
       emit(state + 1);
       dataCubit.loadTestInfoOfClass(model.classModel);
@@ -62,8 +62,7 @@ class TestCubit extends Cubit<int> {
         }
       }
 
-      List<StudentModel> listStudents = await FireBaseProvider.instance
-          .getAllStudentInFoInClass(listStudentIds);
+      List<StudentModel> listStudents = model.students!.where((e) => listStudentIds.contains(e.userId)).toList();
 
       List<double> listSubmit = [];
       List<double> listGPA = [];

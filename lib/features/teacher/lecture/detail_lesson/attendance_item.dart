@@ -75,7 +75,7 @@ class AttendanceItem extends StatelessWidget {
                                               studentId: studentModel.userId,
                                               timekeeping: 0,
                                               vocabulary: -2,
-                                              teacherNote: '', supportNote: ''));
+                                              teacherNote: '', supportNote: '', doingTime: ''));
                                       dataCubit.updateStudentLesson(int.parse(TextUtils.getName(position: 1)),StudentLessonModel(
                                           grammar: -2,
                                           hw: -2,
@@ -88,7 +88,7 @@ class AttendanceItem extends StatelessWidget {
                                           studentId: studentModel.userId,
                                           timekeeping: 0,
                                           vocabulary: -2,
-                                          teacherNote: '', supportNote: ''));
+                                          teacherNote: '', supportNote: '', doingTime: ''));
                                       s = items.indexOf(v.toString());
                                       if (c.mounted) {
                                         BlocProvider.of<DropdownAttendanceCubit>(c)
@@ -105,7 +105,7 @@ class AttendanceItem extends StatelessWidget {
                                             studentId: studentModel.userId,
                                             timekeeping: items.indexOf(v.toString()),
                                             vocabulary: -2,
-                                            teacherNote: '', supportNote: ''));
+                                            teacherNote: '', supportNote: '', doingTime: ''));
                                       }
                                       if (items.length == 7 && c.mounted) {
                                         sessionCubit.updateTimekeeping(s);

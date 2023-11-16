@@ -13,19 +13,13 @@ class QuestionOptionItem extends StatelessWidget {
       {super.key,
       required this.questionModel,
       required this.onTap,
-      required this.soundCubit,
-      required this.isDone,
-      required this.token, required this.type});
+      required this.isDone});
   final int id, index, now;
   final QuestionModel questionModel;
   final Function() onTap;
-  final SoundCubit soundCubit;
   final bool isDone;
-  final String token;
-  final String type;
   @override
   Widget build(BuildContext context) {
-    String question = questionModel.convertQuestion;
     return Row(
       children: [
         Container(
@@ -78,148 +72,6 @@ class QuestionOptionItem extends StatelessWidget {
                               )
                             ],
                           ),
-                          if (id == questionModel.id ||
-                              now == questionModel.id) ...[
-                            if (questionModel.instruction != "")
-                              Text(
-                                questionModel.instruction,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: Resizable.font(context, 17)),
-                              ),
-                            if (question != "")
-                              Text(
-                                question,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: Resizable.font(context, 17)),
-                              ),
-                            if (questionModel.sound != "")
-                              Expanded(
-                                child: Sounder(
-                                  AppConfigs.getDataUrl(
-                                      "${type}_${TextUtils.getName()}_${questionModel.listSound.first}",
-                                      token),
-                                  "network",
-                                  0,
-                                  soundCubit: soundCubit,
-                                  backgroundColor: primaryColor,
-                                  iconColor: Colors.white,
-                                ),
-                              ),
-                            if (questionModel.image != "")
-                              SizedBox(
-                                height: Resizable.size(context, 100),
-                                child: ListView.builder(
-                                    itemCount: questionModel.listImage.length,
-                                    scrollDirection: Axis.horizontal,
-                                    padding: EdgeInsets.symmetric(
-                                        vertical:
-                                            Resizable.padding(context, 5)),
-                                    itemBuilder: (_, i) => Container(
-                                          margin: EdgeInsets.all(
-                                              Resizable.padding(context, 2)),
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.1,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.1,
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                                image: NetworkImage(
-                                                    AppConfigs.getDataUrl(
-                                                        "${type}_${TextUtils.getName()}_${questionModel.listImage[i]}",
-                                                        token)),
-                                                fit: BoxFit.fill),
-                                            border: Border.all(
-                                                width: 0,
-                                                color: secondaryColor),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(Resizable.size(
-                                                    context, 5))),
-                                          ),
-                                        )),
-                              ),
-                            if (questionModel.questionType == 1 ||
-                                questionModel.questionType == 5)
-                              ...questionModel.listAnswer.map((e) => Padding(
-                                  padding: EdgeInsets.only(
-                                      top: Resizable.padding(context, 3)),
-                                  child: Text(
-                                      "${questionModel.listAnswer.indexOf(e) + 1}.$e",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: Resizable.font(context, 15),
-                                          fontWeight: FontWeight.w800)))),
-                            if (questionModel.questionType == 11) ...[
-                              Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: questionModel.listAnswer
-                                      .sublist(0, 2)
-                                      .map((item) => Container(
-                                            margin: EdgeInsets.all(
-                                                Resizable.padding(context, 2)),
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.1,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.1,
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      AppConfigs.getDataUrl(
-                                                          "${type}_${TextUtils.getName()}_$item",
-                                                          token)),
-                                                  fit: BoxFit.fill),
-                                              border: Border.all(
-                                                  width: 0,
-                                                  color: secondaryColor),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(
-                                                      Resizable.size(
-                                                          context, 5))),
-                                            ),
-                                          ))
-                                      .toList()),
-                              Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: questionModel.listAnswer
-                                      .sublist(2)
-                                      .map((item) => Container(
-                                            margin: EdgeInsets.all(
-                                                Resizable.padding(context, 2)),
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.1,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.1,
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      AppConfigs.getDataUrl(
-                                                          "${type}_${TextUtils.getName()}_$item",
-                                                          token)),
-                                                  fit: BoxFit.fill),
-                                              border: Border.all(
-                                                  color: secondaryColor),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(
-                                                      Resizable.size(
-                                                          context, 5))),
-                                            ),
-                                          ))
-                                      .toList())
-                            ],
-                          ]
                         ],
                       )),
                 )))

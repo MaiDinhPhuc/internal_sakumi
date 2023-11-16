@@ -1,9 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/app_configs.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
+import 'package:internal_sakumi/features/teacher/grading/question_view.dart';
 import 'package:internal_sakumi/features/teacher/grading/sound/sound_cubit.dart';
+import 'package:internal_sakumi/features/teacher/grading/sound/sounder.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
@@ -34,6 +38,11 @@ class DetailGradingView extends StatelessWidget {
         :SingleChildScrollView(
       child: Column(
         children: [
+          Row(
+            children: [
+              Expanded(child: QuestionView(questionModel: cubit.getQuestion(), soundCubit: soundCubit, cubit: cubit))
+            ],
+          ),
           ...cubit.answers.map((e) => AnswerInfoView(
             answerModel: e,
             soundCubit: soundCubit,

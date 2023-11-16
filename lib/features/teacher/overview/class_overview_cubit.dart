@@ -6,7 +6,6 @@ import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class ClassOverviewCubit extends Cubit<int> {
   ClassOverviewCubit() : super(0);
@@ -93,8 +92,7 @@ class ClassOverviewCubit extends Cubit<int> {
         listHomework.add(tempHw);
       }
       emit(state + 1);
-      students =
-      await FireBaseProvider.instance.getAllStudentInFoInClass(listStdIds);
+      students = classModel2.students;
       List<LessonModel> lessonTemp =
       classModel2.listLesson!.where((element) => element.btvn == 0).toList();
       List<int> lessonExceptionIds = [];

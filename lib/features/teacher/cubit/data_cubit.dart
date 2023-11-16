@@ -116,12 +116,16 @@ class DataCubit extends Cubit<int> {
             .getLessonResultByClassId(i.classModel.classId);
         var stdLessons = await FireBaseProvider.instance
             .getAllStudentLessonsInClass(i.classModel.classId);
+        var listStdIds = stdClasses.map((e) => e.userId).toList();
+        var students = await FireBaseProvider.instance
+            .getAllStudentInFoInClass(listStdIds);
         classes![classes!.indexOf(i)] = i.copyWith(
             listLesson: lessons,
             stdClasses: stdClasses,
             lessonResults: lessonResults,
             stdLessons: stdLessons,
-            lessonCount: lessonResults.length);
+            lessonCount: lessonResults.length,
+            students: students);
       }
       filterInTeacher();
     }
@@ -131,12 +135,8 @@ class DataCubit extends Cubit<int> {
             .getListTestByCourseId(i.classModel.courseId);
         var testResults = await FireBaseProvider.instance
             .getListTestResult(i.classModel.classId);
-        List<int> listTestIds = [];
-        for (var j in listTest) {
-          listTestIds.add(j.id);
-        }
         var stdTests = await FireBaseProvider.instance
-            .getListStudentTestByIDs(listTestIds);
+            .getAllStudentTest(i.classModel.classId);
         classes![classes!.indexOf(i)] = i.copyWith(
             stdTests: stdTests, listTest: listTest, testResults: testResults);
       }
@@ -153,6 +153,9 @@ class DataCubit extends Cubit<int> {
         .getLessonResultByClassId(classModel.classId);
     var stdLessons = await FireBaseProvider.instance
         .getAllStudentLessonsInClass(classModel.classId);
+    var listStdIds = stdClasses.map((e) => e.userId).toList();
+    var students =
+        await FireBaseProvider.instance.getAllStudentInFoInClass(listStdIds);
     classes![classes!.indexOf(classes!.firstWhere(
         (e) => e.classModel.classId == classModel.classId))] = classes![classes!
             .indexOf(classes!
@@ -162,7 +165,8 @@ class DataCubit extends Cubit<int> {
             stdClasses: stdClasses,
             lessonResults: lessonResults,
             stdLessons: stdLessons,
-            lessonCount: lessonResults.length);
+            lessonCount: lessonResults.length,
+            students: students);
     emit(state + 1);
   }
 
@@ -171,18 +175,20 @@ class DataCubit extends Cubit<int> {
         .getListTestByCourseId(classModel.courseId);
     var testResults =
         await FireBaseProvider.instance.getListTestResult(classModel.classId);
-    List<int> listTestIds = [];
-    for (var j in listTest) {
-      listTestIds.add(j.id);
-    }
     var stdTests =
-        await FireBaseProvider.instance.getListStudentTestByIDs(listTestIds);
+        await FireBaseProvider.instance.getAllStudentTest(classModel.classId);
+    var listStdIds = stdTests.map((e) => e.studentId).toList();
+    var students =
+        await FireBaseProvider.instance.getAllStudentInFoInClass(listStdIds);
     classes![classes!.indexOf(classes!.firstWhere(
         (e) => e.classModel.classId == classModel.classId))] = classes![classes!
             .indexOf(classes!
                 .firstWhere((e) => e.classModel.classId == classModel.classId))]
         .copyWith(
-            stdTests: stdTests, listTest: listTest, testResults: testResults);
+            stdTests: stdTests,
+            listTest: listTest,
+            testResults: testResults,
+            students: students);
     emit(state + 1);
   }
 
@@ -191,18 +197,17 @@ class DataCubit extends Cubit<int> {
         .getLessonsByCourseId(classModel.courseId);
     var stdClasses = await FireBaseProvider.instance
         .getStudentClassInClass(classModel.classId);
+    var listStdIds = stdClasses.map((e) => e.userId).toList();
+    var students =
+        await FireBaseProvider.instance.getAllStudentInFoInClass(listStdIds);
     var stdLessons = await FireBaseProvider.instance
         .getAllStudentLessonsInClass(classModel.classId);
     var listTest = await FireBaseProvider.instance
         .getListTestByCourseId(classModel.courseId);
     var testResults =
         await FireBaseProvider.instance.getListTestResult(classModel.classId);
-    List<int> listTestIds = [];
-    for (var j in listTest) {
-      listTestIds.add(j.id);
-    }
     var stdTests =
-        await FireBaseProvider.instance.getListStudentTestByIDs(listTestIds);
+        await FireBaseProvider.instance.getAllStudentTest(classModel.classId);
     classes![classes!.indexOf(classes!.firstWhere(
         (e) => e.classModel.classId == classModel.classId))] = classes![classes!
             .indexOf(classes!
@@ -213,7 +218,8 @@ class DataCubit extends Cubit<int> {
             testResults: testResults,
             listLesson: lessons,
             stdClasses: stdClasses,
-            stdLessons: stdLessons);
+            stdLessons: stdLessons,
+            students: students);
     emit(state + 1);
   }
 
@@ -314,7 +320,7 @@ class DataCubit extends Cubit<int> {
           listTestIds.add(j.id);
         }
         var stdTests = await FireBaseProvider.instance
-            .getListStudentTestByIDs(listTestIds);
+            .getAllStudentTest(i.classModel.classId);
         classes![classes!.indexOf(i)] = i.copyWith(
             stdTests: stdTests, listTest: listTest, testResults: testResults);
       }
@@ -383,7 +389,8 @@ class DataCubit extends Cubit<int> {
           timekeeping: stdLesson.timekeeping,
           vocabulary: stdLesson.vocabulary,
           teacherNote: stdLesson.teacherNote,
-          supportNote: stdLesson.supportNote));
+          supportNote: stdLesson.supportNote,
+          doingTime: stdLesson.doingTime));
     } else {
       var i = stdLessons.indexOf(stdLessons.firstWhere((e) =>
           e.lessonId == stdLesson.lessonId &&
@@ -400,7 +407,8 @@ class DataCubit extends Cubit<int> {
           timekeeping: stdLesson.timekeeping,
           vocabulary: stdLesson.vocabulary,
           teacherNote: stdLesson.teacherNote,
-          supportNote: stdLesson.supportNote);
+          supportNote: stdLesson.supportNote,
+          doingTime: stdLesson.doingTime);
     }
     classes![index] = classes![index].copyWith(stdLessons: stdLessons);
   }
@@ -422,12 +430,17 @@ class DataCubit extends Cubit<int> {
           classId: classId,
           score: score,
           studentId: studentId,
-          testID: testId));
+          testID: testId,
+          doingTime: stdTest.doingTime));
     } else {
       var i = stdTests.indexOf(stdTests.firstWhere((e) =>
           e.testID == stdTest.testID && e.studentId == stdTest.studentId));
       stdTests[i] = StudentTestModel(
-          classId: classId, score: score, studentId: studentId, testID: testId);
+          classId: classId,
+          score: score,
+          studentId: studentId,
+          testID: testId,
+          doingTime: stdTest.doingTime);
     }
     classes![index] = classes![index].copyWith(stdTests: stdTests);
   }
@@ -444,8 +457,8 @@ class DataCubit extends Cubit<int> {
   }
 
   updateClassStatus(ClassModel classModel) {
-    var index = classes!
-        .indexOf(classes!.firstWhere((e) => e.classModel.classId == classModel.classId));
-    classes![index] = classes![index].copyWith(classModel:classModel);
+    var index = classes!.indexOf(
+        classes!.firstWhere((e) => e.classModel.classId == classModel.classId));
+    classes![index] = classes![index].copyWith(classModel: classModel);
   }
 }

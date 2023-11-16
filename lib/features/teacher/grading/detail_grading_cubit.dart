@@ -68,6 +68,11 @@ class DetailGradingCubit extends Cubit<int> {
     return "";
   }
 
+  QuestionModel getQuestion(){
+    var question = listQuestions!.firstWhere((e) => e.id == now);
+    return question;
+  }
+
   updateAnswerView(int questionId) async {
     now = questionId;
     emit(0);
@@ -115,7 +120,7 @@ class DetailGradingCubit extends Cubit<int> {
     return list;
   }
 
-  change(int questionId, context) async {
+  change(int questionId) async {
     now = questionId;
     emit(questionId);
   }

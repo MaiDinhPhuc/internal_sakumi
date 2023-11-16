@@ -6,6 +6,7 @@ import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
+import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
@@ -21,18 +22,19 @@ class ClassModel2 {
   final List<StudentTestModel>? stdTests;
   final List<TestModel>? listTest;
   final List<TestResultModel>? testResults;
+  final List<StudentModel>? students;
 
   ClassModel2 copyWith(
-  {ClassModel? classModel,
-    CourseModel? course,
-    int? lessonCount,
-    List<LessonModel>? listLesson,
-    List<StudentClassModel>? stdClasses,
-    List<LessonResultModel>? lessonResults,
-    List<StudentLessonModel>? stdLessons,
-    List<StudentTestModel>? stdTests,
-    List<TestModel>? listTest,
-    List<TestResultModel>? testResults}) {
+      {ClassModel? classModel,
+      CourseModel? course,
+      int? lessonCount,
+      List<LessonModel>? listLesson,
+      List<StudentClassModel>? stdClasses,
+      List<LessonResultModel>? lessonResults,
+      List<StudentLessonModel>? stdLessons,
+      List<StudentTestModel>? stdTests,
+      List<TestModel>? listTest,
+      List<TestResultModel>? testResults, List<StudentModel>? students}) {
     return ClassModel2(
         course: course ?? this.course,
         listLesson: listLesson ?? this.listLesson,
@@ -43,10 +45,12 @@ class ClassModel2 {
         lessonCount: lessonCount ?? this.lessonCount,
         listTest: listTest ?? this.listTest,
         stdTests: stdTests ?? this.stdTests,
-        testResults: testResults ?? this.testResults);
+        testResults: testResults ?? this.testResults,
+        students: students ?? this.students
+    );
   }
 
-  static Future<List<ClassModel2>> loadClass (
+  static Future<List<ClassModel2>> loadClass(
     List<ClassModel> classes,
   ) async {
     List<ClassModel2> results = [];
@@ -62,6 +66,7 @@ class ClassModel2 {
         listTest: null,
         stdTests: null,
         testResults: null,
+        students: null
       ));
     }
 
@@ -106,5 +111,6 @@ class ClassModel2 {
       required this.lessonCount,
       required this.listTest,
       required this.stdTests,
-      required this.testResults});
+      required this.testResults,
+      required this.students});
 }

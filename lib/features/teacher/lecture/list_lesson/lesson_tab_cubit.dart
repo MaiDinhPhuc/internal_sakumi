@@ -116,7 +116,7 @@ class LessonTabCubit extends Cubit<int> {
           i.classStatus != "Deposit" &&
           i.classStatus != "Retained" &&
           i.classStatus != "Moved" &&
-          i.classStatus == "Viewer")
+          i.classStatus != "Viewer")
           .toList();
       List<int> sdtIdsTemp = [];
       for (var i in listStdClassTemp) {
@@ -134,7 +134,7 @@ class LessonTabCubit extends Cubit<int> {
       }
 
       List<StudentModel> students =
-      await FireBaseProvider.instance.getAllStudentInFoInClass(studentIds);
+          classModel2.students!.where((e) => studentIds.contains(e.userId)).toList();
       students.sort((a, b) => a.userId.compareTo(b.userId));
       List<String> names = [];
       for (var i in students) {
@@ -159,7 +159,7 @@ class LessonTabCubit extends Cubit<int> {
               .where((element) =>
           element.lessonId == i.lessonId &&
               element.timekeeping != 0 &&
-              !sdtIdsTemp.contains(element.studentId))
+              sdtIdsTemp.contains(element.studentId))
               .toList();
           double tempAttendance = 0;
           double tempHw = 0;

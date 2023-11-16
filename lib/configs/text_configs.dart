@@ -266,10 +266,16 @@ enum AppText {
   txtPleaseCheckListLesson,
   txtRead,
   txtTeachingDay,
-  txtDeleteLesson
+  txtDeleteLesson,
+  txtGradingNumber,
+  txtDoingTime,
+  txtPoint
 }
 
 Map<AppText, String> texts = {
+  AppText.txtDoingTime: 'Thời gian làm bài',
+  AppText.txtPoint: 'Điểm số',
+  AppText.txtGradingNumber: 'Số bài đã chấm',
   AppText.titleManageFeedBack: 'Quản lý góp ý',
   AppText.txtDeleteLesson: 'Xoá bài học',
   AppText.txtTeachingDay: 'Ngày dạy',
@@ -356,7 +362,7 @@ Map<AppText, String> texts = {
   AppText.textStudentNotDo: 'Học viên đã bỏ qua câu này!',
   AppText.titleQuestion: 'CÂU HỎI',
   AppText.textQuestionNumber: 'CÂU SỐ ',
-  AppText.textNumberResultReceive: 'Số bài nhận được:',
+  AppText.textNumberResultReceive: 'Số bài nhận được',
   AppText.textClass: 'Lớp',
   AppText.titleOverView: 'Tổng quan',
   AppText.titleLesson: 'Bài học',

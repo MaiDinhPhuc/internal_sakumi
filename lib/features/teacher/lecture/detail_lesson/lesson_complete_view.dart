@@ -134,7 +134,7 @@ class LessonCompleteView extends StatelessWidget {
                                   timekeeping: stdLesson.timekeeping,
                                   vocabulary: stdLesson.vocabulary,
                                   teacherNote: sessionCubit.listNoteForEachStudent[index],
-                                  supportNote: stdLesson.supportNote));
+                                  supportNote: stdLesson.supportNote, doingTime: stdLesson.doingTime));
                         }
                         if (context.mounted) {
                           Navigator.pushNamed(context,
