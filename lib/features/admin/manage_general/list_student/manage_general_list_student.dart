@@ -4,7 +4,7 @@ import 'package:internal_sakumi/features/admin/manage_general/list_student/alert
 import 'package:internal_sakumi/features/admin/manage_general/list_student/alert_new_student.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
-import 'package:internal_sakumi/features/admin/manage_general/user_item.dart';
+import 'package:internal_sakumi/features/admin/manage_general/student_item.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 

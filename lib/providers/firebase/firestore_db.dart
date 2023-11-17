@@ -788,6 +788,7 @@ class FireStoreDb {
     final snapshot = await db
         .collection("teacher_class")
         .where('class_id', isEqualTo: classId)
+        .where('class_status',  isEqualTo: "InProgress")
         .get();
 
     debugPrint(
@@ -1002,6 +1003,16 @@ class FireStoreDb {
       'user_id': model.userId,
     });
     debugPrint("==========>add db for \"teacher_class\"");
+  }
+
+  Future<void> updateTeacherInClass(TeacherClassModel model) async {
+    await db
+        .collection("teacher_class")
+        .doc("teacher_${model.userId}_class_${model.classId}")
+        .update({
+      'class_status': "InProgress",
+    });
+    debugPrint("==========>update db for \"teacher_class\"");
   }
 
   Future<void> changeClassStatus(ClassModel classModel, String newStatus,

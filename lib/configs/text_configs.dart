@@ -269,10 +269,12 @@ enum AppText {
   txtDeleteLesson,
   txtGradingNumber,
   txtDoingTime,
-  txtPoint
+  txtPoint,
+  txtTeacherNote
 }
 
 Map<AppText, String> texts = {
+  AppText.txtTeacherNote: 'Nhận xét của Giáo viên',
   AppText.txtDoingTime: 'Thời gian làm bài',
   AppText.txtPoint: 'Điểm số',
   AppText.txtGradingNumber: 'Số bài đã chấm',
@@ -569,6 +571,17 @@ extension AppTexts on AppText {
   }
 
   String get text => texts[this] ?? '--TextNotFound--';
+}
+
+String vietnameseSubTextTeacher(String text){
+  switch (text) {
+    case 'Remove':
+      return "Xoá";
+    case 'InProgress':
+      return "Đang Dạy";
+    default:
+      return "error";
+  }
 }
 
 String vietnameseSubText(String text){

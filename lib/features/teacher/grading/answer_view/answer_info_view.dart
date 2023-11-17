@@ -1,12 +1,15 @@
 import 'package:flutter/Material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/features/teacher/grading/answer_view/pick_image_cubit.dart';
 import 'package:internal_sakumi/features/teacher/grading/answer_view/record_dialog.dart';
 import 'package:internal_sakumi/features/teacher/grading/answer_view/record_services.dart';
 import 'package:internal_sakumi/features/teacher/grading/answer_view/student_answer_view.dart';
 import 'package:internal_sakumi/features/teacher/grading/answer_view/voice_record_cubit.dart';
+import 'package:internal_sakumi/features/teacher/grading/collapse_teacher_note.dart';
 import 'package:internal_sakumi/features/teacher/grading/detail_grading_cubit.dart';
 import 'package:internal_sakumi/features/teacher/grading/detail_grading_view.dart';
 import 'package:internal_sakumi/features/teacher/grading/sound/sound_cubit.dart';
+import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:microphone/microphone.dart';
@@ -18,8 +21,10 @@ class AnswerInfoView extends StatelessWidget {
       {super.key,
       required this.answerModel,
       required this.soundCubit,
-      required this.cubit, required this.checkActiveCubit})
-      : imageCubit = ImagePickerCubit(), voiceRecordCubit = VoiceRecordCubit();
+      required this.cubit,
+      required this.checkActiveCubit})
+      : imageCubit = ImagePickerCubit(),
+        voiceRecordCubit = VoiceRecordCubit();
   final AnswerModel answerModel;
   final SoundCubit soundCubit;
   final DetailGradingCubit cubit;
@@ -69,34 +74,72 @@ class AnswerInfoView extends StatelessWidget {
               StudentAnswerView(
                 answerModel: answerModel,
                 cubit: cubit,
-                soundCubit: soundCubit, checkActiveCubit: checkActiveCubit,
+                soundCubit: soundCubit,
+                checkActiveCubit: checkActiveCubit,
               ),
               if (!cubit.isGeneralComment)
-                TeacherNoteView(
-                  imagePickerCubit: imageCubit,
-                  answerModel: answerModel,
-                  cubit: cubit,
-                  noteController: noteController,
-                  onChange: (String? text) {
-                    if (text != null) {
-                      cubit.listAnswer![cubit.listAnswer!.indexOf(answerModel)]
-                          .newTeacherNote = text;
-                    }
-                  },
-                  onOpenFile: () async {
-                    await imageCubit.pickImage(answerModel,checkActiveCubit, cubit);
-                  }, onOpenMic: () {
-                    //TODO: record in here
-                  // RecordService.instance.start();
-                  // showDialog(
-                  //     context: context,
-                  //     builder: (context) =>  RecordDialog(stop: () async {
-                  //       Navigator.of(context).pop();
-                  //       await RecordService.instance.stop();
-                  //       RecordService.instance.dispose();
-                  //     }));
-                }, type: 'single', checkActiveCubit: checkActiveCubit,
-                )
+                BlocProvider(
+                    create: (context) => DropdownCubit(),
+                    child: BlocBuilder<DropdownCubit, int>(
+                      builder: (c, state) => Stack(
+                        children: [
+                          Container(
+                              alignment: Alignment.centerLeft,
+                              child: AnimatedCrossFade(
+                                  firstChild: CollapseTeacherNote(
+                                    onPress: () {
+                                      BlocProvider.of<DropdownCubit>(c).update();
+                                    },
+                                    state: state,
+                                  ),
+                                  secondChild: Column(
+                                    children: [
+                                      CollapseTeacherNote(
+                                        onPress: () {
+                                          BlocProvider.of<DropdownCubit>(c)
+                                              .update();
+                                        },
+                                        state: state,
+                                      ),
+                                      TeacherNoteView(
+                                        imagePickerCubit: imageCubit,
+                                        answerModel: answerModel,
+                                        cubit: cubit,
+                                        noteController: noteController,
+                                        onChange: (String? text) {
+                                          if (text != null) {
+                                            cubit.listAnswer![cubit.listAnswer!.indexOf(answerModel)]
+                                                .newTeacherNote = text;
+                                          }
+                                        },
+                                        onOpenFile: () async {
+                                          await imageCubit.pickImage(
+                                              answerModel, checkActiveCubit, cubit);
+                                        },
+                                        onOpenMic: () {
+                                          //TODO: record in here
+                                          // RecordService.instance.start();
+                                          // showDialog(
+                                          //     context: context,
+                                          //     builder: (context) =>  RecordDialog(stop: () async {
+                                          //       Navigator.of(context).pop();
+                                          //       await RecordService.instance.stop();
+                                          //       RecordService.instance.dispose();
+                                          //     }));
+                                        },
+                                        type: 'single',
+                                        checkActiveCubit: checkActiveCubit,
+                                      )
+                                    ],
+                                  ),
+                                  crossFadeState: state % 2 == 1
+                                      ? CrossFadeState.showSecond
+                                      : CrossFadeState.showFirst,
+                                  duration: const Duration(
+                                      milliseconds: 100))),
+                        ],
+                      ),
+                    ))
             ]),
           )
         ],

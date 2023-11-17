@@ -144,14 +144,18 @@ class GradingCubit extends Cubit<int> {
 
   int getBTVNResultCount(int lessonId, int type) {
     int temp = 0;
+    var stdIds = students!.map((e) => e.userId).toList();
+
+    var listStudentLesson = listStudentLessons!.where((e) => stdIds.contains(e.studentId));
+
     if (type == 1) {
-      for (var i in listStudentLessons!) {
+      for (var i in listStudentLesson) {
         if (i.hw != -2 && i.lessonId == lessonId) {
           temp++;
         }
       }
     } else {
-      for (var i in listStudentLessons!) {
+      for (var i in listStudentLesson) {
         if (i.hw > -1 && i.lessonId == lessonId) {
           temp++;
         }
@@ -162,14 +166,17 @@ class GradingCubit extends Cubit<int> {
 
   int getTestResultCount(int testId, int type) {
     int temp = 0;
+    var stdIds = students!.map((e) => e.userId).toList();
+
+    var listStudentTest = listStudentTests!.where((e) => stdIds.contains(e.studentId));
     if (type == 1) {
-      for (var i in listStudentTests!) {
+      for (var i in listStudentTest) {
         if (i.score != -2 && i.testID == testId) {
           temp++;
         }
       }
     } else {
-      for (var i in listStudentTests!) {
+      for (var i in listStudentTest) {
         if (i.score > -1 && i.testID == testId) {
           temp++;
         }

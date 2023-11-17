@@ -4,7 +4,7 @@ import 'package:internal_sakumi/features/admin/manage_general/dotted_border_butt
 import 'package:internal_sakumi/features/admin/manage_general/list_teacher/alert_checkbox_teacher.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_teacher/alert_new_teacher.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
-import 'package:internal_sakumi/features/admin/manage_general/user_item.dart';
+import 'package:internal_sakumi/features/admin/manage_general/teacher_item.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
@@ -24,7 +24,7 @@ class ManageGeneralListTeacher extends StatelessWidget {
       ),
     ) : Column(
       children: [
-        ...(cubit.listTeacher!).map((e) => UserItem(e.name, e.phone, e.url)).toList(),
+        ...(cubit.listTeacher!).map((e) => TeacherItem(teacher: e,cubit: cubit)).toList(),
         SizedBox(height: Resizable.padding(context, 5)),
         if(cubit.listTeacher!.isNotEmpty || cubit.canAdd == true)
           Material(

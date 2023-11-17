@@ -5,6 +5,7 @@ import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
+import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
@@ -14,6 +15,7 @@ class ManageGeneralCubit extends Cubit<int> {
   List<ClassModel>? listClassNow;
   List<TeacherModel>? listTeacher;
   List<StudentModel>? listStudent;
+  List<TeacherClassModel>? listTeacherClass;
   List<StudentClassModel>? listStudentClass;
   List<CourseModel>? listAllCourse;
   int selector = -1;
@@ -21,6 +23,8 @@ class ManageGeneralCubit extends Cubit<int> {
   List<bool> listStateClassStatus = [true, true, false, false];
   List<bool> listClassType = [true, true];
   bool canAdd = true;
+
+  List<String> listTeacherClassStatus = ["InProgress","Remove"];
 
   List<String> listStudentStatusMenu = [
     "Completed",
@@ -201,6 +205,7 @@ class ManageGeneralCubit extends Cubit<int> {
 
   loadTeacherInClass(int selector) async {
     listTeacher = null;
+    listTeacherClass = null;
     var listAllTeacherInClass =
         await FireBaseProvider.instance.getAllTeacherInClassByClassId(selector);
     List<int> listTeacherId = [];
@@ -208,6 +213,17 @@ class ManageGeneralCubit extends Cubit<int> {
       listTeacherId.add(i.userId);
     }
     listTeacher = await FireBaseProvider.instance.getListTeacherByListId(listTeacherId);
+    listTeacherClass = listAllTeacherInClass;
+    emit(state + 2);
+  }
+
+  loadAfterRemoveTeacher(TeacherModel teacher) {
+    for (int i = 0; i < listTeacher!.length; i++) {
+      if (teacher.userId == listTeacher![i].userId) {
+        listTeacher!.remove(listTeacher![i]);
+        break;
+      }
+    }
     emit(state + 2);
   }
 
@@ -244,6 +260,17 @@ class ManageGeneralCubit extends Cubit<int> {
       }
     }
     return studentClassModel!;
+  }
+
+  TeacherClassModel getTeacherClass(int teacherId) {
+    TeacherClassModel? teacherClassModel;
+    for (var i in listTeacherClass!) {
+      if (i.userId == teacherId) {
+        teacherClassModel = i;
+        break;
+      }
+    }
+    return teacherClassModel!;
   }
 }
 

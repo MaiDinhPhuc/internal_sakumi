@@ -1,19 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/configs/app_configs.dart';
-import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
 import 'package:internal_sakumi/features/teacher/grading/question_view.dart';
 import 'package:internal_sakumi/features/teacher/grading/sound/sound_cubit.dart';
-import 'package:internal_sakumi/features/teacher/grading/sound/sounder.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
-
 import 'answer_view/answer_info_view.dart';
 import 'answer_view/input_form/teacher_note_view.dart';
 import 'answer_view/pick_image_cubit.dart';
@@ -51,8 +44,6 @@ class DetailGradingView extends StatelessWidget {
                                   Container(
                                       alignment: Alignment.centerLeft,
                                       padding: EdgeInsets.symmetric(
-                                          vertical:
-                                              Resizable.padding(context, 10),
                                           horizontal:
                                               Resizable.padding(context, 10)),
                                       decoration: BoxDecoration(
@@ -73,6 +64,7 @@ class DetailGradingView extends StatelessWidget {
                                             state: state,
                                           ),
                                           secondChild: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               CollapseQuestion(
                                                 onPress: () {
@@ -84,14 +76,16 @@ class DetailGradingView extends StatelessWidget {
                                               Container(
                                                 height: Resizable.size(context, 1),
                                                 margin: EdgeInsets.symmetric(
-                                                    vertical: Resizable.padding(context, 15)),
+                                                    vertical: Resizable.padding(context, 5)),
                                                 color: const Color(0xffD9D9D9),
                                               ),
+                                              SizedBox(height: Resizable.padding(context, 10)),
                                               QuestionView(
                                                   questionModel:
                                                       cubit.getQuestion(),
                                                   soundCubit: soundCubit,
-                                                  cubit: cubit)
+                                                  cubit: cubit),
+                                              SizedBox(height: Resizable.padding(context, 10)),
                                             ],
                                           ),
                                           crossFadeState: state % 2 == 1

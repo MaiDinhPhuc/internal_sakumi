@@ -6,6 +6,7 @@ import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/detail_grading_data_model.dart';
+import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/question_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';

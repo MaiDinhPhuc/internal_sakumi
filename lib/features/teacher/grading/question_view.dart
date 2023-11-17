@@ -26,15 +26,22 @@ class QuestionView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (questionModel.instruction != "")
-            Text(
+            Padding(padding: EdgeInsets.only(bottom: Resizable.padding(context, 5)),child: Text(
               questionModel.instruction,
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 17)),
-            ),
+            )),
           if (question != "")
             Text(
               question,
+              style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: Resizable.font(context, 17)),
+            ),
+          if (questionModel.paragraph != "")
+            Text(
+              questionModel.paragraph ,
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 17)),

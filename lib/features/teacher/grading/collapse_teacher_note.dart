@@ -2,14 +2,14 @@ import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
-class CollapseQuestion extends StatelessWidget {
-  const CollapseQuestion({Key? key, required this.onPress, required this.state}) : super(key: key);
+class CollapseTeacherNote extends StatelessWidget {
+  const CollapseTeacherNote({super.key, required this.onPress, required this.state});
   final Function() onPress;
   final int state;
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-      Text(AppText.titleQuestion.text,
+    return Row( children: [
+      Text(AppText.txtTeacherNote.text,
           style: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: Resizable.font(context, 18))),
