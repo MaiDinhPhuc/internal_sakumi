@@ -205,17 +205,19 @@ class DataCubit extends Cubit<int> {
         .getLessonsByCourseId(classModel.courseId);
     var stdClasses = await FireBaseProvider.instance
         .getStudentClassInClass(classModel.classId);
-    var listStdIds = stdClasses.map((e) => e.userId).toList();
-    var students =
-        await FireBaseProvider.instance.getAllStudentInFoInClass(listStdIds);
+    var lessonResults = await FireBaseProvider.instance
+        .getLessonResultByClassId(classModel.classId);
     var stdLessons = await FireBaseProvider.instance
         .getAllStudentLessonsInClass(classModel.classId);
+    var listStdIds = stdClasses.map((e) => e.userId).toList();
+    var students =
+    await FireBaseProvider.instance.getAllStudentInFoInClass(listStdIds);
     var listTest = await FireBaseProvider.instance
         .getListTestByCourseId(classModel.courseId);
     var testResults =
-        await FireBaseProvider.instance.getListTestResult(classModel.classId);
+    await FireBaseProvider.instance.getListTestResult(classModel.classId);
     var stdTests =
-        await FireBaseProvider.instance.getAllStudentTest(classModel.classId);
+    await FireBaseProvider.instance.getAllStudentTest(classModel.classId);
     classes![classes!.indexOf(classes!.firstWhere(
         (e) => e.classModel.classId == classModel.classId))] = classes![classes!
             .indexOf(classes!
@@ -224,6 +226,8 @@ class DataCubit extends Cubit<int> {
             stdTests: stdTests,
             listTest: listTest,
             testResults: testResults,
+            lessonResults: lessonResults,
+            lessonCount: lessonResults.length,
             listLesson: lessons,
             stdClasses: stdClasses,
             stdLessons: stdLessons,
