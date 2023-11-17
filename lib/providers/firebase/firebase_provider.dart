@@ -946,7 +946,15 @@ class FireBaseProvider extends NetworkProvider {
       "Moved"
     ];
     var listStdClass = (await FireBaseProvider.instance.getStudentClassInClass(classId)).where((e) => !listStatus.contains(e.classStatus)).toList();
-    var listStdId = listStdClass.map((e) => e.userId).toList();
+    var listStdLesson = (await FireBaseProvider.instance.getAllStudentLessonInLesson(classId, lessonId)).where((e) => e.hw != -2).toList();
+    var listTemp1 = listStdClass.map((e) => e.userId).toList();
+    var listTemp2 = listStdLesson.map((e) => e.studentId).toList();
+    List<int> listStdId = [];
+    for (int element in listTemp1) {
+      if (listTemp2.contains(element)) {
+        listStdId.add(element);
+      }
+    }
     String token = courseModel.token;
     List<QuestionModel> listQuestions = [];
     if (type == "type=test") {
