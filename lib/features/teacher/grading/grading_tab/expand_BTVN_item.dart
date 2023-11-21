@@ -36,13 +36,14 @@ class ExpandBTVNItem extends StatelessWidget {
                     fontSize: Resizable.font(context, 17))),
             button: Container(),
             dropdown: Container()),
+        SizedBox(height:  Resizable.padding(context, 10)),
         ...cubit.students!.map((e) => Container(
             alignment: Alignment.centerLeft,
             margin:
-                EdgeInsets.symmetric(vertical: Resizable.padding(context, 8)),
+                EdgeInsets.only(bottom: Resizable.padding(context, 5)),
             padding: EdgeInsets.symmetric(
                 horizontal: Resizable.padding(context, 15),
-                vertical: Resizable.padding(context, 8)),
+                vertical: Resizable.padding(context, 5)),
             decoration: BoxDecoration(
                 border: Border.all(
                     width: Resizable.size(context, 1),

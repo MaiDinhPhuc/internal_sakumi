@@ -29,11 +29,3 @@ class ClassModel {
         classType: data['class_type']??0);
   }
 }
-// class_id
-// course_id
-// class_code
-// description
-// start_time
-// end_time
-// note
-//class_type

@@ -7,20 +7,28 @@ import 'package:internal_sakumi/features/admin/manage_general/manage_general_cub
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/title_widget.dart';
 
-
 class ManageGeneralListClass extends StatelessWidget {
   final ManageGeneralCubit cubit;
   const ManageGeneralListClass(this.cubit, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          TitleWidget(AppText.titleListClass.text.toUpperCase()),
-          ...(cubit.listClassNow!)
-              .map(
-                (e) => Row(
+    return Column(
+      children: [
+        TitleWidget(AppText.titleListClass.text.toUpperCase()),
+        Padding(
+            padding: EdgeInsets.all(Resizable.padding(context, 10)),
+            child: DottedBorderButton(
+                AppText.btnAddNewClass.text.toUpperCase(),
+                isManageGeneral: true, onPressed: () {
+              alertNewClass(context, false, null, null);
+            })),
+        Expanded(child: SingleChildScrollView(
+          child: Column(
+            children: [
+              ...(cubit.listClassNow!)
+                  .map(
+                    (e) => Row(
                   children: [
                     Container(
                       color: e.classId == cubit.selector
@@ -51,38 +59,39 @@ class ManageGeneralListClass extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(
                                     Resizable.size(context, 5)),
                                 onTap: (cubit.listTeacher == null ||
-                                        cubit.listStudent == null)
+                                    cubit.listStudent == null)
                                     ? () {}
                                     : () {
-                                        cubit.selectedClass(e.classId);
-                                      },
+                                  cubit.selectedClass(e.classId);
+                                },
                                 child: Padding(
                                     padding: EdgeInsets.symmetric(
                                         vertical:
-                                            Resizable.padding(context, 10),
+                                        Resizable.padding(context, 10),
                                         horizontal:
-                                            Resizable.padding(context, 15)),
+                                        Resizable.padding(context, 15)),
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           e.classCode.toUpperCase(),
                                           style: TextStyle(
                                               fontWeight: FontWeight.w700,
                                               fontSize:
-                                                  Resizable.font(context, 17)),
+                                              Resizable.font(context, 17)),
                                         ),
                                         InkWell(
                                             borderRadius: BorderRadius.circular(
                                                 Resizable.size(context, 100)),
                                             onTap: () {
-                                              alertNewClass(context, true, e, cubit);
+                                              alertNewClass(
+                                                  context, true, e, cubit);
                                             },
                                             child: Image.asset(
                                                 'assets/images/ic_edit.png',
                                                 height:
-                                                    Resizable.size(context, 20),
+                                                Resizable.size(context, 20),
                                                 width: Resizable.size(
                                                     context, 20)))
                                       ],
@@ -90,18 +99,12 @@ class ManageGeneralListClass extends StatelessWidget {
                   ],
                 ),
               )
-              .toList(),
-          Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: Resizable.padding(context, 10)),
-              child: DottedBorderButton(
-                  AppText.btnAddNewClass.text.toUpperCase(),
-                  isManageGeneral: true, onPressed: () {
-                alertNewClass(context, false, null, null);
-              })),
-          SizedBox(height: Resizable.size(context, 50))
-        ],
-      ),
+                  .toList(),
+              SizedBox(height: Resizable.size(context, 50))
+            ],
+          ),
+        ))
+      ],
     );
   }
 }

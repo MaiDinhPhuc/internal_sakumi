@@ -46,7 +46,7 @@ class AdminAppBarItem extends StatelessWidget {
                   switch (id) {
                     case 0:
                       await Navigator.pushNamed(context,
-                          '${Routes.admin}/manageStudents');
+                          '${Routes.admin}/searchGeneral');
                       break;
                     case 1:
                       await Navigator.pushNamed(context,

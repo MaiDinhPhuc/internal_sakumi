@@ -29,7 +29,7 @@ class ManageGeneralScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: Resizable.size(context, 20)),
-                const CustomBackButton(),
+                const CustomBackHomeButton(),
                 SizedBox(height: Resizable.size(context, 20)),
                 if(s!=-1)
                   Row(

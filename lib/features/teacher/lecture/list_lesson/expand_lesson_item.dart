@@ -8,7 +8,8 @@ import 'package:internal_sakumi/widget/note_widget.dart';
 class ExpandLessonItem extends StatelessWidget {
   final int index;
   final LessonTabCubit cubit;
-  const ExpandLessonItem(this.index, {Key? key, required this.cubit}) : super(key: key);
+  const ExpandLessonItem(this.index, {Key? key, required this.cubit})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +18,12 @@ class ExpandLessonItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(AppText.titleNoteFromSupport.text,
+          Text(AppText.txtNoteTeacherForSp.text,
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 19))),
-        NoteWidget(cubit.listSpNote![index]!.toString()),
-          Text(AppText.titleNoteFromAnotherTeacher.text,
+          NoteWidget(cubit.listSpNote![index]!.toString()),
+          Text(AppText.txtNoteTeacherForAnotherSs.text,
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 19))),
@@ -63,28 +64,31 @@ class ExpandLessonItem extends StatelessWidget {
                     fontSize: Resizable.font(context, 17)),
               )),
           Padding(
-                  padding: EdgeInsets.symmetric(
-                      vertical: Resizable.padding(context, 8)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      for(int i = 0; i<cubit.listDetailLesson![index]!['names'].length; i++ )
-                       TrackStudentItemRowLayout(
-                              name: Text(
-                                cubit.listDetailLesson![index]!['names'][i],
-                                style: TextStyle(
-                                    fontSize: Resizable.font(context, 20),
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              attendance: TrackingItem(
-                                  cubit.listDetailLesson![index]!['attendance'][i]),
-                              submit:  TrackingItem(
-                                  cubit.listDetailLesson![index]!['hw'][i],
-                                  isSubmit: true),
-                              note:  NoteWidget(cubit.listDetailLesson![index]!['note'][i]))
-                    ],
-                  ),
-                )
+            padding:
+                EdgeInsets.symmetric(vertical: Resizable.padding(context, 8)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                for (int i = 0;
+                    i < cubit.listDetailLesson![index]!['names'].length;
+                    i++)
+                  TrackStudentItemRowLayout(
+                      name: Text(
+                        cubit.listDetailLesson![index]!['names'][i],
+                        style: TextStyle(
+                            fontSize: Resizable.font(context, 20),
+                            fontWeight: FontWeight.w500),
+                      ),
+                      attendance: TrackingItem(
+                          cubit.listDetailLesson![index]!['attendance'][i]),
+                      submit: TrackingItem(
+                          cubit.listDetailLesson![index]!['hw'][i],
+                          isSubmit: true),
+                      note: NoteWidget(
+                          cubit.listDetailLesson![index]!['note'][i]))
+              ],
+            ),
+          )
         ],
       ),
     );

@@ -81,7 +81,7 @@ class FireBaseProvider extends NetworkProvider {
               BlocProvider.of<DataCubit>(context).loadClass();
             }
           }
-          Navigator.pushReplacementNamed(context, '${Routes.admin}/manageStudents');
+          Navigator.pushReplacementNamed(context, '${Routes.admin}/searchGeneral');
         }
         if (user.role == "teacher") {
           TeacherModel teacherModel =
@@ -179,7 +179,7 @@ class FireBaseProvider extends NetworkProvider {
           user.role == "teacher") {
         debugPrint("======== ${user.role} ==========");
         if (user.role == "admin") {
-          Navigator.pushReplacementNamed(context, '${Routes.admin}/manageStudents');
+          Navigator.pushReplacementNamed(context, '${Routes.admin}/searchGeneral');
         }
         if (user.role == "teacher") {
           Navigator.pushReplacementNamed(context, Routes.teacher);

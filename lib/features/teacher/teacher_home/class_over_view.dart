@@ -79,19 +79,49 @@ class ClassOverview extends StatelessWidget {
           radius: Resizable.size(context, 15),
           fontSize: Resizable.font(context, 14),
         ),
-        widgetEvaluate: Container(
-          width: Resizable.size(context, 20),
-          height: Resizable.size(context, 20),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              color: primaryColor,
-              borderRadius: BorderRadius.circular(Resizable.size(context, 5))),
-          child: Text('A', //TODO ADD ALGORITHM
-              style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  color: Colors.white,
-                  fontSize: Resizable.font(context, 30))),
-        ),
+        widgetEvaluate: (model.classModel.classStatus == "Completed" &&
+                model.stdClasses != null)
+            ? Text("${getPercentUpSale(model)}%",
+                style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    color: primaryColor,
+                    fontSize: Resizable.font(context, 30)))
+            : Container(
+                width: Resizable.size(context, 20),
+                height: Resizable.size(context, 20),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: primaryColor,
+                    borderRadius:
+                        BorderRadius.circular(Resizable.size(context, 5))),
+                child: Text('A',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
+                        fontSize: Resizable.font(context, 30))),
+              ),
         widgetStatus: Container());
+  }
+
+  double getPercentUpSale(ClassModel2 classModel2) {
+    if (classModel2.stdClasses == null) {
+      return 0;
+    }
+
+    double upNumber = 0;
+    int temp = 0;
+    for (var i in classModel2.stdClasses!) {
+      if (i.classStatus == "UpSale" || i.classStatus == "Force") {
+        upNumber++;
+      }
+      if((i.classStatus == "Completed" ||
+          i.classStatus == "InProgress" ||
+          i.classStatus == "ReNew" ||
+          i.classStatus == "UpSale" ||
+          i.classStatus == "Force")){
+        temp++;
+      }
+    }
+    return ((upNumber / temp) * 100).roundToDouble();
   }
 }

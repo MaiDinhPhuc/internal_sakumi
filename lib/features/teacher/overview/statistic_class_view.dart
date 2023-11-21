@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/overview/class_overview_cubit.dart';
 import 'package:internal_sakumi/features/teacher/overview/overview_chart.dart';
@@ -126,7 +127,7 @@ class StatisticClassView extends StatelessWidget {
                 color: const Color(0xffE0E0E0),
                 width: Resizable.size(context, 0.5),
               )),
-          child: Column(
+          child: cubit.listStdClass == null || cubit.classModel!.classStatus != "Completed" ? Column(
             children: [
               Align(
                 alignment: Alignment.topLeft,
@@ -138,9 +139,27 @@ class StatisticClassView extends StatelessWidget {
               ),
               Expanded(
                   child: Center(
-                      child: Text('A', //TODO ADD EVALUATE
+                      child: Text('A',
                           style: TextStyle(
                               color: const Color(0xffFFD600),
+                              fontWeight: FontWeight.w600,
+                              fontSize: Resizable.font(context, 40)))))
+            ],
+          ) : Column(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(AppText.txtUpPercent.text,
+                    style: TextStyle(
+                        color: const Color(0xff757575),
+                        fontWeight: FontWeight.w600,
+                        fontSize: Resizable.font(context, 20))),
+              ),
+              Expanded(
+                  child: Center(
+                      child: Text("${cubit.getPercentUpSale()}%",
+                          style: TextStyle(
+                              color: primaryColor,
                               fontWeight: FontWeight.w600,
                               fontSize: Resizable.font(context, 40)))))
             ],

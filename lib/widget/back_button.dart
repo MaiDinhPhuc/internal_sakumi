@@ -46,7 +46,7 @@ class CustomBackButton extends StatelessWidget {
                     primaryColor
                         .withAlpha(30)),
                 onTap: ()  {
-                  Navigator.pop(context);
+                  Navigator.pushReplacementNamed(context, '${Routes.admin}/searchGeneral');
                 },
                 child: Container(
                   margin:

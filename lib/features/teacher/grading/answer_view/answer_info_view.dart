@@ -70,7 +70,7 @@ class AnswerInfoView extends StatelessWidget {
                 ),
                 color: Colors.white),
             child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
               StudentAnswerView(
                 answerModel: answerModel,
                 cubit: cubit,
@@ -81,64 +81,61 @@ class AnswerInfoView extends StatelessWidget {
                 BlocProvider(
                     create: (context) => DropdownCubit(),
                     child: BlocBuilder<DropdownCubit, int>(
-                      builder: (c, state) => Stack(
-                        children: [
-                          Container(
-                              alignment: Alignment.centerLeft,
-                              child: AnimatedCrossFade(
-                                  firstChild: CollapseTeacherNote(
+                      builder: (c, state) => Container(
+                          alignment: Alignment.centerLeft,
+                          child: AnimatedCrossFade(
+                              firstChild: CollapseTeacherNote(
+                                onPress: () {
+                                  BlocProvider.of<DropdownCubit>(c).update();
+                                },
+                                state: state,
+                              ),
+                              secondChild: Column(
+                                children: [
+                                  CollapseTeacherNote(
                                     onPress: () {
-                                      BlocProvider.of<DropdownCubit>(c).update();
+                                      BlocProvider.of<DropdownCubit>(c)
+                                          .update();
                                     },
                                     state: state,
                                   ),
-                                  secondChild: Column(
-                                    children: [
-                                      CollapseTeacherNote(
-                                        onPress: () {
-                                          BlocProvider.of<DropdownCubit>(c)
-                                              .update();
-                                        },
-                                        state: state,
-                                      ),
-                                      TeacherNoteView(
-                                        imagePickerCubit: imageCubit,
-                                        answerModel: answerModel,
-                                        cubit: cubit,
-                                        noteController: noteController,
-                                        onChange: (String? text) {
-                                          if (text != null) {
-                                            cubit.listAnswer![cubit.listAnswer!.indexOf(answerModel)]
-                                                .newTeacherNote = text;
-                                          }
-                                        },
-                                        onOpenFile: () async {
-                                          await imageCubit.pickImage(
-                                              answerModel, checkActiveCubit, cubit);
-                                        },
-                                        onOpenMic: () {
-                                          //TODO: record in here
-                                          // RecordService.instance.start();
-                                          // showDialog(
-                                          //     context: context,
-                                          //     builder: (context) =>  RecordDialog(stop: () async {
-                                          //       Navigator.of(context).pop();
-                                          //       await RecordService.instance.stop();
-                                          //       RecordService.instance.dispose();
-                                          //     }));
-                                        },
-                                        type: 'single',
-                                        checkActiveCubit: checkActiveCubit,
-                                      )
-                                    ],
-                                  ),
-                                  crossFadeState: state % 2 == 1
-                                      ? CrossFadeState.showSecond
-                                      : CrossFadeState.showFirst,
-                                  duration: const Duration(
-                                      milliseconds: 100))),
-                        ],
-                      ),
+                                  TeacherNoteView(
+                                    imagePickerCubit: imageCubit,
+                                    answerModel: answerModel,
+                                    cubit: cubit,
+                                    noteController: noteController,
+                                    onChange: (String? text) {
+                                      if (text != null) {
+                                        cubit
+                                            .listAnswer![cubit.listAnswer!
+                                                .indexOf(answerModel)]
+                                            .newTeacherNote = text;
+                                      }
+                                    },
+                                    onOpenFile: () async {
+                                      await imageCubit.pickImage(
+                                          answerModel, checkActiveCubit, cubit);
+                                    },
+                                    onOpenMic: () {
+                                      //TODO: record in here
+                                      // RecordService.instance.start();
+                                      // showDialog(
+                                      //     context: context,
+                                      //     builder: (context) =>  RecordDialog(stop: () async {
+                                      //       Navigator.of(context).pop();
+                                      //       await RecordService.instance.stop();
+                                      //       RecordService.instance.dispose();
+                                      //     }));
+                                    },
+                                    type: 'single',
+                                    checkActiveCubit: checkActiveCubit,
+                                  )
+                                ],
+                              ),
+                              crossFadeState: state % 2 == 1
+                                  ? CrossFadeState.showSecond
+                                  : CrossFadeState.showFirst,
+                              duration: const Duration(milliseconds: 100))),
                     ))
             ]),
           )

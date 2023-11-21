@@ -26,7 +26,7 @@ class TestCubit extends Cubit<int> {
   List<StudentModel>? listStudents;
 
   load(ClassModel2 model, DataCubit dataCubit) async {
-    if (model.students == null) {
+    if (model.stdTests == null) {
       classModel = model.classModel;
       emit(state + 1);
       dataCubit.loadTestInfoOfClass(model.classModel);

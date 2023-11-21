@@ -20,9 +20,10 @@ class TestGradingItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(
-          horizontal: Resizable.padding(context, 80),
-          vertical: Resizable.padding(context, 5)),
+      margin: EdgeInsets.only(
+          left: Resizable.padding(context, 80),
+          right: Resizable.padding(context, 80),
+          bottom: Resizable.padding(context, 5)),
       child: BlocProvider(
           create: (context) => DropdownCubit(),
           child: BlocBuilder<DropdownCubit, int>(
@@ -32,7 +33,7 @@ class TestGradingItem extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     padding: EdgeInsets.symmetric(
                         horizontal: Resizable.padding(context, 15),
-                        vertical: Resizable.padding(context, 8)),
+                        vertical: Resizable.padding(context, 5)),
                     decoration: BoxDecoration(
                         border: Border.all(
                             width: Resizable.size(context, 1),

@@ -99,7 +99,7 @@ class StudentInfoItem extends StatelessWidget {
                     child: Material(
                       color: Colors.transparent,
                       child: InkWell(
-                          onTap: () =>alertEditStudentProfile(c,cubit.listData[index], index),
+                          onTap: () => alertEditStudentProfile(c,cubit.listData[index], index),
                           borderRadius:
                           BorderRadius.circular(
                               Resizable.size(

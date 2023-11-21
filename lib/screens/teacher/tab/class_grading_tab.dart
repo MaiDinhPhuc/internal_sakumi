@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/app_bar/class_appbar.dart';
 import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
-import 'package:internal_sakumi/features/teacher/grading/detail_grading_view.dart';
-import 'package:internal_sakumi/features/teacher/grading/drop_down_grading_widget.dart';
 import 'package:internal_sakumi/features/teacher/grading/grading_tab/filter_grading_tab.dart';
 import 'package:internal_sakumi/features/teacher/grading/grading_tab/grading_cubit.dart';
-import 'package:internal_sakumi/features/teacher/grading/grading_tab/grading_item_layout.dart';
 import 'package:internal_sakumi/features/teacher/grading/grading_tab/list_grading_item.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
-import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:shimmer/shimmer.dart';
@@ -69,26 +64,14 @@ class ClassGradingTab extends StatelessWidget {
                           child: Column(
                             children: [
                               ...shimmerList.map((e) => Padding(
-                                  padding: EdgeInsets
-                                      .symmetric(
-                                      horizontal: Resizable
-                                          .padding(
-                                          context,
-                                          150)),
-                                  child:
-                                  const ItemShimmer()))
+                                  padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 80)),
+                                  child: const ItemShimmer()))
                             ],
                           )),
                     )
                         :Column(
                       children: [
                         FilterGradingTab(cubit: cubit),
-                        Padding(padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 80)),
-                            child: GradingItemLayout(
-                            title: Padding(padding: EdgeInsets.only(left:Resizable.padding(context, 15) ),child: Text(AppText.titleSubject.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17)))),
-                            receivedNUmber: Text(AppText.textNumberResultReceive.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17))),
-                            gradingNumber: Text(AppText.txtGradingNumber.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17))),
-                            button: Container(), dropdown: Container())),
                         ListGradingItem(cubit: cubit)
                       ],
                     )

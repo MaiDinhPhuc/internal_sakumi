@@ -270,10 +270,26 @@ enum AppText {
   txtGradingNumber,
   txtDoingTime,
   txtPoint,
-  txtTeacherNote
+  txtTeacherNote,
+  txtNotGradingItem,
+  txtNoteTeacherForSp,
+  txtNoteTeacherForAnotherSs,
+  titleSearch,
+  titleSearchGeneral,
+  txtTeacher,
+  txtClass,
+  txtUpPercent
 }
 
 Map<AppText, String> texts = {
+  AppText.txtUpPercent: 'Tỉ lệ lên kỳ',
+  AppText.txtClass: 'Lớp học',
+  AppText.txtTeacher: 'Giáo viên',
+  AppText.titleSearchGeneral: 'Tìm kiếm chung',
+  AppText.titleSearch: 'Tìm kiếm',
+  AppText.txtNoteTeacherForAnotherSs: 'Nhận xét của Sensei gửi cho Sensei tiếp theo',
+  AppText.txtNoteTeacherForSp: 'Nhận xét của Sensei gửi cho Support',
+  AppText.txtNotGradingItem: 'Bạn chưa có bài nào để chấm, có thể chọn lại filter để show các bài ... ',
   AppText.txtTeacherNote: 'Nhận xét của Giáo viên',
   AppText.txtDoingTime: 'Thời gian làm bài',
   AppText.txtPoint: 'Điểm số',

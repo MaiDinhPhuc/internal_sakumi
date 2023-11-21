@@ -30,6 +30,30 @@ class ClassOverviewCubit extends Cubit<int> {
     "Remove"
   ];
 
+
+  double getPercentUpSale() {
+    if (listStdClass == null) {
+      return 0;
+    }
+
+    double upNumber = 0;
+    int temp = 0;
+    for (var i in listStdClass!) {
+      if (i.classStatus == "UpSale" || i.classStatus == "Force") {
+        upNumber++;
+      }
+      if((i.classStatus == "Completed" ||
+          i.classStatus == "InProgress" ||
+          i.classStatus == "ReNew" ||
+          i.classStatus == "UpSale" ||
+          i.classStatus == "Force")){
+        temp++;
+      }
+    }
+    return ((upNumber / temp) * 100).roundToDouble();
+  }
+
+
   loadFirst(ClassModel2 classModel2, DataCubit dataCubit) async {
     if(classModel2.stdLessons == null){
       classModel = classModel2.classModel;
