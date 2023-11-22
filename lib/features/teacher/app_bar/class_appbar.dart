@@ -52,7 +52,7 @@ class HeaderTeacher extends StatelessWidget {
                           ? MainAxisAlignment.spaceBetween
                           : MainAxisAlignment.center,
                       children: [
-                        index == -1 || role == "admin"
+                        (index == -1 || role == "admin") && role != "teacher"
                             ? const CustomBackHomeButton()
                             : const TeacherHomeButton(),
                         Expanded(child: Container()),
