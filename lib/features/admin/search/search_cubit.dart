@@ -24,10 +24,11 @@ class SearchCubit extends Cubit<int>{
   List<ClassModel> classesNow = [];
 
   load() async{
+    classes = await FireBaseProvider.instance.getListClassNotRemove();
+    emit(state+1);
     users = await FireBaseProvider.instance.getAllUser();
     students = await FireBaseProvider.instance.getAllStudent();
     teachers = await FireBaseProvider.instance.getAllTeacher();
-    classes = await FireBaseProvider.instance.getListClassNotRemove();
     emit(state+1);
   }
 

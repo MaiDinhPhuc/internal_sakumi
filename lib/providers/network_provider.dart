@@ -7,6 +7,7 @@ import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/detail_grading_data_model.dart';
+import 'package:internal_sakumi/model/feedback_model.dart';
 import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
@@ -185,6 +186,8 @@ abstract class NetworkProvider {
   Future<void> updateCourseInfo(CourseModel courseModel);
 
   Future<TeacherHomeClass> getDataForManageClassTab();
+
+  Future<List<FeedBackModel>> getListFeedBack(String status);
 
 
   //master

@@ -346,6 +346,17 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<void> updateFeedBackStatus(
+      int classId, int date, String newStatus) async {
+    await db
+        .collection('feedbacks')
+        .doc("feedback_classId_${classId}_$date")
+        .update({
+      'status': newStatus,
+    });
+    debugPrint("==========>update db for \"feedbacks\"");
+  }
+
   Future<void> updateTimekeeping(
       int userId, int lessonId, int classId, int attendId) async {
     await db
@@ -806,6 +817,16 @@ class FireStoreDb {
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllLessonNotBTVN ${snapshot.size}");
 
     // debugPrint("==========>get db from \"teacher_class\": ${snapshot.docs.length}");
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getListFeedBack(String status) async {
+    final snapshot =
+    await db.collection("feedbacks").where('status', isEqualTo: status).get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListFeedBack ${snapshot.size}");
+
     return snapshot;
   }
 

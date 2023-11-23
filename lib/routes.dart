@@ -154,7 +154,7 @@ Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
 });
 var manageFeedbacksHandler =
 Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return const ManageFeedBacksScreen();
+  return ManageFeedBacksScreen();
 });
 var lessonsHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
