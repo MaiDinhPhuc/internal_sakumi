@@ -33,9 +33,26 @@ class FeedBackCubit extends Cubit<int> {
   List<String> listStatusCheck = ["unread"];
 
   loadData() async {
-    courses = await FireBaseProvider.instance.getAllCourse();
-    listFeedBack =
+    courses ??= await FireBaseProvider.instance.getAllCourse();
+    listFeedBack ??=
         await FireBaseProvider.instance.getListFeedBack(listStatusCheck.first);
+    var listStdId =
+    (getFeedBack().where((e) => e.userId != -1)).map((e) => e.userId).toList();
+    List<int> listClassId = [];
+    for (var i in getFeedBack()) {
+      if (!listClassId.contains(i.classId)) {
+        listClassId.add(i.classId);
+      }
+    }
+    List<int> listClassTemp = listClassId
+        .where((element) => !this.listClassId.contains(element))
+        .toList();
+    List<int> listStdTemp = listStdId
+        .where((element) => !this.listStdId.contains(element))
+        .toList();
+    this.listClassId.addAll(listClassTemp);
+    this.listStdId.addAll(listStdTemp);
+    getStudents(listStdTemp, listClassTemp);
     emit(state + 1);
   }
 
@@ -69,23 +86,6 @@ class FeedBackCubit extends Cubit<int> {
     List<FeedBackModel> list = listFeedBack!
         .where((e) => e.category == type && e.status == statusNow)
         .toList();
-    var listStdId =
-        (list.where((e) => e.userId != -1)).map((e) => e.userId).toList();
-    List<int> listClassId = [];
-    for (var i in list) {
-      if (!listClassId.contains(i.classId)) {
-        listClassId.add(i.classId);
-      }
-    }
-    List<int> listClassTemp = listClassId
-        .where((element) => !this.listClassId.contains(element))
-        .toList();
-    List<int> listStdTemp = listStdId
-        .where((element) => !this.listStdId.contains(element))
-        .toList();
-    this.listClassId.addAll(listClassTemp);
-    this.listStdId.addAll(listStdTemp);
-    getStudents(listStdTemp, listClassTemp);
     return list;
   }
 
@@ -167,7 +167,7 @@ class FeedBackCubit extends Cubit<int> {
     var classTemp =
         await FireBaseProvider.instance.getListClassForTeacher(listClassId);
     classes.addAll(classTemp);
-    emit(state + 1);
+    emit(state+1);
   }
 
   filter(String value) {
@@ -179,6 +179,7 @@ class FeedBackCubit extends Cubit<int> {
       case "Đã xử lí":
         statusNow = "done";
     }
+    loadData();
     emit(state + 1);
   }
 

@@ -10,7 +10,6 @@ import 'package:internal_sakumi/features/teacher/grading/detail_grading_view.dar
 import 'package:internal_sakumi/model/navigation/feedback_navigation.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/title_widget.dart';
-import 'package:screenshot/screenshot.dart';
 
 class ManageFeedBacksScreen extends StatelessWidget {
   ManageFeedBacksScreen({super.key}) : cubit = FeedBackCubit(), dropdownCubit = DropdownGradingCubit(AppText.txtUnread.text);
@@ -44,7 +43,7 @@ class ManageFeedBacksScreen extends StatelessWidget {
                         child: BlocBuilder<FeedBackCubit, int>(
                       bloc: cubit,
                       builder: (c, s) {
-                        return cubit.listFeedBack == null || cubit.courses == null
+                        return cubit.listFeedBack == null
                             ? const Center(
                                 child: CircularProgressIndicator(
                                     color: primaryColor),

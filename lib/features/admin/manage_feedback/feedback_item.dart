@@ -99,23 +99,14 @@ class FeedBackItem extends StatelessWidget {
                           fontWeight: FontWeight.w500)))
             ],
           ),
-          BlocBuilder<NoteFeedBackCubit, int>(
-              bloc: noteCubit..loadNote(feedback),
-              builder: (cc, ss) {
-                return Column(
-                  children: [
-                    SizedBox(height: Resizable.padding(context, 10)),
-                    ...noteCubit.listNote.map((e) => Container(child: Text("hihihihihihi",style: TextStyle(color: Colors.black, fontSize: 30),),)),
-                    Material(
-                        color: Colors.transparent,
-                        child: DottedBorderButton(
-                            AppText.txtAddNote.text.toUpperCase(),
-                            isManageGeneral: true, onPressed: () async {
-                          await noteCubit.addNewNote();
-                        }))
-                  ],
-                );
-              })
+          Material(
+              color: Colors.transparent,
+              child: DottedBorderButton(
+                  AppText.txtAddNote.text.toUpperCase(),
+                  isManageGeneral: true, onPressed: () async {
+                noteCubit.list.add("value");
+                print(noteCubit.list);
+              }))
         ]));
   }
 }
