@@ -295,10 +295,12 @@ enum AppText {
   txtFeedBackEmpty,
   txtAddNote,
   txtLetNote,
-  txtTool
+  txtTool,
+  txtNumberIgnore
 }
 
 Map<AppText, String> texts = {
+  AppText.txtNumberIgnore: 'Số câu bỏ qua',
   AppText.txtTool: 'Tool',
   AppText.txtLetNote: 'Hãy điền ghi chú vào đây',
   AppText.txtAddNote: 'Thêm ghi chú',
@@ -542,8 +544,8 @@ Map<AppText, String> texts = {
   AppText.txtPointOfTest: 'Điểm kiểm tra',
   AppText.txtAveragePoint: 'Điểm trung bình',
   AppText.txtDoHomeworks: 'Làm BTVN',
-  AppText.txtNotMark: 'Chưa chấm bài tập về nhà',
-  AppText.txtMarked: 'Đã chấm bài tập về nhà',
+  AppText.txtNotMark: 'Chưa chấm bài',
+  AppText.txtMarked: 'Đã chấm bài ',
   AppText.txtNoNoteForStudent: 'Không có dặn dò dành cho học viên',
   AppText.txtNoNoteForSupport: 'Không có dặn dò dành cho Team Support',
   AppText.txtNoNoteForTeacher: 'Không có dặn dò dành cho Sensei',

@@ -13,13 +13,16 @@ import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
 
+import 'icon_tooltip.dart';
+
 class CollapseOverviewStudentItem extends StatelessWidget {
   final String role;
   final StudentClassModel stdClass;
-  const CollapseOverviewStudentItem(this.stdClass,this.role,{Key? key, required this.cubit, required this.dataCubit}) : super(key: key);
+  const CollapseOverviewStudentItem(this.stdClass, this.role,
+      {Key? key, required this.cubit, required this.dataCubit})
+      : super(key: key);
   final ClassOverviewCubit cubit;
   final DataCubit dataCubit;
-
 
   @override
   Widget build(BuildContext context) {
@@ -29,160 +32,33 @@ class CollapseOverviewStudentItem extends StatelessWidget {
           right: Resizable.padding(context, 15),
         ),
         child: OverviewItemRowLayout(
-            icon: role == "admin" ? BlocProvider(
-              create: (context)=>MenuPopupCubit(),
-              child: BlocBuilder<MenuPopupCubit, int>(
-                builder: (c, s){
-                  var popupCubit = BlocProvider.of<MenuPopupCubit>(c);
-                  return PopupMenuButton(itemBuilder: (context) => [
-                    ...cubit.listStudentStatusMenu.map((e) => PopupMenuItem(
-                        padding: EdgeInsets.zero,
-                        child: BlocProvider(create: (context)=>CheckBoxFilterCubit(stdClass.status == e),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (c,state){
-                          return InkWell(
-                            onTap: (){
-                              Navigator.pop(context);
-                              if(stdClass.status != e){
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => ConfirmChangeStudentStatusOverView(e,stdClass,cubit.students!.firstWhere((e) => e.userId == stdClass.userId),cubit,popupCubit, dataCubit: dataCubit,));
-                              }
-                            },
-                            child: Container(
-                                height: Resizable.size(
-                                    context, 33),
-                                decoration: BoxDecoration(
-                                    color: state? primaryColor: Colors.white
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: Resizable.padding(
-                                      context, 10)),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(vietnameseSubText(e), style: TextStyle(fontSize: Resizable.font(
-                                          context, 15),color:state? Colors.white : Colors.black)),
-                                      if(state)
-                                        const Icon(Icons.check, color: Colors.white,)
-                                    ],
-                                  ),
-                                )
-                            ),
-                          );
-                        }))
-                    ))
-                  ],
-                    child: Tooltip(
-                        padding: EdgeInsets.all(Resizable.padding(context, 10)),
-                        decoration: BoxDecoration(
-                            color: Colors.black,
-                            border: Border.all(
-                                color: Colors.black, width: Resizable.size(context, 1)),
-                            borderRadius:
-                            BorderRadius.circular(Resizable.padding(context, 5))),
-                        richMessage: WidgetSpan(
-                            alignment: PlaceholderAlignment.baseline,
-                            baseline: TextBaseline.alphabetic,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                RichText(
-                                  text: TextSpan(
-                                    text: vietnameseSubText(stdClass.status),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: Resizable.font(context, 18),
-                                        color: Colors.white),
-                                  ),
-                                ),
-                              ],
-                            )),
-                        child: AspectRatio(
-                          aspectRatio: 1,
-                          child: Container(
-                            padding: EdgeInsets.all(Resizable.padding(context, 10)),
-                            decoration: BoxDecoration(
-                                color: stdClass.color,
-                                borderRadius:
-                                BlocProvider.of<DropdownCubit>(context).state % 2 ==
-                                    0
-                                    ? BorderRadius.horizontal(
-                                    left: Radius.circular(
-                                        Resizable.padding(context, 5)))
-                                    : BorderRadius.only(
-                                    topLeft: Radius.circular(
-                                        Resizable.padding(context, 5)))),
-                            child: Image.asset(
-                                'assets/images/ic_${stdClass.icon}.png'),
-                          ),
-                        )),
-                  );
-                },
-              ),
-            ) : Tooltip(
-                padding: EdgeInsets.all(Resizable.padding(context, 10)),
-                decoration: BoxDecoration(
-                    color: Colors.black,
-                    border: Border.all(
-                        color: Colors.black, width: Resizable.size(context, 1)),
-                    borderRadius:
-                    BorderRadius.circular(Resizable.padding(context, 5))),
-                richMessage: WidgetSpan(
-                    alignment: PlaceholderAlignment.baseline,
-                    baseline: TextBaseline.alphabetic,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            text: vietnameseSubText(stdClass.status),
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: Resizable.font(context, 18),
-                                color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    )),
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: Container(
-                    padding: EdgeInsets.all(Resizable.padding(context, 10)),
-                    decoration: BoxDecoration(
-                        color: stdClass.color,
-                        borderRadius:
-                        BlocProvider.of<DropdownCubit>(context).state % 2 ==
-                            0
-                            ? BorderRadius.horizontal(
-                            left: Radius.circular(
-                                Resizable.padding(context, 5)))
-                            : BorderRadius.only(
-                            topLeft: Radius.circular(
-                                Resizable.padding(context, 5)))),
-                    child: Image.asset(
-                        'assets/images/ic_${stdClass.icon}.png'),
-                  ),
-                )),
-            name: Text(cubit.students!.firstWhere((e) => e.userId == stdClass.userId).name,
+            icon: IconToolTip(
+                role: role,
+                cubit: cubit,
+                stdClass: stdClass,
+                dataCubit: dataCubit),
+            name: Text(
+                "${cubit.students!.firstWhere((e) => e.userId == stdClass.userId).name} - ${cubit.students!.firstWhere((e) => e.userId == stdClass.userId).studentCode}",
                 style: TextStyle(
                     fontSize: Resizable.font(context, 20),
                     color: const Color(0xff131111),
                     fontWeight: FontWeight.w500)),
             attend: CircleProgress(
-                    title:
-                        '${(cubit.listStdDetail[index]["attendancePercent"] * 100).toStringAsFixed(0)} %',
-                    lineWidth: Resizable.size(context, 3),
-                    percent: cubit.listStdDetail[index]["attendancePercent"],
-                    radius: Resizable.size(context, 16),
-                    fontSize: Resizable.font(context, 14),
-                  ),
-            submit:CircleProgress(
-                    title:
-                        '${(cubit.listStdDetail[index]["hwPercent"] * 100).toStringAsFixed(0)} %',
-                    lineWidth: Resizable.size(context, 3),
-                    percent: cubit.listStdDetail[index]["hwPercent"],
-                    radius: Resizable.size(context, 16),
-                    fontSize: Resizable.font(context, 14),
-                  ),
+              title:
+                  '${(cubit.listStdDetail[index]["attendancePercent"] * 100).toStringAsFixed(0)} %',
+              lineWidth: Resizable.size(context, 3),
+              percent: cubit.listStdDetail[index]["attendancePercent"],
+              radius: Resizable.size(context, 16),
+              fontSize: Resizable.font(context, 14),
+            ),
+            submit: CircleProgress(
+              title:
+                  '${(cubit.listStdDetail[index]["hwPercent"] * 100).toStringAsFixed(0)} %',
+              lineWidth: Resizable.size(context, 3),
+              percent: cubit.listStdDetail[index]["hwPercent"],
+              radius: Resizable.size(context, 16),
+              fontSize: Resizable.font(context, 14),
+            ),
             point: Container(),
             // cubit.stdPoints![index] == 0
             //         ? Container()

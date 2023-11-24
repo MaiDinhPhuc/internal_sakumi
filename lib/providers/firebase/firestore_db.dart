@@ -194,6 +194,22 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentTestInLesson(
+      int classId, int testId) async {
+    final snapshot = await db
+        .collection('student_test')
+        .where('class_id', isEqualTo: classId)
+        .where('test_id', isEqualTo: testId)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentTestInLesson $classId $testId ${snapshot.size}");
+
+    // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
+
+    return snapshot;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getLessonResultByLessonId(
       int id, int classId) async {
     final snapshot = await db

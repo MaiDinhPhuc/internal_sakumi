@@ -66,15 +66,15 @@ class GradingCubit extends Cubit<int> {
 
 
   String getTestTime(int stdId, int testId) {
-    var stdLesson = listStudentTests!
+    var stdTests = listStudentTests!
         .where((e) => e.studentId == stdId && e.testID == testId).toList();
-    if(stdLesson.isEmpty){
+    if(stdTests.isEmpty){
       return "";
     }
-    if (stdLesson.first.doingTime == "") {
+    if (stdTests.first.time.isEmpty) {
       return "";
     }
-    int seconds = int.parse(stdLesson.first.doingTime);
+    int seconds = stdTests.first.time['time_test'];
 
     int hours = seconds ~/ 3600;
     int minutes = (seconds % 3600) ~/ 60;
@@ -85,8 +85,22 @@ class GradingCubit extends Cubit<int> {
     return formattedTime;
   }
 
+  String getNumberIgnoreTest(int stdId, int testId) {
+    var stdTests = listStudentTests!
+        .where((e) => e.studentId == stdId && e.testID == testId).toList();
+    if(stdTests.isEmpty){
+      return "";
+    }
+    if (stdTests.first.time.isEmpty) {
+      return "";
+    }
+    int number = stdTests.first.time["skip_test"];
 
-  int getTestPoint(int stdId, int testId) {
+    return number.toString();
+  }
+
+
+  double getTestPoint(int stdId, int testId) {
     var stdTest = listStudentTests!
         .where((e) => e.studentId == stdId && e.testID == testId).toList();
     if(stdTest.isEmpty){
@@ -108,10 +122,10 @@ class GradingCubit extends Cubit<int> {
     if(stdLesson.isEmpty){
       return "";
     }
-    if (stdLesson.first.doingTime == "") {
+    if (stdLesson.first.time.isEmpty) {
       return "";
     }
-    int seconds = int.parse(stdLesson.first.doingTime);
+    int seconds = stdLesson.first.time["time_btvn"];
 
     int hours = seconds ~/ 3600;
     int minutes = (seconds % 3600) ~/ 60;
@@ -120,6 +134,20 @@ class GradingCubit extends Cubit<int> {
     String formattedTime =
         '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
     return formattedTime;
+  }
+
+  String getNumberIgnore(int stdId, int lessonId) {
+    var stdLesson = listStudentLessons!
+        .where((e) => e.studentId == stdId && e.lessonId == lessonId).toList();
+    if(stdLesson.isEmpty){
+      return "";
+    }
+    if (stdLesson.first.time.isEmpty) {
+      return "";
+    }
+    int number = stdLesson.first.time["skip_btvn"];
+
+    return number.toString();
   }
 
   int getBTVNPoint(int stdId, int lessonId) {

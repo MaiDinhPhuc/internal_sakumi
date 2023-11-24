@@ -30,139 +30,153 @@ class DetailGradingView extends StatelessWidget {
         ? const Center(
             child: CircularProgressIndicator(),
           )
-        : SingleChildScrollView(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                        child: BlocProvider(
-                            create: (context) => DropdownCubit(),
-                            child: BlocBuilder<DropdownCubit, int>(
-                              builder: (c, state) => Stack(
-                                children: [
-                                  Container(
-                                      alignment: Alignment.centerLeft,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal:
-                                              Resizable.padding(context, 10)),
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                            topRight: Radius.circular(
-                                                Resizable.size(context, 5)),
-                                            bottomRight: Radius.circular(
-                                                Resizable.size(context, 5)),
-                                            bottomLeft: Radius.circular(
-                                                Resizable.size(context, 5)),
-                                          ),
-                                          color: Colors.white),
-                                      child: AnimatedCrossFade(
-                                          firstChild: CollapseQuestion(
-                                            onPress: () {
-                                              BlocProvider.of<DropdownCubit>(c).update();
-                                            },
-                                            state: state,
-                                          ),
-                                          secondChild: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              CollapseQuestion(
-                                                onPress: () {
-                                                  BlocProvider.of<DropdownCubit>(c)
-                                                      .update();
-                                                },
-                                                state: state,
-                                              ),
-                                              Container(
-                                                height: Resizable.size(context, 1),
-                                                margin: EdgeInsets.symmetric(
-                                                    vertical: Resizable.padding(context, 5)),
-                                                color: const Color(0xffD9D9D9),
-                                              ),
-                                              SizedBox(height: Resizable.padding(context, 10)),
-                                              QuestionView(
-                                                  questionModel:
-                                                      cubit.getQuestion(),
-                                                  soundCubit: soundCubit,
-                                                  cubit: cubit),
-                                              SizedBox(height: Resizable.padding(context, 10)),
-                                            ],
-                                          ),
-                                          crossFadeState: state % 2 == 1
-                                              ? CrossFadeState.showSecond
-                                              : CrossFadeState.showFirst,
-                                          duration: const Duration(
-                                              milliseconds: 100))),
-                                ],
+        : Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                      child: BlocProvider(
+                          create: (context) => DropdownCubit(),
+                          child: BlocBuilder<DropdownCubit, int>(
+                            builder: (c, state) => Stack(
+                              children: [
+                                Container(
+                                    margin: EdgeInsets.only(bottom: Resizable.padding(context, 5)),
+                                    alignment: Alignment.centerLeft,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal:
+                                            Resizable.padding(context, 10)),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            width: 0.5, color: Colors.black),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(
+                                                Resizable.size(context, 5))),
+                                        color: Colors.white),
+                                    child: AnimatedCrossFade(
+                                        firstChild: CollapseQuestion(
+                                          onPress: () {
+                                            BlocProvider.of<DropdownCubit>(c)
+                                                .update();
+                                          },
+                                          state: state,
+                                        ),
+                                        secondChild: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            CollapseQuestion(
+                                              onPress: () {
+                                                BlocProvider.of<DropdownCubit>(
+                                                        c)
+                                                    .update();
+                                              },
+                                              state: state,
+                                            ),
+                                            Container(
+                                              height:
+                                                  Resizable.size(context, 1),
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: Resizable.padding(
+                                                      context, 5)),
+                                              color: const Color(0xffD9D9D9),
+                                            ),
+                                            SizedBox(
+                                                height: Resizable.padding(
+                                                    context, 10)),
+                                            QuestionView(
+                                                questionModel:
+                                                    cubit.getQuestion(),
+                                                soundCubit: soundCubit,
+                                                cubit: cubit),
+                                            SizedBox(
+                                                height: Resizable.padding(
+                                                    context, 10)),
+                                          ],
+                                        ),
+                                        crossFadeState: state % 2 == 1
+                                            ? CrossFadeState.showFirst
+                                            : CrossFadeState.showSecond,
+                                        duration:
+                                            const Duration(milliseconds: 100))),
+                              ],
+                            ),
+                          )))
+                ],
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ...cubit.answers.map((e) => AnswerInfoView(
+                            answerModel: e,
+                            soundCubit: soundCubit,
+                            cubit: cubit,
+                            checkActiveCubit: checkActiveCubit,
+                          )),
+                      if (cubit.isGeneralComment)
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: Resizable.padding(context, 10),
+                              horizontal: Resizable.padding(context, 10)),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(Resizable.size(context, 5))),
+                              color: Colors.white),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(AppText.textGeneralComment.text,
+                                  style: TextStyle(
+                                      fontSize: Resizable.font(context, 18),
+                                      fontWeight: FontWeight.w700)),
+                              TeacherNoteView(
+                                imagePickerCubit: imageCubit,
+                                answerModel: cubit.listAnswer!.first,
+                                cubit: cubit,
+                                noteController: noteController,
+                                onChange: (String? text) {
+                                  if (text != null) {
+                                    for (var i in cubit.answers) {
+                                      i.newTeacherNote = text;
+                                    }
+                                  }
+                                },
+                                onOpenFile: () async {
+                                  await imageCubit.pickImageForAll(
+                                      checkActiveCubit, cubit);
+                                },
+                                onOpenMic: () {},
+                                type: 'all',
+                                checkActiveCubit: checkActiveCubit,
                               ),
-                            )))
-                  ],
-                ),
-                ...cubit.answers.map((e) => AnswerInfoView(
-                      answerModel: e,
-                      soundCubit: soundCubit,
-                      cubit: cubit,
-                      checkActiveCubit: checkActiveCubit,
-                    )),
-                if (cubit.isGeneralComment)
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        vertical: Resizable.padding(context, 10),
-                        horizontal: Resizable.padding(context, 10)),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(Resizable.size(context, 5))),
-                        color: Colors.white),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(AppText.textGeneralComment.text,
-                            style: TextStyle(
-                                fontSize: Resizable.font(context, 18),
-                                fontWeight: FontWeight.w700)),
-                        TeacherNoteView(
-                          imagePickerCubit: imageCubit,
-                          answerModel: cubit.listAnswer!.first,
-                          cubit: cubit,
-                          noteController: noteController,
-                          onChange: (String? text) {
-                            if (text != null) {
-                              for (var i in cubit.answers) {
-                                i.newTeacherNote = text;
-                              }
-                            }
-                          },
-                          onOpenFile: () async {
-                            await imageCubit.pickImageForAll(
-                                checkActiveCubit, cubit);
-                          },
-                          onOpenMic: () {},
-                          type: 'all',
-                          checkActiveCubit: checkActiveCubit,
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
+                      BlocBuilder<CheckActiveCubit, bool>(
+                          bloc: checkActiveCubit,
+                          builder: (c, s) {
+                            return Padding(
+                                padding: EdgeInsets.only(
+                                    top: Resizable.padding(context, 15)),
+                                child: SubmitButton(
+                                    isActive: s,
+                                    onPressed: () async {
+                                      await cubit.submit(
+                                          cubit,
+                                          context,
+                                          checkActiveCubit,
+                                          cubit.gradingType,
+                                          dataCubit);
+                                    },
+                                    title:
+                                        AppText.btnUpdate.text.toUpperCase()));
+                          })
+                    ],
                   ),
-                BlocBuilder<CheckActiveCubit, bool>(
-                    bloc: checkActiveCubit,
-                    builder: (c, s) {
-                      return Padding(
-                          padding: EdgeInsets.only(
-                              top: Resizable.padding(context, 15)),
-                          child: SubmitButton(
-                              isActive: s,
-                              onPressed: () async {
-                                await cubit.submit(
-                                    cubit,
-                                    context,
-                                    checkActiveCubit,
-                                    cubit.gradingType,
-                                    dataCubit);
-                              },
-                              title: AppText.btnUpdate.text.toUpperCase()));
-                    })
-              ],
-            ),
+                ),
+              )
+            ],
           );
   }
 }

@@ -34,13 +34,16 @@ class ExpandBTVNItem extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     color: const Color(0xff757575),
                     fontSize: Resizable.font(context, 17))),
-            button: Container(),
+            button: Text(AppText.txtNumberIgnore.text,
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xff757575),
+                    fontSize: Resizable.font(context, 17))),
             dropdown: Container()),
-        SizedBox(height:  Resizable.padding(context, 10)),
+        SizedBox(height: Resizable.padding(context, 10)),
         ...cubit.students!.map((e) => Container(
             alignment: Alignment.centerLeft,
-            margin:
-                EdgeInsets.only(bottom: Resizable.padding(context, 5)),
+            margin: EdgeInsets.only(bottom: Resizable.padding(context, 5)),
             padding: EdgeInsets.symmetric(
                 horizontal: Resizable.padding(context, 15),
                 vertical: Resizable.padding(context, 5)),
@@ -70,9 +73,19 @@ class ExpandBTVNItem extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                         color: const Color(0xff757575),
                         fontSize: Resizable.font(context, 17))),
-                gradingNumber: TrackingItem(cubit.getBTVNPoint(e.userId, lessonId),
-                    isSubmit: true),
-                button: Container(),
+                gradingNumber: Padding(
+                    padding:
+                        EdgeInsets.only(left: Resizable.padding(context, 10)),
+                    child: TrackingItem(cubit.getBTVNPoint(e.userId, lessonId),
+                        isSubmit: true)),
+                button: Padding(
+                    padding:
+                        EdgeInsets.only(left: Resizable.padding(context, 10)),
+                    child: Text(cubit.getNumberIgnore(e.userId, lessonId),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: primaryColor,
+                            fontSize: Resizable.font(context, 20)))),
                 dropdown: Container())))
       ],
     );

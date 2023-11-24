@@ -391,6 +391,17 @@ class FireBaseProvider extends NetworkProvider {
         .toList();
   }
 
+
+  @override
+  Future<List<StudentTestModel>> getAllStudentTestInLesson(
+      int classId, int testId) async {
+    return (await FireStoreDb.instance
+        .getAllStudentTestInLesson(classId, testId))
+        .docs
+        .map((e) => StudentTestModel.fromSnapshot(e))
+        .toList();
+  }
+
   @override
   Future<LessonResultModel> getLessonResultByLessonId(
       int id, int classId) async {
@@ -934,11 +945,20 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<DetailGradingDataModel> getDataForDetailGrading(
-      int classId, int lessonId, String type) async {
+      int classId, int parentId, String type) async {
     ClassModel classModel =
         await FireBaseProvider.instance.getClassById(classId);
     CourseModel courseModel =
         await FireBaseProvider.instance.getCourseById(classModel.courseId);
+    String token = courseModel.token;
+    List<QuestionModel> listQuestions = [];
+    if (type == "type=test") {
+      listQuestions = await FireBaseProvider.instance.getQuestionByUrl(
+          AppConfigs.getDataUrl("test_$parentId.json", token));
+    } else {
+      listQuestions = await FireBaseProvider.instance.getQuestionByUrl(
+          AppConfigs.getDataUrl("btvn_$parentId.json", token));
+    }
     List<String> listStatus = [
       "Remove",
       "Dropped",
@@ -947,26 +967,29 @@ class FireBaseProvider extends NetworkProvider {
       "Moved"
     ];
     var listStdClass = (await FireBaseProvider.instance.getStudentClassInClass(classId)).where((e) => !listStatus.contains(e.classStatus)).toList();
-    var listStdLesson = (await FireBaseProvider.instance.getAllStudentLessonInLesson(classId, lessonId)).where((e) => e.hw != -2).toList();
-    var listTemp1 = listStdClass.map((e) => e.userId).toList();
-    var listTemp2 = listStdLesson.map((e) => e.studentId).toList();
     List<int> listStdId = [];
-    for (int element in listTemp1) {
-      if (listTemp2.contains(element)) {
-        listStdId.add(element);
-      }
-    }
-    String token = courseModel.token;
-    List<QuestionModel> listQuestions = [];
-    if (type == "type=test") {
-      listQuestions = await FireBaseProvider.instance.getQuestionByUrl(
-          AppConfigs.getDataUrl("test_$lessonId.json", token));
-    } else {
-      listQuestions = await FireBaseProvider.instance.getQuestionByUrl(
-          AppConfigs.getDataUrl("btvn_$lessonId.json", token));
-    }
+   if(type != "type=test"){
+     var listStdLesson = (await FireBaseProvider.instance.getAllStudentLessonInLesson(classId, parentId)).where((e) => e.hw != -2).toList();
+     var listTemp1 = listStdClass.map((e) => e.userId).toList();
+     var listTemp2 = listStdLesson.map((e) => e.studentId).toList();
+     for (int element in listTemp1) {
+       if (listTemp2.contains(element)) {
+         listStdId.add(element);
+       }
+     }
+   }else{
+     var listStdTest = (await FireBaseProvider.instance.getAllStudentTestInLesson(classId, parentId)).where((e) => e.score != -2).toList();
+     var listTemp1 = listStdClass.map((e) => e.userId).toList();
+     var listTemp2 = listStdTest.map((e) => e.studentId).toList();
+     for (int element in listTemp1) {
+       if (listTemp2.contains(element)) {
+         listStdId.add(element);
+       }
+     }
+   }
+
     List<AnswerModel> listAnswer =
-        (await FireBaseProvider.instance.getListAnswer(lessonId, classId)).where((e) => listStdId.contains(e.studentId)).toList();
+        (await FireBaseProvider.instance.getListAnswer(parentId, classId)).where((e) => listStdId.contains(e.studentId)).toList();
 
     if (listAnswer.isEmpty) {
       return DetailGradingDataModel(
