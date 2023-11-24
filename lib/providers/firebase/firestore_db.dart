@@ -357,6 +357,17 @@ class FireStoreDb {
     debugPrint("==========>update db for \"feedbacks\"");
   }
 
+  Future<void> updateFeedBackNote(
+      int classId, int date, List<dynamic> listNote) async {
+    await db
+        .collection('feedbacks')
+        .doc("feedback_classId_${classId}_$date")
+        .update({
+      'note': listNote,
+    });
+    debugPrint("==========>update db for \"feedbacks\"");
+  }
+
   Future<void> updateTimekeeping(
       int userId, int lessonId, int classId, int attendId) async {
     await db

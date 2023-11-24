@@ -9,6 +9,7 @@ import 'package:internal_sakumi/screens/admin/tab/manage_feedbacks_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_statistics_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/search_general_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_tags_screen.dart';
+import 'package:internal_sakumi/screens/admin/tab/tool_screen.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
 import 'package:internal_sakumi/screens/master_screen.dart';
@@ -80,6 +81,8 @@ class Routes {
         handler: manageStatisticsHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/manageFeedbacks',
         handler: manageFeedbacksHandler, transitionType: TransitionType.fadeIn);
+    router.define('$admin/tools',
+        handler: toolsHandler, transitionType: TransitionType.fadeIn);
     router.define('/:role/overview/:classId',
         handler: overViewHandler, transitionType: TransitionType.fadeIn);
     router.define('/:role/grading/:classId',
@@ -155,6 +158,10 @@ Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
 var manageFeedbacksHandler =
 Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return ManageFeedBacksScreen();
+});
+var toolsHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return const ToolScreen();
 });
 var lessonsHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {

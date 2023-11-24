@@ -15,7 +15,9 @@ class ListFeedBack extends StatelessWidget {
           )
         : Column(
             children: [
-              ...cubit.getFeedBack().map((e) => FeedBackItem(feedback: e, cubit: cubit))
+              ...cubit
+                  .getFeedBack()
+                  .map((e) => FeedBackItem(feedback: e, cubit: cubit))
             ],
           );
   }

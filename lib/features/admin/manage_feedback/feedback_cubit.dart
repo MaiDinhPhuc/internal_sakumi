@@ -22,6 +22,7 @@ class FeedBackCubit extends Cubit<int> {
 
   List<int> listStdId = [];
 
+  bool isLoading = true;
 
   List<FeedBackModel>? listFeedBack;
   String type = "general";
@@ -105,13 +106,32 @@ class FeedBackCubit extends Cubit<int> {
     emit(state + 1);
   }
 
+  changeNote(FeedBackModel feedBack, List<dynamic> note) async {
+    var index = listFeedBack!.indexOf(listFeedBack!.firstWhere(
+            (e) => e.date == feedBack.date && e.classId == feedBack.classId));
+    listFeedBack![index] = FeedBackModel(
+        userId: feedBack.userId,
+        classId: feedBack.classId,
+        date: feedBack.date,
+        note: note,
+        status: feedBack.status,
+        content: feedBack.content,
+        category: feedBack.category);
+  }
+
   String getCourse(int classId) {
     if (courses == null || classes.isEmpty) {
       return "";
     }
 
-    var courseId = classes.firstWhere((e) => e.classId == classId).courseId;
+    for(var i in classes){
 
+    }
+
+    var courseId = classes.firstWhere((e) => e.classId == classId).courseId;
+    print("========>");
+    print(courseId);
+    print("========>");
     String name = courses!.where((e) => e.courseId == courseId).isEmpty
         ? ""
         : "${courses!.where((e) => e.courseId == courseId).first.title} - ${courses!.where((e) => e.courseId == courseId).first.level}";
@@ -161,12 +181,15 @@ class FeedBackCubit extends Cubit<int> {
 
 
   getStudents(List<int> listStdId, List<int> listClassId) async {
+    isLoading = true;
+    emit(state+1);
     var stdTemp =
         await FireBaseProvider.instance.getAllStudentInFoInClass(listStdId);
     students.addAll(stdTemp);
     var classTemp =
         await FireBaseProvider.instance.getListClassForTeacher(listClassId);
     classes.addAll(classTemp);
+    isLoading = false;
     emit(state+1);
   }
 
@@ -183,8 +206,9 @@ class FeedBackCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  changeType(String newType) {
+  changeType(String newType)async {
     type = newType;
+    await loadData();
     statusNow = "unread";
     emit(state + 1);
   }

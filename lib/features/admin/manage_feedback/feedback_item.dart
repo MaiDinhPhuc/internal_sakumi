@@ -10,6 +10,7 @@ import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'feedback_cubit.dart';
 import 'feedback_note_cubit.dart';
+import 'input_feedback_note.dart';
 
 class FeedBackItem extends StatelessWidget {
   FeedBackItem({super.key, required this.feedback, required this.cubit})
@@ -99,14 +100,28 @@ class FeedBackItem extends StatelessWidget {
                           fontWeight: FontWeight.w500)))
             ],
           ),
-          Material(
-              color: Colors.transparent,
-              child: DottedBorderButton(
-                  AppText.txtAddNote.text.toUpperCase(),
-                  isManageGeneral: true, onPressed: () async {
-                noteCubit.list.add("value");
-                print(noteCubit.list);
-              }))
+          BlocBuilder<NoteFeedBackCubit, int>(
+              bloc: noteCubit..loadNote(feedback),
+              builder: (cc, ss) {
+                return Column(
+                  children: [
+                    ...noteCubit.listNote.map((e) => InputFeedBackNote( sendNote: ()async{
+                      if(noteCubit.listController[noteCubit.listNote.indexOf(e)].text != ""){
+                        noteCubit.sendNote(feedback,cubit);
+                      }
+                    }, controller: noteCubit.listController[noteCubit.listNote.indexOf(e)],)),
+                    if (noteCubit.canAdd)
+                      Padding(padding: EdgeInsets.only(top: Resizable.padding(context, 5)),child: Material(
+                          color: Colors.transparent,
+                          child: DottedBorderButton(
+                              AppText.txtAddNote.text.toUpperCase(),
+                              isManageGeneral: true,
+                              onPressed: () async {
+                                noteCubit.addNewNote();
+                              })))
+                  ],
+                );
+              })
         ]));
   }
 }

@@ -56,5 +56,6 @@ List<NavigationModel> buttonAdminList = [
   NavigationModel(1, AppText.titleManageClass.text),
   NavigationModel(2, AppText.titleManageTag.text),
   NavigationModel(3, AppText.titleStatistics.text),
-  NavigationModel(4, AppText.titleManageFeedBack.text)
+  NavigationModel(4, AppText.titleManageFeedBack.text),
+  NavigationModel(5, AppText.txtTool.text)
 ];

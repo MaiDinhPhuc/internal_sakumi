@@ -293,10 +293,14 @@ enum AppText {
   txtDone,
   titleListFeedBack,
   txtFeedBackEmpty,
-  txtAddNote
+  txtAddNote,
+  txtLetNote,
+  txtTool
 }
 
 Map<AppText, String> texts = {
+  AppText.txtTool: 'Tool',
+  AppText.txtLetNote: 'Hãy điền ghi chú vào đây',
   AppText.txtAddNote: 'Thêm ghi chú',
   AppText.txtFeedBackEmpty: 'Đang không có góp ý, vui lòng chọn lại mục góp ý hoặc filter phù hợp...',
   AppText.titleListFeedBack: 'Danh sách góp ý',

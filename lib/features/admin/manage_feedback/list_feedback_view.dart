@@ -17,7 +17,6 @@ class ListFeedBackView extends StatelessWidget {
   final DropdownGradingCubit dropdownCubit;
   @override
   Widget build(BuildContext context) {
-    print("=================>ListFeedBackView");
     return Column(
       children: [
         Row(
@@ -51,16 +50,20 @@ class ListFeedBackView extends StatelessWidget {
                 ))
           ],
         ),
-        Container(
-          margin: EdgeInsets.only(bottom: Resizable.padding(context, 5)),
-          padding: EdgeInsets.all(Resizable.padding(context, 5)),
-          decoration: BoxDecoration(
-              color: cubit.getFeedBack().isEmpty
-                  ? Colors.transparent
-                  : lightGreyColor,
-              borderRadius: BorderRadius.circular(Resizable.size(context, 5))),
-          child: ListFeedBack(cubit: cubit),
-        )
+        cubit.isLoading == false ?
+          Expanded(child: SingleChildScrollView(
+            child:
+            Container(
+              margin: EdgeInsets.only(bottom: Resizable.padding(context, 5)),
+              padding: EdgeInsets.all(Resizable.padding(context, 5)),
+              decoration: BoxDecoration(
+                  color: cubit.getFeedBack().isEmpty
+                      ? Colors.transparent
+                      : lightGreyColor,
+                  borderRadius: BorderRadius.circular(Resizable.size(context, 5))),
+              child:ListFeedBack(cubit: cubit),
+            ),
+          )): const Expanded(child: Center(child: CircularProgressIndicator(color: primaryColor,)))
       ],
     );
   }
