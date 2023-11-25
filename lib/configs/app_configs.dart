@@ -12,4 +12,6 @@ class AppConfigs{
   }
 
   static String defaultImage = 'https://cdn3.iconfinder.com/data/icons/education-1-28/49/144-512.png';
+
+  static const meetRecordingsId = '1IAcWu52mBEBMiOySR6M8IGb1DZYzma50';
 }

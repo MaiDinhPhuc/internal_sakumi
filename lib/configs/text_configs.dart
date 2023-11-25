@@ -296,10 +296,22 @@ enum AppText {
   txtAddNote,
   txtLetNote,
   txtTool,
+  //record tool
+  txtPleaseInputLinkAndTitle,
+  txtSuccessfullyUpdateVideo,
+  btnVerify,
+  btnInputLinkAndTitle,
+  txtNotLoggedIn,
+  txtTool,
   txtNumberIgnore
 }
 
 Map<AppText, String> texts = {
+  AppText.txtNotLoggedIn: 'Bạn chưa xác thực tài khoản google',
+  AppText.btnInputLinkAndTitle: 'Nhập Link và tiêu đề',
+  AppText.btnVerify: 'Xác minn',
+  AppText.txtSuccessfullyUpdateVideo: 'Đổi tên và di chuyển video thành công',
+  AppText.txtPleaseInputLinkAndTitle: 'Vui lòng nhập đường dẫn và tiêu đề',
   AppText.txtNumberIgnore: 'Số câu bỏ qua',
   AppText.txtTool: 'Tool',
   AppText.txtLetNote: 'Hãy điền ghi chú vào đây',
