@@ -18,8 +18,8 @@ class CollapseQuestion extends StatelessWidget {
           splashRadius: Resizable.size(context, 10),
           icon: Icon(
             state % 2 == 0
-                ? Icons.keyboard_arrow_down
-                : Icons.keyboard_arrow_up,
+                ? Icons.keyboard_arrow_up
+                : Icons.keyboard_arrow_down,
           ))
     ]);
   }

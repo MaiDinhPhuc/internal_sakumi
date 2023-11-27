@@ -24,6 +24,7 @@ class TestCubit extends Cubit<int> {
   List<double>? listSubmit;
   List<double>? listGPA;
   List<StudentModel>? listStudents;
+  List<bool?>? listStatus;
 
   load(ClassModel2 model, DataCubit dataCubit) async {
     if (model.stdTests == null) {
@@ -44,10 +45,39 @@ class TestCubit extends Cubit<int> {
           .where((element) => element.classId == model.classModel.classId)
           .toList();
       List<List<StudentTestModel>> listTestState = [];
+      listStatus = [];
       for (var i in listTestIds) {
         List<StudentTestModel> listTemp =
             listStdTest.where((element) => element.testID == i).toList();
         listTestState.add(listTemp);
+        bool? status;
+        if (listTemp.isEmpty) {
+          status = null;
+        } else {
+          int submitCount = 0;
+          int checkCount = 0;
+          int notSubmitCount = 0;
+          for (var k in listTemp) {
+            if (k.score != -2) {
+              submitCount++;
+            }
+            if (k.score > -1) {
+              checkCount++;
+            }
+            if (k.score == -2) {
+              notSubmitCount++;
+            }
+          }
+          if (checkCount == submitCount) {
+            status = true;
+          } else {
+            status = false;
+          }
+          if (notSubmitCount == listTemp.length) {
+            status = null;
+          }
+        }
+        listStatus!.add(status);
       }
       List<StudentClassModel> listStudentClass = model.stdClasses!;
       List<int> listStudentIds = [];
@@ -68,7 +98,7 @@ class TestCubit extends Cubit<int> {
       List<double> listGPA = [];
       for (var i in listTestState) {
         int temp = 0;
-        int sum = 0;
+        double sum = 0;
         int count = 0;
         if (i.isNotEmpty) {
           for (var j in i) {
@@ -122,7 +152,7 @@ class TestCubit extends Cubit<int> {
     return listTestResult!.any((element) => element.testId == testId);
   }
 
-  int checkSubmitted(int studentId, int testId) {
+  double checkSubmitted(int studentId, int testId) {
     for (var i in listTestState!) {
       bool checkExist = i.any((element) =>
           element.studentId == studentId && element.testID == testId);

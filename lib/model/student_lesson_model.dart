@@ -14,37 +14,35 @@ class StudentLessonModel {
       studentId,
       timekeeping,
       vocabulary;
-  final String teacherNote, supportNote, doingTime;
+  final String teacherNote, supportNote;
+  final Map time;
 
   Color get attendColor {
-    if(timekeeping == 5) return const Color(0xffF57F17);
-    if(timekeeping == 6) return const Color(0xffB71C1C);
-    if(timekeeping < 5) return const Color(0xff33691E);
+    if (timekeeping == 5) return const Color(0xffF57F17);
+    if (timekeeping == 6) return const Color(0xffB71C1C);
+    if (timekeeping < 5) return const Color(0xff33691E);
 
     return primaryColor;
   }
 
   Color get hwColor {
-
-    if(hw == -2) return const Color(0xffB71C1C);
-    if(hw != -2) return const Color(0xff33691E);
+    if (hw == -2) return const Color(0xffB71C1C);
+    if (hw != -2) return const Color(0xff33691E);
 
     return primaryColor;
   }
 
-
   String get hwTitle {
-    if(hw == -2) return AppText.txtNotSubmit.text;
-    if(hw != -2) return AppText.txtSubmitted.text;
+    if (hw == -2) return AppText.txtNotSubmit.text;
+    if (hw != -2) return AppText.txtSubmitted.text;
 
     return "error";
   }
 
-
   String get attendTitle {
-    if(timekeeping == 6) return AppText.txtAbsent.text;
-    if(timekeeping == 5) return AppText.txtPermitted.text;
-    if(timekeeping < 5) return AppText.txtPresent.text;
+    if (timekeeping == 6) return AppText.txtAbsent.text;
+    if (timekeeping == 5) return AppText.txtPermitted.text;
+    if (timekeeping < 5) return AppText.txtPresent.text;
 
     return AppText.txtNotTimeKeeping.text;
   }
@@ -60,7 +58,9 @@ class StudentLessonModel {
       required this.studentId,
       required this.timekeeping,
       required this.vocabulary,
-      required this.teacherNote, required this.supportNote, required this.doingTime});
+      required this.teacherNote,
+      required this.supportNote,
+      required this.time});
 
   factory StudentLessonModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
@@ -76,6 +76,8 @@ class StudentLessonModel {
         studentId: data['student_id'],
         timekeeping: data['time_keeping'],
         teacherNote: data['teacher_note'],
-        vocabulary: data['vocabulary'], supportNote: data['support_note']??'', doingTime: data['test_time']??'');
+        vocabulary: data['vocabulary'],
+        supportNote: data['support_note'] ?? '',
+        time: data['time']??{});
   }
 }

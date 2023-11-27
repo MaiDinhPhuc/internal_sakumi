@@ -12,7 +12,8 @@ class CollapseTestItem extends StatelessWidget {
       {super.key,
       required this.index,
       required this.title,
-      required this.testId, required this.cubit});
+      required this.testId,
+      required this.cubit});
   final int index, testId;
   final String title;
   final TestCubit cubit;
@@ -41,7 +42,14 @@ class CollapseTestItem extends StatelessWidget {
               ),
             )
           : cubit.listSubmit![index] == 0
-              ? Container()
+              ? CircleProgress(
+                  title:
+                      '0%',
+                  lineWidth: Resizable.size(context, 3),
+                  percent: 0,
+                  radius: Resizable.size(context, 16),
+                  fontSize: Resizable.font(context, 14),
+                )
               : CircleProgress(
                   title:
                       '${(cubit.listSubmit![index] * 100).toStringAsFixed(0)} %',
@@ -82,18 +90,29 @@ class CollapseTestItem extends StatelessWidget {
                 child: CircularProgressIndicator(),
               ),
             )
-          : !cubit.checkGrading(testId)
-              ? Image.asset('assets/images/ic_check.png',
-                  color: greenColor, scale: 30)
+          : cubit.listStatus![cubit.listTest!.indexOf(
+                      cubit.listTest!.firstWhere((e) => e.id == testId))] ==
+                  null
+              ? Container()
               : Container(
                   padding: EdgeInsets.symmetric(
                       vertical: Resizable.padding(context, 4),
                       horizontal: Resizable.padding(context, 10)),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10000),
-                      color: redColor),
+                      color: cubit.listStatus![cubit.listTest!.indexOf(cubit
+                                  .listTest!
+                                  .firstWhere((e) => e.id == testId))] ==
+                              true
+                          ? greenColor
+                          : redColor),
                   child: Text(
-                    AppText.txtNotGradingTest.text.toUpperCase(),
+                    (cubit.listStatus![cubit.listTest!.indexOf(cubit.listTest!
+                                    .firstWhere((e) => e.id == testId))] ==
+                                true
+                            ? AppText.txtMarked.text
+                            : AppText.txtNotMark.text)
+                        .toUpperCase(),
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: Resizable.font(context, 14),

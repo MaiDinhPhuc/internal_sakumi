@@ -34,7 +34,11 @@ class ExpandTestItem extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     color: const Color(0xff757575),
                     fontSize: Resizable.font(context, 17))),
-            button: Container(),
+            button: Text(AppText.txtNumberIgnore.text,
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xff757575),
+                    fontSize: Resizable.font(context, 17))),
             dropdown: Container()),
         SizedBox(height:  Resizable.padding(context, 10)),
         ...cubit.students!.map((e) => Container(
@@ -72,7 +76,11 @@ class ExpandTestItem extends StatelessWidget {
                         fontSize: Resizable.font(context, 17))),
                 gradingNumber: TrackingItem(cubit.getTestPoint(e.userId, testId),
                     isSubmit: true),
-                button: Container(),
+                button: Text(cubit.getNumberIgnoreTest(e.userId, testId),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xff757575),
+                        fontSize: Resizable.font(context, 17))),
                 dropdown: Container())))
       ],
     );

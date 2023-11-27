@@ -25,7 +25,7 @@ class NoteWidget extends StatelessWidget {
 
 class TrackingItem extends StatelessWidget {
   final bool isSubmit;
-  final int? condition;
+  final dynamic condition;
   const TrackingItem(this.condition, {this.isSubmit = false, Key? key})
       : super(key: key);
 

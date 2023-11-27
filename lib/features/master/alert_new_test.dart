@@ -1,7 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_field.dart';
-import 'package:internal_sakumi/model/lesson_model.dart';
+import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
@@ -12,34 +12,19 @@ import 'add_new_lesson_button.dart';
 import 'input_2_filed.dart';
 import 'manage_course_cubit.dart';
 
-void alertAddNewLesson(BuildContext context, LessonModel? lessonModel,
-    bool isEdit, ManageCourseCubit cubit) {
-  TextEditingController contCon = TextEditingController(
-      text: lessonModel == null ? " " : lessonModel.content);
+void alertAddNewTest(BuildContext context, TestModel? testModel, bool isEdit,
+    ManageCourseCubit cubit) {
   TextEditingController titleCon =
-      TextEditingController(text: lessonModel == null ? "" : lessonModel.title);
-  TextEditingController vocaCon = TextEditingController(
-      text: lessonModel == null ? "0" : lessonModel.vocabulary.toString());
-  TextEditingController idCourseCon = TextEditingController(
-      text: lessonModel == null ? "0" : lessonModel.courseId.toString());
-  TextEditingController idLessonCon = TextEditingController(
-      text: lessonModel == null ? "0" : lessonModel.lessonId.toString());
-  TextEditingController btvnCon = TextEditingController(
-      text: lessonModel == null ? "0" : lessonModel.btvn.toString());
-  TextEditingController alphaCon = TextEditingController(
-      text: lessonModel == null ? "0" : lessonModel.alphabet.toString());
-  TextEditingController kanjiCon = TextEditingController(
-      text: lessonModel == null ? "0" : lessonModel.kanji.toString());
-  TextEditingController grammarCon = TextEditingController(
-      text: lessonModel == null ? "0" : lessonModel.grammar.toString());
-  TextEditingController listenCon = TextEditingController(
-      text: lessonModel == null ? "0" : lessonModel.listening.toString());
-  TextEditingController flCardCon = TextEditingController(
-      text: lessonModel == null ? "0" : lessonModel.flashcard.toString());
+      TextEditingController(text: testModel == null ? " " : testModel.title);
+  TextEditingController courseIdCon = TextEditingController(
+      text: testModel == null ? "" : testModel.courseId.toString());
+  TextEditingController idCon = TextEditingController(
+      text: testModel == null ? "" : testModel.id.toString());
+  TextEditingController difficultCon = TextEditingController(
+      text: testModel == null ? "" : testModel.difficulty.toString());
   TextEditingController desCon = TextEditingController(
-      text: lessonModel == null ? " " : lessonModel.description.toString());
-  TextEditingController orderCon = TextEditingController(
-      text: lessonModel == null ? "0" : lessonModel.order.toString());
+      text: testModel == null ? "" : testModel.description);
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   showDialog(
       context: context,
@@ -64,8 +49,8 @@ void alertAddNewLesson(BuildContext context, LessonModel? lessonModel,
                                 bottom: Resizable.padding(context, 20)),
                             child: Text(
                               isEdit
-                                  ? AppText.txtEditLessonInfo.text.toUpperCase()
-                                  : AppText.btnAddNewLesson.text.toUpperCase(),
+                                  ? AppText.txtEditTest.text.toUpperCase()
+                                  : AppText.txtAddNewTest.text.toUpperCase(),
                               style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                   fontSize: Resizable.font(context, 20)),
@@ -75,13 +60,6 @@ void alertAddNewLesson(BuildContext context, LessonModel? lessonModel,
                           flex: 10,
                           child: SingleChildScrollView(
                               child: Column(children: [
-                            Input2Field(
-                              title1: AppText.txtCourseId.text,
-                              title2: AppText.txtLessonId.text,
-                              con1: idCourseCon,
-                              con2: idLessonCon,
-                              enable: isEdit ? false : true,
-                            ),
                             InputItem(
                                 onChange: (String? value) {
                                   debugPrint(value);
@@ -89,33 +67,19 @@ void alertAddNewLesson(BuildContext context, LessonModel? lessonModel,
                                 controller: titleCon,
                                 title: AppText.txtTitle.text,
                                 isExpand: true),
+                            Input2Field(
+                                title1: AppText.txtCourseId.text,
+                                title2: AppText.txtTestId.text,
+                                con1: courseIdCon,
+                                con2: idCon,
+                                enable: isEdit ? false : true),
                             InputItem(
                                 onChange: (String? value) {
-                                  debugPrint(value);
+                                  debugPrint(desCon.text);
                                 },
-                                controller: contCon,
-                                title: AppText.txtContent.text,
-                                isExpand: true),
-                            Input2Field(
-                                title1: "Vocabulary",
-                                title2: "BTVN",
-                                con1: vocaCon,
-                                con2: btvnCon),
-                            Input2Field(
-                                title1: "Alphabet",
-                                title2: "Kanji",
-                                con1: alphaCon,
-                                con2: kanjiCon),
-                            Input2Field(
-                                title1: "Grammar",
-                                title2: "Listening",
-                                con1: grammarCon,
-                                con2: listenCon),
-                            Input2Field(
-                                title1: "FlashCard",
-                                title2: "Order",
-                                con1: flCardCon,
-                                con2: orderCon),
+                                controller: difficultCon,
+                                title: AppText.txtDifficult.text,
+                                isExpand: false),
                             InputItem(
                                 onChange: (String? value) {
                                   debugPrint(desCon.text);
@@ -138,12 +102,12 @@ void alertAddNewLesson(BuildContext context, LessonModel? lessonModel,
                                     DeleteButton(
                                         onPressed: () async {
                                           await FireBaseProvider.instance
-                                              .deleteLesson(
-                                            int.parse(idLessonCon.text),
-                                            int.parse(idCourseCon.text),
+                                              .deleteTest(
+                                            int.parse(idCon.text),
+                                            int.parse(courseIdCon.text),
                                           );
                                           Navigator.pop(context);
-                                          cubit.loadLessonInCourse(
+                                          cubit.loadTestInCourse(
                                               cubit.selector);
                                         },
                                         title: AppText.txtDeleteLesson.text),
@@ -168,69 +132,42 @@ void alertAddNewLesson(BuildContext context, LessonModel? lessonModel,
                                           if (!isEdit) {
                                             final bool check = await FireBaseProvider
                                                 .instance
-                                                .addNewLesson(LessonModel(
-                                                    lessonId: int.parse(
-                                                        idLessonCon.text),
+                                                .addNewTest(TestModel(
+                                                    id: int.parse(
+                                                        idCon.text),
                                                     courseId: int.parse(
-                                                        idCourseCon.text),
+                                                        courseIdCon.text),
                                                     description: desCon.text,
-                                                    content: contCon.text,
                                                     title: titleCon.text,
-                                                    btvn:
-                                                        int.parse(btvnCon.text),
-                                                    vocabulary:
-                                                        int.parse(vocaCon.text),
-                                                    listening: int.parse(
-                                                        listenCon.text),
-                                                    kanji: int.parse(
-                                                        kanjiCon.text),
-                                                    grammar: int.parse(
-                                                        grammarCon.text),
-                                                    flashcard: int.parse(flCardCon.text),
-                                                    alphabet: int.parse(alphaCon.text),
-                                                    order: int.parse(orderCon.text)));
+                                                    difficulty:
+                                                        int.parse(difficultCon.text)));
                                             if (context.mounted) {
                                               Navigator.pop(context);
                                               if (check == true) {
-                                                cubit.loadLessonInCourse(
+                                                cubit.loadTestInCourse(
                                                     cubit.selector);
                                               } else {
                                                 notificationDialog(
                                                     context,
                                                     AppText
-                                                        .txtPleaseCheckListLesson
+                                                        .txtPleaseCheckListTest
                                                         .text);
                                               }
                                             }
                                           } else {
                                             await FireBaseProvider.instance
-                                                .updateLessonInfo(LessonModel(
-                                                    lessonId: int.parse(
-                                                        idLessonCon.text),
-                                                    courseId: int.parse(
-                                                        idCourseCon.text),
-                                                    description: desCon.text,
-                                                    content: contCon.text,
-                                                    title: titleCon.text,
-                                                    btvn:
-                                                        int.parse(btvnCon.text),
-                                                    vocabulary:
-                                                        int.parse(vocaCon.text),
-                                                    listening: int.parse(
-                                                        listenCon.text),
-                                                    kanji: int.parse(
-                                                        kanjiCon.text),
-                                                    grammar: int.parse(
-                                                        grammarCon.text),
-                                                    flashcard: int.parse(
-                                                        flCardCon.text),
-                                                    alphabet: int.parse(
-                                                        alphaCon.text),
-                                                    order:
-                                                        int.parse(orderCon.text)));
+                                                .updateTestInfo(TestModel(
+                                                id: int.parse(
+                                                    idCon.text),
+                                                courseId: int.parse(
+                                                    courseIdCon.text),
+                                                description: desCon.text,
+                                                title: titleCon.text,
+                                                difficulty:
+                                                int.parse(difficultCon.text)));
                                             if (context.mounted) {
                                               Navigator.pop(context);
-                                              cubit.loadLessonInCourse(
+                                              cubit.loadTestInCourse(
                                                   cubit.selector);
                                             }
                                           }

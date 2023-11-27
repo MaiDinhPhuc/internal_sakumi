@@ -7,7 +7,6 @@ import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
-import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
@@ -402,7 +401,7 @@ class DataCubit extends Cubit<int> {
           vocabulary: stdLesson.vocabulary,
           teacherNote: stdLesson.teacherNote,
           supportNote: stdLesson.supportNote,
-          doingTime: stdLesson.doingTime));
+          time: stdLesson.time));
     } else {
       var i = stdLessons.indexOf(stdLessons.firstWhere((e) =>
           e.lessonId == stdLesson.lessonId &&
@@ -420,13 +419,13 @@ class DataCubit extends Cubit<int> {
           vocabulary: stdLesson.vocabulary,
           teacherNote: stdLesson.teacherNote,
           supportNote: stdLesson.supportNote,
-          doingTime: stdLesson.doingTime);
+          time: stdLesson.time);
     }
     classes![index] = classes![index].copyWith(stdLessons: stdLessons);
   }
 
   updateStudentTestAfterGrading(
-      int classId, int testId, int studentId, int score) {
+      int classId, int testId, int studentId, double score) {
     var index = classes!
         .indexOf(classes!.firstWhere((e) => e.classModel.classId == classId));
     List<StudentTestModel> stdTests = classes![index].stdTests!;
@@ -443,7 +442,7 @@ class DataCubit extends Cubit<int> {
           score: score,
           studentId: studentId,
           testID: testId,
-          doingTime: stdTest.doingTime));
+          time: stdTest.time));
     } else {
       var i = stdTests.indexOf(stdTests.firstWhere((e) =>
           e.testID == stdTest.testID && e.studentId == stdTest.studentId));
@@ -452,7 +451,7 @@ class DataCubit extends Cubit<int> {
           score: score,
           studentId: studentId,
           testID: testId,
-          doingTime: stdTest.doingTime);
+          time: stdTest.time);
     }
     classes![index] = classes![index].copyWith(stdTests: stdTests);
   }

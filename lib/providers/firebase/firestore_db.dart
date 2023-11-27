@@ -13,6 +13,7 @@ import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
+import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/providers/api/api_provider.dart';
 import 'package:intl/intl.dart';
@@ -188,6 +189,22 @@ class FireStoreDb {
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentLessonInLesson $classId $lessonId ${snapshot.size}");
+
+    // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentTestInLesson(
+      int classId, int testId) async {
+    final snapshot = await db
+        .collection('student_test')
+        .where('class_id', isEqualTo: classId)
+        .where('test_id', isEqualTo: testId)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentTestInLesson $classId $testId ${snapshot.size}");
 
     // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
 
@@ -484,11 +501,29 @@ class FireStoreDb {
     return temp;
   }
 
+  Future<DocumentSnapshot<Map<String, dynamic>>> getTestByDocs(
+      String docs) async {
+    final temp = await db.collection("test").doc(docs).get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTestByDocs $docs ${temp.exists}");
+
+    return temp;
+  }
+
   Future<void> deleteLessonByDocs(String docs) async {
     await db.collection("lessons").doc(docs).delete();
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> deleteLessonByDocs $docs");
+  }
+
+
+  Future<void> deleteTestByDocs(String docs) async {
+    await db.collection("test").doc(docs).delete();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> deleteTestByDocs $docs");
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getStudentLessonByDocs(
@@ -560,6 +595,34 @@ class FireStoreDb {
       "vocabulary": model.vocabulary
     });
     debugPrint("==========> add db for \"lessons\"");
+  }
+
+  Future<void> addTest(TestModel model) async {
+    await db
+        .collection("test")
+        .doc("test_${model.id}_course_${model.courseId}")
+        .set({
+      "course_id": model.courseId,
+      "description": model.description,
+      "difficulty": model.difficulty,
+      "id": model.id,
+      "title": model.title
+    });
+    debugPrint("==========> add db for \"test\"");
+  }
+
+  Future<void> updateTestInfo(TestModel model) async {
+    await db
+        .collection("test")
+        .doc("test_${model.id}_course_${model.courseId}")
+        .update({
+      "course_id": model.courseId,
+      "description": model.description,
+      "difficulty": model.difficulty,
+      "id": model.id,
+      "title": model.title
+    });
+    debugPrint("==========> update db from \"lessons\"");
   }
 
   Future<void> updateCourseInfo(CourseModel model) async {

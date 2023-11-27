@@ -25,7 +25,6 @@ import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
 
 abstract class NetworkProvider {
-
   //user
   Future<void> logInUser(TextEditingController email,
       TextEditingController password, BuildContext context, ErrorCubit cubit);
@@ -38,7 +37,8 @@ abstract class NetworkProvider {
 
   Future<String> uploadImageAndGetUrl(Uint8List data, String folder);
 
-  Future<int> getCountWithCondition(String tableName, String field, dynamic condition);
+  Future<int> getCountWithCondition(
+      String tableName, String field, dynamic condition);
 
   Future<List<ClassModel2>> getClassByAdmin();
 
@@ -46,7 +46,8 @@ abstract class NetworkProvider {
 
   Future<List<ClassModel2>> getClassByTeacherId(int teacherId);
 
-  Future<List<LessonResultModel>> getLessonsResultsByListClassIds(List<int> ids);
+  Future<List<LessonResultModel>> getLessonsResultsByListClassIds(
+      List<int> ids);
 
   Future<UserModel> getUserById(int id);
 
@@ -65,7 +66,6 @@ abstract class NetworkProvider {
 
   Future<List<TeacherClassModel>> getTeacherClassById(String string, int id);
 
-
   Future<List<LessonModel>> getLessonsByCourseId(int id);
 
   Future<ClassModel> getClassById(int id);
@@ -74,7 +74,8 @@ abstract class NetworkProvider {
 
   Future<List<LessonResultModel>> getLessonResultByClassId(int id);
 
-  Future<List<StudentLessonModel>> getAllStudentLessonInLesson(int classId, int lessonId);
+  Future<List<StudentLessonModel>> getAllStudentLessonInLesson(
+      int classId, int lessonId);
 
   Future<LessonResultModel> getLessonResultByLessonId(int id, int classId);
 
@@ -90,20 +91,23 @@ abstract class NetworkProvider {
 
   Future<List<AnswerModel>> getListAnswer(int id, int classId);
 
-
   Future<LessonModel> getLesson(int courseId, int lessonId);
 
-  Future<void> updateTimekeeping(int userId, int lessonId, int classId, int attendId);
+  Future<void> updateTimekeeping(
+      int userId, int lessonId, int classId, int attendId);
 
-  Future<void> updateTeacherNote(int userId, int lessonId, int classId, String note);
+  Future<void> updateTeacherNote(
+      int userId, int lessonId, int classId, String note);
 
-  Future<void> updateStudentStatus(int userId, int classId, int point, String type);
+  Future<void> updateStudentStatus(
+      int userId, int classId, int point, String type);
 
   Future<void> changeStatusLesson(int lessonId, int classId, String status);
 
   Future<void> noteForAllStudentInClass(int lessonId, int classId, String note);
 
-  Future<void> updateTeacherInLessonResult(int lessonId, int classId, int studentId);
+  Future<void> updateTeacherInLessonResult(
+      int lessonId, int classId, int studentId);
 
   Future<void> noteForSupport(int lessonId, int classId, String note);
 
@@ -131,16 +135,21 @@ abstract class NetworkProvider {
 
   Future<List<TeacherModel>> getListTeacherByListId(List<int> teacherIds);
 
-  Future<List<StudentLessonModel>> getStudentLessons(int classId, List<int> studentIds);
+  Future<List<StudentLessonModel>> getStudentLessons(
+      int classId, List<int> studentIds);
 
+  Future<DetailGradingDataModel> getDataForDetailGrading(
+      int classId, int parentId, String type);
 
-  Future<DetailGradingDataModel> getDataForDetailGrading(int classId, int lessonId, String type);
+  Future<List<StudentTestModel>> getAllStudentTestInLesson(
+      int classId, int testId);
 
-  Future<List<StudentTestModel>> getListStudentTestByIDs( List<int> listTestIds);
+  Future<List<StudentTestModel>> getListStudentTestByIDs(List<int> listTestIds);
 
   Future<List<CourseModel>> getCourseByListId(List<int> listCourseIds);
 
-  Future<List<StudentLessonModel>> getAllStudentLessonsInListClassId(List<int> listClassId);
+  Future<List<StudentLessonModel>> getAllStudentLessonsInListClassId(
+      List<int> listClassId);
 
   Future<List<ClassModel>> getListClassForTeacher(List<int> ids);
 
@@ -165,7 +174,7 @@ abstract class NetworkProvider {
 
   // Future<List<TagModel>> getTags();
 
-  Future<bool> addNewLesson(LessonModel model);
+
 
   Future<void> updateLessonInfo(LessonModel lessonModel);
 
@@ -177,7 +186,8 @@ abstract class NetworkProvider {
 
   Future<bool> addTeacherToClass(TeacherClassModel model);
 
-  Future<void> changeClassStatus(ClassModel classModel,String newStatus,ManageGeneralCubit cubit, BuildContext context);
+  Future<void> changeClassStatus(ClassModel classModel, String newStatus,
+      ManageGeneralCubit cubit, BuildContext context);
 
   Future<void> updateClassInfo(ClassModel classModel);
 
@@ -189,12 +199,17 @@ abstract class NetworkProvider {
 
   Future<List<FeedBackModel>> getListFeedBack(String status);
 
-
   //master
 
   Future<List<CourseModel>> getAllCourseEnable();
 
   Future<bool> addNewCourse(CourseModel model);
+
+  Future<bool> addNewLesson(LessonModel model);
+
+  Future<bool> addNewTest(TestModel model);
+
+  Future<void> updateTestInfo(TestModel testModel);
 
   Future<void> addCourseFromJson(String json);
 
@@ -204,4 +219,5 @@ abstract class NetworkProvider {
 
   Future<void> deleteLesson(int lessonId, int courseId);
 
+  Future<void> deleteTest(int testId, int courseId);
 }

@@ -94,6 +94,9 @@ class ChooseScoreCubit extends Cubit<double> {
     if(value == -1){
       emit(-1);
     }
+    if(value == 0){
+      emit(0);
+    }
     if (0 < value && value <= 2.5) {
       emit(2.5);
     }

@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StudentTestModel {
-  final int classId, score, studentId, testID;
-  final String doingTime;
-
+  final int classId, studentId, testID;
+  final Map time;
+  final double score;
   const StudentTestModel(
       {required this.classId,
       required this.score,
       required this.studentId,
       required this.testID,
-      required this.doingTime});
+      required this.time});
 
   factory StudentTestModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
@@ -19,7 +19,7 @@ class StudentTestModel {
       score: data["score"] ?? 0,
       studentId: data['student_id'] ?? 0,
       testID: data["test_id"] ?? 0,
-      doingTime:  data["test_time"] ?? ""
+        time:  data["time"] ?? {}
     );
   }
 }
