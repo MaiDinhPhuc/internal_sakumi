@@ -576,3 +576,4 @@ class RenameCubit extends Cubit<int> {
 
   buildUI() => emit(state + 1);
 }
+
