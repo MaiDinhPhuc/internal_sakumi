@@ -174,7 +174,7 @@ abstract class NetworkProvider {
 
   // Future<List<TagModel>> getTags();
 
-  Future<bool> addNewLesson(LessonModel model);
+
 
   Future<void> updateLessonInfo(LessonModel lessonModel);
 
@@ -205,6 +205,12 @@ abstract class NetworkProvider {
 
   Future<bool> addNewCourse(CourseModel model);
 
+  Future<bool> addNewLesson(LessonModel model);
+
+  Future<bool> addNewTest(TestModel model);
+
+  Future<void> updateTestInfo(TestModel testModel);
+
   Future<void> addCourseFromJson(String json);
 
   Future<void> addLessonFromJson(String json);
@@ -212,4 +218,6 @@ abstract class NetworkProvider {
   Future<void> addTestFromJson(String json);
 
   Future<void> deleteLesson(int lessonId, int courseId);
+
+  Future<void> deleteTest(int testId, int courseId);
 }

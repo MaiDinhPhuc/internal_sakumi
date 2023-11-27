@@ -296,10 +296,20 @@ enum AppText {
   txtAddNote,
   txtLetNote,
   txtTool,
-  txtNumberIgnore
+  txtNumberIgnore,
+  txtAddNewTest,
+  txtEditTest,
+  txtTestId,
+  txtDifficult,
+  txtPleaseCheckListTest,
 }
 
 Map<AppText, String> texts = {
+  AppText.txtPleaseCheckListTest: 'Bài kiểm tra đã tồn tại, vui lòng kiểm tra data...',
+  AppText.txtDifficult: 'Độ khó',
+  AppText.txtTestId: 'Mã bài kiểm tra',
+  AppText.txtAddNewTest: 'Thêm bài kiểm tra mới',
+  AppText.txtEditTest: 'Chỉnh sửa bài kiểm tra',
   AppText.txtNumberIgnore: 'Số câu bỏ qua',
   AppText.txtTool: 'Tool',
   AppText.txtLetNote: 'Hãy điền ghi chú vào đây',

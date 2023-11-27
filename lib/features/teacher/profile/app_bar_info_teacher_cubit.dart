@@ -14,7 +14,7 @@ class AppBarInfoTeacherCubit extends Cubit<TeacherModel?> {
     emit(null);
     SharedPreferences localData = await SharedPreferences.getInstance();
     var profileTeacher = await FireBaseProvider.instance
-        .getTeacherByTeacherCode(localData.getString(PrefKeyConfigs.code).toString());
+        .getTeacherById(localData.getInt(PrefKeyConfigs.userId)!);
     teacherModel = profileTeacher;
     emit(profileTeacher);
   }

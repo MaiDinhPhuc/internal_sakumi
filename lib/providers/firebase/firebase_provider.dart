@@ -757,6 +757,11 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<void> updateTestInfo(TestModel testModel) async {
+    await FireStoreDb.instance.updateTestInfo(testModel);
+  }
+
+  @override
   Future<List<ClassModel2>> getClassByTeacherId(int teacherId) async {
     var teacherClassIDs =
         (await FireStoreDb.instance.getTeacherClassById('user_id', teacherId))
@@ -1306,15 +1311,33 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<bool> addNewTest(TestModel model) async {
+    final temp = await FireStoreDb.instance
+        .getTestByDocs("test_${model.id}_course_${model.courseId}");
+    if (!temp.exists) {
+      await FireStoreDb.instance.addTest(model);
+      return true;
+    }
+    return false;
+  }
+
+  @override
   Future<void> deleteLesson(int lessonId, int courseId) async {
     await FireStoreDb.instance
         .deleteLessonByDocs("lesson_${lessonId}_course_$courseId");
   }
 
   @override
+  Future<void> deleteTest(int testId, int courseId) async {
+    await FireStoreDb.instance
+        .deleteTestByDocs("test_${testId}_course_$courseId");
+  }
+
+  @override
   Future<void> updateCourseState(CourseModel courseModel, bool state) async {
     await FireStoreDb.instance.updateCourseState(courseModel, state);
   }
+
 
   @override
   Future<void> addCourseFromJson(String jsonData) async {
