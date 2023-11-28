@@ -34,9 +34,7 @@ class ClassGradingTab extends StatelessWidget {
             )
                 :BlocBuilder<GradingCubit, int>(
                 bloc: cubit
-                  ..load(dataController.classes!.firstWhere((e) =>
-                  e.classModel.classId ==
-                      int.parse(TextUtils.getName())), dataController),
+                  ..load(int.parse(TextUtils.getName()), dataController),
                 builder: (c, s) {
               return cubit.classModel == null
                   ? Transform.scale(

@@ -4,4 +4,5 @@ class PrefKeyConfigs {
   static const String name = 'user_name';
   static const String email = 'email';
   static const String logoutYet = "logoutYet";
+  static const String role = 'role';
 }

@@ -36,9 +36,7 @@ class ListLessonTab extends StatelessWidget {
                   )
                 : BlocBuilder<LessonTabCubit, int>(
                     bloc: cubit
-                      ..load(dataController.classes!.firstWhere((e) =>
-                          e.classModel.classId ==
-                          int.parse(TextUtils.getName())), dataController),
+                      ..load(int.parse(TextUtils.getName()), dataController),
                     builder: (c, s) {
                       return cubit.classModel == null
                           ? Transform.scale(
@@ -81,7 +79,7 @@ class ListLessonTab extends StatelessWidget {
                                                         fontSize: Resizable.font(
                                                             context, 17))),
                                                 name:
-                                                    Text(AppText.titleSubject.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17))),
+                                                    Padding(padding: EdgeInsets.only(left: Resizable.padding(context, 20)),child: Text(AppText.titleSubject.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17)))),
                                                 sensei: Text(AppText.txtSensei.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17))),
                                                 attend: Text(AppText.txtRateOfAttendance.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17))),
                                                 submit: Text(AppText.txtRateOfSubmitHomework.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17))),
@@ -108,7 +106,7 @@ class ListLessonTab extends StatelessWidget {
                                                   ],
                                                 )),
                                               )
-                                            : ListLessonItem(cubit: cubit, role: role),
+                                            : ListLessonItem(cubit: cubit, role: role, dataCubit: dataController),
                                         SizedBox(
                                             height: Resizable.size(context, 50))
                                       ],

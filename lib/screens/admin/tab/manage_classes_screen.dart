@@ -103,7 +103,7 @@ class ManageClassesScreen extends StatelessWidget {
                     ),
                   ),
                   BlocBuilder<DataCubit, int>(
-                      builder: (context, _) => dataController.classes == null
+                      builder: (context, _) => dataController.classes == null || dataController.classNow == null
                           ? Shimmer.fromColors(
                         baseColor: Colors.grey[300]!,
                         highlightColor: Colors.grey[100]!,
@@ -127,7 +127,6 @@ class ManageClassesScreen extends StatelessWidget {
                                 horizontal: Resizable.size(context, 150)),
                             child: ClassItemAdmin(classItemCubit: ClassItemCubit(e), dataCubit: dataController)))
                             .toList(),
-                        SizedBox(height: Resizable.size(context, 50))
                       ])
                           : Center(
                         child: Text(AppText.txtNoClass.text),

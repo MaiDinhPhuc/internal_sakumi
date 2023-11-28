@@ -40,6 +40,10 @@ class MyApp extends StatelessWidget {
           title: 'Nội Bộ Sakumi',
           theme: ThemeData(
             primarySwatch: primaryColor,
+            textTheme: Theme.of(context).textTheme.apply(
+              fontSizeFactor: 1.0,
+              fontFamily: "Montserrat",
+            ),
           ),
           onGenerateRoute: Routes.router.generator,
         ));

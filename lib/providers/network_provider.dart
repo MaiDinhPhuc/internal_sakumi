@@ -191,6 +191,8 @@ abstract class NetworkProvider {
 
   Future<void> updateClassInfo(ClassModel classModel);
 
+  Future<void> updateLessonResult(int lessonId, int classId, String note);
+
   Future<void> updateCourseState(CourseModel courseModel, bool state);
 
   Future<void> updateCourseInfo(CourseModel courseModel);
@@ -199,9 +201,15 @@ abstract class NetworkProvider {
 
   Future<List<FeedBackModel>> getListFeedBack(String status);
 
+  Future<StudentModel> getStudentById(int studentId);
+
+  Future<void> updateProfileStudent(String id, StudentModel model);
+
   //master
 
   Future<List<CourseModel>> getAllCourseEnable();
+
+  Future<List<ClassModel>> getListClassForAdmin();
 
   Future<bool> addNewCourse(CourseModel model);
 

@@ -460,6 +460,17 @@ class FireStoreDb {
     debugPrint("==========>update db from \"lesson_result\"");
   }
 
+  Future<void> updateNoteInLessonResult(
+      int lessonId, int classId, String note) async {
+    await db
+        .collection('lesson_result')
+        .doc("lesson_${lessonId}_class_$classId")
+        .update({
+      'support_note_for_teacher': note,
+    });
+    debugPrint("==========>update db from \"lesson_result\"");
+  }
+
   Future<void> noteForSupport(int lessonId, int classId, String note) async {
     await db
         .collection('lesson_result')
@@ -570,7 +581,9 @@ class FireStoreDb {
       'title': model.title,
       'token': model.token,
       'type': model.type,
-      'dataversion': model.version
+      'dataversion': model.version,
+      'prefix': model.prefix,
+      "suffix":model.suffix
     });
     debugPrint("==========> add db for \"courses\"");
   }
@@ -637,7 +650,9 @@ class FireStoreDb {
       'title': model.title,
       'token': model.token,
       'type': model.type,
-      'dataversion': model.version
+      'dataversion': model.version,
+      'prefix': model.prefix,
+      "suffix":model.suffix
     });
     debugPrint("==========> update db from \"courses\"");
   }
@@ -705,6 +720,22 @@ class FireStoreDb {
       'teacher_code': model.teacherCode,
       'phone': model.phone,
       'user_id': model.userId,
+    });
+    debugPrint("==========>update db from \"teacher\"");
+  }
+
+
+  Future<void> updateProfileStudent(String id, StudentModel model) async {
+    await db.collection('students').doc("student_user_$id").update({
+      'name': model.name,
+      'note': model.note,
+      'url': model.url,
+      'status': model.status,
+      'student_code': model.studentCode,
+      'phone': model.phone,
+      'user_id': model.userId,
+      'in_jp': model.inJapan,
+
     });
     debugPrint("==========>update db from \"teacher\"");
   }
@@ -843,6 +874,20 @@ class FireStoreDb {
     return snapshot;
   }
 
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getListClassForAdmin() async {
+    final snapshot = await db
+        .collection("class")
+        .where("class_status", whereNotIn: ["Remove", "Completed", "Cancel"])
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListClassNotRemove ${snapshot.size}");
+
+    return snapshot;
+  }
+
+
   Future<QuerySnapshot<Map<String, dynamic>>> getListClassAvailableForTeacher(
       List<int> listIds) async {
     final snapshot = await db
@@ -924,6 +969,19 @@ class FireStoreDb {
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> get10StudentFirst ${snapshot.size}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getStudentById(int studentId) async {
+    final snapshot = await db
+        .collection("students")
+        .where('user_id', isEqualTo: studentId)
+        .get();
+    // debugPrint("==========>get db from \"students\": ${snapshot.docs.length}");
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentById ${snapshot.size}");
 
     return snapshot;
   }

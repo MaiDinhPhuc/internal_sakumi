@@ -185,6 +185,7 @@ void alertNewStudent(
                                               Resizable.size(context, 100)),
                                       child: SubmitButton(
                                           onPressed: () async {
+                                            int millisecondsSinceEpoch = DateTime.now().millisecondsSinceEpoch;
                                             if (formKey.currentState!
                                                 .validate()) {
                                               await cubit.createStudent(
@@ -194,7 +195,7 @@ void alertNewStudent(
                                                       url: '',
                                                       note: noteCon.text,
                                                       userId:
-                                                          cubit.userCount!,
+                                                      millisecondsSinceEpoch,
                                                       inJapan: cubit.active,
                                                       phone: phoneCon.text,
                                                       studentCode:
@@ -204,14 +205,12 @@ void alertNewStudent(
                                                       email: emailCon.text,
                                                       role: AppText
                                                           .selectorStudent.text,
-                                                      id: cubit.userCount!));
+                                                      id: millisecondsSinceEpoch));
                                               if (context.mounted) {
                                                 Navigator.pop(context);
                                                 if (cubit.checkCreate == true) {
                                                   debugPrint(
                                                       '===========> listStudentClass ${cubit.studentClassCount! + 1}');
-                                                  debugPrint(
-                                                      '===========> userId ${cubit.userCount! + 1}');
 
                                                   await cubit.addStudentToClass(
                                                       context,
@@ -225,7 +224,7 @@ void alertNewStudent(
                                                           activeStatus: 1,
                                                           learningStatus: 1,
                                                           moveTo: 0,
-                                                          userId: cubit.userCount!,
+                                                          userId: millisecondsSinceEpoch,
                                                           classStatus:
                                                               AppText.statusInProgress.text,
                                                           date: DateFormat(

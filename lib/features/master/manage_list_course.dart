@@ -29,74 +29,64 @@ class ManageListCourse extends StatelessWidget {
           TitleWidget(AppText.txtListCourse.text.toUpperCase()),
           ...(cubit.listCourseNow!)
               .map(
-                (e) => Row(
-              children: [
-                Container(
-                  color: e.courseId == cubit.selector
-                      ? primaryColor
-                      : Colors.transparent,
-                  width: Resizable.size(context, 4),
-                  margin: EdgeInsets.only(
-                      right: Resizable.padding(context, 5),
-                      bottom: Resizable.padding(context, 10)),
-                ),
-                Expanded(
-                    child: Card(
-                        margin: EdgeInsets.only(
-                            right: Resizable.padding(context, 10),
-                            bottom: Resizable.padding(context, 10)),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                Resizable.size(context, 5)),
-                            side: BorderSide(
-                                color: cubit.selector != e.courseId
-                                    ? const Color(0xffE0E0E0)
-                                    : Colors.black,
-                                width: Resizable.size(context, 1))),
-                        elevation: cubit.selector == e.courseId
-                            ? Resizable.size(context, 2)
-                            : 0,
-                        child: InkWell(
-                            borderRadius: BorderRadius.circular(
-                                Resizable.size(context, 5)),
-                            onTap: () {
-                              if(e.courseId != cubit.selector){
-                                cubit.selectedCourse(e.courseId);
-                              }
-                            },
-                            child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical:
-                                    Resizable.padding(context, 10),
-                                    horizontal:
-                                    Resizable.padding(context, 15)),
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "${e.courseId} - ${e.title} ${e.termName} ${e.code}",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize:
-                                          Resizable.font(context, 17)),
-                                    ),
-                                    InkWell(
-                                        borderRadius: BorderRadius.circular(
-                                            Resizable.size(context, 100)),
-                                        onTap: () {
-                                          alertAddNewCourse(context,e,true, cubit);
-                                        },
-                                        child: Image.asset(
-                                            'assets/images/ic_edit.png',
-                                            height:
-                                            Resizable.size(context, 20),
-                                            width: Resizable.size(
-                                                context, 20)))
-                                  ],
-                                )))))
-              ],
-            ),
+                (e) => Card(
+                    margin: EdgeInsets.only(
+                        right: Resizable.padding(context, 10),
+                        bottom: Resizable.padding(context, 10)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            Resizable.size(context, 5)),
+                        side: BorderSide(
+                            color: cubit.selector != e.courseId
+                                ? const Color(0xffE0E0E0)
+                                : Colors.black,
+                            width: Resizable.size(context, 1))),
+                    elevation: cubit.selector == e.courseId
+                        ? Resizable.size(context, 2)
+                        : 0,
+                    child: InkWell(
+                        borderRadius: BorderRadius.circular(
+                            Resizable.size(context, 5)),
+                        onTap: () {
+                          if(e.courseId != cubit.selector){
+                            cubit.selectedCourse(e.courseId);
+                          }
+                        },
+                        child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical:
+                                Resizable.padding(context, 10),
+                                horizontal:
+                                Resizable.padding(context, 15)),
+                            child: Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                    flex: 10,
+                                    child: Text(
+                                  "${e.courseId} - ${e.title} ${e.termName} ${e.code}",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize:
+                                      Resizable.font(context, 17)),
+                                )),
+                               Expanded(
+                                   flex: 1,
+                                   child:  InkWell(
+                                   borderRadius: BorderRadius.circular(
+                                       Resizable.size(context, 100)),
+                                   onTap: () {
+                                     alertAddNewCourse(context,e,true, cubit);
+                                   },
+                                   child: Image.asset(
+                                       'assets/images/ic_edit.png',
+                                       height:
+                                       Resizable.size(context, 20),
+                                       width: Resizable.size(
+                                           context, 20))))
+                              ],
+                            )))),
           )
               .toList(),
           Padding(

@@ -14,7 +14,7 @@ class FilterCourseState extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         margin: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 10)),
-        alignment: Alignment.centerRight, width: Resizable.size(context, 120),
+        alignment: Alignment.centerRight, width: Resizable.size(context, 150),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(24),
           child: Material(

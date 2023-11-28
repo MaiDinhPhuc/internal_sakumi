@@ -34,11 +34,7 @@ class ClassTestTab extends StatelessWidget {
                   )
                 : BlocBuilder<TestCubit, int>(
                     bloc: cubit
-                      ..load(
-                          dataController.classes!.firstWhere((e) =>
-                              e.classModel.classId ==
-                              int.parse(TextUtils.getName())),
-                          dataController),
+                      ..load(int.parse(TextUtils.getName()), dataController),
                     builder: (cc, s) {
                       return cubit.classModel == null
                           ? Transform.scale(

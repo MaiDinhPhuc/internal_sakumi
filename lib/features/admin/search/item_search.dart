@@ -9,140 +9,221 @@ import 'package:internal_sakumi/utils/resizable.dart';
 
 class ItemSearch extends StatelessWidget {
   const ItemSearch(
-      {super.key, this.teacherModel, this.studentModel,this.classModel, required this.type});
+      {super.key,
+      this.teacherModel,
+      this.studentModel,
+      this.classModel,
+      required this.type,
+      required this.isLast});
   final String type;
   final TeacherModel? teacherModel;
   final StudentModel? studentModel;
   final ClassModel? classModel;
+  final bool isLast;
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onTap: ()async{
-          if(type == AppText.txtClass.text){
+        onTap: () async {
+          if (type == AppText.txtClass.text) {
             await Navigator.pushNamed(context,
                 "${Routes.admin}/overview/class=${classModel!.classId}");
+          } else if (type == AppText.txtStudent.text) {
+            await Navigator.pushNamed(context,
+                "${Routes.admin}/studentInfo/student=${studentModel!.userId}");
+          } else {
+            await Navigator.pushNamed(context,
+                "${Routes.admin}/teacherInfo/teacher=${teacherModel!.userId}");
           }
         },
-        child: type != AppText.txtClass.text ? Padding(
-          padding: EdgeInsets.all( Resizable.padding(context, 5)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: Resizable.padding(context, 5)),
-                      child: SmallAvatar(type == AppText.txtStudent.text
-                          ? studentModel!.url
-                          : teacherModel!.url)),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                          type == AppText.txtStudent.text
-                              ? studentModel!.name
-                              : teacherModel!.name,
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: Resizable.size(context, 17),
-                              fontWeight: FontWeight.w600)),
-                      Text(
-                          type == AppText.txtStudent.text
-                              ? "${AppText.txtStudentCode.text}: ${studentModel!.studentCode}"
-                              : "${AppText.txtTeacherCode.text}: ${teacherModel!.teacherCode}",
-                          style: TextStyle(
-                              color:const Color(0xFF757575),
-                              fontSize: Resizable.size(context, 14),
-                              fontWeight: FontWeight.w600))
-                    ],
-                  )
-                ],
-              ),
-              Icon(Icons.arrow_forward_ios_outlined, size: Resizable.size(context, 17),color: const Color(0xFF757575))
-            ],
-          ),
-        ) : Padding(
-          padding: EdgeInsets.all( Resizable.padding(context, 5)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: Resizable.padding(context, 5)),
-                      child:Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(1000),
-                          boxShadow: [BoxShadow(blurRadius: 5, color:  getColor(classModel!.classStatus))],
+        child: type != AppText.txtClass.text
+            ? Padding(
+                padding: EdgeInsets.only(
+                    top: Resizable.padding(context, 10),
+                    left: Resizable.padding(context, 5),
+                    right: Resizable.padding(context, 5)),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: Resizable.padding(context, 5)),
+                                child: SmallAvatar(
+                                    type == AppText.txtStudent.text
+                                        ? studentModel!.url
+                                        : teacherModel!.url)),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    type == AppText.txtStudent.text
+                                        ? studentModel!.name
+                                        : teacherModel!.name,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: Resizable.size(context, 14),
+                                        fontWeight: FontWeight.w600)),
+                                SizedBox(height: Resizable.padding(context, 2)),
+                                Text(
+                                    type == AppText.txtStudent.text
+                                        ? "${AppText.txtStudentCode.text}: ${studentModel!.studentCode}"
+                                        : "${AppText.txtTeacherCode.text}: ${teacherModel!.teacherCode}",
+                                    style: TextStyle(
+                                        color: const Color(0xFF757575),
+                                        fontSize: Resizable.size(context, 10),
+                                        fontWeight: FontWeight.w600))
+                              ],
+                            )
+                          ],
                         ),
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(1000),
-                            child: Tooltip(
-                                padding: EdgeInsets.all(Resizable.padding(context, 10)),
-                                decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    border: Border.all(
-                                        color: Colors.black, width: Resizable.size(context, 1)),
-                                    borderRadius:
-                                    BorderRadius.circular(Resizable.padding(context, 5))),
-                                richMessage: WidgetSpan(
-                                    alignment: PlaceholderAlignment.baseline,
-                                    baseline: TextBaseline.alphabetic,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        RichText(
-                                          text: TextSpan(
-                                            text: vietnameseSubText(classModel!.classStatus),
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: Resizable.font(context, 18),
-                                                color: Colors.white),
-                                          ),
-                                        ),
-                                      ],
-                                    )),
-                                child: AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color: getColor(classModel!.classStatus),
-                                        borderRadius: BorderRadius.circular(1000)),
-                                    child: Center(
-                                      child: Image.asset('assets/images/ic_${getIcon(classModel!.classStatus)}.png',scale: 50,),
-                                    ),
+                        Icon(Icons.arrow_forward_ios_outlined,
+                            size: Resizable.size(context, 17),
+                            color: const Color(0xFF757575))
+                      ],
+                    ),
+                    isLast
+                        ? Container(
+                            margin: EdgeInsets.symmetric(
+                                vertical: Resizable.padding(context, 5)))
+                        : Container(
+                            height: Resizable.size(context, 1),
+                            margin: EdgeInsets.only(
+                                left: Resizable.padding(context, 5),
+                                right: Resizable.padding(context, 5),
+                                top: Resizable.padding(context, 5)),
+                            color: const Color(0xffD9D9D9),
+                          )
+                  ],
+                ),
+              )
+            : Padding(
+                padding: EdgeInsets.only(
+                    top: Resizable.padding(context, 10),
+                    left: Resizable.padding(context, 5),
+                    right: Resizable.padding(context, 5)),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: Resizable.padding(context, 5)),
+                                child: Container(
+                                  height: 30,
+                                  width: 30,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(1000),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          blurRadius: 5,
+                                          color:
+                                              getColor(classModel!.classStatus))
+                                    ],
                                   ),
-                                ))
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(1000),
+                                      child: Tooltip(
+                                          padding: EdgeInsets.all(
+                                              Resizable.padding(context, 10)),
+                                          decoration: BoxDecoration(
+                                              color: Colors.black,
+                                              border: Border.all(
+                                                  color: Colors.black,
+                                                  width: Resizable.size(
+                                                      context, 1)),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      Resizable.padding(
+                                                          context, 5))),
+                                          richMessage: WidgetSpan(
+                                              alignment:
+                                                  PlaceholderAlignment.baseline,
+                                              baseline: TextBaseline.alphabetic,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      text: vietnameseSubText(
+                                                          classModel!
+                                                              .classStatus),
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize:
+                                                              Resizable.font(
+                                                                  context, 18),
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )),
+                                          child: AspectRatio(
+                                            aspectRatio: 1,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  color: getColor(
+                                                      classModel!.classStatus),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          1000)),
+                                              child: Center(
+                                                child: Image.asset(
+                                                  'assets/images/ic_${getIcon(classModel!.classStatus)}.png',
+                                                  scale: 50,
+                                                ),
+                                              ),
+                                            ),
+                                          ))),
+                                )),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    "${AppText.txtClassCode.text}: ${classModel!.classCode}",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: Resizable.size(context, 14),
+                                        fontWeight: FontWeight.w600)),
+                                Text(
+                                    "${AppText.txtClassType.text}: ${classModel!.classType == 0 ? "Lớp Chung" : "Lớp 1-1"}",
+                                    style: TextStyle(
+                                        color: const Color(0xFF757575),
+                                        fontSize: Resizable.size(context, 10),
+                                        fontWeight: FontWeight.w600))
+                              ],
+                            )
+                          ],
                         ),
-                      )),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                          "${AppText.txtClassCode.text}: ${classModel!.classCode}",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: Resizable.size(context, 17),
-                              fontWeight: FontWeight.w600)),
-                      Text(
-                          "${AppText.txtClassType.text}: ${classModel!.classType == 0 ? "Lớp Chung" : "Lớp 1-1"}",
-                          style: TextStyle(
-                              color:const Color(0xFF757575),
-                              fontSize: Resizable.size(context, 14),
-                              fontWeight: FontWeight.w600))
-                    ],
-                  )
-                ],
-              ),
-              Icon(Icons.arrow_forward_ios_outlined, size: Resizable.size(context, 17),color: const Color(0xFF757575))
-            ],
-          ),
-        ));
+                        Icon(Icons.arrow_forward_ios_outlined,
+                            size: Resizable.size(context, 17),
+                            color: const Color(0xFF757575))
+                      ],
+                    ),
+                    isLast
+                        ? Container(
+                            margin: EdgeInsets.symmetric(
+                                vertical: Resizable.padding(context, 5)))
+                        : Container(
+                            height: Resizable.size(context, 1),
+                            margin: EdgeInsets.only(
+                                left: Resizable.padding(context, 5),
+                                right: Resizable.padding(context, 5),
+                                top: Resizable.padding(context, 5)),
+                            color: const Color(0xffD9D9D9),
+                          )
+                  ],
+                ),
+              ));
   }
+
   Color getColor(String status) {
     switch (status) {
       case 'InProgress':

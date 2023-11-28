@@ -1,6 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
+import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/sensei_item.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -11,9 +12,10 @@ import 'lesson_item_row_layout.dart';
 import 'lesson_tab_cubit.dart';
 
 class ListLessonItem extends StatelessWidget {
-  const ListLessonItem({super.key, required this.cubit, required this.role});
+  const ListLessonItem({super.key, required this.cubit, required this.role, required this.dataCubit});
   final LessonTabCubit cubit;
   final String role;
+  final DataCubit dataCubit;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -57,7 +59,7 @@ class ListLessonItem extends StatelessWidget {
                                         "Pending")
                                       ExpandLessonItem(
                                           cubit.listLessonInfo!.indexOf(e),
-                                          cubit: cubit)
+                                          cubit: cubit, dataCubit: dataCubit, lessonId: e["id"],)
                                   ],
                                 ),
                                 crossFadeState: state % 2 == 1
