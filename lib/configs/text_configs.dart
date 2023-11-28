@@ -302,7 +302,7 @@ enum AppText {
   btnVerify,
   btnInputLinkAndTitle,
   txtNotLoggedIn,
-  txtTool,
+  // txtTool,
   txtNumberIgnore
 }
 
