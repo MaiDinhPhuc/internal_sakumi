@@ -14,7 +14,9 @@ class ChartView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: Resizable.size(context, 10)),
-      height: Resizable.size(context, 190),
+      constraints: BoxConstraints(
+        maxHeight: Resizable.size(context, 200),
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

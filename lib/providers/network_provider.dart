@@ -174,7 +174,7 @@ abstract class NetworkProvider {
 
   // Future<List<TagModel>> getTags();
 
-  Future<bool> addNewLesson(LessonModel model);
+
 
   Future<void> updateLessonInfo(LessonModel lessonModel);
 
@@ -191,6 +191,8 @@ abstract class NetworkProvider {
 
   Future<void> updateClassInfo(ClassModel classModel);
 
+  Future<void> updateLessonResult(int lessonId, int classId, String note);
+
   Future<void> updateCourseState(CourseModel courseModel, bool state);
 
   Future<void> updateCourseInfo(CourseModel courseModel);
@@ -199,11 +201,23 @@ abstract class NetworkProvider {
 
   Future<List<FeedBackModel>> getListFeedBack(String status);
 
+  Future<StudentModel> getStudentById(int studentId);
+
+  Future<void> updateProfileStudent(String id, StudentModel model);
+
   //master
 
   Future<List<CourseModel>> getAllCourseEnable();
 
+  Future<List<ClassModel>> getListClassForAdmin();
+
   Future<bool> addNewCourse(CourseModel model);
+
+  Future<bool> addNewLesson(LessonModel model);
+
+  Future<bool> addNewTest(TestModel model);
+
+  Future<void> updateTestInfo(TestModel testModel);
 
   Future<void> addCourseFromJson(String json);
 
@@ -212,4 +226,6 @@ abstract class NetworkProvider {
   Future<void> addTestFromJson(String json);
 
   Future<void> deleteLesson(int lessonId, int courseId);
+
+  Future<void> deleteTest(int testId, int courseId);
 }

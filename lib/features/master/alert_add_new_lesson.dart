@@ -142,6 +142,9 @@ void alertAddNewLesson(BuildContext context, LessonModel? lessonModel,
                                             int.parse(idLessonCon.text),
                                             int.parse(idCourseCon.text),
                                           );
+                                          Navigator.pop(context);
+                                          cubit.loadLessonInCourse(
+                                              cubit.selector);
                                         },
                                         title: AppText.txtDeleteLesson.text),
                                   Row(

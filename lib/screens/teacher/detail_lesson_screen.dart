@@ -49,9 +49,7 @@ class DetailLessonScreen extends StatelessWidget {
                     child: BlocBuilder<DetailLessonCubit, LessonResultModel?>(
                       bloc: cubit
                         ..checkLessonResult(
-                            dataController.classes!.firstWhere((e) =>
-                                e.classModel.classId ==
-                                int.parse(TextUtils.getName(position: 1))),
+                            int.parse(TextUtils.getName(position: 1)),
                             dataController),
                       builder: (cc, s) {
                         return s == null
@@ -77,7 +75,8 @@ class DetailLessonScreen extends StatelessWidget {
                                   if (s.status == 'Pending')
                                     LessonPendingView(
                                         BlocProvider.of<DetailLessonCubit>(cc),
-                                        dataController, pendingViewCubit),
+                                        dataController,
+                                        pendingViewCubit),
                                   if (s.status == 'Teaching')
                                     LessonTeachingView(
                                       dataCubit: dataController,
@@ -86,7 +85,8 @@ class DetailLessonScreen extends StatelessWidget {
                                   if (s.status == 'Complete')
                                     LessonCompleteView(
                                         BlocProvider.of<DetailLessonCubit>(cc),
-                                        dataController,sessionCubit),
+                                        dataController,
+                                        sessionCubit),
                                 ],
                               );
                       },

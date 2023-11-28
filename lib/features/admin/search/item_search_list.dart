@@ -15,26 +15,45 @@ class ItemSearchList extends StatelessWidget {
   final String type, text;
   @override
   Widget build(BuildContext context) {
-    return text == "" ? Container() : Container(
-      constraints: BoxConstraints(
-        maxHeight: Resizable.padding(context, 300), // max height
-      ),
-      margin: EdgeInsets.only(left: Resizable.padding(context, 110), top:Resizable.padding(context, 5)),
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.black),
-          borderRadius: BorderRadius.circular(10)),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            if(searchCubit.type == AppText.txtStudent.text && text != "")
-              ...searchCubit.studentsNow.map((e) => ItemSearch(type: type,studentModel: e)),
-            if(searchCubit.type == AppText.txtTeacher.text && text != "")
-              ...searchCubit.teachersNow.map((e) => ItemSearch(type: type,teacherModel: e)),
-            if(searchCubit.type == AppText.txtClass.text && text != "")
-              ...searchCubit.classesNow.map((e) => ItemSearch(type: type,classModel: e,)),
-          ],
-        ),
-      ),
-    );
+    return text == ""
+        ? Container()
+        : Container(
+            constraints: BoxConstraints(
+              maxHeight: Resizable.padding(context, 300), // max height
+            ),
+            margin: EdgeInsets.only(
+                left: Resizable.padding(context, 110),
+                top: Resizable.padding(context, 5)),
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                borderRadius: BorderRadius.circular(10)),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  if (searchCubit.type == AppText.txtStudent.text && text != "")
+                    ...searchCubit.studentsNow.map((e) => ItemSearch(
+                        type: type,
+                        studentModel: e,
+                        isLast: searchCubit.studentsNow.indexOf(e) ==
+                            searchCubit.studentsNow
+                                .indexOf(searchCubit.studentsNow.last))),
+                  if (searchCubit.type == AppText.txtTeacher.text && text != "")
+                    ...searchCubit.teachersNow.map((e) => ItemSearch(
+                        type: type,
+                        teacherModel: e,
+                        isLast: searchCubit.teachersNow.indexOf(e) ==
+                            searchCubit.teachersNow
+                                .indexOf(searchCubit.teachersNow.last))),
+                  if (searchCubit.type == AppText.txtClass.text && text != "")
+                    ...searchCubit.classesNow.map((e) => ItemSearch(
+                        type: type,
+                        classModel: e,
+                        isLast: searchCubit.classesNow.indexOf(e) ==
+                            searchCubit.classesNow
+                                .indexOf(searchCubit.classesNow.last))),
+                ],
+              ),
+            ),
+          );
   }
 }

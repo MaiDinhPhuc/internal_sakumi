@@ -18,10 +18,10 @@ class FilterGradingTab extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Expanded(
-            flex:25,
+            flex:24,
             child: Container()),
         Expanded(
-            flex:4,
+            flex:5,
             child: BlocProvider(
               create: (context) => DropdownGradingCubit(AppText.titleHomework.text),
               child: BlocBuilder<DropdownGradingCubit, String>(
@@ -49,7 +49,7 @@ class FilterGradingTab extends StatelessWidget {
             flex:1,
             child: Container()),
         Expanded(
-            flex:4,
+            flex:5,
             child: BlocProvider(
               create: (context) => DropdownGradingCubit(AppText.textNotMarked.text),
               child: BlocBuilder<DropdownGradingCubit, String>(

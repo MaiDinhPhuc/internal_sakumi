@@ -17,50 +17,66 @@ import 'lesson_item.dart';
 import 'manage_course_cubit.dart';
 
 class ManageListLesson extends StatelessWidget {
-  const ManageListLesson(this.cubit,{super.key});
+  const ManageListLesson(this.cubit, {super.key});
   final ManageCourseCubit cubit;
   @override
   Widget build(BuildContext context) {
-    return Expanded(child: !cubit.canAdd ? Container() : cubit.listLesson == null ? Transform.scale(
-      scale: 0.75,
-      child: const Center(
-        child:
-        CircularProgressIndicator(),
-      ),
-    ) : Column(
-      children: [
-        ...(cubit.listLesson!).map((e) => LessonItem(e,cubit)).toList(),
-        SizedBox(height: Resizable.padding(context, 5)),
-        if(cubit.listLesson!.isNotEmpty || cubit.canAdd == true)
-          Material(
-              color: Colors.transparent,
-              child: DottedBorderButton(
-                  AppText.btnAddNewLesson.text.toUpperCase(),
-                  isManageGeneral: true, onPressed: () async {
-                selectionDialog(context, AppText.txtAddManual.text, AppText.txtAddFromJson.text, () async {
-                  Navigator.pop(context);
-                  alertAddNewLesson(context,null,false,cubit);
-                }, ()async {
-                  Navigator.pop(context);
-                  FilePickerResult? result = await FilePicker.platform.pickFiles();
-                  if (result != null) {
-                    waitingDialog(context);
-                    Uint8List uInt8list = Uint8List.fromList(result.files.single.bytes!.toList());
-                    const utf8Decoder = Utf8Decoder(allowMalformed: true);
-                    final decodedBytes = utf8Decoder.convert(uInt8list);
-                    bool check = await LessonModel.check(decodedBytes);
-                    if(check){
-                      await FireBaseProvider.instance.addLessonFromJson(decodedBytes);
-                      Navigator.pop(context);
-                      cubit.loadLessonInCourse(cubit.selector);
-                    }else{
-                      Navigator.pop(context);
-                      alertItemExist(context, AppText.txtLessonExist.text);
-                    }
-                  }
-                });
-              })),
-      ],
-    ));
+    return Expanded(
+        child: !cubit.canAdd
+            ? Container()
+            : cubit.listLesson == null
+                ? Transform.scale(
+                    scale: 0.75,
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : Column(
+                    children: [
+                      ...(cubit.listLesson!)
+                          .map((e) => LessonItem(e, cubit))
+                          .toList(),
+                      SizedBox(height: Resizable.padding(context, 5)),
+                      if (cubit.listLesson!.isNotEmpty || cubit.canAdd == true)
+                        Material(
+                            color: Colors.transparent,
+                            child: DottedBorderButton(
+                                AppText.btnAddNewLesson.text.toUpperCase(),
+                                isManageGeneral: true, onPressed: () async {
+                              selectionDialog(
+                                  context,
+                                  AppText.txtAddManual.text,
+                                  AppText.txtAddFromJson.text, () async {
+                                Navigator.pop(context);
+                                alertAddNewLesson(context, null, false, cubit);
+                              }, () async {
+                                Navigator.pop(context);
+                                FilePickerResult? result =
+                                    await FilePicker.platform.pickFiles();
+                                if (result != null) {
+                                  waitingDialog(context);
+                                  Uint8List uInt8list = Uint8List.fromList(
+                                      result.files.single.bytes!.toList());
+                                  const utf8Decoder =
+                                      Utf8Decoder(allowMalformed: true);
+                                  final decodedBytes =
+                                      utf8Decoder.convert(uInt8list);
+                                  bool check =
+                                      await LessonModel.check(decodedBytes);
+                                  if (check) {
+                                    await FireBaseProvider.instance
+                                        .addLessonFromJson(decodedBytes);
+                                    Navigator.pop(context);
+                                    cubit.loadLessonInCourse(cubit.selector);
+                                  } else {
+                                    Navigator.pop(context);
+                                    alertItemExist(
+                                        context, AppText.txtLessonExist.text);
+                                  }
+                                }
+                              });
+                            })),
+                    ],
+                  ));
   }
 }

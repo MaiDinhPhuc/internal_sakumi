@@ -57,7 +57,7 @@ class SearchGeneralScreen extends StatelessWidget {
                                   color: Colors.grey.shade600,
                                 )),
                             widget: SizedBox(
-                              width: Resizable.font(context, 180),
+                              width: Resizable.font(context, 200),
                               child: DropDownSearch(
                                   items: [
                                     AppText.txtClass.text,

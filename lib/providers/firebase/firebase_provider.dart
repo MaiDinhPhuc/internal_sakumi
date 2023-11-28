@@ -74,6 +74,7 @@ class FireBaseProvider extends NetworkProvider {
           sharedPreferences.setInt(PrefKeyConfigs.userId, adminModel.userId);
           sharedPreferences.setString(PrefKeyConfigs.name, adminModel.name);
           sharedPreferences.setString(PrefKeyConfigs.email, email.text);
+          sharedPreferences.setString(PrefKeyConfigs.role, "admin");
           if (context.mounted) {
             Navigator.pop(context);
             var logoutYet =
@@ -82,7 +83,8 @@ class FireBaseProvider extends NetworkProvider {
               BlocProvider.of<DataCubit>(context).loadClass();
             }
           }
-          Navigator.pushReplacementNamed(context, '${Routes.admin}/searchGeneral');
+          Navigator.pushReplacementNamed(
+              context, '${Routes.admin}/searchGeneral');
         }
         if (user.role == "teacher") {
           TeacherModel teacherModel =
@@ -92,6 +94,7 @@ class FireBaseProvider extends NetworkProvider {
           sharedPreferences.setInt(PrefKeyConfigs.userId, teacherModel.userId);
           sharedPreferences.setString(PrefKeyConfigs.name, teacherModel.name);
           sharedPreferences.setString(PrefKeyConfigs.email, email.text);
+          sharedPreferences.setString(PrefKeyConfigs.role, "teacher");
           if (context.mounted) {
             Navigator.pop(context);
             var logoutYet =
@@ -106,6 +109,7 @@ class FireBaseProvider extends NetworkProvider {
         if (user.role == "master") {
           sharedPreferences.setInt(PrefKeyConfigs.userId, user.id);
           sharedPreferences.setString(PrefKeyConfigs.email, email.text);
+          sharedPreferences.setString(PrefKeyConfigs.role, "master");
           if (context.mounted) {
             Navigator.pop(context);
           }
@@ -165,6 +169,7 @@ class FireBaseProvider extends NetworkProvider {
     sharedPreferences.setInt(PrefKeyConfigs.userId, -1);
     sharedPreferences.setString(PrefKeyConfigs.name, '');
     sharedPreferences.setString(PrefKeyConfigs.email, '');
+    sharedPreferences.setString(PrefKeyConfigs.role, '');
     sharedPreferences.setString(PrefKeyConfigs.logoutYet, 'true');
     BlocProvider.of<DataCubit>(context).loadClass();
     Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
@@ -180,7 +185,8 @@ class FireBaseProvider extends NetworkProvider {
           user.role == "teacher") {
         debugPrint("======== ${user.role} ==========");
         if (user.role == "admin") {
-          Navigator.pushReplacementNamed(context, '${Routes.admin}/searchGeneral');
+          Navigator.pushReplacementNamed(
+              context, '${Routes.admin}/searchGeneral');
         }
         if (user.role == "teacher") {
           Navigator.pushReplacementNamed(context, Routes.teacher);
@@ -391,12 +397,11 @@ class FireBaseProvider extends NetworkProvider {
         .toList();
   }
 
-
   @override
   Future<List<StudentTestModel>> getAllStudentTestInLesson(
       int classId, int testId) async {
     return (await FireStoreDb.instance
-        .getAllStudentTestInLesson(classId, testId))
+            .getAllStudentTestInLesson(classId, testId))
         .docs
         .map((e) => StudentTestModel.fromSnapshot(e))
         .toList();
@@ -555,6 +560,11 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<void> updateProfileStudent(String id, StudentModel model) async {
+    await FireStoreDb.instance.updateProfileStudent(id, model);
+  }
+
+  @override
   Future<List<TestModel>> getListTestByCourseId(int courseId) async {
     final test = (await FireStoreDb.instance.getListTestByCourseId(courseId))
         .docs
@@ -644,6 +654,16 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<List<ClassModel>> getListClassNotRemove() async {
     final listClass = (await FireStoreDb.instance.getListClassNotRemove())
+        .docs
+        .map((e) => ClassModel.fromSnapshot(e))
+        .toList();
+    listClass.sort((a, b) => a.classId.compareTo(b.classId));
+    return listClass;
+  }
+
+  @override
+  Future<List<ClassModel>> getListClassForAdmin() async {
+    final listClass = (await FireStoreDb.instance.getListClassForAdmin())
         .docs
         .map((e) => ClassModel.fromSnapshot(e))
         .toList();
@@ -747,6 +767,13 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<void> updateLessonResult(
+      int lessonId, int classId, String note) async {
+    await FireStoreDb.instance
+        .updateNoteInLessonResult(lessonId, classId, note);
+  }
+
+  @override
   Future<void> updateCourseInfo(CourseModel courseModel) async {
     await FireStoreDb.instance.updateCourseInfo(courseModel);
   }
@@ -757,20 +784,28 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<void> updateTestInfo(TestModel testModel) async {
+    await FireStoreDb.instance.updateTestInfo(testModel);
+  }
+
+  @override
   Future<List<ClassModel2>> getClassByTeacherId(int teacherId) async {
     var teacherClassIDs =
         (await FireStoreDb.instance.getTeacherClassById('user_id', teacherId))
             .docs
             .map((e) => e.data()['class_id'] as int)
             .toList();
-    var classes =
-        await FireBaseProvider.instance.getListClassForTeacher(teacherClassIDs);
+    var classes = (await FireBaseProvider.instance
+            .getListClassForTeacher(teacherClassIDs))
+        .where((e) =>
+            e.classStatus == "Preparing" || e.classStatus == "InProgress")
+        .toList();
     return ClassModel2.loadClass(classes);
   }
 
   @override
   Future<List<ClassModel2>> getClassByAdmin() async {
-    var classes = await FireBaseProvider.instance.getListClassNotRemove();
+    var classes = await FireBaseProvider.instance.getListClassForAdmin();
     return ClassModel2.loadClass(classes);
   }
 
@@ -966,30 +1001,41 @@ class FireBaseProvider extends NetworkProvider {
       "Retained",
       "Moved"
     ];
-    var listStdClass = (await FireBaseProvider.instance.getStudentClassInClass(classId)).where((e) => !listStatus.contains(e.classStatus)).toList();
+    var listStdClass =
+        (await FireBaseProvider.instance.getStudentClassInClass(classId))
+            .where((e) => !listStatus.contains(e.classStatus))
+            .toList();
     List<int> listStdId = [];
-   if(type != "type=test"){
-     var listStdLesson = (await FireBaseProvider.instance.getAllStudentLessonInLesson(classId, parentId)).where((e) => e.hw != -2).toList();
-     var listTemp1 = listStdClass.map((e) => e.userId).toList();
-     var listTemp2 = listStdLesson.map((e) => e.studentId).toList();
-     for (int element in listTemp1) {
-       if (listTemp2.contains(element)) {
-         listStdId.add(element);
-       }
-     }
-   }else{
-     var listStdTest = (await FireBaseProvider.instance.getAllStudentTestInLesson(classId, parentId)).where((e) => e.score != -2).toList();
-     var listTemp1 = listStdClass.map((e) => e.userId).toList();
-     var listTemp2 = listStdTest.map((e) => e.studentId).toList();
-     for (int element in listTemp1) {
-       if (listTemp2.contains(element)) {
-         listStdId.add(element);
-       }
-     }
-   }
+    if (type != "type=test") {
+      var listStdLesson = (await FireBaseProvider.instance
+              .getAllStudentLessonInLesson(classId, parentId))
+          .where((e) => e.hw != -2)
+          .toList();
+      var listTemp1 = listStdClass.map((e) => e.userId).toList();
+      var listTemp2 = listStdLesson.map((e) => e.studentId).toList();
+      for (int element in listTemp1) {
+        if (listTemp2.contains(element)) {
+          listStdId.add(element);
+        }
+      }
+    } else {
+      var listStdTest = (await FireBaseProvider.instance
+              .getAllStudentTestInLesson(classId, parentId))
+          .where((e) => e.score != -2)
+          .toList();
+      var listTemp1 = listStdClass.map((e) => e.userId).toList();
+      var listTemp2 = listStdTest.map((e) => e.studentId).toList();
+      for (int element in listTemp1) {
+        if (listTemp2.contains(element)) {
+          listStdId.add(element);
+        }
+      }
+    }
 
     List<AnswerModel> listAnswer =
-        (await FireBaseProvider.instance.getListAnswer(parentId, classId)).where((e) => listStdId.contains(e.studentId)).toList();
+        (await FireBaseProvider.instance.getListAnswer(parentId, classId))
+            .where((e) => listStdId.contains(e.studentId))
+            .toList();
 
     if (listAnswer.isEmpty) {
       return DetailGradingDataModel(
@@ -1040,6 +1086,14 @@ class FireBaseProvider extends NetworkProvider {
         .docs
         .map((e) => StudentModel.fromSnapshot(e))
         .toList();
+  }
+
+  @override
+  Future<StudentModel> getStudentById(int studentId) async {
+    return (await FireStoreDb.instance.getStudentById(studentId))
+        .docs
+        .map((e) => StudentModel.fromSnapshot(e))
+        .single;
   }
 
   @override
@@ -1306,9 +1360,26 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<bool> addNewTest(TestModel model) async {
+    final temp = await FireStoreDb.instance
+        .getTestByDocs("test_${model.id}_course_${model.courseId}");
+    if (!temp.exists) {
+      await FireStoreDb.instance.addTest(model);
+      return true;
+    }
+    return false;
+  }
+
+  @override
   Future<void> deleteLesson(int lessonId, int courseId) async {
     await FireStoreDb.instance
         .deleteLessonByDocs("lesson_${lessonId}_course_$courseId");
+  }
+
+  @override
+  Future<void> deleteTest(int testId, int courseId) async {
+    await FireStoreDb.instance
+        .deleteTestByDocs("test_${testId}_course_$courseId");
   }
 
   @override
@@ -1443,7 +1514,7 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<FeedBackModel>> getListFeedBack(String status)async {
+  Future<List<FeedBackModel>> getListFeedBack(String status) async {
     final listFeedBack = (await FireStoreDb.instance.getListFeedBack(status))
         .docs
         .map((e) => FeedBackModel.fromSnapshot(e))

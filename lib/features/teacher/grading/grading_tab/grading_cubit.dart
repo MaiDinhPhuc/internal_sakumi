@@ -28,47 +28,57 @@ class GradingCubit extends Cubit<int> {
   bool isBTVN = true;
   bool isNotGrading = true;
 
-  load(ClassModel2 model, DataCubit dataCubit) async {
-    if (model.stdTests == null) {
-      classModel = model.classModel;
-      emit(state + 1);
-      dataCubit.loadDataForGradingTab(model.classModel);
+  load(int classId, DataCubit dataCubit) async {
+    var temp = dataCubit.classes!
+        .where((e) => e.classModel.classId == classId)
+        .toList();
+    if (temp.isEmpty) {
+      dataCubit.loadMoreClass(classId);
     } else {
-      classModel = model.classModel;
-      emit(state + 1);
-      listStudentLessons = model.stdLessons;
-      listLessonResult = model.lessonResults;
-      List<int> listLessonId =
-          listLessonResult!.map((e) => e.lessonId).toList();
-      lessons = model.listLesson!
-          .where((e) => listLessonId.contains(e.lessonId))
-          .toList();
-      listTestResult = model.testResults;
-      listStudentTests = model.stdTests;
-      List<int> listTestId = listTestResult!.map((e) => e.testId).toList();
-      tests = model.listTest!.where((e) => listTestId.contains(e.id)).toList();
-      List<String> listStatus = [
-        "Remove",
-        "Dropped",
-        "Deposit",
-        "Retained",
-        "Moved"
-      ];
-      var listStdClass = model.stdClasses!
-          .where((e) => !listStatus.contains(e.classStatus))
-          .toList();
-      var listStdIds = listStdClass.map((e) => e.userId).toList();
-      students =
-          model.students!.where((e) => listStdIds.contains(e.userId)).toList();
-      emit(state + 1);
+      var model = temp.first;
+      if (model.stdTests == null) {
+        classModel = model.classModel;
+        emit(state + 1);
+        dataCubit.loadDataForGradingTab(model.classModel);
+      } else {
+        classModel = model.classModel;
+        emit(state + 1);
+        listStudentLessons = model.stdLessons;
+        listLessonResult = model.lessonResults;
+        List<int> listLessonId =
+            listLessonResult!.map((e) => e.lessonId).toList();
+        lessons = model.listLesson!
+            .where((e) => listLessonId.contains(e.lessonId))
+            .toList();
+        listTestResult = model.testResults;
+        listStudentTests = model.stdTests;
+        List<int> listTestId = listTestResult!.map((e) => e.testId).toList();
+        tests =
+            model.listTest!.where((e) => listTestId.contains(e.id)).toList();
+        List<String> listStatus = [
+          "Remove",
+          "Dropped",
+          "Deposit",
+          "Retained",
+          "Moved"
+        ];
+        var listStdClass = model.stdClasses!
+            .where((e) => !listStatus.contains(e.classStatus))
+            .toList();
+        var listStdIds = listStdClass.map((e) => e.userId).toList();
+        students = model.students!
+            .where((e) => listStdIds.contains(e.userId))
+            .toList();
+        emit(state + 1);
+      }
     }
   }
 
-
   String getTestTime(int stdId, int testId) {
     var stdTests = listStudentTests!
-        .where((e) => e.studentId == stdId && e.testID == testId).toList();
-    if(stdTests.isEmpty){
+        .where((e) => e.studentId == stdId && e.testID == testId)
+        .toList();
+    if (stdTests.isEmpty) {
       return "";
     }
     if (stdTests.first.time.isEmpty) {
@@ -87,8 +97,9 @@ class GradingCubit extends Cubit<int> {
 
   String getNumberIgnoreTest(int stdId, int testId) {
     var stdTests = listStudentTests!
-        .where((e) => e.studentId == stdId && e.testID == testId).toList();
-    if(stdTests.isEmpty){
+        .where((e) => e.studentId == stdId && e.testID == testId)
+        .toList();
+    if (stdTests.isEmpty) {
       return "";
     }
     if (stdTests.first.time.isEmpty) {
@@ -99,11 +110,11 @@ class GradingCubit extends Cubit<int> {
     return number.toString();
   }
 
-
   double getTestPoint(int stdId, int testId) {
     var stdTest = listStudentTests!
-        .where((e) => e.studentId == stdId && e.testID == testId).toList();
-    if(stdTest.isEmpty){
+        .where((e) => e.studentId == stdId && e.testID == testId)
+        .toList();
+    if (stdTest.isEmpty) {
       return -2;
     }
     if (stdTest.first.score == -2) {
@@ -118,8 +129,9 @@ class GradingCubit extends Cubit<int> {
 
   String getBTVNTime(int stdId, int lessonId) {
     var stdLesson = listStudentLessons!
-        .where((e) => e.studentId == stdId && e.lessonId == lessonId).toList();
-    if(stdLesson.isEmpty){
+        .where((e) => e.studentId == stdId && e.lessonId == lessonId)
+        .toList();
+    if (stdLesson.isEmpty) {
       return "";
     }
     if (stdLesson.first.time.isEmpty) {
@@ -138,8 +150,9 @@ class GradingCubit extends Cubit<int> {
 
   String getNumberIgnore(int stdId, int lessonId) {
     var stdLesson = listStudentLessons!
-        .where((e) => e.studentId == stdId && e.lessonId == lessonId).toList();
-    if(stdLesson.isEmpty){
+        .where((e) => e.studentId == stdId && e.lessonId == lessonId)
+        .toList();
+    if (stdLesson.isEmpty) {
       return "";
     }
     if (stdLesson.first.time.isEmpty) {
@@ -150,10 +163,11 @@ class GradingCubit extends Cubit<int> {
     return number.toString();
   }
 
-  int getBTVNPoint(int stdId, int lessonId) {
+  dynamic getBTVNPoint(int stdId, int lessonId) {
     var stdLesson = listStudentLessons!
-        .where((e) => e.studentId == stdId && e.lessonId == lessonId).toList();
-    if(stdLesson.isEmpty){
+        .where((e) => e.studentId == stdId && e.lessonId == lessonId)
+        .toList();
+    if (stdLesson.isEmpty) {
       return -2;
     }
     if (stdLesson.first.hw == -2) {
@@ -170,11 +184,12 @@ class GradingCubit extends Cubit<int> {
     emit(state + 2);
   }
 
-  int getBTVNResultCount(int lessonId, int type) {
+  dynamic getBTVNResultCount(int lessonId, int type) {
     int temp = 0;
     var stdIds = students!.map((e) => e.userId).toList();
 
-    var listStudentLesson = listStudentLessons!.where((e) => stdIds.contains(e.studentId));
+    var listStudentLesson =
+        listStudentLessons!.where((e) => stdIds.contains(e.studentId));
 
     if (type == 1) {
       for (var i in listStudentLesson) {
@@ -192,11 +207,12 @@ class GradingCubit extends Cubit<int> {
     return temp;
   }
 
-  int getTestResultCount(int testId, int type) {
+  dynamic getTestResultCount(int testId, int type) {
     int temp = 0;
     var stdIds = students!.map((e) => e.userId).toList();
 
-    var listStudentTest = listStudentTests!.where((e) => stdIds.contains(e.studentId));
+    var listStudentTest =
+        listStudentTests!.where((e) => stdIds.contains(e.studentId));
     if (type == 1) {
       for (var i in listStudentTest) {
         if (i.score != -2 && i.testID == testId) {
@@ -238,13 +254,15 @@ class GradingCubit extends Cubit<int> {
     List<TestResultModel> list = [];
     if (isNotGrading) {
       for (var i in listTestResult!) {
-        if (getTestResultCount(i.testId, 0) != getTestResultCount(i.testId, 1) ) {
+        if (getTestResultCount(i.testId, 0) !=
+            getTestResultCount(i.testId, 1)) {
           list.add(i);
         }
       }
     } else {
       for (var i in listTestResult!) {
-        if (getTestResultCount(i.testId, 0) == getTestResultCount(i.testId, 1)) {
+        if (getTestResultCount(i.testId, 0) ==
+            getTestResultCount(i.testId, 1)) {
           list.add(i);
         }
       }

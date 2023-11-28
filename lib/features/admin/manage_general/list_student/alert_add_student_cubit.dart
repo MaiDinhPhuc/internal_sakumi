@@ -11,7 +11,6 @@ import 'package:internal_sakumi/widget/waiting_dialog.dart';
 class AlertAddStudentCubit extends Cubit<int> {
   AlertAddStudentCubit() : super(0);
 
-  int? userCount;
   int? studentClassCount;
   List<StudentModel>? listAllStudent, listStd, listSelectedStudent = [];
   bool? checkCreate, checkAdd;
@@ -20,7 +19,6 @@ class AlertAddStudentCubit extends Cubit<int> {
   loadAllUser(ManageGeneralCubit cubit) async {
     studentClassCount = (await FireStoreDb.instance.getCount("student_class")).count;
     listAllStudent = await FireBaseProvider.instance.getAllStudent();
-    userCount = (await FireStoreDb.instance.getCount("users")).count;
     listStd = [];
     for(var i in listAllStudent!){
      var count = 0;

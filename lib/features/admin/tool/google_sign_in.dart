@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import "package:http/http.dart" as http;
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -30,8 +31,10 @@ class SignInDemoState extends State<SignInDemo> {
   List<drive.File> documents = [];
   List<drive.File> folders = [];
   TextEditingController controller = TextEditingController();
+  String editString = '';
   List<RenameModel> listRename = [];
   List<SubmitModel> listSubmit = [];
+  RenameCubit cubit = RenameCubit();
 
   @override
   void initState() {
@@ -48,7 +51,7 @@ class SignInDemoState extends State<SignInDemo> {
     List<String> list = text.split('\n');
     List<String> listTemp = list
         .map((string) =>
-        string.replaceAllMapped(RegExp(r'^\s+|\s+$'), (match) => "*"))
+            string.replaceAllMapped(RegExp(r'^\s+|\s+$'), (match) => "*"))
         .toList();
     List<String> listString = [];
     for (var i in listTemp) {
@@ -80,10 +83,19 @@ class SignInDemoState extends State<SignInDemo> {
         case '1':
           {
             targetFolder =
-            '${text.substring(0, 4)}-${text.substring(4, text.length)}';
+                '${text.substring(0, 4)}-${text.substring(4, text.length)}';
             break;
           }
         case 'R':
+          {
+            if (text.substring(3, 4) == '2') {
+              targetFolder = '$text-$term';
+              break;
+            } else {
+              targetFolder = text;
+              break;
+            }
+          }
         case 'K':
           {
             targetFolder = text;
@@ -95,10 +107,10 @@ class SignInDemoState extends State<SignInDemo> {
             break;
           }
       }
-    } else {
+    } else if (textSource.contains('LT')) {
       targetFolder =
-      '${text.substring(0, 2)} ${text.substring(2, text.length)} - $term';
-    }
+          '${text.substring(0, 2)} ${text.substring(2, text.length)} - $term';
+    } else {}
     debugPrint('============> target folder $targetFolder');
     return targetFolder;
   }
@@ -119,12 +131,64 @@ class SignInDemoState extends State<SignInDemo> {
           pageSize: 1000,
           pageToken: pageToken,
           $fields:
-          "nextPageToken, files(id, name, mimeType, thumbnailLink, parents)");
+              "nextPageToken, files(id, name, mimeType, thumbnailLink, parents)");
       pageToken = fileList.nextPageToken;
 
       docs.addAll(fileList.files?.toList() ?? []);
-
     } while (pageToken != null);
+  }
+
+  Future<void> _reCheckInvalid() async {
+    Navigator.pop(context);
+
+    for (var i in listRename) {
+      int count = 0;
+      for (var j in listRename) {
+        if (i.link == j.link) {
+          count++;
+        }
+      }
+      if (count > 1) {
+        i.invalid = 4;
+      }
+    }
+
+    for (var r in listRename) {
+      int count = 0;
+      String fileName = r.name;
+      String fileId = '';
+
+      for (var f in documents) {
+        if (f.name!.contains(r.link) && r.invalid == null) {
+          count++;
+          fileId = f.id.toString();
+        }
+      }
+      if (count == 0) {
+        r.invalid = 1;
+      }
+      if (count > 1) {
+        r.invalid = 3;
+      }
+      if (r.invalid == null) {
+        folders.clear();
+        String nameOfFolder = r.folder.trim();
+        await _queryDrive(
+            "mimeType='application/vnd.google-apps.folder' and name='$nameOfFolder'",
+            folders);
+        debugPrint('=======> folder: $nameOfFolder');
+        if (folders == null || folders.isEmpty) {
+          r.invalid = 2;
+        } else {
+          for (var i in folders) {
+            debugPrint('=======> folder ${i.name}');
+          }
+          String folderId = '${folders.first.id}';
+          listSubmit.add(SubmitModel(fileName, fileId, folderId));
+        }
+      }
+      cubit.buildUI();
+    }
   }
 
   Future<void> _checkInvalid() async {
@@ -145,19 +209,33 @@ class SignInDemoState extends State<SignInDemo> {
 
       debugPrint('======> googleDriver ${documents.length}');
 
+      for (var i in listRename) {
+        int count = 0;
+        for (var j in listRename) {
+          if (i.link == j.link) {
+            count++;
+          }
+        }
+        if (count > 1) {
+          i.invalid = 4;
+        }
+      }
+
       for (var r in listRename) {
         int count = 0;
         String fileName = r.name;
         String fileId = '';
         for (var f in documents) {
-          if (f.name!.contains(r.link)) {
+          if (f.name!.contains(r.link) && r.invalid == null) {
             count++;
             fileId = f.id.toString();
-            break;
           }
         }
-        if (count == 0) {
+        if (count == 0 && r.invalid == null) {
           r.invalid = 1;
+        }
+        if (count > 1) {
+          r.invalid = 3;
         }
         if (r.invalid == null) {
           folders.clear();
@@ -169,15 +247,15 @@ class SignInDemoState extends State<SignInDemo> {
           if (folders == null || folders.isEmpty) {
             r.invalid = 2;
           } else {
-
-            for(var i in folders){
+            for (var i in folders) {
               debugPrint('=======> folder ${i.name}');
             }
             String folderId = '${folders.first.id}';
             listSubmit.add(SubmitModel(fileName, fileId, folderId));
           }
         }
-        setState(() {});
+        // setState(() {});
+        cubit.buildUI();
       }
 
       if (context.mounted) {
@@ -186,36 +264,37 @@ class SignInDemoState extends State<SignInDemo> {
     }
   }
 
-  _delete(){
+  _delete() {
     controller.text = '';
     debugPrint('===========> delete ListSubmit before ${listSubmit.length}');
     listRename.removeRange(0, listRename.length);
     listSubmit.removeRange(0, listSubmit.length);
     debugPrint('===========> delete ListSubmit after ${listSubmit.length}');
-    setState(() {});
+    // setState(() {});
+    cubit.buildUI();
   }
 
   Future<void> _submit() async {
     waitingDialog(context);
 
-    for(var i in listSubmit) {
-      debugPrint('===========> file file file ${i.name} == ${i.fileId} == ${i.folderId}');
+    for (var i in listSubmit) {
+      debugPrint(
+          '===========> file file file ${i.name} == ${i.fileId} == ${i.folderId}');
       var fileMetadata = drive.File();
       fileMetadata.name = i.name;
       fileMetadata.mimeType = 'application/vnd.google-apps.folder';
       await drive.DriveApi(
-          AuthClient(http.Client(), await _currentUser!.authHeaders))
+              AuthClient(http.Client(), await _currentUser!.authHeaders))
           .files
           .update(fileMetadata, i.fileId,
-          removeParents: AppConfigs.meetRecordingsId,
-          addParents: i.folderId);
+              removeParents: AppConfigs.meetRecordingsId,
+              addParents: i.folderId);
     }
     if (context.mounted) {
       Navigator.pop(context);
       listSubmit.removeRange(0, listSubmit.length);
-      setState(() {
-
-      });
+      // setState(() {});
+      cubit.buildUI();
       notificationDialog(context, AppText.txtSuccessfullyUpdateVideo.text);
     }
   }
@@ -232,156 +311,269 @@ class SignInDemoState extends State<SignInDemo> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: ConstrainedBox(
+    return BlocProvider(
+      create: (context) => cubit,
+      child: BlocBuilder<RenameCubit, int>(
+        builder: (c, s) => Scaffold(
+            body: ConstrainedBox(
           constraints: const BoxConstraints.expand(),
           child: _currentUser != null
               ? Stack(
-            children: [
-              SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    ListTile(
-                      leading: GoogleUserCircleAvatar(
-                        identity: _currentUser!,
-                      ),
-                      title: Text(_currentUser!.displayName ?? ''),
-                      subtitle: Text(_currentUser!.email ?? ''),
-                    ),
-                    if (controller.text != null &&
-                        controller.text.isNotEmpty) ...[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ...listRename
-                              .map((e) => Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical:
-                                Resizable.padding(context, 5),
-                                horizontal: Resizable.padding(
-                                    context, 10)),
-                            child: Row(
-                              children: [
-                                Icon(
-                                    e.invalid == null
-                                        ? Icons.check_box_outlined
-                                        : e.invalid == 1
-                                        ? Icons
-                                        .file_copy_outlined
-                                        : Icons
-                                        .folder_copy_outlined,
-                                    color: e.invalid == null
-                                        ? Colors.green
-                                        : Colors.red),
-                                SizedBox(
-                                    width: Resizable.size(
-                                        context, 10)),
-                                Expanded(
-                                    child: Text(
-                                      e.name,
-                                      style: TextStyle(
-                                          color: e.invalid == null
-                                              ? Colors.green
-                                              : Colors.red),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ))
-                              ],
+                  children: [
+                    SingleChildScrollView(
+                      child: Column(
+                        children: <Widget>[
+                          ListTile(
+                            leading: GoogleUserCircleAvatar(
+                              identity: _currentUser!,
                             ),
-                          ))
-                              .toList(),
-                          SizedBox(height: Resizable.padding(context, 70))
+                            title: Text(_currentUser!.displayName ?? ''),
+                            subtitle: Text(_currentUser!.email ?? ''),
+                          ),
+                          if (controller.text != null &&
+                              controller.text.isNotEmpty) ...[
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ...listRename
+                                    .map((e) => InkWell(
+                                          onTap: e.invalid == null
+                                              ? null
+                                              : e.invalid! > 2
+                                                  ? () => notificationDialog(
+                                                      context,
+                                                      AppText
+                                                          .txtDuplicateLinkOrVideo
+                                                          .text)
+                                                  : () {
+                                                      alertEditField(
+                                                          context,
+                                                          e.invalid == 1
+                                                              ? e.link
+                                                              : e.name,
+                                                          onPressed: () async {
+                                                        List<String> nameSplit =
+                                                            e.name
+                                                                .trim()
+                                                                .split('-');
+                                                        e.folder = _getFolderName(
+                                                            nameSplit[1]
+                                                                .toUpperCase()
+                                                                .trim(),
+                                                            nameSplit[2]
+                                                                .toUpperCase()
+                                                                .trim());
+                                                        e.invalid = null;
+                                                        debugPrint(
+                                                            '=========> invalid ${e.name} == ${e.link} == ${e.folder} == ${e.invalid}');
+                                                        await _reCheckInvalid();
+                                                      }, onChanged: (v) {
+                                                        if (e.invalid == 1) {
+                                                          e.link = v;
+                                                        }
+                                                        if (e.invalid == 2) {
+                                                          e.name = v;
+                                                        }
+                                                      });
+                                                    },
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: Resizable.padding(
+                                                    context, 5),
+                                                horizontal: Resizable.padding(
+                                                    context, 50)),
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                    e.invalid == null
+                                                        ? Icons
+                                                            .check_box_outlined
+                                                        : e.invalid == 2
+                                                            ? Icons
+                                                                .folder_copy_outlined
+                                                            : Icons
+                                                                .file_copy_outlined,
+                                                    color: e.invalid == null
+                                                        ? Colors.green
+                                                        : Colors.red),
+                                                SizedBox(
+                                                    width: Resizable.size(
+                                                        context, 10)),
+                                                Expanded(
+                                                    child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          bottom:
+                                                              Resizable.padding(
+                                                                  context,
+                                                                  e.invalid !=
+                                                                          null
+                                                                      ? 5
+                                                                      : 0)),
+                                                      child: Row(
+                                                        children: [
+                                                          Expanded(
+                                                              flex: 1,
+                                                              child: Text(
+                                                                e.link,
+                                                                style: TextStyle(
+                                                                    color: e.invalid ==
+                                                                            null
+                                                                        ? Colors
+                                                                            .green
+                                                                        : Colors
+                                                                            .red),
+                                                                maxLines: 1,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                              )),
+                                                          Expanded(
+                                                              flex: 1,
+                                                              child: Text(
+                                                                e.folder,
+                                                                style: TextStyle(
+                                                                    color: e.invalid ==
+                                                                            null
+                                                                        ? Colors
+                                                                            .green
+                                                                        : Colors
+                                                                            .red),
+                                                                maxLines: 1,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                              )),
+                                                          Expanded(
+                                                              flex: 8,
+                                                              child: Text(
+                                                                e.name,
+                                                                style: TextStyle(
+                                                                    color: e.invalid ==
+                                                                            null
+                                                                        ? Colors
+                                                                            .green
+                                                                        : Colors
+                                                                            .red),
+                                                                maxLines: 1,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                              )),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    if (e.invalid != null)
+                                                      Text(
+                                                          e.invalid == 1
+                                                              ? AppText
+                                                                  .txtErrorInvalidFile
+                                                                  .text
+                                                              : e.invalid == 2
+                                                                  ? AppText
+                                                                      .txtErrorInvalidFolder
+                                                                      .text
+                                                                  : e.invalid ==
+                                                                          3
+                                                                      ? AppText
+                                                                          .txtErrorDuplicateVideo
+                                                                          .text
+                                                                      : AppText
+                                                                          .txtErrorDuplicateLink
+                                                                          .text,
+                                                          style:
+                                                              const TextStyle(
+                                                                  color: Colors
+                                                                      .black54))
+                                                  ],
+                                                )),
+                                              ],
+                                            ),
+                                          ),
+                                        ))
+                                    .toList(),
+                                SizedBox(height: Resizable.padding(context, 70))
+                              ],
+                            )
+                          ],
+                          if (controller.text == null ||
+                              controller.text.isEmpty)
+                            TextButton(
+                              onPressed: () => alertInputField(
+                                  context, controller, _checkInvalid),
+                              child: Text(AppText.btnInputLinkAndTitle.text
+                                  .toUpperCase()),
+                            )
                         ],
-                      )
-                    ],
-                    if (controller.text == null ||
-                        controller.text.isEmpty)
+                      ),
+                    ),
+                    if (controller.text != null && controller.text.isNotEmpty)
                       Align(
-                        alignment: Alignment.center,
-                        child: TextButton(
-                          onPressed: () => alertInputField(
-                              context, controller, _checkInvalid),
-                          child: Text(AppText.btnInputLinkAndTitle.text.toUpperCase()),
+                        alignment: Alignment.bottomCenter,
+                        child: Card(
+                          margin: EdgeInsets.zero,
+                          shadowColor: Colors.black,
+                          elevation: 10,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Expanded(
+                                  child: TextButton(
+                                onPressed: listSubmit.isEmpty
+                                    ? null
+                                    : () async {
+                                        await _submit();
+                                      },
+                                style: ButtonStyle(
+                                    padding: MaterialStateProperty.all(
+                                        EdgeInsets.symmetric(
+                                            vertical: Resizable.padding(
+                                                context, 20)))),
+                                child: Text(AppText.btnUpdate.text),
+                              )),
+                              Container(
+                                width: Resizable.size(context, 1),
+                                height: Resizable.size(context, 30),
+                                color: Colors.black38,
+                              ),
+                              Expanded(
+                                  child: TextButton(
+                                onPressed: () => _delete(),
+                                style: ButtonStyle(
+                                    padding: MaterialStateProperty.all(
+                                        EdgeInsets.symmetric(
+                                            vertical: Resizable.padding(
+                                                context, 20)))),
+                                child: Text(AppText.btnRemove.text),
+                              )),
+                            ],
+                          ),
                         ),
                       )
                   ],
-                ),
-              ),
-              if (controller.text != null && controller.text.isNotEmpty)
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Card(
-                    margin: EdgeInsets.zero,
-                    shadowColor: Colors.black,
-                    elevation: 10,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                            child: TextButton(
-                              onPressed: listSubmit.isEmpty ? null : () async{
-                                await _submit();
-                              },
-                              style: ButtonStyle(
-                                  padding: MaterialStateProperty.all(
-                                      EdgeInsets.symmetric(
-                                          vertical: Resizable.padding(
-                                              context, 20)))),
-                              child: Text(AppText.btnUpdate.text),
-                            )),
-                        Container(
-                          width: Resizable.size(context, 1),
-                          height: Resizable.size(context, 30),
-                          color: Colors.black38,
-                        ),
-                        Expanded(
-                            child: TextButton(
-                              onPressed: () => _delete(),
-                              style: ButtonStyle(
-                                  padding: MaterialStateProperty.all(
-                                      EdgeInsets.symmetric(
-                                          vertical: Resizable.padding(
-                                              context, 20)))),
-                              child: Text(AppText.btnRemove.text),
-                            )),
-                      ],
-                    ),
-                  ),
                 )
-            ],
-          )
               : Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Text(AppText.txtNotLoggedIn.text),
-              TextButton(
-                onPressed: _handleSignIn,
-                child: Text(AppText.btnLogin.text.toUpperCase()),
-              ),
-            ],
-          ),
-        ));
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Text(AppText.txtNotLoggedIn.text),
+                    TextButton(
+                      onPressed: _handleSignIn,
+                      child: Text(AppText.btnLogin.text.toUpperCase()),
+                    ),
+                  ],
+                ),
+        )),
+      ),
+    );
   }
 }
 
-// Import the functions you need from the SDKs you need
-// import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+class RenameCubit extends Cubit<int> {
+  RenameCubit() : super(0);
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-// const firebaseConfig = {
-//   apiKey: "AIzaSyB-5VgM4RqdajfpQ4CX5dskh5SkKXRHdkk",
-//   authDomain: "sign-in-demo-73eb7.firebaseapp.com",
-//   projectId: "sign-in-demo-73eb7",
-//   storageBucket: "sign-in-demo-73eb7.appspot.com",
-//   messagingSenderId: "149064557878",
-//   appId: "1:149064557878:web:f66c67da0533af4db2ff97",
-//   measurementId: "G-3YX13RVQF5"
-// };
-//
-// // Initialize Firebase
-// const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
+  buildUI() => emit(state + 1);
+}
+
