@@ -34,23 +34,23 @@ class ClassItemRowLayout extends StatelessWidget {
             child: Row(
           children: [
             Expanded(
-                flex: 3,
+                flex: 4,
                 child: Container(
                   alignment: Alignment.center,
                   child: widgetClassCode,
                 )),
             Expanded(
-                flex: 5,
+                flex: 6,
                 child: Container(
                     alignment: Alignment.centerLeft,
                     margin: EdgeInsets.only(left: Resizable.padding(context, 10)),
                     child: widgetCourse)),
             Expanded(
-                flex: 5,
+                flex: 6,
                 child:
                 Container(alignment: Alignment.center, child: widgetLessons)),
             Expanded(
-                flex: 2,
+                flex: 3,
                 child: Container(
                     alignment: Alignment.center, child: widgetAttendance)),
             Expanded(

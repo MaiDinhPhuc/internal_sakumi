@@ -86,7 +86,9 @@ class ManageCourseCubit extends Cubit<int> {
         token: model.token,
         code: model.code,
         enable: value,
-        version: model.version);
+        version: model.version,
+        prefix: model.prefix,
+        suffix: model.suffix);
     filter();
   }
 

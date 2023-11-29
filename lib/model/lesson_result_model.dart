@@ -2,7 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LessonResultModel {
   final int id, lessonId, classId, teacherId;
-  final String? noteForTeacher, noteForStudent, noteForSupport, status, date, supportNoteForTeacher;
+  final String? noteForTeacher,
+      noteForStudent,
+      noteForSupport,
+      status,
+      date,
+      supportNoteForTeacher;
 
   LessonResultModel(
       {required this.id,
@@ -13,7 +18,25 @@ class LessonResultModel {
       required this.date,
       required this.noteForStudent,
       required this.noteForSupport,
-      required this.noteForTeacher, required this.supportNoteForTeacher});
+      required this.noteForTeacher,
+      required this.supportNoteForTeacher});
+
+  LessonResultModel copyWith({String? supportNoteForTeacher}) {
+    return LessonResultModel(
+      id: id,
+      classId: classId,
+      lessonId: lessonId,
+      teacherId: teacherId,
+      status: status,
+      date: date,
+      noteForStudent: noteForStudent,
+      noteForSupport: noteForSupport,
+      noteForTeacher: noteForTeacher,
+      supportNoteForTeacher:
+          supportNoteForTeacher ?? this.supportNoteForTeacher,
+    );
+  }
+
   factory LessonResultModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
@@ -26,6 +49,7 @@ class LessonResultModel {
         date: data['date'],
         noteForStudent: data['student_note'],
         noteForSupport: data['support_note'],
-        noteForTeacher: data['teacher_note'], supportNoteForTeacher: data["support_note_for_teacher"]??"");
+        noteForTeacher: data['teacher_note'],
+        supportNoteForTeacher: data["support_note_for_teacher"] ?? "");
   }
 }

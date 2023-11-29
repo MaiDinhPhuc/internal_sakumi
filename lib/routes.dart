@@ -1,15 +1,15 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:internal_sakumi/screens/admin/add_teacher_screen.dart';
-import 'package:internal_sakumi/screens/admin/add_user_to_class_screen.dart';
-import 'package:internal_sakumi/screens/admin/detail_class_screen.dart';
 import 'package:internal_sakumi/screens/admin/manage_general_screen.dart';
+import 'package:internal_sakumi/screens/admin/student_info_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_classes_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_feedbacks_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_statistics_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/search_general_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_tags_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/tool_screen.dart';
+import 'package:internal_sakumi/screens/admin/tab/voucher_screen.dart';
+import 'package:internal_sakumi/screens/admin/teacher_info_screen.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
 import 'package:internal_sakumi/screens/master_screen.dart';
@@ -69,8 +69,6 @@ class Routes {
         handler: manageGeneralHandler, transitionType: TransitionType.fadeIn);
     router.define('$teacher/profile',
         handler: profileTeacherHandler, transitionType: TransitionType.fadeIn);
-    // router.define(addTeacher,
-    //     handler: addTeacherHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/searchGeneral',
         handler: searchScreenHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/manageClasses',
@@ -83,6 +81,12 @@ class Routes {
         handler: manageFeedbacksHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/tools',
         handler: toolsHandler, transitionType: TransitionType.fadeIn);
+    router.define('$admin/voucher',
+        handler: voucherHandler, transitionType: TransitionType.fadeIn);
+    router.define('$admin/teacherInfo/:teacherId',
+        handler: teacherInfoHandler, transitionType: TransitionType.fadeIn);
+    router.define('$admin/studentInfo/:studentId',
+        handler: studentInfoHandler, transitionType: TransitionType.fadeIn);
     router.define('/:role/overview/:classId',
         handler: overViewHandler, transitionType: TransitionType.fadeIn);
     router.define('/:role/grading/:classId',
@@ -97,8 +101,6 @@ class Routes {
         handler: detailLessonHandler, transitionType: TransitionType.fadeIn);
     // router.define('$admin/:classId',
     //     handler: detailClassHandler, transitionType: TransitionType.fadeIn);
-    router.define(addUserToClass,
-        handler: addUserToClassHandler, transitionType: TransitionType.fadeIn);
   }
 }
 
@@ -121,20 +123,11 @@ var teacherHandler =
   return const TeacherScreen();
 });
 
-var addUserToClassHandler =
-    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return AddUserToClassScreen(params['classId']?.first);
-});
-
 var masterHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return const MasterScreen();
 });
 
-var addTeacherHandler =
-    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return AddTeacherScreen();
-});
 var manageGeneralHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return const ManageGeneralScreen();
@@ -163,6 +156,18 @@ var toolsHandler =
 Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return const ToolScreen();
 });
+var voucherHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return const VoucherScreen();
+});
+var studentInfoHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return StudentInfoScreen();
+});
+var teacherInfoHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return TeacherInfoScreen();
+});
 var lessonsHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return ListLessonTab(params['role'][0]);
@@ -178,10 +183,6 @@ var gradingHandler =
 var testHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return ClassTestTab(params['role'][0]);
-});
-var detailClassHandler =
-    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return DetailClassScreen(params['classId'][0]);
 });
 var detailGradingHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {

@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class StudentTestModel {
   final int classId, studentId, testID;
   final Map time;
-  final double score;
+  final dynamic score;
   const StudentTestModel(
       {required this.classId,
       required this.score,

@@ -30,7 +30,7 @@ class LessonItemRowLayout extends StatelessWidget {
               child: attend,
             )),
         Expanded(
-            flex: 4,
+            flex: 5,
             child: Align(alignment: Alignment.center,
               child: submit,
             )),

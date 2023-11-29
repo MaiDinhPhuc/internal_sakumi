@@ -24,61 +24,72 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
   bool? check;
   int? teacherId;
 
-  checkLessonResult(ClassModel2 model, DataCubit dataCubit) async {
-    if(model.lessonResults == null){
-      dataCubit.loadLessonInfoOfClass(model.classModel);
+  checkLessonResult(int classId, DataCubit dataCubit) async {
+    var temp = dataCubit.classes!.where((e) => e.classModel.classId == classId).toList();
+    if(temp.isEmpty){
+      dataCubit.loadMoreClass(classId);
     }else{
-      SharedPreferences localData = await SharedPreferences.getInstance();
-      teacherId = int.parse(localData.getInt(PrefKeyConfigs.userId).toString());
+      var model = temp.first;
+      if (model.lessonResults == null) {
+        dataCubit.loadLessonInfoOfClass(model.classModel);
+      } else {
+        SharedPreferences localData = await SharedPreferences.getInstance();
+        teacherId = int.parse(localData.getInt(PrefKeyConfigs.userId).toString());
 
-      var lessonModel = model.listLesson!.firstWhere((e) => e.lessonId ==  int.parse(TextUtils.getName()));
-      title = lessonModel.title;
+        var lessonModel = model.listLesson!
+            .firstWhere((e) => e.lessonId == int.parse(TextUtils.getName()));
+        title = lessonModel.title;
 
-      check = model.lessonResults!.any((e) => e.lessonId == int.parse(TextUtils.getName()));
+        check = model.lessonResults!
+            .any((e) => e.lessonId == int.parse(TextUtils.getName()));
 
-
-      debugPrint('=============> addLessonResult $check');
-      if(check == false) {
-        emit(
-            LessonResultModel(
-                id: 1000,
-                classId: int.parse(TextUtils.getName(position: 1)),
-                lessonId: int.parse(TextUtils.getName()),
-                teacherId: teacherId!,
-                status: 'Pending',
-                date: DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now()),
-                noteForStudent: '',
-                noteForSupport: '',
-                noteForTeacher: '', supportNoteForTeacher: '')
-        );
-      }
-      if(check == true){
-        var lessonResult = model.lessonResults!.firstWhere((e) => e.lessonId == int.parse(TextUtils.getName()));
-        emit(lessonResult);
+        debugPrint('=============> addLessonResult $check');
+        if (check == false) {
+          emit(LessonResultModel(
+              id: 1000,
+              classId: int.parse(TextUtils.getName(position: 1)),
+              lessonId: int.parse(TextUtils.getName()),
+              teacherId: teacherId!,
+              status: 'Pending',
+              date: DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now()),
+              noteForStudent: '',
+              noteForSupport: '',
+              noteForTeacher: '',
+              supportNoteForTeacher: ''));
+        }
+        if (check == true) {
+          var lessonResult = model.lessonResults!
+              .firstWhere((e) => e.lessonId == int.parse(TextUtils.getName()));
+          emit(lessonResult);
+        }
       }
     }
   }
 
-  addLessonResult(LessonResultModel model)async{
-
+  addLessonResult(LessonResultModel model) async {
     await FireBaseProvider.instance.addLessonResult(model);
 
     emit(model);
   }
 
   updateStatus(String status, DataCubit dataCubit) async {
-    await FireBaseProvider.instance.changeStatusLesson(int.parse(TextUtils.getName()),
-        int.parse(TextUtils.getName(position: 1)), status);
-    dataCubit.updateLessonResults(int.parse(TextUtils.getName(position: 1)), LessonResultModel(
-        id: state!.id,
-        classId: state!.classId,
-        lessonId: state!.lessonId,
-        teacherId: state!.teacherId,
-        status: status,
-        date: state!.date,
-        noteForStudent: state!.noteForStudent,
-        noteForSupport: state!.noteForSupport,
-        noteForTeacher: state!.noteForTeacher,supportNoteForTeacher: state!.supportNoteForTeacher));
+    await FireBaseProvider.instance.changeStatusLesson(
+        int.parse(TextUtils.getName()),
+        int.parse(TextUtils.getName(position: 1)),
+        status);
+    dataCubit.updateLessonResults(
+        int.parse(TextUtils.getName(position: 1)),
+        LessonResultModel(
+            id: state!.id,
+            classId: state!.classId,
+            lessonId: state!.lessonId,
+            teacherId: state!.teacherId,
+            status: status,
+            date: state!.date,
+            noteForStudent: state!.noteForStudent,
+            noteForSupport: state!.noteForSupport,
+            noteForTeacher: state!.noteForTeacher,
+            supportNoteForTeacher: state!.supportNoteForTeacher));
     emit(LessonResultModel(
         id: state!.id,
         classId: state!.classId,
@@ -88,7 +99,8 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
         date: state!.date,
         noteForStudent: state!.noteForStudent,
         noteForSupport: state!.noteForSupport,
-        noteForTeacher: state!.noteForTeacher,supportNoteForTeacher: state!.supportNoteForTeacher));
+        noteForTeacher: state!.noteForTeacher,
+        supportNoteForTeacher: state!.supportNoteForTeacher));
   }
 
   noteForStudents(String note, DataCubit dataCubit) async {
@@ -98,18 +110,21 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
         note);
     await FireBaseProvider.instance.updateTeacherInLessonResult(
         int.parse(TextUtils.getName()),
-        int.parse(TextUtils.getName(position: 1)),teacherId!
-        );
-    dataCubit.updateLessonResults(int.parse(TextUtils.getName(position: 1)), LessonResultModel(
-        id: state!.id,
-        classId: state!.classId,
-        lessonId: state!.lessonId,
-        teacherId: teacherId!,
-        status: state!.status,
-        date: state!.date,
-        noteForStudent: note,
-        noteForSupport: state!.noteForSupport,
-        noteForTeacher: state!.noteForTeacher,supportNoteForTeacher: state!.supportNoteForTeacher));
+        int.parse(TextUtils.getName(position: 1)),
+        teacherId!);
+    dataCubit.updateLessonResults(
+        int.parse(TextUtils.getName(position: 1)),
+        LessonResultModel(
+            id: state!.id,
+            classId: state!.classId,
+            lessonId: state!.lessonId,
+            teacherId: teacherId!,
+            status: state!.status,
+            date: state!.date,
+            noteForStudent: note,
+            noteForSupport: state!.noteForSupport,
+            noteForTeacher: state!.noteForTeacher,
+            supportNoteForTeacher: state!.supportNoteForTeacher));
     emit(LessonResultModel(
         id: state!.id,
         classId: state!.classId,
@@ -119,7 +134,8 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
         date: state!.date,
         noteForStudent: note,
         noteForSupport: state!.noteForSupport,
-        noteForTeacher: state!.noteForTeacher,supportNoteForTeacher: state!.supportNoteForTeacher));
+        noteForTeacher: state!.noteForTeacher,
+        supportNoteForTeacher: state!.supportNoteForTeacher));
   }
 
   noteForSupport(String note, DataCubit dataCubit) async {
@@ -127,16 +143,19 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
         int.parse(TextUtils.getName()),
         int.parse(TextUtils.getName(position: 1)),
         note);
-    dataCubit.updateLessonResults(int.parse(TextUtils.getName(position: 1)), LessonResultModel(
-        id: state!.id,
-        classId: state!.classId,
-        lessonId: state!.lessonId,
-        teacherId: state!.teacherId,
-        status: state!.status,
-        date: state!.date,
-        noteForStudent: state!.noteForStudent,
-        noteForSupport: note,
-        noteForTeacher: state!.noteForTeacher,supportNoteForTeacher: state!.supportNoteForTeacher));
+    dataCubit.updateLessonResults(
+        int.parse(TextUtils.getName(position: 1)),
+        LessonResultModel(
+            id: state!.id,
+            classId: state!.classId,
+            lessonId: state!.lessonId,
+            teacherId: state!.teacherId,
+            status: state!.status,
+            date: state!.date,
+            noteForStudent: state!.noteForStudent,
+            noteForSupport: note,
+            noteForTeacher: state!.noteForTeacher,
+            supportNoteForTeacher: state!.supportNoteForTeacher));
     emit(LessonResultModel(
         id: state!.id,
         classId: state!.classId,
@@ -146,25 +165,28 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
         date: state!.date,
         noteForStudent: state!.noteForStudent,
         noteForSupport: note,
-        noteForTeacher: state!.noteForTeacher,supportNoteForTeacher: state!.supportNoteForTeacher));
+        noteForTeacher: state!.noteForTeacher,
+        supportNoteForTeacher: state!.supportNoteForTeacher));
   }
 
   noteForAnotherSensei(String note, DataCubit dataCubit) async {
-
     await FireBaseProvider.instance.noteForAnotherSensei(
         int.parse(TextUtils.getName()),
         int.parse(TextUtils.getName(position: 1)),
         note);
-    dataCubit.updateLessonResults(int.parse(TextUtils.getName(position: 1)), LessonResultModel(
-        id: state!.id,
-        classId: state!.classId,
-        lessonId: state!.lessonId,
-        teacherId: state!.teacherId,
-        status: state!.status,
-        date: state!.date,
-        noteForStudent: state!.noteForStudent,
-        noteForSupport: state!.noteForSupport,
-        noteForTeacher: note,supportNoteForTeacher: state!.supportNoteForTeacher));
+    dataCubit.updateLessonResults(
+        int.parse(TextUtils.getName(position: 1)),
+        LessonResultModel(
+            id: state!.id,
+            classId: state!.classId,
+            lessonId: state!.lessonId,
+            teacherId: state!.teacherId,
+            status: state!.status,
+            date: state!.date,
+            noteForStudent: state!.noteForStudent,
+            noteForSupport: state!.noteForSupport,
+            noteForTeacher: note,
+            supportNoteForTeacher: state!.supportNoteForTeacher));
     emit(LessonResultModel(
         id: state!.id,
         classId: state!.classId,
@@ -174,6 +196,7 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
         date: state!.date,
         noteForStudent: state!.noteForStudent,
         noteForSupport: state!.noteForSupport,
-        noteForTeacher: note,supportNoteForTeacher: state!.supportNoteForTeacher));
+        noteForTeacher: note,
+        supportNoteForTeacher: state!.supportNoteForTeacher));
   }
 }

@@ -27,11 +27,11 @@ class ListTest extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                         color: const Color(0xff757575),
                         fontSize: Resizable.font(context, 17))),
-                name: Text(AppText.titleSubject.text,
+                name: Padding(padding: EdgeInsets.only(left: Resizable.padding(context, 20)),child: Text(AppText.titleSubject.text,
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: const Color(0xff757575),
-                        fontSize: Resizable.font(context, 17))),
+                        fontSize: Resizable.font(context, 17)))),
                 submit: Text(AppText.txtRateOfSubmitTest.text,
                     style: TextStyle(
                         fontWeight: FontWeight.w600,

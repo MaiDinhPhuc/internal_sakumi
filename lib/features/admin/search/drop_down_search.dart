@@ -30,7 +30,7 @@ class DropDownSearch extends StatelessWidget {
               child: Text(item,
                   style: TextStyle(
                       fontSize: Resizable.font(context, 20),
-                      fontWeight: FontWeight.w500)),
+                      fontWeight: FontWeight.w700)),
             )))
             .toList(),
         value: value,

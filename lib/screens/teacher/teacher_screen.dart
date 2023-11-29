@@ -6,7 +6,6 @@ import 'package:internal_sakumi/features/teacher/cubit/class_item_cubit.dart';
 import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
-import 'package:internal_sakumi/features/teacher/teacher_home/filter_teacher_home.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/welcome_teacher_appbar.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:shimmer/shimmer.dart';
@@ -30,7 +29,7 @@ class TeacherScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               const WelComeTeacherAppBar(),
-              TeacherHomeFilter(cubit: dataController),
+              //TeacherHomeFilter(cubit: dataController),
               Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: Resizable.size(context, 150)),

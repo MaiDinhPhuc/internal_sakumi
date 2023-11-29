@@ -1,14 +1,22 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_tab_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/note_widget.dart';
+import 'package:internal_sakumi/widget/waiting_dialog.dart';
+
+import 'input_sp_note_for_ss.dart';
 
 class ExpandLessonItem extends StatelessWidget {
   final int index;
   final LessonTabCubit cubit;
-  const ExpandLessonItem(this.index, {Key? key, required this.cubit})
+  final DataCubit dataCubit;
+  final int lessonId;
+  const ExpandLessonItem(this.index, {Key? key, required this.cubit, required this.dataCubit, required this.lessonId})
       : super(key: key);
 
   @override
@@ -18,16 +26,50 @@ class ExpandLessonItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(AppText.txtNoteTeacherForSp.text,
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: Resizable.font(context, 19))),
-          NoteWidget(cubit.listSpNote![index]!.toString()),
-          Text(AppText.txtNoteTeacherForAnotherSs.text,
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: Resizable.font(context, 19))),
-          NoteWidget(cubit.listTeacherNote![index]!.toString()),
+          if (cubit.listSpNote![index]! != "")
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(AppText.txtNoteTeacherForSp.text,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: Resizable.font(context, 19))),
+                NoteWidget(cubit.listSpNote![index]!)
+              ],
+            ),
+          if (cubit.listTeacherNote![index]! != "")
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(AppText.txtNoteTeacherForAnotherSs.text,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: Resizable.font(context, 19))),
+                NoteWidget(cubit.listTeacherNote![index]!),
+              ],
+            ),
+          if (cubit.role == "admin")
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(AppText.txtNoteSpForTeacher.text,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: Resizable.font(context, 19))),
+                InputSpNoteForSS(
+                    sendNote: ()async {
+                      waitingDialog(context);
+                      dataCubit.updateNoteInLessonResultsToFb(cubit.classId!, lessonId);
+                      await Future.delayed(const Duration(seconds: 1), (){
+                        Navigator.pop(context);
+                      });
+                    },
+                    value: cubit.listSpNoteForTeacher![index]!,
+                    onChange: (value) {
+                      dataCubit.updateNoteInLessonResults(cubit.classId!, lessonId, value!);
+                    })
+              ],
+            ),
           Container(
             height: Resizable.size(context, 1),
             margin:

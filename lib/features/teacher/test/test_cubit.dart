@@ -26,7 +26,14 @@ class TestCubit extends Cubit<int> {
   List<StudentModel>? listStudents;
   List<bool?>? listStatus;
 
-  load(ClassModel2 model, DataCubit dataCubit) async {
+  load(int classId, DataCubit dataCubit) async {
+    var temp = dataCubit.classes!
+        .where((e) => e.classModel.classId == classId)
+        .toList();
+    if (temp.isEmpty) {
+      dataCubit.loadMoreClass(classId);
+    } else {
+      var model = temp.first;
     if (model.stdTests == null) {
       classModel = model.classModel;
       emit(state + 1);
@@ -120,7 +127,7 @@ class TestCubit extends Cubit<int> {
       this.listStudents = listStudents;
       emit(state + 1);
     }
-  }
+  }}
 
   reloadAfterAssignment(int classId, int courseId, int testId) async {
     SharedPreferences localData = await SharedPreferences.getInstance();

@@ -5,7 +5,6 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 
 class StudentLessonModel {
   final int grammar,
-      hw,
       id,
       kanji,
       lessonId,
@@ -16,6 +15,7 @@ class StudentLessonModel {
       vocabulary;
   final String teacherNote, supportNote;
   final Map time;
+  final dynamic hw;
 
   Color get attendColor {
     if (timekeeping == 5) return const Color(0xffF57F17);

@@ -1,6 +1,5 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_field.dart';
 import 'package:internal_sakumi/model/course_model.dart';
@@ -10,6 +9,8 @@ import 'package:internal_sakumi/widget/dialog_button.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
+import 'header_alert_course.dart';
+import 'input_2_filed.dart';
 import 'manage_course_cubit.dart';
 
 void alertAddNewCourse(BuildContext context, CourseModel? courseModel,
@@ -34,8 +35,12 @@ void alertAddNewCourse(BuildContext context, CourseModel? courseModel,
       TextEditingController(text: courseModel == null ? "" : courseModel.token);
   TextEditingController typeCon =
       TextEditingController(text: courseModel == null ? "" : courseModel.type);
-  TextEditingController verCon =
-  TextEditingController(text: courseModel == null ? "1" : courseModel.version.toString());
+  TextEditingController verCon = TextEditingController(
+      text: courseModel == null ? "1" : courseModel.version.toString());
+  TextEditingController prefixCon = TextEditingController(
+      text: courseModel == null ? "" : courseModel.prefix);
+  TextEditingController suffixCon = TextEditingController(
+      text: courseModel == null ? "" : courseModel.suffix);
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   showDialog(
@@ -54,225 +59,31 @@ void alertAddNewCourse(BuildContext context, CourseModel? courseModel,
                     children: [
                       Expanded(
                           flex: 1,
-                          child: Row(
-                            mainAxisAlignment: isEdit
-                                ? MainAxisAlignment.spaceBetween
-                                : MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                alignment: Alignment.topLeft,
-                                margin: EdgeInsets.only(
-                                    bottom: Resizable.padding(context, 20)),
-                                child: Text(
-                                  isEdit
-                                      ? AppText.txtEditCourseInfo.text
-                                          .toUpperCase()
-                                      : AppText.btnAddNewCourse.text
-                                          .toUpperCase(),
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: Resizable.font(context, 20)),
-                                ),
-                              ),
-                              if (isEdit)
-                                Padding(
-                                    padding: EdgeInsets.only(
-                                        bottom: Resizable.padding(context, 20)),
-                                    child: BlocProvider(
-                                      create: (context) =>
-                                          SwitcherCubit(courseModel!.enable),
-                                      child: BlocBuilder<SwitcherCubit, bool>(
-                                        builder: (c, s) {
-                                          return Row(
-                                            children: [
-                                              Text(AppText.titleStatus.text,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: Resizable.font(
-                                                          context, 18),
-                                                      color: const Color(
-                                                          0xff757575))),
-                                              Switch(
-                                                  value: s,
-                                                  activeColor: primaryColor,
-                                                  onChanged:
-                                                      (bool value) async {
-                                                    BlocProvider.of<
-                                                            SwitcherCubit>(c)
-                                                        .update();
-                                                    await FireBaseProvider
-                                                        .instance
-                                                        .updateCourseState(
-                                                            courseModel!,
-                                                            value);
-                                                    cubit.loadAfterChangeStatus(
-                                                        courseModel, value);
-                                                  })
-                                            ],
-                                          );
-                                        },
-                                      ),
-                                    ))
-                            ],
-                          )),
+                          child: HeaderAlertCourse(isEdit: isEdit, courseModel: courseModel, cubit: cubit)),
                       Expanded(
                           flex: 10,
                           child: SingleChildScrollView(
                               child: Column(children: [
-                            Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: Resizable.padding(context, 5)),
-                                child: IntrinsicHeight(
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 3,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(AppText.txtTermName.text,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: Resizable.font(
-                                                          context, 18),
-                                                      color: const Color(
-                                                          0xff757575))),
-                                              InputField(
-                                                  controller: termNameCon,
-                                                  errorText: AppText
-                                                      .txtPleaseInput.text)
-                                            ],
-                                          )),
-                                      SizedBox(
-                                          width: Resizable.size(context, 20)),
-                                      Expanded(
-                                          flex: 3,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(AppText.txtTermId.text,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: Resizable.font(
-                                                          context, 18),
-                                                      color: const Color(
-                                                          0xff757575))),
-                                              InputField(
-                                                  controller: termIdCon,
-                                                  errorText: AppText
-                                                      .txtPleaseInput.text)
-                                            ],
-                                          ))
-                                    ],
-                                  ),
-                                )),
-                            Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: Resizable.padding(context, 5)),
-                                child: IntrinsicHeight(
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 3,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(AppText.txtCourseId.text,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: Resizable.font(
-                                                          context, 18),
-                                                      color: const Color(
-                                                          0xff757575))),
-                                              InputField(
-                                                  controller: idCon,
-                                                  errorText: AppText
-                                                      .txtPleaseInput.text)
-                                            ],
-                                          )),
-                                      SizedBox(
-                                          width: Resizable.size(context, 20)),
-                                      Expanded(
-                                          flex: 3,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(AppText.txtCode.text,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: Resizable.font(
-                                                          context, 18),
-                                                      color: const Color(
-                                                          0xff757575))),
-                                              InputField(
-                                                  controller: codeCon,
-                                                  errorText: AppText
-                                                      .txtPleaseInput.text)
-                                            ],
-                                          ))
-                                    ],
-                                  ),
-                                )),
-                            Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: Resizable.padding(context, 5)),
-                                child: IntrinsicHeight(
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 3,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(AppText.txtLessonCount.text,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: Resizable.font(
-                                                          context, 18),
-                                                      color: const Color(
-                                                          0xff757575))),
-                                              InputField(
-                                                  controller: countCon,
-                                                  errorText: AppText
-                                                      .txtPleaseInput.text)
-                                            ],
-                                          )),
-                                      SizedBox(
-                                          width: Resizable.size(context, 20)),
-                                      Expanded(
-                                          flex: 3,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(AppText.txtLevel.text,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: Resizable.font(
-                                                          context, 18),
-                                                      color: const Color(
-                                                          0xff757575))),
-                                              InputField(
-                                                  controller: levelCon,
-                                                  errorText: AppText
-                                                      .txtPleaseInput.text)
-                                            ],
-                                          ))
-                                    ],
-                                  ),
-                                )),
+                            Input2Field(
+                                title1: AppText.txtTermName.text,
+                                title2: AppText.txtTermId.text,
+                                con1: termNameCon,
+                                con2: termIdCon),
+                            Input2Field(
+                                title1: AppText.txtCourseId.text,
+                                title2: AppText.txtCode.text,
+                                con1: idCon,
+                                con2: codeCon),
+                            Input2Field(
+                                title1: AppText.txtLessonCount.text,
+                                title2: AppText.txtLevel.text,
+                                con1: countCon,
+                                con2: levelCon),
+                            Input2Field(
+                                title1: AppText.txtPrefix.text,
+                                title2: AppText.txtSuffix.text,
+                                con1: prefixCon,
+                                con2: suffixCon),
                             InputItem(
                                 controller: titleCon,
                                 title: AppText.txtTitle.text,
@@ -281,57 +92,11 @@ void alertAddNewCourse(BuildContext context, CourseModel? courseModel,
                                 controller: desCon,
                                 title: AppText.txtDescription.text,
                                 isExpand: true),
-                            Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: Resizable.padding(context, 5)),
-                                child: IntrinsicHeight(
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 3,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(AppText.txtToken.text,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: Resizable.font(
-                                                          context, 18),
-                                                      color: const Color(
-                                                          0xff757575))),
-                                              InputField(
-                                                  controller: tokenCon,
-                                                  errorText: AppText
-                                                      .txtPleaseInput.text)
-                                            ],
-                                          )),
-                                      SizedBox(
-                                          width: Resizable.size(context, 20)),
-                                      Expanded(
-                                          flex: 3,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(AppText.txtCourseType.text,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: Resizable.font(
-                                                          context, 18),
-                                                      color: const Color(
-                                                          0xff757575))),
-                                              InputField(
-                                                  controller: typeCon,
-                                                  errorText: AppText
-                                                      .txtPleaseInput.text)
-                                            ],
-                                          ))
-                                    ],
-                                  ),
-                                )),
+                            Input2Field(
+                                title1: AppText.txtToken.text,
+                                title2: AppText.txtCourseType.text,
+                                con1: tokenCon,
+                                con2: typeCon),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -391,7 +156,13 @@ void alertAddNewCourse(BuildContext context, CourseModel? courseModel,
                                                           type: typeCon.text,
                                                           token: tokenCon.text,
                                                           code: codeCon.text,
-                                                          enable: true, version: int.parse(verCon.text)));
+                                                          enable: true,
+                                                          version: int.parse(
+                                                              verCon.text),
+                                                          prefix:
+                                                              prefixCon.text,
+                                                          suffix:
+                                                              suffixCon.text));
                                               if (context.mounted) {
                                                 Navigator.pop(context);
                                                 if (check == true) {
@@ -413,7 +184,13 @@ void alertAddNewCourse(BuildContext context, CourseModel? courseModel,
                                                           type: typeCon.text,
                                                           token: tokenCon.text,
                                                           code: codeCon.text,
-                                                          enable: true, version: int.parse(verCon.text)));
+                                                          enable: true,
+                                                          version: int.parse(
+                                                              verCon.text),
+                                                          prefix:
+                                                              prefixCon.text,
+                                                          suffix:
+                                                              suffixCon.text));
                                                 } else {
                                                   notificationDialog(
                                                       context,
@@ -439,7 +216,11 @@ void alertAddNewCourse(BuildContext context, CourseModel? courseModel,
                                                       type: typeCon.text,
                                                       token: tokenCon.text,
                                                       code: codeCon.text,
-                                                      enable: true, version: int.parse(verCon.text)));
+                                                      enable: true,
+                                                      version: int.parse(
+                                                          verCon.text),
+                                                      prefix: prefixCon.text,
+                                                      suffix: suffixCon.text));
 
                                               if (context.mounted) {
                                                 Navigator.pop(context);
@@ -460,7 +241,12 @@ void alertAddNewCourse(BuildContext context, CourseModel? courseModel,
                                                         type: typeCon.text,
                                                         token: tokenCon.text,
                                                         code: codeCon.text,
-                                                        enable: courseModel!.enable, version: int.parse(verCon.text)),
+                                                        enable:
+                                                            courseModel!.enable,
+                                                        version: int.parse(
+                                                            verCon.text),
+                                                        prefix: prefixCon.text,
+                                                        suffix: suffixCon.text),
                                                     courseModel.courseId);
                                               }
                                             }

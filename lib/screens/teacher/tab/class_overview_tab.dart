@@ -39,9 +39,7 @@ class ClassOverViewTab extends StatelessWidget {
                     ),
                   ) : BlocBuilder<ClassOverviewCubit, int>(
                       bloc: cubit
-                        ..loadFirst(dataController.classes!.firstWhere((e) =>
-                        e.classModel.classId ==
-                            int.parse(TextUtils.getName())), dataController),
+                        ..loadFirst(int.parse(TextUtils.getName()), dataController),
                       builder: (c, _) {
                         return cubit.classModel == null
                             ? Transform.scale(

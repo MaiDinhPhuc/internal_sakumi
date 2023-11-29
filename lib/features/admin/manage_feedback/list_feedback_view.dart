@@ -22,7 +22,7 @@ class ListFeedBackView extends StatelessWidget {
         Row(
           children: [
             Expanded(
-                flex: 7,
+                flex: 9,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -30,7 +30,7 @@ class ListFeedBackView extends StatelessWidget {
                   ],
                 )),
             Expanded(
-                flex: 2,
+                flex: 3,
                 child: BlocBuilder<DropdownGradingCubit, String>(
                   bloc: dropdownCubit,
                   builder: (cc, state) {
