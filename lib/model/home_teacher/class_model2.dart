@@ -10,7 +10,6 @@ import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
-
 class ClassModel2 {
   final ClassModel classModel;
   final int? lessonCount;

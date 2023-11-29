@@ -67,6 +67,7 @@ dependencies:
   googleapis: ^11.4.0
   http: ^0.13.4
   google_sign_in: ^5.4.0
+  google_sign_in_web: ^0.10.0
 
 
 dev_dependencies:
