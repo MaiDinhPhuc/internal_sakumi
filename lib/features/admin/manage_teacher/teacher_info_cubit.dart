@@ -13,6 +13,9 @@ class TeacherInfoCubit extends Cubit<int>{
   String teacherCode = "";
   String phone = "";
   String note = "";
+
+
+
   loadStudent(int teacherId) async{
     teacher = await FireBaseProvider.instance.getTeacherById(teacherId);
     user = await FireBaseProvider.instance.getUserById(teacherId);

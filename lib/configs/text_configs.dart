@@ -320,9 +320,13 @@ enum AppText {
   txtErrorDuplicateLink,
   txtErrorDuplicateVideo,
   txtDuplicateLinkOrVideo,
+  txtListStudentClass,
+  txtNotStudentClass
 }
 
 Map<AppText, String> texts = {
+  AppText.txtNotStudentClass: 'Học viên chưa tham gia lớp nào!',
+  AppText.txtListStudentClass: 'DANH SÁCH LỚP CỦA HỌC VIÊN',
   AppText.txtUpdateTeacherDone: 'Cập nhật Sensei thành công!',
   AppText.txtSendReloadPassDone: 'Đã gửi mail cho học viên. Vui lòng thông báo cho học viên check mail để cập nhật mật khẩu mới!',
   AppText.txtReloadPass: 'Cập nhật mật khẩu',

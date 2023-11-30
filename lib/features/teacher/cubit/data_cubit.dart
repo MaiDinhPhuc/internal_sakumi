@@ -8,8 +8,6 @@ import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
-import 'package:internal_sakumi/model/teacher_model.dart';
-import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -1,12 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/Material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
-import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
-import 'package:internal_sakumi/screens/teacher/teacher_screen.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';

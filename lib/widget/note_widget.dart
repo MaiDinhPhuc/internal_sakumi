@@ -62,7 +62,7 @@ class TrackingItem extends StatelessWidget {
             .toUpperCase(),
         textAlign: TextAlign.center,
         style: TextStyle(
-            fontSize: Resizable.font(context, 12),
+            fontSize: (getAttendance(condition) == AppText.txtNotAttendance.text && isSubmit == false) ? Resizable.font(context, 10) : Resizable.font(context, 12),
             fontWeight: FontWeight.w800,
             color: Colors.white),
       ),

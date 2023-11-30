@@ -344,7 +344,20 @@ class FireBaseProvider extends NetworkProvider {
               .map((e) => LessonResultModel.fromSnapshot(e))
               .toList();
     }
-
+    list.sort((a, b) {
+      DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm:ss');
+      var tempA = a.date;
+      var tempB = b.date;
+      if (tempA!.length == 10) {
+        tempA += ' 00:00:00';
+      }
+      if (tempB!.length == 10) {
+        tempB += ' 00:00:00';
+      }
+      final dateA = dateFormat.parse(tempA);
+      final dateB = dateFormat.parse(tempB);
+      return dateA.compareTo(dateB);
+    });
     return list;
   }
 
@@ -398,6 +411,16 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<List<StudentLessonModel>> getStudentLessonByStdId(
+      int studentId) async {
+    return (await FireStoreDb.instance
+        .getStudentLessonByStdId(studentId))
+        .docs
+        .map((e) => StudentLessonModel.fromSnapshot(e))
+        .toList();
+  }
+
+  @override
   Future<List<StudentTestModel>> getAllStudentTestInLesson(
       int classId, int testId) async {
     return (await FireStoreDb.instance
@@ -437,6 +460,14 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<List<StudentClassModel>> getStudentClassInClass(int classId) async {
     return (await FireStoreDb.instance.getStudentClassInClass(classId))
+        .docs
+        .map((e) => StudentClassModel.fromSnapshot(e))
+        .toList();
+  }
+
+  @override
+  Future<List<StudentClassModel>> getStudentClassByStdId(int studentId) async {
+    return (await FireStoreDb.instance.getStudentClassByStdId(studentId))
         .docs
         .map((e) => StudentClassModel.fromSnapshot(e))
         .toList();
@@ -577,6 +608,14 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<List<StudentTestModel>> getAllStudentTest(int classId) async {
     return (await FireStoreDb.instance.getAllStudentTest(classId))
+        .docs
+        .map((e) => StudentTestModel.fromSnapshot(e))
+        .toList();
+  }
+
+  @override
+  Future<List<StudentTestModel>> getStudentTestByStdId(int studentId) async {
+    return (await FireStoreDb.instance.getStudentTestByStdId(studentId))
         .docs
         .map((e) => StudentTestModel.fromSnapshot(e))
         .toList();

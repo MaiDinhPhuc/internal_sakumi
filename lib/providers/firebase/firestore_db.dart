@@ -195,6 +195,21 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getStudentLessonByStdId(
+      int studentId) async {
+    final snapshot = await db
+        .collection('student_lesson')
+        .where('student_id', isEqualTo: studentId)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentLessonByStdId $studentId ${snapshot.size}");
+
+    // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
+
+    return snapshot;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentTestInLesson(
       int classId, int testId) async {
     final snapshot = await db
@@ -246,6 +261,20 @@ class FireStoreDb {
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassInClass $classId ${snapshot.size}");
+
+    // debugPrint("==========>get db from \"student_class\" : ${snapshot.docs.length}");
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getStudentClassByStdId(
+      int studentId) async {
+    final snapshot = await db
+        .collection("student_class")
+        .where("user_id", isEqualTo: studentId)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassByStdId $studentId ${snapshot.size}");
 
     // debugPrint("==========>get db from \"student_class\" : ${snapshot.docs.length}");
     return snapshot;
@@ -764,6 +793,19 @@ class FireStoreDb {
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentTest $classId ${snapshot.size}");
 
     // debugPrint("==========>get db from \"student_test\": ${snapshot.docs.length}");
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getStudentTestByStdId(
+      int studentId) async {
+    final snapshot = await db
+        .collection('student_test')
+        .where('student_id', isEqualTo: studentId)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentTestByStdId $studentId ${snapshot.size}");
+
     return snapshot;
   }
 

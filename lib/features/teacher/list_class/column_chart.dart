@@ -16,9 +16,13 @@ class ColumnChart extends StatelessWidget {
                 fontWeight: FontWeight.w700,
                 fontSize: Resizable.font(context, 17))),
         SizedBox(height: Resizable.size(context, 5)),
-        SizedBox(
-          width: Resizable.size(context, 300),
-          height: Resizable.size(context, 130),
+        Container(
+         // width: Resizable.size(context, 300),
+          // height: Resizable.size(context, 130),
+          constraints: BoxConstraints(
+            maxHeight: Resizable.size(context, 130),
+            maxWidth: Resizable.size(context, 300)
+          ),
           child: DChartBarCustom(
             spaceBetweenItem: Resizable.size(context, 5),
             spaceDomainLinetoChart: Resizable.size(context, 1),

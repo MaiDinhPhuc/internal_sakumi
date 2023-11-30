@@ -205,6 +205,12 @@ abstract class NetworkProvider {
 
   Future<void> updateProfileStudent(String id, StudentModel model);
 
+  Future<List<StudentClassModel>> getStudentClassByStdId(int studentId);
+
+  Future<List<StudentLessonModel>> getStudentLessonByStdId(int studentId);
+
+  Future<List<StudentTestModel>> getStudentTestByStdId(int studentId);
+
   //master
 
   Future<List<CourseModel>> getAllCourseEnable();
