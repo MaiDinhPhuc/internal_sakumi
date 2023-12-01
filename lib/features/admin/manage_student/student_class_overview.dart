@@ -17,12 +17,12 @@ class StudentClassOverview extends StatelessWidget {
 
   const StudentClassOverview(
       {super.key,
-        required this.model,
-        required this.courseTitle,
-        required this.lessonPercent,
-        required this.lessonCountTitle,
-        required this.attendancePercent,
-        required this.hwPercent});
+      required this.model,
+      required this.courseTitle,
+      required this.lessonPercent,
+      required this.lessonCountTitle,
+      required this.attendancePercent,
+      required this.hwPercent});
 
   @override
   Widget build(BuildContext context) {
@@ -31,29 +31,30 @@ class StudentClassOverview extends StatelessWidget {
             style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: Resizable.font(context, 20))),
-        widgetCourse: Text(courseTitle, style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: Resizable.font(context, 18))),
+        widgetCourse: Text(courseTitle,
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: Resizable.font(context, 18))),
         widgetLessons: Row(
           mainAxisSize: MainAxisSize.max,
           //mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
                 child: LinearPercentIndicator(
-                  padding: EdgeInsets.zero,
-                  animation: true,
-                  lineHeight: Resizable.size(context, 6),
-                  animationDuration: 2000,
-                  percent: lessonPercent,
-                  center: const SizedBox(),
-                  barRadius: const Radius.circular(10000),
-                  backgroundColor: greyColor.shade100,
-                  progressColor: primaryColor,
-                )),
+              padding: EdgeInsets.zero,
+              animation: true,
+              lineHeight: Resizable.size(context, 6),
+              animationDuration: 2000,
+              percent: lessonPercent,
+              center: const SizedBox(),
+              barRadius: const Radius.circular(10000),
+              backgroundColor: greyColor.shade100,
+              progressColor: primaryColor,
+            )),
             Container(
               alignment: Alignment.centerRight,
               constraints:
-              BoxConstraints(minWidth: Resizable.size(context, 50)),
+                  BoxConstraints(minWidth: Resizable.size(context, 50)),
               child: Text(
                   '$lessonCountTitle ${AppText.txtLesson.text.toLowerCase()}',
                   style: TextStyle(
@@ -64,7 +65,7 @@ class StudentClassOverview extends StatelessWidget {
         ),
         widgetAttendance: CircleProgress(
           title:
-          '${((attendancePercent == null ? 0 : attendancePercent!) * 100).toStringAsFixed(0)} %',
+              '${((attendancePercent == null ? 0 : attendancePercent!) * 100).toStringAsFixed(0)} %',
           lineWidth: Resizable.size(context, 3),
           percent: attendancePercent == null ? 0 : attendancePercent!,
           radius: Resizable.size(context, 15),
@@ -72,7 +73,7 @@ class StudentClassOverview extends StatelessWidget {
         ),
         widgetSubmit: CircleProgress(
           title:
-          '${((hwPercent == null ? 0 : hwPercent!) * 100).toStringAsFixed(0)} %',
+              '${((hwPercent == null ? 0 : hwPercent!) * 100).toStringAsFixed(0)} %',
           lineWidth: Resizable.size(context, 3),
           percent: hwPercent == null ? 0 : hwPercent!,
           radius: Resizable.size(context, 15),

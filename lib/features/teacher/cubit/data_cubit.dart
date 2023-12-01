@@ -29,6 +29,13 @@ class DataCubit extends Cubit<int> {
     // "Completed",
     // "Cancel"
   ];
+
+  List<String> listClassStatusMenuAdmin2 = [
+    "Preparing",
+    "InProgress",
+    "Completed",
+    "Cancel"
+  ];
   List<bool> listCourseTypeFilter = [false, false, false, false, false];
   List<String> listCourseTypeMenuAdmin = [
     "GENERAL",

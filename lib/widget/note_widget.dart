@@ -69,7 +69,7 @@ class TrackingItem extends StatelessWidget {
     );
   }
 
-  static String getAttendance(int? s) {
+  static String getAttendance(dynamic s) {
     switch (s) {
       case 0:
       case null:

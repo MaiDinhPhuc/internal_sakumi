@@ -64,7 +64,7 @@ abstract class NetworkProvider {
 
   Future<TeacherModel> getTeacherById(int id);
 
-  Future<List<TeacherClassModel>> getTeacherClassById(String string, int id);
+  Future<List<TeacherClassModel>> getTeacherClassById(int id);
 
   Future<List<LessonModel>> getLessonsByCourseId(int id);
 

@@ -235,9 +235,8 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<TeacherClassModel>> getTeacherClassById(
-      String string, int id) async {
-    return (await FireStoreDb.instance.getTeacherClassById(string, id))
+  Future<List<TeacherClassModel>> getTeacherClassById(int id) async {
+    return (await FireStoreDb.instance.getTeacherClassById(id))
         .docs
         .map((e) => TeacherClassModel.fromSnapshot(e))
         .toList();
@@ -830,7 +829,7 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<List<ClassModel2>> getClassByTeacherId(int teacherId) async {
     var teacherClassIDs =
-        (await FireStoreDb.instance.getTeacherClassById('user_id', teacherId))
+        (await FireStoreDb.instance.getTeacherClassById(teacherId))
             .docs
             .map((e) => e.data()['class_id'] as int)
             .toList();

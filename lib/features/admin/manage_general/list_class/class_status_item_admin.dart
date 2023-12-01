@@ -32,7 +32,7 @@ class StatusClassItemAdmin extends StatelessWidget {
           var popupCubit = BlocProvider.of<MenuPopupCubit>(c);
           return PopupMenuButton(
               itemBuilder: (context) => [
-                    ...dataCubit.listClassStatusMenuAdmin.map((e) =>
+                    ...dataCubit.listClassStatusMenuAdmin2.map((e) =>
                         PopupMenuItem(
                             padding: EdgeInsets.zero,
                             child: BlocProvider(

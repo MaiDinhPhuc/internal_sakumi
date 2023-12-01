@@ -126,6 +126,9 @@ class StudentInfoModel {
         temp2++;
       }
     }
+    if(temp2 == 0){
+      return 0;
+    }
     double attendancePercent = temp1 / temp2;
 
     return attendancePercent;
@@ -145,6 +148,9 @@ class StudentInfoModel {
       if (i.timekeeping != 0) {
         temp2++;
       }
+    }
+    if(temp2 == 0){
+      return 0;
     }
     double attendancePercent = temp1 / temp2;
 

@@ -133,6 +133,7 @@ enum AppText {
   txtHintNoteForSupport,
   txtHintNoteForTeacher,
   titleNoteForSenseiAfterTeach,
+  txtNoteForSenseiAfterComplete,
   txtNoteForSenseiAfterTeach,
   txtQuestionForSenseiAfterTeach,
   txtBack,
@@ -321,10 +322,12 @@ enum AppText {
   txtErrorDuplicateVideo,
   txtDuplicateLinkOrVideo,
   txtListStudentClass,
-  txtNotStudentClass
+  txtNotStudentClass,
+  txtNotTeacherClass
 }
 
 Map<AppText, String> texts = {
+  AppText.txtNotTeacherClass: 'Giáo viên chưa tham gia dạy lớp nào!',
   AppText.txtNotStudentClass: 'Học viên chưa tham gia lớp nào!',
   AppText.txtListStudentClass: 'DANH SÁCH LỚP CỦA HỌC VIÊN',
   AppText.txtUpdateTeacherDone: 'Cập nhật Sensei thành công!',
@@ -587,8 +590,8 @@ Map<AppText, String> texts = {
   AppText.txtAttendance: 'Đi học',
   AppText.txtOutSoon: 'Ra sớm',
   AppText.txtInLate: 'Vào trễ',
-  AppText.txtAbsent: 'Nghỉ không phép',
-  AppText.txtPermitted: 'Nghỉ có phép',
+  AppText.txtAbsent: 'Nghỉ KP',
+  AppText.txtPermitted: 'Nghỉ CP',
   AppText.txtNotTimeKeeping: 'Chưa điểm danh',
   AppText.txtTest: 'Bài kiểm tra',
   AppText.txtPointOfTest: 'Điểm kiểm tra',
@@ -605,6 +608,7 @@ Map<AppText, String> texts = {
   AppText.titleNoteForSenseiAfterTeach: 'Dặn dò dành cho Sensei cuối buổi học',
   AppText.txtNoteForSenseiAfterTeach:
       'Sensei vui lòng tắt record Google Meet trước khi bấm đồng ý kết thúc buổi học',
+  AppText.txtNoteForSenseiAfterComplete :"Sensei vui lòng kiểm tra các ghi chú trước khi bấm đồng ý hoàn thành buổi học",
   AppText.txtQuestionForSenseiAfterTeach:
       'Sensei có muốn kết thúc buổi học không?',
   AppText.txtAgree: 'Đồng ý',
