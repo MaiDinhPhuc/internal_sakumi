@@ -67,15 +67,14 @@ class FireStoreDb {
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getTeacherClassById(
-      String string, int id) async {
+      int id) async {
     final snapshot = await db
         .collection("teacher_class")
-        .where(string, isEqualTo: id)
-        .where("class_status", isNotEqualTo: "Remove")
+        .where("user_id", isEqualTo: id)
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTeacherClassById $string $id ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTeacherClassById $id ${snapshot.size}");
 
     // debugPrint("==========>get db from \"teacher_class\" : ${snapshot.docs.length}");
 
@@ -195,6 +194,21 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getStudentLessonByStdId(
+      int studentId) async {
+    final snapshot = await db
+        .collection('student_lesson')
+        .where('student_id', isEqualTo: studentId)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentLessonByStdId $studentId ${snapshot.size}");
+
+    // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
+
+    return snapshot;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentTestInLesson(
       int classId, int testId) async {
     final snapshot = await db
@@ -246,6 +260,20 @@ class FireStoreDb {
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassInClass $classId ${snapshot.size}");
+
+    // debugPrint("==========>get db from \"student_class\" : ${snapshot.docs.length}");
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getStudentClassByStdId(
+      int studentId) async {
+    final snapshot = await db
+        .collection("student_class")
+        .where("user_id", isEqualTo: studentId)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassByStdId $studentId ${snapshot.size}");
 
     // debugPrint("==========>get db from \"student_class\" : ${snapshot.docs.length}");
     return snapshot;
@@ -529,7 +557,6 @@ class FireStoreDb {
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> deleteLessonByDocs $docs");
   }
 
-
   Future<void> deleteTestByDocs(String docs) async {
     await db.collection("test").doc(docs).delete();
 
@@ -583,7 +610,7 @@ class FireStoreDb {
       'type': model.type,
       'dataversion': model.version,
       'prefix': model.prefix,
-      "suffix":model.suffix
+      "suffix": model.suffix
     });
     debugPrint("==========> add db for \"courses\"");
   }
@@ -652,7 +679,7 @@ class FireStoreDb {
       'type': model.type,
       'dataversion': model.version,
       'prefix': model.prefix,
-      "suffix":model.suffix
+      "suffix": model.suffix
     });
     debugPrint("==========> update db from \"courses\"");
   }
@@ -724,7 +751,6 @@ class FireStoreDb {
     debugPrint("==========>update db from \"teacher\"");
   }
 
-
   Future<void> updateProfileStudent(String id, StudentModel model) async {
     await db.collection('students').doc("student_user_$id").update({
       'name': model.name,
@@ -735,7 +761,6 @@ class FireStoreDb {
       'phone': model.phone,
       'user_id': model.userId,
       'in_jp': model.inJapan,
-
     });
     debugPrint("==========>update db from \"teacher\"");
   }
@@ -764,6 +789,19 @@ class FireStoreDb {
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentTest $classId ${snapshot.size}");
 
     // debugPrint("==========>get db from \"student_test\": ${snapshot.docs.length}");
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getStudentTestByStdId(
+      int studentId) async {
+    final snapshot = await db
+        .collection('student_test')
+        .where('student_id', isEqualTo: studentId)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentTestByStdId $studentId ${snapshot.size}");
+
     return snapshot;
   }
 
@@ -829,7 +867,7 @@ class FireStoreDb {
       'student_code': model.studentCode,
       'url': model.url,
       'user_id': model.userId,
-      'status': model.studentCode
+      'status': model.status
     });
     debugPrint("==========>add db for \"students\"");
   }
@@ -874,19 +912,15 @@ class FireStoreDb {
     return snapshot;
   }
 
-
   Future<QuerySnapshot<Map<String, dynamic>>> getListClassForAdmin() async {
-    final snapshot = await db
-        .collection("class")
-        .where("class_status", whereNotIn: ["Remove", "Completed", "Cancel"])
-        .get();
+    final snapshot = await db.collection("class").where("class_status",
+        whereNotIn: ["Remove", "Completed", "Cancel"]).get();
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListClassNotRemove ${snapshot.size}");
 
     return snapshot;
   }
-
 
   Future<QuerySnapshot<Map<String, dynamic>>> getListClassAvailableForTeacher(
       List<int> listIds) async {
@@ -918,7 +952,7 @@ class FireStoreDb {
     final snapshot = await db
         .collection("teacher_class")
         .where('class_id', isEqualTo: classId)
-        .where('class_status',  isEqualTo: "InProgress")
+        .where('class_status', isEqualTo: "InProgress")
         .get();
 
     debugPrint(
@@ -939,9 +973,12 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getListFeedBack(String status) async {
-    final snapshot =
-    await db.collection("feedbacks").where('status', isEqualTo: status).get();
+  Future<QuerySnapshot<Map<String, dynamic>>> getListFeedBack(
+      String status) async {
+    final snapshot = await db
+        .collection("feedbacks")
+        .where('status', isEqualTo: status)
+        .get();
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListFeedBack ${snapshot.size}");
@@ -973,7 +1010,8 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getStudentById(int studentId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getStudentById(
+      int studentId) async {
     final snapshot = await db
         .collection("students")
         .where('user_id', isEqualTo: studentId)

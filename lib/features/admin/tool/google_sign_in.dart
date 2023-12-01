@@ -39,19 +39,20 @@ class SignInDemoState extends State<SignInDemo> {
   @override
   void initState() {
     super.initState();
-    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account){
       setState(() {
         _currentUser = account;
       });
     });
     _googleSignIn.signInSilently();
+    debugPrint('=============> current ${_currentUser?.email}');
   }
 
   List<RenameModel> splitString(String text) {
     List<String> list = text.split('\n');
     List<String> listTemp = list
         .map((string) =>
-            string.replaceAllMapped(RegExp(r'^\s+|\s+$'), (match) => "*"))
+        string.replaceAllMapped(RegExp(r'^\s+|\s+$'), (match) => "*"))
         .toList();
     List<String> listString = [];
     for (var i in listTemp) {
@@ -62,12 +63,18 @@ class SignInDemoState extends State<SignInDemo> {
 
     for (var e in listString) {
       List<String> splitString = e.split('|');
-
       String link = splitString.first.trim().split('/').last;
       String name = splitString.last.trim();
-      List<String> nameSplit = name.trim().split('-');
-      String folder = _getFolderName(
-          nameSplit[1].toUpperCase().trim(), nameSplit[2].toUpperCase().trim());
+      List<String> nameSplit = [];
+      String folder = '';
+      try{
+        nameSplit = name.trim().split('-');
+        folder = _getFolderName(
+            nameSplit[1].toUpperCase().trim(), nameSplit[2].toUpperCase().trim());
+      }
+      catch(err){
+        debugPrint('=========> error $err');
+      }
 
       listRename.add(RenameModel(link, name, folder));
     }

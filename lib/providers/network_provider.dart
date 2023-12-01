@@ -64,7 +64,7 @@ abstract class NetworkProvider {
 
   Future<TeacherModel> getTeacherById(int id);
 
-  Future<List<TeacherClassModel>> getTeacherClassById(String string, int id);
+  Future<List<TeacherClassModel>> getTeacherClassById(int id);
 
   Future<List<LessonModel>> getLessonsByCourseId(int id);
 
@@ -204,6 +204,12 @@ abstract class NetworkProvider {
   Future<StudentModel> getStudentById(int studentId);
 
   Future<void> updateProfileStudent(String id, StudentModel model);
+
+  Future<List<StudentClassModel>> getStudentClassByStdId(int studentId);
+
+  Future<List<StudentLessonModel>> getStudentLessonByStdId(int studentId);
+
+  Future<List<StudentTestModel>> getStudentTestByStdId(int studentId);
 
   //master
 

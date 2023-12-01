@@ -3,19 +3,19 @@ import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
-import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
+import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-class ClassOverview extends StatelessWidget {
-  final ClassModel2 model;
+class StudentClassOverview extends StatelessWidget {
+  final ClassModel model;
   final String courseTitle;
   final double lessonPercent;
   final String lessonCountTitle;
   final double? attendancePercent, hwPercent;
 
-  const ClassOverview(
+  const StudentClassOverview(
       {super.key,
       required this.model,
       required this.courseTitle,
@@ -27,11 +27,14 @@ class ClassOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClassItemRowLayout(
-        widgetClassCode: AutoSizeText(model.classModel.classCode.toUpperCase(),
+        widgetClassCode: AutoSizeText(model.classCode.toUpperCase(),
             style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: Resizable.font(context, 20))),
-        widgetCourse: Text(courseTitle),
+        widgetCourse: Text(courseTitle,
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: Resizable.font(context, 18))),
         widgetLessons: Row(
           mainAxisSize: MainAxisSize.max,
           //mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,49 +79,7 @@ class ClassOverview extends StatelessWidget {
           radius: Resizable.size(context, 15),
           fontSize: Resizable.font(context, 14),
         ),
-        widgetEvaluate: (model.classModel.classStatus == "Completed" &&
-                model.stdClasses != null)
-            ? Text("${getPercentUpSale(model)}%",
-                style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    color: primaryColor,
-                    fontSize: Resizable.font(context, 30)))
-            : Container(
-                width: Resizable.size(context, 20),
-                height: Resizable.size(context, 20),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: primaryColor,
-                    borderRadius:
-                        BorderRadius.circular(Resizable.size(context, 5))),
-                child: Text('A',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white,
-                        fontSize: Resizable.font(context, 30))),
-              ),
+        widgetEvaluate: Container(),
         widgetStatus: Container());
-  }
-
-  double getPercentUpSale(ClassModel2 classModel2) {
-    if (classModel2.stdClasses == null) {
-      return 0;
-    }
-
-    double upNumber = 0;
-    int temp = 0;
-    for (var i in classModel2.stdClasses!) {
-      if (i.classStatus == "UpSale" || i.classStatus == "Force") {
-        upNumber++;
-      }
-      if((i.classStatus == "Completed" ||
-          i.classStatus == "InProgress" ||
-          i.classStatus == "ReNew" ||
-          i.classStatus == "UpSale" ||
-          i.classStatus == "Force")){
-        temp++;
-      }
-    }
-    return ((upNumber / temp) * 100).roundToDouble();
   }
 }

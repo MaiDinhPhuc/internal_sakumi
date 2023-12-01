@@ -42,7 +42,7 @@ class InputFeedBackNote extends StatelessWidget {
                       padding:
                           EdgeInsets.only(right: Resizable.padding(context, 5)),
                       child:
-                          Image.asset('assets/images/ic_send.png', scale: 5)),
+                      Icon(Icons.send, color: primaryColor,size:  Resizable.size(context, 20))),
                 ),
           border: OutlineInputBorder(
               borderRadius:

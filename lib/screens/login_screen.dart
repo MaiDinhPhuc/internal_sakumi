@@ -133,6 +133,7 @@ class LogInScreen extends StatelessWidget {
                                     color: primaryColor)),
                             Container(),
                             Text(AppText.txtMessageLogin.text,
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: Resizable.font(context, 16))),
