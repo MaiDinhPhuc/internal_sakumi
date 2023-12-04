@@ -80,8 +80,9 @@ class TestAlreadyView extends StatelessWidget {
                           BorderRadius.circular(Resizable.size(context, 5))),
                 )),
                 Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: Resizable.padding(context, 15),
+                  padding: EdgeInsets.only(
+                    right: Resizable.padding(context, 15),
+                    top:  Resizable.padding(context, 10)
                   ),
                   child: TestItemRowLayout(
                       test: Container(),

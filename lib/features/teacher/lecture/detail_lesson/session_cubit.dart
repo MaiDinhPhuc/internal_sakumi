@@ -50,7 +50,7 @@ class SessionCubit extends Cubit<int> {
           }
         }
         listStudent = await FireBaseProvider.instance.getAllStudentInFoInClass(listStudentId);
-
+        emit(state+1);
         for(int i = 0; i < listStudent!.length; i++){
           listNoteForEachStudent.add("");
         }

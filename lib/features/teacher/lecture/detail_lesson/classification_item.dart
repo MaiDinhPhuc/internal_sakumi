@@ -109,7 +109,7 @@ class ClassificationItem extends StatelessWidget {
               onChanged: onChanged,
               decoration: InputDecoration(
                 enabled: true,
-                hintText: AppText.txtHintNoteForStudent.text,
+                hintText: AppText.txtHintNoteForStudentSendToSP.text,
                 hintStyle: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: Resizable.font(context, 18)),

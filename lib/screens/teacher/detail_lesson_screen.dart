@@ -82,7 +82,7 @@ class DetailLessonScreen extends StatelessWidget {
                                       dataCubit: dataController,
                                       sessionCubit: sessionCubit,
                                     ),
-                                  if (s.status == 'Complete')
+                                  if (s.status == 'Waiting')
                                     LessonCompleteView(
                                         BlocProvider.of<DetailLessonCubit>(cc),
                                         dataController,

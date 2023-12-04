@@ -1,8 +1,5 @@
-import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/Material.dart';
-import 'package:internal_sakumi/configs/text_configs.dart';
 
 class StudentClassModel {
   final int activeStatus, classId, id, learningStatus, moveTo, userId;

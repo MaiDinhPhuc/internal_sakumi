@@ -13,7 +13,8 @@ class LessonModel {
       kanji,
       listening,
       order,
-      vocabulary;
+      vocabulary,
+      reading;
   final String description, content, title;
 
   LessonModel(
@@ -29,7 +30,8 @@ class LessonModel {
       required this.grammar,
       required this.flashcard,
       required this.alphabet,
-      required this.order});
+      required this.order,
+      required this.reading});
 
   static Future<bool> check(String jsonData) async {
     final data = json.decode(jsonData);
@@ -47,18 +49,19 @@ class LessonModel {
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
     return LessonModel(
-        lessonId: data['lesson_id']??0,
-        courseId: data['course_id']??0,
-        description: data['description']??"",
-        content: data['content']??"",
-        title: data['title']??"",
-        btvn: data['btvn']??0,
-        vocabulary: data['vocabulary']??0,
-        listening: data['listening']??0,
-        kanji: data['kanji']??0,
-        grammar: data['grammar']??0,
-        flashcard: data['flashcard']??0,
-        alphabet: data['alphabet']??0,
-        order: data['order']??0);
+        lessonId: data['lesson_id'] ?? 0,
+        courseId: data['course_id'] ?? 0,
+        description: data['description'] ?? "",
+        content: data['content'] ?? "",
+        title: data['title'] ?? "",
+        btvn: data['btvn'] ?? 0,
+        vocabulary: data['vocabulary'] ?? 0,
+        listening: data['listening'] ?? 0,
+        kanji: data['kanji'] ?? 0,
+        grammar: data['grammar'] ?? 0,
+        flashcard: data['flashcard'] ?? 0,
+        alphabet: data['alphabet'] ?? 0,
+        order: data['order'] ?? 0,
+        reading: data['reading'] ?? 0);
   }
 }

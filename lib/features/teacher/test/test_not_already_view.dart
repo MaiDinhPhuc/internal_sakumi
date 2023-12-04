@@ -3,17 +3,24 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/alert_view.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
+import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:internal_sakumi/widget/waiting_dialog.dart';
+
+import 'alert_test_see_soon.dart';
 
 class TestNotAlreadyView extends StatelessWidget {
   const TestNotAlreadyView(
       {super.key,
       required this.index,
       required this.title,
-      required this.onTap, required this.role});
+      required this.onConfirm,
+      required this.role,
+      required this.test});
   final int index;
   final String title, role;
-  final Function() onTap;
+  final Function() onConfirm;
+  final TestModel test;
 
   @override
   Widget build(BuildContext context) {
@@ -45,25 +52,49 @@ class TestNotAlreadyView extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 16))),
           submit: Container(),
-          status: role == "teacher" ? ElevatedButton(
-            onPressed: () => alertAssignTestView(context, onTap),
-            style: ButtonStyle(
-                shadowColor: MaterialStateProperty.all(greyColor.shade500),
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                    side: BorderSide(color: greyColor.shade500),
-                    borderRadius: BorderRadius.circular(
-                        Resizable.padding(context, 1000)))),
-                backgroundColor: MaterialStateProperty.all(Colors.white),
-                padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-                    horizontal: Resizable.padding(context, 27)))),
-            child: Text(AppText.txtAssignmentTest.text.toUpperCase(),
-                style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: Resizable.font(context, 12),
-                    color: greyColor.shade500)),
-          ) : Container(),
+          status: Container(),
           mark: Container(),
-          dropdown: Container()),
+          dropdown: PopupMenuButton(
+            padding: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(
+                color: Colors.black, // Set the desired border color here
+                width: 0.5,
+              ),
+              borderRadius: BorderRadius.all(
+                Radius.circular(Resizable.size(context, 5)),
+              ),
+            ),
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                onTap: () {
+                  alertTestSeeSoon(context, test);
+                  waitingDialog(context);
+                },
+                padding: EdgeInsets.zero,
+                child: Center(
+                    child: Text(AppText.txtSeeSoon.text,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: Resizable.font(context, 20)))),
+              ),
+              if (role == "teacher")
+                PopupMenuItem(
+                  onTap: () {
+                    alertAssignTestView(context, onConfirm);
+                    waitingDialog(context);
+                  },
+                  padding: EdgeInsets.zero,
+                  child: Center(
+                      child: Text(AppText.txtAssignTest.text,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: Resizable.font(context, 20),
+                              color: const Color(0xffB71C1C)))),
+                )
+            ],
+            icon: const Icon(Icons.more_vert),
+          )),
     );
   }
 }

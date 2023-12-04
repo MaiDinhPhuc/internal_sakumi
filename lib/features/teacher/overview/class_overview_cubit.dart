@@ -134,7 +134,7 @@ class ClassOverviewCubit extends Cubit<int> {
               .where((element) => element.studentId == i.userId)
               .toList();
           List<int> listAttendance = [];
-          List<int?> listHw = [];
+          List<double?> listHw = [];
           List<String> title = [];
           List<String> senseiNote = [];
           List<String> spNote = [];
@@ -216,8 +216,18 @@ class ClassOverviewCubit extends Cubit<int> {
         emit(state + 1);
       }
     }
+  }
 
-
+  double? getGPAPoint(int index){
+    double temp = 0;
+    double count = 0;
+    for(int i = 0; i<listStdDetail[index]["hw"].length; i++ ){
+      if(listStdDetail[index]["hw"][i] != null && listStdDetail[index]["hw"][i] > -1){
+        temp += listStdDetail[index]["hw"][i];
+        count++;
+      }
+    }
+   return count == 0? null : temp/count;
   }
 
   loadAfterRemove() async {

@@ -1,4 +1,5 @@
 import 'package:flutter/Material.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
@@ -40,8 +41,9 @@ class InputSpNoteForSS extends StatelessWidget {
                 margin: EdgeInsets.all(Resizable.padding(context, 5)),
                 padding:
                 EdgeInsets.only(right: Resizable.padding(context, 5)),
-                child:
-                Image.asset('assets/images/ic_send.png', scale: 5)),
+                child: Icon(Icons.send, color: primaryColor,size:  Resizable.size(context, 20))
+                //Image.asset('assets/images/ic_send.png', scale: 5)
+            ),
           ),
           border: OutlineInputBorder(
               borderRadius:

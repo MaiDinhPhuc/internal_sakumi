@@ -42,7 +42,7 @@ class ClassItemRowLayout extends StatelessWidget {
             Expanded(
                 flex: 6,
                 child: Container(
-                    alignment: Alignment.centerLeft,
+                    alignment: Alignment.center,
                     margin: EdgeInsets.only(left: Resizable.padding(context, 10)),
                     child: widgetCourse)),
             Expanded(

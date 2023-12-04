@@ -220,7 +220,7 @@ class LessonTabCubit extends Cubit<int> {
               }
             }
             List<int?> attendanceDetail = [];
-            List<int?> hwDetail = [];
+            List<double?> hwDetail = [];
             List<String> noteDetail = [];
             for (var k in students) {
               bool check = false;

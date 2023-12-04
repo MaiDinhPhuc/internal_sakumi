@@ -129,9 +129,6 @@ class FeedBackCubit extends Cubit<int> {
     }
 
     var courseId = classes.firstWhere((e) => e.classId == classId).courseId;
-    print("========>");
-    print(courseId);
-    print("========>");
     String name = courses!.where((e) => e.courseId == courseId).isEmpty
         ? ""
         : "${courses!.where((e) => e.courseId == courseId).first.title} - ${courses!.where((e) => e.courseId == courseId).first.level}";
@@ -169,7 +166,7 @@ class FeedBackCubit extends Cubit<int> {
 
   String getName(int stdId) {
     if (students.isEmpty) {
-      return "";
+      return "Ẩn danh";
     }
     if (stdId == -1) {
       return "Ẩn danh";

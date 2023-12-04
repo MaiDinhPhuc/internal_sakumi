@@ -40,6 +40,8 @@ void alertAddNewLesson(BuildContext context, LessonModel? lessonModel,
       text: lessonModel == null ? " " : lessonModel.description.toString());
   TextEditingController orderCon = TextEditingController(
       text: lessonModel == null ? "0" : lessonModel.order.toString());
+  TextEditingController readingCon = TextEditingController(
+      text: lessonModel == null ? "0" : lessonModel.reading.toString());
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   showDialog(
       context: context,
@@ -113,9 +115,20 @@ void alertAddNewLesson(BuildContext context, LessonModel? lessonModel,
                                 con2: listenCon),
                             Input2Field(
                                 title1: "FlashCard",
-                                title2: "Order",
+                                title2: "Reading",
                                 con1: flCardCon,
-                                con2: orderCon),
+                                con2: readingCon),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Order",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: Resizable.font(context, 18),
+                                        color: const Color(0xff757575))),
+                                InputField(controller: orderCon)
+                              ],
+                            ),
                             InputItem(
                                 onChange: (String? value) {
                                   debugPrint(desCon.text);
@@ -188,7 +201,8 @@ void alertAddNewLesson(BuildContext context, LessonModel? lessonModel,
                                                         grammarCon.text),
                                                     flashcard: int.parse(flCardCon.text),
                                                     alphabet: int.parse(alphaCon.text),
-                                                    order: int.parse(orderCon.text)));
+                                                    order: int.parse(orderCon.text),
+                                                    reading: int.parse(readingCon.text)));
                                             if (context.mounted) {
                                               Navigator.pop(context);
                                               if (check == true) {
@@ -227,7 +241,8 @@ void alertAddNewLesson(BuildContext context, LessonModel? lessonModel,
                                                     alphabet: int.parse(
                                                         alphaCon.text),
                                                     order:
-                                                        int.parse(orderCon.text)));
+                                                        int.parse(orderCon.text),
+                                                    reading: int.parse(readingCon.text)));
                                             if (context.mounted) {
                                               Navigator.pop(context);
                                               cubit.loadLessonInCourse(
