@@ -117,26 +117,7 @@ class VoucherImage extends StatelessWidget {
                     onPressed: () async{
                       RenderRepaintBoundary boundary = _globalKey.currentContext!
                           .findRenderObject() as RenderRepaintBoundary;
-
                       await cubit.downloadVoucher(boundary);
-
-                      // RenderRepaintBoundary boundary = _globalKey.currentContext!
-                      //     .findRenderObject() as RenderRepaintBoundary;
-                      // var image = await boundary.toImage(pixelRatio: 5);
-                      //
-                      // if(kIsWeb){
-                      //   ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
-                      //   Uint8List pngBytes = byteData!.buffer.asUint8List();
-                      //   final base64 = base64Encode(pngBytes);
-                      //   final anchor =
-                      //   html.AnchorElement(href: 'data:application/octet-stream;base64,$base64')
-                      //     ..download = "${cubit.qrCode}.png"
-                      //     ..target = 'blank';
-                      //
-                      //   html.document.body!.append(anchor);
-                      //   anchor.click();
-                      //   anchor.remove();
-                      // }
                     },
                     title: AppText.btnDownloadImage.text.toUpperCase())
               ],
