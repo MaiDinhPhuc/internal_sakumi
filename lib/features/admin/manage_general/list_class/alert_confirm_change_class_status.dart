@@ -57,7 +57,7 @@ class ConfirmChangeClassStatus extends StatelessWidget {
                     note: classModel.note,
                     classCode: classModel.classCode,
                     classStatus: newStatus,
-                    classType: classModel.classType));
+                    classType: classModel.classType, link: classModel.link));
                 popupCubit.update();
                 Navigator.pop(context);
               });

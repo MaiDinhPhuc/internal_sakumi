@@ -62,9 +62,9 @@ class ListLessonTab extends StatelessWidget {
                                     Column(
                                       children: [
                                         Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: Resizable.padding(
-                                                    context, 20)),
+                                            padding: EdgeInsets.only(
+                                                right: Resizable.padding(context, 20),
+                                                left: Resizable.padding(context, 15)),
                                             margin: EdgeInsets.symmetric(
                                                 horizontal: Resizable.padding(
                                                     context, 150)),

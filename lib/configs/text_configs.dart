@@ -64,6 +64,7 @@ enum AppText {
   txtClassId,
   txtCourseId,
   txtClassCode,
+  txtLink,
   txtCourse,
   txtNumberOfLessons,
   txtRateOfAttendance,
@@ -129,7 +130,8 @@ enum AppText {
   txtNoNoteForStudent,
   txtNoNoteForSupport,
   txtNoNoteForTeacher,
-  txtHintNoteForStudent,
+  txtHintNoteForStudentSendToSP,
+  txtHintNoteForStudentSendToHV,
   txtHintNoteForSupport,
   txtHintNoteForTeacher,
   titleNoteForSenseiAfterTeach,
@@ -165,6 +167,7 @@ enum AppText {
   txtErrorEndDate,
   txtPleaseChooseCourse,
   txtPleaseInputClassCode,
+  txtPleaseInputLink,
   txtPleaseCheckListClass,
   txtPleaseCheckListUser,
   txtPleaseCheckListStudentInClass,
@@ -323,10 +326,14 @@ enum AppText {
   txtDuplicateLinkOrVideo,
   txtListStudentClass,
   txtNotStudentClass,
-  txtNotTeacherClass
+  txtNotTeacherClass,
+  txtSeeSoon,
+  txtAssignTest
 }
 
 Map<AppText, String> texts = {
+  AppText.txtAssignTest: 'Giao bài',
+  AppText.txtSeeSoon: 'Xem trước',
   AppText.txtNotTeacherClass: 'Giáo viên chưa tham gia dạy lớp nào!',
   AppText.txtNotStudentClass: 'Học viên chưa tham gia lớp nào!',
   AppText.txtListStudentClass: 'DANH SÁCH LỚP CỦA HỌC VIÊN',
@@ -536,6 +543,7 @@ Map<AppText, String> texts = {
   AppText.txtClassId: 'Mã định danh lớp',
   AppText.txtCourseId: 'Mã khoá học',
   AppText.txtClassCode: 'Mã lớp',
+  AppText.txtLink: 'Link google meet',
   AppText.txtCourse: 'Khoá học',
   AppText.txtNumberOfLessons: 'Số buổi học',
   AppText.txtRateOfAttendance: 'Tỉ lệ đi học',
@@ -602,7 +610,8 @@ Map<AppText, String> texts = {
   AppText.txtNoNoteForStudent: 'Không có dặn dò dành cho học viên',
   AppText.txtNoNoteForSupport: 'Không có dặn dò dành cho Team Support',
   AppText.txtNoNoteForTeacher: 'Không có dặn dò dành cho Sensei',
-  AppText.txtHintNoteForStudent: 'Điền ghi chú của Sensei dành cho học viên...',
+  AppText.txtHintNoteForStudentSendToSP: 'Điền ghi chú của Sensei dành cho học viên...(Gửi cho Support)',
+  AppText.txtHintNoteForStudentSendToHV: 'Điền ghi chú của Sensei dành cho học viên...(Gửi cho tất cả Học viên)',
   AppText.txtHintNoteForSupport: 'Điền ghi chú dành cho Team Support...',
   AppText.txtHintNoteForTeacher: 'Điền ghi chú dành cho Sensei tiếp theo...',
   AppText.titleNoteForSenseiAfterTeach: 'Dặn dò dành cho Sensei cuối buổi học',
@@ -628,6 +637,7 @@ Map<AppText, String> texts = {
   AppText.txtErrorStartDate: 'Vui lòng chọn ngày bắt đầu trước ngày kết thúc',
   AppText.txtPleaseChooseCourse: 'Vui lòng chọn khoá học',
   AppText.txtPleaseInputClassCode: 'Vui lòng nhập mã lớp học',
+  AppText.txtPleaseInputLink: 'Vui lòng nhập link lớp học',
   AppText.txtPleaseCheckListClass:
       'Mã lớp đã tồn tại. Vui lòng kiểm tra lại danh sách lớp',
   AppText.txtPleaseCheckListUser:

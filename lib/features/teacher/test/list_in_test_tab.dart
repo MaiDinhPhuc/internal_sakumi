@@ -6,6 +6,7 @@ import 'package:internal_sakumi/features/teacher/test/test_cubit.dart';
 import 'package:internal_sakumi/features/teacher/test/test_not_already_view.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
+import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 class ListTest extends StatelessWidget {
   const ListTest({super.key, required this.cubit, required this.role});
@@ -17,8 +18,9 @@ class ListTest extends StatelessWidget {
       children: [
         if (cubit.listTest!.isNotEmpty)
           Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: Resizable.padding(context, 20)),
+              padding: EdgeInsets.only(
+                  right: Resizable.padding(context, 20),
+                  left: Resizable.padding(context, 10)),
               margin: EdgeInsets.symmetric(
                   horizontal: Resizable.padding(context, 150)),
               child: TestItemRowLayout(
@@ -27,11 +29,14 @@ class ListTest extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                         color: const Color(0xff757575),
                         fontSize: Resizable.font(context, 17))),
-                name: Padding(padding: EdgeInsets.only(left: Resizable.padding(context, 20)),child: Text(AppText.titleSubject.text,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xff757575),
-                        fontSize: Resizable.font(context, 17)))),
+                name: Padding(
+                    padding:
+                        EdgeInsets.only(left: Resizable.padding(context, 5)),
+                    child: Text(AppText.titleSubject.text,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xff757575),
+                            fontSize: Resizable.font(context, 17)))),
                 submit: Text(AppText.txtRateOfSubmitTest.text,
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
@@ -63,11 +68,13 @@ class ListTest extends StatelessWidget {
               : TestNotAlreadyView(
                   index: cubit.listTest!.indexOf(e),
                   title: e.title,
-                  onTap: () async {
+                  onConfirm: () {
                     cubit.assignmentTest(context,
                         int.parse(TextUtils.getName()), e.courseId, e.id);
+                    Navigator.of(context).pop();
                   },
                   role: role,
+                  test: e,
                 ))
       ],
     );

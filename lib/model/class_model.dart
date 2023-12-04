@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ClassModel {
   final int classId, courseId, classType;
-  final String description, endTime, startTime, note, classCode, classStatus;
+  final String description, endTime, startTime, note, classCode, classStatus, link;
 
   ClassModel(
       {required this.classId,
@@ -13,7 +13,7 @@ class ClassModel {
       required this.note,
       required this.classCode,
       required this.classStatus,
-      required this.classType});
+      required this.classType, required this.link});
   factory ClassModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
@@ -26,6 +26,6 @@ class ClassModel {
         note: data['note'] ?? '',
         classCode: data['class_code'] ?? '',
         classStatus: data['class_status'] ?? '',
-        classType: data['class_type']??0);
+        classType: data['class_type']??0, link: data['link'] ?? '');
   }
 }

@@ -43,8 +43,7 @@ class CollapseTestItem extends StatelessWidget {
             )
           : cubit.listSubmit![index] == 0
               ? CircleProgress(
-                  title:
-                      '0%',
+                  title: '0%',
                   lineWidth: Resizable.size(context, 3),
                   percent: 0,
                   radius: Resizable.size(context, 16),
@@ -68,20 +67,21 @@ class CollapseTestItem extends StatelessWidget {
           : cubit.listGPA![index] == 0
               ? Container()
               : Container(
-                  padding: EdgeInsets.symmetric(
-                      vertical: Resizable.padding(context, 10),
-                      horizontal: Resizable.padding(context, 12)),
+                  height: Resizable.size(context, 30),
+                  width: Resizable.size(context, 30),
                   decoration: BoxDecoration(
                       border: Border.all(
                           width: Resizable.size(context, 1),
                           color: greyColor.shade100),
                       borderRadius: BorderRadius.circular(10)),
-                  child: Text(
-                    cubit.listGPA![index].toString(),
-                    style: TextStyle(
-                        color: primaryColor,
-                        fontSize: Resizable.font(context, 18),
-                        fontWeight: FontWeight.w800),
+                  child: Center(
+                    child: Text(
+                      cubit.listGPA![index].toStringAsFixed(1),
+                      style: TextStyle(
+                          color: primaryColor,
+                          fontSize: Resizable.font(context, 18),
+                          fontWeight: FontWeight.w800),
+                    )
                   )),
       status: cubit.listTestResult == null
           ? Transform.scale(

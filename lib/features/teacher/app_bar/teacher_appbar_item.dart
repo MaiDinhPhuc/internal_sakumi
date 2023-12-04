@@ -31,7 +31,7 @@ class AppBarTeacherItem extends StatelessWidget {
                     style: TextStyle(
                         color: greyColor.shade600,
                         fontWeight: FontWeight.w700,
-                        fontSize: 16)),
+                        fontSize: 14)),
               ],
             ),
           ),

@@ -632,7 +632,8 @@ class FireStoreDb {
       "listening": model.listening,
       "order": model.order,
       "title": model.title,
-      "vocabulary": model.vocabulary
+      "vocabulary": model.vocabulary,
+      "reading":model.reading
     });
     debugPrint("==========> add db for \"lessons\"");
   }
@@ -701,7 +702,8 @@ class FireStoreDb {
       "listening": model.listening,
       "order": model.order,
       "title": model.title,
-      "vocabulary": model.vocabulary
+      "vocabulary": model.vocabulary,
+      "reading": model.reading
     });
     debugPrint("==========> update db from \"lessons\"");
   }
@@ -1130,7 +1132,8 @@ class FireStoreDb {
       'note': model.note,
       'class_code': model.classCode,
       'class_status': model.classStatus,
-      'class_type': model.classType
+      'class_type': model.classType,
+      'link': model.link
     });
     debugPrint("==========>add db for \"class\"");
   }
@@ -1229,7 +1232,8 @@ class FireStoreDb {
       'note': model.note,
       'class_code': model.classCode,
       'class_status': model.classStatus,
-      'class_type': model.classType
+      'class_type': model.classType,
+      'link': model.link
     });
     debugPrint("==========>update db for \"class\"");
   }

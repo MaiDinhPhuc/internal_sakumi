@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
-import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/admin/manage_general/list_student/alert_confirm_change_student_status.dart';
-import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/features/teacher/overview/class_overview_cubit.dart';
 import 'package:internal_sakumi/features/teacher/overview/overview_chart.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
-import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
 
@@ -59,13 +55,23 @@ class CollapseOverviewStudentItem extends StatelessWidget {
               radius: Resizable.size(context, 16),
               fontSize: Resizable.font(context, 14),
             ),
-            point: Container(),
-            // cubit.stdPoints![index] == 0
-            //         ? Container()
-            //         : CircleAvatar(
-            //             radius: Resizable.size(context, 16),
-            //             child: Text(cubit.stdPoints![index].toStringAsFixed(1)),
-            //           ),
+            point: cubit.getGPAPoint(index) == null
+                ? Container()
+                : Container(
+                    height: Resizable.size(context, 30),
+                    width: Resizable.size(context, 30),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            width: Resizable.size(context, 1),
+                            color: greyColor.shade100),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Center(child: Text(
+                      cubit.getGPAPoint(index)!.toStringAsFixed(1),
+                      style: TextStyle(
+                          color: primaryColor,
+                          fontSize: Resizable.font(context, 18),
+                          fontWeight: FontWeight.w800),
+                    ))),
             dropdown: IconButton(
                 onPressed: () {
                   BlocProvider.of<DropdownCubit>(context).update();

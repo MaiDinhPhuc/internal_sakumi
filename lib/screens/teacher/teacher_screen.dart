@@ -30,6 +30,7 @@ class TeacherScreen extends StatelessWidget {
             children: [
               const WelComeTeacherAppBar(),
               //TeacherHomeFilter(cubit: dataController),
+
               Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: Resizable.size(context, 150)),

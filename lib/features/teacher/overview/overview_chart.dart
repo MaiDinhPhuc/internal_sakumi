@@ -67,7 +67,7 @@ class OverviewItemRowLayout extends StatelessWidget {
             )),
         Expanded(
             flex: 18,
-            child: Container(alignment: Alignment.centerLeft, child: name)),
+            child: Container(alignment: Alignment.center, child: name)),
         Expanded(
             flex: 8,
             child: Container(alignment: Alignment.center, child: attend)),
