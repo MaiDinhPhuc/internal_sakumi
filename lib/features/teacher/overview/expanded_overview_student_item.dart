@@ -67,7 +67,7 @@ class ExpandedOverviewStudentItem extends StatelessWidget {
 class CollapseLearnedLesson extends StatelessWidget {
   final String title;
   final int attend;
-  final int? hw;
+  final double? hw;
   const CollapseLearnedLesson(this.title, this.attend,this.hw, {Key? key}) : super(key: key);
 
   @override

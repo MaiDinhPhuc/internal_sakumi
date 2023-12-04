@@ -15,6 +15,7 @@ import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
+import 'package:internal_sakumi/model/voucher_model.dart';
 import 'package:internal_sakumi/providers/api/api_provider.dart';
 import 'package:intl/intl.dart';
 
@@ -632,7 +633,8 @@ class FireStoreDb {
       "listening": model.listening,
       "order": model.order,
       "title": model.title,
-      "vocabulary": model.vocabulary
+      "vocabulary": model.vocabulary,
+      "reading":model.reading
     });
     debugPrint("==========> add db for \"lessons\"");
   }
@@ -701,7 +703,8 @@ class FireStoreDb {
       "listening": model.listening,
       "order": model.order,
       "title": model.title,
-      "vocabulary": model.vocabulary
+      "vocabulary": model.vocabulary,
+      "reading": model.reading
     });
     debugPrint("==========> update db from \"lessons\"");
   }
@@ -1130,7 +1133,8 @@ class FireStoreDb {
       'note': model.note,
       'class_code': model.classCode,
       'class_status': model.classStatus,
-      'class_type': model.classType
+      'class_type': model.classType,
+      'link': model.link
     });
     debugPrint("==========>add db for \"class\"");
   }
@@ -1229,7 +1233,8 @@ class FireStoreDb {
       'note': model.note,
       'class_code': model.classCode,
       'class_status': model.classStatus,
-      'class_type': model.classType
+      'class_type': model.classType,
+      'link': model.link
     });
     debugPrint("==========>update db for \"class\"");
   }
@@ -1284,5 +1289,52 @@ class FireStoreDb {
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentTestByIds $ids ${snapshot.size}");
 
     return snapshot;
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getVoucher(
+      String docs) async {
+    final temp = await db.collection("voucher").doc(docs).get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getVoucher $docs ${temp.exists}");
+
+    return temp;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getListVoucher() async {
+    final snapshot =
+    await db.collection("voucher").get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListFeedBack ${snapshot.size}");
+
+    return snapshot;
+  }
+
+  Future<void> addVoucher(VoucherModel model) async {
+    await db
+        .collection("voucher")
+        .doc("sakumi_voucher_${model.voucherCode}")
+        .set({
+      'id': model.id,
+      'recipient_code': model.recipientCode,
+      'used_user_code': model.usedUserCode,
+      'voucher_code': model.voucherCode,
+      'create_date': model.createDate,
+      'used_date': model.usedDate,
+      'expired_date': model.expiredDate,
+      'noted': model.noted,
+      'price': model.price,
+      'type': model.type
+    });
+  }
+
+  Future<void> updateVoucher(String dateTime, String voucherCode) async {
+    await db
+        .collection("voucher")
+        .doc("sakumi_voucher_$voucherCode")
+        .update({
+      'used_date': dateTime,
+    });
   }
 }

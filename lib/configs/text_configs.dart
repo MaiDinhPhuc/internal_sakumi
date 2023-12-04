@@ -64,6 +64,7 @@ enum AppText {
   txtClassId,
   txtCourseId,
   txtClassCode,
+  txtLink,
   txtCourse,
   txtNumberOfLessons,
   txtRateOfAttendance,
@@ -129,7 +130,8 @@ enum AppText {
   txtNoNoteForStudent,
   txtNoNoteForSupport,
   txtNoNoteForTeacher,
-  txtHintNoteForStudent,
+  txtHintNoteForStudentSendToSP,
+  txtHintNoteForStudentSendToHV,
   txtHintNoteForSupport,
   txtHintNoteForTeacher,
   titleNoteForSenseiAfterTeach,
@@ -165,6 +167,7 @@ enum AppText {
   txtErrorEndDate,
   txtPleaseChooseCourse,
   txtPleaseInputClassCode,
+  txtPleaseInputLink,
   txtPleaseCheckListClass,
   txtPleaseCheckListUser,
   txtPleaseCheckListStudentInClass,
@@ -321,12 +324,52 @@ enum AppText {
   txtErrorDuplicateLink,
   txtErrorDuplicateVideo,
   txtDuplicateLinkOrVideo,
+  titleManageVoucher,
+  titleVoucherCode,
+  titleInfoVoucher,
+  titleApplyCourse,
+  titleExpiredDate,
+  titleDiscount,
+  txtAllCourse,
+  txtJLPTCourse,
+  txtKaiwaCourse,
+  txtGeneralCourse,
+  btnCreateVoucher,
+  btnDownloadImage,
+  txtVoucherNote1,
+  txtVoucherNote2,
+  titleSakumi,
+  txtDirectDiscountVoucher,
+  txtApplyFor,
+  txtCreateNewVoucherSuccessfully,
   txtListStudentClass,
   txtNotStudentClass,
-  txtNotTeacherClass
+  txtNotTeacherClass,
+  txtSeeSoon,
+  txtAssignTest
 }
 
 Map<AppText, String> texts = {
+  AppText.txtCreateNewVoucherSuccessfully: 'Mã voucher @ đã được tạo thành công',
+  AppText.txtApplyFor: 'Áp dụng cho @',
+  AppText.txtDirectDiscountVoucher: 'Voucher Giảm Giá Trực Tiếp',
+  AppText.titleSakumi: 'Nhật Ngữ Sakumi',
+  AppText.txtVoucherNote1: '- Chỉ áp dụng tối đa 1 voucher cho 1 khoá học',
+  AppText.txtVoucherNote2: '- Không áp dụng 2 chương trình khuyến mãi cùng lúc',
+  AppText.btnCreateVoucher: 'Tạo voucher',
+  AppText.btnDownloadImage: 'Tải ảnh',
+  AppText.txtAllCourse: 'Tất Cả Khoá Học',
+  AppText.txtJLPTCourse: 'Khoá Luyện Thi JLPT',
+  AppText.txtKaiwaCourse: 'Khoá Học Giao Tiếp',
+  AppText.txtGeneralCourse: 'Khoá Học Tổng Hợp',
+  AppText.titleDiscount: 'Giá tiền giảm',
+  AppText.titleInfoVoucher: 'Thông tin voucher',
+  AppText.titleVoucherCode: 'Mã Voucher',
+  AppText.titleApplyCourse: 'Khoá học áp dụng',
+  AppText.titleExpiredDate: 'Ngày hết hạn',
+  AppText.titleManageVoucher: 'Quản lý voucher',
+  AppText.txtAssignTest: 'Giao bài',
+  AppText.txtSeeSoon: 'Xem trước',
   AppText.txtNotTeacherClass: 'Giáo viên chưa tham gia dạy lớp nào!',
   AppText.txtNotStudentClass: 'Học viên chưa tham gia lớp nào!',
   AppText.txtListStudentClass: 'DANH SÁCH LỚP CỦA HỌC VIÊN',
@@ -536,6 +579,7 @@ Map<AppText, String> texts = {
   AppText.txtClassId: 'Mã định danh lớp',
   AppText.txtCourseId: 'Mã khoá học',
   AppText.txtClassCode: 'Mã lớp',
+  AppText.txtLink: 'Link google meet',
   AppText.txtCourse: 'Khoá học',
   AppText.txtNumberOfLessons: 'Số buổi học',
   AppText.txtRateOfAttendance: 'Tỉ lệ đi học',
@@ -602,7 +646,8 @@ Map<AppText, String> texts = {
   AppText.txtNoNoteForStudent: 'Không có dặn dò dành cho học viên',
   AppText.txtNoNoteForSupport: 'Không có dặn dò dành cho Team Support',
   AppText.txtNoNoteForTeacher: 'Không có dặn dò dành cho Sensei',
-  AppText.txtHintNoteForStudent: 'Điền ghi chú của Sensei dành cho học viên...',
+  AppText.txtHintNoteForStudentSendToSP: 'Điền ghi chú của Sensei dành cho học viên...(Gửi cho Support)',
+  AppText.txtHintNoteForStudentSendToHV: 'Điền ghi chú của Sensei dành cho học viên...(Gửi cho tất cả Học viên)',
   AppText.txtHintNoteForSupport: 'Điền ghi chú dành cho Team Support...',
   AppText.txtHintNoteForTeacher: 'Điền ghi chú dành cho Sensei tiếp theo...',
   AppText.titleNoteForSenseiAfterTeach: 'Dặn dò dành cho Sensei cuối buổi học',
@@ -628,6 +673,7 @@ Map<AppText, String> texts = {
   AppText.txtErrorStartDate: 'Vui lòng chọn ngày bắt đầu trước ngày kết thúc',
   AppText.txtPleaseChooseCourse: 'Vui lòng chọn khoá học',
   AppText.txtPleaseInputClassCode: 'Vui lòng nhập mã lớp học',
+  AppText.txtPleaseInputLink: 'Vui lòng nhập link lớp học',
   AppText.txtPleaseCheckListClass:
       'Mã lớp đã tồn tại. Vui lòng kiểm tra lại danh sách lớp',
   AppText.txtPleaseCheckListUser:
@@ -720,5 +766,26 @@ String vietnameseSubText(String text){
       return "Bắt buộc lên kỳ";
     default:
       return "error";
+  }
+}
+
+String priceVND(String text){
+  if(text != null && text.length > 3){
+    int count = 0;
+    List<String> price = [];
+    do{
+      int end = text.length - 3*count;
+      int start = end - 3 < 0 ? 0 : end -3 ;
+      String temp = text.substring(start, end);
+
+      if(temp != '') {
+        price.add(temp);
+      }
+      count++;
+    }while(count <= text.length ~/ 3);
+
+    return price.reversed.join('.');
+  }else {
+    return text;
   }
 }

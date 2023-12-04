@@ -58,7 +58,7 @@ class LessonTeachingView extends StatelessWidget {
                         )),
                     NoteForTeamCard(
                       sessionCubit.isNoteStudent,
-                      hintText: AppText.txtHintNoteForStudent.text,
+                      hintText: AppText.txtHintNoteForStudentSendToHV.text,
                       noNote: AppText.txtNoNoteForStudent.text,
                       onChanged: (v) {
                         sessionCubit.inputStudent(v);

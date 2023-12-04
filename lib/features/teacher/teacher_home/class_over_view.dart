@@ -31,23 +31,26 @@ class ClassOverview extends StatelessWidget {
             style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: Resizable.font(context, 20))),
-        widgetCourse: Text(courseTitle),
+        widgetCourse: Text(courseTitle, style: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: Resizable.font(context, 16))),
         widgetLessons: Row(
           mainAxisSize: MainAxisSize.max,
-          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-                child: LinearPercentIndicator(
-              padding: EdgeInsets.zero,
-              animation: true,
-              lineHeight: Resizable.size(context, 6),
-              animationDuration: 2000,
-              percent: lessonPercent,
-              center: const SizedBox(),
-              barRadius: const Radius.circular(10000),
-              backgroundColor: greyColor.shade100,
-              progressColor: primaryColor,
-            )),
+                child: Padding(
+                    padding: EdgeInsets.only(left:Resizable.padding(context, 5)),
+                    child: LinearPercentIndicator(
+                  padding: EdgeInsets.zero,
+                  animation: true,
+                  lineHeight: Resizable.size(context, 6),
+                  animationDuration: 2000,
+                  percent: lessonPercent,
+                  center: const SizedBox(),
+                  barRadius: const Radius.circular(10000),
+                  backgroundColor: greyColor.shade100,
+                  progressColor: primaryColor,
+                ))),
             Container(
               alignment: Alignment.centerRight,
               constraints:

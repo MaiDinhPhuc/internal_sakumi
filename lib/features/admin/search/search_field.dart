@@ -7,13 +7,14 @@ class SearchField extends StatelessWidget {
   final TextEditingController txt;
   final ValueChanged<String> onChanged;
   final Widget widget;
+  final bool? isNotTypeSearch;
 
   const SearchField(this.hintText,
       {super.key,
       required this.txt,
       required this.onChanged,
       required this.suffixIcon,
-      required this.widget});
+      required this.widget, this.isNotTypeSearch = false});
 
   @override
   Widget build(BuildContext context) => TextFormField(
@@ -35,7 +36,7 @@ class SearchField extends StatelessWidget {
             horizontal: Resizable.padding(context, 20),
           ),
           constraints: BoxConstraints(maxHeight: Resizable.size(context, 40)),
-          prefixIcon: Row(
+          prefixIcon: isNotTypeSearch == true ? null : Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               widget,
@@ -54,12 +55,12 @@ class SearchField extends StatelessWidget {
               color: Colors.grey.shade900),
           errorMaxLines: 2,
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Colors.black, width: 1),
+            borderRadius: BorderRadius.circular(Resizable.size(context, 8)),
+            borderSide: BorderSide(color: Colors.black, width: Resizable.size(context, 1)),
           ),
-          border: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.black, width: 1),
-            borderRadius: BorderRadius.circular(10),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: const Color(0xffE0E0E0), width: Resizable.size(context, 1)),
+            borderRadius: BorderRadius.circular(Resizable.size(context, 8)),
           ),
           suffixIcon: suffixIcon,
         ),

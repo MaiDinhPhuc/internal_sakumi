@@ -23,11 +23,11 @@ class CollapseLessonItem extends StatelessWidget {
           style: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: Resizable.font(context, 20))),
-      name: Text(title.toUpperCase(),
+      name: Padding(padding: EdgeInsets.only(left: Resizable.padding(context, 10)),child: Text(title.toUpperCase(),
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
               fontWeight: FontWeight.w700,
-              fontSize: Resizable.font(context, 16))),
+              fontSize: Resizable.font(context, 16)))),
       sensei: Align(
         alignment: Alignment.center,
         child: Opacity(

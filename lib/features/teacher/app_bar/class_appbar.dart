@@ -95,7 +95,7 @@ class HeaderTeacher extends StatelessWidget {
                               textAlign: TextAlign.right,
                               style: TextStyle(
                                   fontWeight: FontWeight.w800,
-                                  fontSize: Resizable.font(context, 40))),
+                                  fontSize: Resizable.font(context, 36))),
                     ),
                     SizedBox(
                       width: Resizable.padding(context, 10),
