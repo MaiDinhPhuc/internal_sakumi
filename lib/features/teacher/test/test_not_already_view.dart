@@ -67,9 +67,9 @@ class TestNotAlreadyView extends StatelessWidget {
             ),
             itemBuilder: (context) => [
               PopupMenuItem(
-                onTap: () {
-                  alertTestSeeSoon(context, test);
-                  waitingDialog(context);
+                onTap: () async {
+                  await alertTestSeeSoon(context, test);
+                  //waitingDialog(context);
                 },
                 padding: EdgeInsets.zero,
                 child: Center(
@@ -82,7 +82,7 @@ class TestNotAlreadyView extends StatelessWidget {
                 PopupMenuItem(
                   onTap: () {
                     alertAssignTestView(context, onConfirm);
-                    waitingDialog(context);
+                    //waitingDialog(context);
                   },
                   padding: EdgeInsets.zero,
                   child: Center(
