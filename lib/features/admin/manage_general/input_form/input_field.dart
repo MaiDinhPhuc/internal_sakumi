@@ -4,7 +4,7 @@ import 'package:internal_sakumi/utils/resizable.dart';
 class InputField extends StatelessWidget {
   final TextEditingController controller;
   final bool isExpand;
-  final String? errorText;
+  final String? errorText, hintText;
   final Function(String)? onChange;
   final bool autoFocus, enabled;
   const InputField(
@@ -12,7 +12,7 @@ class InputField extends StatelessWidget {
       this.isExpand = false,
       this.autoFocus = true,
       this.enabled = true,
-      this.errorText,
+      this.errorText, this.hintText,
       this.onChange,
       Key? key})
       : super(key: key);
@@ -40,6 +40,7 @@ class InputField extends StatelessWidget {
         decoration: InputDecoration(
           isDense: true,
           fillColor: Colors.white,
+          hintText: hintText,
           hoverColor: Colors.transparent,
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
@@ -67,7 +68,7 @@ class InputField extends StatelessWidget {
 class InputItem extends StatelessWidget {
   final TextEditingController controller;
   final String title;
-  final String? errorText;
+  final String? errorText, hintText;
   final bool isExpand;
   final bool autoFocus, enabled;
   final Function(String)? onChange;
@@ -77,7 +78,7 @@ class InputItem extends StatelessWidget {
       this.isExpand = false,
       this.autoFocus = true,
       this.enabled = true,
-      this.errorText,
+      this.errorText, this.hintText,
       this.onChange,
       Key? key})
       : super(key: key);
@@ -85,7 +86,7 @@ class InputItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
+        padding: EdgeInsets.only(bottom: Resizable.padding(context, 5)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -98,6 +99,7 @@ class InputItem extends StatelessWidget {
               controller: controller,
               isExpand: isExpand,
               errorText: errorText,
+              hintText: hintText,
               autoFocus: autoFocus,
               onChange: onChange,
               enabled: enabled,

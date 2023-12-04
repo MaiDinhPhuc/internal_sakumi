@@ -8,10 +8,13 @@ class InputDate extends StatelessWidget {
   final String title;
   final bool isStartDate;
   final String? errorText;
-  const InputDate(
+  late bool isisVoucher;
+  final Function? onPressed;
+  InputDate(
       {required this.title,
       this.isStartDate = true,
       this.errorText,
+      this.isisVoucher = false, this.onPressed,
       Key? key})
       : super(key: key);
 
@@ -28,7 +31,10 @@ class InputDate extends StatelessWidget {
                   fontSize: Resizable.font(context, 18),
                   color: const Color(0xff757575))),
           BlocProvider(
-              create: (context) => DateTimeCubit()..selectedDate(isStartDate ? DateTimeCubit.startDay : DateTimeCubit.endDay),
+              create: (context) => DateTimeCubit()
+                ..selectedDate(isStartDate
+                    ? DateTimeCubit.startDay
+                    : DateTimeCubit.endDay),
               child: BlocBuilder<DateTimeCubit, DateTime>(
                 builder: (c, date) => Padding(
                     padding: EdgeInsets.symmetric(
@@ -63,6 +69,7 @@ class InputDate extends StatelessWidget {
                                               : DateTimeCubit.endDay = v.value;
                                           BlocProvider.of<DateTimeCubit>(c)
                                               .selectedDate(v.value);
+                                          if(onPressed != null){onPressed!();}
                                           Navigator.pop(context);
                                         },
                                         //showActionButtons: true,
@@ -96,7 +103,11 @@ class InputDate extends StatelessWidget {
                                 fontSize: Resizable.font(context, 18),
                                 fontWeight: FontWeight.w500),
                             decoration: InputDecoration(
-                              hintText: DateFormat('dd/MM/yyyy').format(date),
+                              hintText: DateFormat('dd/MM/yyyy').format(
+                                  DateTime(
+                                      date.year,
+                                      date.month + (isisVoucher ? 3 : 0),
+                                      date.day)),
                               isDense: true,
                               fillColor: Colors.white,
                               hoverColor: Colors.transparent,

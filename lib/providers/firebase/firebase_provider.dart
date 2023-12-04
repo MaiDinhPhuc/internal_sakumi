@@ -30,6 +30,7 @@ import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
+import 'package:internal_sakumi/model/voucher_model.dart';
 import 'package:internal_sakumi/providers/network_provider.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
@@ -1520,5 +1521,38 @@ class FireBaseProvider extends NetworkProvider {
         .map((e) => FeedBackModel.fromSnapshot(e))
         .toList();
     return listFeedBack;
+  }
+
+  @override
+  Future<int> getQuantityVoucher() async {
+    final list = (await FireStoreDb.instance.getListVoucher())
+        .docs
+        .map((e) => VoucherModel.fromSnapshot(e))
+        .toList();
+
+    debugPrint('==========> getQuantityVoucher ${list.length}');
+
+    return list.length;
+  }
+
+  @override
+  Future<bool> checkExistVoucher(String voucherCode) async {
+    final temp = await FireStoreDb.instance
+        .getVoucher("sakumi_voucher_$voucherCode");
+
+    if (temp.exists) {
+      return true;
+    }
+    return false;
+  }
+
+  @override
+  Future<void> addNewVoucher(VoucherModel model) async {
+    if ((await checkExistVoucher(model.voucherCode)) == false) {
+      return await FireStoreDb.instance.addVoucher(model);
+    }
+    else{
+      debugPrint('=========> duplicate voucher');
+    }
   }
 }

@@ -320,9 +320,45 @@ enum AppText {
   txtErrorDuplicateLink,
   txtErrorDuplicateVideo,
   txtDuplicateLinkOrVideo,
+  titleManageVoucher,
+  titleVoucherCode,
+  titleInfoVoucher,
+  titleApplyCourse,
+  titleExpiredDate,
+  titleDiscount,
+  txtAllCourse,
+  txtJLPTCourse,
+  txtKaiwaCourse,
+  txtGeneralCourse,
+  btnCreateVoucher,
+  btnDownloadImage,
+  txtVoucherNote1,
+  txtVoucherNote2,
+  titleSakumi,
+  txtDirectDiscountVoucher,
+  txtApplyFor,
+  txtCreateNewVoucherSuccessfully
 }
 
 Map<AppText, String> texts = {
+  AppText.txtCreateNewVoucherSuccessfully: 'Mã voucher @ đã được tạo thành công',
+  AppText.txtApplyFor: 'Áp dụng cho @',
+  AppText.txtDirectDiscountVoucher: 'Voucher Giảm Giá Trực Tiếp',
+  AppText.titleSakumi: 'Nhật Ngữ Sakumi',
+  AppText.txtVoucherNote1: '- Chỉ áp dụng tối đa 1 voucher cho 1 khoá học',
+  AppText.txtVoucherNote2: '- Không áp dụng 2 chương trình khuyến mãi cùng lúc',
+  AppText.btnCreateVoucher: 'Tạo voucher',
+  AppText.btnDownloadImage: 'Tải ảnh',
+  AppText.txtAllCourse: 'Tất Cả Khoá Học',
+  AppText.txtJLPTCourse: 'Khoá Luyện Thi JLPT',
+  AppText.txtKaiwaCourse: 'Khoá Học Giao Tiếp',
+  AppText.txtGeneralCourse: 'Khoá Học Tổng Hợp',
+  AppText.titleDiscount: 'Giá tiền giảm',
+  AppText.titleInfoVoucher: 'Thông tin voucher',
+  AppText.titleVoucherCode: 'Mã Voucher',
+  AppText.titleApplyCourse: 'Khoá học áp dụng',
+  AppText.titleExpiredDate: 'Ngày hết hạn',
+  AppText.titleManageVoucher: 'Quản lý voucher',
   AppText.txtUpdateTeacherDone: 'Cập nhật Sensei thành công!',
   AppText.txtSendReloadPassDone: 'Đã gửi mail cho học viên. Vui lòng thông báo cho học viên check mail để cập nhật mật khẩu mới!',
   AppText.txtReloadPass: 'Cập nhật mật khẩu',
@@ -712,5 +748,26 @@ String vietnameseSubText(String text){
       return "Bắt buộc lên kỳ";
     default:
       return "error";
+  }
+}
+
+String priceVND(String text){
+  if(text != null && text.length > 3){
+    int count = 0;
+    List<String> price = [];
+    do{
+      int end = text.length - 3*count;
+      int start = end - 3 < 0 ? 0 : end -3 ;
+      String temp = text.substring(start, end);
+
+      if(temp != '') {
+        price.add(temp);
+      }
+      count++;
+    }while(count <= text.length ~/ 3);
+
+    return price.reversed.join('.');
+  }else {
+    return text;
   }
 }
