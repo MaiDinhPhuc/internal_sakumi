@@ -10,9 +10,9 @@ import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
 
-void alertTestSeeSoon(BuildContext context, TestModel testModel) {
+Future<void> alertTestSeeSoon(BuildContext context, TestModel testModel) async {
   final SoundCubit questionSoundCubit = SoundCubit();
-  showDialog(
+  await showDialog(
       context: context,
       builder: (_) {
         return Dialog(

@@ -71,7 +71,7 @@ class ListTest extends StatelessWidget {
                   onConfirm: () {
                     cubit.assignmentTest(context,
                         int.parse(TextUtils.getName()), e.courseId, e.id);
-                    Navigator.of(context).pop();
+                    //Navigator.of(context).pop();
                   },
                   role: role,
                   test: e,
