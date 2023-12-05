@@ -2,17 +2,14 @@ import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/app_bar/admin_appbar.dart';
-import 'package:internal_sakumi/features/admin/search/search_field.dart';
 import 'package:internal_sakumi/features/admin/voucher/voucher_cubit.dart';
 import 'package:internal_sakumi/features/admin/voucher/voucher_form.dart';
 import 'package:internal_sakumi/features/admin/voucher/voucher_image.dart';
+import 'package:internal_sakumi/features/admin/voucher/voucher_search.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class VoucherScreen extends StatelessWidget {
-  final TextEditingController searchTextController;
-  VoucherScreen({Key? key})
-      : searchTextController = TextEditingController(),
-        super(key: key);
+  const VoucherScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,50 +36,20 @@ class VoucherScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w800,
                               )),
                         ),
-                        Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: Resizable.padding(context, 15)),
-                              child: Row(
-                                children: [
-                                  Expanded(flex: 1, child: Container()),
-                                  Expanded(
-                                      flex: 3,
-                                      child: SearchField(
-                                        AppText.txtSearch.text,
-                                        txt: searchTextController,
-                                        isNotTypeSearch: true,
-                                        suffixIcon: IconButton(
-                                            tooltip: AppText.txtSearch.text,
-                                            splashRadius:
-                                                Resizable.size(context, 10),
-                                            onPressed: () {
-                                              // voucherCubit.searchCubit
-                                              //     .search(searchTextController.text);
-                                              debugPrint(
-                                                  '==========> icon button');
-                                            },
-                                            icon: Icon(
-                                              Icons.search,
-                                              color: Colors.grey.shade600,
-                                            )),
-                                        widget: Container(),
-                                        onChanged: (String value) {
-                                          // voucherCubit.searchCubit.search(value);
-                                        },
-                                      )),
-                                  Expanded(flex: 1, child: Container()),
-                                ],
-                              ),
+                        BlocBuilder<VoucherCubit, int>(builder: (c, s) {
+                          var cubit = BlocProvider.of<VoucherCubit>(c);
+                          return Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: Resizable.padding(context, 15)),
+                            child: Row(
+                              children: [
+                                Expanded(flex: 1, child: Container()),
+                                Expanded(flex: 3, child: VoucherSearch(cubit)),
+                                Expanded(flex: 1, child: Container()),
+                              ],
                             ),
-                            // ItemSearchList(
-                            //   searchCubit: voucherCubit.searchCubit,
-                            //   type: voucherCubit.searchCubit.type,
-                            //   text: searchTextController.text,
-                            // )
-                          ],
-                        ),
+                          );
+                        }),
                         Row(
                           children: [
                             Expanded(flex: 1, child: Container()),

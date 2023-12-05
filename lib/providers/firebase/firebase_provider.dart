@@ -88,8 +88,6 @@ class FireBaseProvider extends NetworkProvider {
               context, '${Routes.admin}/searchGeneral');
         }
         if (user.role == "teacher") {
-
-
           debugPrint("============> getTeacherById 1");
           TeacherModel teacherModel =
               await FireBaseProvider.instance.getTeacherById(user.id);
@@ -416,8 +414,7 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<List<StudentLessonModel>> getStudentLessonByStdId(
       int studentId) async {
-    return (await FireStoreDb.instance
-        .getStudentLessonByStdId(studentId))
+    return (await FireStoreDb.instance.getStudentLessonByStdId(studentId))
         .docs
         .map((e) => StudentLessonModel.fromSnapshot(e))
         .toList();
@@ -1521,7 +1518,7 @@ class FireBaseProvider extends NetworkProvider {
     List<List<int>> subLists = [];
     for (int i = 0; i < ids.length; i += 10) {
       List<int> subList =
-      ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
+          ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
       subLists.add(subList);
     }
 
@@ -1535,12 +1532,15 @@ class FireBaseProvider extends NetworkProvider {
       tempX.add(
           FireStoreDb.instance.getListClassAvailableForTeacher(subLists[i]));
     }
-    List<QuerySnapshot<Map<String, dynamic>>> responses = await Future.wait(tempX);
+    List<QuerySnapshot<Map<String, dynamic>>> responses =
+        await Future.wait(tempX);
 
     temp = responses.fold(
         [],
-            (pre, res) =>
-        [...pre, ...res.docs.map((e) => ClassModel.fromSnapshot(e)).toList()]);
+        (pre, res) => [
+              ...pre,
+              ...res.docs.map((e) => ClassModel.fromSnapshot(e)).toList()
+            ]);
 
     List<ClassModel> list = [];
     for (var i in temp) {
@@ -1573,21 +1573,19 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<int> getQuantityVoucher() async {
-    final list = (await FireStoreDb.instance.getListVoucher())
+  Future<VoucherModel> getVoucherByVoucherCode(String code) async {
+    final res = (await FireStoreDb.instance.getVoucherByVoucherCode(code))
         .docs
         .map((e) => VoucherModel.fromSnapshot(e))
-        .toList();
+        .single;
 
-    debugPrint('==========> getQuantityVoucher ${list.length}');
-
-    return list.length;
+    return res;
   }
 
   @override
   Future<bool> checkExistVoucher(String voucherCode) async {
-    final temp = await FireStoreDb.instance
-        .getVoucher("sakumi_voucher_$voucherCode");
+    final temp =
+        await FireStoreDb.instance.getVoucher("sakumi_voucher_$voucherCode");
 
     if (temp.exists) {
       return true;
@@ -1599,9 +1597,27 @@ class FireBaseProvider extends NetworkProvider {
   Future<void> addNewVoucher(VoucherModel model) async {
     if ((await checkExistVoucher(model.voucherCode)) == false) {
       return await FireStoreDb.instance.addVoucher(model);
-    }
-    else{
+    } else {
       debugPrint('=========> duplicate voucher');
     }
+  }
+
+  @override
+  Future<List<VoucherModel>> searchVoucher(String text) async {
+    debugPrint('==========> search voucher000 $text');
+    final list = (await FireStoreDb.instance.getListSearchVoucher(text))
+        .docs
+        .map((e) => VoucherModel.fromSnapshot(e))
+        .toList();
+
+    debugPrint('==========> search voucher ${list.length}');
+
+    return list;
+  }
+
+  @override
+  Future<void> updateVoucher(
+      String usedUserCode, String noted, String voucherCode) async {
+    await FireStoreDb.instance.updateVoucher(usedUserCode, noted, voucherCode);
   }
 }

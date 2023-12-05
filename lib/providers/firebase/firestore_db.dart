@@ -634,7 +634,7 @@ class FireStoreDb {
       "order": model.order,
       "title": model.title,
       "vocabulary": model.vocabulary,
-      "reading":model.reading
+      "reading": model.reading
     });
     debugPrint("==========> add db for \"lessons\"");
   }
@@ -1291,8 +1291,7 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getVoucher(
-      String docs) async {
+  Future<DocumentSnapshot<Map<String, dynamic>>> getVoucher(String docs) async {
     final temp = await db.collection("voucher").doc(docs).get();
 
     debugPrint(
@@ -1301,12 +1300,25 @@ class FireStoreDb {
     return temp;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getListVoucher() async {
-    final snapshot =
-    await db.collection("voucher").get();
+  // Future<QuerySnapshot<Map<String, dynamic>>> getListVoucher() async {
+  //   final snapshot = await db.collection("voucher").get();
+  //
+  //   debugPrint(
+  //       "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListVoucher ${snapshot.size}");
+  //
+  //   return snapshot;
+  // }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getListSearchVoucher(
+      String text) async {
+    final snapshot = await db
+        .collection("voucher")
+        .where('voucher_code',
+            isGreaterThanOrEqualTo: text, isLessThanOrEqualTo: "$text\uf7ff")
+        .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListFeedBack ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListSearchVoucher ${snapshot.size}");
 
     return snapshot;
   }
@@ -1329,12 +1341,22 @@ class FireStoreDb {
     });
   }
 
-  Future<void> updateVoucher(String dateTime, String voucherCode) async {
-    await db
+  Future<QuerySnapshot<Map<String, dynamic>>> getVoucherByVoucherCode(
+      String code) async {
+    final snapshot = await db
         .collection("voucher")
-        .doc("sakumi_voucher_$voucherCode")
-        .update({
-      'used_date': dateTime,
+        .where("voucher_code", isEqualTo: code)
+        .get();
+
+    return snapshot;
+  }
+
+  Future<void> updateVoucher(
+      String usedUserCode, String noted, String voucherCode) async {
+    await db.collection("voucher").doc("sakumi_voucher_$voucherCode").update({
+      'used_date': DateFormat('dd/MM/yyyy').format(DateTime.now()),
+      'used_user_code': usedUserCode,
+      'noted': noted,
     });
   }
 }
