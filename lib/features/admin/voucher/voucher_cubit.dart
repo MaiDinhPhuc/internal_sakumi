@@ -95,11 +95,8 @@ class VoucherCubit extends Cubit<int> {
     emit(state+1);
   }
 
-  downloadVoucher(RenderRepaintBoundary boundary)async{
-    isDownload = false;
-
+  downloadVoucher(RenderRepaintBoundary boundary, BuildContext context)async{
     var image = await boundary.toImage(pixelRatio: 5);
-
     if(kIsWeb) {
       ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
       Uint8List pngBytes = byteData!.buffer.asUint8List();
@@ -113,7 +110,16 @@ class VoucherCubit extends Cubit<int> {
       anchor.click();
       anchor.remove();
     }
-    await quantityVoucher();
+
+    if(context.mounted){
+      waitingDialog(context);
+      await quantityVoucher();
+      if(context.mounted) {
+        Navigator.pop(context);
+        isDownload = false;
+      }
+    }
+
     emit(state+1);
   }
 }

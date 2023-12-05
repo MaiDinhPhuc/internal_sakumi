@@ -351,7 +351,7 @@ enum AppText {
 
 Map<AppText, String> texts = {
   AppText.txtCreateNewVoucherSuccessfully: 'Mã voucher @ đã được tạo thành công',
-  AppText.txtApplyFor: 'Áp dụng cho @',
+  AppText.txtApplyFor: 'Áp dụng cho: @',
   AppText.txtDirectDiscountVoucher: 'Voucher Giảm Giá Trực Tiếp',
   AppText.titleSakumi: 'Nhật Ngữ Sakumi',
   AppText.txtVoucherNote1: '- Chỉ áp dụng tối đa 1 voucher cho 1 khoá học',

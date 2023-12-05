@@ -8,7 +8,6 @@ import 'package:internal_sakumi/features/admin/voucher/voucher_cubit.dart';
 import 'package:internal_sakumi/model/voucher_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
-import 'package:internal_sakumi/widget/waiting_dialog.dart';
 import 'package:intl/intl.dart';
 
 class VoucherImage extends StatelessWidget {
@@ -117,7 +116,7 @@ class VoucherImage extends StatelessWidget {
                     onPressed: () async{
                       RenderRepaintBoundary boundary = _globalKey.currentContext!
                           .findRenderObject() as RenderRepaintBoundary;
-                      await cubit.downloadVoucher(boundary);
+                      await cubit.downloadVoucher(boundary, context);
                     },
                     title: AppText.btnDownloadImage.text.toUpperCase())
               ],
