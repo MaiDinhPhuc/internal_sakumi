@@ -81,7 +81,6 @@ Future<void> alertTestSeeSoon(BuildContext context, TestModel testModel) async {
                                       AppText.textCancel.text.toUpperCase(),
                                       onPressed: () {
                                     Navigator.pop(context);
-                                    Navigator.pop(context);
                                   }),
                                 ),
                               ],

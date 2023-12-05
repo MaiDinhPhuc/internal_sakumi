@@ -56,7 +56,7 @@ class TrackingItem extends StatelessWidget {
                     : condition! == -1
                         ? AppText.textNotMarked.text
                         : condition! > -1
-                            ? condition.toString()
+                            ? condition.toStringAsFixed(1)
                             : AppText.txtNotSubmit.text
                 : getAttendance(condition))
             .toUpperCase(),
