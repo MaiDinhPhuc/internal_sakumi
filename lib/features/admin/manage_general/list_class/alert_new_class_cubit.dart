@@ -71,7 +71,7 @@ class AlertNewClassCubit extends Cubit<int> {
   String findCourse(int courseId)  {
     for(var i in listCourse!){
       if(i.courseId == courseId){
-        return '${i.title} ${i.termName}';
+        return '${i.title} ${i.termName} ${i.code}';
       }
     }
     return AppText.textChooseCourse.text;

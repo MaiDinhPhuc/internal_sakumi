@@ -20,6 +20,7 @@ class FilterClassStatusMenu extends StatelessWidget {
             color: Colors.transparent,
             child: PopupMenuButton(
                 onCanceled: () {
+                  cubit.searchTextController.text = "";
                   cubit.filterClass();
                 },
                 itemBuilder: (context) => [

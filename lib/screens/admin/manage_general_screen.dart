@@ -4,16 +4,19 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/filter_class_status_menu.dart';
 import 'package:internal_sakumi/features/admin/manage_general/filter_class_type_menu.dart';
 import 'package:internal_sakumi/features/admin/manage_general/filter_course_menu.dart';
+import 'package:internal_sakumi/features/admin/manage_general/filter_level_menu.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_class/manage_general_list_class.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_teacher/manage_general_list_teacher.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_student/manage_general_list_student.dart';
+import 'package:internal_sakumi/features/admin/search/search_field.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/back_button.dart';
 import 'package:internal_sakumi/widget/title_widget.dart';
 
 class ManageGeneralScreen extends StatelessWidget {
   const ManageGeneralScreen({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,7 @@ class ManageGeneralScreen extends StatelessWidget {
             body: Padding(
           padding:
               EdgeInsets.symmetric(horizontal: Resizable.padding(context, 50)),
-          child: BlocBuilder<ManageGeneralCubit, int>(builder: (c,s){
+          child: BlocBuilder<ManageGeneralCubit, int>(builder: (c, s) {
             var cubit = BlocProvider.of<ManageGeneralCubit>(c);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,22 +34,50 @@ class ManageGeneralScreen extends StatelessWidget {
                 SizedBox(height: Resizable.size(context, 20)),
                 const CustomBackHomeButton(),
                 SizedBox(height: Resizable.size(context, 20)),
-                if(s!=-1)
+                if (s != -1)
                   Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    FilterClassTypeMenu(cubit: cubit),
-                    FilterCourseMenu(cubit: cubit),
-                    FilterClassStatusMenu(cubit:cubit)
-                  ],
-                ),
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Expanded(
+                          flex: 7,
+                          child: Padding(
+                              padding: EdgeInsets.only(
+                                  left: Resizable.padding(context, 25)),
+                              child: SearchField(
+                                AppText.txtSearch.text,
+                                txt: cubit.searchTextController,
+                                suffixIcon: IconButton(
+                                    tooltip: AppText.txtSearch.text,
+                                    onPressed: () {
+                                      cubit.search(cubit.searchTextController.text);
+                                    },
+                                    icon: Icon(
+                                      Icons.search,
+                                      color: Colors.grey.shade600,
+                                    )),
+                                widget: Container(),
+                                onChanged: (String value) {
+                                  cubit.search(value);
+                                },
+                                isNotTypeSearch: true,
+                              ))),
+                      Expanded(flex:1,child: Container()),
+                      Expanded(
+                          flex: 2, child: FilterClassTypeMenu(cubit: cubit)),
+                      Expanded(flex: 2, child: FilterCourseMenu(cubit: cubit)),
+                      Expanded(flex: 2, child: FilterLevelMenu(cubit: cubit)),
+                      Expanded(
+                          flex: 2, child: FilterClassStatusMenu(cubit: cubit))
+                    ],
+                  ),
                 SizedBox(height: Resizable.size(context, 20)),
-                if(s == -1)
+                if (s == -1)
                   const Center(
                     child: CircularProgressIndicator(),
                   ),
-                if(s!=-1)
-                  Expanded(child: Row(
+                if (s != -1)
+                  Expanded(
+                      child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
@@ -56,10 +87,9 @@ class ManageGeneralScreen extends StatelessWidget {
                                 left: Resizable.padding(context, 20)),
                             child: cubit.listClassNow == null
                                 ? Transform.scale(
-                              scale: 0.75,
-                              child:
-                              const CircularProgressIndicator(),
-                            )
+                                    scale: 0.75,
+                                    child: const CircularProgressIndicator(),
+                                  )
                                 : ManageGeneralListClass(cubit),
                           )),
                       Expanded(
@@ -69,23 +99,22 @@ class ManageGeneralScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Expanded(
                                         child: Align(
-                                          alignment: Alignment.center,
-                                          child: TitleWidget(AppText
-                                              .titleListTeacher.text
-                                              .toUpperCase()),
-                                        )),
+                                      alignment: Alignment.center,
+                                      child: TitleWidget(AppText
+                                          .titleListTeacher.text
+                                          .toUpperCase()),
+                                    )),
                                     Expanded(
                                         child: Align(
-                                          alignment: Alignment.center,
-                                          child: TitleWidget(AppText
-                                              .titleListStudent.text
-                                              .toUpperCase()),
-                                        )),
+                                      alignment: Alignment.center,
+                                      child: TitleWidget(AppText
+                                          .titleListStudent.text
+                                          .toUpperCase()),
+                                    )),
                                   ],
                                 ),
                                 Container(
@@ -97,12 +126,12 @@ class ManageGeneralScreen extends StatelessWidget {
                                           Resizable.padding(context, 5))),
                                   child: Row(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       ManageGeneralListTeacher(cubit),
                                       SizedBox(
-                                          width: Resizable.padding(
-                                              context, 10)),
+                                          width:
+                                              Resizable.padding(context, 10)),
                                       ManageGeneralListStudent(cubit)
                                     ],
                                   ),

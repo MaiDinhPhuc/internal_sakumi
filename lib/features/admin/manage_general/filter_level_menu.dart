@@ -7,8 +7,8 @@ import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'manage_general_cubit.dart';
 
-class FilterClassTypeMenu extends StatelessWidget {
-  const FilterClassTypeMenu({super.key, required this.cubit});
+class FilterLevelMenu extends StatelessWidget {
+  const FilterLevelMenu({super.key, required this.cubit});
   final ManageGeneralCubit cubit;
   @override
   Widget build(BuildContext context) {
@@ -25,20 +25,16 @@ class FilterClassTypeMenu extends StatelessWidget {
                   cubit.filterClass();
                 },
                 itemBuilder: (context) => [
-                  ...cubit.listClassTypeMenu.map((e) => PopupMenuItem(
+                  ...cubit.listLevelMenu.map((e) => PopupMenuItem(
                       padding: EdgeInsets.zero,
-                      child: BlocProvider(create: (c)=>CheckBoxFilterCubit(cubit.listClassType[cubit.listClassTypeMenu.indexOf(e)]),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
+                      child: BlocProvider(create: (c)=>CheckBoxFilterCubit(cubit.levelFilter[cubit.listLevelMenu.indexOf(e)]),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
                         return CheckboxListTile(
                           controlAffinity: ListTileControlAffinity.leading,
                           title: Text(e),
                           value: state,
                           onChanged: (newValue) {
-                            cubit.listClassType[cubit.listClassTypeMenu.indexOf(e)] = newValue!;
-                            if(cubit.listClassType.every((element) => element == false)){
-                              cubit.listClassType[cubit.listClassTypeMenu.indexOf(e)] = !newValue;
-                            }else{
-                              BlocProvider.of<CheckBoxFilterCubit>(cc).update();
-                            }
+                            cubit.levelFilter[cubit.listLevelMenu.indexOf(e)] = newValue!;
+                            BlocProvider.of<CheckBoxFilterCubit>(cc).update();
                           },
                         );
                       }))
@@ -64,7 +60,7 @@ class FilterClassTypeMenu extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Expanded(child: Center(
-                          child: Text(AppText.txtClassType.text,
+                          child: Text(AppText.txtLevel.text,
                               style: TextStyle(
                                   fontSize: Resizable.font(context, 18),
                                   fontWeight: FontWeight.w500))

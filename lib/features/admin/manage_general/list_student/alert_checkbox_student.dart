@@ -4,6 +4,7 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_student/alert_add_student_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
+import 'package:internal_sakumi/features/admin/search/search_field.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
@@ -51,78 +52,24 @@ void alertCheckBoxStudent(
                                                   Resizable.font(context, 20)),
                                         ),
                                       ),
-                                      Container(
-                                        alignment: Alignment.topLeft,
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal:
-                                            Resizable.padding(context, 20),
-                                            vertical:
-                                            Resizable.padding(context, 10)),
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                  color: Colors.grey,
-                                                  blurRadius: Resizable.padding(
-                                                      context, 2),
-                                                  offset: Offset(
-                                                      0,
-                                                      Resizable.size(
-                                                          context, 1)))
-                                            ]),
-                                        child: Card(
-                                          elevation: 5,
-                                          shadowColor: primaryColor.withAlpha(100),
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(100),
-                                              side: const BorderSide(color: primaryColor, width: 1)),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Container(
-                                                width: 320,
-                                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                                child: TextFormField(
-                                                  onChanged: (value){
-                                                    cubit.search(value, manageGeneralCubit);
-                                                  },
-                                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                                                  decoration:  InputDecoration(
-                                                    focusedBorder: InputBorder.none,
-                                                    border: InputBorder.none,
-                                                    disabledBorder: InputBorder.none,
-                                                    enabledBorder: InputBorder.none,
-                                                    errorBorder: InputBorder.none,
-                                                    focusedErrorBorder: InputBorder.none,
-                                                    hintText: AppText.txtSearch.text,
-                                                    hintStyle: const TextStyle(
-                                                      color: Color(0xff9a9a9a),
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Material(
-                                                color: primaryColor,
-                                                borderRadius:
-                                                const BorderRadius.horizontal(right: Radius.circular(100)),
-                                                child: InkWell(
-                                                    borderRadius:
-                                                    const BorderRadius.horizontal(right: Radius.circular(100)),
-                                                    onTap: () {},
-                                                    child: const Padding(
-                                                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-                                                      child: Icon(
-                                                        Icons.search,
-                                                        color: Colors.white,
-                                                        size: 30,
-                                                      ),
-                                                    )),
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      ),
+                                      Padding(padding:EdgeInsets.symmetric(horizontal: Resizable.padding(context, 20)),child: SearchField(
+                                        AppText.txtSearch.text,
+                                        txt: cubit.searchTextController,
+                                        suffixIcon: IconButton(
+                                            tooltip: AppText.txtSearch.text,
+                                            onPressed: () {
+                                              cubit.search(cubit.searchTextController.text, manageGeneralCubit);
+                                            },
+                                            icon: Icon(
+                                              Icons.search,
+                                              color: Colors.grey.shade600,
+                                            )),
+                                        widget: Container(),
+                                        onChanged: (String value) {
+                                          cubit.search(value, manageGeneralCubit);
+                                        },
+                                        isNotTypeSearch: true,
+                                      )),
                                       Expanded(
                                           child: SingleChildScrollView(
                                         child: Padding(

@@ -56,16 +56,17 @@ class VoucherInfoView extends StatelessWidget {
                               text: cubit.priceVoucher,
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontWeight: FontWeight.w700,
+                                  fontWeight: FontWeight.w800,
                                   fontSize: Resizable.font(context, 76))),
                           TextSpan(
                               text: 'đ',
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontWeight: FontWeight.w700,
+                                  fontWeight: FontWeight.w800,
                                   fontSize: Resizable.font(context, 43)))
                         ])),
                     Container(
+                      // margin: EdgeInsets.only(top: Resizable.padding(context, 3)),
                       height: Resizable.size(context, 3),
                       decoration: BoxDecoration(
                           color: primaryColor,
@@ -80,7 +81,7 @@ class VoucherInfoView extends StatelessWidget {
                           bottom: Resizable.padding(context, 5)),
                       child: Text(
                           AppText.txtApplyFor.text
-                              .replaceAll('@', cubit.courseVoucher),
+                              .replaceAll('@', cubit.courseVoucher.toUpperCase()),
                           style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: Resizable.font(context, 17),
@@ -90,11 +91,11 @@ class VoucherInfoView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(AppText.txtVoucherNote1.text,
-                            style: TextStyle(
-                                fontSize: Resizable.font(context, 13))),
+                            style: TextStyle(fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 14))),
                         Text(AppText.txtVoucherNote2.text,
-                            style: TextStyle(
-                                fontSize: Resizable.font(context, 13))),
+                            style: TextStyle(fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 14))),
                       ],
                     )
                   ],
@@ -121,7 +122,7 @@ class VoucherInfoView extends StatelessWidget {
                                 Resizable.size(context, 10))),
                         child: cubit.qrCode == '' ? Transform.scale(
                           scale: 0.2,
-                          child: const CircularProgressIndicator(),
+                          child: CircularProgressIndicator(strokeWidth: Resizable.size(context, 15),),
                         ) : Container(
                           padding: EdgeInsets.all(Resizable.padding(context, 10)),
                           color: Colors.white,
@@ -150,8 +151,8 @@ class VoucherInfoView extends StatelessWidget {
                                 text: '${AppText.titleExpiredDate.text}: ',
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: Resizable.font(context, 13))),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: Resizable.font(context, 14))),
                             TextSpan(
                                 text: DateFormat('dd/MM/yyyy').format(DateTime(
                                   cubit.expiredDate.year,
@@ -161,8 +162,8 @@ class VoucherInfoView extends StatelessWidget {
                                 )),
                                 style: TextStyle(
                                     color: primaryColor,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: Resizable.font(context, 13)))
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: Resizable.font(context, 14)))
                           ]))
                     ],
                   ),
