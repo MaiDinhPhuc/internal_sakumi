@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
@@ -35,6 +36,8 @@ class TeacherInfoCubit extends Cubit<int> {
   String note = "";
 
   loadStudent(int teacherId) async {
+    debugPrint("============> getTeacherById 2");
+
     teacher = await FireBaseProvider.instance.getTeacherById(teacherId);
     user = await FireBaseProvider.instance.getUserById(teacherId);
     name = teacher!.name;

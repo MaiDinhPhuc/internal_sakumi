@@ -68,6 +68,7 @@ class DataCubit extends Cubit<int> {
       loadClassForTeacherRole(userId);
     } else {
       loadClassForAdminRole();
+      searchCubit.load();
     }
 
     debugPrint("======================> loadClass");

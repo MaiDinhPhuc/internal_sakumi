@@ -8,9 +8,11 @@ import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class SearchCubit extends Cubit<int>{
   SearchCubit():super(0){
-    load();
+    // load();
   }
 
+
+  // load();
   String type = AppText.txtClass.text;
 
 

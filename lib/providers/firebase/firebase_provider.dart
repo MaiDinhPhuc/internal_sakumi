@@ -88,6 +88,9 @@ class FireBaseProvider extends NetworkProvider {
               context, '${Routes.admin}/searchGeneral');
         }
         if (user.role == "teacher") {
+
+
+          debugPrint("============> getTeacherById 1");
           TeacherModel teacherModel =
               await FireBaseProvider.instance.getTeacherById(user.id);
           sharedPreferences.setString(
@@ -1518,19 +1521,27 @@ class FireBaseProvider extends NetworkProvider {
     List<List<int>> subLists = [];
     for (int i = 0; i < ids.length; i += 10) {
       List<int> subList =
-          ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
+      ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
       subLists.add(subList);
     }
 
     List<ClassModel> temp = [];
+
+    //
+    List<Future<QuerySnapshot<Map<String, dynamic>>>> tempX = [];
+
     for (int i = 0; i < subLists.length; i++) {
-      temp = temp +
-          (await FireStoreDb.instance
-                  .getListClassAvailableForTeacher(subLists[i]))
-              .docs
-              .map((e) => ClassModel.fromSnapshot(e))
-              .toList();
+      // temp = temp +
+      tempX.add(
+          FireStoreDb.instance.getListClassAvailableForTeacher(subLists[i]));
     }
+    List<QuerySnapshot<Map<String, dynamic>>> responses = await Future.wait(tempX);
+
+    temp = responses.fold(
+        [],
+            (pre, res) =>
+        [...pre, ...res.docs.map((e) => ClassModel.fromSnapshot(e)).toList()]);
+
     List<ClassModel> list = [];
     for (var i in temp) {
       if (i.classStatus == "InProgress" ||
