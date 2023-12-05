@@ -4,13 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
-import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -51,11 +49,23 @@ class TestCubit extends Cubit<int> {
       List<StudentTestModel> listStdTest = model.stdTests!
           .where((element) => element.classId == model.classModel.classId)
           .toList();
+      List<StudentClassModel> listStudentClass = model.stdClasses!;
+      List<int> listStudentIds = [];
+      for (var element in listStudentClass) {
+        if (element.classStatus != "Remove" &&
+            element.classStatus != "Moved" &&
+            element.classStatus != "Retained" &&
+            element.classStatus != "Dropped" &&
+            element.classStatus != "Deposit" &&
+            element.classStatus != "Viewer") {
+          listStudentIds.add(element.userId);
+        }
+      }
       List<List<StudentTestModel>> listTestState = [];
       listStatus = [];
       for (var i in listTestIds) {
         List<StudentTestModel> listTemp =
-            listStdTest.where((element) => element.testID == i).toList();
+            listStdTest.where((element) => element.testID == i && listStudentIds.contains(element.studentId)).toList();
         listTestState.add(listTemp);
         bool? status;
         if (listTemp.isEmpty) {
@@ -86,18 +96,7 @@ class TestCubit extends Cubit<int> {
         }
         listStatus!.add(status);
       }
-      List<StudentClassModel> listStudentClass = model.stdClasses!;
-      List<int> listStudentIds = [];
-      for (var element in listStudentClass) {
-        if (element.classStatus != "Remove" &&
-            element.classStatus != "Moved" &&
-            element.classStatus != "Retained" &&
-            element.classStatus != "Dropped" &&
-            element.classStatus != "Deposit" &&
-            element.classStatus != "Viewer") {
-          listStudentIds.add(element.userId);
-        }
-      }
+
 
       List<StudentModel> listStudents = model.students!.where((e) => listStudentIds.contains(e.userId)).toList();
 

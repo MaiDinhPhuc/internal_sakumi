@@ -21,18 +21,19 @@ class FilterCourseMenu extends StatelessWidget {
             color: Colors.transparent,
             child: PopupMenuButton(
                 onCanceled: (){
+                  cubit.searchTextController.text = "";
                   cubit.filterClass();
                 },
                 itemBuilder: (context) => [
-                  ...cubit.listAllCourse!.map((e) => PopupMenuItem(
+                  ...cubit.listCourseTypeMenuAdmin.map((e) => PopupMenuItem(
                       padding: EdgeInsets.zero,
-                      child: BlocProvider(create: (c)=>CheckBoxFilterCubit(cubit.listStateCourse[cubit.listAllCourse!.indexOf(e)]),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
+                      child: BlocProvider(create: (c)=>CheckBoxFilterCubit(cubit.listCourseTypeFilter[cubit.listCourseTypeMenuAdmin.indexOf(e)]),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
                         return CheckboxListTile(
                           controlAffinity: ListTileControlAffinity.leading,
-                          title: Text("${e.title} - ${e.termName} - ${e.code}"),
+                          title: Text(e),
                           value: state,
                           onChanged: (newValue) {
-                            cubit.listStateCourse[cubit.listAllCourse!.indexOf(e)] = newValue!;
+                            cubit.listCourseTypeFilter[cubit.listCourseTypeMenuAdmin.indexOf(e)] = newValue!;
                             BlocProvider.of<CheckBoxFilterCubit>(cc).update();
                           },
                         );

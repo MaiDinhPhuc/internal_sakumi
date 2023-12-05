@@ -1,5 +1,4 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
@@ -19,10 +18,22 @@ class ManageGeneralCubit extends Cubit<int> {
   List<StudentClassModel>? listStudentClass;
   List<CourseModel>? listAllCourse;
   int selector = -1;
-  List<bool> listStateCourse = [];
+  //List<bool> listStateCourse = [];
+  final TextEditingController searchTextController = TextEditingController();
   List<bool> listStateClassStatus = [true, true, false, false];
   List<bool> listClassType = [true, true];
   bool canAdd = true;
+
+  List<bool> listCourseTypeFilter = [false, false, false, false, false];
+  List<String> listCourseTypeMenuAdmin = [
+    "GENERAL",
+    "KAIWA",
+    "JLPT",
+    "KID",
+    "1VS1"
+  ];
+  List<bool> levelFilter = [false, false, false, false, false];
+  List<String> listLevelMenu = ["N5", "N4", "N3", "N2", "N1"];
 
   List<String> listTeacherClassStatus = ["InProgress","Remove"];
 
@@ -56,47 +67,16 @@ class ManageGeneralCubit extends Cubit<int> {
 
   loadAllClass() async {
     final List<ClassModel> list = await FireBaseProvider.instance.getListClassNotRemove();
-    listAllCourse = await FireBaseProvider.instance.getAllCourseEnable();
-    List<int> courseIdsTemp = [];
-    for(var i in listAllCourse!){
-      courseIdsTemp.add(i.courseId);
-    }
-    List<ClassModel> listClassEnable = [];
-    for(var i in list){
-      if(courseIdsTemp.contains(i.courseId)){
-        listClassEnable.add(i);
-      }
-    }
-    listAllClass = listClassEnable;
-    listClassNow = listAllClass;
-    for (int i = 0; i < listAllCourse!.length; i++) {
-      listStateCourse.add(false);
-    }
+    listAllCourse = await FireBaseProvider.instance.getAllCourse();
+    listAllClass = list;
     filterClass();
     emit(listAllClass!.first.classId);
   }
 
   loadAfterAddClass(int index) async {
-    // listAllClass = await FireBaseProvider.instance.getListClassNotRemove();
-    // listAllCourse = await FireBaseProvider.instance.getAllCourseEnable();
     final List<ClassModel> list = await FireBaseProvider.instance.getListClassNotRemove();
-    listAllCourse = await FireBaseProvider.instance.getAllCourseEnable();
-    List<int> courseIdsTemp = [];
-    for(var i in listAllCourse!){
-      courseIdsTemp.add(i.courseId);
-    }
-    List<ClassModel> listClassEnable = [];
-    for(var i in list){
-      if(courseIdsTemp.contains(i.courseId)){
-        listClassEnable.add(i);
-      }
-    }
-    listAllClass = listClassEnable;
-    listClassNow = listAllClass;
-    for (int i = 0; i < listAllCourse!.length; i++) {
-      listStateCourse.add(false);
-    }
-    listClassNow = listAllClass;
+    listAllClass = list;
+    filterClass();
     selector = index;
     canAdd = true;
     emit(selector);
@@ -106,19 +86,7 @@ class ManageGeneralCubit extends Cubit<int> {
 
   loadAfterChangeClassStatus() async {
     final List<ClassModel> list = await FireBaseProvider.instance.getListClassNotRemove();
-    listAllCourse = await FireBaseProvider.instance.getAllCourseEnable();
-    List<int> courseIdsTemp = [];
-    for(var i in listAllCourse!){
-      courseIdsTemp.add(i.courseId);
-    }
-    List<ClassModel> listClassEnable = [];
-    for(var i in list){
-      if(courseIdsTemp.contains(i.courseId)){
-        listClassEnable.add(i);
-      }
-    }
-    listAllClass = listClassEnable;
-    listClassNow = listAllClass;
+    listAllClass = list;
     filterClass();
     emit(state + 2);
   }
@@ -132,60 +100,46 @@ class ManageGeneralCubit extends Cubit<int> {
   }
 
   filterClass() {
-    listClassNow = [];
+    var list1 = [];
+    var list2 = [];
+    var list3 = [];
+    var list4 = [];
 
-    List<int> listCourseNow = [];
-    if (listStateCourse.every((element) => element == false)) {
-      for (int i = 0; i < listStateCourse.length; i++) {
-        listCourseNow.add(listAllCourse![i].courseId);
-      }
-    } else {
-      for (int i = 0; i < listStateCourse.length; i++) {
-        if (listStateCourse[i] == true) {
-          listCourseNow.add(listAllCourse![i].courseId);
-        }
+    for (int i = 0; i < listClassType.length; i++) {
+      if (listClassType[i] == true) {
+        list1.add(i);
       }
     }
-    List<String> listCLassStatus = [];
+
+    for (int i = 0; i < listCourseTypeFilter.length; i++) {
+      if (listCourseTypeFilter[i] == true) {
+        list2.add(listCourseTypeMenuAdmin[i]);
+      }
+    }
+
     for (int i = 0; i < listStateClassStatus.length; i++) {
       if (listStateClassStatus[i] == true) {
-        listCLassStatus.add(listClassStatusMenu[i]);
+        list3.add(listClassStatusMenu[i]);
       }
     }
 
-    List<ClassModel> listTemp1 = [];
-
-    for (var i in listAllClass!) {
-      for (var j in listCourseNow) {
-        if (i.courseId == j) {
-          listTemp1.add(i);
-          break;
-        }
-      }
-    }
-    List<ClassModel> listTemp2 = [];
-    for (var i in listTemp1) {
-      for (var j in listCLassStatus) {
-        if (i.classStatus == j) {
-          listTemp2.add(i);
-        }
-      }
-    }
-    List<int> listType = [];
-    if (listClassType[0] == true) {
-      listType.add(0);
-    }
-    if (listClassType[1] == true) {
-      listType.add(1);
-    }
-    for (var i in listTemp2) {
-      for (var j in listType) {
-        if (i.classType == j) {
-          listClassNow!.add(i);
-        }
+    for (int i = 0; i < levelFilter.length; i++) {
+      if (levelFilter[i] == true) {
+        list4.add(listLevelMenu[i]);
       }
     }
 
+    listClassNow = listAllClass!
+        .where((e) =>
+    list3.contains(e.classStatus) &&
+        list1.contains(e.classType) &&
+        (list2.isEmpty
+            ? true
+            : list2.contains(getCourseOfClass(e.courseId).type.toUpperCase())) &&
+        (list4.isEmpty
+            ? true
+            : list4.contains(getCourseOfClass(e.courseId).level.toUpperCase())))
+        .toList();
     bool change = true;
     for (var i in listClassNow!) {
       if (i.classId == selector) {
@@ -201,6 +155,20 @@ class ManageGeneralCubit extends Cubit<int> {
     }
 
     emit(state + 2);
+  }
+
+  search(String value){
+    if(value == ""){
+      filterClass();
+      emit(state+1);
+    }else{
+      listClassNow = listAllClass!.where((e) => e.classCode.toUpperCase().contains(value.toUpperCase())).toList();
+      emit(state+1);
+    }
+  }
+
+  CourseModel getCourseOfClass(int courseId){
+    return listAllCourse!.firstWhere((e) => e.courseId == courseId);
   }
 
   loadTeacherInClass(int selector) async {

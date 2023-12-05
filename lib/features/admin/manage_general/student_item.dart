@@ -41,13 +41,13 @@ class StudentItem extends StatelessWidget {
                   Text("${student.name} ${student.studentCode}",
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
-                          fontSize: Resizable.font(context, 20),
+                          fontSize: Resizable.font(context, 16),
                           color: Colors.black)),
                   SizedBox(height: Resizable.padding(context, 3)),
                   Text(student.phone,
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
-                          fontSize: Resizable.font(context, 15),
+                          fontSize: Resizable.font(context, 13),
                           color: const Color(0xff757575)))
                 ],
               ),
