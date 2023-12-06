@@ -1461,4 +1461,5 @@ class FireBaseProvider extends NetworkProvider {
       String usedUserCode, String noted, String voucherCode, String date) async {
     await FireStoreDb.instance.updateVoucher(usedUserCode, noted, voucherCode, date);
   }
+
 }
