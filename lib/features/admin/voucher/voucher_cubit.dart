@@ -41,6 +41,8 @@ class VoucherCubit extends Cubit<int> {
 
   String status = AppText.txtNew.text;
 
+  String initialValue = '';
+
   buildUI() {
     isVoucher = false;
     emit(state + 1);
@@ -146,10 +148,16 @@ class VoucherCubit extends Cubit<int> {
   showInfoVoucher(String code) async {
     voucherModel =
         await FireBaseProvider.instance.getVoucherByVoucherCode(code);
+    initialValue = voucherModel!.noted;
   }
 
-  updateVoucher(String usedUserCode, String noted, String voucherCode) async {
+  updateVoucher(String usedUserCode, String noted, String voucherCode, String date) async {
     await FireBaseProvider.instance
-        .updateVoucher(usedUserCode, noted, voucherCode);
+        .updateVoucher(usedUserCode, noted, voucherCode, date);
+  }
+
+  updateNote(String v){
+    initialValue = v;
+    emit(state+1);
   }
 }

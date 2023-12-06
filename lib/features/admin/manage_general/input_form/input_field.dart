@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class InputField extends StatelessWidget {
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final bool isExpand;
-  final String? errorText, hintText;
+  final String? errorText, hintText, initialValue;
   final Function(String)? onChange;
   final bool autoFocus, enabled;
   const InputField(
@@ -12,7 +12,7 @@ class InputField extends StatelessWidget {
       this.isExpand = false,
       this.autoFocus = true,
       this.enabled = true,
-      this.errorText, this.hintText,
+      this.errorText, this.hintText, this.initialValue,
       this.onChange,
       Key? key})
       : super(key: key);
@@ -25,8 +25,8 @@ class InputField extends StatelessWidget {
         enabled: enabled,
         validator: (value) {
           if ((value == null ||
-                  controller.text.isEmpty ||
-                  controller.text == null) &&
+                  ((controller!.text.isEmpty ||
+                  controller!.text == null) && controller != null)) &&
               !isExpand) {
             return errorText;
           }
@@ -36,7 +36,7 @@ class InputField extends StatelessWidget {
             fontSize: Resizable.font(context, 18), fontWeight: FontWeight.w500),
         controller: controller,
         autofocus: autoFocus,
-        //initialValue: '',
+        initialValue: initialValue,
         decoration: InputDecoration(
           isDense: true,
           fillColor: Colors.white,
@@ -66,9 +66,9 @@ class InputField extends StatelessWidget {
 }
 
 class InputItem extends StatelessWidget {
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final String title;
-  final String? errorText, hintText;
+  final String? errorText, hintText, initialValue;
   final bool isExpand;
   final bool autoFocus, enabled;
   final Function(String)? onChange;
@@ -78,7 +78,7 @@ class InputItem extends StatelessWidget {
       this.isExpand = false,
       this.autoFocus = true,
       this.enabled = true,
-      this.errorText, this.hintText,
+      this.errorText, this.hintText, this.initialValue,
       this.onChange,
       Key? key})
       : super(key: key);
@@ -97,6 +97,7 @@ class InputItem extends StatelessWidget {
                     color: const Color(0xff757575))),
             InputField(
               controller: controller,
+              initialValue: initialValue,
               isExpand: isExpand,
               errorText: errorText,
               hintText: hintText,
