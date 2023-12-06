@@ -346,10 +346,16 @@ enum AppText {
   txtNotStudentClass,
   txtNotTeacherClass,
   txtSeeSoon,
-  txtAssignTest
+  txtAssignTest,
+  txtNew,
+  txtUsed,
+  txtRecipientCode,
 }
 
 Map<AppText, String> texts = {
+  AppText.txtRecipientCode: 'Mã người nhận',
+  AppText.txtNew: 'Mới',
+  AppText.txtUsed: 'Đã sử dụng',
   AppText.txtCreateNewVoucherSuccessfully: 'Mã voucher @ đã được tạo thành công',
   AppText.txtApplyFor: 'Áp dụng cho: @',
   AppText.txtDirectDiscountVoucher: 'Voucher Giảm Giá Trực Tiếp',

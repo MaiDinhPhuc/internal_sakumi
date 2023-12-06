@@ -1291,12 +1291,17 @@ class FireStoreDb {
     return temp;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getListVoucher() async {
-    final snapshot = await db.collection("voucher").get();
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getListSearchVoucher(
+      String text) async {
+    final snapshot = await db
+        .collection("voucher")
+        .where('voucher_code',
+            isGreaterThanOrEqualTo: text, isLessThanOrEqualTo: "$text\uf7ff")
+        .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListVoucher ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
-
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListSearchVoucher ${snapshot.size}");
     return snapshot;
   }
 
@@ -1318,9 +1323,22 @@ class FireStoreDb {
     });
   }
 
-  Future<void> updateVoucher(String dateTime, String voucherCode) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getVoucherByVoucherCode(
+      String code) async {
+    final snapshot = await db
+        .collection("voucher")
+        .where("voucher_code", isEqualTo: code)
+        .get();
+
+    return snapshot;
+  }
+
+  Future<void> updateVoucher(
+      String usedUserCode, String noted, String voucherCode, String dateTime) async {
     await db.collection("voucher").doc("sakumi_voucher_$voucherCode").update({
       'used_date': dateTime,
+      'used_user_code': usedUserCode,
+      'noted': noted,
     });
   }
 }

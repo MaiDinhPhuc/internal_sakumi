@@ -31,9 +31,17 @@ class VoucherCubit extends Cubit<int> {
 
   String createDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
 
-  String characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+  String characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
   int numVoucher = 0;
+
+  List<VoucherModel> listSearch = [];
+
+  VoucherModel? voucherModel;
+
+  String status = AppText.txtNew.text;
+
+  String initialValue = '';
 
   buildUI() {
     isVoucher = false;
@@ -50,17 +58,21 @@ class VoucherCubit extends Cubit<int> {
     emit(state + 1);
   }
 
+  selectStatus(String sts) {
+    status = sts;
+    emit(state + 1);
+  }
+
   randomQR() async {
     String randomString = String.fromCharCodes(Iterable.generate(
-        10, (_) => characters.codeUnitAt(Random().nextInt(characters.length))));
+        5, (_) => characters.codeUnitAt(Random().nextInt(characters.length))));
 
-    numVoucher = await FireBaseProvider.instance.getQuantityVoucher() + 1;
+    // String num = numVoucher
+    //     .toString()
+    //     .padLeft(6, '0');
+    numVoucher = DateTime.now().millisecondsSinceEpoch;
 
-    String num = numVoucher
-        .toString()
-        .padLeft(6, '0');
-
-    return 'VC$randomString$num';
+    return 'VC$randomString$numVoucher';
   }
 
   quantityVoucher() async {
@@ -92,17 +104,17 @@ class VoucherCubit extends Cubit<int> {
       isDownload = true;
     }
 
-    emit(state+1);
+    emit(state + 1);
   }
 
-  downloadVoucher(RenderRepaintBoundary boundary, BuildContext context)async{
+  downloadVoucher(RenderRepaintBoundary boundary, BuildContext context) async {
     var image = await boundary.toImage(pixelRatio: 5);
-    if(kIsWeb) {
+    if (kIsWeb) {
       ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
       Uint8List pngBytes = byteData!.buffer.asUint8List();
       final base64 = base64Encode(pngBytes);
-      final anchor =
-      html.AnchorElement(href: 'data:application/octet-stream;base64,$base64')
+      final anchor = html.AnchorElement(
+          href: 'data:application/octet-stream;base64,$base64')
         ..download = "$qrCode.png"
         ..target = 'blank';
 
@@ -111,15 +123,41 @@ class VoucherCubit extends Cubit<int> {
       anchor.remove();
     }
 
-    if(context.mounted){
+    if (context.mounted) {
       waitingDialog(context);
       await quantityVoucher();
-      if(context.mounted) {
+      if (context.mounted) {
         Navigator.pop(context);
         isDownload = false;
       }
     }
 
+    emit(state + 1);
+  }
+
+  searchVoucher(String text) async {
+    int temp = listSearch.length;
+    if (text == null || text.isEmpty) {
+      listSearch.removeRange(0, temp);
+    } else {
+      listSearch = await FireBaseProvider.instance.searchVoucher(text);
+    }
+    emit(state + 1);
+  }
+
+  showInfoVoucher(String code) async {
+    voucherModel =
+        await FireBaseProvider.instance.getVoucherByVoucherCode(code);
+    initialValue = voucherModel!.noted;
+  }
+
+  updateVoucher(String usedUserCode, String noted, String voucherCode, String date) async {
+    await FireBaseProvider.instance
+        .updateVoucher(usedUserCode, noted, voucherCode, date);
+  }
+
+  updateNote(String v){
+    initialValue = v;
     emit(state+1);
   }
 }
