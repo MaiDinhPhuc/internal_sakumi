@@ -65,6 +65,8 @@ class DataCubit extends Cubit<int> {
     SharedPreferences localData = await SharedPreferences.getInstance();
     var userId = localData.getInt(PrefKeyConfigs.userId);
 
+    var role = localData.getString(PrefKeyConfigs.role);
+
     if (userId == null || userId == -1) return;
 
     if(userId != -1){
@@ -73,14 +75,19 @@ class DataCubit extends Cubit<int> {
 
     if(int.tryParse(TextUtils.getName()) != null) return;
 
-    if(classNow != null) return;
+    if(classNow != null) {
+      if(role == "teacher"){
+        filterInTeacher();
+      }else{
+        filterInAdmin();
+      }
+      return;
+    }
 
 
-    var user = await FireBaseProvider.instance.getUserById(userId);
+    if (role == 'master') return;
 
-    if (user.role == 'master') return;
-
-    if (user.role == 'teacher') {
+    if (role == 'teacher') {
       loadClassForTeacherRole(userId);
     } else {
       loadClassForAdminRole();
@@ -148,7 +155,6 @@ class DataCubit extends Cubit<int> {
   }
 
   loadLessonInfoOfClass(ClassModel classModel) async {
-    print("===========>load 1");
     var lessons = await FireBaseProvider.instance
         .getLessonsByCourseId(classModel.courseId);
     var stdClasses = await FireBaseProvider.instance

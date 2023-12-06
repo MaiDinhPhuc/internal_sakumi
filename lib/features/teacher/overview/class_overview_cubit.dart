@@ -55,13 +55,10 @@ class ClassOverviewCubit extends Cubit<int> {
 
 
   loadFirst(int classId, DataCubit dataCubit) async {
-    print("============>load overview 1");
     var temp = dataCubit.classes.where((e) => e.classModel.classId == classId).toList();
     if(temp.isEmpty){
       dataCubit.loadMoreClass(classId);
-      print("============>load overview 2");
     }else{
-      print("============>load overview 3");
       var classModel2 = temp.first;
       if(classModel2.stdLessons == null){
         classModel = classModel2.classModel;
