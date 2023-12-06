@@ -18,7 +18,6 @@ class TeacherScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var dataController = BlocProvider.of<DataCubit>(context)..loadClass();
-    print("================>TeacherScreen");
     final shimmerList = List.generate(5, (index) => index);
     return Scaffold(
         body: Column(

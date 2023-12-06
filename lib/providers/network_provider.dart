@@ -196,7 +196,7 @@ abstract class NetworkProvider {
   Future<void> updateCourseInfo(CourseModel courseModel);
 
   Future<bool> checkExistVoucher(String voucherCode);
-  
+
 
   Future<void> addNewVoucher(VoucherModel model);
 
