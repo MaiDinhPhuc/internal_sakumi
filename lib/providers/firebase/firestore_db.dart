@@ -41,19 +41,6 @@ class FireStoreDb {
     }
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getTeacherByTeacherCode(
-      String teacherCode) async {
-    final snapshot = await db
-        .collection("teacher")
-        .where("teacher_code", isEqualTo: teacherCode)
-        .get();
-    debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTeacherByTeacherCode $teacherCode ${snapshot.size}");
-
-    // debugPrint("==========>get db from \"teacher\" : ${snapshot.docs.length}");
-
-    return snapshot;
-  }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getTeacherById(int id) async {
     final snapshot =
@@ -75,7 +62,7 @@ class FireStoreDb {
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTeacherClassById $id ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTeacherClassById $id ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     // debugPrint("==========>get db from \"teacher_class\" : ${snapshot.docs.length}");
 
@@ -88,7 +75,7 @@ class FireStoreDb {
         await db.collection("lessons").where('course_id', isEqualTo: id).get();
     // debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsByCourseId $id ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsByCourseId $id ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -101,7 +88,7 @@ class FireStoreDb {
         .get();
     // debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListTeacherByListId $teacherIds ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListTeacherByListId $teacherIds ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -112,7 +99,7 @@ class FireStoreDb {
     // debugPrint("==========>get db from \"class\" : ${snapshot.docs.length}");
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getClassById $id ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getClassById $id ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -123,7 +110,7 @@ class FireStoreDb {
     // debugPrint("==========>get db from \"class\" : ${snapshot.docs.length}");
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllCourseEnable ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllCourseEnable ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -133,7 +120,7 @@ class FireStoreDb {
         await db.collection("courses").where("course_id", isEqualTo: id).get();
     // debugPrint("==========>get db from \"courses\" : ${snapshot.docs.length}");
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCourseById $id ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCourseById $id ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -159,7 +146,7 @@ class FireStoreDb {
     // debugPrint("==========>get db from \"courses\" : ${snapshot.docs.length}");
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsResultsByListClassIds $ids ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsResultsByListClassIds $ids ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -172,7 +159,7 @@ class FireStoreDb {
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonResultByClassId $id ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonResultByClassId $id ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     // debugPrint("==========>get db from \"lesson_result\" : ${snapshot.docs.length}");
 
@@ -188,7 +175,7 @@ class FireStoreDb {
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentLessonInLesson $classId $lessonId ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentLessonInLesson $classId $lessonId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
 
@@ -203,7 +190,7 @@ class FireStoreDb {
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentLessonByStdId $studentId ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentLessonByStdId $studentId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
 
@@ -219,7 +206,7 @@ class FireStoreDb {
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentTestInLesson $classId $testId ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentTestInLesson $classId $testId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
 
@@ -235,7 +222,7 @@ class FireStoreDb {
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonResultByLessonId $id $classId ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonResultByLessonId $id $classId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     // debugPrint("==========>get db from \"lesson_result\" : ${snapshot.docs.length}");
     return snapshot;
@@ -246,7 +233,7 @@ class FireStoreDb {
     // debugPrint("==========>get db from \"courses\" : ${snapshot.docs.length}");
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllCourse ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllCourse ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -260,7 +247,7 @@ class FireStoreDb {
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassInClass $classId ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassInClass $classId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     // debugPrint("==========>get db from \"student_class\" : ${snapshot.docs.length}");
     return snapshot;
@@ -274,7 +261,7 @@ class FireStoreDb {
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassByStdId $studentId ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassByStdId $studentId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     // debugPrint("==========>get db from \"student_class\" : ${snapshot.docs.length}");
     return snapshot;
@@ -295,7 +282,7 @@ class FireStoreDb {
     ]).get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassValid $classId ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassValid $classId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     // debugPrint("==========>get db from \"student_class\" : ${snapshot.docs.length}");
     return snapshot;
@@ -310,7 +297,7 @@ class FireStoreDb {
     // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentLessonsInListClassId $classIds ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentLessonsInListClassId $classIds ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     //list.sort((a, b) => a.studentId.compareTo(b.studentId));
 
@@ -326,7 +313,7 @@ class FireStoreDb {
     // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentClassByListIds $classIds ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentClassByListIds $classIds ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     //list.sort((a, b) => a.studentId.compareTo(b.studentId));
 
@@ -342,7 +329,7 @@ class FireStoreDb {
     // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentLessonsInClass $classId ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentLessonsInClass $classId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -357,7 +344,7 @@ class FireStoreDb {
     // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassAvailable $classId $studentIds ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassAvailable $classId $studentIds ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -370,7 +357,7 @@ class FireStoreDb {
         .where('class_id', isEqualTo: classId)
         .get();
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListAnswer $id $classId ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListAnswer $id $classId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     // debugPrint("==========>get db from \"answer\" : ${snapshot.docs.length}");
     return snapshot;
@@ -385,7 +372,7 @@ class FireStoreDb {
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLesson $courseId $lessonId ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLesson $courseId $lessonId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     // debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
 
@@ -526,7 +513,7 @@ class FireStoreDb {
     final temp = await db.collection("courses").doc(docs).get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCourseByDocs $docs ${temp.exists}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCourseByDocs $docs ${temp.exists} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return temp;
   }
@@ -536,7 +523,7 @@ class FireStoreDb {
     final temp = await db.collection("lessons").doc(docs).get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonByDocs $docs ${temp.exists}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonByDocs $docs ${temp.exists} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return temp;
   }
@@ -546,20 +533,20 @@ class FireStoreDb {
     final temp = await db.collection("test").doc(docs).get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTestByDocs $docs ${temp.exists}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTestByDocs $docs ${temp.exists} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return temp;
   }
 
   Future<void> deleteLessonByDocs(String docs) async {
-    await db.collection("lessons").doc(docs).delete();
+    await db.collection("lessons").doc(docs).update({"enable": false});
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> deleteLessonByDocs $docs");
   }
 
   Future<void> deleteTestByDocs(String docs) async {
-    await db.collection("test").doc(docs).delete();
+    await db.collection("test").doc(docs).update({"enable": false});
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> deleteTestByDocs $docs");
@@ -570,7 +557,7 @@ class FireStoreDb {
     final temp = await db.collection("student_lesson").doc(docs).get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentLessonByDocs $docs ${temp.exists}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentLessonByDocs $docs ${temp.exists} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return temp;
   }
@@ -634,7 +621,8 @@ class FireStoreDb {
       "order": model.order,
       "title": model.title,
       "vocabulary": model.vocabulary,
-      "reading":model.reading
+      "reading": model.reading,
+      "enable":model.enable
     });
     debugPrint("==========> add db for \"lessons\"");
   }
@@ -648,7 +636,8 @@ class FireStoreDb {
       "description": model.description,
       "difficulty": model.difficulty,
       "id": model.id,
-      "title": model.title
+      "title": model.title,
+      "enable":model.enable
     });
     debugPrint("==========> add db for \"test\"");
   }
@@ -662,7 +651,8 @@ class FireStoreDb {
       "description": model.description,
       "difficulty": model.difficulty,
       "id": model.id,
-      "title": model.title
+      "title": model.title,
+      "enable": model.enable
     });
     debugPrint("==========> update db from \"lessons\"");
   }
@@ -704,7 +694,8 @@ class FireStoreDb {
       "order": model.order,
       "title": model.title,
       "vocabulary": model.vocabulary,
-      "reading": model.reading
+      "reading": model.reading,
+      "enable": model.enable
     });
     debugPrint("==========> update db from \"lessons\"");
   }
@@ -717,7 +708,7 @@ class FireStoreDb {
         .get();
     // debugPrint("==========>get db from \"lesson_result\" : 1");
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> checkLessonResult $lessonId $classId ${temp.exists}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> checkLessonResult $lessonId $classId ${temp.exists} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return temp;
   }
@@ -776,7 +767,7 @@ class FireStoreDb {
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListTestByCourseId $courseId ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListTestByCourseId $courseId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -789,7 +780,7 @@ class FireStoreDb {
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentTest $classId ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentTest $classId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     // debugPrint("==========>get db from \"student_test\": ${snapshot.docs.length}");
     return snapshot;
@@ -803,7 +794,7 @@ class FireStoreDb {
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentTestByStdId $studentId ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentTestByStdId $studentId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -816,7 +807,7 @@ class FireStoreDb {
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListTestResult $classId ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListTestResult $classId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -852,7 +843,7 @@ class FireStoreDb {
     final snapshot = await db.collection("users").get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllUser ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllUser ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -880,7 +871,7 @@ class FireStoreDb {
     final snapshot =
         await db.collection("users").where('email', isEqualTo: email).get();
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getUserByEmail $email ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getUserByEmail $email ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -910,7 +901,7 @@ class FireStoreDb {
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListClassNotRemove ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListClassNotRemove ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -920,7 +911,7 @@ class FireStoreDb {
         whereNotIn: ["Remove", "Completed", "Cancel"]).get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListClassNotRemove ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListClassNotRemove ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -945,7 +936,7 @@ class FireStoreDb {
     // debugPrint("==========>get db from \"teacher_class\": ${snapshot.docs.length}");
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllTeacherInClass ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllTeacherInClass ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -959,7 +950,7 @@ class FireStoreDb {
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllTeacherInClassByClassId $classId ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllTeacherInClassByClassId $classId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     // debugPrint("==========>get db from \"teacher_class\": ${snapshot.docs.length}");
     return snapshot;
@@ -970,7 +961,7 @@ class FireStoreDb {
         await db.collection("lessons").where('btvn', isEqualTo: 0).get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllLessonNotBTVN ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllLessonNotBTVN ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     // debugPrint("==========>get db from \"teacher_class\": ${snapshot.docs.length}");
     return snapshot;
@@ -984,7 +975,7 @@ class FireStoreDb {
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListFeedBack ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListFeedBack ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -994,7 +985,7 @@ class FireStoreDb {
     // debugPrint("==========>get db from \"students\": ${snapshot.docs.length}");
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudent ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudent ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -1008,7 +999,7 @@ class FireStoreDb {
     // debugPrint("==========>get db from \"students\": ${snapshot.docs.length}");
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> get10StudentFirst ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> get10StudentFirst ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -1022,7 +1013,7 @@ class FireStoreDb {
     // debugPrint("==========>get db from \"students\": ${snapshot.docs.length}");
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentById ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentById ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -1036,7 +1027,7 @@ class FireStoreDb {
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> get10Student $lastId ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> get10Student $lastId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     // debugPrint("==========>get db from \"students\": ${snapshot.docs.length}");
     return snapshot;
@@ -1047,7 +1038,7 @@ class FireStoreDb {
     debugPrint("==========>get count db from \"$tableName\"");
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCount $tableName");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCount $tableName - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return count;
   }
@@ -1060,7 +1051,7 @@ class FireStoreDb {
         .count()
         .get();
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========>get count db from \"$tableName\" with $field equal ${condition.toString()}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========>check db exist from \"$tableName\" with $field equal ${condition.toString()} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return count;
   }
@@ -1069,7 +1060,7 @@ class FireStoreDb {
     final snapshot = await db.collection("teacher").get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllTeacher ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllTeacher ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -1086,7 +1077,7 @@ class FireStoreDb {
         await db.collection("admin").where("user_id", isEqualTo: id).get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAdminById $id ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAdminById $id ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -1099,7 +1090,7 @@ class FireStoreDb {
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCourseByName $title $term ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCourseByName $title $term ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     // debugPrint("==========>get db from \"courses\": ${snapshot.docs.length}");
     final course = snapshot.docs.map((e) => CourseModel.fromSnapshot(e)).single;
@@ -1114,7 +1105,7 @@ class FireStoreDb {
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getClassByClassCode $classCode ${temp.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getClassByClassCode $classCode ${temp.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     // debugPrint("==========>get db from \"class\"");
     return temp;
@@ -1146,7 +1137,7 @@ class FireStoreDb {
     // debugPrint("==========>get db from \"student_class\"");
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassByDoc $doc ${temp.exists}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassByDoc $doc ${temp.exists} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return temp;
   }
@@ -1181,7 +1172,7 @@ class FireStoreDb {
     final temp = await db.collection("teacher_class").doc(docs).get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTeacherClassByDocs $docs ${temp.exists}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTeacherClassByDocs $docs ${temp.exists} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return temp;
   }
@@ -1248,7 +1239,7 @@ class FireStoreDb {
     // debugPrint("==========>get db from \"students\" : ${snapshot.docs.length}");
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentInFoInClass $listStdId ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentInFoInClass $listStdId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -1260,7 +1251,7 @@ class FireStoreDb {
     // debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsByLessonId $ids ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsByLessonId $ids ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -1272,7 +1263,7 @@ class FireStoreDb {
     // debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsByListCourseId $ids ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsByListCourseId $ids ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -1286,27 +1277,25 @@ class FireStoreDb {
     // debugPrint("==========>get db from \"student_test\" : ${snapshot.docs.length}");
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentTestByIds $ids ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentTestByIds $ids ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getVoucher(
-      String docs) async {
+  Future<DocumentSnapshot<Map<String, dynamic>>> getVoucher(String docs) async {
     final temp = await db.collection("voucher").doc(docs).get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getVoucher $docs ${temp.exists}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getVoucher $docs ${temp.exists} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return temp;
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getListVoucher() async {
-    final snapshot =
-    await db.collection("voucher").get();
+    final snapshot = await db.collection("voucher").get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListFeedBack ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListVoucher ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -1330,10 +1319,7 @@ class FireStoreDb {
   }
 
   Future<void> updateVoucher(String dateTime, String voucherCode) async {
-    await db
-        .collection("voucher")
-        .doc("sakumi_voucher_$voucherCode")
-        .update({
+    await db.collection("voucher").doc("sakumi_voucher_$voucherCode").update({
       'used_date': dateTime,
     });
   }

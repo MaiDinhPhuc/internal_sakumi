@@ -39,7 +39,7 @@ class SearchGeneralScreen extends StatelessWidget {
                       )),
                 ),
                 BlocBuilder<SearchCubit, int>(
-                    bloc: dataController.searchCubit,
+                    bloc: dataController.searchCubit..load(),
                     builder: (c, s) {
                       return Column(
                         children: [

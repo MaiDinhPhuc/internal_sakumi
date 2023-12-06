@@ -16,6 +16,7 @@ class LessonModel {
       vocabulary,
       reading;
   final String description, content, title;
+  final bool enable;
 
   LessonModel(
       {required this.lessonId,
@@ -31,7 +32,8 @@ class LessonModel {
       required this.flashcard,
       required this.alphabet,
       required this.order,
-      required this.reading});
+      required this.reading,
+      required this.enable});
 
   static Future<bool> check(String jsonData) async {
     final data = json.decode(jsonData);
@@ -62,6 +64,7 @@ class LessonModel {
         flashcard: data['flashcard'] ?? 0,
         alphabet: data['alphabet'] ?? 0,
         order: data['order'] ?? 0,
-        reading: data['reading'] ?? 0);
+        reading: data['reading'] ?? 0,
+        enable: data['enable'] ?? true);
   }
 }

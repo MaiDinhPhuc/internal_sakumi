@@ -22,6 +22,7 @@ import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
+import 'package:internal_sakumi/model/voucher_model.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
 
 abstract class NetworkProvider {
@@ -60,7 +61,6 @@ abstract class NetworkProvider {
   Future<bool> createNewTeacher(TeacherModel model, UserModel user);
 
   //Teacher
-  Future<TeacherModel> getTeacherByTeacherCode(String teacherCode);
 
   Future<TeacherModel> getTeacherById(int id);
 
@@ -90,8 +90,6 @@ abstract class NetworkProvider {
   Future<List<StudentLessonModel>> getAllStudentLessonsInClass(int classId);
 
   Future<List<AnswerModel>> getListAnswer(int id, int classId);
-
-  Future<LessonModel> getLesson(int courseId, int lessonId);
 
   Future<void> updateTimekeeping(
       int userId, int lessonId, int classId, int attendId);
@@ -197,7 +195,11 @@ abstract class NetworkProvider {
 
   Future<void> updateCourseInfo(CourseModel courseModel);
 
-  Future<TeacherHomeClass> getDataForManageClassTab();
+  Future<bool> checkExistVoucher(String voucherCode);
+
+  Future<int> getQuantityVoucher();
+
+  Future<void> addNewVoucher(VoucherModel model);
 
   Future<List<FeedBackModel>> getListFeedBack(String status);
 

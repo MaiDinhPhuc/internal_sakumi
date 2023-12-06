@@ -9,6 +9,10 @@ class ColumnChart extends StatelessWidget {
   final List<double> listStd;
   @override
   Widget build(BuildContext context) {
+    var listStdTemp = listStd;
+    if(listStd.every((number) => number == 0)){
+      listStdTemp = [1,0,0,0,0];
+    }
     return Column(
       children: [
         Text(AppText.titleStdNumber.text,
@@ -17,12 +21,14 @@ class ColumnChart extends StatelessWidget {
                 fontSize: Resizable.font(context, 17))),
         SizedBox(height: Resizable.size(context, 5)),
         Container(
-         // width: Resizable.size(context, 300),
-          // height: Resizable.size(context, 130),
-          constraints: BoxConstraints(
-            maxHeight: Resizable.size(context, 130),
-            maxWidth: Resizable.size(context, 300)
-          ),
+          width: Resizable.size(context, 300),
+          height: Resizable.size(context, 130),
+          // constraints: BoxConstraints(
+          //   maxHeight: Resizable.size(context, 130),
+          //   maxWidth: Resizable.size(context, 300),
+          //   minHeight: Resizable.size(context, 130),
+          //   minWidth: Resizable.size(context, 300),
+          // ),
           child: DChartBarCustom(
             spaceBetweenItem: Resizable.size(context, 5),
             spaceDomainLinetoChart: Resizable.size(context, 1),
@@ -31,27 +37,27 @@ class ColumnChart extends StatelessWidget {
             listData: [
               DChartBarDataCustom(
                   color: const Color(0xff33691E),
-                  value: listStd[0],
+                  value: listStdTemp[0],
                   label: 'A',
                   showValue: true),
               DChartBarDataCustom(
                   color: const Color(0xff757575),
-                  value: listStd[1],
+                  value: listStdTemp[1],
                   label: 'B',
                   showValue: true),
               DChartBarDataCustom(
                   color: const Color(0xffFFD600),
-                  value: listStd[2],
+                  value: listStdTemp[2],
                   label: 'C',
                   showValue: true),
               DChartBarDataCustom(
                   color: const Color(0xffE65100),
-                  value: listStd[3],
+                  value: listStdTemp[3],
                   label: 'D',
                   showValue: true),
               DChartBarDataCustom(
                   color: const Color(0xffB71C1C),
-                  value: listStd[4],
+                  value: listStdTemp[4],
                   label: 'E',
                   showValue: true),
             ],

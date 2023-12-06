@@ -17,7 +17,8 @@ class TeacherScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var dataController = BlocProvider.of<DataCubit>(context);
+    var dataController = BlocProvider.of<DataCubit>(context)..loadClass();
+    print("================>TeacherScreen");
     final shimmerList = List.generate(5, (index) => index);
     return Scaffold(
         body: Column(
@@ -30,7 +31,6 @@ class TeacherScreen extends StatelessWidget {
             children: [
               const WelComeTeacherAppBar(),
               //TeacherHomeFilter(cubit: dataController),
-
               Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: Resizable.size(context, 150)),
@@ -72,7 +72,7 @@ class TeacherScreen extends StatelessWidget {
                             color: greyColor.shade600)),
                   )),
               BlocBuilder<DataCubit, int>(
-                  builder: (context, _) => dataController.classes == null
+                  builder: (context, _) => dataController.classNow == null
                       ? Shimmer.fromColors(
                           baseColor: Colors.grey[300]!,
                           highlightColor: Colors.grey[100]!,
@@ -88,7 +88,7 @@ class TeacherScreen extends StatelessWidget {
                             ),
                           ),
                         )
-                      : dataController.classes!.isNotEmpty
+                      : dataController.classNow!.isNotEmpty
                           ? Column(children: [
                               ...dataController.classNow!
                                   .map((e) => Padding(

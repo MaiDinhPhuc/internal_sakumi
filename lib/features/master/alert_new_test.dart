@@ -107,8 +107,8 @@ void alertAddNewTest(BuildContext context, TestModel? testModel, bool isEdit,
                                             int.parse(courseIdCon.text),
                                           );
                                           Navigator.pop(context);
-                                          cubit.loadTestInCourse(
-                                              cubit.selector);
+                                          cubit
+                                              .loadTestInCourse(cubit.selector);
                                         },
                                         title: AppText.txtDeleteLesson.text),
                                   Row(
@@ -130,17 +130,20 @@ void alertAddNewTest(BuildContext context, TestModel? testModel, bool isEdit,
                                       AddNewLessonButton(() async {
                                         if (formKey.currentState!.validate()) {
                                           if (!isEdit) {
-                                            final bool check = await FireBaseProvider
-                                                .instance
-                                                .addNewTest(TestModel(
-                                                    id: int.parse(
-                                                        idCon.text),
-                                                    courseId: int.parse(
-                                                        courseIdCon.text),
-                                                    description: desCon.text,
-                                                    title: titleCon.text,
-                                                    difficulty:
-                                                        int.parse(difficultCon.text)));
+                                            final bool check =
+                                                await FireBaseProvider.instance
+                                                    .addNewTest(TestModel(
+                                                        id:
+                                                            int.parse(
+                                                                idCon.text),
+                                                        courseId: int.parse(
+                                                            courseIdCon.text),
+                                                        description:
+                                                            desCon.text,
+                                                        title: titleCon.text,
+                                                        difficulty: int.parse(
+                                                            difficultCon.text),
+                                                        enable: true));
                                             if (context.mounted) {
                                               Navigator.pop(context);
                                               if (check == true) {
@@ -157,14 +160,14 @@ void alertAddNewTest(BuildContext context, TestModel? testModel, bool isEdit,
                                           } else {
                                             await FireBaseProvider.instance
                                                 .updateTestInfo(TestModel(
-                                                id: int.parse(
-                                                    idCon.text),
-                                                courseId: int.parse(
-                                                    courseIdCon.text),
-                                                description: desCon.text,
-                                                title: titleCon.text,
-                                                difficulty:
-                                                int.parse(difficultCon.text)));
+                                                    id: int.parse(idCon.text),
+                                                    courseId: int.parse(
+                                                        courseIdCon.text),
+                                                    description: desCon.text,
+                                                    title: titleCon.text,
+                                                    difficulty: int.parse(
+                                                        difficultCon.text),
+                                                    enable: testModel!.enable));
                                             if (context.mounted) {
                                               Navigator.pop(context);
                                               cubit.loadTestInCourse(

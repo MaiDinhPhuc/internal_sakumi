@@ -21,7 +21,7 @@ class ManageClassesScreen extends StatelessWidget {
   const ManageClassesScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    var dataController = BlocProvider.of<DataCubit>(context);
+    var dataController = BlocProvider.of<DataCubit>(context)..loadClass();
     final shimmerList = List.generate(5, (index) => index);
     return Scaffold(
       body: Column(
@@ -97,7 +97,7 @@ class ManageClassesScreen extends StatelessWidget {
                     )
                   ),
                   BlocBuilder<DataCubit, int>(
-                      builder: (context, _) => dataController.classes == null || dataController.classNow == null
+                      builder: (context, _) => dataController.classNow == null
                           ? Shimmer.fromColors(
                         baseColor: Colors.grey[300]!,
                         highlightColor: Colors.grey[100]!,
@@ -113,7 +113,7 @@ class ManageClassesScreen extends StatelessWidget {
                           ),
                         ),
                       )
-                          : dataController.classes!.isNotEmpty
+                          : dataController.classNow!.isNotEmpty
                           ? Column(children: [
                         ...dataController.classNow!
                             .map((e) => Padding(

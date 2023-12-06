@@ -6,20 +6,22 @@ import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 class TestModel {
   final String title, description;
   final int id, courseId, difficulty;
+  final bool enable;
 
   const TestModel(
       {required this.id,
       required this.title,
       required this.difficulty,
       required this.courseId,
-      required this.description});
+      required this.description,
+      required this.enable});
 
-  static Future<bool> check(String jsonData)async{
+  static Future<bool> check(String jsonData) async {
     final data = json.decode(jsonData);
-    for(var i in data){
-      int testCount = await FireBaseProvider.instance.getCountWithCondition(
-          "test", "id", i['id']);
-      if(testCount != 0){
+    for (var i in data) {
+      int testCount = await FireBaseProvider.instance
+          .getCountWithCondition("test", "id", i['id']);
+      if (testCount != 0) {
         return false;
       }
     }
@@ -31,10 +33,11 @@ class TestModel {
     final data = document.data()!;
     return TestModel(
       id: data["id"],
-      title: data["title"]??"",
-      difficulty: data['difficulty']??0,
-      courseId: data["course_id"]??0,
-      description: data['description']??"",
+      title: data["title"] ?? "",
+      difficulty: data['difficulty'] ?? 0,
+      courseId: data["course_id"] ?? 0,
+      description: data['description'] ?? "",
+      enable: data['enable'] ?? true
     );
   }
 }
