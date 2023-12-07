@@ -15,6 +15,7 @@ import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layou
 import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ManageClassesScreen extends StatelessWidget {

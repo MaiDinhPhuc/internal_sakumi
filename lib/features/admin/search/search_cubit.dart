@@ -7,14 +7,9 @@ import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class SearchCubit extends Cubit<int>{
-  SearchCubit():super(0){
-    // load();
-  }
+  SearchCubit():super(0);
 
-
-  // load();
   String type = AppText.txtClass.text;
-
 
   List<ClassModel>? classes;
   List<StudentModel>? students;
@@ -26,12 +21,12 @@ class SearchCubit extends Cubit<int>{
   List<ClassModel> classesNow = [];
 
   load() async{
+    if(type == AppText.txtStudent.text && students != null) return;
+    if(type == AppText.txtClass.text && classes != null) return;
+    if(type == AppText.txtTeacher.text && teachers != null) return;
     classes = await FireBaseProvider.instance.getListClassNotRemove();
     emit(state+1);
-    users = await FireBaseProvider.instance.getAllUser();
     students = await FireBaseProvider.instance.getAllStudent();
-    teachers = await FireBaseProvider.instance.getAllTeacher();
-    emit(state+1);
   }
 
   search(String value){
@@ -58,9 +53,28 @@ class SearchCubit extends Cubit<int>{
     }
   }
 
+  updateStudent(StudentModel student){
+    var index = students!
+        .indexOf(students!.firstWhere((e) => e.userId == student.userId));
+    students![index] = student;
+  }
 
-  changeType(String? value){
+
+  updateTeacher(TeacherModel teacher){
+    var index = teachers!
+        .indexOf(teachers!.firstWhere((e) => e.userId == teacher.userId));
+    teachers![index] = teacher;
+  }
+
+  changeType(String? value)async{
     type = value!;
+    if(type == AppText.txtStudent.text && students != null) {
+      users = await FireBaseProvider.instance.getAllUser();
+    }
+    if(type == AppText.txtTeacher.text && teachers == null){
+      teachers = await FireBaseProvider.instance.getAllTeacher();
+      users = await FireBaseProvider.instance.getAllUser();
+    }
     emit(state+1);
   }
 }

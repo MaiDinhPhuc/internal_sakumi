@@ -742,7 +742,7 @@ class FireStoreDb {
       'phone': model.phone,
       'user_id': model.userId,
     });
-    debugPrint("==========>update db from \"teacher\"");
+    debugPrint("==========>update db for \"teacher\"");
   }
 
   Future<void> updateProfileStudent(String id, StudentModel model) async {
@@ -756,7 +756,7 @@ class FireStoreDb {
       'user_id': model.userId,
       'in_jp': model.inJapan,
     });
-    debugPrint("==========>update db from \"teacher\"");
+    debugPrint("==========>update db for \"students\"");
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getListTestByCourseId(
@@ -911,7 +911,7 @@ class FireStoreDb {
         whereNotIn: ["Remove", "Completed", "Cancel"]).get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListClassNotRemove ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListClassForAdmin ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }

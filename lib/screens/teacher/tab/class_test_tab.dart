@@ -25,14 +25,7 @@ class ClassTestTab extends StatelessWidget {
         body: Column(
           children: [
             HeaderTeacher(index: 2, classId: TextUtils.getName(), role: role),
-            dataController.classes == null
-                ? Center(
-                    child: Transform.scale(
-                      scale: 0.75,
-                      child: const CircularProgressIndicator(),
-                    ),
-                  )
-                : BlocBuilder<TestCubit, int>(
+            BlocBuilder<TestCubit, int>(
                     bloc: cubit
                       ..load(int.parse(TextUtils.getName()), dataController),
                     builder: (cc, s) {

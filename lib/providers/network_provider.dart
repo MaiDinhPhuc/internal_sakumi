@@ -41,11 +41,11 @@ abstract class NetworkProvider {
   Future<int> getCountWithCondition(
       String tableName, String field, dynamic condition);
 
-  Future<List<ClassModel2>> getClassByAdmin();
+  Future<List<ClassModel2>> getClassByAdmin(List<ClassModel>? listClasses);
 
   Future<UserModel> getUser(String email);
 
-  Future<List<ClassModel2>> getClassByTeacherId(int teacherId);
+  Future<List<ClassModel2>> getClassByTeacherId(int teacherId, List<ClassModel>? listClasses);
 
   Future<List<LessonResultModel>> getLessonsResultsByListClassIds(
       List<int> ids);

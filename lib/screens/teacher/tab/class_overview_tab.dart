@@ -32,12 +32,6 @@ class ClassOverViewTab extends StatelessWidget {
                 children: [
                   HeaderTeacher(
                       index: 0, classId: TextUtils.getName(), role: role),
-                  // dataController.classes.isEmpty ? Center(
-                  //   child: Transform.scale(
-                  //     scale: 0.75,
-                  //     child: const CircularProgressIndicator(),
-                  //   ),
-                  // ) :
                   BlocBuilder<ClassOverviewCubit, int>(
                       bloc: cubit
                         ..loadFirst(int.parse(TextUtils.getName()), dataController),

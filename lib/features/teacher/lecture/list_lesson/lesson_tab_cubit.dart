@@ -32,7 +32,7 @@ class LessonTabCubit extends Cubit<int> {
     SharedPreferences localData = await SharedPreferences.getInstance();
     role = localData.getString(PrefKeyConfigs.role).toString();
     this.classId = classId;
-    var temp = dataCubit.classes!
+    var temp = dataCubit.classes
         .where((e) => e.classModel.classId == classId)
         .toList();
     if (temp.isEmpty) {

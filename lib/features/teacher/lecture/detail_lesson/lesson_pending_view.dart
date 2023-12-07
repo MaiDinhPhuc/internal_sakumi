@@ -24,7 +24,7 @@ class LessonPendingView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PendingViewCubit, int>(
         bloc: pendingViewCubit
-          ..load(dataCubit.classes!.firstWhere((e) =>
+          ..load(dataCubit.classes.firstWhere((e) =>
               e.classModel.classId ==
               int.parse(TextUtils.getName(position: 1)))),
         builder: (c, s) {

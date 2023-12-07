@@ -21,7 +21,7 @@ class LessonTeachingView extends StatelessWidget {
     return BlocBuilder<SessionCubit, int>(
         bloc: sessionCubit
           ..load(
-              dataCubit.classes!.firstWhere((e) =>
+              dataCubit.classes.firstWhere((e) =>
                   e.classModel.classId ==
                   int.parse(TextUtils.getName(position: 1))),
               dataCubit),

@@ -65,12 +65,14 @@ class ClassOverviewCubit extends Cubit<int> {
         emit(state + 1);
         dataCubit.loadLessonInfoOfClass(classModel2.classModel);
       }else{
+        dataCubit.loadStudentForClass(classId);
         countAvailable = 0;
         listAttendance = [];
         listHomework = [];
         classModel = classModel2.classModel;
         emit(state + 1);
-        List<int> listStdIds = [];
+        students = classModel2.students;
+        emit(state + 1);
         for (var i in classModel2.stdClasses!) {
           if (i.classStatus != "Remove" &&
               i.classStatus != "Dropped" &&
@@ -79,7 +81,6 @@ class ClassOverviewCubit extends Cubit<int> {
               i.classStatus != "Moved") {
             countAvailable++;
           }
-          listStdIds.add(i.userId);
         }
         List<int> listLessonIds = [];
         for (var i in classModel2.lessonResults!) {
@@ -121,7 +122,7 @@ class ClassOverviewCubit extends Cubit<int> {
           listHomework.add(tempHw);
         }
         emit(state + 1);
-        students = classModel2.students;
+
         List<LessonModel> lessonTemp =
         classModel2.listLesson!.where((element) => element.btvn == 0).toList();
         List<int> lessonExceptionIds = [];

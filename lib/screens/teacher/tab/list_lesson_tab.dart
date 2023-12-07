@@ -27,14 +27,7 @@ class ListLessonTab extends StatelessWidget {
         body: Column(
           children: [
             HeaderTeacher(index: 1, classId: TextUtils.getName(), role: role),
-            dataController.classes == null
-                ? Center(
-                    child: Transform.scale(
-                      scale: 0.75,
-                      child: const CircularProgressIndicator(),
-                    ),
-                  )
-                : BlocBuilder<LessonTabCubit, int>(
+            BlocBuilder<LessonTabCubit, int>(
                     bloc: cubit
                       ..load(int.parse(TextUtils.getName()), dataController),
                     builder: (c, s) {

@@ -26,10 +26,18 @@ class TeacherScreen extends StatelessWidget {
         Expanded(
             child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const WelComeTeacherAppBar(),
               //TeacherHomeFilter(cubit: dataController),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: Resizable.padding(context, 20)),
+                child: Text(
+                    AppText.titleManageClass.text.toUpperCase(),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: Resizable.font(context, 30))),
+              ),
               Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: Resizable.size(context, 150)),

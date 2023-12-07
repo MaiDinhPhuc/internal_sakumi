@@ -25,7 +25,7 @@ class TestCubit extends Cubit<int> {
   List<bool?>? listStatus;
 
   load(int classId, DataCubit dataCubit) async {
-    var temp = dataCubit.classes!
+    var temp = dataCubit.classes
         .where((e) => e.classModel.classId == classId)
         .toList();
     if (temp.isEmpty) {

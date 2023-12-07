@@ -833,12 +833,19 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<ClassModel2>> getClassByTeacherId(int teacherId) async {
+  Future<List<ClassModel2>> getClassByTeacherId(int teacherId, List<ClassModel>? listClasses) async {
     var teacherClassIDs =
         (await FireStoreDb.instance.getTeacherClassById(teacherId))
             .docs
             .map((e) => e.data()['class_id'] as int)
             .toList();
+    if(listClasses != null){
+      var classes = listClasses.where((e) => teacherClassIDs.contains(e.classId)).toList()
+          .where((e) =>
+      e.classStatus == "Preparing" || e.classStatus == "InProgress")
+          .toList();
+      return ClassModel2.loadClass(classes);
+    }
     var classes = (await FireBaseProvider.instance
             .getListClassForTeacher(teacherClassIDs))
         .where((e) =>
@@ -848,7 +855,11 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<ClassModel2>> getClassByAdmin() async {
+  Future<List<ClassModel2>> getClassByAdmin(List<ClassModel>? listClasses) async {
+    if(listClasses != null){
+      var classes = listClasses.where((e) => !["Remove", "Completed", "Cancel"].contains(e.classStatus)).toList();
+      return ClassModel2.loadClass(classes);
+    }
     var classes = await FireBaseProvider.instance.getListClassForAdmin();
     return ClassModel2.loadClass(classes);
   }

@@ -69,108 +69,99 @@ class LessonCompleteView extends StatelessWidget {
                 },
               ))
                   .toList(),
-              BlocBuilder<SessionCubit, int>(
-                  bloc: sessionCubit
-                    ..load(
-                        dataCubit.classes!.firstWhere((e) =>
-                        e.classModel.classId ==
-                            int.parse(TextUtils.getName(position: 1))),
+              Column(
+                children: [
+                  NoteForTeamCard(
+                    sessionCubit.isNoteSupport,
+                    hintText: AppText.txtHintNoteForSupport.text,
+                    noNote: AppText.txtNoNoteForSupport.text,
+                    onChanged: (v) {
+                      sessionCubit.isNoteSupport = v.isNotEmpty ? null : true;
+                      sessionCubit.inputSupport(v);
+                      sessionCubit.checkNoteSupport();
+                    },
+                    onPressed: () {
+                      sessionCubit.checkNoteSupport();
+                    },
+                    sessionCubit: sessionCubit,
+                  ),
+                  NoteForTeamCard(
+                    sessionCubit.isNoteSensei,
+                    hintText: AppText.txtHintNoteForTeacher.text,
+                    noNote: AppText.txtNoNoteForTeacher.text,
+                    onChanged: (v) {
+                      sessionCubit.isNoteSensei = v.isNotEmpty ? null : true;
+                      sessionCubit.inputSensei(v);
+                      sessionCubit.checkNoteSensei();
+                    },
+                    onPressed: () {
+                      sessionCubit.checkNoteSensei();
+                    },
+                    sessionCubit: sessionCubit,
+                  ),
+                  SizedBox(height: Resizable.size(context, 40)),
+                  SubmitButton(
+                    onPressed: ()=>alertCompleteView(
+                        context,
+                            () async {
+                          Navigator.pop(context);
+                          waitingDialog(context);
+                          await detailCubit.noteForSupport(
+                              sessionCubit.noteSupport.isNotEmpty
+                                  ? sessionCubit.noteSupport
+                                  : '',
+                              dataCubit);
+                          if (context.mounted) {
+                            await detailCubit.noteForAnotherSensei(
+                                sessionCubit.noteSupport.isNotEmpty
+                                    ? sessionCubit.noteSensei
+                                    : '',
+                                dataCubit);
+                          }
+                          if (context.mounted) {
+                            for (var std in sessionCubit.listStudent!) {
+                              var tempStd = sessionCubit.listStudent!
+                                  .firstWhere((e) => e.userId == std.userId);
+                              var index =
+                              sessionCubit.listStudent!.indexOf(tempStd);
+
+                              await updateTeacherNote(std.userId,
+                                  sessionCubit.listNoteForEachStudent[index]);
+
+                              var stdLesson = sessionCubit.listStudentLesson!.firstWhere((e) => e.studentId == tempStd.userId);
+
+                              dataCubit.updateStudentLesson(
+                                  int.parse(TextUtils.getName(position: 1)),
+                                  StudentLessonModel(
+                                      grammar: stdLesson.grammar,
+                                      hw: stdLesson.hw,
+                                      id: stdLesson.id,
+                                      classId: stdLesson.classId,
+                                      kanji: stdLesson.kanji,
+                                      lessonId: stdLesson.lessonId,
+                                      listening: stdLesson.listening,
+                                      studentId: stdLesson.studentId,
+                                      timekeeping: stdLesson.timekeeping,
+                                      vocabulary: stdLesson.vocabulary,
+                                      teacherNote: sessionCubit.listNoteForEachStudent[index],
+                                      supportNote: stdLesson.supportNote, time: {}));
+                            }
+                            await BlocProvider.of<DetailLessonCubit>(context)
+                                .updateStatus('Complete',dataCubit);
+                            if (context.mounted) {
+                              Navigator.pushNamed(context,
+                                  "${Routes.teacher}/lesson/class=${int.parse(TextUtils.getName(position: 1))}");
+                            }
+                          }
+                        },
                         dataCubit),
-                  builder: (c, s) {
-                    return Column(
-                      children: [
-                        NoteForTeamCard(
-                          sessionCubit.isNoteSupport,
-                          hintText: AppText.txtHintNoteForSupport.text,
-                          noNote: AppText.txtNoNoteForSupport.text,
-                          onChanged: (v) {
-                            sessionCubit.isNoteSupport = v.isNotEmpty ? null : true;
-                            sessionCubit.inputSupport(v);
-                            sessionCubit.checkNoteSupport();
-                          },
-                          onPressed: () {
-                            sessionCubit.checkNoteSupport();
-                          },
-                          sessionCubit: sessionCubit,
-                        ),
-                        NoteForTeamCard(
-                          sessionCubit.isNoteSensei,
-                          hintText: AppText.txtHintNoteForTeacher.text,
-                          noNote: AppText.txtNoNoteForTeacher.text,
-                          onChanged: (v) {
-                            sessionCubit.isNoteSensei = v.isNotEmpty ? null : true;
-                            sessionCubit.inputSensei(v);
-                            sessionCubit.checkNoteSensei();
-                          },
-                          onPressed: () {
-                            sessionCubit.checkNoteSensei();
-                          },
-                          sessionCubit: sessionCubit,
-                        ),
-                        SizedBox(height: Resizable.size(context, 40)),
-                        SubmitButton(
-                          onPressed: ()=>alertCompleteView(
-                              context,
-                             () async {
-                                Navigator.pop(context);
-                                waitingDialog(context);
-                                await detailCubit.noteForSupport(
-                                    sessionCubit.noteSupport.isNotEmpty
-                                        ? sessionCubit.noteSupport
-                                        : '',
-                                    dataCubit);
-                                if (context.mounted) {
-                                  await detailCubit.noteForAnotherSensei(
-                                      sessionCubit.noteSupport.isNotEmpty
-                                          ? sessionCubit.noteSensei
-                                          : '',
-                                      dataCubit);
-                                }
-                                if (context.mounted) {
-                                  for (var std in sessionCubit.listStudent!) {
-                                    var tempStd = sessionCubit.listStudent!
-                                        .firstWhere((e) => e.userId == std.userId);
-                                    var index =
-                                    sessionCubit.listStudent!.indexOf(tempStd);
 
-                                    await updateTeacherNote(std.userId,
-                                        sessionCubit.listNoteForEachStudent[index]);
-
-                                    var stdLesson = sessionCubit.listStudentLesson!.firstWhere((e) => e.studentId == tempStd.userId);
-
-                                    dataCubit.updateStudentLesson(
-                                        int.parse(TextUtils.getName(position: 1)),
-                                        StudentLessonModel(
-                                            grammar: stdLesson.grammar,
-                                            hw: stdLesson.hw,
-                                            id: stdLesson.id,
-                                            classId: stdLesson.classId,
-                                            kanji: stdLesson.kanji,
-                                            lessonId: stdLesson.lessonId,
-                                            listening: stdLesson.listening,
-                                            studentId: stdLesson.studentId,
-                                            timekeeping: stdLesson.timekeeping,
-                                            vocabulary: stdLesson.vocabulary,
-                                            teacherNote: sessionCubit.listNoteForEachStudent[index],
-                                            supportNote: stdLesson.supportNote, time: {}));
-                                  }
-                                  await BlocProvider.of<DetailLessonCubit>(context)
-                                      .updateStatus('Complete',dataCubit);
-                                  if (context.mounted) {
-                                    Navigator.pushNamed(context,
-                                        "${Routes.teacher}/lesson/class=${int.parse(TextUtils.getName(position: 1))}");
-                                  }
-                                }
-                              },
-                              dataCubit),
-
-                          isActive: sessionCubit.isNoteSupport != false &&
-                              sessionCubit.isNoteSensei != false,
-                          title: AppText.txtCompleteLesson.text,
-                        ),
-                      ],
-                    );
-                  }),
+                    isActive: sessionCubit.isNoteSupport != false &&
+                        sessionCubit.isNoteSensei != false,
+                    title: AppText.txtCompleteLesson.text,
+                  ),
+                ],
+              ),
               SizedBox(height: Resizable.size(context, 100)),
             ],
           );

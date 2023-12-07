@@ -25,14 +25,7 @@ class ClassGradingTab extends StatelessWidget {
           children: [
             HeaderTeacher(
                 index: 3, classId: TextUtils.getName(), role: 'teacher'),
-            dataController.classes == null
-                ? Center(
-              child: Transform.scale(
-                scale: 0.75,
-                child: const CircularProgressIndicator(),
-              ),
-            )
-                :BlocBuilder<GradingCubit, int>(
+            BlocBuilder<GradingCubit, int>(
                 bloc: cubit
                   ..load(int.parse(TextUtils.getName()), dataController),
                 builder: (c, s) {

@@ -29,7 +29,7 @@ class GradingCubit extends Cubit<int> {
   bool isNotGrading = true;
 
   load(int classId, DataCubit dataCubit) async {
-    var temp = dataCubit.classes!
+    var temp = dataCubit.classes
         .where((e) => e.classModel.classId == classId)
         .toList();
     if (temp.isEmpty) {

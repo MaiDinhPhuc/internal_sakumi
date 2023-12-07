@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/features/admin/search/search_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
@@ -35,11 +36,15 @@ class TeacherInfoCubit extends Cubit<int> {
   String phone = "";
   String note = "";
 
-  loadStudent(int teacherId) async {
-    debugPrint("============> getTeacherById 2");
+  loadStudent(int teacherId,SearchCubit searchController) async {
+    if(searchController.students!=null){
+      teacher = searchController.teachers!.firstWhere((e) => e.userId == teacherId);
+      user = searchController.users!.firstWhere((e) => e.id == teacherId);
+    }else{
+      teacher = await FireBaseProvider.instance.getTeacherById(teacherId);
+      user = await FireBaseProvider.instance.getUserById(teacherId);
+    }
 
-    teacher = await FireBaseProvider.instance.getTeacherById(teacherId);
-    user = await FireBaseProvider.instance.getUserById(teacherId);
     name = teacher!.name;
     teacherCode = teacher!.teacherCode;
     phone = teacher!.phone;

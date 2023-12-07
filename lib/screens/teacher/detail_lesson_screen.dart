@@ -34,14 +34,7 @@ class DetailLessonScreen extends StatelessWidget {
               classId: TextUtils.getName(position: 1),
               role: 'teacher',
             ),
-            dataController.classes == null
-                ? Transform.scale(
-                    scale: 0.75,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  )
-                : Expanded(
+            Expanded(
                     //key: Key('${cubit.state?.status}'),
                     child: SingleChildScrollView(
                         child: BlocProvider.value(

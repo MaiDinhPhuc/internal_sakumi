@@ -25,7 +25,7 @@ class DetailLessonCubit extends Cubit<LessonResultModel?> {
   int? teacherId;
 
   checkLessonResult(int classId, DataCubit dataCubit) async {
-    var temp = dataCubit.classes!.where((e) => e.classModel.classId == classId).toList();
+    var temp = dataCubit.classes.where((e) => e.classModel.classId == classId).toList();
     if(temp.isEmpty){
       dataCubit.loadMoreClass(classId);
     }else{
