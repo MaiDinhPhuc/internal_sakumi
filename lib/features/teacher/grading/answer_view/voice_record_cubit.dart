@@ -1,5 +1,12 @@
+import 'dart:typed_data';
+
+import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/features/teacher/grading/answer_view/record_dialog.dart';
 import 'package:internal_sakumi/features/teacher/grading/answer_view/record_services.dart';
+import 'package:internal_sakumi/features/teacher/grading/detail_grading_cubit.dart';
+import 'package:internal_sakumi/features/teacher/grading/detail_grading_view.dart';
+import 'package:internal_sakumi/model/answer_model.dart';
 
 class VoiceRecordCubit extends Cubit<List<dynamic>>{
   VoiceRecordCubit() : super([]);
@@ -8,12 +15,93 @@ class VoiceRecordCubit extends Cubit<List<dynamic>>{
     emit(list);
   }
 
-  startRecord(){
+  record(BuildContext context ,AnswerModel answerModel,CheckActiveCubit checkActiveCubit,DetailGradingCubit cubit) async {
     RecordService.instance.start();
+    showDialog(
+        context: context,
+        builder: (context) =>  RecordDialog(stop: () async {
+          Navigator.of(context).pop();
+          var link = await RecordService.instance.stop();
+          await RecordService.instance.dispose();
+          print("=======>link; $link");
+          if (link != "") {
+            answerModel.listRecordUrl.add(link);
+            if(cubit.answers.every((element) => element.score != -1)){
+              checkActiveCubit.changeActive(true);
+            }else{
+              if(cubit.answers.every((element) => element.newScore != -1)){
+                checkActiveCubit.changeActive(true);
+              }else{
+                checkActiveCubit.changeActive(false);
+              }
+            }
+          }
+          var newList = answerModel.listRecordUrl;
+          emit([...newList]);
+        }));
   }
 
-  stopRecord(){
-    RecordService.instance.stop();
+  removeRecord(AnswerModel answerModel,String value,CheckActiveCubit checkActiveCubit,DetailGradingCubit cubit){
+    answerModel.listRecordUrl.remove(value);
+    if(cubit.answers.every((element) => element.score != -1)){
+      checkActiveCubit.changeActive(true);
+    }else{
+      if(cubit.answers.every((element) => element.newScore != -1)){
+        checkActiveCubit.changeActive(true);
+      }else{
+        checkActiveCubit.changeActive(false);
+      }
+    }
+    var newList = answerModel.listRecordUrl;
+    emit([...newList]);
+  }
+
+  recordForAll(BuildContext context ,CheckActiveCubit checkActiveCubit,DetailGradingCubit cubit){
+    for(var i in cubit.answers){
+      i.listRecordUrl = [];
+    }
+    RecordService.instance.start();
+    showDialog(
+        context: context,
+        builder: (context) =>  RecordDialog(stop: () async {
+          Navigator.of(context).pop();
+          var link = await RecordService.instance.stop();
+          await RecordService.instance.dispose();
+          if (link != "") {
+            for(var i in cubit.answers){
+              i.listRecordUrl.add(link);
+            }
+            if(cubit.answers.every((element) => element.score != -1)){
+              checkActiveCubit.changeActive(true);
+            }else{
+              if(cubit.answers.every((element) => element.newScore != -1)){
+                checkActiveCubit.changeActive(true);
+              }else{
+                checkActiveCubit.changeActive(false);
+              }
+            }
+          }
+          var newList = cubit.answers.first.listRecordUrl;
+          emit([...newList]);
+        }));
+
+  }
+
+  removeRecordForAll(List<AnswerModel> list,String value,CheckActiveCubit checkActiveCubit,DetailGradingCubit cubit){
+    for(var i in list){
+      i.listRecordUrl.remove(value);
+    }
+    if(cubit.answers.every((element) => element.score != -1)){
+      checkActiveCubit.changeActive(true);
+    }else{
+      if(cubit.answers.every((element) => element.newScore != -1)){
+        checkActiveCubit.changeActive(true);
+      }else{
+        checkActiveCubit.changeActive(false);
+      }
+    }
+    var newList = list.first.listRecordUrl;
+    emit([...newList]);
   }
 
 }

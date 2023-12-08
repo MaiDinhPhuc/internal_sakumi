@@ -116,19 +116,14 @@ class AnswerInfoView extends StatelessWidget {
                                       await imageCubit.pickImage(
                                           answerModel, checkActiveCubit, cubit);
                                     },
-                                    onOpenMic: () {
-                                      //TODO: record in here
-                                      // RecordService.instance.start();
-                                      // showDialog(
-                                      //     context: context,
-                                      //     builder: (context) =>  RecordDialog(stop: () async {
-                                      //       Navigator.of(context).pop();
-                                      //       await RecordService.instance.stop();
-                                      //       RecordService.instance.dispose();
-                                      //     }));
+                                    onOpenMic: () async {
+                                      await voiceRecordCubit.record(context,
+                                          answerModel, checkActiveCubit, cubit);
                                     },
                                     type: 'single',
                                     checkActiveCubit: checkActiveCubit,
+                                    voiceRecordCubit: voiceRecordCubit,
+                                    soundCubit: soundCubit,
                                   )
                                 ],
                               ),

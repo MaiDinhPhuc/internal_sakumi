@@ -10,18 +10,21 @@ import 'package:internal_sakumi/widget/submit_button.dart';
 import 'answer_view/answer_info_view.dart';
 import 'answer_view/input_form/teacher_note_view.dart';
 import 'answer_view/pick_image_cubit.dart';
+import 'answer_view/voice_record_cubit.dart';
 import 'collapse_question.dart';
 import 'detail_grading_cubit.dart';
 
 class DetailGradingView extends StatelessWidget {
   DetailGradingView(this.cubit, this.soundCubit,
       {super.key, required this.checkActiveCubit, required this.dataCubit})
-      : imageCubit = ImagePickerCubit();
+      : imageCubit = ImagePickerCubit(),
+        voiceRecordCubit = VoiceRecordCubit();
   final DetailGradingCubit cubit;
   final SoundCubit soundCubit;
   final ImagePickerCubit imageCubit;
   final CheckActiveCubit checkActiveCubit;
   final DataCubit dataCubit;
+  final VoiceRecordCubit voiceRecordCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +44,8 @@ class DetailGradingView extends StatelessWidget {
                             builder: (c, state) => Stack(
                               children: [
                                 Container(
-                                    margin: EdgeInsets.only(bottom: Resizable.padding(context, 5)),
+                                    margin: EdgeInsets.only(
+                                        bottom: Resizable.padding(context, 5)),
                                     alignment: Alignment.centerLeft,
                                     padding: EdgeInsets.symmetric(
                                         horizontal:
@@ -146,9 +150,13 @@ class DetailGradingView extends StatelessWidget {
                                   await imageCubit.pickImageForAll(
                                       checkActiveCubit, cubit);
                                 },
-                                onOpenMic: () {},
+                                onOpenMic: () async {
+                                  await voiceRecordCubit.recordForAll(
+                                      context, checkActiveCubit, cubit);
+                                },
                                 type: 'all',
                                 checkActiveCubit: checkActiveCubit,
+                                voiceRecordCubit: voiceRecordCubit, soundCubit: soundCubit,
                               ),
                             ],
                           ),

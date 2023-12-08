@@ -11,6 +11,7 @@ class AnswerModel {
   String? _newTeacherNote;
   List<dynamic>? _listImagePicker;
   List<String>? _listImageUrl;
+  List<dynamic>? _listRecordUrl;
 
   AnswerModel({
     required this.studentId,
@@ -34,6 +35,12 @@ class AnswerModel {
   set listImageUrl(List<String> values) {
     _listImageUrl = values;
   }
+
+  List<dynamic> get listRecordUrl => _listRecordUrl ?? records;
+  set listRecordUrl(List<dynamic> values) {
+    _listRecordUrl = values;
+  }
+
 
   bool checkIsUrl(value){
     if (value is String) {
@@ -92,8 +99,8 @@ class AnswerModel {
       teacherNote: data['teacher_note']??"",
       parentId: data['parent_id'],
       type: data['type'],
-      images: data['teacher_images_note'],
-      records: data['teacher_records_vote']
+      images: data['teacher_images_note']??[],
+      records: data['teacher_records_note']??[]
     );
   }
 }

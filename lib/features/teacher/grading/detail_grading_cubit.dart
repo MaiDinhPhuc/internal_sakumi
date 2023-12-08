@@ -31,23 +31,25 @@ class DetailGradingCubit extends Cubit<int> {
   String gradingType = "";
 
   init(String type) async {
-    if(type == "type=test"){
+    if (type == "type=test") {
       gradingType = "test";
-    }else{
+    } else {
       gradingType = "btvn";
     }
 
-    data = await FireBaseProvider.instance.getDataForDetailGrading(int.parse(TextUtils.getName(position: 1)),
-        int.parse(TextUtils.getName()), type);
+    data = await FireBaseProvider.instance.getDataForDetailGrading(
+        int.parse(TextUtils.getName(position: 1)),
+        int.parse(TextUtils.getName()),
+        type);
     listQuestions = data!.listQuestions;
     classModel = data!.classModel;
     courseModel = data!.courseModel;
     token = courseModel!.token;
     listAnswer = data!.listAnswer;
 
-    if(listAnswer!.isEmpty){
+    if (listAnswer!.isEmpty) {
       emit(0);
-    }else{
+    } else {
       listState = data!.listState;
       listStudentId = data!.listStudentId;
       listStudent = data!.listStudent;
@@ -70,7 +72,7 @@ class DetailGradingCubit extends Cubit<int> {
     return "";
   }
 
-  QuestionModel getQuestion(){
+  QuestionModel getQuestion() {
     var question = listQuestions!.firstWhere((e) => e.id == now);
     return question;
   }
@@ -81,7 +83,7 @@ class DetailGradingCubit extends Cubit<int> {
     emit(questionId);
   }
 
-  loadingState(){
+  loadingState() {
     emit(-2);
   }
 
@@ -92,8 +94,7 @@ class DetailGradingCubit extends Cubit<int> {
 
   List<AnswerModel> get answers => listAnswer!
       .where((answer) =>
-          answer.questionId == now &&
-          listStudentId!.contains(answer.studentId))
+          answer.questionId == now && listStudentId!.contains(answer.studentId))
       .toList();
 
   bool checkDone(bool isFirst) {
@@ -147,17 +148,20 @@ class DetailGradingCubit extends Cubit<int> {
     }
 
     for (var i in cubit.answers) {
+      print("student_${i.studentId}_homework_question_${i.questionId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}");
       FirebaseFirestore.instance
           .collection('answer')
           .doc(type == "test"
-          ? 'student_${i.studentId}_test_question_${i.questionId}_class_${TextUtils.getName(position: 1)}'
-          : 'student_${i.studentId}_homework_question_${i.questionId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}')
+              ? 'student_${i.studentId}_test_question_${i.questionId}_class_${TextUtils.getName(position: 1)}'
+              : 'student_${i.studentId}_homework_question_${i.questionId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}')
           .update({
         'score': cubit.listAnswer![cubit.listAnswer!.indexOf(i)].newScore,
         'teacher_note':
-        cubit.listAnswer![cubit.listAnswer!.indexOf(i)].newTeacherNote,
+            cubit.listAnswer![cubit.listAnswer!.indexOf(i)].newTeacherNote,
         'teacher_images_note':
-        cubit.listAnswer![cubit.listAnswer!.indexOf(i)].listImageUrl
+            cubit.listAnswer![cubit.listAnswer!.indexOf(i)].listImageUrl,
+        'teacher_records_note':
+            cubit.listAnswer![cubit.listAnswer!.indexOf(i)].listRecordUrl,
       });
     }
     bool isDone = true;
@@ -193,7 +197,7 @@ class DetailGradingCubit extends Cubit<int> {
           FirebaseFirestore.instance
               .collection('student_test')
               .doc(
-              'student_${i.userId}_test_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}')
+                  'student_${i.userId}_test_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}')
               .update({
             'score': temp == 0 ? -1 : submitScore,
           });
@@ -206,7 +210,7 @@ class DetailGradingCubit extends Cubit<int> {
           FirebaseFirestore.instance
               .collection('student_lesson')
               .doc(
-              'student_${i.userId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}')
+                  'student_${i.userId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}')
               .update({
             'hw': temp == 0 ? -1 : submitScore,
           });
