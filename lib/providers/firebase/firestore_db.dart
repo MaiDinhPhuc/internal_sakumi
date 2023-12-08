@@ -41,7 +41,6 @@ class FireStoreDb {
     }
   }
 
-
   Future<QuerySnapshot<Map<String, dynamic>>> getTeacherById(int id) async {
     final snapshot =
         await db.collection("teacher").where("user_id", isEqualTo: id).get();
@@ -622,7 +621,7 @@ class FireStoreDb {
       "title": model.title,
       "vocabulary": model.vocabulary,
       "reading": model.reading,
-      "enable":model.enable
+      "enable": model.enable
     });
     debugPrint("==========> add db for \"lessons\"");
   }
@@ -637,7 +636,7 @@ class FireStoreDb {
       "difficulty": model.difficulty,
       "id": model.id,
       "title": model.title,
-      "enable":model.enable
+      "enable": model.enable
     });
     debugPrint("==========> add db for \"test\"");
   }
@@ -1291,12 +1290,11 @@ class FireStoreDb {
     return temp;
   }
 
-
   Future<QuerySnapshot<Map<String, dynamic>>> getListSearchVoucher(
-      String text) async {
+      String text, String type) async {
     final snapshot = await db
         .collection("voucher")
-        .where('voucher_code',
+        .where(type,
             isGreaterThanOrEqualTo: text, isLessThanOrEqualTo: "$text\uf7ff")
         .get();
 
@@ -1333,8 +1331,8 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<void> updateVoucher(
-      String usedUserCode, String noted, String voucherCode, String dateTime) async {
+  Future<void> updateVoucher(String usedUserCode, String noted,
+      String voucherCode, String dateTime) async {
     await db.collection("voucher").doc("sakumi_voucher_$voucherCode").update({
       'used_date': dateTime,
       'used_user_code': usedUserCode,

@@ -74,7 +74,7 @@ class InputItem extends StatelessWidget {
   final Function(String)? onChange;
   const InputItem(
       {required this.title,
-      required this.controller,
+      this.controller,
       this.isExpand = false,
       this.autoFocus = true,
       this.enabled = true,

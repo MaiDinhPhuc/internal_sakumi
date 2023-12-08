@@ -22,9 +22,13 @@ class VoucherCubit extends Cubit<int> {
   TextEditingController conNote = TextEditingController();
 
   String priceVoucher = '50.000';
+
   String courseVoucher = AppText.txtAllCourse.text;
+
   bool isVoucher = true;
+
   bool isDownload = false;
+
   String qrCode = '';
 
   DateTime get expiredDate => DateTimeCubit.startDay;
@@ -42,6 +46,8 @@ class VoucherCubit extends Cubit<int> {
   String status = AppText.txtNew.text;
 
   String initialValue = '';
+
+  String searchType = AppText.txtRecipientCode.text;
 
   buildUI() {
     isVoucher = false;
@@ -61,6 +67,16 @@ class VoucherCubit extends Cubit<int> {
   selectStatus(String sts) {
     status = sts;
     emit(state + 1);
+  }
+
+  updateNote(String v) {
+    initialValue = v;
+    emit(state + 1);
+  }
+
+  selectSearchType(String type) {
+    searchType = type;
+    emit(state+1);
   }
 
   randomQR() async {
@@ -136,11 +152,15 @@ class VoucherCubit extends Cubit<int> {
   }
 
   searchVoucher(String text) async {
-    int temp = listSearch.length;
     if (text == null || text.isEmpty) {
-      listSearch.removeRange(0, temp);
+      listSearch = [];
     } else {
-      listSearch = await FireBaseProvider.instance.searchVoucher(text);
+      debugPrint('===========> searchVoucher ${text}');
+      listSearch = await FireBaseProvider.instance.searchVoucher(
+          text,
+          searchType == AppText.txtRecipientCode.text
+              ? 'recipient_code'
+              : 'voucher_code');
     }
     emit(state + 1);
   }
@@ -151,13 +171,9 @@ class VoucherCubit extends Cubit<int> {
     initialValue = voucherModel!.noted;
   }
 
-  updateVoucher(String usedUserCode, String noted, String voucherCode, String date) async {
+  updateVoucher(String usedUserCode, String noted, String voucherCode,
+      String date) async {
     await FireBaseProvider.instance
         .updateVoucher(usedUserCode, noted, voucherCode, date);
-  }
-
-  updateNote(String v){
-    initialValue = v;
-    emit(state+1);
   }
 }

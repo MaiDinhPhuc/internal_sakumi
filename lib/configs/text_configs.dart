@@ -316,6 +316,7 @@ enum AppText {
   txtUpdateTeacherDone,
   txtPleaseInputLinkAndTitle,
   txtSuccessfullyUpdateVideo,
+  txtSuccessfullyUpdateVoucher,
   btnVerify,
   btnInputLinkAndTitle,
   txtNotLoggedIn,
@@ -350,7 +351,7 @@ enum AppText {
   txtNew,
   txtUsed,
   txtRecipientCode,
-  txtEditAttendance
+  txtEditAttendance,
 }
 
 Map<AppText, String> texts = {
@@ -398,6 +399,7 @@ Map<AppText, String> texts = {
   AppText.btnInputLinkAndTitle: 'Nhập Link và tiêu đề',
   AppText.btnVerify: 'Xác minh',
   AppText.txtSuccessfullyUpdateVideo: 'Đổi tên và di chuyển video thành công',
+  AppText.txtSuccessfullyUpdateVoucher: 'Cập nhật voucher thành công',
   AppText.txtPleaseInputLinkAndTitle: 'Vui lòng nhập đường dẫn và tiêu đề',
   AppText.txtPleaseCheckListTest: 'Bài kiểm tra đã tồn tại, vui lòng kiểm tra data...',
   AppText.txtDifficult: 'Độ khó',

@@ -10,13 +10,7 @@ import 'package:internal_sakumi/widget/waiting_dialog.dart';
 import 'package:intl/intl.dart';
 
 void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
-  final TextEditingController conCode = TextEditingController();
-  final TextEditingController conDiscount = TextEditingController();
-  final TextEditingController conRecipient = TextEditingController();
-  final TextEditingController conNote = TextEditingController();
   final TextEditingController conUser = TextEditingController();
-  final TextEditingController conExpiredDate = TextEditingController();
-  final TextEditingController conCourse = TextEditingController();
 
   var items = [AppText.txtNew.text, AppText.txtUsed.text];
 
@@ -44,13 +38,11 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                   ),
                   InputItem(
                     title: AppText.titleVoucherCode.text,
-                    controller: conCode,
                     hintText: cubit.voucherModel!.voucherCode,
                     enabled: false,
                   ),
                   InputItem(
                       title: AppText.titleDiscount.text,
-                      controller: conDiscount,
                       hintText: cubit.voucherModel!.price,
                       enabled: false),
                   Row(
@@ -59,7 +51,6 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                       Expanded(
                           child: InputItem(
                               title: AppText.txtRecipientCode.text,
-                              controller: conRecipient,
                               enabled: false,
                               hintText: cubit.voucherModel!.recipientCode)),
                       SizedBox(width: Resizable.padding(context, 15)),
@@ -79,14 +70,12 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                       Expanded(
                           child: InputItem(
                               title: AppText.titleApplyCourse.text,
-                              controller: conCourse,
                               enabled: false,
                               hintText: cubit.voucherModel!.type)),
                       SizedBox(width: Resizable.padding(context, 15)),
                       Expanded(
                           child: InputItem(
                         title: AppText.titleExpiredDate.text,
-                        controller: conExpiredDate,
                         hintText: cubit.voucherModel!.expiredDate,
                         enabled: false,
                       ))
@@ -94,7 +83,6 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                   ),
                   InputItem(
                       title: AppText.txtNote.text,
-                      controller: null,
                       enabled: cubit.voucherModel!.usedDate.isEmpty,
                       initialValue: cubit.voucherModel!.noted,
                       onChange: (v) {
@@ -137,10 +125,11 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                           child: SubmitButton(
                               isActive: cubit.voucherModel!.usedDate.isEmpty,
                               onPressed: () async {
-                                String date = cubit.status != AppText.txtNew.text
-                                    ? DateFormat('dd/MM/yyyy')
-                                        .format(DateTime.now())
-                                    : '';
+                                String date =
+                                    cubit.status != AppText.txtNew.text
+                                        ? DateFormat('dd/MM/yyyy')
+                                            .format(DateTime.now())
+                                        : '';
                                 if (date.isNotEmpty && conUser.text.isEmpty) {
                                   if (context.mounted) {
                                     notificationDialog(context,
@@ -156,7 +145,10 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                                       date);
                                   if (context.mounted) {
                                     Navigator.pop(context);
-                                    Navigator.pop(context);
+                                    notificationDialog(
+                                        context,
+                                        AppText
+                                            .txtSuccessfullyUpdateVoucher.text);
                                   }
                                 }
                               },

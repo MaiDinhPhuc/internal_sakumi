@@ -22,48 +22,65 @@ class VoucherScreen extends StatelessWidget {
               child: BlocProvider(
                   create: (context) => VoucherCubit()..quantityVoucher(),
                   child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.only(
-                              top: Resizable.padding(context, 20)),
-                          child: Text(
-                              AppText.titleManageVoucher.text.toUpperCase(),
-                              style: TextStyle(
-                                fontSize: Resizable.font(context, 30),
-                                fontWeight: FontWeight.w800,
-                              )),
-                        ),
-                        BlocBuilder<VoucherCubit, int>(builder: (c, s) {
-                          var cubit = BlocProvider.of<VoucherCubit>(c);
-                          return Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: Resizable.padding(context, 15)),
-                            child: Row(
-                              children: [
-                                Expanded(flex: 1, child: Container()),
-                                Expanded(flex: 3, child: VoucherSearch(cubit)),
-                                Expanded(flex: 1, child: Container()),
-                              ],
-                            ),
-                          );
-                        }),
-                        Row(
+                    child: BlocBuilder<VoucherCubit, int>(
+                      builder: (c, s) {
+                        var cubit = BlocProvider.of<VoucherCubit>(c);
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Expanded(flex: 1, child: Container()),
-                            Expanded(
-                                flex: 20,
-                                child: BlocBuilder<VoucherCubit, int>(
-                                    builder: (c, s) {
-                                  return VoucherView(
-                                      BlocProvider.of<VoucherCubit>(c));
-                                })),
-                            Expanded(flex: 1, child: Container()),
+                            Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.only(
+                                  top: Resizable.padding(context, 20)),
+                              child: Text(
+                                  AppText.titleManageVoucher.text.toUpperCase(),
+                                  style: TextStyle(
+                                    fontSize: Resizable.font(context, 30),
+                                    fontWeight: FontWeight.w800,
+                                  )),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: Resizable.padding(context, 15)),
+                              child: Row(
+                                children: [
+                                  Expanded(flex: 1, child: Container()),
+                                  Expanded(
+                                      flex: 3, child: VoucherSearch(cubit)),
+                                  Expanded(flex: 1, child: Container()),
+                                ],
+                              ),
+                            ),
+                            Stack(
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(flex: 1, child: Container()),
+                                    Expanded(
+                                        flex: 20,
+                                        child: BlocBuilder<VoucherCubit, int>(
+                                            builder: (c, s) {
+                                          return VoucherView(
+                                              BlocProvider.of<VoucherCubit>(c));
+                                        })),
+                                    Expanded(flex: 1, child: Container()),
+                                  ],
+                                ),
+                                if (cubit.listSearch.isNotEmpty)
+                                  Row(
+                                    children: [
+                                      Expanded(flex: 1, child: Container()),
+                                      Expanded(
+                                          flex: 3,
+                                          child: VoucherSearchList(cubit)),
+                                      Expanded(flex: 1, child: Container()),
+                                    ],
+                                  ),
+                              ],
+                            )
                           ],
-                        ),
-                      ],
+                        );
+                      },
                     ),
                   )))
         ],

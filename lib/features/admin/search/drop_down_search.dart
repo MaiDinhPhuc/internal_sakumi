@@ -26,7 +26,8 @@ class DropDownSearch extends StatelessWidget {
         items: items
             .map((item) => DropdownMenuItem<String>(
             value: item,
-            child: Center(
+            child: Align(
+              alignment: Alignment.centerLeft,
               child: Text(item,
                   style: TextStyle(
                       fontSize: Resizable.font(context, 20),
