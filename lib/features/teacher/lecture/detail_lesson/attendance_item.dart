@@ -17,10 +17,29 @@ class AttendanceItem extends StatelessWidget {
   final int attendId;
   final List<String> items;
   const AttendanceItem(this.studentModel, this.attendId,
-      {required this.items, Key? key, required this.dataCubit, required this.sessionCubit})
+      {required this.items,
+      this.paddingLeft = 150,
+      this.paddingRight = 150,
+      this.hw = -2,
+      this.teacherNote = "",
+      this.supportNote = "",
+      Key? key,
+      required this.dataCubit,
+      required this.sessionCubit,
+      required this.classId,
+      required this.lessonId,
+      required this.time})
       : super(key: key);
   final DataCubit dataCubit;
   final SessionCubit sessionCubit;
+  final double paddingLeft;
+  final double paddingRight;
+  final int classId;
+  final int lessonId;
+  final double hw;
+  final String teacherNote;
+  final String supportNote;
+  final Map time;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -29,8 +48,8 @@ class AttendanceItem extends StatelessWidget {
             builder: (c, s) => Container(
                   margin: EdgeInsets.only(
                       bottom: Resizable.padding(context, 10),
-                      right: Resizable.padding(context, 150),
-                      left: Resizable.padding(context, 150)),
+                      right: Resizable.padding(context, paddingRight),
+                      left: Resizable.padding(context, paddingLeft)),
                   padding: EdgeInsets.symmetric(
                       horizontal: Resizable.padding(context, 20),
                       vertical: Resizable.padding(context, 8)),
@@ -58,58 +77,80 @@ class AttendanceItem extends StatelessWidget {
                               Expanded(
                                   flex: 2,
                                   child: DropDownWidget(
-                                      studentModel.userId,
-                                      selectorId: s,
-                                      items: items,
+                                    studentModel.userId,
+                                    selectorId: s,
+                                    items: items,
                                     onPressed: (v) async {
-                                      await addStudentLesson(
+                                      var check = await addStudentLesson(
                                           StudentLessonModel(
                                               grammar: -2,
                                               hw: -2,
                                               id: 10000,
-                                              classId:
-                                              int.parse(TextUtils.getName(position: 1)),
+                                              classId: classId,
                                               kanji: -2,
-                                              lessonId: int.parse(TextUtils.getName()),
+                                              lessonId: lessonId,
                                               listening: -2,
                                               studentId: studentModel.userId,
                                               timekeeping: 0,
                                               vocabulary: -2,
-                                              teacherNote: '', supportNote: '', time: {}));
-                                      dataCubit.updateStudentLesson(int.parse(TextUtils.getName(position: 1)),StudentLessonModel(
-                                          grammar: -2,
-                                          hw: -2,
-                                          id: 10000,
-                                          classId:
-                                          int.parse(TextUtils.getName(position: 1)),
-                                          kanji: -2,
-                                          lessonId: int.parse(TextUtils.getName()),
-                                          listening: -2,
-                                          studentId: studentModel.userId,
-                                          timekeeping: 0,
-                                          vocabulary: -2,
-                                          teacherNote: '', supportNote: '', time: {}));
+                                              teacherNote: '',
+                                              supportNote: '',
+                                              time: {}));
+
                                       s = items.indexOf(v.toString());
-                                      if (c.mounted) {
-                                        BlocProvider.of<DropdownAttendanceCubit>(c)
-                                            .updateAttendance(items.indexOf(v.toString()), studentModel.userId, c);
-                                        dataCubit.updateStudentLesson(int.parse(TextUtils.getName(position: 1)),StudentLessonModel(
-                                            grammar: -2,
-                                            hw: -2,
-                                            id: 10000,
-                                            classId:
-                                            int.parse(TextUtils.getName(position: 1)),
-                                            kanji: -2,
-                                            lessonId: int.parse(TextUtils.getName()),
-                                            listening: -2,
-                                            studentId: studentModel.userId,
-                                            timekeeping: items.indexOf(v.toString()),
-                                            vocabulary: -2,
-                                            teacherNote: '', supportNote: '', time: {}));
+                                      if (check == false) {
+                                        if (c.mounted) {
+                                          BlocProvider.of<
+                                                  DropdownAttendanceCubit>(c)
+                                              .updateAttendance(
+                                                  items.indexOf(v.toString()),
+                                                  studentModel.userId,
+                                                  classId,
+                                                  lessonId,
+                                                  c);
+                                          dataCubit.updateStudentLesson(
+                                              int.parse(TextUtils.getName(
+                                                  position: 1)),
+                                              StudentLessonModel(
+                                                  grammar: -2,
+                                                  hw: hw,
+                                                  id: 10000,
+                                                  classId: classId,
+                                                  kanji: -2,
+                                                  lessonId: lessonId,
+                                                  listening: -2,
+                                                  studentId:
+                                                      studentModel.userId,
+                                                  timekeeping: items
+                                                      .indexOf(v.toString()),
+                                                  vocabulary: -2,
+                                                  teacherNote: teacherNote,
+                                                  supportNote: supportNote,
+                                                  time: time));
+                                        }
+                                      } else {
+                                        dataCubit.updateStudentLesson(
+                                            int.parse(
+                                                TextUtils.getName(position: 1)),
+                                            StudentLessonModel(
+                                                grammar: -2,
+                                                hw: -2,
+                                                id: 10000,
+                                                classId: classId,
+                                                kanji: -2,
+                                                lessonId: lessonId,
+                                                listening: -2,
+                                                studentId: studentModel.userId,
+                                                timekeeping: s,
+                                                vocabulary: -2,
+                                                teacherNote: '',
+                                                supportNote: '',
+                                                time: {}));
                                       }
-                                      if (items.length == 7 && c.mounted) {
-                                        sessionCubit.updateTimekeeping(s);
-                                      }
+                                      sessionCubit.updateTimekeeping(s);
+                                      // if (items.length == 7 && c.mounted) {
+                                      //
+                                      // }
                                     },
                                   ))
                             ],
@@ -119,10 +160,12 @@ class AttendanceItem extends StatelessWidget {
                   ),
                 )));
   }
-  addStudentLesson(StudentLessonModel model) async {
+
+  Future<bool> addStudentLesson(StudentLessonModel model) async {
     var check = await FireBaseProvider.instance.addStudentLesson(model);
 
     debugPrint('===================> check addStudentLesson $check');
+
+    return check;
   }
 }
-

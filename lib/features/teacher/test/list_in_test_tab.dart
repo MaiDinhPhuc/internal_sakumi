@@ -6,7 +6,6 @@ import 'package:internal_sakumi/features/teacher/test/test_cubit.dart';
 import 'package:internal_sakumi/features/teacher/test/test_not_already_view.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
-import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 class ListTest extends StatelessWidget {
   const ListTest({super.key, required this.cubit, required this.role});
@@ -71,7 +70,6 @@ class ListTest extends StatelessWidget {
                   onConfirm: () {
                     cubit.assignmentTest(context,
                         int.parse(TextUtils.getName()), e.courseId, e.id);
-                    //Navigator.of(context).pop();
                   },
                   role: role,
                   test: e,

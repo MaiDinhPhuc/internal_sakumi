@@ -28,6 +28,8 @@ class LessonTabCubit extends Cubit<int> {
   List<String>? listTeachingDay;
   String? role;
   int? classId;
+  List<StudentModel>? students;
+  List<StudentLessonModel>? listStdLesson;
   load(int classId, DataCubit dataCubit) async {
     SharedPreferences localData = await SharedPreferences.getInstance();
     role = localData.getString(PrefKeyConfigs.role).toString();
@@ -160,7 +162,9 @@ class LessonTabCubit extends Cubit<int> {
         for (var i in students) {
           names.add(i.name);
         }
+        this.students = students;
         List<StudentLessonModel> listStdLesson = classModel2.stdLessons!;
+        this.listStdLesson = listStdLesson;
         List<double?> listAttendance = [];
         List<double?> listHw = [];
         List<bool?> listHwStatus = [];

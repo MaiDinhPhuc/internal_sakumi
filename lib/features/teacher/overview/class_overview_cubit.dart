@@ -82,6 +82,7 @@ class ClassOverviewCubit extends Cubit<int> {
             countAvailable++;
           }
         }
+        listStdClass = classModel2.stdClasses;
         List<int> listLessonIds = [];
         for (var i in classModel2.lessonResults!) {
           if (listLessonIds.contains(i.lessonId) == false) {
@@ -133,6 +134,7 @@ class ClassOverviewCubit extends Cubit<int> {
           List<StudentLessonModel> stdLesson = classModel2.stdLessons!
               .where((element) => element.studentId == i.userId)
               .toList();
+
           List<int> listAttendance = [];
           List<double?> listHw = [];
           List<String> title = [];
@@ -149,6 +151,7 @@ class ClassOverviewCubit extends Cubit<int> {
                 .where((element) => element.lessonId == j.lessonId)
                 .single
                 .title);
+
             senseiNote.add(j.teacherNote);
             spNote.add(j.supportNote);
           }
@@ -212,7 +215,7 @@ class ClassOverviewCubit extends Cubit<int> {
           }
         }
         percentHw = count1 / (total1 == 0 ? 1 : total1);
-        listStdClass = classModel2.stdClasses;
+
         emit(state + 1);
       }
     }

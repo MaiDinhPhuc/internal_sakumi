@@ -28,6 +28,14 @@ class SessionCubit extends Cubit<int> {
 
   List<String> listNoteForEachStudent = [];
 
+
+  loadEdit(List<StudentModel>? students, List<StudentLessonModel>? stdLessons, int lessonId){
+    listStudent = students;
+    List<int> studentId = listStudent!.map((e) => e.userId).toList();
+    listStudentLesson = stdLessons!.where((e) => studentId.contains(e.studentId) && e.lessonId == lessonId).toList();
+    emit(state+1);
+  }
+
   load(ClassModel2 classModel, DataCubit dataCubit) async {
     await getTeacherId();
     debugPrint('===============> init session $teacherId');

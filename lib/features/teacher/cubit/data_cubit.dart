@@ -58,6 +58,10 @@ class DataCubit extends Cubit<int> {
     classNow = null;
   }
 
+  updateSession(){
+    emit(state+1);
+  }
+
   loadClass() async {
 
     SharedPreferences localData = await SharedPreferences.getInstance();

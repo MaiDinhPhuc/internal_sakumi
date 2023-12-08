@@ -350,9 +350,11 @@ enum AppText {
   txtNew,
   txtUsed,
   txtRecipientCode,
+  txtEditAttendance
 }
 
 Map<AppText, String> texts = {
+  AppText.txtEditAttendance: 'Chỉnh sửa điểm danh',
   AppText.txtRecipientCode: 'Mã người nhận',
   AppText.txtNew: 'Mới',
   AppText.txtUsed: 'Đã sử dụng',

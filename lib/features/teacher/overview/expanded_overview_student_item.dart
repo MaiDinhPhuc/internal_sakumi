@@ -5,9 +5,7 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/features/teacher/overview/class_overview_cubit.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
-import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:screenshot/screenshot.dart';
 
 class ExpandedOverviewStudentItem extends StatelessWidget {
   final StudentClassModel stdClass;

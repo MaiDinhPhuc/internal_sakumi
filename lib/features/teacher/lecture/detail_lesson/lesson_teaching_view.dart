@@ -55,6 +55,8 @@ class LessonTeachingView extends StatelessWidget {
                           ],
                           dataCubit: dataCubit,
                           sessionCubit: sessionCubit,
+                          classId: int.parse(TextUtils.getName(position: 1)),
+                          lessonId: int.parse(TextUtils.getName()), time: const {},
                         )),
                     NoteForTeamCard(
                       sessionCubit.isNoteStudent,
