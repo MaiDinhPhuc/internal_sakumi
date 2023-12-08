@@ -22,7 +22,7 @@ class VoucherForm extends StatelessWidget {
           controller: cubit.conCode,
         ),
         InputItem(
-          title: AppText.titleUserId.text,
+          title: AppText.txtRecipientCode.text,
           controller: cubit.conUser,
         ),
         // SizedBox(height: Resizable.size(context, 5)),

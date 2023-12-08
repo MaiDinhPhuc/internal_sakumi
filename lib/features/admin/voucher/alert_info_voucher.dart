@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_dropdown.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_field.dart';
@@ -96,6 +95,7 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                   InputItem(
                       title: AppText.txtNote.text,
                       controller: null,
+                      enabled: cubit.voucherModel!.usedDate.isEmpty,
                       initialValue: cubit.voucherModel!.noted,
                       onChange: (v) {
                         cubit.updateNote(v);
@@ -137,13 +137,16 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                           child: SubmitButton(
                               isActive: cubit.voucherModel!.usedDate.isEmpty,
                               onPressed: () async {
-                                var date = cubit.status != AppText.txtNew.text
+                                String date = cubit.status != AppText.txtNew.text
                                     ? DateFormat('dd/MM/yyyy')
                                         .format(DateTime.now())
                                     : '';
-                                if (date.isEmpty ||
-                                    (date.isNotEmpty &&
-                                        conUser.text.isNotEmpty)) {
+                                if (date.isNotEmpty && conUser.text.isEmpty) {
+                                  if (context.mounted) {
+                                    notificationDialog(context,
+                                        AppText.txtPleaseInputStudentCode.text);
+                                  }
+                                } else {
                                   Navigator.pop(context);
                                   waitingDialog(context);
                                   await cubit.updateVoucher(
@@ -153,12 +156,7 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                                       date);
                                   if (context.mounted) {
                                     Navigator.pop(context);
-                                  }
-                                }
-                                if (date.isNotEmpty && conUser.text.isEmpty) {
-                                  if (context.mounted) {
-                                    notificationDialog(context,
-                                        AppText.txtPleaseInputStudentCode.text);
+                                    Navigator.pop(context);
                                   }
                                 }
                               },
