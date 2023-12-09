@@ -13,9 +13,7 @@ import 'package:intl/intl.dart';
 class VoucherImage extends StatelessWidget {
   final VoucherCubit cubit;
   final _globalKey = GlobalKey();
-  VoucherImage(this.cubit, {Key? key})
-      :
-        super(key: key);
+  VoucherImage(this.cubit, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +26,7 @@ class VoucherImage extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius:
-                  BorderRadius.circular(Resizable.padding(context, 10)),
+                      BorderRadius.circular(Resizable.padding(context, 10)),
                   border: Border.all(
                       color: const Color(0xff757575),
                       width: Resizable.size(context, 0.5))),
@@ -37,7 +35,7 @@ class VoucherImage extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: const Color(0xfff5f5f5),
                   borderRadius:
-                  BorderRadius.circular(Resizable.padding(context, 15)),
+                      BorderRadius.circular(Resizable.padding(context, 15)),
                 ),
                 padding: EdgeInsets.all(Resizable.padding(context, 15)),
                 child: Row(
@@ -51,8 +49,7 @@ class VoucherImage extends StatelessWidget {
                             color: Colors.white,
                             // width: 100,
                             child: Column(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Expanded(flex: 1, child: SocialInfoView()),
                                 Expanded(
@@ -93,29 +90,33 @@ class VoucherImage extends StatelessWidget {
                       await cubit.createNewVoucher(
                           context,
                           VoucherModel(
-                              id: cubit.numVoucher,
-                              recipientCode: cubit.conUser.text,
-                              usedUserCode: '',
-                              voucherCode: cubit.qrCode,
-                              createDate: cubit.createDate,
-                              usedDate: '',
-                              expiredDate: DateFormat('dd/MM/yyyy').format(DateTime(
-                                cubit.expiredDate.year,
-                                cubit.expiredDate.month +
-                                    (cubit.isVoucher ? 3 : 0),
-                                cubit.expiredDate.day,
-                              )),
-                              noted: cubit.conNote.text,
-                              price: cubit.priceVoucher,
-                              type: cubit.courseVoucher));
+                            id: cubit.numVoucher,
+                            recipientCode: cubit.conUser.text,
+                            usedUserCode: '',
+                            voucherCode: cubit.qrCode,
+                            createDate: cubit.createDate,
+                            usedDate: '',
+                            expiredDate:
+                                DateFormat('dd/MM/yyyy').format(DateTime(
+                              cubit.expiredDate.year,
+                              cubit.expiredDate.month +
+                                  (cubit.isVoucher ? 3 : 0),
+                              cubit.expiredDate.day,
+                            )),
+                            noted: cubit.conNote.text,
+                            price: cubit.priceVoucher,
+                            type: cubit.courseVoucher,
+                            isFullCourse: cubit.isFullCourse,
+                          ));
                     },
                     title: AppText.btnCreateVoucher.text.toUpperCase()),
                 SizedBox(width: Resizable.size(context, 10)),
                 SubmitButton(
                     isActive: cubit.isDownload,
-                    onPressed: () async{
-                      RenderRepaintBoundary boundary = _globalKey.currentContext!
-                          .findRenderObject() as RenderRepaintBoundary;
+                    onPressed: () async {
+                      RenderRepaintBoundary boundary =
+                          _globalKey.currentContext!.findRenderObject()
+                              as RenderRepaintBoundary;
                       await cubit.downloadVoucher(boundary, context);
                     },
                     title: AppText.btnDownloadImage.text.toUpperCase())

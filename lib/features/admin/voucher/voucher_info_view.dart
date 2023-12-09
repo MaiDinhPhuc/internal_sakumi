@@ -25,7 +25,8 @@ class VoucherInfoView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset('assets/images/img_logo_voucher.png', height: Resizable.size(context, 24)),
+                    Image.asset('assets/images/img_logo_voucher.png',
+                        height: Resizable.size(context, 24)),
                     SizedBox(width: Resizable.size(context, 5)),
                     Text(AppText.titleSakumi.text.toUpperCase(),
                         style: TextStyle(
@@ -41,7 +42,7 @@ class VoucherInfoView extends StatelessWidget {
                   decoration: BoxDecoration(
                       color: primaryColor,
                       borderRadius:
-                      BorderRadius.circular(Resizable.size(context, 5))),
+                          BorderRadius.circular(Resizable.size(context, 5))),
                   child: Text(AppText.txtDirectDiscountVoucher.text,
                       style: TextStyle(
                           color: Colors.white,
@@ -52,19 +53,19 @@ class VoucherInfoView extends StatelessWidget {
                   children: [
                     RichText(
                         text: TextSpan(children: [
-                          TextSpan(
-                              text: cubit.priceVoucher,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: Resizable.font(context, 76))),
-                          TextSpan(
-                              text: 'đ',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: Resizable.font(context, 43)))
-                        ])),
+                      TextSpan(
+                          text: cubit.priceVoucher,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w800,
+                              fontSize: Resizable.font(context, 76))),
+                      TextSpan(
+                          text: 'đ',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w800,
+                              fontSize: Resizable.font(context, 43)))
+                    ])),
                     Container(
                       // margin: EdgeInsets.only(top: Resizable.padding(context, 3)),
                       height: Resizable.size(context, 3),
@@ -80,8 +81,8 @@ class VoucherInfoView extends StatelessWidget {
                       padding: EdgeInsets.only(
                           bottom: Resizable.padding(context, 5)),
                       child: Text(
-                          AppText.txtApplyFor.text
-                              .replaceAll('@', cubit.courseVoucher.toUpperCase()),
+                          AppText.txtApplyFor.text.replaceAll(
+                              '@', cubit.courseVoucher.toUpperCase()),
                           style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: Resizable.font(context, 17),
@@ -91,11 +92,18 @@ class VoucherInfoView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(AppText.txtVoucherNote1.text,
-                            style: TextStyle(fontWeight: FontWeight.w600,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
                                 fontSize: Resizable.font(context, 14))),
                         Text(AppText.txtVoucherNote2.text,
-                            style: TextStyle(fontWeight: FontWeight.w600,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
                                 fontSize: Resizable.font(context, 14))),
+                        if (cubit.isFullCourse)
+                          Text(AppText.txtVoucherNote3.text,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: Resizable.font(context, 14))),
                       ],
                     )
                   ],
@@ -107,32 +115,38 @@ class VoucherInfoView extends StatelessWidget {
           Expanded(flex: 3, child: Container()),
           Expanded(
               flex: 14,
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(height: Resizable.size(context, 10)),
                   AspectRatio(
                       aspectRatio: 1,
                       child: Container(
-                        padding:
-                        EdgeInsets.all(Resizable.padding(context, 10)),
+                        padding: EdgeInsets.all(Resizable.padding(context, 10)),
                         decoration: BoxDecoration(
                             color: const Color(0xffeeeeee),
                             borderRadius: BorderRadius.circular(
                                 Resizable.size(context, 10))),
-                        child: cubit.qrCode == '' ? Transform.scale(
-                          scale: 0.2,
-                          child: CircularProgressIndicator(strokeWidth: Resizable.size(context, 15),),
-                        ) : Container(
-                          padding: EdgeInsets.all(Resizable.padding(context, 10)),
-                          color: Colors.white,
-                          child: QrImageView(
-                              data: cubit.qrCode,
-                              backgroundColor: Colors.white,
-                              padding: EdgeInsets.zero),
-                        ),
+                        child: cubit.qrCode == ''
+                            ? Transform.scale(
+                                scale: 0.2,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: Resizable.size(context, 15),
+                                ),
+                              )
+                            : Container(
+                                padding: EdgeInsets.all(
+                                    Resizable.padding(context, 10)),
+                                color: Colors.white,
+                                child: QrImageView(
+                                    data: cubit.qrCode,
+                                    backgroundColor: Colors.white,
+                                    padding: EdgeInsets.zero),
+                              ),
                       )),
-                  Column(crossAxisAlignment: CrossAxisAlignment.start,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: EdgeInsets.only(
@@ -147,24 +161,24 @@ class VoucherInfoView extends StatelessWidget {
                       ),
                       RichText(
                           text: TextSpan(children: [
-                            TextSpan(
-                                text: '${AppText.titleExpiredDate.text}: ',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: Resizable.font(context, 14))),
-                            TextSpan(
-                                text: DateFormat('dd/MM/yyyy').format(DateTime(
-                                  cubit.expiredDate.year,
-                                  cubit.expiredDate.month +
-                                      (cubit.isVoucher ? 3 : 0),
-                                  cubit.expiredDate.day,
-                                )),
-                                style: TextStyle(
-                                    color: primaryColor,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: Resizable.font(context, 14)))
-                          ]))
+                        TextSpan(
+                            text: '${AppText.titleExpiredDate.text}: ',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 14))),
+                        TextSpan(
+                            text: DateFormat('dd/MM/yyyy').format(DateTime(
+                              cubit.expiredDate.year,
+                              cubit.expiredDate.month +
+                                  (cubit.isVoucher ? 3 : 0),
+                              cubit.expiredDate.day,
+                            )),
+                            style: TextStyle(
+                                color: primaryColor,
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 14)))
+                      ]))
                     ],
                   ),
                   SizedBox(height: Resizable.size(context, 10)),

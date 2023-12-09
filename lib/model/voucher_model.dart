@@ -21,6 +21,7 @@ class VoucherModel {
       noted,
       price,
       type;
+  final bool isFullCourse;
 
   const VoucherModel(
       {required this.id,
@@ -32,7 +33,7 @@ class VoucherModel {
       required this.expiredDate,
       required this.noted,
       required this.price,
-      required this.type});
+      required this.type, required this.isFullCourse});
 
   factory VoucherModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
@@ -52,6 +53,7 @@ class VoucherModel {
       noted: data['noted'] ?? '',
       price: data['price'] ?? '50.000',
       type: data['type'] ?? AppText.txtAllCourse.text,
+      isFullCourse: data['full_course'] ?? false,
     );
   }
 }

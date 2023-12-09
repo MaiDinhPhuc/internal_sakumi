@@ -1317,7 +1317,8 @@ class FireStoreDb {
       'expired_date': model.expiredDate,
       'noted': model.noted,
       'price': model.price,
-      'type': model.type
+      'type': model.type,
+      'full_course': model.isFullCourse
     });
   }
 

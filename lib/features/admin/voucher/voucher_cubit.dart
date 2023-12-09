@@ -49,6 +49,8 @@ class VoucherCubit extends Cubit<int> {
 
   String searchType = AppText.txtRecipientCode.text;
 
+  bool isFullCourse = false;
+
   buildUI() {
     isVoucher = false;
     emit(state + 1);
@@ -76,7 +78,12 @@ class VoucherCubit extends Cubit<int> {
 
   selectSearchType(String type) {
     searchType = type;
-    emit(state+1);
+    emit(state + 1);
+  }
+
+  selectFullCourse() {
+    isFullCourse = !isFullCourse;
+    emit(state + 1);
   }
 
   randomQR() async {

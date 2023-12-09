@@ -339,6 +339,7 @@ enum AppText {
   btnDownloadImage,
   txtVoucherNote1,
   txtVoucherNote2,
+  txtVoucherNote3,
   titleSakumi,
   txtDirectDiscountVoucher,
   txtApplyFor,
@@ -352,9 +353,11 @@ enum AppText {
   txtUsed,
   txtRecipientCode,
   txtEditAttendance,
+  txtFullCourse,
 }
 
 Map<AppText, String> texts = {
+  AppText.txtFullCourse: 'Full khoá',
   AppText.txtEditAttendance: 'Chỉnh sửa điểm danh',
   AppText.txtRecipientCode: 'Mã người nhận',
   AppText.txtNew: 'Mới',
@@ -365,6 +368,7 @@ Map<AppText, String> texts = {
   AppText.titleSakumi: 'Nhật Ngữ Sakumi',
   AppText.txtVoucherNote1: '- Chỉ áp dụng tối đa 1 voucher cho 1 khoá học',
   AppText.txtVoucherNote2: '- Không áp dụng 2 chương trình khuyến mãi cùng lúc',
+  AppText.txtVoucherNote3: '- Chỉ áp dụng khi đóng trọn khoá',
   AppText.btnCreateVoucher: 'Tạo voucher',
   AppText.btnDownloadImage: 'Tải ảnh',
   AppText.txtAllCourse: 'Tất Cả Khoá Học',

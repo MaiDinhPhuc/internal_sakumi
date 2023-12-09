@@ -50,6 +50,39 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                     children: [
                       Expanded(
                           child: InputItem(
+                              title: AppText.titleApplyCourse.text,
+                              enabled: false,
+                              hintText: cubit.voucherModel!.type)),
+                      SizedBox(width: Resizable.padding(context, 15)),
+                      Expanded(
+                          child: Row(
+                        children: [
+                          InkWell(
+                              child: cubit.isFullCourse
+                                  ? const Icon(
+                                      Icons.check_box,
+                                      color: Color(0xffE0E0E0),
+                                    )
+                                  : const Icon(Icons.check_box_outline_blank,
+                                      color: Color(0xffE0E0E0))),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: Resizable.padding(context, 2)),
+                            child: Text(AppText.txtFullCourse.text,
+                                style: TextStyle(
+                                    color: const Color(0xff757575),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: Resizable.font(context, 18))),
+                          )
+                        ],
+                      ))
+                    ],
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                          child: InputItem(
                               title: AppText.txtRecipientCode.text,
                               enabled: false,
                               hintText: cubit.voucherModel!.recipientCode)),
@@ -69,16 +102,32 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                     children: [
                       Expanded(
                           child: InputItem(
-                              title: AppText.titleApplyCourse.text,
-                              enabled: false,
-                              hintText: cubit.voucherModel!.type)),
-                      SizedBox(width: Resizable.padding(context, 15)),
-                      Expanded(
-                          child: InputItem(
                         title: AppText.titleExpiredDate.text,
                         hintText: cubit.voucherModel!.expiredDate,
                         enabled: false,
-                      ))
+                      )),
+                      SizedBox(width: Resizable.padding(context, 15)),
+                      Expanded(
+                          child: Padding(
+                        padding: EdgeInsets.only(
+                            bottom: Resizable.padding(context, 5)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(AppText.titleStatus.text,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: Resizable.font(context, 18),
+                                    color: const Color(0xff757575))),
+                            InputDropdown(
+                                onChanged: (v) =>
+                                    cubit.selectStatus(v.toString()),
+                                title: '',
+                                hint: items.first,
+                                items: items),
+                          ],
+                        ),
+                      )),
                     ],
                   ),
                   InputItem(
@@ -89,21 +138,6 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                         cubit.updateNote(v);
                       },
                       isExpand: true),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(AppText.titleStatus.text,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: Resizable.font(context, 18),
-                              color: const Color(0xff757575))),
-                      InputDropdown(
-                          onChanged: (v) => cubit.selectStatus(v.toString()),
-                          title: '',
-                          hint: items.first,
-                          items: items),
-                    ],
-                  ),
                   Container(
                     margin:
                         EdgeInsets.only(top: Resizable.padding(context, 10)),
