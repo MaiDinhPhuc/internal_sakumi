@@ -8,13 +8,13 @@ class InputDate extends StatelessWidget {
   final String title;
   final bool isStartDate;
   final String? errorText;
-  late bool isisVoucher;
+  late bool isVoucher;
   final Function? onPressed;
   InputDate(
       {required this.title,
       this.isStartDate = true,
       this.errorText,
-      this.isisVoucher = false, this.onPressed,
+      this.isVoucher = false, this.onPressed,
       Key? key})
       : super(key: key);
 
@@ -106,7 +106,7 @@ class InputDate extends StatelessWidget {
                               hintText: DateFormat('dd/MM/yyyy').format(
                                   DateTime(
                                       date.year,
-                                      date.month + (isisVoucher ? 3 : 0),
+                                      date.month + (isVoucher ? 3 : 0),
                                       date.day)),
                               isDense: true,
                               fillColor: Colors.white,

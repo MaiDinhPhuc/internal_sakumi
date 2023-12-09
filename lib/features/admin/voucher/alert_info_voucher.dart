@@ -91,7 +91,7 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                         child: InputItem(
                           title: AppText.titleUserId.text,
                           hintText: cubit.voucherModel!.usedUserCode,
-                          enabled: cubit.voucherModel!.usedDate.isEmpty,
+                          enabled: cubit.isActive(),
                           controller: conUser,
                         ),
                       )
@@ -132,7 +132,7 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                   ),
                   InputItem(
                       title: AppText.txtNote.text,
-                      enabled: cubit.voucherModel!.usedDate.isEmpty,
+                      enabled: cubit.isActive(),
                       initialValue: cubit.voucherModel!.noted,
                       onChange: (v) {
                         cubit.updateNote(v);
@@ -157,7 +157,7 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                           constraints: BoxConstraints(
                               minWidth: Resizable.size(context, 100)),
                           child: SubmitButton(
-                              isActive: cubit.voucherModel!.usedDate.isEmpty,
+                              isActive: cubit.isActive(),
                               onPressed: () async {
                                 String date =
                                     cubit.status != AppText.txtNew.text

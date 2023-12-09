@@ -100,7 +100,7 @@ class VoucherForm extends StatelessWidget {
         ),
         InputDate(
             title: AppText.titleExpiredDate.text,
-            isisVoucher: cubit.isVoucher,
+            isVoucher: cubit.isVoucher,
             onPressed: () => cubit.buildUI(),
             errorText: AppText.txtErrorStartDate.text),
         // SizedBox(width: Resizable.size(context, 10)),

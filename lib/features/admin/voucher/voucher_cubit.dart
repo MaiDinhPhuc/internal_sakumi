@@ -183,4 +183,22 @@ class VoucherCubit extends Cubit<int> {
     await FireBaseProvider.instance
         .updateVoucher(usedUserCode, noted, voucherCode, date);
   }
+
+  isExpired(String date) {
+    var list = date.split('/');
+    var temp = list.reversed.join('-');
+    return DateTime.parse(temp).isBefore(DateTime.now());
+  }
+
+  isActive() {
+    if (isExpired(voucherModel!.expiredDate)) {
+      return false;
+    } else {
+      if (voucherModel!.usedDate.isEmpty) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
 }
