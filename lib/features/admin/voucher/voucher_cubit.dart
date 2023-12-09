@@ -191,14 +191,14 @@ class VoucherCubit extends Cubit<int> {
   }
 
   isActive() {
-    if (isExpired(voucherModel!.expiredDate)) {
-      return false;
-    } else {
-      if (voucherModel!.usedDate.isEmpty) {
-        return true;
-      } else {
+    if (voucherModel!.usedDate.isEmpty) {
+      if(isExpired(voucherModel!.expiredDate)) {
         return false;
+      } else {
+        return true;
       }
+    } else {
+      return false;
     }
   }
 }

@@ -174,17 +174,17 @@ class VoucherSearchList extends StatelessWidget {
                                       maxHeight: Resizable.size(context, 20)),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(1000),
-                                      color: cubit.isExpired(model.expiredDate)
-                                          ? const Color(0xffb71c1c)
-                                          : model.usedDate.isEmpty
-                                              ? const Color(0xff33691E)
-                                              : const Color(0xffF57F17)),
+                                      color: model.usedDate.isEmpty
+                                          ? cubit.isExpired(model.expiredDate)
+                                              ? const Color(0xffb71c1c)
+                                              : const Color(0xff33691E)
+                                          : const Color(0xffF57F17)),
                                   child: Text(
-                                    cubit.isExpired(model.expiredDate)
-                                        ? AppText.txtExpired.text
-                                        : model.usedDate.isEmpty
-                                            ? AppText.txtNew.text
-                                            : AppText.txtUsed.text,
+                                    model.usedDate.isEmpty
+                                        ? cubit.isExpired(model.expiredDate)
+                                            ? AppText.txtExpired.text
+                                            : AppText.txtNew.text
+                                        : AppText.txtUsed.text,
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w700,
