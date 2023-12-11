@@ -110,7 +110,8 @@ class ExpandLessonItem extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                         fontSize: Resizable.font(context, 17)),
                   )),
-              TrackStudentItemRowLayout(
+              if (cubit.role == "admin")
+                TrackStudentItemRowLayout(
                   name: Container(),
                   attendance: Container(),
                   submit: Container(),
@@ -135,7 +136,7 @@ class ExpandLessonItem extends StatelessWidget {
                             PopupMenuItem(
                               onTap: () {
                                 alertEditAttendance(context,cubit ,sessionCubit, dataCubit, lessonId);
-                                waitingDialog(context);
+                                //waitingDialog(context);
                               },
                               padding: EdgeInsets.zero,
                               child: Center(
