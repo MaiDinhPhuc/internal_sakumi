@@ -7,6 +7,7 @@ import 'package:internal_sakumi/features/master/manage_list_course.dart';
 import 'package:internal_sakumi/features/master/manage_list_lesson.dart';
 import 'package:internal_sakumi/features/master/manage_list_test.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:internal_sakumi/widget/custom_appbar.dart';
 import 'package:internal_sakumi/widget/title_widget.dart';
 
 class ManageCourseTab extends StatelessWidget {
@@ -14,14 +15,23 @@ class ManageCourseTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(create: (context)=>ManageCourseCubit()..loadAllCourse(),
+    return BlocProvider(
+      create: (context) => ManageCourseCubit()..loadAllCourse(),
       child: Scaffold(
-          body: Padding(
-            padding:  EdgeInsets.symmetric(horizontal: Resizable.padding(context, 50)),
+          body: Column(
+        children: [
+          CustomAppbar(buttonList: [
+            AppText.txtManageCourse.text,
+            AppText.txtAnother.text,
+          ], s: 0),
+          Expanded(
+              child: Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: Resizable.padding(context, 50)),
             child: BlocBuilder<ManageCourseCubit, int>(
-              builder: (c,s){
+              builder: (c, s) {
                 var cubit = BlocProvider.of<ManageCourseCubit>(c);
-                if(cubit.listAllCourse == null){
+                if (cubit.listAllCourse == null) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
@@ -29,8 +39,12 @@ class ManageCourseTab extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Padding(padding: EdgeInsets.symmetric(vertical:  Resizable.padding(context, 10)),child: FilterCourseState(cubit)),
-                    Expanded(child: Row(
+                    Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: Resizable.padding(context, 10)),
+                        child: FilterCourseState(cubit)),
+                    Expanded(
+                        child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
@@ -40,10 +54,9 @@ class ManageCourseTab extends StatelessWidget {
                                   left: Resizable.padding(context, 20)),
                               child: cubit.listCourseNow == null
                                   ? Transform.scale(
-                                scale: 0.75,
-                                child:
-                                const CircularProgressIndicator(),
-                              )
+                                      scale: 0.75,
+                                      child: const CircularProgressIndicator(),
+                                    )
                                   : ManageListCourse(cubit),
                             )),
                         Expanded(
@@ -53,23 +66,22 @@ class ManageCourseTab extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Expanded(
                                           child: Align(
-                                            alignment: Alignment.center,
-                                            child: TitleWidget(AppText
-                                                .txtListLesson.text
-                                                .toUpperCase()),
-                                          )),
+                                        alignment: Alignment.center,
+                                        child: TitleWidget(AppText
+                                            .txtListLesson.text
+                                            .toUpperCase()),
+                                      )),
                                       Expanded(
                                           child: Align(
-                                            alignment: Alignment.center,
-                                            child: TitleWidget(AppText
-                                                .txtListTest.text
-                                                .toUpperCase()),
-                                          )),
+                                        alignment: Alignment.center,
+                                        child: TitleWidget(AppText
+                                            .txtListTest.text
+                                            .toUpperCase()),
+                                      )),
                                     ],
                                   ),
                                   Container(
@@ -81,12 +93,12 @@ class ManageCourseTab extends StatelessWidget {
                                             Resizable.padding(context, 5))),
                                     child: Row(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         ManageListLesson(cubit),
                                         SizedBox(
-                                            width: Resizable.padding(
-                                                context, 10)),
+                                            width:
+                                                Resizable.padding(context, 10)),
                                         ManageListTest(cubit)
                                       ],
                                     ),
@@ -100,7 +112,9 @@ class ManageCourseTab extends StatelessWidget {
                 );
               },
             ),
-          )
-      ),);
+          ))
+        ],
+      )),
+    );
   }
 }

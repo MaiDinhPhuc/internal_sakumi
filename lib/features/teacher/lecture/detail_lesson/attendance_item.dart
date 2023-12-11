@@ -91,13 +91,12 @@ class AttendanceItem extends StatelessWidget {
                                               lessonId: lessonId,
                                               listening: -2,
                                               studentId: studentModel.userId,
-                                              timekeeping: 0,
+                                              timekeeping: items
+                                                  .indexOf(v.toString()),
                                               vocabulary: -2,
                                               teacherNote: '',
                                               supportNote: '',
                                               time: {}));
-
-                                      s = items.indexOf(v.toString());
                                       if (check == false) {
                                         if (c.mounted) {
                                           BlocProvider.of<
@@ -141,16 +140,18 @@ class AttendanceItem extends StatelessWidget {
                                                 lessonId: lessonId,
                                                 listening: -2,
                                                 studentId: studentModel.userId,
-                                                timekeeping: s,
+                                                timekeeping: items.indexOf(v.toString()),
                                                 vocabulary: -2,
                                                 teacherNote: '',
                                                 supportNote: '',
                                                 time: {}));
                                       }
-                                      sessionCubit.updateTimekeeping(s);
-                                      // if (items.length == 7 && c.mounted) {
-                                      //
-                                      // }
+                                      if (items.length == 7 && c.mounted) {
+                                        sessionCubit.updateTimekeeping(items.indexOf(v.toString()));
+                                      }
+                                      BlocProvider.of<
+                                          DropdownAttendanceCubit>(c)
+                                          .updateUI(items.indexOf(v.toString()));
                                     },
                                   ))
                             ],

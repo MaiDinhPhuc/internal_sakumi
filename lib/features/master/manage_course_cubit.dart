@@ -111,6 +111,12 @@ class ManageCourseCubit extends Cubit<int> {
     emit(state + 1);
   }
 
+  updateLesson(LessonModel lesson){
+    var index = listLesson!.indexOf(listLesson!.firstWhere((e) => e.lessonId == lesson.lessonId));
+    listLesson![index] = lesson;
+    emit(state+1);
+  }
+
   loadTestInCourse(int selector) async {
     listTest = null;
     listTest = await FireBaseProvider.instance.getListTestByCourseId(selector);

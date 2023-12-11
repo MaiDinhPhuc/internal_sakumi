@@ -135,7 +135,7 @@ class ExpandLessonItem extends StatelessWidget {
                             PopupMenuItem(
                               onTap: () {
                                 alertEditAttendance(context,cubit ,sessionCubit, dataCubit, lessonId);
-                                //waitingDialog(context);
+                                waitingDialog(context);
                               },
                               padding: EdgeInsets.zero,
                               child: Center(

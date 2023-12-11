@@ -356,9 +356,11 @@ enum AppText {
   txtRecipientCode,
   txtEditAttendance,
   txtFullCourse,
+  txtIgnore
 }
 
 Map<AppText, String> texts = {
+  AppText.txtIgnore: 'Bỏ qua',
   AppText.txtFullCourse: 'Full khoá',
   AppText.txtEditAttendance: 'Chỉnh sửa điểm danh',
   AppText.txtRecipientCode: 'Mã người nhận',

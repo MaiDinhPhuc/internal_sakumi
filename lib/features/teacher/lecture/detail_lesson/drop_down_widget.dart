@@ -64,6 +64,10 @@ class DropdownAttendanceCubit extends Cubit<int> {
         // int.parse(TextUtils.getName()),
         // int.parse(TextUtils.getName(position: 1)),
         attendId);
+    // emit(attendId);
+  }
+
+  updateUI(int attendId){
     emit(attendId);
   }
 

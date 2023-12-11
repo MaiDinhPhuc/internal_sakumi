@@ -12,7 +12,8 @@ import 'package:internal_sakumi/screens/admin/tab/voucher_screen.dart';
 import 'package:internal_sakumi/screens/admin/teacher_info_screen.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
-import 'package:internal_sakumi/screens/master_screen.dart';
+import 'package:internal_sakumi/screens/master/another_tab.dart';
+import 'package:internal_sakumi/screens/master/manage_course_tab.dart';
 import 'package:internal_sakumi/screens/splash_screen.dart';
 import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
 import 'package:internal_sakumi/screens/teacher/tab/class_overview_tab.dart';
@@ -63,8 +64,10 @@ class Routes {
         handler: splashScreenHandler, transitionType: TransitionType.fadeIn);
     router.define(teacher,
         handler: teacherHandler, transitionType: TransitionType.fadeIn);
-    router.define(master,
-        handler: masterHandler, transitionType: TransitionType.fadeIn);
+    router.define('$master/manageCourse',
+        handler: manageCourseHandler, transitionType: TransitionType.fadeIn);
+    router.define('$master/another',
+        handler: manageAnotherHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/manageGeneral',
         handler: manageGeneralHandler, transitionType: TransitionType.fadeIn);
     router.define('$teacher/profile',
@@ -123,9 +126,14 @@ var teacherHandler =
   return const TeacherScreen();
 });
 
-var masterHandler =
+var manageCourseHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return const MasterScreen();
+  return const ManageCourseTab();
+});
+
+var manageAnotherHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return const AnotherTab();
 });
 
 var manageGeneralHandler =

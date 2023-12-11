@@ -186,7 +186,9 @@ class ClassOverviewCubit extends Cubit<int> {
               'attendancePercent': 0,
               'hwPercent': 0,
               'teacherNote': senseiNote,
-              'spNote': spNote
+              'spNote': spNote,
+              'doingTime':getBTVNTime(stdLesson),
+              'ignore':getNumberIgnore(stdLesson)
             });
           } else {
             listStdDetail.add({
@@ -198,7 +200,9 @@ class ClassOverviewCubit extends Cubit<int> {
               'attendancePercent': tempAttendance / count,
               'hwPercent': tempHw / countHw,
               'teacherNote': senseiNote,
-              'spNote': spNote
+              'spNote': spNote,
+              'doingTime':getBTVNTime(stdLesson),
+              'ignore':getNumberIgnore(stdLesson)
             });
           }
         }
@@ -231,6 +235,47 @@ class ClassOverviewCubit extends Cubit<int> {
       }
     }
    return count == 0? null : temp/count;
+  }
+
+  List<String> getBTVNTime(List<StudentLessonModel> stdLessons) {
+    if(stdLessons.isEmpty){
+      return [];
+    }
+    List<String> listTime = [];
+    for(var stdLesson in stdLessons){
+      if (stdLesson.time.isEmpty) {
+        listTime.add("");
+      }else{
+        int seconds = stdLesson.time["time_btvn"];
+
+        int hours = seconds ~/ 3600;
+        int minutes = (seconds % 3600) ~/ 60;
+        int remainingSeconds = seconds % 60;
+
+        String formattedTime =
+            '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
+        listTime.add(formattedTime);
+      }
+
+    }
+    return listTime;
+  }
+
+  List<String> getNumberIgnore(List<StudentLessonModel> stdLessons) {
+    if(stdLessons.isEmpty){
+      return [];
+    }
+    List<String> listTime = [];
+    for(var stdLesson in stdLessons){
+      if (stdLesson.time.isEmpty) {
+        listTime.add("");
+      }else{
+        int skip = stdLesson.time["skip_btvn"];
+        listTime.add(skip.toString());
+      }
+
+    }
+    return listTime;
   }
 
   loadAfterRemove() async {

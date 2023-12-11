@@ -114,7 +114,7 @@ class FireBaseProvider extends NetworkProvider {
           sharedPreferences.setString(PrefKeyConfigs.role, "master");
           if (context.mounted) {
             Navigator.pop(context);
-            Navigator.pushReplacementNamed(context, Routes.master);
+            Navigator.pushReplacementNamed(context, '${Routes.master}/manageCourse');
           }
         }
         email.clear();
@@ -194,7 +194,7 @@ class FireBaseProvider extends NetworkProvider {
           Navigator.pushReplacementNamed(context, Routes.teacher);
         }
         if (user.role == "master") {
-          Navigator.pushReplacementNamed(context, Routes.master);
+          Navigator.pushReplacementNamed(context, '${Routes.master}/manageCourse');
         }
       }
       return true;
