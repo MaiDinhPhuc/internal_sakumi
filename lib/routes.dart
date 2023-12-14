@@ -12,6 +12,7 @@ import 'package:internal_sakumi/screens/admin/tab/voucher_screen.dart';
 import 'package:internal_sakumi/screens/admin/teacher_info_screen.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
+import 'package:internal_sakumi/screens/master/detail_survey_screen.dart';
 import 'package:internal_sakumi/screens/master/survey_tab.dart';
 import 'package:internal_sakumi/screens/master/manage_course_tab.dart';
 import 'package:internal_sakumi/screens/splash_screen.dart';
@@ -67,7 +68,7 @@ class Routes {
     router.define('$master/manageCourse',
         handler: manageCourseHandler, transitionType: TransitionType.fadeIn);
     router.define('$master/manageSurvey',
-        handler: manageAnotherHandler, transitionType: TransitionType.fadeIn);
+        handler: manageSurveyHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/manageGeneral',
         handler: manageGeneralHandler, transitionType: TransitionType.fadeIn);
     router.define('$teacher/profile',
@@ -90,6 +91,8 @@ class Routes {
         handler: teacherInfoHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/studentInfo/:studentId',
         handler: studentInfoHandler, transitionType: TransitionType.fadeIn);
+    router.define('$master/manageSurvey/:id',
+        handler: manageSurveyDetailHandler, transitionType: TransitionType.fadeIn);
     router.define('/:role/overview/:classId',
         handler: overViewHandler, transitionType: TransitionType.fadeIn);
     router.define('/:role/grading/:classId',
@@ -131,9 +134,14 @@ var manageCourseHandler =
   return const ManageCourseTab();
 });
 
-var manageAnotherHandler =
+var manageSurveyHandler =
 Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return const SurveyTab();
+});
+
+var manageSurveyDetailHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return DetailSurveyScreen();
 });
 
 var manageGeneralHandler =

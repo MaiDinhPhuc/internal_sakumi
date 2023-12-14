@@ -4,6 +4,7 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
 import 'package:internal_sakumi/features/master/manage_survey/alert_add_new_survey.dart';
 import 'package:internal_sakumi/features/master/manage_survey/manage_survey_cubit.dart';
+import 'package:internal_sakumi/features/master/manage_survey/survey_item.dart';
 import 'package:internal_sakumi/features/master/manage_survey/survey_layout.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -62,22 +63,24 @@ class SurveyTab extends StatelessWidget {
                         BlocBuilder<ManageSurveyCubit, int>(
                             builder: (c, s) =>
                                 surveyController.listSurvey == null
-                                    ? Shimmer.fromColors(
-                                        baseColor: Colors.grey[300]!,
-                                        highlightColor: Colors.grey[100]!,
-                                        child: SingleChildScrollView(
-                                          child: Column(
-                                            children: [
-                                              ...shimmerList.map(
-                                                  (e) => const ItemShimmer())
-                                            ],
-                                          ),
-                                        ),
-                                      )
+                                    ? Padding(padding: EdgeInsets.only(top: Resizable.padding(context, 10)),child: Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        ...shimmerList.map(
+                                                (e) => const ItemShimmer())
+                                      ],
+                                    ),
+                                  ),
+                                ))
                                     : surveyController.listSurvey!.isNotEmpty
                                         ? Column(children: [
                                             ...surveyController.listSurvey!
-                                                .map((e) => Container())
+                                                .map((e) => SurveyItem(
+                                                    surveyModel: e,
+                                                    cubit: surveyController))
                                                 .toList(),
                                           ])
                                         : Container()),
@@ -86,10 +89,9 @@ class SurveyTab extends StatelessWidget {
                                 vertical: Resizable.size(context, 20)),
                             child: DottedBorderButton(
                                 AppText.btnAddNewSurvey.text.toUpperCase(),
-                                isManageGeneral: true,
-                                onPressed: () {
-                                  alertAddNewSurvey(context,surveyController);
-                                }))
+                                isManageGeneral: true, onPressed: () {
+                              alertAddNewSurvey(context, surveyController);
+                            }))
                       ],
                     ),
                   )))

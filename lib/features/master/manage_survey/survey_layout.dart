@@ -17,7 +17,7 @@ class SurveyLayout extends StatelessWidget {
       children: [
         Expanded(
             flex: 4,
-            child: Container(alignment: Alignment.centerLeft, child: surveyCode)),
+            child: Container(alignment: Alignment.center, child: surveyCode)),
         Expanded(
             flex: 8,
             child: Container(alignment: Alignment.centerLeft, child: title)),

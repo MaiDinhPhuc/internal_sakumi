@@ -90,11 +90,12 @@ class InputItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: Resizable.font(context, 18),
-                    color: const Color(0xff757575))),
+            if(title != "")
+              Text(title,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: Resizable.font(context, 18),
+                      color: const Color(0xff757575))),
             InputField(
               controller: controller,
               initialValue: initialValue,

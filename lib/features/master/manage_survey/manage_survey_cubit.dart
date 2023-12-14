@@ -1,6 +1,8 @@
+import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/model/survey_model.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,6 +12,7 @@ class ManageSurveyCubit extends Cubit<int>{
   int? userID;
 
   List<SurveyModel>? listSurvey;
+
 
   loadSurvey()async{
     SharedPreferences localData = await SharedPreferences.getInstance();
@@ -23,18 +26,34 @@ class ManageSurveyCubit extends Cubit<int>{
       userID = userId;
     }
 
-    if(int.tryParse(TextUtils.getName()) != null) return;
+    if(listSurvey != null) return;
 
     if (role == 'teacher' || role == "admin") return;
 
     if (role == 'master') {
       getDataFromFirebase();
     }
+    debugPrint("==========>loadSurvey");
   }
 
-  getDataFromFirebase(){
-    listSurvey = [];
+  getDataFromFirebase()async{
+    listSurvey = await FireBaseProvider.instance.getAllSurvey();
     emit(state+1);
+  }
+
+  addNewSurvey(SurveyModel surveyModel){
+    listSurvey!.add(surveyModel);
+    emit(state+1);
+  }
+
+  deleteSurvey(int id){
+    listSurvey!.remove(listSurvey!.firstWhere((e) => e.id == id));
+    emit(state+1);
+  }
+
+  updateSurvey(SurveyModel newSurvey){
+    var index = listSurvey!.indexOf(listSurvey!.firstWhere((e) => e.id == newSurvey.id));
+    listSurvey![index] = newSurvey;
   }
 
 }

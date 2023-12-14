@@ -2,15 +2,16 @@ import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_field.dart';
 import 'package:internal_sakumi/features/master/manage_course/add_new_lesson_button.dart';
+import 'package:internal_sakumi/model/survey_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
+import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 import 'manage_survey_cubit.dart';
 
-void alertAddNewSurvey(BuildContext context,
-    ManageSurveyCubit cubit) {
+void alertAddNewSurvey(BuildContext context, ManageSurveyCubit cubit) {
   TextEditingController titleCon = TextEditingController();
   TextEditingController codeCon = TextEditingController();
   TextEditingController desCon = TextEditingController();
@@ -39,7 +40,7 @@ void alertAddNewSurvey(BuildContext context,
                             margin: EdgeInsets.only(
                                 bottom: Resizable.padding(context, 20)),
                             child: Text(
-                               AppText.txtAddNewSurvey.text.toUpperCase(),
+                              AppText.txtAddNewSurvey.text.toUpperCase(),
                               style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                   fontSize: Resizable.font(context, 20)),
@@ -49,35 +50,35 @@ void alertAddNewSurvey(BuildContext context,
                           flex: 10,
                           child: SingleChildScrollView(
                               child: Column(children: [
-                                InputItem(
-                                    onChange: (String? value) {
-                                      debugPrint(value);
-                                    },
-                                    controller: codeCon,
-                                    title: AppText.txtSurveyCode.text,
-                                    isExpand: false),
-                                InputItem(
-                                    onChange: (String? value) {
-                                      debugPrint(value);
-                                    },
-                                    controller: titleCon,
-                                    title: AppText.txtSurveyTitle.text,
-                                    isExpand: false),
-                                InputItem(
-                                    onChange: (String? value) {
-                                      debugPrint(value);
-                                    },
-                                    controller: desCon,
-                                    title: AppText.txtDescription.text,
-                                    isExpand: true),
-                              ]))),
+                            InputItem(
+                                onChange: (String? value) {
+                                  debugPrint(codeCon.text);
+                                },
+                                controller: codeCon,
+                                title: AppText.txtSurveyCode.text,
+                                isExpand: false, errorText: AppText.txtPleaseInput.text),
+                            InputItem(
+                                onChange: (String? value) {
+                                  debugPrint(titleCon.text);
+                                },
+                                controller: titleCon,
+                                title: AppText.txtSurveyTitle.text,
+                                isExpand: false,errorText: AppText.txtPleaseInput.text),
+                            InputItem(
+                                onChange: (String? value) {
+                                  debugPrint(desCon.text);
+                                },
+                                controller: desCon,
+                                title: AppText.txtDescription.text,
+                                isExpand: true,errorText: AppText.txtPleaseInput.text),
+                          ]))),
                       Expanded(
                           flex: 2,
                           child: Container(
                               margin: EdgeInsets.only(
                                   top: Resizable.padding(context, 20)),
                               child: Row(
-                                mainAxisAlignment:  MainAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
@@ -85,10 +86,10 @@ void alertAddNewSurvey(BuildContext context,
                                       Container(
                                         constraints: BoxConstraints(
                                             minWidth:
-                                            Resizable.size(context, 100)),
+                                                Resizable.size(context, 100)),
                                         margin: EdgeInsets.only(
                                             right:
-                                            Resizable.padding(context, 20)),
+                                                Resizable.padding(context, 20)),
                                         child: DialogButton(
                                             AppText.textCancel.text
                                                 .toUpperCase(),
@@ -97,18 +98,27 @@ void alertAddNewSurvey(BuildContext context,
                                       ),
                                       AddNewLessonButton(() async {
                                         if (formKey.currentState!.validate()) {
-                                          final bool check = false;
+                                          int millisecondsSinceEpoch =
+                                              DateTime.now()
+                                                  .millisecondsSinceEpoch;
+                                          waitingDialog(context);
+                                          await FireBaseProvider.instance.checkNewSurvey(SurveyModel(
+                                               surveyCode: codeCon.text,
+                                               title: titleCon.text,
+                                               description: desCon.text,
+                                               id: millisecondsSinceEpoch,
+                                               detail: [], enable: true));
                                           if (context.mounted) {
                                             Navigator.pop(context);
-                                            if (check == true) {
-
-                                            } else {
-                                              notificationDialog(
-                                                  context,
-                                                  AppText
-                                                      .txtPleaseCheckListSurvey
-                                                      .text);
-                                            }
+                                            Navigator.pop(context);
+                                            cubit.addNewSurvey(SurveyModel(
+                                                surveyCode: codeCon.text,
+                                                title: titleCon.text,
+                                                description: desCon.text,
+                                                id: millisecondsSinceEpoch,
+                                                detail: [], enable: true));
+                                            Navigator.pushNamed(context,
+                                                '${Routes.master}/manageSurvey/id=$millisecondsSinceEpoch');
                                           }
                                         } else {
                                           print('Form is invalid');

@@ -24,6 +24,7 @@ import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
+import 'package:internal_sakumi/model/survey_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
@@ -437,6 +438,15 @@ class FireBaseProvider extends NetworkProvider {
             .getAllStudentLessonInLesson(classId, lessonId))
         .docs
         .map((e) => StudentLessonModel.fromSnapshot(e))
+        .toList();
+  }
+
+  @override
+  Future<List<SurveyModel>> getAllSurvey() async {
+    return (await FireStoreDb.instance
+        .getAllSurvey())
+        .docs
+        .map((e) => SurveyModel.fromSnapshot(e))
         .toList();
   }
 
@@ -1307,6 +1317,12 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<void> deleteSurvey(int id) async {
+    await FireStoreDb.instance
+        .deleteSurveyByDocs("survey_$id");
+  }
+
+  @override
   Future<void> updateCourseState(CourseModel courseModel, bool state) async {
     await FireStoreDb.instance.updateCourseState(courseModel, state);
   }
@@ -1513,5 +1529,20 @@ class FireBaseProvider extends NetworkProvider {
       String voucherCode, String date) async {
     await FireStoreDb.instance
         .updateVoucher(usedUserCode, noted, voucherCode, date);
+  }
+
+
+  @override
+  Future<bool> checkNewSurvey(SurveyModel survey) async {
+    await FireStoreDb.instance.createNewSurvey(survey);
+    return true;
+  }
+
+  @override
+  Future<SurveyModel> getSurveyById(int id)async {
+    return (await FireStoreDb.instance.getSurveyById(id))
+        .docs
+        .map((e) => SurveyModel.fromSnapshot(e))
+        .single;
   }
 }

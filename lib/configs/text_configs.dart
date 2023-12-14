@@ -363,10 +363,24 @@ enum AppText {
   txtIgnore,
   txtSurveyCode,
   txtSurveyTitle,
-  txtPleaseCheckListSurvey
+  txtPleaseCheckListSurvey,
+  txtDeleteSurvey,
+  txtConfirmDeleteSurvey,
+  btnAddNewSurveyQuestion,
+  txtSurveyType1,
+  txtSurveyType2,
+  txtSurveyType3,
+  txtLetInputSurveyQuestion
 }
 
 Map<AppText, String> texts = {
+  AppText.txtLetInputSurveyQuestion: 'Hãy điền câu hỏi khảo sát vào đây',
+  AppText.txtSurveyType1: 'Trắc nghiệm (cho chọn 1 lựa chọn)',
+  AppText.txtSurveyType2: 'Hộp kiểm (cho chọn nhiều lựa chọn)',
+  AppText.txtSurveyType3: 'Đoạn văn ngắn',
+  AppText.btnAddNewSurveyQuestion: '+Thêm câu hỏi mới',
+  AppText.txtConfirmDeleteSurvey: 'SS chắc chắn muốn xoá bài khảo sát này???',
+  AppText.txtDeleteSurvey: 'Xoá bài',
   AppText.txtPleaseCheckListSurvey: 'Bài khảo sát đã tồn tại, vui lòng kiểm tra mã bài khảo sát',
   AppText.txtSurveyTitle: 'Tiêu đề bài khảo sát',
   AppText.txtAddNewSurvey: 'Thêm bài khảo sát mới',

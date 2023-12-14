@@ -16,6 +16,7 @@ import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
+import 'package:internal_sakumi/model/survey_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_home_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
@@ -235,4 +236,12 @@ abstract class NetworkProvider {
   Future<void> deleteLesson(int lessonId, int courseId);
 
   Future<void> deleteTest(int testId, int courseId);
+
+  Future<void> deleteSurvey(int id);
+
+  Future<bool> checkNewSurvey(SurveyModel survey);
+
+  Future<List<SurveyModel>> getAllSurvey();
+
+  Future<SurveyModel> getSurveyById(int id);
 }

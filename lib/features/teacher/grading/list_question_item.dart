@@ -45,8 +45,7 @@ class ListQuestionItem extends StatelessWidget {
                           isDone: cubit.listState![
                           cubit.listQuestions!.indexOf(e)],
                         ),
-                      ))
-                          .toList(),
+                      )).toList(),
                     ],
                   ),
                 ),
