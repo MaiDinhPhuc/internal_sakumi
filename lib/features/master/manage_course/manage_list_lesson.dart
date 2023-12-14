@@ -5,25 +5,27 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
-import 'package:internal_sakumi/features/master/test_item.dart';
-import 'package:internal_sakumi/model/test_model.dart';
+import 'package:internal_sakumi/features/teacher/alert_view.dart';
+import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
+import 'alert_add_new_lesson.dart';
 import 'alert_item_exist.dart';
-import 'alert_new_test.dart';
+import 'lesson_item.dart';
 import 'manage_course_cubit.dart';
 
-class ManageListTest extends StatelessWidget {
-  const ManageListTest(this.cubit, {super.key});
+
+class ManageListLesson extends StatelessWidget {
+  const ManageListLesson(this.cubit, {super.key});
   final ManageCourseCubit cubit;
   @override
   Widget build(BuildContext context) {
     return Expanded(
         child: !cubit.canAdd
             ? Container()
-            : cubit.listTest == null
+            : cubit.listLesson == null
                 ? Transform.scale(
                     scale: 0.75,
                     child: const Center(
@@ -32,25 +34,22 @@ class ManageListTest extends StatelessWidget {
                   )
                 : Column(
                     children: [
-                      ...(cubit.listTest!)
-                          .map((e) => TestItem(
-                                e,
-                                cubit: cubit,
-                              ))
+                      ...(cubit.listLesson!)
+                          .map((e) => LessonItem(e, cubit))
                           .toList(),
                       SizedBox(height: Resizable.padding(context, 5)),
-                      if (cubit.listTest!.isNotEmpty || cubit.canAdd == true)
+                      if (cubit.listLesson!.isNotEmpty || cubit.canAdd == true)
                         Material(
                             color: Colors.transparent,
                             child: DottedBorderButton(
-                                AppText.btnAddNewTest.text.toUpperCase(),
+                                AppText.btnAddNewLesson.text.toUpperCase(),
                                 isManageGeneral: true, onPressed: () async {
                               selectionDialog(
                                   context,
                                   AppText.txtAddManual.text,
-                                  AppText.txtAddFromJson.text, () {
+                                  AppText.txtAddFromJson.text, () async {
                                 Navigator.pop(context);
-                                alertAddNewTest(context, null, false, cubit);
+                                alertAddNewLesson(context, null, false, cubit);
                               }, () async {
                                 Navigator.pop(context);
                                 FilePickerResult? result =
@@ -64,16 +63,16 @@ class ManageListTest extends StatelessWidget {
                                   final decodedBytes =
                                       utf8Decoder.convert(uInt8list);
                                   bool check =
-                                      await TestModel.check(decodedBytes);
+                                      await LessonModel.check(decodedBytes);
                                   if (check) {
                                     await FireBaseProvider.instance
-                                        .addTestFromJson(decodedBytes);
+                                        .addLessonFromJson(decodedBytes);
                                     Navigator.pop(context);
-                                    cubit.loadTestInCourse(cubit.selector);
+                                    cubit.loadLessonInCourse(cubit.selector);
                                   } else {
                                     Navigator.pop(context);
                                     alertItemExist(
-                                        context, AppText.txtTestExist.text);
+                                        context, AppText.txtLessonExist.text);
                                   }
                                 }
                               });

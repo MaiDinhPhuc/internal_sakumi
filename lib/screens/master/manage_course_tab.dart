@@ -1,11 +1,11 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/master/filter_course_state.dart';
-import 'package:internal_sakumi/features/master/manage_course_cubit.dart';
-import 'package:internal_sakumi/features/master/manage_list_course.dart';
-import 'package:internal_sakumi/features/master/manage_list_lesson.dart';
-import 'package:internal_sakumi/features/master/manage_list_test.dart';
+import 'package:internal_sakumi/features/master/manage_course/filter_course_state.dart';
+import 'package:internal_sakumi/features/master/manage_course/manage_course_cubit.dart';
+import 'package:internal_sakumi/features/master/manage_course/manage_list_course.dart';
+import 'package:internal_sakumi/features/master/manage_course/manage_list_lesson.dart';
+import 'package:internal_sakumi/features/master/manage_course/manage_list_test.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/custom_appbar.dart';
 import 'package:internal_sakumi/widget/title_widget.dart';
@@ -22,7 +22,7 @@ class ManageCourseTab extends StatelessWidget {
         children: [
           CustomAppbar(buttonList: [
             AppText.txtManageCourse.text,
-            AppText.txtAnother.text,
+            AppText.txtSurvey.text,
           ], s: 0),
           Expanded(
               child: Padding(

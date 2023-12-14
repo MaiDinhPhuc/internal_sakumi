@@ -84,7 +84,7 @@ class CustomAppbar extends StatelessWidget {
                                             '${Routes.master}/manageCourse');
                                       }else{
                                         Navigator.pushNamed(context,
-                                            '${Routes.master}/another');
+                                            '${Routes.master}/manageSurvey');
                                       }
                                     },
                                     child: Container(

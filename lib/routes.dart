@@ -12,7 +12,7 @@ import 'package:internal_sakumi/screens/admin/tab/voucher_screen.dart';
 import 'package:internal_sakumi/screens/admin/teacher_info_screen.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
-import 'package:internal_sakumi/screens/master/another_tab.dart';
+import 'package:internal_sakumi/screens/master/survey_tab.dart';
 import 'package:internal_sakumi/screens/master/manage_course_tab.dart';
 import 'package:internal_sakumi/screens/splash_screen.dart';
 import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
@@ -66,7 +66,7 @@ class Routes {
         handler: teacherHandler, transitionType: TransitionType.fadeIn);
     router.define('$master/manageCourse',
         handler: manageCourseHandler, transitionType: TransitionType.fadeIn);
-    router.define('$master/another',
+    router.define('$master/manageSurvey',
         handler: manageAnotherHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/manageGeneral',
         handler: manageGeneralHandler, transitionType: TransitionType.fadeIn);
@@ -133,7 +133,7 @@ var manageCourseHandler =
 
 var manageAnotherHandler =
 Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return const AnotherTab();
+  return const SurveyTab();
 });
 
 var manageGeneralHandler =

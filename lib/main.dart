@@ -1,14 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/configs/prefKey_configs.dart';
-import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/routes.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 import 'configs/color_configs.dart';
+import 'features/master/manage_survey/manage_survey_cubit.dart';
 import 'features/teacher/cubit/data_cubit.dart';
 import 'features/teacher/profile/app_bar_info_teacher_cubit.dart';
 import 'firebase_options.dart';
@@ -34,6 +31,7 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (context) => AppBarInfoTeacherCubit()),
           BlocProvider<DataCubit>(create: (context) => DataCubit()),
+          BlocProvider<ManageSurveyCubit>(create: (context) => ManageSurveyCubit()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

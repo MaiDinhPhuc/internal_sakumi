@@ -227,10 +227,13 @@ enum AppText {
   //master
   txtManageCourse,
   txtAnother,
+  txtSurvey,
+  titleSurveyList,
   txtListCourse,
   txtListLesson,
   txtListTest,
   btnAddNewCourse,
+  btnAddNewSurvey,
   btnAddNewLesson,
   btnAddNewTest,
   txtAddManual,
@@ -303,6 +306,7 @@ enum AppText {
   txtTool,
   txtNumberIgnore,
   txtAddNewTest,
+  txtAddNewSurvey,
   txtEditTest,
   txtTestId,
   txtDifficult,
@@ -356,10 +360,20 @@ enum AppText {
   txtRecipientCode,
   txtEditAttendance,
   txtFullCourse,
-  txtIgnore
+  txtIgnore,
+  txtSurveyCode,
+  txtSurveyTitle,
+  txtPleaseCheckListSurvey
 }
 
 Map<AppText, String> texts = {
+  AppText.txtPleaseCheckListSurvey: 'Bài khảo sát đã tồn tại, vui lòng kiểm tra mã bài khảo sát',
+  AppText.txtSurveyTitle: 'Tiêu đề bài khảo sát',
+  AppText.txtAddNewSurvey: 'Thêm bài khảo sát mới',
+  AppText.btnAddNewSurvey: 'Thêm bài khảo sát',
+  AppText.txtSurveyCode: 'Mã bài khảo sát',
+  AppText.titleSurveyList: 'Danh sách bài khảo sát',
+  AppText.txtSurvey: 'Khảo sát',
   AppText.txtIgnore: 'Bỏ qua',
   AppText.txtFullCourse: 'Full khoá',
   AppText.txtEditAttendance: 'Chỉnh sửa điểm danh',
