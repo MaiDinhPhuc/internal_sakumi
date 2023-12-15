@@ -245,6 +245,8 @@ class FireBaseProvider extends NetworkProvider {
         .toList();
     if(lessons.every((e) => e.order == 0) == false){
       lessons.sort((a, b) => a.order.compareTo(b.order));
+    }else{
+      lessons.sort((a, b) => a.lessonId.compareTo(b.lessonId));
     }
 
     return lessons;
