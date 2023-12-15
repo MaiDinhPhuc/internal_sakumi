@@ -243,7 +243,10 @@ class FireBaseProvider extends NetworkProvider {
         .toList()
         .where((e) => e.enable == true)
         .toList();
-    lessons.sort((a, b) => a.lessonId.compareTo(b.lessonId));
+    if(lessons.every((e) => e.order == 0) == false){
+      lessons.sort((a, b) => a.order.compareTo(b.order));
+    }
+
     return lessons;
   }
 
@@ -288,7 +291,9 @@ class FireBaseProvider extends NetworkProvider {
                   .where((e) => e.enable == true)
                   .toList()
             ]);
-
+    if(list.every((e) => e.order == 0) == false){
+      list.sort((a, b) => a.order.compareTo(b.order));
+    }
     return list;
   }
 
@@ -333,7 +338,9 @@ class FireBaseProvider extends NetworkProvider {
                   .where((e) => e.enable == true)
                   .toList()
             ]);
-
+    if(list.every((e) => e.order == 0) == false){
+      list.sort((a, b) => a.order.compareTo(b.order));
+    }
     return list;
   }
 
@@ -1469,6 +1476,9 @@ class FireBaseProvider extends NetworkProvider {
         .toList()
         .where((e) => e.enable == true)
         .toList();
+    if(listLesson.every((e) => e.order == 0) == false){
+      listLesson.sort((a, b) => a.order.compareTo(b.order));
+    }
     return listLesson;
   }
 

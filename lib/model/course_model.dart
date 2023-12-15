@@ -69,12 +69,14 @@ class CourseModel {
         lessonCount: data['lesson_count'],
         level: data['level'],
         termId: data['term_id'],
-        termName: data['term_name'],
-        title: data['title'],
-        token: data['token'],
+        termName: data['term_name'] ?? "",
+        title: data['title'] ?? "",
+        token: data['token'] ?? "",
         type: data['type'] ?? "general",
-        code: data['code'],
+        code: data['code'] ?? "",
         enable: data['enable'] ?? true,
-        version: data['dataversion'] ?? 1, prefix: data['prefix'] ?? "", suffix: data['suffix'] ?? "");
+        version: data['dataversion'] ?? 1,
+        prefix: data['prefix'] ?? "",
+        suffix: data['suffix'] ?? "");
   }
 }
