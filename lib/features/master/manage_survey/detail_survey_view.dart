@@ -66,7 +66,7 @@ class DetailSurveyView extends StatelessWidget {
                           flex: 1,
                           child: Container(
                             margin: EdgeInsets.symmetric(
-                                horizontal: Resizable.size(context, 30)),
+                                horizontal: Resizable.size(context, 20)),
                             constraints: BoxConstraints(
                                 minHeight: Resizable.size(context, 30)),
                             child: SubmitButton(
@@ -91,7 +91,7 @@ class DetailSurveyView extends StatelessWidget {
                           flex: 1,
                           child: Container(
                             margin: EdgeInsets.symmetric(
-                                horizontal: Resizable.size(context, 30)),
+                                horizontal: Resizable.size(context, 20)),
                             constraints: BoxConstraints(
                                 minHeight: Resizable.size(context, 30)),
                             child: SubmitButton(

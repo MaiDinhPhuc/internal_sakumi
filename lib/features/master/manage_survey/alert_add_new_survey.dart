@@ -27,7 +27,7 @@ void alertAddNewSurvey(BuildContext context, ManageSurveyCubit cubit) {
                 key: formKey,
                 child: Container(
                   width: MediaQuery.of(context).size.width / 2,
-                  height: MediaQuery.of(context).size.height * 0.55,
+                  height: MediaQuery.of(context).size.height * 0.65,
                   padding: EdgeInsets.all(Resizable.padding(context, 20)),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -77,65 +77,62 @@ void alertAddNewSurvey(BuildContext context, ManageSurveyCubit cubit) {
                           ]))),
                       Expanded(
                           flex: 2,
-                          child: Container(
-                              margin: EdgeInsets.only(
-                                  top: Resizable.padding(context, 20)),
-                              child: Row(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Container(
-                                        constraints: BoxConstraints(
-                                            minWidth:
-                                                Resizable.size(context, 100)),
-                                        margin: EdgeInsets.only(
-                                            right:
-                                                Resizable.padding(context, 20)),
-                                        child: DialogButton(
-                                            AppText.textCancel.text
-                                                .toUpperCase(),
-                                            onPressed: () =>
-                                                Navigator.pop(context)),
-                                      ),
-                                      AddNewLessonButton(() async {
-                                        if (formKey.currentState!.validate()) {
-                                          int millisecondsSinceEpoch =
-                                              DateTime.now()
-                                                  .millisecondsSinceEpoch;
-                                          waitingDialog(context);
-                                          await FireBaseProvider.instance
-                                              .checkNewSurvey(SurveyModel(
-                                                  surveyCode: codeCon.text,
-                                                  title: titleCon.text,
-                                                  description: desCon.text,
-                                                  id: millisecondsSinceEpoch,
-                                                  detail: [],
-                                                  enable: true,
-                                                  active: false));
-                                          if (context.mounted) {
-                                            Navigator.pop(context);
-                                            Navigator.pop(context);
-                                            cubit.addNewSurvey(SurveyModel(
-                                                surveyCode: codeCon.text,
-                                                title: titleCon.text,
-                                                description: desCon.text,
-                                                id: millisecondsSinceEpoch,
-                                                detail: [],
-                                                enable: true,
-                                                active: false));
-                                            Navigator.pushNamed(context,
-                                                '${Routes.master}/manageSurvey/id=$millisecondsSinceEpoch');
-                                          }
-                                        } else {
-                                          print('Form is invalid');
-                                        }
-                                      }, false)
-                                    ],
-                                  )
+                                  Container(
+                                    constraints: BoxConstraints(
+                                        minWidth:
+                                        Resizable.size(context, 100), minHeight: Resizable.size(context, 20)),
+                                    margin: EdgeInsets.only(
+                                        right:
+                                        Resizable.padding(context, 20)),
+                                    child: DialogButton(
+                                        AppText.textCancel.text
+                                            .toUpperCase(),
+                                        onPressed: () =>
+                                            Navigator.pop(context)),
+                                  ),
+                                  AddNewLessonButton(() async {
+                                    if (formKey.currentState!.validate()) {
+                                      int millisecondsSinceEpoch =
+                                          DateTime.now()
+                                              .millisecondsSinceEpoch;
+                                      waitingDialog(context);
+                                      await FireBaseProvider.instance
+                                          .checkNewSurvey(SurveyModel(
+                                          surveyCode: codeCon.text,
+                                          title: titleCon.text,
+                                          description: desCon.text,
+                                          id: millisecondsSinceEpoch,
+                                          detail: [],
+                                          enable: true,
+                                          active: false));
+                                      if (context.mounted) {
+                                        Navigator.pop(context);
+                                        Navigator.pop(context);
+                                        cubit.addNewSurvey(SurveyModel(
+                                            surveyCode: codeCon.text,
+                                            title: titleCon.text,
+                                            description: desCon.text,
+                                            id: millisecondsSinceEpoch,
+                                            detail: [],
+                                            enable: true,
+                                            active: false));
+                                        Navigator.pushNamed(context,
+                                            '${Routes.master}/manageSurvey/id=$millisecondsSinceEpoch');
+                                      }
+                                    } else {
+                                      print('Form is invalid');
+                                    }
+                                  }, false)
                                 ],
-                              )))
+                              )
+                            ],
+                          ))
                     ],
                   ),
                 )));

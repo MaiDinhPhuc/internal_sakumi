@@ -10,7 +10,7 @@ class AddNewLessonButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(minWidth: Resizable.size(context, 120)),
+      constraints: BoxConstraints(minWidth: Resizable.size(context, 100), minHeight: Resizable.size(context, 20)),
       child: SubmitButton(
           onPressed: onPress,
           title: isEdit ? AppText.btnUpdate.text : AppText.btnAdd.text),
