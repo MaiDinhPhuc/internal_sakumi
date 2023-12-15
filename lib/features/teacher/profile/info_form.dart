@@ -46,7 +46,7 @@ class _InfoFormState extends State<InfoForm> {
                             .requestFocus(listInfo[0]['focusNode']);
                       },
                       iconSize: Resizable.size(context, 20),
-                      icon: Image.asset('assets/images/ic_edit.png'))
+                      icon: Image.asset('assets/images/ic_edit.png',width:Resizable.size(context, 20),height: Resizable.size(context, 20)))
             ],
           ),
           Divider(

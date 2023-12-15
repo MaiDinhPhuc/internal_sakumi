@@ -45,7 +45,7 @@ class _InfoPassState extends State<InfoPass> {
                             .requestFocus(listPass[0]['focusNode']);
                       },
                       iconSize: Resizable.size(context, 20),
-                      icon: Image.asset('assets/images/ic_edit.png'))
+                      icon: Image.asset('assets/images/ic_edit.png', height: Resizable.size(context, 20),width: Resizable.size(context, 20)))
             ],
           ),
           Divider(

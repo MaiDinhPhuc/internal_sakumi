@@ -73,7 +73,7 @@ class SurveyItem extends StatelessWidget {
                     ),
                     PopupMenuItem(
                       onTap: () {
-                        Navigator.pop(context);
+                        //Navigator.pop(context);
                         showDialog(
                             context: context,
                             builder: (context) => ConfirmDeleteSurvey(
