@@ -56,21 +56,24 @@ void alertAddNewSurvey(BuildContext context, ManageSurveyCubit cubit) {
                                 },
                                 controller: codeCon,
                                 title: AppText.txtSurveyCode.text,
-                                isExpand: false, errorText: AppText.txtPleaseInput.text),
+                                isExpand: false,
+                                errorText: AppText.txtPleaseInput.text),
                             InputItem(
                                 onChange: (String? value) {
                                   debugPrint(titleCon.text);
                                 },
                                 controller: titleCon,
                                 title: AppText.txtSurveyTitle.text,
-                                isExpand: false,errorText: AppText.txtPleaseInput.text),
+                                isExpand: false,
+                                errorText: AppText.txtPleaseInput.text),
                             InputItem(
                                 onChange: (String? value) {
                                   debugPrint(desCon.text);
                                 },
                                 controller: desCon,
                                 title: AppText.txtDescription.text,
-                                isExpand: true,errorText: AppText.txtPleaseInput.text),
+                                isExpand: true,
+                                errorText: AppText.txtPleaseInput.text),
                           ]))),
                       Expanded(
                           flex: 2,
@@ -102,12 +105,15 @@ void alertAddNewSurvey(BuildContext context, ManageSurveyCubit cubit) {
                                               DateTime.now()
                                                   .millisecondsSinceEpoch;
                                           waitingDialog(context);
-                                          await FireBaseProvider.instance.checkNewSurvey(SurveyModel(
-                                               surveyCode: codeCon.text,
-                                               title: titleCon.text,
-                                               description: desCon.text,
-                                               id: millisecondsSinceEpoch,
-                                               detail: [], enable: true));
+                                          await FireBaseProvider.instance
+                                              .checkNewSurvey(SurveyModel(
+                                                  surveyCode: codeCon.text,
+                                                  title: titleCon.text,
+                                                  description: desCon.text,
+                                                  id: millisecondsSinceEpoch,
+                                                  detail: [],
+                                                  enable: true,
+                                                  active: false));
                                           if (context.mounted) {
                                             Navigator.pop(context);
                                             Navigator.pop(context);
@@ -116,7 +122,9 @@ void alertAddNewSurvey(BuildContext context, ManageSurveyCubit cubit) {
                                                 title: titleCon.text,
                                                 description: desCon.text,
                                                 id: millisecondsSinceEpoch,
-                                                detail: [], enable: true));
+                                                detail: [],
+                                                enable: true,
+                                                active: false));
                                             Navigator.pushNamed(context,
                                                 '${Routes.master}/manageSurvey/id=$millisecondsSinceEpoch');
                                           }

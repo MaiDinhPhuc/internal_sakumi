@@ -3,8 +3,11 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
 import 'package:internal_sakumi/features/master/manage_survey/question_survey_view.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/title_widget.dart';
+import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
+import 'confirm_active_survey.dart';
 import 'detail_survey_cubit.dart';
 import 'edit_survey_question_view.dart';
 import 'manage_survey_cubit.dart';
@@ -27,7 +30,7 @@ class DetailSurveyView extends StatelessWidget {
                     child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      if(detailSurveyCubit.surveyModel!.detail.isNotEmpty)
+                      if (detailSurveyCubit.surveyModel!.detail.isNotEmpty)
                         SizedBox(height: Resizable.padding(context, 10)),
                       ...detailSurveyCubit.surveyModel!.detail
                           .map((e) => IntrinsicHeight(
@@ -36,22 +39,73 @@ class DetailSurveyView extends StatelessWidget {
                                   index: detailSurveyCubit.surveyModel!.detail
                                       .indexOf(e),
                                   detailSurveyCubit: detailSurveyCubit,
+                                  active: detailSurveyCubit.surveyModel!.active,
                                 ),
                               ))
                           .toList(),
-                      Padding(
-                          padding:
-                              EdgeInsets.all(Resizable.padding(context, 10)),
-                          child: DottedBorderButton(
-                              AppText.btnAddNewSurveyQuestion.text
-                                  .toUpperCase(),
-                              isManageGeneral: true, onPressed: () {
-                            detailSurveyCubit.addNewQuestion();
-                            cubit.updateSurvey(detailSurveyCubit.surveyModel!);
-                          }))
+                      if (detailSurveyCubit.surveyModel!.active == false)
+                        Padding(
+                            padding:
+                                EdgeInsets.all(Resizable.padding(context, 10)),
+                            child: DottedBorderButton(
+                                AppText.btnAddNewSurveyQuestion.text
+                                    .toUpperCase(),
+                                isManageGeneral: true, onPressed: () {
+                              detailSurveyCubit.addNewQuestion();
+                              cubit
+                                  .updateSurvey(detailSurveyCubit.surveyModel!);
+                            }))
                     ],
                   ),
-                ))
+                )),
+                if (detailSurveyCubit.surveyModel!.active == false)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: Resizable.size(context, 30)),
+                            constraints: BoxConstraints(
+                                minHeight: Resizable.size(context, 30)),
+                            child: SubmitButton(
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) =>
+                                          ConfirmActiveSurvey(
+                                            onActive: (){
+                                              detailSurveyCubit.changeActive();
+                                              cubit.updateSurvey(
+                                                  detailSurveyCubit.surveyModel!);
+                                              Navigator.of(context).pop();
+                                              notificationDialog(
+                                                  context, AppText.txtActiveSuccess.text);
+                                            }));
+
+                                },
+                                title: AppText.txtActive.text),
+                          )),
+                      Expanded(
+                          flex: 1,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: Resizable.size(context, 30)),
+                            constraints: BoxConstraints(
+                                minHeight: Resizable.size(context, 30)),
+                            child: SubmitButton(
+                                onPressed: () {
+                                  detailSurveyCubit.save();
+                                  cubit.updateSurvey(
+                                      detailSurveyCubit.surveyModel!);
+                                  notificationDialog(
+                                      context, AppText.txtSaveSuccess.text);
+                                },
+                                title: AppText.txtSave.text),
+                          ))
+                    ],
+                  )
               ],
             )),
         Expanded(

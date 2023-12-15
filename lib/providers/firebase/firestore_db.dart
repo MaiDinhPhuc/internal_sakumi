@@ -573,6 +573,21 @@ class FireStoreDb {
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> deleteTestByDocs $docs");
   }
 
+
+  Future<void> activeSurveyByDocs(String docs) async {
+    await db.collection("survey").doc(docs).update({"active": true});
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> activeTestByDocs $docs");
+  }
+
+  Future<void> saveSurveyByDocs(String docs, SurveyModel survey) async {
+    await db.collection("survey").doc(docs).update({"detail": survey.detail});
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> saveTestByDocs $docs");
+  }
+
   Future<DocumentSnapshot<Map<String, dynamic>>> getStudentLessonByDocs(
       String docs) async {
     final temp = await db.collection("student_lesson").doc(docs).get();
@@ -907,7 +922,8 @@ class FireStoreDb {
       'title': model.title,
       'description': model.description,
       'survey_code': model.surveyCode,
-      'enable':model.enable
+      'enable':model.enable,
+      'active':model.active
     });
     debugPrint("==========>add db for \"survey\"");
   }

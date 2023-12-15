@@ -1545,4 +1545,16 @@ class FireBaseProvider extends NetworkProvider {
         .map((e) => SurveyModel.fromSnapshot(e))
         .single;
   }
+
+  @override
+  Future<void> activeSurvey(int id)async {
+    await FireStoreDb.instance
+        .activeSurveyByDocs("survey_$id");
+  }
+
+  @override
+  Future<void> saveSurvey(int id, SurveyModel survey)async {
+    await FireStoreDb.instance
+        .saveSurveyByDocs("survey_$id", survey);
+  }
 }

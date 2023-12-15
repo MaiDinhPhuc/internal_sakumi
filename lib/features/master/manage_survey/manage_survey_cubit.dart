@@ -54,6 +54,6 @@ class ManageSurveyCubit extends Cubit<int>{
   updateSurvey(SurveyModel newSurvey){
     var index = listSurvey!.indexOf(listSurvey!.firstWhere((e) => e.id == newSurvey.id));
     listSurvey![index] = newSurvey;
+    print("========>${newSurvey.active}");
   }
-
 }

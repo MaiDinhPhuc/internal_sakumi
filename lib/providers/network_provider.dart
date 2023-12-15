@@ -244,4 +244,8 @@ abstract class NetworkProvider {
   Future<List<SurveyModel>> getAllSurvey();
 
   Future<SurveyModel> getSurveyById(int id);
+
+  Future<void> activeSurvey(int id);
+
+  Future<void> saveSurvey(int id, SurveyModel survey);
 }

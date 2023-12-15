@@ -187,7 +187,9 @@ enum AppText {
   textSSNote,
   titleHome,
   txtTeacherProfile,
-  txtChangeImage, txtBaseInfo, txtPassLogin,
+  txtChangeImage,
+  txtBaseInfo,
+  txtPassLogin,
   txtCurrentPass,
   txtNewPass,
   txtAgainNewPass,
@@ -201,7 +203,8 @@ enum AppText {
   textStudentNotSubmit,
   textContactIT,
   textDetail,
-  txtLogout, txtTeacherLogOut,
+  txtLogout,
+  txtTeacherLogOut,
   txtRateOfSubmitTest,
   textLesson,
   stsCompleted,
@@ -219,10 +222,20 @@ enum AppText {
   txtWrongAccount,
   stsRenew,
   stsRemove,
-  stsUpSale, txtType, textMarked, textNotMarked,
-  txtInvalidLogin,txtConfirmDeleteClass, btnRemoveClass,
-  txtEditClassInfo, txtClassType, txtChooseClassType,txtPleaseChooseType,
-  txtConfirmChangeStatus, txtLoadMore,txtSearch,
+  stsUpSale,
+  txtType,
+  textMarked,
+  textNotMarked,
+  txtInvalidLogin,
+  txtConfirmDeleteClass,
+  btnRemoveClass,
+  txtEditClassInfo,
+  txtClassType,
+  txtChooseClassType,
+  txtPleaseChooseType,
+  txtConfirmChangeStatus,
+  txtLoadMore,
+  txtSearch,
 
   //master
   txtManageCourse,
@@ -370,10 +383,28 @@ enum AppText {
   txtSurveyType1,
   txtSurveyType2,
   txtSurveyType3,
-  txtLetInputSurveyQuestion
+  txtLetInputSurveyQuestion,
+  txtLetInputSurveyAnswer,
+  txtAnotherSetting,
+  txtForce,
+  txtActive,
+  txtSave,
+  btnAddNewSurveyAnswer,
+  txtSaveSuccess,
+  txtConfirmActiveSurvey,
+  txtActiveSuccess
 }
 
 Map<AppText, String> texts = {
+  AppText.txtActiveSuccess: 'Kích hoạt thành công!',
+  AppText.txtConfirmActiveSurvey: 'Xác nhận muốn kích hoạt bài khảo sát hay không? \nLưu ý: Kích hoạt thành công sẽ không thể chỉnh sửa bài khảo sát!',
+  AppText.txtSaveSuccess: 'Lưu thành công!',
+  AppText.btnAddNewSurveyAnswer: '+Thêm câu trả lời mới',
+  AppText.txtActive: 'Kích hoạt',
+  AppText.txtSave: 'Lưu',
+  AppText.txtForce: 'Bắt buộc',
+  AppText.txtAnotherSetting: 'Cài đặt khác',
+  AppText.txtLetInputSurveyAnswer: 'Hãy điền câu trả lời khảo sát vào đây',
   AppText.txtLetInputSurveyQuestion: 'Hãy điền câu hỏi khảo sát vào đây',
   AppText.txtSurveyType1: 'Trắc nghiệm (cho chọn 1 lựa chọn)',
   AppText.txtSurveyType2: 'Hộp kiểm (cho chọn nhiều lựa chọn)',
@@ -381,7 +412,8 @@ Map<AppText, String> texts = {
   AppText.btnAddNewSurveyQuestion: '+Thêm câu hỏi mới',
   AppText.txtConfirmDeleteSurvey: 'SS chắc chắn muốn xoá bài khảo sát này???',
   AppText.txtDeleteSurvey: 'Xoá bài',
-  AppText.txtPleaseCheckListSurvey: 'Bài khảo sát đã tồn tại, vui lòng kiểm tra mã bài khảo sát',
+  AppText.txtPleaseCheckListSurvey:
+      'Bài khảo sát đã tồn tại, vui lòng kiểm tra mã bài khảo sát',
   AppText.txtSurveyTitle: 'Tiêu đề bài khảo sát',
   AppText.txtAddNewSurvey: 'Thêm bài khảo sát mới',
   AppText.btnAddNewSurvey: 'Thêm bài khảo sát',
@@ -395,7 +427,8 @@ Map<AppText, String> texts = {
   AppText.txtNew: 'Mới',
   AppText.txtUsed: 'Đã sử dụng',
   AppText.txtExpired: 'Đã Hết hạn',
-  AppText.txtCreateNewVoucherSuccessfully: 'Mã voucher @ đã được tạo thành công',
+  AppText.txtCreateNewVoucherSuccessfully:
+      'Mã voucher @ đã được tạo thành công',
   AppText.txtApplyFor: 'Áp dụng cho: @',
   AppText.txtDirectDiscountVoucher: 'Voucher Giảm Giá Trực Tiếp',
   AppText.titleSakumi: 'Nhật Ngữ Sakumi',
@@ -420,25 +453,31 @@ Map<AppText, String> texts = {
   AppText.txtNotStudentClass: 'Học viên chưa tham gia lớp nào!',
   AppText.txtListStudentClass: 'DANH SÁCH LỚP CỦA HỌC VIÊN',
   AppText.txtUpdateTeacherDone: 'Cập nhật Sensei thành công!',
-  AppText.txtSendReloadPassDone: 'Đã gửi mail cho học viên. Vui lòng thông báo cho học viên check mail để cập nhật mật khẩu mới!',
+  AppText.txtSendReloadPassDone:
+      'Đã gửi mail cho học viên. Vui lòng thông báo cho học viên check mail để cập nhật mật khẩu mới!',
   AppText.txtReloadPass: 'Cập nhật mật khẩu',
   AppText.txtUpdateStudentDone: 'Cập nhật học sinh thành công!',
   AppText.txtNoteSpForTeacher: 'Ghi chú của team Support cho Sensei',
   AppText.txtPrefix: 'Tiền tố',
   AppText.txtSuffix: 'Hậu tố',
   AppText.txtVoucher: 'Voucher',
-  AppText.txtDuplicateLinkOrVideo: 'Trùng link meet hoặc trùng video, vui lòng kiểm tra lại',
-  AppText.txtErrorInvalidFile: 'Không tìm thấy file video trong drive MEET RECORDINGS SS',
-  AppText.txtErrorInvalidFolder: 'Không tìm thấy folder trong drive SCREEN RECORDING',
+  AppText.txtDuplicateLinkOrVideo:
+      'Trùng link meet hoặc trùng video, vui lòng kiểm tra lại',
+  AppText.txtErrorInvalidFile:
+      'Không tìm thấy file video trong drive MEET RECORDINGS SS',
+  AppText.txtErrorInvalidFolder:
+      'Không tìm thấy folder trong drive SCREEN RECORDING',
   AppText.txtErrorDuplicateLink: 'Trùng link meet trong sheet RENAME RECORD',
-  AppText.txtErrorDuplicateVideo: 'Trùng tên file video trong drive MEET RECORDINGS SS',
+  AppText.txtErrorDuplicateVideo:
+      'Trùng tên file video trong drive MEET RECORDINGS SS',
   AppText.txtNotLoggedIn: 'Bạn chưa xác thực tài khoản google',
   AppText.btnInputLinkAndTitle: 'Nhập Link và tiêu đề',
   AppText.btnVerify: 'Xác minh',
   AppText.txtSuccessfullyUpdateVideo: 'Đổi tên và di chuyển video thành công',
   AppText.txtSuccessfullyUpdateVoucher: 'Cập nhật voucher thành công',
   AppText.txtPleaseInputLinkAndTitle: 'Vui lòng nhập đường dẫn và tiêu đề',
-  AppText.txtPleaseCheckListTest: 'Bài kiểm tra đã tồn tại, vui lòng kiểm tra data...',
+  AppText.txtPleaseCheckListTest:
+      'Bài kiểm tra đã tồn tại, vui lòng kiểm tra data...',
   AppText.txtDifficult: 'Độ khó',
   AppText.txtTestId: 'Mã bài kiểm tra',
   AppText.txtAddNewTest: 'Thêm bài kiểm tra mới',
@@ -447,7 +486,8 @@ Map<AppText, String> texts = {
   AppText.txtTool: 'Tool',
   AppText.txtLetNote: 'Hãy điền ghi chú vào đây',
   AppText.txtAddNote: 'Thêm ghi chú',
-  AppText.txtFeedBackEmpty: 'Đang không có góp ý, vui lòng chọn lại mục góp ý hoặc filter phù hợp...',
+  AppText.txtFeedBackEmpty:
+      'Đang không có góp ý, vui lòng chọn lại mục góp ý hoặc filter phù hợp...',
   AppText.titleListFeedBack: 'Danh sách góp ý',
   AppText.txtUnread: 'Chưa đọc',
   AppText.txtWaiting: 'Đang chờ được xử lí',
@@ -466,9 +506,11 @@ Map<AppText, String> texts = {
   AppText.txtTeacher: 'Giáo viên',
   AppText.titleSearchGeneral: 'Tìm kiếm chung',
   AppText.titleSearch: 'Tìm kiếm',
-  AppText.txtNoteTeacherForAnotherSs: 'Nhận xét của Sensei gửi cho Sensei tiếp theo',
+  AppText.txtNoteTeacherForAnotherSs:
+      'Nhận xét của Sensei gửi cho Sensei tiếp theo',
   AppText.txtNoteTeacherForSp: 'Nhận xét của Sensei gửi cho Support',
-  AppText.txtNotGradingItem: 'Bạn chưa có bài nào để chấm, có thể chọn lại filter để show các bài ... ',
+  AppText.txtNotGradingItem:
+      'Bạn chưa có bài nào để chấm, có thể chọn lại filter để show các bài ... ',
   AppText.txtTeacherNote: 'Nhận xét của Giáo viên',
   AppText.txtDoingTime: 'Thời gian làm bài',
   AppText.txtPoint: 'Điểm số',
@@ -478,7 +520,8 @@ Map<AppText, String> texts = {
   AppText.txtTeachingDay: 'Ngày dạy',
   AppText.txtRead: 'Tôi đã đọc ghi chú',
   AppText.btnAddNewStudent: 'Thêm học viên mới',
-  AppText.txtPleaseCheckListLesson: 'Bài học đã tồn tại, vui lòng kiểm tra lại!',
+  AppText.txtPleaseCheckListLesson:
+      'Bài học đã tồn tại, vui lòng kiểm tra lại!',
   AppText.txtContent: 'Nội dung',
   AppText.txtLessonId: 'Mã bài học',
   AppText.txtEditLessonInfo: 'Chỉnh sửa thông tin bài học',
@@ -501,7 +544,8 @@ Map<AppText, String> texts = {
   AppText.titleStdNumber: 'Số lượng học viên',
   AppText.btnDisableCourse: 'xoá khoá học',
   AppText.txtEditCourseInfo: 'Chỉnh sửa khoá học',
-  AppText.txtPleaseCheckListCourse: 'Khoá học đã tồn tại, vui lòng kiểm tra lại',
+  AppText.txtPleaseCheckListCourse:
+      'Khoá học đã tồn tại, vui lòng kiểm tra lại',
   AppText.txtPleaseInput: 'Vui lòng không để trống',
   AppText.txtTermName: 'Tên học kì',
   AppText.txtTermId: 'Mã học kì',
@@ -519,11 +563,12 @@ Map<AppText, String> texts = {
   AppText.txtListLesson: 'Danh sách bài học',
   AppText.txtListTest: 'Danh sách bài test',
   AppText.txtListCourse: 'Danh sách khoá học',
-  AppText.txtAnother: 'Tab khác',
+  AppText.txtAnother: 'Ý kiến khác',
   AppText.txtManageCourse: 'Quản lý khoá học',
   AppText.txtSearch: 'Tìm kiếm...',
   AppText.txtLoadMore: 'Xem thêm',
-  AppText.txtConfirmChangeStatus: 'SS chắc chắn muốn thay đổi\n trạng thái của @ từ % sang #',
+  AppText.txtConfirmChangeStatus:
+      'SS chắc chắn muốn thay đổi\n trạng thái của @ từ % sang #',
   AppText.txtPleaseChooseType: 'Vui lòng chọn loại lớp',
   AppText.txtEditClassInfo: 'Chỉnh sửa thông tin lớp học',
   AppText.txtConfirmDeleteClass: 'SS chắc chắn muốn xoá lớp @ hay không?',
@@ -546,7 +591,8 @@ Map<AppText, String> texts = {
   AppText.txtRateOfSubmitTest: 'Tỉ lệ nộp bài',
   AppText.textDetail: 'Chi tiết',
   AppText.textStudentNotSubmit: 'Lớp chưa có ai nộp bài tập!',
-  AppText.textContactIT: 'Lỗi khi load data, vui lòng liên hệ team IT để được support',
+  AppText.textContactIT:
+      'Lỗi khi load data, vui lòng liên hệ team IT để được support',
   AppText.titleHome: 'Trang chủ',
   AppText.textSSNote: 'Sensei hãy nhận xét về bài làm của Học viên nhé...',
   AppText.txtGradingDone: 'Chấm điểm xong!',
@@ -693,14 +739,17 @@ Map<AppText, String> texts = {
   AppText.txtNoNoteForStudent: 'Không có dặn dò dành cho học viên',
   AppText.txtNoNoteForSupport: 'Không có dặn dò dành cho Team Support',
   AppText.txtNoNoteForTeacher: 'Không có dặn dò dành cho Sensei',
-  AppText.txtHintNoteForStudentSendToSP: 'Điền ghi chú của Sensei dành cho học viên...(Gửi cho Support)',
-  AppText.txtHintNoteForStudentSendToHV: 'Điền ghi chú của Sensei dành cho học viên...(Gửi cho tất cả Học viên)',
+  AppText.txtHintNoteForStudentSendToSP:
+      'Điền ghi chú của Sensei dành cho học viên...(Gửi cho Support)',
+  AppText.txtHintNoteForStudentSendToHV:
+      'Điền ghi chú của Sensei dành cho học viên...(Gửi cho tất cả Học viên)',
   AppText.txtHintNoteForSupport: 'Điền ghi chú dành cho Team Support...',
   AppText.txtHintNoteForTeacher: 'Điền ghi chú dành cho Sensei tiếp theo...',
   AppText.titleNoteForSenseiAfterTeach: 'Dặn dò dành cho Sensei cuối buổi học',
   AppText.txtNoteForSenseiAfterTeach:
       'Sensei vui lòng tắt record Google Meet trước khi bấm đồng ý kết thúc buổi học',
-  AppText.txtNoteForSenseiAfterComplete :"Sensei vui lòng kiểm tra các ghi chú trước khi bấm đồng ý hoàn thành buổi học",
+  AppText.txtNoteForSenseiAfterComplete:
+      "Sensei vui lòng kiểm tra các ghi chú trước khi bấm đồng ý hoàn thành buổi học",
   AppText.txtQuestionForSenseiAfterTeach:
       'Sensei có muốn kết thúc buổi học không?',
   AppText.txtAgree: 'Đồng ý',
@@ -763,7 +812,6 @@ Map<AppText, String> texts = {
   AppText.txtWrongAccount: 'Vui lòng kiểm tra lại tài khoản',
 };
 
-
 extension AppTexts on AppText {
   static String getStringValue(String value) {
     return value;
@@ -772,7 +820,7 @@ extension AppTexts on AppText {
   String get text => texts[this] ?? '--TextNotFound--';
 }
 
-String vietnameseSubTextTeacher(String text){
+String vietnameseSubTextTeacher(String text) {
   switch (text) {
     case 'Remove':
       return "Xoá";
@@ -783,7 +831,7 @@ String vietnameseSubTextTeacher(String text){
   }
 }
 
-String vietnameseSubText(String text){
+String vietnameseSubText(String text) {
   switch (text) {
     case 'Completed':
       return "Hoàn Thành";
@@ -816,23 +864,23 @@ String vietnameseSubText(String text){
   }
 }
 
-String priceVND(String text){
-  if(text != null && text.length > 3){
+String priceVND(String text) {
+  if (text != null && text.length > 3) {
     int count = 0;
     List<String> price = [];
-    do{
-      int end = text.length - 3*count;
-      int start = end - 3 < 0 ? 0 : end -3 ;
+    do {
+      int end = text.length - 3 * count;
+      int start = end - 3 < 0 ? 0 : end - 3;
       String temp = text.substring(start, end);
 
-      if(temp != '') {
+      if (temp != '') {
         price.add(temp);
       }
       count++;
-    }while(count <= text.length ~/ 3);
+    } while (count <= text.length ~/ 3);
 
     return price.reversed.join('.');
-  }else {
+  } else {
     return text;
   }
 }
