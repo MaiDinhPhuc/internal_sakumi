@@ -187,8 +187,16 @@ class ClassOverviewCubit extends Cubit<int> {
               'hwPercent': 0,
               'teacherNote': senseiNote,
               'spNote': spNote,
-              'doingTime':getBTVNTime(stdLesson),
-              'ignore':getNumberIgnore(stdLesson)
+              'doingTime':getTime(stdLesson,"time_btvn"),
+              'ignore':getNumber(stdLesson,"skip_btvn"),
+              'time_alphabet': getTime(stdLesson,"time_alphabet"),
+              'time_flashcard':getTime(stdLesson,"time_flashcard"),
+              'time_grammar':getTime(stdLesson,"time_grammar"),
+              'time_kanji':getTime(stdLesson,"time_kanji"),
+              'time_listening':getTime(stdLesson,"time_listening"),
+              'time_reading':getTime(stdLesson,"time_reading"),
+              'time_vocabulary':getTime(stdLesson,"time_vocabulary"),
+              'flip_flashcard':getNumber(stdLesson,"flip_flashcard")
             });
           } else {
             listStdDetail.add({
@@ -201,8 +209,16 @@ class ClassOverviewCubit extends Cubit<int> {
               'hwPercent': tempHw / countHw,
               'teacherNote': senseiNote,
               'spNote': spNote,
-              'doingTime':getBTVNTime(stdLesson),
-              'ignore':getNumberIgnore(stdLesson)
+              'doingTime':getTime(stdLesson,"time_btvn"),
+              'ignore':getNumber(stdLesson,"skip_btvn"),
+              'time_alphabet': getTime(stdLesson,"time_alphabet"),
+              'time_flashcard':getTime(stdLesson,"time_flashcard"),
+              'time_grammar':getTime(stdLesson,"time_grammar"),
+              'time_kanji':getTime(stdLesson,"time_kanji"),
+              'time_listening':getTime(stdLesson,"time_listening"),
+              'time_reading':getTime(stdLesson,"time_reading"),
+              'time_vocabulary':getTime(stdLesson,"time_vocabulary"),
+              'flip_flashcard':getNumber(stdLesson,"flip_flashcard")
             });
           }
         }
@@ -237,7 +253,7 @@ class ClassOverviewCubit extends Cubit<int> {
    return count == 0? null : temp/count;
   }
 
-  List<String> getBTVNTime(List<StudentLessonModel> stdLessons) {
+  List<String> getTime(List<StudentLessonModel> stdLessons, String field) {
     if(stdLessons.isEmpty){
       return [];
     }
@@ -245,8 +261,10 @@ class ClassOverviewCubit extends Cubit<int> {
     for(var stdLesson in stdLessons){
       if (stdLesson.time.isEmpty) {
         listTime.add("");
+      }else if(stdLesson.time[field] == null){
+        listTime.add("");
       }else{
-        int seconds = stdLesson.time["time_btvn"];
+        int seconds = stdLesson.time[field];
 
         int hours = seconds ~/ 3600;
         int minutes = (seconds % 3600) ~/ 60;
@@ -261,7 +279,7 @@ class ClassOverviewCubit extends Cubit<int> {
     return listTime;
   }
 
-  List<String> getNumberIgnore(List<StudentLessonModel> stdLessons) {
+  List<String> getNumber(List<StudentLessonModel> stdLessons, String field) {
     if(stdLessons.isEmpty){
       return [];
     }
@@ -269,8 +287,10 @@ class ClassOverviewCubit extends Cubit<int> {
     for(var stdLesson in stdLessons){
       if (stdLesson.time.isEmpty) {
         listTime.add("");
+      }else if(stdLesson.time[field] == null){
+        listTime.add("");
       }else{
-        int skip = stdLesson.time["skip_btvn"];
+        int skip = stdLesson.time[field];
         listTime.add(skip.toString());
       }
 
