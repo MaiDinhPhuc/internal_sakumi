@@ -31,8 +31,10 @@ class SessionCubit extends Cubit<int> {
 
   loadEdit(List<StudentModel>? students, List<StudentLessonModel>? stdLessons, int lessonId){
     listStudent = students;
+    listStudent!.sort((a, b) => a.userId.compareTo(b.userId));
     List<int> studentId = listStudent!.map((e) => e.userId).toList();
     listStudentLesson = stdLessons!.where((e) => studentId.contains(e.studentId) && e.lessonId == lessonId).toList();
+    listStudentLesson!.sort((a, b) => a.studentId.compareTo(b.studentId));
     emit(state+1);
   }
 
@@ -58,12 +60,16 @@ class SessionCubit extends Cubit<int> {
           }
         }
         listStudent = await FireBaseProvider.instance.getAllStudentInFoInClass(listStudentId);
+        listStudent!.sort((a, b) => a.userId.compareTo(b.userId));
+        var listId = listStudent!.map((e) => e.userId);
         emit(state+1);
         for(int i = 0; i < listStudent!.length; i++){
           listNoteForEachStudent.add("");
         }
 
         listStudentLesson = classModel.stdLessons!.where((e) => e.lessonId == int.parse(TextUtils.getName())).toList();
+        listStudentLesson!.sort((a, b) => a.studentId.compareTo(b.studentId));
+        var listId2 = listStudentLesson!.map((e) => e.studentId);
         totalAttendance = listStudentLesson!
             .fold(0, (pre, e) => e.timekeeping > 0 ? (pre + 1) : pre);
         emit(state+1);

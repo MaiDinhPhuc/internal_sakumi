@@ -42,11 +42,9 @@ class ClassOverviewCubit extends Cubit<int> {
       if (i.classStatus == "UpSale" || i.classStatus == "Force") {
         upNumber++;
       }
-      if((i.classStatus == "Completed" ||
-          i.classStatus == "InProgress" ||
-          i.classStatus == "ReNew" ||
-          i.classStatus == "UpSale" ||
-          i.classStatus == "Force")){
+      if((i.classStatus != "Remove" ||
+          i.classStatus != "Moved" ||
+          i.classStatus != "Viewer")){
         temp++;
       }
     }

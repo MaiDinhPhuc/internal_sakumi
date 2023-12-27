@@ -21,7 +21,7 @@ class DetailSurveyAdminScreen extends StatelessWidget {
               index: 3, classId: TextUtils.getName(position: 1), role: "admin"),
           Expanded(
               child: BlocBuilder<DetailSurveyAdminCubit, int>(
-                  bloc: cubit..load(int.parse(TextUtils.getName())),
+                  bloc: cubit..load(int.parse(TextUtils.getName()),int.parse(TextUtils.getName(position: 1))),
                   builder: (c, s) {
                     return cubit.surveyModel == null
                         ? Center(

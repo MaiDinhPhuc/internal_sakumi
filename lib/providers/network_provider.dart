@@ -16,6 +16,7 @@ import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
+import 'package:internal_sakumi/model/survey_answer_model.dart';
 import 'package:internal_sakumi/model/survey_model.dart';
 import 'package:internal_sakumi/model/survey_result_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
@@ -257,4 +258,8 @@ abstract class NetworkProvider {
   Future<bool> addSurveyToClass(SurveyModel model, int classId, int id);
 
   Future<void> assignSurveyResult(SurveyResultModel result);
+
+  Future<List<SurveyAnswerModel>> getSurveyAnswerByClassId(int classId,int surveyId);
+
+  Future<List<SurveyAnswerModel>> getSurveyAnswerInClass(int classId);
 }

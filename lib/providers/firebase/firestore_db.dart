@@ -870,6 +870,33 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getSurveyAnswerByClassId(
+      int classId, int surveyId) async {
+    final snapshot = await db
+        .collection("survey_answer")
+        .where("class_id", isEqualTo: classId)
+        .where("survey_id", isEqualTo: surveyId)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getSurveyAnswerByClassId $classId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getSurveyAnswer(
+      int classId) async {
+    final snapshot = await db
+        .collection("survey_answer")
+        .where("class_id", isEqualTo: classId)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getSurveyAnswer $classId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getSurveyEnable() async {
     final snapshot = await db
         .collection("survey")

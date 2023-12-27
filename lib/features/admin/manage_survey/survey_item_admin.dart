@@ -7,6 +7,7 @@ import 'package:internal_sakumi/model/survey_result_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import 'confirm_assign_survey.dart';
 import 'confirm_recall_survey.dart';
@@ -37,7 +38,37 @@ class SurveyItemAdmin extends StatelessWidget {
                   color: Colors.black,
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 17))),
-          number: Container(),
+          number:result.dateAssign == 0
+              ? Container()
+              : Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Expanded(
+                  child: Padding(
+                      padding: EdgeInsets.only(left:Resizable.padding(context, 15)),
+                      child: LinearPercentIndicator(
+                        padding: EdgeInsets.zero,
+                        animation: true,
+                        lineHeight: Resizable.size(context, 6),
+                        animationDuration: 2000,
+                        percent: cubit.getNumber(result.surveyId)/cubit.stdClasses!.length,
+                        center: const SizedBox(),
+                        barRadius: const Radius.circular(10000),
+                        backgroundColor: greyColor.shade100,
+                        progressColor: primaryColor,
+                      ))),
+              Container(
+                alignment: Alignment.centerRight,
+                constraints:
+                BoxConstraints(minWidth: Resizable.size(context, 50)),
+                child: Text(
+                    '${cubit.getNumber(result.surveyId)} / ${cubit.stdClasses!.length} bài',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: Resizable.font(context, 16))),
+              )
+            ],
+          ),
           date: result.dateAssign == 0
               ? Container()
               : Text(convertDate(result.dateAssign),
@@ -65,19 +96,18 @@ class SurveyItemAdmin extends StatelessWidget {
                   itemBuilder: (context) => [
                     PopupMenuItem(
                       onTap: () async {
-                        Navigator.pop(context);
                         if (result.status == 'assign') {
                           await Navigator.pushNamed(context,
                               "/admin/survey/class=${result.classId}/surveyId=${result.surveyId}");
-                          await Navigator.pushNamed(context,
-                              "/admin/survey/class=${result.classId}/surveyId=${result.surveyId}");
+                          // await Navigator.pushNamed(context,
+                          //     "/admin/survey/class=${result.classId}/surveyId=${result.surveyId}");
                         } else {
                           showDialog(
                               context: context,
                               builder: (context) => ConfirmAssignSurvey(
                                     result: result, cubit: cubit,
                                   ));
-                          waitingDialog(context);
+                          //waitingDialog(context);
                         }
                       },
                       padding: EdgeInsets.zero,
@@ -93,21 +123,20 @@ class SurveyItemAdmin extends StatelessWidget {
                     ),
                     PopupMenuItem(
                       onTap: () {
-                        Navigator.pop(context);
                         if (result.status == 'assign') {
                           showDialog(
                               context: context,
                               builder: (context) => ConfirmRecallSurvey(
                                 result: result, cubit: cubit,
                               ));
-                          waitingDialog(context);
+                          //waitingDialog(context);
                         } else {
                           showDialog(
                               context: context,
                               builder: (context) => ConfirmDeleteSurvey(
                                 result: result, cubit: cubit,
                               ));
-                          waitingDialog(context);
+                          //waitingDialog(context);
                         }
                       },
                       padding: EdgeInsets.zero,

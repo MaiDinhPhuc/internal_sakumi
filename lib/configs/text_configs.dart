@@ -398,10 +398,12 @@ enum AppText {
   txtRecall,
   txtSeeResult,
   txtConfirmAssignSurvey,
-  txtConfirmRecallSurvey
+  txtConfirmRecallSurvey,
+  txtSubmitNumber
 }
 
 Map<AppText, String> texts = {
+  AppText.txtSubmitNumber: 'Có @ người trên # người trả lời câu hỏi này.',
   AppText.txtConfirmRecallSurvey: 'SS chắc chắn muốn thu hồi bài khảo sát này???',
   AppText.txtConfirmAssignSurvey: 'SS chắc chắn muốn giao bài khảo sát này???',
   AppText.txtSeeResult: 'Xem kết quả',

@@ -61,19 +61,12 @@ void alertEditAttendance(BuildContext context, LessonTabCubit lessonCubit,
                                       ...sessionCubit.listStudent!.map((e) =>
                                           AttendanceItem(
                                             e,
-                                            sessionCubit.listStudent!
-                                                        .indexOf(e) >
-                                                    sessionCubit
-                                                            .listStudentLesson!
-                                                            .length -
-                                                        1
+                                            sessionCubit
+                                                .listStudentLesson!.where((ee) => ee.studentId == e.userId).toList().isEmpty
                                                 ? 0
                                                 : sessionCubit
-                                                    .listStudentLesson![sessionCubit
-                                                        .listStudent!
-                                                        .indexOf(
-                                                            e)] //cubit.listStudent!.indexOf(e)
-                                                    .timekeeping,
+                                                .listStudentLesson!.where((ee) => ee.studentId == e.userId).toList().first
+                                                .timekeeping,
                                             items: [
                                               AppText.txtNotTimeKeeping.text,
                                               AppText.txtPresent.text,

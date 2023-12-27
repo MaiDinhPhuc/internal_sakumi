@@ -24,6 +24,7 @@ import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
+import 'package:internal_sakumi/model/survey_answer_model.dart';
 import 'package:internal_sakumi/model/survey_model.dart';
 import 'package:internal_sakumi/model/survey_result_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
@@ -1593,6 +1594,24 @@ class FireBaseProvider extends NetworkProvider {
         .toList();
     listResult.sort((a, b) => a.dateAssign.compareTo(b.dateAssign));
     return listResult;
+  }
+
+  @override
+  Future<List<SurveyAnswerModel>> getSurveyAnswerByClassId(int classId, int surveyId)async {
+    var listAnswer = (await FireStoreDb.instance.getSurveyAnswerByClassId(classId, surveyId))
+        .docs
+        .map((e) => SurveyAnswerModel.fromSnapshot(e))
+        .toList();
+    return listAnswer;
+  }
+
+  @override
+  Future<List<SurveyAnswerModel>> getSurveyAnswerInClass(int classId)async {
+    var listAnswer = (await FireStoreDb.instance.getSurveyAnswer(classId))
+        .docs
+        .map((e) => SurveyAnswerModel.fromSnapshot(e))
+        .toList();
+    return listAnswer;
   }
 
   @override

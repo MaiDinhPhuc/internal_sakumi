@@ -27,3 +27,19 @@ class SurveyAnswerModel {
         studentName: data['student_name'] ?? "");
   }
 }
+
+// {
+//   "class_id":34,
+//   "survey_id": 1702865987328,
+//   "id":123123123123123,
+//   "student_id":1000,
+//   "student_avt":"",
+//   "student_name": "Nguyễn Văn A",
+//   "detail":
+//   [
+//     {
+//       "id":1702866025797,
+//       "answer":"Lựa chọn 1:Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, to",
+//     },
+//   ]
+// }
