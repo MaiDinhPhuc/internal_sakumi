@@ -10,8 +10,8 @@ import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 import 'manage_survey_admin_cubit.dart';
 
-void alertCheckBoxSurvey(
-    BuildContext context, ManageSurveyAdminCubit manageSurveyAdminCubit, int classId) {
+void alertCheckBoxSurvey(BuildContext context,
+    ManageSurveyAdminCubit manageSurveyAdminCubit, int classId) {
   showDialog(
       context: context,
       builder: (_) {
@@ -51,66 +51,70 @@ void alertCheckBoxSurvey(
                                     ),
                                   ),
                                   Expanded(
-                                      child: SingleChildScrollView(
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal:
-                                              Resizable.padding(context, 0)),
-                                      child: Column(
-                                        children: [
-                                          ...List.generate(
-                                              cubit.listSurvey!.length,
-                                              (index) => BlocProvider(
-                                                  key: Key(
-                                                      "${cubit.listSurvey![index].id}"),
-                                                  create: (c) => CheckBoxCubit()
-                                                    ..load(false),
-                                                  child: BlocBuilder<
-                                                      CheckBoxCubit, bool?>(
-                                                    builder: (cc, state) =>
-                                                        CheckboxListTile(
-                                                            contentPadding:
-                                                                EdgeInsets.symmetric(
-                                                                    horizontal: Resizable
-                                                                        .padding(
-                                                                            context,
-                                                                            30)),
-                                                            controlAffinity:
-                                                                ListTileControlAffinity
-                                                                    .leading,
-                                                            value:
-                                                                state ?? false,
-                                                            onChanged: (v) {
-                                                              if (v! == true) {
-                                                                cubit
-                                                                    .listSurveyCheck
-                                                                    .add(cubit
-                                                                            .listSurvey![
-                                                                        index]);
-                                                              } else {
-                                                                cubit
-                                                                    .listSurveyCheck
-                                                                    .remove(cubit
-                                                                            .listSurvey![
-                                                                        index]);
-                                                              }
+                                      child: cubit.listSurvey!.isEmpty
+                                          ? Center(
+                                              child: Text(
+                                                  AppText.txtSurveyEmpty.text))
+                                          : SingleChildScrollView(
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal:
+                                                        Resizable.padding(
+                                                            context, 0)),
+                                                child: Column(
+                                                  children: [
+                                                    ...List.generate(
+                                                        cubit
+                                                            .listSurvey!.length,
+                                                        (index) => BlocProvider(
+                                                            key: Key(
+                                                                "${cubit.listSurvey![index].id}"),
+                                                            create: (c) =>
+                                                                CheckBoxCubit()
+                                                                  ..load(false),
+                                                            child: BlocBuilder<
+                                                                CheckBoxCubit,
+                                                                bool?>(
+                                                              builder: (cc,
+                                                                      state) =>
+                                                                  CheckboxListTile(
+                                                                      contentPadding: EdgeInsets.symmetric(
+                                                                          horizontal: Resizable.padding(
+                                                                              context,
+                                                                              30)),
+                                                                      controlAffinity:
+                                                                          ListTileControlAffinity
+                                                                              .leading,
+                                                                      value: state ??
+                                                                          false,
+                                                                      onChanged:
+                                                                          (v) {
+                                                                        if (v! ==
+                                                                            true) {
+                                                                          cubit
+                                                                              .listSurveyCheck
+                                                                              .add(cubit.listSurvey![index]);
+                                                                        } else {
+                                                                          cubit
+                                                                              .listSurveyCheck
+                                                                              .remove(cubit.listSurvey![index]);
+                                                                        }
 
-                                                              BlocProvider.of<
-                                                                      CheckBoxCubit>(cc)
-                                                                  .update(v);
-                                                            },
-                                                            title: Text(cubit
-                                                                .listSurvey![
-                                                                    index]
-                                                                .title)),
-                                                  ))).toList(),
-                                          SizedBox(
-                                              height:
-                                                  Resizable.size(context, 50))
-                                        ],
-                                      ),
-                                    ),
-                                  ))
+                                                                        BlocProvider.of<CheckBoxCubit>(cc)
+                                                                            .update(v);
+                                                                      },
+                                                                      title: Text(cubit
+                                                                          .listSurvey![
+                                                                              index]
+                                                                          .title)),
+                                                            ))).toList(),
+                                                    SizedBox(
+                                                        height: Resizable.size(
+                                                            context, 50))
+                                                  ],
+                                                ),
+                                              ),
+                                            ))
                                 ],
                               ),
                               Container(
@@ -142,27 +146,33 @@ void alertCheckBoxSurvey(
                                           onPressed: () =>
                                               Navigator.pop(context)),
                                     ),
-                                    Container(
-                                      constraints: BoxConstraints(
-                                          minWidth:
-                                              Resizable.size(context, 100)),
-                                      child: SubmitButton(
-                                          onPressed: () async {
-                                            Navigator.pop(context);
-                                            waitingDialog(context);
-                                            for(var i in cubit.listSurveyCheck){
-                                              DateTime dateTime = DateTime.now();
-                                              int id = dateTime.millisecondsSinceEpoch;
-                                              await cubit.addSurveyResult(i,classId,id);
-                                              manageSurveyAdminCubit.addSurveyToClass(i, id, classId);
-                                            }
-                                            if (context.mounted) {
-
+                                    if (cubit.listSurvey!.isNotEmpty)
+                                      Container(
+                                        constraints: BoxConstraints(
+                                            minWidth:
+                                                Resizable.size(context, 100)),
+                                        child: SubmitButton(
+                                            onPressed: () async {
                                               Navigator.pop(context);
-                                            }
-                                          },
-                                          title: AppText.btnAdd.text),
-                                    ),
+                                              waitingDialog(context);
+                                              for (var i
+                                                  in cubit.listSurveyCheck) {
+                                                DateTime dateTime =
+                                                    DateTime.now();
+                                                int id = dateTime
+                                                    .millisecondsSinceEpoch;
+                                                await cubit.addSurveyResult(
+                                                    i, classId, id);
+                                                manageSurveyAdminCubit
+                                                    .addSurveyToClass(
+                                                        i, id, classId);
+                                              }
+                                              if (context.mounted) {
+                                                Navigator.pop(context);
+                                              }
+                                            },
+                                            title: AppText.btnAdd.text),
+                                      ),
                                   ],
                                 ),
                               )
