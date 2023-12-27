@@ -1,5 +1,6 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:internal_sakumi/screens/admin/detail_survey_screen.dart';
 import 'package:internal_sakumi/screens/admin/manage_general_screen.dart';
 import 'package:internal_sakumi/screens/admin/student_info_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_classes_screen.dart';
@@ -109,6 +110,8 @@ class Routes {
         handler: detailGradingHandler, transitionType: TransitionType.fadeIn);
     router.define('/:role/lesson/:classId/:lessonId',
         handler: detailLessonHandler, transitionType: TransitionType.fadeIn);
+    router.define('/:role/survey/:classId/:surveyId',
+        handler: detailSurveyHandler, transitionType: TransitionType.fadeIn);
     // router.define('$admin/:classId',
     //     handler: detailClassHandler, transitionType: TransitionType.fadeIn);
   }
@@ -206,7 +209,7 @@ var testHandler =
 });
 var surveyHandler =
 Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return const ManageSurveyTab();
+  return ManageSurveyTab();
 });
 var detailGradingHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
@@ -215,6 +218,10 @@ var detailGradingHandler =
 var detailLessonHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return DetailLessonScreen();
+});
+var detailSurveyHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return DetailSurveyAdminScreen();
 });
 var profileTeacherHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {

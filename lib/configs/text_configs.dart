@@ -392,10 +392,22 @@ enum AppText {
   btnAddNewSurveyAnswer,
   txtSaveSuccess,
   txtConfirmActiveSurvey,
-  txtActiveSuccess
+  txtActiveSuccess,
+  txtSurveyResultEmpty,
+  txtDateAssignSurvey,
+  txtRecall,
+  txtSeeResult,
+  txtConfirmAssignSurvey,
+  txtConfirmRecallSurvey
 }
 
 Map<AppText, String> texts = {
+  AppText.txtConfirmRecallSurvey: 'SS chắc chắn muốn thu hồi bài khảo sát này???',
+  AppText.txtConfirmAssignSurvey: 'SS chắc chắn muốn giao bài khảo sát này???',
+  AppText.txtSeeResult: 'Xem kết quả',
+  AppText.txtRecall: 'Thu hồi',
+  AppText.txtDateAssignSurvey: 'Ngày giao bài khảo sát ',
+  AppText.txtSurveyResultEmpty: 'Hiện tại lớp chưa có bài khảo sát nào.',
   AppText.txtActiveSuccess: 'Kích hoạt thành công!',
   AppText.txtConfirmActiveSurvey: 'Xác nhận muốn kích hoạt bài khảo sát hay không? \nLưu ý: Kích hoạt thành công sẽ không thể chỉnh sửa bài khảo sát!',
   AppText.txtSaveSuccess: 'Lưu thành công!',

@@ -25,6 +25,7 @@ import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/model/survey_model.dart';
+import 'package:internal_sakumi/model/survey_result_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
@@ -824,6 +825,22 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<bool> addSurveyToClass(SurveyModel model, int classId, int id) async {
+    var temp = await FireStoreDb.instance
+        .getSurveyResultByDoc("class_${classId}_survey_${model.id}");
+    if (!temp.exists) {
+      await FireStoreDb.instance.addSurveyToClass(model, classId, id);
+      return true;
+    }
+    await FireStoreDb.instance.updateSurveyToClass(model, classId);
+    return false;
+  }
+  @override
+  Future<void> assignSurveyResult(SurveyResultModel result)async{
+    await FireStoreDb.instance.assignSurveyResult(result);
+  }
+
+  @override
   Future<bool> addTeacherToClass(TeacherClassModel model) async {
     final temp = await FireStoreDb.instance.getTeacherClassByDocs(
         "teacher_${model.userId}_class_${model.classId}");
@@ -1331,6 +1348,8 @@ class FireBaseProvider extends NetworkProvider {
         .deleteSurveyByDocs("survey_$id");
   }
 
+
+
   @override
   Future<void> updateCourseState(CourseModel courseModel, bool state) async {
     await FireStoreDb.instance.updateCourseState(courseModel, state);
@@ -1556,6 +1575,24 @@ class FireBaseProvider extends NetworkProvider {
         .docs
         .map((e) => SurveyModel.fromSnapshot(e))
         .single;
+  }
+
+  @override
+  Future<List<SurveyModel>> getSurveyEnable()async {
+    return (await FireStoreDb.instance.getSurveyEnable())
+        .docs
+        .map((e) => SurveyModel.fromSnapshot(e))
+        .toList();
+  }
+
+  @override
+  Future<List<SurveyResultModel>> getSurveyResultByClassId(int classId)async {
+    var listResult = (await FireStoreDb.instance.getSurveyResultByClassId(classId))
+        .docs
+        .map((e) => SurveyResultModel.fromSnapshot(e))
+        .toList();
+    listResult.sort((a, b) => a.dateAssign.compareTo(b.dateAssign));
+    return listResult;
   }
 
   @override

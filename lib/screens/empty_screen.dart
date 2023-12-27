@@ -5,8 +5,10 @@ class EmptyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text('Empty'),
+    return Scaffold(
+      body: Center(
+        child: Text('Empty'),
+      ),
     );
   }
 }
