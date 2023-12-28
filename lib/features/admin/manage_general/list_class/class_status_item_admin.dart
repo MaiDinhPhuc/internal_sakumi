@@ -137,3 +137,72 @@ class StatusClassItemAdmin extends StatelessWidget {
     );
   }
 }
+
+class StatusClassItemAdminV2 extends StatelessWidget {
+  const StatusClassItemAdminV2(
+      {super.key,
+        required this.color,
+        required this.icon,
+        required this.classModel});
+  final Color color;
+  final String icon;
+  final ClassModel classModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => MenuPopupCubit(),
+      child: BlocBuilder<MenuPopupCubit, int>(
+        builder: (c, s) {
+          var popupCubit = BlocProvider.of<MenuPopupCubit>(c);
+          return Tooltip(
+              decoration: BoxDecoration(
+                  color: Colors.black,
+                  border: Border.all(
+                      color: Colors.black,
+                      width: Resizable.size(context, 1)),
+                  borderRadius:
+                  BorderRadius.circular(Resizable.size(context, 5))),
+              richMessage: WidgetSpan(
+                  alignment: PlaceholderAlignment.baseline,
+                  baseline: TextBaseline.alphabetic,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          text: vietnameseSubText(classModel.classStatus),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: Resizable.font(context, 18),
+                              color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  )),
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: Container(
+                  height: Resizable.size(context, 20),
+                  width: Resizable.size(context, 20),
+                  padding: EdgeInsets.all(Resizable.padding(context, 10)),
+                  decoration: BoxDecoration(
+                      color: color,
+                      borderRadius:
+                      BlocProvider.of<DropdownCubit>(context).state %
+                          2 ==
+                          0
+                          ? BorderRadius.horizontal(
+                          left: Radius.circular(
+                              Resizable.padding(context, 5)))
+                          : BorderRadius.only(
+                          topLeft: Radius.circular(
+                              Resizable.padding(context, 5)))),
+                  child: Image.asset('assets/images/ic_$icon.png'),
+                ),
+              ));
+        },
+      ),
+    );
+  }
+}

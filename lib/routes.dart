@@ -12,6 +12,7 @@ import 'package:internal_sakumi/screens/admin/tab/manage_tags_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/tool_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/voucher_screen.dart';
 import 'package:internal_sakumi/screens/admin/teacher_info_screen.dart';
+import 'package:internal_sakumi/screens/admin_v2/tab/manage_class_screen_v2.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
 import 'package:internal_sakumi/screens/master/detail_survey_screen.dart';
@@ -161,7 +162,8 @@ var searchScreenHandler =
 });
 var manageClassesHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return const ManageClassesScreen();
+  //return const ManageClassesScreen();
+  return const ManageClassScreenV2();
 });
 var manageTagsHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
@@ -208,7 +210,7 @@ var testHandler =
   return ClassTestTab(params['role'][0]);
 });
 var surveyHandler =
-Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return ManageSurveyTab();
 });
 var detailGradingHandler =
@@ -220,7 +222,7 @@ var detailLessonHandler =
   return DetailLessonScreen();
 });
 var detailSurveyHandler =
-Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return DetailSurveyAdminScreen();
 });
 var profileTeacherHandler =

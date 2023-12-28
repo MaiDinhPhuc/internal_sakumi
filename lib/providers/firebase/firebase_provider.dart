@@ -1625,4 +1625,14 @@ class FireBaseProvider extends NetworkProvider {
     await FireStoreDb.instance
         .saveSurveyByDocs("survey_$id", survey);
   }
+
+  @override
+  Future<List<ClassModel>> getClassWithFilter(List<String> listStatusFilter, List<int> listTypeFilter)async {
+    final listClass = (await FireStoreDb.instance.getListClassWithFilter(listStatusFilter,listTypeFilter))
+        .docs
+        .map((e) => ClassModel.fromSnapshot(e))
+        .toList();
+    listClass.sort((a, b) => a.classId.compareTo(b.classId));
+    return listClass;
+  }
 }

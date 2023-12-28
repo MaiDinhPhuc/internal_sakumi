@@ -1028,6 +1028,22 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getListClassWithFilter(
+      List<String> listStatusFilter, List<int> listTypeFilter) async {
+    final snapshot = await db
+        .collection("class")
+        .orderBy('class_id')
+        .where(Filter.and(Filter("class_status", whereIn: listStatusFilter),
+            Filter("class_type", whereIn: listTypeFilter)))
+        .limit(10)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListClassWithFilter ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getListClassForAdmin() async {
     final snapshot = await db.collection("class").where("class_status",
         whereNotIn: ["Remove", "Completed", "Cancel"]).get();
@@ -1325,8 +1341,7 @@ class FireStoreDb {
     debugPrint("==========>update db for \"survey_result\"");
   }
 
-  Future<void> assignSurveyResult(
-      SurveyResultModel model) async {
+  Future<void> assignSurveyResult(SurveyResultModel model) async {
     await db
         .collection("survey_result")
         .doc("class_${model.classId}_survey_${model.surveyId}")

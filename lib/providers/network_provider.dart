@@ -262,4 +262,6 @@ abstract class NetworkProvider {
   Future<List<SurveyAnswerModel>> getSurveyAnswerByClassId(int classId,int surveyId);
 
   Future<List<SurveyAnswerModel>> getSurveyAnswerInClass(int classId);
+
+  Future<List<ClassModel>> getClassWithFilter(List<String> listStatusFilter, List<int> listTypeFilter);
 }

@@ -2,62 +2,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
-enum FilterClassType { group, one }
-extension FilterClassTypeEx on FilterClassType {
+import 'filter_admin_provider.dart';
 
-  String get title {
-    switch(this) {
-      case FilterClassType.group : return  "Lớp Nhóm";
-      case FilterClassType.one : return  "Lớp 1:1";
-    }
-  }
-
-
-}
-
-
-
-enum FilterClassCourse { kaiwa, jlpt, general, kid }
-enum FilterClassLevel { n1, n2, n3, n4, n5, other }
-enum FilterClassStatus { preparing, completed, studying }
-enum AdminFilter { type, course, level, status }
-// extension AdminFilterController on AdminFilter {}
-
-class AdminClassFilterCubit extends Cubit<int> {
-  AdminClassFilterCubit() : super(0) {
-    _init();
-  }
-  static const Map<AdminFilter, List> defaultFilter = {
-    AdminFilter.type: [FilterClassType.one],
-    AdminFilter.course: [],
-    AdminFilter.level: [],
-    AdminFilter.status: [],
-  };
-  Map<AdminFilter, List> _filter = {};
-
-  Future<void> _saveToPref() async {
-  }
-  Future<Map<AdminFilter, List>?> _fromPref() async {
-    return null;
-  }
-  _init() async {
-    _filter = await _fromPref() ?? defaultFilter;
-    emit(state + 1);
-  }
-  String filterListString(AdminFilter adminFilter)  {
-    return '';
-  }
-  update(AdminFilter adminFilter, List<Object> selectedList) {
-
-
-    if (_filter[adminFilter] != selectedList) {
-      _filter[adminFilter] = selectedList;
-      _saveToPref();
-      emit(state + 1);
-    }
-  }
-}
 
 class CacheObject {
   Object? data;
@@ -69,13 +17,35 @@ class CacheObject {
 class DataProvider {
   static Map<String, CacheObject> cached = {};
 
+  static Future<List<ClassModel>> clasList(Map<AdminFilter, List> filter, int admin, {ClassModel? lastItem}) async {
 
-  Future<List<ClassModel>> clasList(Map<AdminFilter, List> _filter, int admin, {ClassModel? lastItem}) async {
-    return [];
+    List? listType = filter[AdminFilter.type];
+    List? listStatus = filter[AdminFilter.status];
+    List<int> listTypeQuery = listType!.map((e) => type(e)).toList();
+    List<String> listStatusQuery = listStatus!.map((e) => status(e)).toList();
+    var listClass = await FireBaseProvider.instance.getClassWithFilter(listStatusQuery,listTypeQuery);
+    return listClass;
   }
 
-  Future<CourseModel> courseById(int id) async {
+  static String status(FilterClassStatus status) {
+    switch(status) {
+      case FilterClassStatus.preparing : return  "Preparing";
+      case FilterClassStatus.completed : return  "Completed";
+      case FilterClassStatus.studying : return  "InProgress";
+      case FilterClassStatus.cancel : return  "Cancel";
+    }
+  }
 
+
+  static int type(FilterClassType type) {
+    switch(type) {
+      case FilterClassType.group : return 0;
+      case FilterClassType.one : return 1;
+    }
+  }
+
+  static Future<CourseModel> courseById(int id) async {
+    return await FireBaseProvider.instance.getCourseById(id);
   }
 
 
