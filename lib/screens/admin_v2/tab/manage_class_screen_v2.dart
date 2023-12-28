@@ -3,21 +3,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/app_bar/admin_appbar.dart';
+import 'package:internal_sakumi/features/admin_v2/manage_class_v2/class_cubit_v2.dart';
 import 'package:internal_sakumi/features/admin_v2/manage_class_v2/class_item_v2.dart';
 import 'package:internal_sakumi/features/admin_v2/manage_class_v2/filter_class_type_v2.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
+import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/providers/cache/filter_admin_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ManageClassScreenV2 extends StatelessWidget {
-  const ManageClassScreenV2({super.key});
+  ManageClassScreenV2({super.key}) : cubit = ClassCubit();
+
+  final ClassCubit cubit;
 
   @override
   Widget build(BuildContext context) {
     var filterController = BlocProvider.of<AdminClassFilterCubit>(context);
     final shimmerList = List.generate(5, (index) => index);
+    print("==========>rebuild ${filterController.filter.keys.isNotEmpty}");
+    if(filterController.filter.keys.isNotEmpty){
+      cubit.reload(filterController.filter);
+    }
     return Scaffold(
       body: Column(
         children: [
@@ -39,13 +47,17 @@ class ManageClassScreenV2 extends StatelessWidget {
                   Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: Resizable.padding(context, 150)),
-                      child: Row(
+                      child: BlocListener<AdminClassFilterCubit, int>(
+                          listener:(context, _){
+                            print("============>reload ${filterController.filter.keys.isNotEmpty}");
+                            cubit.reload(filterController.filter);
+                          },
+                         child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          if(filterController.listClass != null)
                             FilterTypeAdminV2(filterController)
                         ],
-                      )),
+                      ))),
                   Container(
                       margin: EdgeInsets.symmetric(
                           horizontal: Resizable.padding(context, 150)),
@@ -89,8 +101,9 @@ class ManageClassScreenV2 extends StatelessWidget {
                                 color: greyColor.shade600)),
                       )
                   ),
-                  BlocBuilder<AdminClassFilterCubit, int>(
-                      builder: (context, _) => filterController.listClass== null
+                  BlocBuilder<ClassCubit, List<ClassModel>?>(
+                    bloc: cubit,
+                      builder: (context, list) =>  list == null
                           ? Shimmer.fromColors(
                         baseColor: Colors.grey[300]!,
                         highlightColor: Colors.grey[100]!,
@@ -106,9 +119,9 @@ class ManageClassScreenV2 extends StatelessWidget {
                           ),
                         ),
                       )
-                          : filterController.listClass!.isNotEmpty
+                          : list.isNotEmpty
                           ? Column(children: [
-                        ...filterController.listClass!
+                        ...list
                             .map((e) => Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: Resizable.size(context, 150)),

@@ -163,7 +163,7 @@ var searchScreenHandler =
 var manageClassesHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   //return const ManageClassesScreen();
-  return const ManageClassScreenV2();
+  return ManageClassScreenV2();
 });
 var manageTagsHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {

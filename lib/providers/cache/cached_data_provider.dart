@@ -45,7 +45,10 @@ class DataProvider {
   }
 
   static Future<CourseModel> courseById(int id) async {
-    return await FireBaseProvider.instance.getCourseById(id);
+    if(cached['course_$id'] == null){
+      return await FireBaseProvider.instance.getCourseById(id);
+    }
+    return;
   }
 
 

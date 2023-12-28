@@ -13,9 +13,9 @@ class FilterTypeAdminV2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SelectFilterCubit, int>(
-        bloc: selectCubit..loadType(cubit.filter[AdminFilter.type]!),
+        bloc: selectCubit..loadType(cubit.filter[AdminFilter.type] == null ? [] : cubit.filter[AdminFilter.type]!),
         builder: (c,s){
-      return Container(
+      return  Container(
           margin: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 10)),
           alignment: Alignment.centerRight, width: Resizable.size(context, 120),
           child: ClipRRect(

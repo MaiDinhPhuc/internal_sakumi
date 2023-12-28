@@ -9,16 +9,21 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/card_item.dart';
 import 'package:internal_sakumi/widget/note_widget.dart';
 
+import 'class_detail_cubit.dart';
 import 'class_overview_v2.dart';
 
 class ClassItemV2 extends StatelessWidget {
-  const ClassItemV2({super.key, required this.classModel});
+  ClassItemV2({super.key, required this.classModel}) : cubit = ClassDetailCubit(classModel);
   final ClassModel classModel;
+  final ClassDetailCubit cubit;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => DropdownCubit(),
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => DropdownCubit()),
+          BlocProvider.value(value: cubit),
+        ],
         child: BlocBuilder<DropdownCubit, int>(
           builder: (c, state) => AnimatedCrossFade(
               firstChild: CardItem(

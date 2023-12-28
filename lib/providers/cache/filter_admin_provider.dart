@@ -117,7 +117,6 @@ class AdminClassFilterCubit extends Cubit<int> {
 
   Map<AdminFilter, List> get filter => _filter;
 
-  List<ClassModel>? listClass;
 
   Future<void> _saveToPref() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -140,7 +139,7 @@ class AdminClassFilterCubit extends Cubit<int> {
           pre[key] = defaultFilter[key]!;
           return pre;
         });
-    listClass = await DataProvider.clasList(filter, 1);
+
     emit(state + 1);
   }
 
@@ -149,17 +148,13 @@ class AdminClassFilterCubit extends Cubit<int> {
   }
 
   update(AdminFilter adminFilter, List<Object> selectedList) async {
-    print(adminFilter);
-    print(selectedList);
-    print(_filter[adminFilter]);
+
     if (_filter[adminFilter] != selectedList) {
-      print("========>1");
+
       _filter[adminFilter] = selectedList;
-      print("========>2");
+
       _saveToPref();
-      print("========>3");
-      listClass = await DataProvider.clasList(filter, 1);
-      print("========>4");
+
       emit(state + 1);
     }
   }
