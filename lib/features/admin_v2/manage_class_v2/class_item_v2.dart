@@ -13,7 +13,8 @@ import 'class_detail_cubit.dart';
 import 'class_overview_v2.dart';
 
 class ClassItemV2 extends StatelessWidget {
-  ClassItemV2({super.key, required this.classModel}) : cubit = ClassDetailCubit(classModel);
+  ClassItemV2({super.key, required this.classModel})
+      : cubit = ClassDetailCubit(classModel);
   final ClassModel classModel;
   final ClassDetailCubit cubit;
 
@@ -28,82 +29,79 @@ class ClassItemV2 extends StatelessWidget {
           builder: (c, state) => AnimatedCrossFade(
               firstChild: CardItem(
                   widget: ClassOverViewV2(
-                  classModel: classModel
+                    classModel: classModel,
+                    cubit: cubit,
                   ),
-                  onTap: () async {
-
-                  },
+                  onTap: () async {},
                   onPressed: () {
                     BlocProvider.of<DropdownCubit>(c).update();
                   },
                   widgetStatus: StatusClassItemAdminV2(
-                    classModel: classModel,
-                    color:classModel.getColor(),
-                    icon: classModel.getIcon())),
+                      classModel: classModel,
+                      color: classModel.getColor(),
+                      icon: classModel.getIcon())),
               secondChild: CardItem(
-                isExpand: true,
-                widget: Column(
-                  children: [
-                    ClassOverViewV2(
-                        classModel: classModel
-                    ),
-                    Text("Chart in here"),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: Resizable.padding(context, 15)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: Resizable.size(context, 1),
-                            margin: EdgeInsets.symmetric(
-                                vertical: Resizable.padding(context, 15)),
-                            color: const Color(0xffD9D9D9),
-                          ),
-                          Row(
-                            children: [
-                              Text(AppText.txtLastLesson.text,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: Resizable.font(context, 19))),
-                              SizedBox(width: Resizable.padding(context, 10)),
-                              Text("last lesson",
-                                  style: TextStyle(
-                                      color: primaryColor,
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: Resizable.font(context, 19))),
-                            ],
-                          ),
-                          Container(
-                            height: Resizable.size(context, 1),
-                            margin: EdgeInsets.symmetric(
-                                vertical: Resizable.padding(context, 15)),
-                            color: const Color(0xffD9D9D9),
-                          ),
-                          Text(AppText.titleClassDes.text,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: Resizable.font(context, 19))),
-                          NoteWidget(classModel.description),
-                          Text(AppText.titleClassNote.text,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: Resizable.font(context, 19))),
-                          NoteWidget(classModel.note)
-                        ],
+                  isExpand: true,
+                  widget: Column(
+                    children: [
+                      ClassOverViewV2(
+                        classModel: classModel,
+                        cubit: cubit,
                       ),
-                    )
-                  ],
-                ),
-                onTap: () async {
-
-                },
-                onPressed: () => BlocProvider.of<DropdownCubit>(c).update(),
-                widgetStatus: StatusClassItemAdminV2(
-                    classModel: classModel,
-                    color:classModel.getColor(),
-                    icon: classModel.getIcon())
-              ),
+                      Text("Chart in here"),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: Resizable.padding(context, 15)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: Resizable.size(context, 1),
+                              margin: EdgeInsets.symmetric(
+                                  vertical: Resizable.padding(context, 15)),
+                              color: const Color(0xffD9D9D9),
+                            ),
+                            Row(
+                              children: [
+                                Text(AppText.txtLastLesson.text,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: Resizable.font(context, 19))),
+                                SizedBox(width: Resizable.padding(context, 10)),
+                                Text(cubit.lastLesson == null ? "" : cubit.lastLesson!,
+                                    style: TextStyle(
+                                        color: primaryColor,
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: Resizable.font(context, 19))),
+                              ],
+                            ),
+                            Container(
+                              height: Resizable.size(context, 1),
+                              margin: EdgeInsets.symmetric(
+                                  vertical: Resizable.padding(context, 15)),
+                              color: const Color(0xffD9D9D9),
+                            ),
+                            Text(AppText.titleClassDes.text,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: Resizable.font(context, 19))),
+                            NoteWidget(classModel.description),
+                            Text(AppText.titleClassNote.text,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: Resizable.font(context, 19))),
+                            NoteWidget(classModel.note)
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  onTap: () async {},
+                  onPressed: () => BlocProvider.of<DropdownCubit>(c).update(),
+                  widgetStatus: StatusClassItemAdminV2(
+                      classModel: classModel,
+                      color: classModel.getColor(),
+                      icon: classModel.getIcon())),
               crossFadeState: state % 2 == 1
                   ? CrossFadeState.showSecond
                   : CrossFadeState.showFirst,

@@ -1627,7 +1627,17 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<ClassModel>> getClassWithFilter(List<String> listStatusFilter, List<int> listTypeFilter)async {
+  Future<List<ClassModel>> getMoreClassWithFilter(List<String> listStatusFilter, List<int> listTypeFilter, int lastId)async {
+    final listClass = (await FireStoreDb.instance.getMoreClassWithFilter(listStatusFilter,listTypeFilter, lastId))
+        .docs
+        .map((e) => ClassModel.fromSnapshot(e))
+        .toList();
+    listClass.sort((a, b) => a.classId.compareTo(b.classId));
+    return listClass;
+  }
+
+  @override
+  Future<List<ClassModel>> getListClassWithFilter(List<String> listStatusFilter, List<int> listTypeFilter)async {
     final listClass = (await FireStoreDb.instance.getListClassWithFilter(listStatusFilter,listTypeFilter))
         .docs
         .map((e) => ClassModel.fromSnapshot(e))

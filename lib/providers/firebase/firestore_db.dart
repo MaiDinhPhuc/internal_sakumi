@@ -1028,13 +1028,30 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getMoreClassWithFilter(
+      List<String> listStatusFilter, List<int> listTypeFilter, int lastId) async {
+    final snapshot = await db
+        .collection("class")
+        .orderBy('class_id')
+        .where(Filter.and(Filter("class_status", whereIn: listStatusFilter),
+            Filter("class_type", whereIn: listTypeFilter))).startAfter([lastId])
+        .limit(10)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListClassWithFilter ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+
   Future<QuerySnapshot<Map<String, dynamic>>> getListClassWithFilter(
       List<String> listStatusFilter, List<int> listTypeFilter) async {
     final snapshot = await db
         .collection("class")
         .orderBy('class_id')
         .where(Filter.and(Filter("class_status", whereIn: listStatusFilter),
-            Filter("class_type", whereIn: listTypeFilter)))
+        Filter("class_type", whereIn: listTypeFilter)))
         .limit(10)
         .get();
 

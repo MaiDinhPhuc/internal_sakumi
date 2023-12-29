@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:collection/collection.dart';
 
 enum FilterClassType { group, one }
 
@@ -120,15 +121,67 @@ class AdminClassFilterCubit extends Cubit<int> {
 
   Future<void> _saveToPref() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String jsonString = json.encode(_filter);
+    String jsonString = json.encode(convertFilterEncode());
     prefs.setString('filter', jsonString);
+  }
+
+  Map<String, dynamic> convertFilterEncode(){
+    var listType = filter[AdminFilter.type]!.map((e) => (e as FilterClassType).title).toList();
+    var listCourse =  filter[AdminFilter.course]!.map((e) => (e as FilterClassCourse).title).toList();
+    var listLevel = filter[AdminFilter.level]!.map((e) => (e as FilterClassLevel).title).toList();
+    var listStatus = filter[AdminFilter.status]!.map((e) => (e as FilterClassStatus).title).toList();
+
+    return {
+      "type": listType,
+      "course": listCourse,
+      "level": listLevel,
+      "status":listStatus
+    };
+  }
+
+  Map<AdminFilter, List> convertFilterDecode(dynamic json){
+
+    var listType = [];
+    for(var i in json["type"]){
+      if(i == "Lớp Nhóm"){
+        listType.add(FilterClassType.group);
+      }
+      if(i == "Lớp 1:1"){
+        listType.add(FilterClassType.one);
+      }
+    }
+    var listStatus = [];
+    for(var i in json["status"]){
+      switch (i) {
+        case "Mới tạo":
+          listStatus.add(FilterClassStatus.preparing);
+          break;
+        case "Hoàn thành" :
+          listStatus.add(FilterClassStatus.completed);
+          break;
+        case "Đang học":
+          listStatus.add(FilterClassStatus.studying);
+          break ;
+        case "Huỷ":
+          listStatus.add(FilterClassStatus.cancel);
+          break ;
+      }
+    }
+
+
+    return {
+      AdminFilter.type: listType,
+      AdminFilter.course: [],
+      AdminFilter.level: [],
+      AdminFilter.status: listStatus
+    };
   }
 
   Future<Map<AdminFilter, List>?> _fromPref() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? jsonString = prefs.getString('filter');
     if (jsonString != null) {
-      return json.decode(jsonString);
+      return convertFilterDecode(json.decode(jsonString));
     }
     return null;
   }
@@ -139,7 +192,6 @@ class AdminClassFilterCubit extends Cubit<int> {
           pre[key] = defaultFilter[key]!;
           return pre;
         });
-
     emit(state + 1);
   }
 
@@ -147,14 +199,11 @@ class AdminClassFilterCubit extends Cubit<int> {
     return '';
   }
 
-  update(AdminFilter adminFilter, List<Object> selectedList) async {
-
-    if (_filter[adminFilter] != selectedList) {
-
+  update(AdminFilter adminFilter, List selectedList) async {
+    bool areListsEqual = const ListEquality().equals(_filter[adminFilter], selectedList);
+    if (!areListsEqual) {
       _filter[adminFilter] = selectedList;
-
       _saveToPref();
-
       emit(state + 1);
     }
   }

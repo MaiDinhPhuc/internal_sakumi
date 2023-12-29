@@ -13,7 +13,7 @@ class FilterTypeAdminV2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SelectFilterCubit, int>(
-        bloc: selectCubit..loadType(cubit.filter[AdminFilter.type] == null ? [] : cubit.filter[AdminFilter.type]!),
+        bloc: selectCubit..loadType(cubit.filter[AdminFilter.type] == null ? [FilterClassType.group] :cubit.filter[AdminFilter.type]!),
         builder: (c,s){
       return  Container(
           margin: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 10)),
@@ -27,17 +27,17 @@ class FilterTypeAdminV2 extends StatelessWidget {
                     cubit.update(AdminFilter.type, selectCubit.convertType());
                   },
                   itemBuilder: (context) => [
-                    ...selectCubit.list.map((e) => PopupMenuItem(
+                    ...selectCubit.listType.map((e) => PopupMenuItem(
                         padding: EdgeInsets.zero,
-                        child: BlocProvider(create: (c)=>CheckBoxFilterCubit(selectCubit.listSelect[selectCubit.list.indexOf(e)]),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
+                        child: BlocProvider(create: (c)=>CheckBoxFilterCubit(selectCubit.listSelect[selectCubit.listType.indexOf(e)]),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
                           return CheckboxListTile(
                             controlAffinity: ListTileControlAffinity.leading,
                             title: Text(e.title),
                             value: state,
                             onChanged: (newValue) {
-                              selectCubit.listSelect[selectCubit.list.indexOf(e)] = newValue!;
+                              selectCubit.listSelect[selectCubit.listType.indexOf(e)] = newValue!;
                               if(selectCubit.listSelect.every((element) => element == false)){
-                                selectCubit.listSelect[selectCubit.list.indexOf(e)] = !newValue;
+                                selectCubit.listSelect[selectCubit.listType.indexOf(e)] = !newValue;
                               }else{
                                 BlocProvider.of<CheckBoxFilterCubit>(cc).update();
                               }
@@ -87,9 +87,11 @@ class SelectFilterCubit extends Cubit<int>{
   SelectFilterCubit():super(0);
 
   List<bool> listSelect = [];
-  List<FilterClassType> list = [FilterClassType.group, FilterClassType.one];
+  List<FilterClassType> listType = [FilterClassType.group, FilterClassType.one];
+  List<FilterClassStatus> listStatus = [FilterClassStatus.preparing,FilterClassStatus.studying,FilterClassStatus.completed,FilterClassStatus.cancel];
 
-  loadType(List<dynamic> listType){
+
+  loadType(List<dynamic> list){
     for(var i in listType){
       if(list.contains(i)){
         listSelect.add(true);
@@ -97,9 +99,7 @@ class SelectFilterCubit extends Cubit<int>{
         listSelect.add(false);
       }
     }
-    while(listSelect.length != 2){
-      listSelect.add(false);
-    }
+    emit(state+1);
   }
 
   List<FilterClassType> convertType(){
@@ -109,6 +109,34 @@ class SelectFilterCubit extends Cubit<int>{
     }
     if(listSelect[1] == true){
       filter.add(FilterClassType.one);
+    }
+    return filter;
+  }
+
+  loadStatus(List<dynamic> list){
+    for(var i in listStatus){
+      if(list.contains(i)){
+        listSelect.add(true);
+      }else{
+        listSelect.add(false);
+      }
+    }
+    emit(state+1);
+  }
+
+  List<FilterClassStatus> convertStatus(){
+    List<FilterClassStatus> filter = [];
+    if(listSelect[0] == true){
+      filter.add(FilterClassStatus.preparing);
+    }
+    if(listSelect[1] == true){
+      filter.add(FilterClassStatus.studying);
+    }
+    if(listSelect[2] == true){
+      filter.add(FilterClassStatus.completed);
+    }
+    if(listSelect[3] == true){
+      filter.add(FilterClassStatus.cancel);
     }
     return filter;
   }

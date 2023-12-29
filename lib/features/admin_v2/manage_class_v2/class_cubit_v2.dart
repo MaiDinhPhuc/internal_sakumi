@@ -3,18 +3,31 @@ import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/cache/filter_admin_provider.dart';
 
-class ClassCubit extends Cubit<List<ClassModel>?>{
-  ClassCubit():super(null);
+class ClassCubit extends Cubit<int>{
+  ClassCubit():super(0);
 
   bool isLastPage = false;
 
+  List<ClassModel>? listClass;
+
   reload(Map<AdminFilter, List> filter)async{
     if(filter.keys.isNotEmpty){
-      emit(await DataProvider.clasList(filter, 1));
+      listClass = await DataProvider.classList(filter, 1);
+      if(listClass!.length < 10){
+        isLastPage = true;
+      }else{
+        isLastPage = false;
+      }
     }
+    emit(state+1);
   }
 
-  loadMore(){
-
+  loadMore(Map<AdminFilter, List> filter)async{
+    var list = await DataProvider.classList(filter, 1,lastItem: listClass!.last);
+    if(list.length < 10){
+      isLastPage = true;
+    }
+    listClass!.addAll(list);
+    emit(state+1);
   }
 }
