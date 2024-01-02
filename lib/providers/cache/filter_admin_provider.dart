@@ -195,9 +195,6 @@ class AdminClassFilterCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  String filterListString(AdminFilter adminFilter) {
-    return '';
-  }
 
   update(AdminFilter adminFilter, List selectedList) async {
     bool areListsEqual = const ListEquality().equals(_filter[adminFilter], selectedList);

@@ -26,11 +26,17 @@ class ClassDetailCubit extends Cubit<int> {
 
   loadData() async {
     await DataProvider.courseById(classModel.courseId, onCourseLoaded);
-    await DataProvider.lessonResultByClassId(classModel.classId, loadLessonResult);
-    await DataProvider.stdClassByClassId(classModel.classId, loadStudentClass);
-    await DataProvider.lessonByCourseId(classModel.courseId, loadLessonInClass);
+
     await DataProvider.stdLessonByClassId(classModel.classId, loadStdLesson);
-    loadPercent();
+
+    await DataProvider.lessonResultByClassId(classModel.classId, loadLessonResult);
+
+    await DataProvider.stdClassByClassId(classModel.classId, loadStudentClass);
+
+    await DataProvider.lessonByCourseId(classModel.courseId, loadLessonInClass);
+
+    await loadPercent();
+
   }
 
   onCourseLoaded(Object course) {
@@ -40,27 +46,28 @@ class ClassDetailCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  loadLessonResult(Object lessonResults) async {
+  loadLessonResult(Object lessonResults)  {
     this.lessonResults = lessonResults as List<LessonResultModel>;
     lessonCountTitle = "${this.lessonResults!.length}/$lessonCount";
     emit(state + 1);
   }
 
-  loadStudentClass(Object studentClass) async {
+  loadStudentClass(Object studentClass)  {
     stdClasses = studentClass as List<StudentClassModel>;
   }
 
-  loadLessonInClass(Object lessons) async {
+  loadLessonInClass(Object lessons) {
     this.lessons = lessons as List<LessonModel>;
     emit(state + 1);
   }
 
-  loadStdLesson(Object stdLessons)async{
+  loadStdLesson(Object stdLessons){
     this.stdLessons = stdLessons as List<StudentLessonModel>;
     emit(state+1);
   }
 
-  loadPercent() {
+  loadPercent()async {
+    await Future.delayed(const Duration(milliseconds: 500));
     List<int> listStdIdsEnable = [];
 
     for (var element in stdClasses!) {
@@ -74,10 +81,12 @@ class ClassDetailCubit extends Cubit<int> {
       }
     }
 
+
     var stdLessons = this.stdLessons!
         .where(
             (e) => listStdIdsEnable.contains(e.studentId) && e.timekeeping != 0)
         .toList();
+
     double attendancePercent = 0;
     double hwPercent = 0;
     List<LessonModel> lessonTemp =
@@ -109,8 +118,13 @@ class ClassDetailCubit extends Cubit<int> {
     this.attendancePercent = attendancePercent;
     this.hwPercent = hwPercent;
 
-    // var lastLesson = lessons!.firstWhere((e) => e.lessonId == lessonResults!.last.lessonId);
-    // this.lastLesson = lastLesson.title;
+    var lessonId = lessons!.map((e) => e.lessonId);
+    var lessonResultId = lessonResults!.map((e) => e.lessonId);
+    print(lessonResultId.length);
+    print(lessonId);
+    print(lessonId.contains(lessonResultId.last));
+    var lastLesson = lessons!.firstWhere((e) => e.lessonId == lessonResults!.last.lessonId);
+    this.lastLesson = lastLesson.title;
     emit(state + 1);
   }
 }
