@@ -73,7 +73,7 @@ class CollapseLearnedLesson extends StatelessWidget {
                           vertical: Resizable.padding(
                               context, 3)),
                       child: Text(
-                          hw == -2 ? AppText.txtNotSubmit.text : hw == -1 ?  AppText.textNotMarked.text: hw == null ? AppText.txtNull.text : hw.toString(),
+                          hw == -2 ? AppText.txtNotSubmit.text : hw == -1 ?  AppText.textNotMarked.text: hw == null ? AppText.txtNull.text : hw!.toStringAsFixed(2),
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight:

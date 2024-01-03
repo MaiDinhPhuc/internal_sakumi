@@ -23,13 +23,16 @@ class ClassDetailCubit extends Cubit<int> {
   String? lessonCountTitle;
   double? hwPercent, attendancePercent;
   String? lastLesson;
+  List<int>? attChart, hwChart;
+  List<double>? stds;
 
   loadData() async {
     await DataProvider.courseById(classModel.courseId, onCourseLoaded);
 
     await DataProvider.stdLessonByClassId(classModel.classId, loadStdLesson);
 
-    await DataProvider.lessonResultByClassId(classModel.classId, loadLessonResult);
+    await DataProvider.lessonResultByClassId(
+        classModel.classId, loadLessonResult);
 
     await DataProvider.stdClassByClassId(classModel.classId, loadStudentClass);
 
@@ -37,22 +40,23 @@ class ClassDetailCubit extends Cubit<int> {
 
     await loadPercent();
 
+    await loadStatistic();
   }
 
   onCourseLoaded(Object course) {
     title =
-        "${(course as CourseModel).name} ${(course).level} ${(course).termName}";
+    "${(course as CourseModel).name} ${(course).level} ${(course).termName}";
     lessonCount = course.lessonCount;
     emit(state + 1);
   }
 
-  loadLessonResult(Object lessonResults)  {
+  loadLessonResult(Object lessonResults) {
     this.lessonResults = lessonResults as List<LessonResultModel>;
     lessonCountTitle = "${this.lessonResults!.length}/$lessonCount";
     emit(state + 1);
   }
 
-  loadStudentClass(Object studentClass)  {
+  loadStudentClass(Object studentClass) {
     stdClasses = studentClass as List<StudentClassModel>;
   }
 
@@ -61,12 +65,12 @@ class ClassDetailCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  loadStdLesson(Object stdLessons){
+  loadStdLesson(Object stdLessons) {
     this.stdLessons = stdLessons as List<StudentLessonModel>;
-    emit(state+1);
+    emit(state + 1);
   }
 
-  loadPercent()async {
+  loadPercent() async {
     await Future.delayed(const Duration(milliseconds: 500));
     List<int> listStdIdsEnable = [];
 
@@ -90,7 +94,7 @@ class ClassDetailCubit extends Cubit<int> {
     double attendancePercent = 0;
     double hwPercent = 0;
     List<LessonModel> lessonTemp =
-        lessons!.where((element) => element.btvn == 0).toList();
+    lessons!.where((element) => element.btvn == 0).toList();
     List<int> lessonExceptionIds = [];
     for (var i in lessonTemp) {
       lessonExceptionIds.add(i.lessonId);
@@ -118,13 +122,68 @@ class ClassDetailCubit extends Cubit<int> {
     this.attendancePercent = attendancePercent;
     this.hwPercent = hwPercent;
 
-    var lessonId = lessons!.map((e) => e.lessonId);
-    var lessonResultId = lessonResults!.map((e) => e.lessonId);
-    print(lessonResultId.length);
-    print(lessonId);
-    print(lessonId.contains(lessonResultId.last));
-    var lastLesson = lessons!.firstWhere((e) => e.lessonId == lessonResults!.last.lessonId);
+    var lastLesson = lessons!.firstWhere((e) =>
+    e.lessonId == lessonResults!.last.lessonId);
     this.lastLesson = lastLesson.title;
     emit(state + 1);
+  }
+
+  loadStatistic() async {
+    var listStatus = stdClasses!.map((e) => e.classStatus).toList();
+    List<int> listLessonId = [];
+    for (var i in lessonResults!) {
+      if (listLessonId.contains(i.lessonId) == false) {
+        listLessonId.add(i.lessonId);
+      }
+    }
+    double col1 = 0;
+    double col2 = 0;
+    double col3 = 0;
+    double col4 = 0;
+    double col5 = 0;
+    for (var i in listStatus) {
+      if (i == "Completed" ||
+          i == "InProgress" ||
+          i == "ReNew") {
+        col1++;
+      }
+      if (i == "Viewer") {
+        col2++;
+      }
+      if (i == "UpSale" || i == "Force") {
+        col4++;
+      }
+      if (i == "Moved") {
+        col3++;
+      }
+      if (i == "Retained" ||
+          i == "Dropped" ||
+          i == "Deposit") {
+        col5++;
+      }
+    }
+    List<double> stds = [col1, col2, col3, col4, col5];
+
+    List<int> attChart = [];
+    List<int> hwChart = [];
+    for (var i in listLessonId) {
+      List<StudentLessonModel> listTemp = stdLessons!.where((e) =>
+      e.lessonId == i && e.timekeeping != 0).toList();
+      int att = 0;
+      int hw = 0;
+      for (var j in listTemp) {
+        if (j.timekeeping < 5) {
+          att++;
+        }
+        if (j.hw != -2) {
+          hw++;
+        }
+      }
+      attChart.add(att);
+      hwChart.add(hw);
+    }
+    this.attChart = attChart;
+    this.hwChart = hwChart;
+    this.stds = stds;
   }
 }

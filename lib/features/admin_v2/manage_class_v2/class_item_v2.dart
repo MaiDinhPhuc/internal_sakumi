@@ -4,7 +4,9 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_class/class_status_item_admin.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
+import 'package:internal_sakumi/features/teacher/teacher_home/chart_view.dart';
 import 'package:internal_sakumi/model/class_model.dart';
+import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/card_item.dart';
 import 'package:internal_sakumi/widget/note_widget.dart';
@@ -32,7 +34,10 @@ class ClassItemV2 extends StatelessWidget {
                     classModel: classModel,
                     cubit: cubit,
                   ),
-                  onTap: () async {},
+                  onTap: () async {
+                    await Navigator.pushNamed(context,
+                        "${Routes.admin}/overview/class=${classModel.classId}");
+                  },
                   onPressed: () {
                     BlocProvider.of<DropdownCubit>(c).update();
                   },
@@ -48,7 +53,14 @@ class ClassItemV2 extends StatelessWidget {
                         classModel: classModel,
                         cubit: cubit,
                       ),
-                      Text("Chart in here"),
+                      ChartView(
+                        attendances: cubit.attChart ?? [],
+                        hws:  cubit.hwChart ?? [],
+                        stds:  cubit.stds ==
+                            null
+                            ? [1,0,0,0,0]
+                            :  cubit.stds!,
+                      ),
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: Resizable.padding(context, 15)),
@@ -96,7 +108,10 @@ class ClassItemV2 extends StatelessWidget {
                       )
                     ],
                   ),
-                  onTap: () async {},
+                  onTap: () async {
+                    await Navigator.pushNamed(context,
+                        "${Routes.admin}/overview/class=${classModel.classId}");
+                  },
                   onPressed: () => BlocProvider.of<DropdownCubit>(c).update(),
                   widgetStatus: StatusClassItemAdminV2(
                       classModel: classModel,

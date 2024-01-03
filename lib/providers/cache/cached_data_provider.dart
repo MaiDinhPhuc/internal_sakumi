@@ -104,6 +104,40 @@ class DataProvider {
     }
   }
 
+  static Future<void> teacherById(int id, Function(Object) onLoaded)async{
+    var key = 'teacher_$id';
+    if (cached[key] == null) {
+      cached[key] = CacheObject(DateTime.now(), callbacks: [onLoaded]);
+      cached[key]!.data =
+      await FireBaseProvider.instance.getTeacherById(id);
+      for (var element in cached[key]!.callbacks) {
+        element.call(cached[key]!.data!);
+      }
+      cached[key]!.callbacks = [];
+    } else if (cached[key]!.data == null) {
+      cached[key]!.callbacks.add(onLoaded);
+    } else {
+      onLoaded.call(cached[key]!.data!);
+    }
+  }
+
+  static Future<void> studentById(int id, Function(Object) onLoaded)async{
+      var key = 'student_$id';
+      if (cached[key] == null) {
+        cached[key] = CacheObject(DateTime.now(), callbacks: [onLoaded]);
+        cached[key]!.data =
+        await FireBaseProvider.instance.getStudentById(id);
+        for (var element in cached[key]!.callbacks) {
+          element.call(cached[key]!.data!);
+        }
+        cached[key]!.callbacks = [];
+      } else if (cached[key]!.data == null) {
+        cached[key]!.callbacks.add(onLoaded);
+      } else {
+        onLoaded.call(cached[key]!.data!);
+      }
+  }
+
   static Future<void> lessonByCourseId(int courseId, Function(Object) onLoaded)async{
     var key = 'lessons_$courseId';
     if (cached[key] == null) {

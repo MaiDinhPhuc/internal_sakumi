@@ -13,6 +13,8 @@ import 'package:internal_sakumi/screens/admin/tab/tool_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/voucher_screen.dart';
 import 'package:internal_sakumi/screens/admin/teacher_info_screen.dart';
 import 'package:internal_sakumi/screens/admin_v2/tab/manage_class_screen_v2.dart';
+import 'package:internal_sakumi/screens/class_info/class_overview_screen_v2.dart';
+import 'package:internal_sakumi/screens/class_info/list_lesson_screen.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
 import 'package:internal_sakumi/screens/master/detail_survey_screen.dart';
@@ -195,11 +197,11 @@ var teacherInfoHandler =
 });
 var lessonsHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return ListLessonTab(params['role'][0]);
+  return ListLessonScreen(role: params['role'][0]); //ListLessonTab(params['role'][0]);
 });
 var overViewHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return ClassOverViewTab(params['role']?.first);
+  return ClassOverViewScreenV2(role: params['role']?.first); //ClassOverViewTab(params['role']?.first);
 });
 var gradingHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
