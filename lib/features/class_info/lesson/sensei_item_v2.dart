@@ -3,12 +3,11 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/small_avt.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
-import 'list_lesson_cubit_v2.dart';
+import 'detail_lesson_cubit_v2.dart';
 
 class SenseiItemV2 extends StatelessWidget {
-  const SenseiItemV2({Key? key, required this.cubit, required this.e}) : super(key: key);
-  final ListLessonCubitV2 cubit;
-  final Map<String, dynamic> e;
+  const SenseiItemV2({Key? key, required this.cubit}) : super(key: key);
+  final DetailLessonCubitV2 cubit;
   @override
   Widget build(BuildContext context) {
     return Tooltip(
@@ -33,9 +32,9 @@ class SenseiItemV2 extends StatelessWidget {
                       color: Colors.white70.withOpacity(0.5)),
                   children: <TextSpan>[
                     TextSpan(
-                        text: cubit
-                            .listTeacher![cubit.listLessonInfo!.indexOf(e)]!
-                            .name,
+                        text: cubit.teacher == null
+                            ? "loading..."
+                            : cubit.teacher!.name,
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: Resizable.font(context, 18),
@@ -53,9 +52,9 @@ class SenseiItemV2 extends StatelessWidget {
                       color: Colors.white70.withOpacity(0.5)),
                   children: <TextSpan>[
                     TextSpan(
-                        text: cubit
-                            .listTeacher![cubit.listLessonInfo!.indexOf(e)]!
-                            .phone,
+                        text: cubit.teacher == null
+                            ? "loading..."
+                            : cubit.teacher!.phone,
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: Resizable.font(context, 18),
@@ -73,8 +72,9 @@ class SenseiItemV2 extends StatelessWidget {
                       color: Colors.white70.withOpacity(0.5)),
                   children: <TextSpan>[
                     TextSpan(
-                        text: cubit
-                            .listTeachingDay![cubit.listLessonInfo!.indexOf(e)],
+                        text: cubit.lessonResult == null
+                            ? "loading..."
+                            : cubit.lessonResult!.date,
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: Resizable.font(context, 18),
@@ -84,8 +84,7 @@ class SenseiItemV2 extends StatelessWidget {
               )
             ],
           )),
-      child: SmallAvatar(
-          cubit.listTeacher![cubit.listLessonInfo!.indexOf(e)]!.url),
+      child: SmallAvatar(cubit.teacher == null ? "" : cubit.teacher!.url),
     );
   }
 }

@@ -31,7 +31,7 @@ class ListLessonScreen extends StatelessWidget {
                   child: const CircularProgressIndicator(),
                 )
                     : Expanded(
-                    key: Key('aa'),
+                    key: const Key('aa'),
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
@@ -72,7 +72,7 @@ class ListLessonScreen extends StatelessWidget {
                                       submit: Text(AppText.txtRateOfSubmitHomework.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17))),
                                       mark: Text(AppText.titleStatus.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17))),
                                       dropdown: Container())),
-                              cubit.listLessonInfo == null
+                              cubit.lessons == null
                                   ? Shimmer.fromColors(
                                 baseColor: Colors.grey[300]!,
                                 highlightColor:
@@ -93,7 +93,11 @@ class ListLessonScreen extends StatelessWidget {
                                       ],
                                     )),
                               )
-                                  : ListLessonItemV2(cubit: cubit, role: role),
+                                  : Column(
+                                children: [
+                                  ...cubit.lessons!.map((e) => ListLessonItemV2(cubit: cubit, role: role, lesson: e)).toList()
+                                ],
+                              ),
                               SizedBox(
                                   height: Resizable.size(context, 50))
                             ],
