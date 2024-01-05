@@ -124,7 +124,7 @@ class ManageClassScreenV2 extends StatelessWidget {
                                       padding: EdgeInsets.symmetric(
                                           horizontal:
                                               Resizable.size(context, 150)),
-                                      child: ClassItemV2(classModel: e)))
+                                      child: ClassItemV2(classModel: e, classCubit: cubit)))
                                   .toList(),
                               cubit.isLastPage
                                   ? Container()

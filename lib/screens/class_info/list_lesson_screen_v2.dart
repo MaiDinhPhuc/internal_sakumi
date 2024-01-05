@@ -10,8 +10,8 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:shimmer/shimmer.dart';
 
-class ListLessonScreen extends StatelessWidget {
-  ListLessonScreen({super.key, required this.role})
+class ListLessonScreenV2 extends StatelessWidget {
+  ListLessonScreenV2({super.key, required this.role})
       : cubit = ListLessonCubitV2(int.parse(TextUtils.getName()));
   final String role;
   final ListLessonCubitV2 cubit;
@@ -95,7 +95,7 @@ class ListLessonScreen extends StatelessWidget {
                               )
                                   : Column(
                                 children: [
-                                  ...cubit.lessons!.map((e) => ListLessonItemV2(cubit: cubit, role: role, lesson: e)).toList()
+                                  ...cubit.lessons!.map((e) => LessonItemV2(cubit: cubit, role: role, lesson: e)).toList()
                                 ],
                               ),
                               SizedBox(

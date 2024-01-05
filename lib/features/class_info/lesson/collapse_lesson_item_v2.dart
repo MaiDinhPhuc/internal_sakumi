@@ -44,7 +44,7 @@ class CollapseLessonItemV2 extends StatelessWidget {
           ? Container()
           : CircleProgress(
               title:
-                  '${(cubit.getAttendancePercent() * 100).toStringAsFixed(0)} %',
+                  '${(cubit.getHwPercent() * 100).toStringAsFixed(0)} %',
               lineWidth: Resizable.size(context, 3),
               percent: cubit.getHwPercent(),
               radius: Resizable.size(context, 16),

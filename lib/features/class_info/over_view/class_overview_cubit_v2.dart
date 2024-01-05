@@ -24,6 +24,8 @@ class ClassOverViewCubitV2 extends Cubit<int>{
   List<Map<String, dynamic>> listStdDetail = [];
   double percentHw = 0;
 
+  bool loaded = false;
+
   List<String> listStudentStatusMenu = [
     "Completed",
     "InProgress",
@@ -38,6 +40,27 @@ class ClassOverViewCubitV2 extends Cubit<int>{
     "Remove"
   ];
 
+  update()async{
+    await DataProvider.stdClassByClassId(classId, loadStudentClass);
+
+    await DataProvider.lessonByCourseId(classModel!.courseId, loadLessonInClass);
+
+    await DataProvider.stdLessonByClassId(classId, loadStdLesson);
+
+    await DataProvider.lessonResultByClassId(classId, loadLessonResult);
+
+    var listStdId = listStdClass!.map((e) => e.userId).toList();
+    students = [];
+    for(var i in listStdId){
+      DataProvider.studentById(i, loadStudentInfo);
+    }
+
+    loadListPercent();
+
+    loadDetail();
+    emit(state+1);
+  }
+
   loadData() async {
     classModel = await FireBaseProvider.instance.getClassById(classId);
 
@@ -45,21 +68,29 @@ class ClassOverViewCubitV2 extends Cubit<int>{
 
     await DataProvider.stdClassByClassId(classId, loadStudentClass);
 
-    await loadListStudentInfo();
+    await DataProvider.lessonByCourseId(classModel!.courseId, loadLessonInClass);
 
     await DataProvider.stdLessonByClassId(classId, loadStdLesson);
 
     await DataProvider.lessonResultByClassId(classId, loadLessonResult);
 
-    await DataProvider.lessonByCourseId(classModel!.courseId, loadLessonInClass);
+    var listStdId = listStdClass!.map((e) => e.userId).toList();
+    students = [];
+    for(var i in listStdId){
+      DataProvider.studentById(i, loadStudentInfo);
+    }
 
-    await loadListPercent();
+    loadListPercent();
 
-    await loadDetail();
+    loadDetail();
+
+    loaded = true;
+
+    emit(state+1);
 
   }
 
-  loadDetail(){
+  loadDetail()async{
     List<int> listStdIdsEnable = [];
     for (var element in listStdClass!) {
       if (element.classStatus != "Remove" &&
@@ -151,8 +182,8 @@ class ClassOverViewCubitV2 extends Cubit<int>{
           'attendance': listAttendance,
           'title': title,
           'hw': listHw,
-          'attendancePercent': tempAttendance / count,
-          'hwPercent': tempHw / countHw,
+          'attendancePercent': tempAttendance / (count== 0 ? 1 :count),
+          'hwPercent': tempHw / (countHw == 0 ? 1 : countHw),
           'teacherNote': senseiNote,
           'spNote': spNote,
           'doingTime':getTime(stdLesson,"time_btvn"),
@@ -182,11 +213,10 @@ class ClassOverViewCubitV2 extends Cubit<int>{
       }
     }
     percentHw = count1 / (total1 == 0 ? 1 : total1);
-
     emit(state + 1);
   }
 
-  loadListPercent(){
+  loadListPercent()async{
     listAttendance = [];
     listHomework = [];
     countAvailable = 0;
@@ -239,14 +269,6 @@ class ClassOverViewCubitV2 extends Cubit<int>{
       listHomework.add(tempHw);
     }
     emit(state + 1);
-  }
-
-  loadListStudentInfo()async{
-    var listStdId = listStdClass!.map((e) => e.userId).toList();
-    students = [];
-    for(var i in listStdId){
-      await DataProvider.studentById(i, loadStudentInfo);
-    }
   }
 
   loadStudentClass(Object studentClass) {
@@ -332,7 +354,10 @@ class ClassOverViewCubitV2 extends Cubit<int>{
 
   loadStudentInfo(Object student) {
     students!.add(student as StudentModel);
-    emit(state+1);
+    if(students!.length == listStdClass!.length){
+      emit(state+1);
+    }
+
   }
 
   loadStdLesson(Object stdLessons) {

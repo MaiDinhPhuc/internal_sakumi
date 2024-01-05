@@ -1,18 +1,29 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/session_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/input_sp_note_for_ss.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
+import 'package:internal_sakumi/model/lesson_result_model.dart';
+import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/note_widget.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
+import 'alert_edit_attendance_v2.dart';
 import 'detail_lesson_cubit_v2.dart';
+import 'list_lesson_cubit_v2.dart';
 
 class ExpandLessonItemV2 extends StatelessWidget {
-  const ExpandLessonItemV2(
-      {super.key, required this.detailCubit, required this.role});
+  ExpandLessonItemV2(
+      {super.key,
+      required this.detailCubit,
+      required this.role,
+      required this.cubit}): sessionCubit = SessionCubit();
   final DetailLessonCubitV2 detailCubit;
+  final ListLessonCubitV2 cubit;
   final String role;
+  final SessionCubit sessionCubit;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -53,12 +64,29 @@ class ExpandLessonItemV2 extends StatelessWidget {
                 InputSpNoteForSS(
                     sendNote: () async {
                       waitingDialog(context);
+
+                      List<LessonResultModel> list = [];
+
+                      for(var i in cubit.lessonResults!){
+                        if(i.lessonId != detailCubit.lesson.lessonId){
+                          list.add(i);
+                        }else{
+                          list.add(detailCubit.lessonResult!);
+                        }
+                      }
+                      DataProvider.updateLessonResult(cubit.classId, list);
+                      await FireBaseProvider.instance.updateLessonResult(
+                          detailCubit.lesson.lessonId,
+                          cubit.classId,
+                          detailCubit.lessonResult!.supportNoteForTeacher!);
                       await Future.delayed(const Duration(seconds: 1), () {
                         Navigator.pop(context);
                       });
                     },
                     value: detailCubit.lessonResult!.supportNoteForTeacher!,
-                    onChange: (value) {})
+                    onChange: (value) {
+                      detailCubit.updateNote(value!);
+                    })
               ],
             ),
           Container(
@@ -124,7 +152,8 @@ class ExpandLessonItemV2 extends StatelessWidget {
                             itemBuilder: (context) => [
                               PopupMenuItem(
                                 onTap: () {
-                                  //alertEditAttendance(context,cubit ,sessionCubit, dataCubit, lessonId);
+                                  alertEditAttendanceV2(context,detailCubit ,cubit,sessionCubit );
+                                  //alertEditAttendanceV2(context,detailCubit ,cubit,sessionCubit );
                                   //waitingDialog(context);
                                 },
                                 padding: EdgeInsets.zero,
@@ -152,23 +181,40 @@ class ExpandLessonItemV2 extends StatelessWidget {
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // ...detailCubit.getStudents().map((e) =>
-                      //     TrackStudentItemRowLayout(
-                      //         name: Text(
-                      //           e.name,
-                      //           style: TextStyle(
-                      //               fontSize: Resizable.font(context, 20),
-                      //               fontWeight: FontWeight.w500),
-                      //         ),
-                      //         attendance: TrackingItem(detailCubit
-                      //             .getStudentLesson(e.userId)
-                      //             .timekeeping),
-                      //         submit: TrackingItem(
-                      //             detailCubit.getStudentLesson(e.userId).hw,
-                      //             isSubmit: true),
-                      //         note: NoteWidget(detailCubit
-                      //             .getStudentLesson(e.userId)
-                      //             .teacherNote)))
+                      ...detailCubit.getStudents().map((e) =>
+                          TrackStudentItemRowLayout(
+                              name: Text(
+                                e.name,
+                                style: TextStyle(
+                                    fontSize: Resizable.font(context, 20),
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              attendance: TrackingItem(
+                                  detailCubit.getStudentLesson(e.userId).isEmpty
+                                      ? null
+                                      : detailCubit
+                                          .getStudentLesson(e.userId)
+                                          .first
+                                          .timekeeping),
+                              submit: TrackingItem(
+                                  detailCubit.lesson.btvn == 0
+                                      ? null
+                                      : detailCubit
+                                              .getStudentLesson(e.userId)
+                                              .isEmpty
+                                          ? -2
+                                          : detailCubit
+                                              .getStudentLesson(e.userId)
+                                              .first
+                                              .hw,
+                                  isSubmit: true),
+                              note: NoteWidget(
+                                  detailCubit.getStudentLesson(e.userId).isEmpty
+                                      ? ""
+                                      : detailCubit
+                                          .getStudentLesson(e.userId)
+                                          .first
+                                          .teacherNote)))
                     ],
                   ),
           )

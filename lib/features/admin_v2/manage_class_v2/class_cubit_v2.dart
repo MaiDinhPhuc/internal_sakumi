@@ -10,6 +10,13 @@ class ClassCubit extends Cubit<int>{
 
   List<ClassModel>? listClass;
 
+  List<String> listClassStatusMenuAdmin2 = [
+    "Preparing",
+    "InProgress",
+    "Completed",
+    "Cancel"
+  ];
+
   reload(Map<AdminFilter, List> filter)async{
     if(filter.keys.isNotEmpty){
       listClass = await DataProvider.classList(filter, 1);
@@ -28,6 +35,13 @@ class ClassCubit extends Cubit<int>{
       isLastPage = true;
     }
     listClass!.addAll(list);
+    emit(state+1);
+  }
+
+  updateClass(ClassModel classModel){
+    var index = listClass!.indexOf(listClass!.firstWhere((e) => e.classId == classModel.classId));
+
+    listClass![index] = classModel;
     emit(state+1);
   }
 }

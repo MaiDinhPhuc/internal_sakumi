@@ -3,25 +3,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
-import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
+import 'package:internal_sakumi/features/admin_v2/manage_class_v2/class_cubit_v2.dart';
+import 'package:internal_sakumi/features/admin_v2/manage_class_v2/confirm_change_class_status_v2.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
-import 'alert_confirm_change_class_status.dart';
-
-class StatusClassItemAdmin extends StatelessWidget {
-  const StatusClassItemAdmin(
+class StatusClassItemAdminV2 extends StatelessWidget {
+  const StatusClassItemAdminV2(
       {super.key,
       required this.color,
       required this.icon,
-      required this.dataCubit,
-      required this.classModel});
+      required this.classModel,
+      required this.classCubit});
   final Color color;
   final String icon;
-  final DataCubit dataCubit;
   final ClassModel classModel;
+  final ClassCubit classCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +31,7 @@ class StatusClassItemAdmin extends StatelessWidget {
           var popupCubit = BlocProvider.of<MenuPopupCubit>(c);
           return PopupMenuButton(
               itemBuilder: (context) => [
-                    ...dataCubit.listClassStatusMenuAdmin2.map((e) =>
+                    ...classCubit.listClassStatusMenuAdmin2.map((e) =>
                         PopupMenuItem(
                             padding: EdgeInsets.zero,
                             child: BlocProvider(
@@ -47,11 +46,9 @@ class StatusClassItemAdmin extends StatelessWidget {
                                         showDialog(
                                             context: context,
                                             builder: (context) =>
-                                                ConfirmChangeClassStatus(
-                                                    e,
-                                                    classModel,
-                                                    popupCubit,
-                                                    dataCubit));
+                                                ConfirmChangeClassStatusV2(
+                                                    e, classModel, popupCubit,
+                                                    classCubit: classCubit));
                                       }
                                     },
                                     child: Container(
@@ -137,4 +134,3 @@ class StatusClassItemAdmin extends StatelessWidget {
     );
   }
 }
-

@@ -8,8 +8,8 @@ import 'package:internal_sakumi/model/teacher_model.dart';
 
 import 'list_lesson_cubit_v2.dart';
 
-class DetailLessonCubitV2 extends Cubit<int>{
-  DetailLessonCubitV2(this.cubit, this.lesson):super(0){
+class DetailLessonCubitV2 extends Cubit<int> {
+  DetailLessonCubitV2(this.cubit, this.lesson) : super(0) {
     loadData();
   }
 
@@ -21,35 +21,51 @@ class DetailLessonCubitV2 extends Cubit<int>{
   TeacherModel? teacher;
   List<StudentClassModel>? stdClasses;
 
-  loadData()async{
-    if(cubit.lessonResults != null){
-      lessonResult = cubit.lessonResults!.firstWhere((e) => e.lessonId == lesson.lessonId);
+  loadData() async {
+    if (cubit.lessonResults != null) {
+      lessonResult =
+          cubit.lessonResults!.firstWhere((e) => e.lessonId == lesson.lessonId);
     }
 
-    if(cubit.stdLessons != null){
-      stdLessons = cubit.stdLessons!.where((e) => e.lessonId == lesson.lessonId).toList();
+    if (cubit.stdLessons != null) {
+      stdLessons = cubit.stdLessons!
+          .where((e) => e.lessonId == lesson.lessonId)
+          .toList();
     }
 
-    if(cubit.listStdClass != null){
+    if (cubit.listStdClass != null) {
       stdClasses = cubit.listStdClass!;
     }
 
-    if(cubit.students.isNotEmpty){
+    if (cubit.students.isNotEmpty) {
       students = cubit.students;
     }
 
-    if(cubit.teachers.isNotEmpty && lessonResult != null){
-      teacher = cubit.teachers.firstWhere((e) => e.userId == lessonResult!.teacherId);
+    if (cubit.teachers.isNotEmpty && lessonResult != null) {
+      teacher =
+          cubit.teachers.firstWhere((e) => e.userId == lessonResult!.teacherId);
     }
-    emit(state+1);
+    emit(state + 1);
   }
 
-  double getAttendancePercent(){
+  updateNote(String value) {
+    lessonResult = LessonResultModel(
+        id: lessonResult!.id,
+        classId: lessonResult!.classId,
+        lessonId: lessonResult!.lessonId,
+        teacherId: lessonResult!.teacherId,
+        status: lessonResult!.status,
+        date: lessonResult!.date,
+        noteForStudent: lessonResult!.noteForStudent,
+        noteForSupport: lessonResult!.noteForSupport,
+        noteForTeacher: lessonResult!.noteForTeacher,
+        supportNoteForTeacher: value);
+  }
+
+  double getAttendancePercent() {
     var stdIds = getStudentId();
     List<StudentLessonModel> tempList = stdLessons!
-        .where((e) =>
-        e.timekeeping != 0 &&
-        stdIds.contains(e.studentId))
+        .where((e) => e.timekeeping != 0 && stdIds.contains(e.studentId))
         .toList();
     double tempAttendance = 0;
     for (var j in tempList) {
@@ -60,13 +76,11 @@ class DetailLessonCubitV2 extends Cubit<int>{
     return tempAttendance / (tempList.isEmpty ? 1 : tempList.length);
   }
 
-  bool? checkGrading(){
+  bool? checkGrading() {
     var stdIds = getStudentId();
     bool? status;
     List<StudentLessonModel> tempList = stdLessons!
-        .where((e) =>
-    e.timekeeping != 0 &&
-        stdIds.contains(e.studentId))
+        .where((e) => e.timekeeping != 0 && stdIds.contains(e.studentId))
         .toList();
     if (tempList.isEmpty) {
       status = null;
@@ -97,12 +111,10 @@ class DetailLessonCubitV2 extends Cubit<int>{
     return status;
   }
 
-  double getHwPercent(){
+  double getHwPercent() {
     var stdIds = getStudentId();
     List<StudentLessonModel> tempList = stdLessons!
-        .where((e) =>
-    e.timekeeping != 0 &&
-        stdIds.contains(e.studentId))
+        .where((e) => e.timekeeping != 0 && stdIds.contains(e.studentId))
         .toList();
     double tempHw = 0;
     for (var j in tempList) {
@@ -113,21 +125,7 @@ class DetailLessonCubitV2 extends Cubit<int>{
     return tempHw / (tempList.isEmpty ? 1 : tempList.length);
   }
 
-  List<int> getStudentId(){
-
-    List<StudentClassModel> listStdClassTemp = stdClasses!
-        .where((i) =>
-    i.classStatus != "Remove" &&
-        i.classStatus != "Dropped" &&
-        i.classStatus != "Deposit" &&
-        i.classStatus != "Retained" &&
-        i.classStatus != "Moved" &&
-        i.classStatus != "Viewer")
-        .toList();
-    List<int> sdtIdsTemp = [];
-    for (var i in listStdClassTemp) {
-      sdtIdsTemp.add(i.userId);
-    }
+  List<int> getStudentId() {
     List<int> studentIds = [];
     for (var i in stdClasses!) {
       if (i.classStatus != "Remove" &&
@@ -142,16 +140,16 @@ class DetailLessonCubitV2 extends Cubit<int>{
     return studentIds;
   }
 
-  StudentLessonModel getStudentLesson(int stdId){
-
-    var stdLesson = stdLessons!.firstWhere((e) => e.studentId == stdId && e.lessonId == lesson.lessonId);
+  List<StudentLessonModel> getStudentLesson(int stdId) {
+    var stdLesson = stdLessons!.where((e) => e.studentId == stdId).toList();
 
     return stdLesson;
   }
 
-  List<StudentModel> getStudents(){
-    if(students != null){
-      List<StudentModel> students = this.students!
+  List<StudentModel> getStudents() {
+    if (students != null) {
+      List<StudentModel> students = this
+          .students!
           .where((e) => getStudentId().contains(e.userId))
           .toList();
       students.sort((a, b) => a.userId.compareTo(b.userId));
@@ -159,5 +157,4 @@ class DetailLessonCubitV2 extends Cubit<int>{
     }
     return [];
   }
-
 }

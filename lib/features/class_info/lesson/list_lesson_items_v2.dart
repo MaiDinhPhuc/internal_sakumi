@@ -12,8 +12,9 @@ import 'detail_lesson_cubit_v2.dart';
 import 'expand_lesson_item_v2.dart';
 import 'list_lesson_cubit_v2.dart';
 
-class ListLessonItemV2 extends StatelessWidget {
-  ListLessonItemV2({Key? key, required this.cubit, required this.role, required this.lesson})
+class LessonItemV2 extends StatelessWidget {
+  LessonItemV2(
+      {Key? key, required this.cubit, required this.role, required this.lesson})
       : detailCubit = DetailLessonCubitV2(cubit, lesson),
         super(key: key);
   final ListLessonCubitV2 cubit;
@@ -58,10 +59,14 @@ class ListLessonItemV2 extends StatelessWidget {
                                     children: [
                                       CollapseLessonItemV2(
                                           cubit: detailCubit,
-                                          index: cubit.lessons!.indexOf(lesson)),
+                                          index:
+                                              cubit.lessons!.indexOf(lesson)),
                                       if (detailCubit.lessonResult!.status !=
                                           "Pending")
-                                        ExpandLessonItemV2(detailCubit: detailCubit, role: role)
+                                        ExpandLessonItemV2(
+                                            detailCubit: detailCubit,
+                                            role: role,
+                                            cubit: cubit)
                                     ],
                                   ),
                                   crossFadeState: state % 2 == 1

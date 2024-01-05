@@ -45,7 +45,7 @@ class RecordService {
      );
      final now = DateTime.now().microsecondsSinceEpoch;
      final ref = FirebaseStorage.instance.ref().child('grading_result_record/$now');
-     await ref.putData(response.bodyBytes, SettableMetadata(contentType: 'video/mp4'));
+     await ref.putData(response.bodyBytes, SettableMetadata(contentType: 'audio/mpeg'));
      var link = await ref.getDownloadURL();
      return link;
   }

@@ -82,7 +82,7 @@ class ClassOverViewScreenV2 extends StatelessWidget {
                                             TextStyle(color: const Color(0xff757575), fontWeight: FontWeight.w600, fontSize: Resizable.font(context, 17))),
                                     dropdown: Container(),
                                     evaluate: Text(AppText.txtEvaluate.text, style: TextStyle(color: const Color(0xff757575), fontWeight: FontWeight.w600, fontSize: Resizable.font(context, 17))))),
-                            cubit.listStdClass == null
+                            cubit.loaded == false
                                 ? Shimmer.fromColors(
                                     baseColor: Colors.grey[300]!,
                                     highlightColor: Colors.grey[100]!,

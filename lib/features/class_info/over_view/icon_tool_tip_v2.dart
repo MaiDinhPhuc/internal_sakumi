@@ -10,6 +10,7 @@ import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'class_overview_cubit_v2.dart';
+import 'confirm_change_student_class_status_v2.dart';
 
 class IconToolTipV2 extends StatelessWidget {
   const IconToolTipV2(
@@ -41,18 +42,16 @@ class IconToolTipV2 extends StatelessWidget {
                               onTap: () {
                                 Navigator.pop(context);
                                 if (stdClass.status != e) {
-                                  // showDialog(
-                                  //     context: context,
-                                  //     builder: (context) =>
-                                  //         ConfirmChangeStudentStatusOverView(
-                                  //           e,
-                                  //           stdClass,
-                                  //           cubit.students!.firstWhere((e) =>
-                                  //           e.userId == stdClass.userId),
-                                  //           cubit,
-                                  //           popupCubit,
-                                  //           dataCubit: dataCubit,
-                                  //         ));
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) =>
+                                          ConfirmChangeStudentClassStatusV2(
+                                            e,
+                                            stdClass,
+                                            cubit.students!.firstWhere((e) =>
+                                            e.userId == stdClass.userId),
+                                            popupCubit, cubit: cubit,
+                                          ));
                                 }
                               },
                               child: Container(
