@@ -7,6 +7,8 @@ import 'package:internal_sakumi/features/admin_v2/manage_class_v2/class_cubit_v2
 import 'package:internal_sakumi/features/admin_v2/manage_class_v2/class_item_v2.dart';
 import 'package:internal_sakumi/features/admin_v2/manage_class_v2/filter_class_status_v2.dart';
 import 'package:internal_sakumi/features/admin_v2/manage_class_v2/filter_class_type_v2.dart';
+import 'package:internal_sakumi/features/admin_v2/manage_class_v2/filter_course_level_v2.dart';
+import 'package:internal_sakumi/features/admin_v2/manage_class_v2/filter_course_type_v2.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
 import 'package:internal_sakumi/providers/cache/filter_admin_provider.dart';
@@ -24,7 +26,7 @@ class ManageClassScreenV2 extends StatelessWidget {
     var filterController = BlocProvider.of<AdminClassFilterCubit>(context);
     final shimmerList = List.generate(5, (index) => index);
     if (filterController.filter.keys.isNotEmpty) {
-      cubit.reload(filterController.filter);
+      cubit.reload(filterController);
     }
     return Scaffold(
       body: Column(
@@ -50,13 +52,15 @@ class ManageClassScreenV2 extends StatelessWidget {
                       horizontal: Resizable.padding(context, 150)),
                   child: BlocListener<AdminClassFilterCubit, int>(
                       listener: (context, _) {
-                        cubit.reload(filterController.filter);
+                        cubit.reload(filterController);
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          FilterStatusAdminV2(filterController),
-                          FilterTypeAdminV2(filterController)
+                          FilterStatusAdminV2(filterController, classCubit: cubit),
+                          FilterCourseTypeAdminV2(filterController, classCubit: cubit),
+                          FilterCourseLevelAdminV2(filterController, classCubit: cubit),
+                          FilterTypeAdminV2(filterController, classCubit: cubit)
                         ],
                       ))),
               Container(
@@ -130,12 +134,12 @@ class ManageClassScreenV2 extends StatelessWidget {
                                   ? Container()
                                   : SubmitButton(
                                       onPressed: () {
-                                        cubit.loadMore(filterController.filter);
+                                        cubit.loadMore(filterController);
                                       },
                                       title: "LoadMore"),
                             ])
-                          : Center(
-                              child: Text(AppText.txtNoClass.text),
+                          : const Center(
+                              child: CircularProgressIndicator(),
                             )),
               SizedBox(height: Resizable.size(context, 50)),
             ],

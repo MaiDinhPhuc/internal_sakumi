@@ -7,11 +7,14 @@ import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 
+import 'class_cubit_v2.dart';
+
 class ClassDetailCubit extends Cubit<int> {
-  ClassDetailCubit(this.classModel) : super(0) {
+  ClassDetailCubit(this.classModel, this.classCubit) : super(0) {
     loadData();
   }
 
+  final ClassCubit classCubit;
   final ClassModel classModel;
   List<LessonResultModel>? lessonResults;
   List<StudentLessonModel>? stdLessons;
@@ -27,16 +30,16 @@ class ClassDetailCubit extends Cubit<int> {
   List<double>? stds;
 
   loadData() async {
-    await DataProvider.courseById(classModel.courseId, onCourseLoaded);
+    DataProvider.courseById(classModel.courseId, onCourseLoaded);
+
+    await DataProvider.stdClassByClassId(classModel.classId, loadStudentClass);
+
+    await DataProvider.lessonByCourseId(classModel.courseId, loadLessonInClass);
 
     await DataProvider.stdLessonByClassId(classModel.classId, loadStdLesson);
 
     await DataProvider.lessonResultByClassId(
         classModel.classId, loadLessonResult);
-
-    await DataProvider.stdClassByClassId(classModel.classId, loadStudentClass);
-
-    await DataProvider.lessonByCourseId(classModel.courseId, loadLessonInClass);
 
     await loadPercent();
 

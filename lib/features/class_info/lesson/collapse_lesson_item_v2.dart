@@ -29,8 +29,20 @@ class CollapseLessonItemV2 extends StatelessWidget {
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 16)))),
-      sensei: Container(),
-      attend: cubit.stdLessons == null
+      sensei: Align(
+        alignment: Alignment.center,
+        child: Opacity(
+          opacity: 0,
+          child: CircleProgress(
+            title: '0 %',
+            lineWidth: Resizable.size(context, 3),
+            percent: 0,
+            radius: Resizable.size(context, 16),
+            fontSize: Resizable.font(context, 14),
+          ),
+        ),
+      ),
+      attend: cubit.stdLessons == null || cubit.lessonResult == null
           ? Container()
           : CircleProgress(
               title:
@@ -40,7 +52,7 @@ class CollapseLessonItemV2 extends StatelessWidget {
               radius: Resizable.size(context, 16),
               fontSize: Resizable.font(context, 14),
             ),
-      submit: cubit.stdLessons == null
+      submit: cubit.stdLessons == null || cubit.lessonResult == null
           ? Container()
           : CircleProgress(
               title:

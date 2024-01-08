@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/model/class_model.dart';
-import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
+import 'package:internal_sakumi/model/course_model.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:collection/collection.dart';
+
+import 'cached_data_provider.dart';
 
 enum FilterClassType { group, one }
 
@@ -45,7 +47,7 @@ extension FilterClassCourseEx on FilterClassCourse {
   }
 }
 
-enum FilterClassLevel { n1, n2, n3, n4, n5, other }
+enum FilterClassLevel { n1, n2, n3, n4, n5 }
 
 extension FilterClassLevelEx on FilterClassLevel {
   String get title {
@@ -60,8 +62,6 @@ extension FilterClassLevelEx on FilterClassLevel {
         return "N4";
       case FilterClassLevel.n5:
         return "N5";
-      case FilterClassLevel.other:
-        return "Other";
     }
   }
 }
@@ -97,27 +97,71 @@ extension FilterClassStatusEx on FilterClassStatus {
 }
 
 enum AdminFilter { type, course, level, status }
-// extension AdminFilterController on AdminFilter {}
 
 class AdminClassFilterCubit extends Cubit<int> {
   AdminClassFilterCubit() : super(0) {
     _init();
   }
 
+  List<CourseModel>? listCourse;
+
   static const Map<AdminFilter, List> defaultFilter = {
     AdminFilter.type: [FilterClassType.group],
-    AdminFilter.course: [],
-    AdminFilter.level: [],
+    AdminFilter.course: [FilterClassCourse.general],
+    AdminFilter.level: [FilterClassLevel.n5],
     AdminFilter.status: [
       FilterClassStatus.preparing,
       FilterClassStatus.studying
     ],
   };
 
+  String courseType(FilterClassCourse type) {
+    switch (type) {
+      case FilterClassCourse.kaiwa:
+        return "kaiwa";
+      case FilterClassCourse.jlpt:
+        return "JLPT";
+      case FilterClassCourse.general:
+        return "general";
+      case FilterClassCourse.kid:
+        return "kid";
+    }
+  }
+
+  String level(FilterClassLevel level) {
+    switch (level) {
+      case FilterClassLevel.n1:
+        return "N1";
+      case FilterClassLevel.n2:
+        return "N2";
+      case FilterClassLevel.n3:
+        return "N3";
+      case FilterClassLevel.n4:
+        return "N4";
+      case FilterClassLevel.n5:
+        return "N5";
+    }
+  }
+
+  List<int> getCourseId(List<dynamic> listCourse, List<dynamic> listLevel){
+
+    List<int> listId = [];
+
+    var types = listCourse.map((e) => courseType(e)).toList();
+    var levels = listLevel.map((e) => level(e)).toList();
+
+    for(var i in this.listCourse!){
+      if(types.contains(i.type) && levels.contains(i.level)){
+        listId.add(i.courseId);
+      }
+    }
+
+    return listId;
+  }
+
   Map<AdminFilter, List> _filter = {};
 
   Map<AdminFilter, List> get filter => _filter;
-
 
   Future<void> _saveToPref() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -125,54 +169,100 @@ class AdminClassFilterCubit extends Cubit<int> {
     prefs.setString('filter', jsonString);
   }
 
-  Map<String, dynamic> convertFilterEncode(){
-    var listType = filter[AdminFilter.type]!.map((e) => (e as FilterClassType).title).toList();
-    var listCourse =  filter[AdminFilter.course]!.map((e) => (e as FilterClassCourse).title).toList();
-    var listLevel = filter[AdminFilter.level]!.map((e) => (e as FilterClassLevel).title).toList();
-    var listStatus = filter[AdminFilter.status]!.map((e) => (e as FilterClassStatus).title).toList();
+  Map<String, dynamic> convertFilterEncode() {
+    var listType = filter[AdminFilter.type]!
+        .map((e) => (e as FilterClassType).title)
+        .toList();
+    var listCourse = filter[AdminFilter.course]!
+        .map((e) => (e as FilterClassCourse).title)
+        .toList();
+    var listLevel = filter[AdminFilter.level]!
+        .map((e) => (e as FilterClassLevel).title)
+        .toList();
+    var listStatus = filter[AdminFilter.status]!
+        .map((e) => (e as FilterClassStatus).title)
+        .toList();
 
     return {
       "type": listType,
       "course": listCourse,
       "level": listLevel,
-      "status":listStatus
+      "status": listStatus
     };
   }
 
-  Map<AdminFilter, List> convertFilterDecode(dynamic json){
-
+  Map<AdminFilter, List> convertFilterDecode(dynamic json) {
     var listType = [];
-    for(var i in json["type"]){
-      if(i == "Lớp Nhóm"){
+    for (var i in json["type"]) {
+      if (i == "Lớp Nhóm") {
         listType.add(FilterClassType.group);
       }
-      if(i == "Lớp 1:1"){
+      if (i == "Lớp 1:1") {
         listType.add(FilterClassType.one);
       }
     }
     var listStatus = [];
-    for(var i in json["status"]){
+    for (var i in json["status"]) {
       switch (i) {
         case "Mới tạo":
           listStatus.add(FilterClassStatus.preparing);
           break;
-        case "Hoàn thành" :
+        case "Hoàn thành":
           listStatus.add(FilterClassStatus.completed);
           break;
         case "Đang học":
           listStatus.add(FilterClassStatus.studying);
-          break ;
+          break;
         case "Huỷ":
           listStatus.add(FilterClassStatus.cancel);
-          break ;
+          break;
+      }
+    }
+
+    var listCourse = [];
+    for (var i in json["course"]) {
+      switch (i) {
+        case "Kaiwa":
+          listCourse.add(FilterClassCourse.kaiwa);
+          break;
+        case "JLPT":
+          listCourse.add(FilterClassCourse.jlpt);
+          break;
+        case "General":
+          listCourse.add(FilterClassCourse.general);
+          break;
+        case "Kid":
+          listCourse.add(FilterClassCourse.kid);
+          break;
+      }
+    }
+
+    var listLevel = [];
+    for (var i in json["level"]) {
+      switch (i) {
+        case "N1":
+          listLevel.add(FilterClassLevel.n1);
+          break;
+        case "N2":
+          listLevel.add(FilterClassLevel.n2);
+          break;
+        case "N3":
+          listLevel.add(FilterClassLevel.n3);
+          break;
+        case "N4":
+          listLevel.add(FilterClassLevel.n4);
+          break;
+        case "N5":
+          listLevel.add(FilterClassLevel.n5);
+          break;
       }
     }
 
 
     return {
       AdminFilter.type: listType,
-      AdminFilter.course: [],
-      AdminFilter.level: [],
+      AdminFilter.course: listCourse,
+      AdminFilter.level: listLevel,
       AdminFilter.status: listStatus
     };
   }
@@ -187,6 +277,10 @@ class AdminClassFilterCubit extends Cubit<int> {
   }
 
   _init() async {
+    listCourse = await FireBaseProvider.instance.getAllCourseEnable();
+    for (var i in listCourse!) {
+      DataProvider.courseById(i.courseId, onLoaded, course: i);
+    }
     _filter = await _fromPref() ??
         defaultFilter.keys.fold({}, (pre, key) {
           pre[key] = defaultFilter[key]!;
@@ -195,9 +289,11 @@ class AdminClassFilterCubit extends Cubit<int> {
     emit(state + 1);
   }
 
+  onLoaded(Object object) {}
 
   update(AdminFilter adminFilter, List selectedList) async {
-    bool areListsEqual = const ListEquality().equals(_filter[adminFilter], selectedList);
+    bool areListsEqual =
+        const ListEquality().equals(_filter[adminFilter], selectedList);
     if (!areListsEqual) {
       _filter[adminFilter] = selectedList;
       _saveToPref();

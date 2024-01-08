@@ -1029,12 +1029,18 @@ class FireStoreDb {
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getMoreClassWithFilter(
-      List<String> listStatusFilter, List<int> listTypeFilter, int lastId) async {
+      List<String> listStatusFilter,
+      List<int> listTypeFilter,
+      int lastId,
+      List<int> listCourseId) async {
     final snapshot = await db
         .collection("class")
         .orderBy('class_id')
-        .where(Filter.and(Filter("class_status", whereIn: listStatusFilter),
-            Filter("class_type", whereIn: listTypeFilter))).startAfter([lastId])
+        .where(Filter.and(
+            Filter("class_status", whereIn: listStatusFilter),
+            Filter("course_id", whereIn: listCourseId),
+            Filter("class_type", whereIn: listTypeFilter)))
+        .startAfter([lastId])
         .limit(10)
         .get();
 
@@ -1044,14 +1050,17 @@ class FireStoreDb {
     return snapshot;
   }
 
-
   Future<QuerySnapshot<Map<String, dynamic>>> getListClassWithFilter(
-      List<String> listStatusFilter, List<int> listTypeFilter) async {
+      List<String> listStatusFilter,
+      List<int> listTypeFilter,
+      List<int> listCourseId) async {
     final snapshot = await db
         .collection("class")
         .orderBy('class_id')
-        .where(Filter.and(Filter("class_status", whereIn: listStatusFilter),
-        Filter("class_type", whereIn: listTypeFilter)))
+        .where(Filter.and(
+            Filter("class_status", whereIn: listStatusFilter),
+            Filter("course_id", whereIn: listCourseId),
+            Filter("class_type", whereIn: listTypeFilter)))
         .limit(10)
         .get();
 

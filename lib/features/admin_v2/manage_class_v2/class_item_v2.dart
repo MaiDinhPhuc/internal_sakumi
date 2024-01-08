@@ -18,7 +18,7 @@ import 'class_overview_v2.dart';
 
 class ClassItemV2 extends StatelessWidget {
   ClassItemV2({super.key, required this.classModel, required this.classCubit})
-      : cubit = ClassDetailCubit(classModel);
+      : cubit = ClassDetailCubit(classModel,classCubit);
   final ClassModel classModel;
   final ClassDetailCubit cubit;
   final ClassCubit classCubit;

@@ -61,12 +61,15 @@ class LessonItemV2 extends StatelessWidget {
                                           cubit: detailCubit,
                                           index:
                                               cubit.lessons!.indexOf(lesson)),
-                                      if (detailCubit.lessonResult!.status !=
-                                          "Pending")
-                                        ExpandLessonItemV2(
-                                            detailCubit: detailCubit,
-                                            role: role,
-                                            cubit: cubit)
+                                      detailCubit.lessonResult == null
+                                          ? const CircularProgressIndicator()
+                                          : detailCubit.lessonResult!.status !=
+                                                  "Pending"
+                                              ? ExpandLessonItemV2(
+                                                  detailCubit: detailCubit,
+                                                  role: role,
+                                                  cubit: cubit)
+                                              : Container()
                                     ],
                                   ),
                                   crossFadeState: state % 2 == 1

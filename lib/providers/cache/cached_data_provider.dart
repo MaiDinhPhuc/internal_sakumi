@@ -1,4 +1,5 @@
 import 'package:internal_sakumi/model/class_model.dart';
+import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
@@ -19,7 +20,7 @@ class DataProvider {
   static Map<String, CacheObject> cached = {};
 
   static Future<List<ClassModel>> classList(
-      Map<AdminFilter, List> filter, int admin,
+      Map<AdminFilter, List> filter, int admin,List<int> listCourseId,
       {ClassModel? lastItem}) async {
     List? listType = filter[AdminFilter.type];
     List? listStatus = filter[AdminFilter.status];
@@ -27,11 +28,11 @@ class DataProvider {
     List<String> listStatusQuery = listStatus!.map((e) => status(e)).toList();
     if(lastItem != null){
       var listClass = await FireBaseProvider.instance
-          .getMoreClassWithFilter(listStatusQuery, listTypeQuery, lastItem.classId);
+          .getMoreClassWithFilter(listStatusQuery, listTypeQuery, lastItem.classId, listCourseId);
       return listClass;
     }
     return await FireBaseProvider.instance
-        .getListClassWithFilter(listStatusQuery, listTypeQuery);
+        .getListClassWithFilter(listStatusQuery, listTypeQuery,listCourseId);
   }
 
   static String status(FilterClassStatus status) {
@@ -56,12 +57,16 @@ class DataProvider {
     }
   }
 
-  static Future<void> courseById(int id, Function(Object) onLoaded) async {
+  static Future<void> courseById(int id, Function(Object) onLoaded, {CourseModel? course}) async {
     var key = 'course_$id';
     if (cached[key] == null) {
       cached[key] = CacheObject(DateTime.now(), callbacks: [onLoaded]);
-      cached[key]!.data =
-          await FireBaseProvider.instance.getCourseById(id);
+      if(course == null){
+        cached[key]!.data =
+        await FireBaseProvider.instance.getCourseById(id);
+      }else{
+        cached[key]!.data = course;
+      }
       for (var element in cached[key]!.callbacks) {
         element.call(cached[key]!.data!);
       }

@@ -23,8 +23,12 @@ class DetailLessonCubitV2 extends Cubit<int> {
 
   loadData() async {
     if (cubit.lessonResults != null) {
-      lessonResult =
-          cubit.lessonResults!.firstWhere((e) => e.lessonId == lesson.lessonId);
+      var result = cubit.lessonResults!
+          .where((e) => e.lessonId == lesson.lessonId)
+          .toList();
+      if (result.isNotEmpty) {
+        lessonResult = result.first;
+      }
     }
 
     if (cubit.stdLessons != null) {
@@ -34,11 +38,17 @@ class DetailLessonCubitV2 extends Cubit<int> {
     }
 
     if (cubit.listStdClass != null) {
-      stdClasses = cubit.listStdClass!;
+      var stdClass = cubit.listStdClass ?? [];
+      if(stdClass.isNotEmpty){
+        stdClasses = cubit.listStdClass!;
+      }
     }
 
     if (cubit.students.isNotEmpty) {
-      students = cubit.students;
+      var std = cubit.students;
+      if(std.isNotEmpty){
+        students = cubit.students;
+      }
     }
 
     if (cubit.teachers.isNotEmpty && lessonResult != null) {

@@ -36,6 +36,8 @@ class ListLessonCubitV2 extends Cubit<int>{
 
     await DataProvider.lessonByCourseId(classModel!.courseId, loadLessonInClass);
 
+    await Future.delayed(const Duration(milliseconds: 500));
+
     var listStdId = listStdClass!.map((e) => e.userId).toList();
     for(var i in listStdId){
       DataProvider.studentById(i, loadStudentInfo);
@@ -56,13 +58,13 @@ class ListLessonCubitV2 extends Cubit<int>{
 
   update()async{
 
-      await DataProvider.stdClassByClassId(classId, loadStudentClass);
+      DataProvider.stdClassByClassId(classId, loadStudentClass);
 
-      await DataProvider.stdLessonByClassId(classId, loadStdLesson);
+      DataProvider.stdLessonByClassId(classId, loadStdLesson);
 
-      await DataProvider.lessonResultByClassId(classId, loadLessonResult);
+      DataProvider.lessonResultByClassId(classId, loadLessonResult);
 
-      await DataProvider.lessonByCourseId(classModel!.courseId, loadLessonInClass);
+      DataProvider.lessonByCourseId(classModel!.courseId, loadLessonInClass);
       students = [];
       listTeacherId = [];
       teachers = [];

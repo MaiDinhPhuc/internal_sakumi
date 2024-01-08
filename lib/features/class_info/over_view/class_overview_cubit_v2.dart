@@ -8,8 +8,8 @@ import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
-class ClassOverViewCubitV2 extends Cubit<int>{
-  ClassOverViewCubitV2(this.classId):super(0){
+class ClassOverViewCubitV2 extends Cubit<int> {
+  ClassOverViewCubitV2(this.classId) : super(0) {
     loadData();
   }
   final int classId;
@@ -40,10 +40,11 @@ class ClassOverViewCubitV2 extends Cubit<int>{
     "Remove"
   ];
 
-  update()async{
+  update() async {
     await DataProvider.stdClassByClassId(classId, loadStudentClass);
 
-    await DataProvider.lessonByCourseId(classModel!.courseId, loadLessonInClass);
+    await DataProvider.lessonByCourseId(
+        classModel!.courseId, loadLessonInClass);
 
     await DataProvider.stdLessonByClassId(classId, loadStdLesson);
 
@@ -51,32 +52,34 @@ class ClassOverViewCubitV2 extends Cubit<int>{
 
     var listStdId = listStdClass!.map((e) => e.userId).toList();
     students = [];
-    for(var i in listStdId){
+    for (var i in listStdId) {
       DataProvider.studentById(i, loadStudentInfo);
     }
 
     loadListPercent();
 
     loadDetail();
-    emit(state+1);
+    emit(state + 1);
   }
 
   loadData() async {
     classModel = await FireBaseProvider.instance.getClassById(classId);
 
-    emit(state+1);
+    emit(state + 1);
 
-    await DataProvider.stdClassByClassId(classId, loadStudentClass);
+    DataProvider.stdClassByClassId(classId, loadStudentClass);
 
-    await DataProvider.lessonByCourseId(classModel!.courseId, loadLessonInClass);
+    DataProvider.stdLessonByClassId(classId, loadStdLesson);
 
-    await DataProvider.stdLessonByClassId(classId, loadStdLesson);
+    DataProvider.lessonByCourseId(classModel!.courseId, loadLessonInClass);
 
-    await DataProvider.lessonResultByClassId(classId, loadLessonResult);
+    DataProvider.lessonResultByClassId(classId, loadLessonResult);
+
+    await Future.delayed(const Duration(milliseconds: 500));
 
     var listStdId = listStdClass!.map((e) => e.userId).toList();
     students = [];
-    for(var i in listStdId){
+    for (var i in listStdId) {
       DataProvider.studentById(i, loadStudentInfo);
     }
 
@@ -86,11 +89,10 @@ class ClassOverViewCubitV2 extends Cubit<int>{
 
     loaded = true;
 
-    emit(state+1);
-
+    emit(state + 1);
   }
 
-  loadDetail()async{
+  loadDetail() async {
     List<int> listStdIdsEnable = [];
     for (var element in listStdClass!) {
       if (element.classStatus != "Remove" &&
@@ -102,7 +104,8 @@ class ClassOverViewCubitV2 extends Cubit<int>{
         listStdIdsEnable.add(element.userId);
       }
     }
-    List<LessonModel> lessonTemp = lessons!.where((element) => element.btvn == 0).toList();
+    List<LessonModel> lessonTemp =
+        lessons!.where((element) => element.btvn == 0).toList();
     List<int> lessonExceptionIds = [];
     for (var i in lessonTemp) {
       lessonExceptionIds.add(i.lessonId);
@@ -164,16 +167,16 @@ class ClassOverViewCubitV2 extends Cubit<int>{
           'hwPercent': 0,
           'teacherNote': senseiNote,
           'spNote': spNote,
-          'doingTime':getTime(stdLesson,"time_btvn"),
-          'ignore':getNumber(stdLesson,"skip_btvn"),
-          'time_alphabet': getTime(stdLesson,"time_alphabet"),
-          'time_flashcard':getTime(stdLesson,"time_flashcard"),
-          'time_grammar':getTime(stdLesson,"time_grammar"),
-          'time_kanji':getTime(stdLesson,"time_kanji"),
-          'time_listening':getTime(stdLesson,"time_listening"),
-          'time_reading':getTime(stdLesson,"time_reading"),
-          'time_vocabulary':getTime(stdLesson,"time_vocabulary"),
-          'flip_flashcard':getNumber(stdLesson,"flip_flashcard")
+          'doingTime': getTime(stdLesson, "time_btvn"),
+          'ignore': getNumber(stdLesson, "skip_btvn"),
+          'time_alphabet': getTime(stdLesson, "time_alphabet"),
+          'time_flashcard': getTime(stdLesson, "time_flashcard"),
+          'time_grammar': getTime(stdLesson, "time_grammar"),
+          'time_kanji': getTime(stdLesson, "time_kanji"),
+          'time_listening': getTime(stdLesson, "time_listening"),
+          'time_reading': getTime(stdLesson, "time_reading"),
+          'time_vocabulary': getTime(stdLesson, "time_vocabulary"),
+          'flip_flashcard': getNumber(stdLesson, "flip_flashcard")
         });
       } else {
         listStdDetail.add({
@@ -182,20 +185,20 @@ class ClassOverViewCubitV2 extends Cubit<int>{
           'attendance': listAttendance,
           'title': title,
           'hw': listHw,
-          'attendancePercent': tempAttendance / (count== 0 ? 1 :count),
+          'attendancePercent': tempAttendance / (count == 0 ? 1 : count),
           'hwPercent': tempHw / (countHw == 0 ? 1 : countHw),
           'teacherNote': senseiNote,
           'spNote': spNote,
-          'doingTime':getTime(stdLesson,"time_btvn"),
-          'ignore':getNumber(stdLesson,"skip_btvn"),
-          'time_alphabet': getTime(stdLesson,"time_alphabet"),
-          'time_flashcard':getTime(stdLesson,"time_flashcard"),
-          'time_grammar':getTime(stdLesson,"time_grammar"),
-          'time_kanji':getTime(stdLesson,"time_kanji"),
-          'time_listening':getTime(stdLesson,"time_listening"),
-          'time_reading':getTime(stdLesson,"time_reading"),
-          'time_vocabulary':getTime(stdLesson,"time_vocabulary"),
-          'flip_flashcard':getNumber(stdLesson,"flip_flashcard")
+          'doingTime': getTime(stdLesson, "time_btvn"),
+          'ignore': getNumber(stdLesson, "skip_btvn"),
+          'time_alphabet': getTime(stdLesson, "time_alphabet"),
+          'time_flashcard': getTime(stdLesson, "time_flashcard"),
+          'time_grammar': getTime(stdLesson, "time_grammar"),
+          'time_kanji': getTime(stdLesson, "time_kanji"),
+          'time_listening': getTime(stdLesson, "time_listening"),
+          'time_reading': getTime(stdLesson, "time_reading"),
+          'time_vocabulary': getTime(stdLesson, "time_vocabulary"),
+          'flip_flashcard': getNumber(stdLesson, "flip_flashcard")
         });
       }
       emit(state + 1);
@@ -216,7 +219,7 @@ class ClassOverViewCubitV2 extends Cubit<int>{
     emit(state + 1);
   }
 
-  loadListPercent()async{
+  loadListPercent() async {
     listAttendance = [];
     listHomework = [];
     countAvailable = 0;
@@ -250,9 +253,9 @@ class ClassOverViewCubitV2 extends Cubit<int>{
     for (var i in listLessonIds) {
       List<StudentLessonModel> listTemp = stdLessons!
           .where((e) =>
-      e.lessonId == i &&
-          e.timekeeping != 0 &&
-          listStdIdsEnable.contains(e.studentId))
+              e.lessonId == i &&
+              e.timekeeping != 0 &&
+              listStdIdsEnable.contains(e.studentId))
           .toList();
       double tempAtt = 0;
       double tempHw = 0;
@@ -276,16 +279,16 @@ class ClassOverViewCubitV2 extends Cubit<int>{
   }
 
   List<String> getTime(List<StudentLessonModel> stdLessons, String field) {
-    if(stdLessons.isEmpty){
+    if (stdLessons.isEmpty) {
       return [];
     }
     List<String> listTime = [];
-    for(var stdLesson in stdLessons){
+    for (var stdLesson in stdLessons) {
       if (stdLesson.time.isEmpty) {
         listTime.add("");
-      }else if(stdLesson.time[field] == null){
+      } else if (stdLesson.time[field] == null) {
         listTime.add("");
-      }else{
+      } else {
         int seconds = stdLesson.time[field];
 
         int hours = seconds ~/ 3600;
@@ -296,26 +299,24 @@ class ClassOverViewCubitV2 extends Cubit<int>{
             '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
         listTime.add(formattedTime);
       }
-
     }
     return listTime;
   }
 
   List<String> getNumber(List<StudentLessonModel> stdLessons, String field) {
-    if(stdLessons.isEmpty){
+    if (stdLessons.isEmpty) {
       return [];
     }
     List<String> listTime = [];
-    for(var stdLesson in stdLessons){
+    for (var stdLesson in stdLessons) {
       if (stdLesson.time.isEmpty) {
         listTime.add("");
-      }else if(stdLesson.time[field] == null){
+      } else if (stdLesson.time[field] == null) {
         listTime.add("");
-      }else{
+      } else {
         int skip = stdLesson.time[field];
         listTime.add(skip.toString());
       }
-
     }
     return listTime;
   }
@@ -331,33 +332,33 @@ class ClassOverViewCubitV2 extends Cubit<int>{
       if (i.classStatus == "UpSale" || i.classStatus == "Force") {
         upNumber++;
       }
-      if((i.classStatus != "Remove" ||
+      if ((i.classStatus != "Remove" ||
           i.classStatus != "Moved" ||
-          i.classStatus != "Viewer")){
+          i.classStatus != "Viewer")) {
         temp++;
       }
     }
     return ((upNumber / temp) * 100).roundToDouble();
   }
 
-  double? getGPAPoint(int index){
+  double? getGPAPoint(int index) {
     double temp = 0;
     double count = 0;
-    for(int i = 0; i<listStdDetail[index]["hw"].length; i++ ){
-      if(listStdDetail[index]["hw"][i] != null && listStdDetail[index]["hw"][i] > -1){
+    for (int i = 0; i < listStdDetail[index]["hw"].length; i++) {
+      if (listStdDetail[index]["hw"][i] != null &&
+          listStdDetail[index]["hw"][i] > -1) {
         temp += listStdDetail[index]["hw"][i];
         count++;
       }
     }
-    return count == 0? null : temp/count;
+    return count == 0 ? null : temp / count;
   }
 
   loadStudentInfo(Object student) {
     students!.add(student as StudentModel);
-    if(students!.length == listStdClass!.length){
-      emit(state+1);
+    if (students!.length == listStdClass!.length) {
+      emit(state + 1);
     }
-
   }
 
   loadStdLesson(Object stdLessons) {
@@ -368,9 +369,7 @@ class ClassOverViewCubitV2 extends Cubit<int>{
     this.lessonResults = lessonResults as List<LessonResultModel>;
   }
 
-
   loadLessonInClass(Object lessons) {
     this.lessons = lessons as List<LessonModel>;
   }
-
 }

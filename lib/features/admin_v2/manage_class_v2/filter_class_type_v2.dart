@@ -6,10 +6,13 @@ import 'package:internal_sakumi/providers/cache/filter_admin_provider.dart';
 import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
+import 'class_cubit_v2.dart';
+
 class FilterTypeAdminV2 extends StatelessWidget {
-  FilterTypeAdminV2(this.cubit,{super.key}) : selectCubit = SelectFilterCubit();
+  FilterTypeAdminV2(this.cubit,{super.key, required this.classCubit}) : selectCubit = SelectFilterCubit();
   final AdminClassFilterCubit cubit;
   final SelectFilterCubit selectCubit;
+  final ClassCubit classCubit;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SelectFilterCubit, int>(
@@ -24,6 +27,7 @@ class FilterTypeAdminV2 extends StatelessWidget {
               color: Colors.transparent,
               child: PopupMenuButton(
                   onCanceled: (){
+                    classCubit.isLastPage = false;
                     cubit.update(AdminFilter.type, selectCubit.convertType());
                   },
                   itemBuilder: (context) => [
@@ -89,7 +93,30 @@ class SelectFilterCubit extends Cubit<int>{
   List<bool> listSelect = [];
   List<FilterClassType> listType = [FilterClassType.group, FilterClassType.one];
   List<FilterClassStatus> listStatus = [FilterClassStatus.preparing,FilterClassStatus.studying,FilterClassStatus.completed,FilterClassStatus.cancel];
+  List<FilterClassCourse> listCourse = [FilterClassCourse.general,FilterClassCourse.kaiwa,FilterClassCourse.jlpt,FilterClassCourse.kid];
+  List<FilterClassLevel> listLevel = [FilterClassLevel.n5, FilterClassLevel.n4, FilterClassLevel.n3, FilterClassLevel.n2, FilterClassLevel.n1];
 
+  loadLevel(List<dynamic> list){
+    for(var i in listLevel){
+      if(list.contains(i)){
+        listSelect.add(true);
+      }else{
+        listSelect.add(false);
+      }
+    }
+    emit(state+1);
+  }
+
+  loadCourse(List<dynamic> list){
+    for(var i in listCourse){
+      if(list.contains(i)){
+        listSelect.add(true);
+      }else{
+        listSelect.add(false);
+      }
+    }
+    emit(state+1);
+  }
 
   loadType(List<dynamic> list){
     for(var i in listType){
@@ -109,6 +136,43 @@ class SelectFilterCubit extends Cubit<int>{
     }
     if(listSelect[1] == true){
       filter.add(FilterClassType.one);
+    }
+    return filter;
+  }
+
+  List<FilterClassLevel> convertLevel(){
+    List<FilterClassLevel> filter = [];
+    if(listSelect[0] == true){
+      filter.add(FilterClassLevel.n5);
+    }
+    if(listSelect[1] == true){
+      filter.add(FilterClassLevel.n4);
+    }
+    if(listSelect[2] == true){
+      filter.add(FilterClassLevel.n3);
+    }
+    if(listSelect[3] == true){
+      filter.add(FilterClassLevel.n2);
+    }
+    if(listSelect[4] == true){
+      filter.add(FilterClassLevel.n1);
+    }
+    return filter;
+  }
+
+  List<FilterClassCourse> convertCourse(){
+    List<FilterClassCourse> filter = [];
+    if(listSelect[0] == true){
+      filter.add(FilterClassCourse.general);
+    }
+    if(listSelect[1] == true){
+      filter.add(FilterClassCourse.kaiwa);
+    }
+    if(listSelect[2] == true){
+      filter.add(FilterClassCourse.jlpt);
+    }
+    if(listSelect[3] == true){
+      filter.add(FilterClassCourse.kid);
     }
     return filter;
   }

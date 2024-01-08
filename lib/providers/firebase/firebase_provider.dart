@@ -1627,8 +1627,8 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<ClassModel>> getMoreClassWithFilter(List<String> listStatusFilter, List<int> listTypeFilter, int lastId)async {
-    final listClass = (await FireStoreDb.instance.getMoreClassWithFilter(listStatusFilter,listTypeFilter, lastId))
+  Future<List<ClassModel>> getMoreClassWithFilter(List<String> listStatusFilter, List<int> listTypeFilter, int lastId, List<int> listCourseId)async {
+    final listClass = (await FireStoreDb.instance.getMoreClassWithFilter(listStatusFilter,listTypeFilter, lastId, listCourseId))
         .docs
         .map((e) => ClassModel.fromSnapshot(e))
         .toList();
@@ -1637,8 +1637,8 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<ClassModel>> getListClassWithFilter(List<String> listStatusFilter, List<int> listTypeFilter)async {
-    final listClass = (await FireStoreDb.instance.getListClassWithFilter(listStatusFilter,listTypeFilter))
+  Future<List<ClassModel>> getListClassWithFilter(List<String> listStatusFilter, List<int> listTypeFilter, List<int> listCourseId)async {
+    final listClass = (await FireStoreDb.instance.getListClassWithFilter(listStatusFilter,listTypeFilter, listCourseId))
         .docs
         .map((e) => ClassModel.fromSnapshot(e))
         .toList();
