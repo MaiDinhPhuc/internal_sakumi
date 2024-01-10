@@ -412,6 +412,14 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<LessonModel> getLessonById(int lessonId) async {
+    return (await FireStoreDb.instance.getLessonById(lessonId))
+        .docs
+        .map((e) => LessonModel.fromSnapshot(e))
+        .single;
+  }
+
+  @override
   Future<CourseModel> getCourseById(int id) async {
     return (await FireStoreDb.instance.getCourseById(id))
         .docs
@@ -1448,7 +1456,7 @@ class FireBaseProvider extends NetworkProvider {
       return [];
     }
     if (ids.length <= 10) {
-      return (await FireStoreDb.instance.getListClassAvailableForTeacher(ids))
+      return (await FireStoreDb.instance.getListClassForTeacher(ids))
           .docs
           .map((e) => ClassModel.fromSnapshot(e))
           .toList();
@@ -1466,7 +1474,7 @@ class FireBaseProvider extends NetworkProvider {
 
     for (int i = 0; i < subLists.length; i++) {
       tempX.add(
-          FireStoreDb.instance.getListClassAvailableForTeacher(subLists[i]));
+          FireStoreDb.instance.getListClassForTeacher(subLists[i]));
     }
     List<QuerySnapshot<Map<String, dynamic>>> responses =
         await Future.wait(tempX);
@@ -1477,6 +1485,54 @@ class FireBaseProvider extends NetworkProvider {
               ...pre,
               ...res.docs.map((e) => ClassModel.fromSnapshot(e)).toList()
             ]);
+
+    List<ClassModel> list = [];
+    for (var i in temp) {
+      if (i.classStatus == "InProgress" ||
+          i.classStatus == "Completed" ||
+          i.classStatus == "Preparing") {
+        list.add(i);
+      }
+    }
+
+    return list;
+  }
+
+  @override
+  Future<List<ClassModel>> getListClassForTeacherV2(List<int> ids, List<String> listStatus) async {
+    if (ids.isEmpty) {
+      return [];
+    }
+    if (ids.length <= 10) {
+      return (await FireStoreDb.instance.getListClassForTeacherV2(ids, listStatus))
+          .docs
+          .map((e) => ClassModel.fromSnapshot(e))
+          .toList();
+    }
+    List<List<int>> subLists = [];
+    for (int i = 0; i < ids.length; i += 10) {
+      List<int> subList =
+      ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
+      subLists.add(subList);
+    }
+
+    List<ClassModel> temp = [];
+
+    List<Future<QuerySnapshot<Map<String, dynamic>>>> tempX = [];
+
+    for (int i = 0; i < subLists.length; i++) {
+      tempX.add(
+          FireStoreDb.instance.getListClassForTeacherV2(subLists[i], listStatus));
+    }
+    List<QuerySnapshot<Map<String, dynamic>>> responses =
+    await Future.wait(tempX);
+
+    temp = responses.fold(
+        [],
+            (pre, res) => [
+          ...pre,
+          ...res.docs.map((e) => ClassModel.fromSnapshot(e)).toList()
+        ]);
 
     List<ClassModel> list = [];
     for (var i in temp) {

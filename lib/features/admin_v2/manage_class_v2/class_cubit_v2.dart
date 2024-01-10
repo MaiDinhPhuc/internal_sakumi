@@ -1,8 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/cache/filter_admin_provider.dart';
+import 'package:internal_sakumi/providers/cache/filter_teacher_provider.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ClassCubit extends Cubit<int> {
   ClassCubit() : super(0);
@@ -19,7 +23,9 @@ class ClassCubit extends Cubit<int> {
     "Cancel"
   ];
 
-  reload(AdminClassFilterCubit filterCubit) async {
+  String? role;
+
+  loadDataAdmin(AdminClassFilterCubit filterCubit) async {
     if (filterCubit.filter.keys.isNotEmpty) {
       List<int> listCourseId = filterCubit.getCourseId(
           filterCubit.filter[AdminFilter.course]!,
@@ -42,12 +48,13 @@ class ClassCubit extends Cubit<int> {
       List<ClassModel> lastClasses = [];
       for (int i = 0; i < subLists.length; i++) {
         List<ClassModel> list =
-            await DataProvider.classList(filterCubit.filter, 1, subLists[i]);
+            await DataProvider.classListAdmin(filterCubit.filter, 1, subLists[i]);
         listClass!.addAll(list);
         lastClasses.add(listClass!.last);
       }
       listLastClass.add(lastClasses);
     }
+    role = "admin";
     emit(state + 1);
   }
 
@@ -71,7 +78,7 @@ class ClassCubit extends Cubit<int> {
     List<ClassModel> lastClasses = listLastClass.last;
     List<ClassModel> lastClassesNew = [];
     for (var i in subLists) {
-      List<ClassModel> list = await DataProvider.classList(
+      List<ClassModel> list = await DataProvider.classListAdmin(
           filterCubit.filter, 1, i,
           lastItem: lastClasses[subLists.indexOf(i)]);
       if (list.isEmpty) {
@@ -95,5 +102,13 @@ class ClassCubit extends Cubit<int> {
 
     listClass![index] = classModel;
     emit(state + 1);
+  }
+
+  loadDataTeacher(TeacherClassFilterCubit filterController)async{
+    role = "teacher";
+    SharedPreferences localData = await SharedPreferences.getInstance();
+    var userId = localData.getInt(PrefKeyConfigs.userId);
+    listClass = await DataProvider.classListTeacher(userId!, filterController.filter);
+    emit(state+1);
   }
 }

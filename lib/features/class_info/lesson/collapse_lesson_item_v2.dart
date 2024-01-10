@@ -5,13 +5,13 @@ import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
 
-import 'detail_lesson_cubit_v2.dart';
+import 'lesson_item_cubit_v2.dart';
 
 class CollapseLessonItemV2 extends StatelessWidget {
   const CollapseLessonItemV2(
       {Key? key, required this.cubit, required this.index})
       : super(key: key);
-  final DetailLessonCubitV2 cubit;
+  final LessonItemCubitV2 cubit;
   final int index;
   @override
   Widget build(BuildContext context) {

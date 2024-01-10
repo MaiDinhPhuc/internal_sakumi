@@ -70,16 +70,16 @@ class DetailLessonScreen extends StatelessWidget {
                                         BlocProvider.of<DetailLessonCubit>(cc),
                                         dataController,
                                         pendingViewCubit),
-                                  if (s.status == 'Teaching')
-                                    LessonTeachingView(
-                                      dataCubit: dataController,
-                                      sessionCubit: sessionCubit,
-                                    ),
-                                  if (s.status == 'Waiting')
-                                    LessonCompleteView(
-                                        BlocProvider.of<DetailLessonCubit>(cc),
-                                        dataController,
-                                        sessionCubit),
+                                  // if (s.status == 'Teaching')
+                                  //   LessonTeachingView(
+                                  //     dataCubit: dataController,
+                                  //     sessionCubit: sessionCubit,
+                                  //   ),
+                                  // if (s.status == 'Waiting')
+                                  //   LessonCompleteView(
+                                  //       BlocProvider.of<DetailLessonCubit>(cc),
+                                  //       dataController,
+                                  //       sessionCubit),
                                 ],
                               );
                       },

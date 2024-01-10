@@ -4,8 +4,8 @@
 // import 'package:internal_sakumi/configs/text_configs.dart';
 // import 'package:internal_sakumi/features/admin/manage_general/list_class/alert_confirm_change_class_status.dart';
 // import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
-// import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit_v2.dart';
-// import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
+// import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/lesson_item_cubit_v2.dart';
+// import 'package:internal_sakumi/screens/teacher/detail_grading_screen_v2.dart';
 // import 'package:internal_sakumi/utils/resizable.dart';
 //
 // class StatusClassItemAdmin extends StatelessWidget {

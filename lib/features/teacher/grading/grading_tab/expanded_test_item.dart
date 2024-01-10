@@ -2,6 +2,7 @@ import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/small_avt.dart';
+import 'package:internal_sakumi/features/teacher/grading_v2/grading_cubit_v2.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/note_widget.dart';
 
@@ -10,7 +11,7 @@ import 'grading_item_layout.dart';
 
 class ExpandTestItem extends StatelessWidget {
   const ExpandTestItem({super.key, required this.cubit, required this.testId});
-  final GradingCubit cubit;
+  final GradingCubitV2 cubit;
   final int testId;
   @override
   Widget build(BuildContext context) {

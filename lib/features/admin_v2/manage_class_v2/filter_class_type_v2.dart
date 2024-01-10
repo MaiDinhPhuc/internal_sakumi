@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/providers/cache/filter_admin_provider.dart';
-import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
+import 'package:internal_sakumi/providers/cache/filter_teacher_provider.dart';
+import 'package:internal_sakumi/screens/class_info/detail_grading_screen_v2.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'class_cubit_v2.dart';
@@ -92,9 +93,10 @@ class SelectFilterCubit extends Cubit<int>{
 
   List<bool> listSelect = [];
   List<FilterClassType> listType = [FilterClassType.group, FilterClassType.one];
-  List<FilterClassStatus> listStatus = [FilterClassStatus.preparing,FilterClassStatus.studying,FilterClassStatus.completed,FilterClassStatus.cancel];
+  List<FilterClassStatus> listStatusAdmin = [FilterClassStatus.preparing,FilterClassStatus.studying,FilterClassStatus.completed,FilterClassStatus.cancel];
   List<FilterClassCourse> listCourse = [FilterClassCourse.general,FilterClassCourse.kaiwa,FilterClassCourse.jlpt,FilterClassCourse.kid];
   List<FilterClassLevel> listLevel = [FilterClassLevel.n5, FilterClassLevel.n4, FilterClassLevel.n3, FilterClassLevel.n2, FilterClassLevel.n1];
+  List<FilterTeacherClassStatus> listStatusTeacher = [FilterTeacherClassStatus.preparing,FilterTeacherClassStatus.studying,FilterTeacherClassStatus.completed];
 
   loadLevel(List<dynamic> list){
     for(var i in listLevel){
@@ -177,8 +179,8 @@ class SelectFilterCubit extends Cubit<int>{
     return filter;
   }
 
-  loadStatus(List<dynamic> list){
-    for(var i in listStatus){
+  loadStatusAdmin(List<dynamic> list){
+    for(var i in listStatusAdmin){
       if(list.contains(i)){
         listSelect.add(true);
       }else{
@@ -188,7 +190,18 @@ class SelectFilterCubit extends Cubit<int>{
     emit(state+1);
   }
 
-  List<FilterClassStatus> convertStatus(){
+  loadStatusTeacher(List<dynamic> list){
+    for(var i in listStatusTeacher){
+      if(list.contains(i)){
+        listSelect.add(true);
+      }else{
+        listSelect.add(false);
+      }
+    }
+    emit(state+1);
+  }
+
+  List<FilterClassStatus> convertStatusAdmin(){
     List<FilterClassStatus> filter = [];
     if(listSelect[0] == true){
       filter.add(FilterClassStatus.preparing);
@@ -201,6 +214,20 @@ class SelectFilterCubit extends Cubit<int>{
     }
     if(listSelect[3] == true){
       filter.add(FilterClassStatus.cancel);
+    }
+    return filter;
+  }
+
+  List<FilterTeacherClassStatus> convertStatusTeacher(){
+    List<FilterTeacherClassStatus> filter = [];
+    if(listSelect[0] == true){
+      filter.add(FilterTeacherClassStatus.preparing);
+    }
+    if(listSelect[1] == true){
+      filter.add(FilterTeacherClassStatus.studying);
+    }
+    if(listSelect[2] == true){
+      filter.add(FilterTeacherClassStatus.completed);
     }
     return filter;
   }

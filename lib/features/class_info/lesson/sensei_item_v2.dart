@@ -3,11 +3,11 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/small_avt.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
-import 'detail_lesson_cubit_v2.dart';
+import 'lesson_item_cubit_v2.dart';
 
 class SenseiItemV2 extends StatelessWidget {
   const SenseiItemV2({Key? key, required this.cubit}) : super(key: key);
-  final DetailLessonCubitV2 cubit;
+  final LessonItemCubitV2 cubit;
   @override
   Widget build(BuildContext context) {
     return Tooltip(

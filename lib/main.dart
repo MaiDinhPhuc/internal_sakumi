@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/providers/cache/filter_admin_provider.dart';
+import 'package:internal_sakumi/providers/cache/filter_teacher_provider.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:url_strategy/url_strategy.dart';
 
@@ -33,7 +34,8 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => AppBarInfoTeacherCubit()),
           BlocProvider<DataCubit>(create: (context) => DataCubit()),
           BlocProvider<ManageSurveyCubit>(create: (context) => ManageSurveyCubit()),
-          BlocProvider<AdminClassFilterCubit>(create: (context)=>AdminClassFilterCubit())
+          BlocProvider<AdminClassFilterCubit>(create: (context)=>AdminClassFilterCubit()),
+          BlocProvider<TeacherClassFilterCubit>(create: (context)=>TeacherClassFilterCubit())
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

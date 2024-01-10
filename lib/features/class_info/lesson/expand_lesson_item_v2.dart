@@ -11,7 +11,7 @@ import 'package:internal_sakumi/widget/note_widget.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 import 'alert_edit_attendance_v2.dart';
-import 'detail_lesson_cubit_v2.dart';
+import 'lesson_item_cubit_v2.dart';
 import 'list_lesson_cubit_v2.dart';
 
 class ExpandLessonItemV2 extends StatelessWidget {
@@ -20,7 +20,7 @@ class ExpandLessonItemV2 extends StatelessWidget {
       required this.detailCubit,
       required this.role,
       required this.cubit}): sessionCubit = SessionCubit();
-  final DetailLessonCubitV2 detailCubit;
+  final LessonItemCubitV2 detailCubit;
   final ListLessonCubitV2 cubit;
   final String role;
   final SessionCubit sessionCubit;

@@ -105,6 +105,17 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getLessonById(int id) async {
+    final snapshot =
+    await db.collection("lessons").where('lesson_id', isEqualTo: id).get();
+    // debugPrint("==========>get db from \"class\" : ${snapshot.docs.length}");
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonById $id ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getAllCourseEnable() async {
     final snapshot =
         await db.collection("courses").where('enable', isEqualTo: true).get();
@@ -1080,7 +1091,7 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getListClassAvailableForTeacher(
+  Future<QuerySnapshot<Map<String, dynamic>>> getListClassForTeacher(
       List<int> listIds) async {
     final snapshot = await db
         .collection("class")
@@ -1088,6 +1099,21 @@ class FireStoreDb {
         .where("class_status", isNotEqualTo: "Remove")
         .get();
     // debugPrint("==========>get db from \"class\": ${snapshot.docs.length}");
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListClassAvailableForTeacher ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getListClassForTeacherV2(
+      List<int> listIds, List<String> listStatus) async {
+    final snapshot = await db
+        .collection("class")
+        .where(Filter.and(
+        Filter("class_id", whereIn: listIds),
+        Filter("class_status", whereIn: listStatus)))
+        .get();
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListClassAvailableForTeacher ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");

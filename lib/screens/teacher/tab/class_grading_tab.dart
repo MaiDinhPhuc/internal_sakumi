@@ -62,8 +62,8 @@ class ClassGradingTab extends StatelessWidget {
                     )
                         :Column(
                       children: [
-                        FilterGradingTab(cubit: cubit),
-                        ListGradingItem(cubit: cubit)
+                        // FilterGradingTab(cubit: cubit),
+                        // ListGradingItem(cubit: cubit)
                       ],
                     )
                   ],

@@ -7,10 +7,10 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
 
 import 'attendance_item_v2.dart';
-import 'detail_lesson_cubit_v2.dart';
+import 'lesson_item_cubit_v2.dart';
 import 'list_lesson_cubit_v2.dart';
 
-void alertEditAttendanceV2(BuildContext context, DetailLessonCubitV2 detailCubit,
+void alertEditAttendanceV2(BuildContext context, LessonItemCubitV2 detailCubit,
     ListLessonCubitV2 cubit, SessionCubit sessionCubit) {
   showDialog(
       context: context,

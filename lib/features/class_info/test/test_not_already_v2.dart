@@ -6,6 +6,7 @@ import 'package:internal_sakumi/features/teacher/test/alert_test_see_soon.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
+import 'alert_confirm_assign_test.dart';
 import 'detail_test_cubit_v2.dart';
 
 class TestNotAlreadyV2 extends StatelessWidget {
@@ -72,8 +73,9 @@ class TestNotAlreadyV2 extends StatelessWidget {
               if (role == "teacher")
                 PopupMenuItem(
                   onTap: () {
-                    //alertAssignTestView(context, onConfirm);
-                    //waitingDialog(context);
+                    alertAssignTestView(context, ()async{
+                      await detailCubit.assignTest(index, context);
+                    });
                   },
                   padding: EdgeInsets.zero,
                   child: Center(

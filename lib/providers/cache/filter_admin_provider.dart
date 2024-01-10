@@ -166,7 +166,7 @@ class AdminClassFilterCubit extends Cubit<int> {
   Future<void> _saveToPref() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String jsonString = json.encode(convertFilterEncode());
-    prefs.setString('filter', jsonString);
+    prefs.setString('filterAdmin', jsonString);
   }
 
   Map<String, dynamic> convertFilterEncode() {
@@ -269,7 +269,7 @@ class AdminClassFilterCubit extends Cubit<int> {
 
   Future<Map<AdminFilter, List>?> _fromPref() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? jsonString = prefs.getString('filter');
+    String? jsonString = prefs.getString('filterAdmin');
     if (jsonString != null) {
       return convertFilterDecode(json.decode(jsonString));
     }

@@ -21,7 +21,6 @@ class DetailGradingScreen extends StatelessWidget {
   final CheckActiveCubit checkActiveCubit;
   @override
   Widget build(BuildContext context) {
-    var dataController = BlocProvider.of<DataCubit>(context);
     return BlocProvider(
         create: (context) => DetailGradingCubit()..init(type),
         child: Scaffold(
@@ -91,7 +90,6 @@ class DetailGradingScreen extends StatelessWidget {
                                                   questionSoundCubit,
                                                   checkActiveCubit:
                                                       checkActiveCubit,
-                                                  dataCubit: dataController,
                                                 ),
                                               ))
                                             ],

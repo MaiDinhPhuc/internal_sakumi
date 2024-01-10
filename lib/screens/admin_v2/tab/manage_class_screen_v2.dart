@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/app_bar/admin_appbar.dart';
+import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
 import 'package:internal_sakumi/features/admin_v2/manage_class_v2/class_cubit_v2.dart';
 import 'package:internal_sakumi/features/admin_v2/manage_class_v2/class_item_v2.dart';
 import 'package:internal_sakumi/features/admin_v2/manage_class_v2/filter_class_status_v2.dart';
@@ -12,6 +13,7 @@ import 'package:internal_sakumi/features/admin_v2/manage_class_v2/filter_course_
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
 import 'package:internal_sakumi/providers/cache/filter_admin_provider.dart';
+import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:shimmer/shimmer.dart';
@@ -26,7 +28,7 @@ class ManageClassScreenV2 extends StatelessWidget {
     var filterController = BlocProvider.of<AdminClassFilterCubit>(context);
     final shimmerList = List.generate(5, (index) => index);
     if (filterController.filter.keys.isNotEmpty) {
-      cubit.reload(filterController);
+      cubit.loadDataAdmin(filterController);
     }
     return Scaffold(
       body: Column(
@@ -52,14 +54,17 @@ class ManageClassScreenV2 extends StatelessWidget {
                       horizontal: Resizable.padding(context, 150)),
                   child: BlocListener<AdminClassFilterCubit, int>(
                       listener: (context, _) {
-                        cubit.reload(filterController);
+                        cubit.loadDataAdmin(filterController);
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          FilterStatusAdminV2(filterController, classCubit: cubit),
-                          FilterCourseTypeAdminV2(filterController, classCubit: cubit),
-                          FilterCourseLevelAdminV2(filterController, classCubit: cubit),
+                          FilterStatusAdminV2(filterController,
+                              classCubit: cubit),
+                          FilterCourseTypeAdminV2(filterController,
+                              classCubit: cubit),
+                          FilterCourseLevelAdminV2(filterController,
+                              classCubit: cubit),
                           FilterTypeAdminV2(filterController, classCubit: cubit)
                         ],
                       ))),
@@ -128,8 +133,21 @@ class ManageClassScreenV2 extends StatelessWidget {
                                       padding: EdgeInsets.symmetric(
                                           horizontal:
                                               Resizable.size(context, 150)),
-                                      child: ClassItemV2(classModel: e, classCubit: cubit)))
+                                      child: ClassItemV2(
+                                          classModel: e, classCubit: cubit)))
                                   .toList(),
+                              Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical:  Resizable.size(context, 5),
+                                      horizontal:
+                                          Resizable.padding(context, 150)),
+                                  child: DottedBorderButton(
+                                      AppText.btnManageClass.text.toUpperCase(),
+                                      onPressed: () {
+                                    Navigator.pushNamed(context,
+                                        '${Routes.admin}/${Routes.manageGeneral}');
+                                  })),
+                    SizedBox(height: Resizable.size(context, 5)),
                               cubit.isLastPage
                                   ? Container()
                                   : SubmitButton(

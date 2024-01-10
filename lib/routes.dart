@@ -14,6 +14,8 @@ import 'package:internal_sakumi/screens/admin/tab/voucher_screen.dart';
 import 'package:internal_sakumi/screens/admin/teacher_info_screen.dart';
 import 'package:internal_sakumi/screens/admin_v2/tab/manage_class_screen_v2.dart';
 import 'package:internal_sakumi/screens/class_info/class_overview_screen_v2.dart';
+import 'package:internal_sakumi/screens/class_info/detail_lesson_v2.dart';
+import 'package:internal_sakumi/screens/class_info/grading_screen_v2.dart';
 import 'package:internal_sakumi/screens/class_info/list_lesson_screen_v2.dart';
 import 'package:internal_sakumi/screens/class_info/list_test_screen_v2.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
@@ -22,13 +24,14 @@ import 'package:internal_sakumi/screens/master/detail_survey_screen.dart';
 import 'package:internal_sakumi/screens/master/survey_tab.dart';
 import 'package:internal_sakumi/screens/master/manage_course_tab.dart';
 import 'package:internal_sakumi/screens/splash_screen.dart';
-import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
+import 'package:internal_sakumi/screens/class_info/detail_grading_screen_v2.dart';
 import 'package:internal_sakumi/screens/teacher/tab/class_overview_tab.dart';
 import 'package:internal_sakumi/screens/teacher/tab/class_test_tab.dart';
 import 'package:internal_sakumi/screens/teacher/detail_lesson_screen.dart';
 import 'package:internal_sakumi/screens/teacher/tab/class_grading_tab.dart';
 import 'package:internal_sakumi/screens/teacher/tab/list_lesson_tab.dart';
 import 'package:internal_sakumi/screens/teacher/teacher_screen.dart';
+import 'package:internal_sakumi/screens/teacher_v2/teacher_screen_v2.dart';
 
 import 'screens/teacher/teacher_profile.dart';
 
@@ -137,7 +140,7 @@ var loginScreenHandler =
 
 var teacherHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return const TeacherScreen();
+  return TeacherScreenV2(); //const TeacherScreen();
 });
 
 var manageCourseHandler =
@@ -206,7 +209,7 @@ var overViewHandler =
 });
 var gradingHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return ClassGradingTab();
+  return GradingScreen();//ClassGradingTab();
 });
 var testHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
@@ -222,7 +225,7 @@ var detailGradingHandler =
 });
 var detailLessonHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return DetailLessonScreen();
+  return DetailLessonV2();// DetailLessonScreen();
 });
 var detailSurveyHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {

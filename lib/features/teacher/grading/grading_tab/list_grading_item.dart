@@ -2,14 +2,14 @@ import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/grading/grading_tab/grading_item_layout.dart';
 import 'package:internal_sakumi/features/teacher/grading/grading_tab/test_item.dart';
+import 'package:internal_sakumi/features/teacher/grading_v2/grading_cubit_v2.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'btvn_item.dart';
-import 'grading_cubit.dart';
 
 class ListGradingItem extends StatelessWidget {
   const ListGradingItem({super.key, required this.cubit});
-  final GradingCubit cubit;
+  final GradingCubitV2 cubit;
   @override
   Widget build(BuildContext context) {
     return Column(

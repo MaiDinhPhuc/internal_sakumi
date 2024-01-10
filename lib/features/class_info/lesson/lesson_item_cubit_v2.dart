@@ -8,8 +8,8 @@ import 'package:internal_sakumi/model/teacher_model.dart';
 
 import 'list_lesson_cubit_v2.dart';
 
-class DetailLessonCubitV2 extends Cubit<int> {
-  DetailLessonCubitV2(this.cubit, this.lesson) : super(0) {
+class LessonItemCubitV2 extends Cubit<int> {
+  LessonItemCubitV2(this.cubit, this.lesson) : super(0) {
     loadData();
   }
 

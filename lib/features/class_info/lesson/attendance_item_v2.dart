@@ -9,7 +9,7 @@ import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
-import 'detail_lesson_cubit_v2.dart';
+import 'lesson_item_cubit_v2.dart';
 import 'list_lesson_cubit_v2.dart';
 
 class AttendanceItemV2 extends StatelessWidget {
@@ -28,7 +28,7 @@ class AttendanceItemV2 extends StatelessWidget {
   final double paddingLeft;
   final double paddingRight;
   final StudentLessonModel stdLesson;
-  final DetailLessonCubitV2 detailCubit;
+  final LessonItemCubitV2 detailCubit;
   final ListLessonCubitV2 cubit;
   @override
   Widget build(BuildContext context) {

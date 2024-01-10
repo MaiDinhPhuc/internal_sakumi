@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/grading/grading_tab/expanded_test_item.dart';
+import 'package:internal_sakumi/features/teacher/grading_v2/grading_cubit_v2.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
 import 'package:internal_sakumi/routes.dart';
@@ -10,12 +11,11 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
 import 'collapse_grading_item.dart';
-import 'grading_cubit.dart';
 import 'grading_item_layout.dart';
 
 class TestGradingItem extends StatelessWidget {
   const TestGradingItem(this.e,{super.key, required this.cubit});
-  final GradingCubit cubit;
+  final GradingCubitV2 cubit;
   final TestResultModel e;
   @override
   Widget build(BuildContext context) {
@@ -50,15 +50,15 @@ class TestGradingItem extends StatelessWidget {
                               e.testId == element.id)]
                               .title,
                           receiveTitle:
-                          '${cubit.getTestResultCount(e.testId, 1)}/${cubit.students!.length}',
+                          '${cubit.getTestResultCount(e.testId, 1)}/${cubit.students.length}',
                           gradingTitle:
-                          '${cubit.getTestResultCount(e.testId, 0)}/${cubit.students!.length}',
+                          '${cubit.getTestResultCount(e.testId, 0)}/${cubit.students.length}',
                           receivePercent:
                           cubit.getTestResultCount(e.testId, 1) /
-                              cubit.students!.length,
+                              cubit.students.length,
                           gradingPercent:
                           cubit.getTestResultCount(e.testId, 0) /
-                              cubit.students!.length,
+                              cubit.students.length,
                         ),
                         secondChild: Column(
                           children: [
@@ -69,15 +69,15 @@ class TestGradingItem extends StatelessWidget {
                                   e.testId == element.id)]
                                   .title,
                               receiveTitle:
-                              '${cubit.getTestResultCount(e.testId, 1)}/${cubit.students!.length}',
+                              '${cubit.getTestResultCount(e.testId, 1)}/${cubit.students.length}',
                               gradingTitle:
-                              '${cubit.getTestResultCount(e.testId, 0)}/${cubit.students!.length}',
+                              '${cubit.getTestResultCount(e.testId, 0)}/${cubit.students.length}',
                               receivePercent:
                               cubit.getTestResultCount(e.testId, 1) /
-                                  cubit.students!.length,
+                                  cubit.students.length,
                               gradingPercent:
                               cubit.getTestResultCount(e.testId, 0) /
-                                  cubit.students!.length,
+                                  cubit.students.length,
                             ),
                             Container(
                               height: Resizable.size(context, 1),

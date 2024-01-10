@@ -4,7 +4,7 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/small_avt.dart';
 import 'package:internal_sakumi/model/student_model.dart';
-import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
+import 'package:internal_sakumi/screens/class_info/detail_grading_screen_v2.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'list_student/alert_confirm_change_student_status.dart';

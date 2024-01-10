@@ -40,6 +40,12 @@ class TestCubitV2 extends Cubit<int>{
     await DataProvider.testByCourseId(classModel!.courseId, loadTest);
   }
 
+  updateListTestResult(TestResultModel testResult){
+    listTestResult!.add(testResult);
+    DataProvider.updateTestResult(classId,listTestResult!);
+    emit(state+1);
+  }
+
   loadTest(Object test) {
     listTest = test as List<TestModel>;
     emit(state+1);

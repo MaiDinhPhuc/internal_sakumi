@@ -7,11 +7,11 @@ import 'package:internal_sakumi/features/admin_v2/manage_class_v2/class_cubit_v2
 import 'package:internal_sakumi/features/admin_v2/manage_class_v2/confirm_change_class_status_v2.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
-import 'package:internal_sakumi/screens/teacher/detail_grading_screen.dart';
+import 'package:internal_sakumi/screens/class_info/detail_grading_screen_v2.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
-class StatusClassItemAdminV2 extends StatelessWidget {
-  const StatusClassItemAdminV2(
+class StatusClassItemV2 extends StatelessWidget {
+  const StatusClassItemV2(
       {super.key,
       required this.color,
       required this.icon,
@@ -24,7 +24,7 @@ class StatusClassItemAdminV2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return classCubit.role! == "admin"? BlocProvider(
       create: (context) => MenuPopupCubit(),
       child: BlocBuilder<MenuPopupCubit, int>(
         builder: (c, s) {
@@ -131,6 +131,51 @@ class StatusClassItemAdminV2 extends StatelessWidget {
                   )));
         },
       ),
-    );
+    ): Tooltip(
+        decoration: BoxDecoration(
+            color: Colors.black,
+            border: Border.all(
+                color: Colors.black,
+                width: Resizable.size(context, 1)),
+            borderRadius:
+            BorderRadius.circular(Resizable.size(context, 5))),
+        richMessage: WidgetSpan(
+            alignment: PlaceholderAlignment.baseline,
+            baseline: TextBaseline.alphabetic,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    text: vietnameseSubText(classModel.classStatus),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: Resizable.font(context, 18),
+                        color: Colors.white),
+                  ),
+                ),
+              ],
+            )),
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: Container(
+            height: Resizable.size(context, 20),
+            width: Resizable.size(context, 20),
+            padding: EdgeInsets.all(Resizable.padding(context, 10)),
+            decoration: BoxDecoration(
+                color: color,
+                borderRadius:
+                BlocProvider.of<DropdownCubit>(context).state %
+                    2 ==
+                    0
+                    ? BorderRadius.horizontal(
+                    left: Radius.circular(
+                        Resizable.padding(context, 5)))
+                    : BorderRadius.only(
+                    topLeft: Radius.circular(
+                        Resizable.padding(context, 5)))),
+            child: Image.asset('assets/images/ic_$icon.png'),
+          ),
+        ));
   }
 }

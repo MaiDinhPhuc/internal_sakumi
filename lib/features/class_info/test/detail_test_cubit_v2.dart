@@ -1,10 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/features/class_info/test/test_cubit_v2.dart';
+import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DetailTestV2 extends Cubit<int> {
   DetailTestV2(this.cubit, this.testModel) : super(0) {
@@ -37,6 +43,40 @@ class DetailTestV2 extends Cubit<int> {
       students = cubit.students;
     }
     emit(state + 1);
+  }
+
+  assignTest(int index, BuildContext context) async {
+    SharedPreferences localData = await SharedPreferences.getInstance();
+    int teacherId =
+        int.parse(localData.getInt(PrefKeyConfigs.userId).toString());
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('dd/MM/yyyy').format(now);
+    listTestResult!.add(TestResultModel(
+        classId: cubit.classId,
+        testId: testModel.id,
+        courseId: cubit.classModel!.courseId,
+        teacherId: teacherId,
+        date: formattedDate));
+    await cubit.updateListTestResult(TestResultModel(
+        classId: cubit.classId,
+        testId: testModel.id,
+        courseId: cubit.classModel!.courseId,
+        teacherId: teacherId,
+        date: formattedDate));
+    Navigator.of(context).pop();
+    CollectionReference create =
+        FirebaseFirestore.instance.collection('test_result');
+    create
+        .doc('test_${testModel.id}_class_${cubit.classId}')
+        .set({
+          'class_id': cubit.classId,
+          'course_id': cubit.classModel!.courseId,
+          'date': formattedDate,
+          'teacher_id': teacherId,
+          'test_id': testModel.id,
+        })
+        .then((value) => debugPrint("test result Added"))
+        .catchError((error) => debugPrint("Failed to add test result: $error"));
   }
 
   double checkSubmitted(int studentId) {

@@ -21,7 +21,7 @@ class ListLessonScreenV2 extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          HeaderTeacher(index: 1, classId: TextUtils.getName(), role: role),
+          HeaderTeacher(index: 1, classId: cubit.classId.toString(), role: role),
           BlocBuilder<ListLessonCubitV2, int>(
               bloc: cubit,
               builder: (c, s) {

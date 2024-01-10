@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
+import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'collapse_test_v2.dart';
@@ -61,9 +62,8 @@ class TestAlreadyV2 extends StatelessWidget {
                     color: Colors.transparent,
                     child: InkWell(
                         onTap: () async {
-                          print("=======>hihihihi");
-                          // await Navigator.pushNamed(context,
-                          //     "${Routes.teacher}/grading/class=${TextUtils.getName()}/type=test/parent=${e.id}");
+                          await Navigator.pushNamed(context,
+                              "${Routes.teacher}/grading/class=${detailCubit.cubit.classId}/type=test/parent=${detailCubit.testModel.id}");
                         },
                         borderRadius:
                             BorderRadius.circular(Resizable.size(context, 5))),

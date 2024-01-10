@@ -8,22 +8,22 @@ import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'collapse_lesson_item_v2.dart';
-import 'detail_lesson_cubit_v2.dart';
+import 'lesson_item_cubit_v2.dart';
 import 'expand_lesson_item_v2.dart';
 import 'list_lesson_cubit_v2.dart';
 
 class LessonItemV2 extends StatelessWidget {
   LessonItemV2(
       {Key? key, required this.cubit, required this.role, required this.lesson})
-      : detailCubit = DetailLessonCubitV2(cubit, lesson),
+      : detailCubit = LessonItemCubitV2(cubit, lesson),
         super(key: key);
   final ListLessonCubitV2 cubit;
-  final DetailLessonCubitV2 detailCubit;
+  final LessonItemCubitV2 detailCubit;
   final LessonModel lesson;
   final String role;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DetailLessonCubitV2, int>(
+    return BlocBuilder<LessonItemCubitV2, int>(
         bloc: detailCubit,
         builder: (c, s) {
           return Column(
@@ -83,22 +83,13 @@ class LessonItemV2 extends StatelessWidget {
                               child: InkWell(
                                   onDoubleTap: () {},
                                   onTap: () async {
-                                    // if (cubit.listStatus![
-                                    //         cubit.listLessonInfo!.indexOf(e)] ==
-                                    //     "Pending") {
-                                    //   await Navigator.pushNamed(c,
-                                    //       "/teacher/lesson/class=${cubit.classModel!.classId}/lesson=${cubit.listLessonInfo![cubit.listLessonInfo!.indexOf(e)]['id']}");
-                                    // } else if (cubit.listStatus![
-                                    //         cubit.listLessonInfo!.indexOf(e)] !=
-                                    //     'Complete') {
-                                    //   await Navigator.pushNamed(c,
-                                    //       "/teacher/lesson/class=${cubit.classModel!.classId}/lesson=${cubit.listLessonInfo![cubit.listLessonInfo!.indexOf(e)]['id']}");
-                                    // } else {
-                                    //   if (role == "teacher") {
-                                    //     await Navigator.pushNamed(c,
-                                    //         "/teacher/grading/class=${cubit.classModel!.classId}/type=btvn/lesson=${cubit.listLessonInfo![cubit.listLessonInfo!.indexOf(e)]['id']}");
-                                    //   }
-                                    // }
+                                    if (detailCubit.lessonResult == null || detailCubit.lessonResult!.status != "Complete" ) {
+                                      await Navigator.pushNamed(c,
+                                          "/teacher/lesson/class=${cubit.classId}/lesson=${lesson.lessonId}");
+                                    } else {
+                                        await Navigator.pushNamed(c,
+                                            "/teacher/grading/class=${cubit.classId}/type=btvn/lesson=${lesson.lessonId}");
+                                    }
                                   },
                                   borderRadius: BorderRadius.circular(
                                       Resizable.size(context, 5))),

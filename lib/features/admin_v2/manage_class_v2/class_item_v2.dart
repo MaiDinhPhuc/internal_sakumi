@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_class/class_status_item_admin.dart';
-import 'package:internal_sakumi/features/class_info/class_status_item_admin_v2.dart';
+import 'package:internal_sakumi/features/class_info/class_status_item_v2.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/chart_view.dart';
 import 'package:internal_sakumi/model/class_model.dart';
@@ -39,12 +39,12 @@ class ClassItemV2 extends StatelessWidget {
                   ),
                   onTap: () async {
                     await Navigator.pushNamed(context,
-                        "${Routes.admin}/overview/class=${classModel.classId}");
+                        "${classCubit.role!}/overview/class=${classModel.classId}");
                   },
                   onPressed: () {
                     BlocProvider.of<DropdownCubit>(c).update();
                   },
-                  widgetStatus: StatusClassItemAdminV2(
+                  widgetStatus: StatusClassItemV2(
                       classModel: classModel,
                       color: classModel.getColor(),
                       icon: classModel.getIcon(), classCubit: classCubit)),
@@ -113,10 +113,10 @@ class ClassItemV2 extends StatelessWidget {
                   ),
                   onTap: () async {
                     await Navigator.pushNamed(context,
-                        "${Routes.admin}/overview/class=${classModel.classId}");
+                        "${classCubit.role!}/overview/class=${classModel.classId}");
                   },
                   onPressed: () => BlocProvider.of<DropdownCubit>(c).update(),
-                  widgetStatus: StatusClassItemAdminV2(
+                  widgetStatus: StatusClassItemV2(
                       classCubit: classCubit,
                       classModel: classModel,
                       color: classModel.getColor(),
