@@ -95,11 +95,11 @@ class SignInDemoState extends State<SignInDemo> {
           }
         case 'R':
           {
-            if (text.substring(3, 4) == '2') {
-              targetFolder = '$text-$term';
+            if (text.substring(3, 4) == 'N') {
+              targetFolder = text;
               break;
             } else {
-              targetFolder = text;
+              targetFolder = '$text-$term';
               break;
             }
           }
