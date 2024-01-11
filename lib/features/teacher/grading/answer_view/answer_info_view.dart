@@ -1,8 +1,6 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/features/teacher/grading/answer_view/pick_image_cubit.dart';
-import 'package:internal_sakumi/features/teacher/grading/answer_view/record_dialog.dart';
-import 'package:internal_sakumi/features/teacher/grading/answer_view/record_services.dart';
 import 'package:internal_sakumi/features/teacher/grading/answer_view/student_answer_view.dart';
 import 'package:internal_sakumi/features/teacher/grading/answer_view/voice_record_cubit.dart';
 import 'package:internal_sakumi/features/teacher/grading/collapse_teacher_note.dart';
@@ -12,7 +10,6 @@ import 'package:internal_sakumi/features/teacher/grading/sound/sound_cubit.dart'
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:microphone/microphone.dart';
 
 import 'input_form/teacher_note_view.dart';
 

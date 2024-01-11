@@ -11,13 +11,6 @@ class RecordService {
   MicrophoneRecorder? _recorder;
 
   Future<MicrophoneRecorder> newRecorder()  async {
-    // if (_recorder != null) {
-    //   if (_recorder!.value.recording != null) {
-    //     await _recorder!.stop();
-    //   }
-    //   _recorder!.dispose();
-    // }
-
 
     _recorder = MicrophoneRecorder();
 

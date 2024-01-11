@@ -1,7 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/session_cubit.dart';
+import 'package:internal_sakumi/features/teacher/lecture_v2/session_cubit.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
@@ -17,15 +17,17 @@ void alertEditAttendanceV2(BuildContext context, LessonItemCubitV2 detailCubit,
       builder: (_) {
         return BlocBuilder<SessionCubit, int>(
             bloc: sessionCubit
-              ..loadEdit(
-                  detailCubit.getStudents(), detailCubit.stdLessons, detailCubit.lesson.lessonId),
+              ..loadEdit(detailCubit.getStudents(), detailCubit.stdLessons,
+                  detailCubit.lesson.lessonId),
             builder: (cc, s) {
               return sessionCubit.listStudent == null ||
                       sessionCubit.listStudentLesson == null
-                  ? Transform.scale(
-                      scale: 0.75,
-                      child: const CircularProgressIndicator(),
-                    )
+                  ? SizedBox(
+                      width: Resizable.size(context, 50),
+                      child: Transform.scale(
+                        scale: 0.75,
+                        child: const CircularProgressIndicator(),
+                      ))
                   : Container(
                       width: MediaQuery.of(context).size.width / 2,
                       padding: EdgeInsets.symmetric(
@@ -89,13 +91,10 @@ void alertEditAttendanceV2(BuildContext context, LessonItemCubitV2 detailCubit,
                                                 sessionCubit: sessionCubit,
                                                 paddingLeft: 50,
                                                 paddingRight: 50,
-                                                stdLesson: sessionCubit
-                                                            .listStudent!
-                                                            .indexOf(e) >
-                                                        sessionCubit
-                                                                .listStudentLesson!
-                                                                .length -
-                                                            1
+                                                stdLesson: detailCubit.stdLessons!
+                                                    .where((ee) =>
+                                                ee.studentId ==
+                                                    e.userId).toList().isEmpty
                                                     ? StudentLessonModel(
                                                         grammar: -2,
                                                         hw: -2,
@@ -112,9 +111,9 @@ void alertEditAttendanceV2(BuildContext context, LessonItemCubitV2 detailCubit,
                                                         supportNote: '',
                                                         time: {})
                                                     : detailCubit.stdLessons!
-                                                        .firstWhere((ee) =>
-                                                            ee.studentId ==
-                                                            e.userId),
+                                                    .where((ee) =>
+                                                ee.studentId ==
+                                                    e.userId).toList().first,
                                                 detailCubit: detailCubit,
                                                 cubit: cubit,
                                               )),

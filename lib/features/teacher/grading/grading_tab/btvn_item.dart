@@ -2,7 +2,7 @@ import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/teacher/grading_v2/grading_cubit_v2.dart';
+import 'package:internal_sakumi/features/teacher/grading/grading_cubit_v2.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/routes.dart';
@@ -11,7 +11,6 @@ import 'package:internal_sakumi/utils/text_utils.dart';
 
 import 'collapse_grading_item.dart';
 import 'expand_BTVN_item.dart';
-import 'grading_cubit.dart';
 import 'grading_item_layout.dart';
 
 class BTVNItem extends StatelessWidget {

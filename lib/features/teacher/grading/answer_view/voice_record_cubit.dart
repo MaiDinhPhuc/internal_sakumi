@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/features/teacher/grading/answer_view/record_dialog.dart';
@@ -23,7 +21,7 @@ class VoiceRecordCubit extends Cubit<List<dynamic>>{
           Navigator.of(context).pop();
           var link = await RecordService.instance.stop();
           await RecordService.instance.dispose();
-          print("=======>link; $link");
+          debugPrint("=======>link; $link");
           if (link != "") {
             answerModel.listRecordUrl.add(link);
             if(cubit.answers.every((element) => element.score != -1)){

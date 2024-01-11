@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/teacher/grading/sound/sound_cubit.dart';
-import 'package:internal_sakumi/features/teacher/grading/sound/sounder.dart';
 import 'package:internal_sakumi/model/question_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:internal_sakumi/utils/text_utils.dart';
 
 class QuestionOptionItem extends StatelessWidget {
   const QuestionOptionItem(this.id, this.index, this.now,

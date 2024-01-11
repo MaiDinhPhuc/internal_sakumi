@@ -6,7 +6,6 @@ import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/custom_button.dart';
-import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 import 'manage_survey_cubit.dart';
 

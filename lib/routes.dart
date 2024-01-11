@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:internal_sakumi/screens/admin/detail_survey_screen.dart';
 import 'package:internal_sakumi/screens/admin/manage_general_screen.dart';
 import 'package:internal_sakumi/screens/admin/student_info_screen.dart';
-import 'package:internal_sakumi/screens/admin/tab/manage_classes_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_feedbacks_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_statistics_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_survey_tab.dart';
@@ -25,15 +24,9 @@ import 'package:internal_sakumi/screens/master/survey_tab.dart';
 import 'package:internal_sakumi/screens/master/manage_course_tab.dart';
 import 'package:internal_sakumi/screens/splash_screen.dart';
 import 'package:internal_sakumi/screens/class_info/detail_grading_screen_v2.dart';
-import 'package:internal_sakumi/screens/teacher/tab/class_overview_tab.dart';
-import 'package:internal_sakumi/screens/teacher/tab/class_test_tab.dart';
-import 'package:internal_sakumi/screens/teacher/detail_lesson_screen.dart';
-import 'package:internal_sakumi/screens/teacher/tab/class_grading_tab.dart';
-import 'package:internal_sakumi/screens/teacher/tab/list_lesson_tab.dart';
-import 'package:internal_sakumi/screens/teacher/teacher_screen.dart';
 import 'package:internal_sakumi/screens/teacher_v2/teacher_screen_v2.dart';
 
-import 'screens/teacher/teacher_profile.dart';
+import 'screens/teacher_v2/teacher_profile.dart';
 
 class Routes {
   static FluroRouter router = FluroRouter();

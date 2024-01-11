@@ -3,7 +3,6 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:screenshot/screenshot.dart';
 
 class OnlyTextView extends StatelessWidget {
   const OnlyTextView({super.key, required this.answer});

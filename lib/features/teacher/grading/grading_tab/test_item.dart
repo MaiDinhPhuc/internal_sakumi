@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/grading/grading_tab/expanded_test_item.dart';
-import 'package:internal_sakumi/features/teacher/grading_v2/grading_cubit_v2.dart';
+import 'package:internal_sakumi/features/teacher/grading/grading_cubit_v2.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
 import 'package:internal_sakumi/routes.dart';

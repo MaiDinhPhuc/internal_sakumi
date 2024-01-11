@@ -5,7 +5,6 @@ import 'package:internal_sakumi/features/master/manage_survey/survey_layout.dart
 import 'package:internal_sakumi/model/survey_model.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 import 'confirm_delete_survey.dart';
 import 'manage_survey_cubit.dart';

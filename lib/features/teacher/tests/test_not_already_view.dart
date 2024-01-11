@@ -5,7 +5,6 @@ import 'package:internal_sakumi/features/class_info/test/alert_confirm_assign_te
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 import 'alert_test_see_soon.dart';
 

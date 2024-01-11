@@ -1,6 +1,6 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/session_cubit.dart';
+import 'package:internal_sakumi/features/teacher/lecture_v2/session_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/input_sp_note_for_ss.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
@@ -19,7 +19,8 @@ class ExpandLessonItemV2 extends StatelessWidget {
       {super.key,
       required this.detailCubit,
       required this.role,
-      required this.cubit}): sessionCubit = SessionCubit();
+      required this.cubit})
+      : sessionCubit = SessionCubit();
   final LessonItemCubitV2 detailCubit;
   final ListLessonCubitV2 cubit;
   final String role;
@@ -67,10 +68,10 @@ class ExpandLessonItemV2 extends StatelessWidget {
 
                       List<LessonResultModel> list = [];
 
-                      for(var i in cubit.lessonResults!){
-                        if(i.lessonId != detailCubit.lesson.lessonId){
+                      for (var i in cubit.lessonResults!) {
+                        if (i.lessonId != detailCubit.lesson.lessonId) {
                           list.add(i);
-                        }else{
+                        } else {
                           list.add(detailCubit.lessonResult!);
                         }
                       }
@@ -152,7 +153,8 @@ class ExpandLessonItemV2 extends StatelessWidget {
                             itemBuilder: (context) => [
                               PopupMenuItem(
                                 onTap: () {
-                                  alertEditAttendanceV2(context,detailCubit ,cubit,sessionCubit );
+                                  alertEditAttendanceV2(context, detailCubit,
+                                      cubit, sessionCubit);
                                   //alertEditAttendanceV2(context,detailCubit ,cubit,sessionCubit );
                                   //waitingDialog(context);
                                 },

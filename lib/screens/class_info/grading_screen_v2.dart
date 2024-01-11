@@ -4,7 +4,7 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/app_bar/class_appbar.dart';
 import 'package:internal_sakumi/features/teacher/grading/grading_tab/filter_grading_tab.dart';
 import 'package:internal_sakumi/features/teacher/grading/grading_tab/list_grading_item.dart';
-import 'package:internal_sakumi/features/teacher/grading_v2/grading_cubit_v2.dart';
+import 'package:internal_sakumi/features/teacher/grading/grading_cubit_v2.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';

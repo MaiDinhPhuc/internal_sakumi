@@ -234,7 +234,7 @@ class GradingCubitV2 extends Cubit<int>{
 
   dynamic getBTVNResultCount(int lessonId, int type) {
     int temp = 0;
-    var stdIds = students!.map((e) => e.userId).toList();
+    var stdIds = students.map((e) => e.userId).toList();
 
     var listStudentLesson =
     listStudentLessons!.where((e) => stdIds.contains(e.studentId));
@@ -257,7 +257,7 @@ class GradingCubitV2 extends Cubit<int>{
 
   dynamic getTestResultCount(int testId, int type) {
     int temp = 0;
-    var stdIds = students!.map((e) => e.userId).toList();
+    var stdIds = students.map((e) => e.userId).toList();
 
     var listStudentTest =
     listStudentTests!.where((e) => stdIds.contains(e.studentId));

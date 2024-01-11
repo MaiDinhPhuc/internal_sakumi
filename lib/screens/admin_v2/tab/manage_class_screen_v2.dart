@@ -34,9 +34,7 @@ class ManageClassScreenV2 extends StatelessWidget {
       body: Column(
         children: [
           const AdminAppBar(index: 1),
-          Expanded(
-              child: SingleChildScrollView(
-                  child: Column(
+          Expanded(child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
@@ -108,62 +106,63 @@ class ManageClassScreenV2 extends StatelessWidget {
                             fontSize: Resizable.font(context, 17),
                             color: greyColor.shade600)),
                   )),
-              BlocBuilder<ClassCubit, int>(
-                  bloc: cubit,
-                  builder: (context, _) => cubit.listClass == null
-                      ? Shimmer.fromColors(
-                          baseColor: Colors.grey[300]!,
-                          highlightColor: Colors.grey[100]!,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                ...shimmerList.map((e) => Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal:
-                                            Resizable.size(context, 150)),
-                                    child: const ItemShimmer()))
-                              ],
-                            ),
-                          ),
-                        )
-                      : cubit.listClass!.isNotEmpty
-                          ? Column(children: [
-                              ...cubit.listClass!
-                                  .map((e) => Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal:
-                                              Resizable.size(context, 150)),
-                                      child: ClassItemV2(
-                                          classModel: e, classCubit: cubit)))
-                                  .toList(),
-                              Padding(
+              Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: Resizable.size(context, 5),
+                      horizontal: Resizable.padding(context, 150)),
+                  child: DottedBorderButton(
+                      AppText.btnManageClass.text.toUpperCase(), onPressed: () {
+                    Navigator.pushNamed(
+                        context, '${Routes.admin}/${Routes.manageGeneral}');
+                  })),
+              Expanded(
+                  child: BlocBuilder<ClassCubit, int>(
+                      bloc: cubit,
+                      builder: (context, _) => cubit.listClass == null
+                          ? Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              ...shimmerList.map((e) => Padding(
                                   padding: EdgeInsets.symmetric(
-                                    vertical:  Resizable.size(context, 5),
                                       horizontal:
-                                          Resizable.padding(context, 150)),
-                                  child: DottedBorderButton(
-                                      AppText.btnManageClass.text.toUpperCase(),
-                                      onPressed: () {
-                                    Navigator.pushNamed(context,
-                                        '${Routes.admin}/${Routes.manageGeneral}');
-                                  })),
-                    SizedBox(height: Resizable.size(context, 5)),
-                              cubit.isLastPage
-                                  ? Container()
-                                  : SubmitButton(
-                                      onPressed: () {
-                                        cubit.loadMore(filterController);
-                                      },
-                                      title: "LoadMore"),
-                            ])
+                                      Resizable.size(context, 150)),
+                                  child: const ItemShimmer()))
+                            ],
+                          ),
+                        ),
+                      )
+                          : cubit.listClass!.isNotEmpty
+                          ? SingleChildScrollView(
+                          child: Column(children: [
+                            ...cubit.listClass!
+                                .map((e) => Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                    Resizable.size(context, 150)),
+                                child: ClassItemV2(
+                                    classModel: e,
+                                    classCubit: cubit)))
+                                .toList(),
+                            SizedBox(height: Resizable.size(context, 5)),
+                            cubit.isLastPage
+                                ? Container()
+                                : SubmitButton(
+                                onPressed: () {
+                                  cubit.loadMore(filterController);
+                                },
+                                title: AppText.txtLoadMore.text),
+                            SizedBox(height: Resizable.size(context, 50))
+                          ]))
                           : const Center(
-                              child: CircularProgressIndicator(),
-                            )),
-              SizedBox(height: Resizable.size(context, 50)),
+                        child: CircularProgressIndicator(),
+                      )))
             ],
-          )))
+          ))
         ],
-      ),
+      )
     );
   }
 }

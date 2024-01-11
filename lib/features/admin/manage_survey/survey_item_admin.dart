@@ -5,8 +5,6 @@ import 'package:internal_sakumi/features/admin/manage_survey/confirm_delete_surv
 import 'package:internal_sakumi/features/master/manage_survey/survey_layout.dart';
 import 'package:internal_sakumi/model/survey_result_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:internal_sakumi/utils/text_utils.dart';
-import 'package:internal_sakumi/widget/waiting_dialog.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import 'confirm_assign_survey.dart';

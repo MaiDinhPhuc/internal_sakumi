@@ -2,9 +2,8 @@ import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
-import 'package:internal_sakumi/features/teacher/test/alert_test_see_soon.dart';
+import 'package:internal_sakumi/features/teacher/tests/alert_test_see_soon.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 import 'alert_confirm_assign_test.dart';
 import 'detail_test_cubit_v2.dart';

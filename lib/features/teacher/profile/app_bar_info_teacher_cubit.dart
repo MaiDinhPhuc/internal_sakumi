@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
+import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../configs/prefKey_configs.dart';
@@ -20,10 +19,13 @@ class AppBarInfoTeacherCubit extends Cubit<TeacherModel?> {
 
     if (state != null && state!.userId == userId) return;
 
-    var profileTeacher = await FireBaseProvider.instance
-        .getTeacherById(localData.getInt(PrefKeyConfigs.userId)!);
-    teacherModel = profileTeacher;
-    emit(profileTeacher);
+    await DataProvider.teacherById(userId, loadTeacherInfo);
+
+  }
+
+  loadTeacherInfo(Object teacher){
+    teacherModel = teacher as TeacherModel;
+    emit(teacherModel);
   }
 
   update(TeacherModel model) {
