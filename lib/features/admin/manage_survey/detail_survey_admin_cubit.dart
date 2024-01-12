@@ -32,7 +32,7 @@ class DetailSurveyAdminCubit extends Cubit<int>{
   int getNumberAnswer(){
     int x = 0;
     for(var i in listSurveyAnswer!){
-      if(i.detail[index]["answer"] != ""){
+      if(i.detail[index]["answer"] != []){
         x++;
       }
     }
@@ -42,7 +42,19 @@ class DetailSurveyAdminCubit extends Cubit<int>{
   int getNumberAnswerByAnswerId(int id, String answer){
     int x = 0;
     for(var i in listSurveyAnswer!){
-      if(i.detail[index]["id"] == id && i.detail[index]["answer"] == answer){
+      if(i.detail[index]["id"] == id && i.detail[index]["answer"].contains(answer)){
+        x++;
+      }
+    }
+    return x;
+  }
+
+  int getNumberAnotherAnswerByAnswerId(int id){
+    int x = 0;
+    List<dynamic> listAnswer = surveyModel!.detail[index]['answer'].map((e)=>e.toString()).toList();
+    for(var i in listSurveyAnswer!){
+      List<dynamic> listSurveyAnswer = i.detail[index]["answer"].map((e)=>e.toString()).toList();
+      if(i.detail[index]["id"] == id && !listSurveyAnswer.every((element) => listAnswer.contains(element))){
         x++;
       }
     }
@@ -51,7 +63,7 @@ class DetailSurveyAdminCubit extends Cubit<int>{
 
   String getAnswerInput(int id){
     var answer = listSurveyAnswer!.firstWhere((e) => e.detail[index]["id"] == id);
-    return answer.detail[index]["answer"];
+    return answer.detail[index]["answer"].first;
   }
 
   List<dynamic> getInfo(int id,String answer){
@@ -59,8 +71,25 @@ class DetailSurveyAdminCubit extends Cubit<int>{
     var listInfo = [];
 
     for(var i in listSurveyAnswer!){
-      if(i.detail[index]["id"] == id && i.detail[index]["answer"] == answer){
+      if(i.detail[index]["id"] == id && i.detail[index]["answer"].contains(answer)){
         listInfo.add({"name": i.studentName,"avt" :i.studentAvt});
+      }
+    }
+
+    return listInfo;
+  }
+
+  List<dynamic> getInfoWithAnotherAnswer(int id){
+
+    var listInfo = [];
+
+    List<dynamic> listAnswer = surveyModel!.detail[index]['answer'].map((e)=>e.toString()).toList();
+
+    for(var i in listSurveyAnswer!){
+      List<dynamic> listSurveyAnswer = i.detail[index]["answer"].map((e)=>e.toString()).toList();
+      if(i.detail[index]["id"] == id && !listSurveyAnswer.every((element) => listAnswer.contains(element))){
+        var answer = listSurveyAnswer.firstWhere((e) => !listAnswer.contains(e)).toString();
+        listInfo.add({"name": i.studentName,"avt" :i.studentAvt, "answer" : answer});
       }
     }
 
