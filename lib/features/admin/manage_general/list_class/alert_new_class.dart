@@ -180,7 +180,7 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                                     classType: cubit
                                                                         .classType!,
                                                                     link: linkCon
-                                                                        .text));
+                                                                        .text, customLessons: []));
                                                             if (context
                                                                 .mounted) {
                                                               Navigator.pop(
@@ -236,7 +236,7 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                                     classType: cubit
                                                                         .classType!,
                                                                     link: linkCon
-                                                                        .text));
+                                                                        .text, customLessons: []));
                                                             if (context
                                                                 .mounted) {
                                                               Navigator.pop(

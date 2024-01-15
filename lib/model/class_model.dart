@@ -3,7 +3,14 @@ import 'package:flutter/Material.dart';
 
 class ClassModel {
   final int classId, courseId, classType;
-  final String description, endTime, startTime, note, classCode, classStatus, link;
+  final String description,
+      endTime,
+      startTime,
+      note,
+      classCode,
+      classStatus,
+      link;
+  List<dynamic> customLessons;
 
   Color getColor() {
     switch (classStatus) {
@@ -42,7 +49,9 @@ class ClassModel {
       required this.note,
       required this.classCode,
       required this.classStatus,
-      required this.classType, required this.link});
+      required this.classType,
+      required this.link,
+      required this.customLessons});
   factory ClassModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
@@ -55,6 +64,8 @@ class ClassModel {
         note: data['note'] ?? '',
         classCode: data['class_code'] ?? '',
         classStatus: data['class_status'] ?? '',
-        classType: data['class_type']??0, link: data['link'] ?? '');
+        classType: data['class_type'] ?? 0,
+        link: data['link'] ?? '',
+        customLessons: data['custom_lesson'] ?? []);
   }
 }
