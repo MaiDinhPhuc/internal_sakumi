@@ -41,6 +41,29 @@ class ConfirmAssignSurvey extends StatelessWidget {
               DateTime dateTime = DateTime.now();
               int epochSeconds = dateTime.millisecondsSinceEpoch;
               Navigator.pop(context);
+              for(var i in cubit.surveyResults!.where((e) => e.status == "assign").toList()){
+                await FireBaseProvider.instance
+                    .assignSurveyResult(SurveyResultModel(
+                    status: "done",
+                    classId: i.classId,
+                    surveyId: i.surveyId,
+                    id: i.id,
+                    title: i.title,
+                    surveyCode: i.surveyCode,
+                    dateAssign: i.dateAssign))
+                    .whenComplete(() {
+                  cubit.updateSurvey(
+                    SurveyResultModel(
+                        status: "done",
+                        classId: i.classId,
+                        surveyId: i.surveyId,
+                        id: i.id,
+                        title: i.title,
+                        surveyCode: i.surveyCode,
+                        dateAssign: i.dateAssign),
+                  );
+                });
+              }
               await FireBaseProvider.instance
                   .assignSurveyResult(SurveyResultModel(
                   status: "assign",

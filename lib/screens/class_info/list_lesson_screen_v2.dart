@@ -46,23 +46,23 @@ class ListLessonScreenV2 extends StatelessWidget {
                                       fontWeight: FontWeight.w800,
                                       fontSize: Resizable.font(context, 30))),
                             ),
-                            // if (role == "admin")
-                            //   Padding(
-                            //       padding: EdgeInsets.only(
-                            //         bottom:Resizable.padding(context, 10),
-                            //           left: Resizable.padding(context, 150),
-                            //       right: Resizable.padding(context, 150)),
-                            //       child: Row(
-                            //           mainAxisAlignment: MainAxisAlignment.end,
-                            //           children: [
-                            //             SubmitButton(
-                            //                 onPressed: () {
-                            //                   showDialog(
-                            //                       context: context,
-                            //                       builder: (context) => AddCustomLessonDialog(classModel: cubit.classModel!));
-                            //                 },
-                            //                 title: AppText.btnAddNewLesson.text)
-                            //           ])),
+                            if (role == "admin")
+                              Padding(
+                                  padding: EdgeInsets.only(
+                                    bottom:Resizable.padding(context, 10),
+                                      left: Resizable.padding(context, 150),
+                                  right: Resizable.padding(context, 150)),
+                                  child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        SubmitButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) => AddCustomLessonDialog(classModel: cubit.classModel!));
+                                            },
+                                            title: AppText.btnAddNewLesson.text)
+                                      ])),
                             Container(
                                 padding: EdgeInsets.only(
                                     right: Resizable.padding(context, 20),

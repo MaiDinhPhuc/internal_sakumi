@@ -37,37 +37,39 @@ class SurveyItemAdmin extends StatelessWidget {
                   color: Colors.black,
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 17))),
-          number:result.dateAssign == 0
+          number: result.dateAssign == 0
               ? Container()
               : Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Expanded(
-                  child: Padding(
-                      padding: EdgeInsets.only(left:Resizable.padding(context, 15)),
-                      child: LinearPercentIndicator(
-                        padding: EdgeInsets.zero,
-                        animation: true,
-                        lineHeight: Resizable.size(context, 6),
-                        animationDuration: 2000,
-                        percent: cubit.getNumber(result.surveyId)/cubit.stdClasses!.length,
-                        center: const SizedBox(),
-                        barRadius: const Radius.circular(10000),
-                        backgroundColor: greyColor.shade100,
-                        progressColor: primaryColor,
-                      ))),
-              Container(
-                alignment: Alignment.centerRight,
-                constraints:
-                BoxConstraints(minWidth: Resizable.size(context, 50)),
-                child: Text(
-                    '${cubit.getNumber(result.surveyId)} / ${cubit.stdClasses!.length} bài',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: Resizable.font(context, 16))),
-              )
-            ],
-          ),
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                        child: Padding(
+                            padding: EdgeInsets.only(
+                                left: Resizable.padding(context, 15)),
+                            child: LinearPercentIndicator(
+                              padding: EdgeInsets.zero,
+                              animation: true,
+                              lineHeight: Resizable.size(context, 6),
+                              animationDuration: 2000,
+                              percent: cubit.getNumber(result.surveyId) /
+                                  cubit.stdClasses!.length,
+                              center: const SizedBox(),
+                              barRadius: const Radius.circular(10000),
+                              backgroundColor: greyColor.shade100,
+                              progressColor: primaryColor,
+                            ))),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      constraints:
+                          BoxConstraints(minWidth: Resizable.size(context, 50)),
+                      child: Text(
+                          '${cubit.getNumber(result.surveyId)} / ${cubit.stdClasses!.length} bài',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: Resizable.font(context, 16))),
+                    )
+                  ],
+                ),
           date: result.dateAssign == 0
               ? Container()
               : Text(convertDate(result.dateAssign),
@@ -95,7 +97,8 @@ class SurveyItemAdmin extends StatelessWidget {
                   itemBuilder: (context) => [
                     PopupMenuItem(
                       onTap: () async {
-                        if (result.status == 'assign') {
+                        if (result.status == 'assign' ||
+                            result.status == 'done') {
                           await Navigator.pushNamed(context,
                               "/admin/survey/class=${result.classId}/surveyId=${result.surveyId}");
                           // await Navigator.pushNamed(context,
@@ -104,7 +107,8 @@ class SurveyItemAdmin extends StatelessWidget {
                           showDialog(
                               context: context,
                               builder: (context) => ConfirmAssignSurvey(
-                                    result: result, cubit: cubit,
+                                    result: result,
+                                    cubit: cubit,
                                   ));
                           //waitingDialog(context);
                         }
@@ -112,7 +116,8 @@ class SurveyItemAdmin extends StatelessWidget {
                       padding: EdgeInsets.zero,
                       child: Center(
                           child: Text(
-                              result.status == "assign"
+                              result.status == "assign" ||
+                                      result.status == 'done'
                                   ? AppText.txtSeeResult.text
                                   : AppText.txtAssignTest.text,
                               style: TextStyle(
@@ -120,35 +125,38 @@ class SurveyItemAdmin extends StatelessWidget {
                                   fontSize: Resizable.font(context, 20),
                                   color: Colors.black))),
                     ),
-                    PopupMenuItem(
-                      onTap: () {
-                        if (result.status == 'assign') {
-                          showDialog(
-                              context: context,
-                              builder: (context) => ConfirmRecallSurvey(
-                                result: result, cubit: cubit,
-                              ));
-                          //waitingDialog(context);
-                        } else {
-                          showDialog(
-                              context: context,
-                              builder: (context) => ConfirmDeleteSurvey(
-                                result: result, cubit: cubit,
-                              ));
-                          //waitingDialog(context);
-                        }
-                      },
-                      padding: EdgeInsets.zero,
-                      child: Center(
-                          child: Text(
-                              result.status == "assign"
-                                  ? AppText.txtRecall.text
-                                  : AppText.txtDeleteSurvey.text,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: Resizable.font(context, 20),
-                                  color: const Color(0xffB71C1C)))),
-                    )
+                    if (result.status != 'done')
+                      PopupMenuItem(
+                        onTap: () {
+                          if (result.status == 'assign') {
+                            showDialog(
+                                context: context,
+                                builder: (context) => ConfirmRecallSurvey(
+                                      result: result,
+                                      cubit: cubit,
+                                    ));
+                            //waitingDialog(context);
+                          } else {
+                            showDialog(
+                                context: context,
+                                builder: (context) => ConfirmDeleteSurvey(
+                                      result: result,
+                                      cubit: cubit,
+                                    ));
+                            //waitingDialog(context);
+                          }
+                        },
+                        padding: EdgeInsets.zero,
+                        child: Center(
+                            child: Text(
+                                result.status == "assign"
+                                    ? AppText.txtRecall.text
+                                    : AppText.txtDeleteSurvey.text,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: Resizable.font(context, 20),
+                                    color: const Color(0xffB71C1C)))),
+                      )
                   ],
                   icon: const Icon(Icons.more_vert),
                 )
