@@ -16,6 +16,7 @@ class StudentLessonModel {
   final String teacherNote, supportNote;
   final Map time;
   final dynamic hw;
+  final List<dynamic> hws;
 
   Color get attendColor {
     if (timekeeping == 5) return const Color(0xffF57F17);
@@ -60,7 +61,7 @@ class StudentLessonModel {
       required this.vocabulary,
       required this.teacherNote,
       required this.supportNote,
-      required this.time});
+      required this.time, required this.hws});
 
   factory StudentLessonModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
@@ -78,6 +79,6 @@ class StudentLessonModel {
         teacherNote: data['teacher_note'],
         vocabulary: data['vocabulary'],
         supportNote: data['support_note'] ?? '',
-        time: data['time']??{});
+        time: data['time']??{}, hws: data['hws']??[]);
   }
 }

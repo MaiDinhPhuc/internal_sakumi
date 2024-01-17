@@ -95,7 +95,7 @@ class AttendanceItem extends StatelessWidget {
                                               vocabulary: -2,
                                               teacherNote: '',
                                               supportNote: '',
-                                              time: {}));
+                                              time: {}, hws: []));
                                       if (check == false) {
                                         if (c.mounted) {
                                           BlocProvider.of<
@@ -124,7 +124,7 @@ class AttendanceItem extends StatelessWidget {
                                                   vocabulary: -2,
                                                   teacherNote: teacherNote,
                                                   supportNote: supportNote,
-                                                  time: time));
+                                                  time: time, hws: []));
                                         }
                                       } else {
                                         dataCubit.updateStudentLesson(
@@ -143,7 +143,7 @@ class AttendanceItem extends StatelessWidget {
                                                 vocabulary: -2,
                                                 teacherNote: '',
                                                 supportNote: '',
-                                                time: {}));
+                                                time: {}, hws: []));
                                       }
                                       if (items.length == 7 && c.mounted) {
                                         sessionCubit.updateTimekeeping(items.indexOf(v.toString()));

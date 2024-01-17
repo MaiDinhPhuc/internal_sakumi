@@ -13,6 +13,7 @@ import 'package:internal_sakumi/screens/admin/tab/voucher_screen.dart';
 import 'package:internal_sakumi/screens/admin/teacher_info_screen.dart';
 import 'package:internal_sakumi/screens/admin_v2/tab/manage_class_screen_v2.dart';
 import 'package:internal_sakumi/screens/class_info/class_overview_screen_v2.dart';
+import 'package:internal_sakumi/screens/class_info/detail_grading_custom_screen.dart';
 import 'package:internal_sakumi/screens/class_info/detail_lesson_v2.dart';
 import 'package:internal_sakumi/screens/class_info/grading_screen_v2.dart';
 import 'package:internal_sakumi/screens/class_info/list_lesson_screen_v2.dart';
@@ -108,10 +109,13 @@ class Routes {
         handler: testHandler, transitionType: TransitionType.fadeIn);
     router.define('/:role/grading/:classId/:type/:parentId',
         handler: detailGradingHandler, transitionType: TransitionType.fadeIn);
+    router.define('/:role/grading/:classId/:type/:customId/:parentId',
+        handler: detailCustomGradingHandler, transitionType: TransitionType.fadeIn);
     router.define('/:role/lesson/:classId/:lessonId',
         handler: detailLessonHandler, transitionType: TransitionType.fadeIn);
     router.define('/:role/survey/:classId/:surveyId',
         handler: detailSurveyHandler, transitionType: TransitionType.fadeIn);
+
     // router.define('$admin/:classId',
     //     handler: detailClassHandler, transitionType: TransitionType.fadeIn);
   }
@@ -215,6 +219,10 @@ var surveyHandler =
 var detailGradingHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return DetailGradingScreen(params['type'][0]);
+});
+var detailCustomGradingHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return DetailGradingCustomScreen(params['type'][0]);
 });
 var detailLessonHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {

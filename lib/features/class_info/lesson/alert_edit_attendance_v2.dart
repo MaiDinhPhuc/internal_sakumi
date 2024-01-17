@@ -109,7 +109,7 @@ void alertEditAttendanceV2(BuildContext context, LessonItemCubitV2 detailCubit,
                                                         vocabulary: -2,
                                                         teacherNote: '',
                                                         supportNote: '',
-                                                        time: {})
+                                                        time: {}, hws: [])
                                                     : detailCubit.stdLessons!
                                                     .where((ee) =>
                                                 ee.studentId ==

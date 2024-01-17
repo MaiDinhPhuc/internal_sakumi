@@ -9,14 +9,16 @@ import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 import 'custom_lesson_cubit.dart';
 import 'info_add_custom_lesson_dialog.dart';
+import 'list_lesson_cubit_v2.dart';
 
 
 class AddCustomLessonDialog extends StatelessWidget {
-  AddCustomLessonDialog({super.key, required this.classModel})
+  AddCustomLessonDialog(this.listLessonCubit,{super.key, required this.classModel})
       : cubit = CustomLessonCubit(classModel);
 
   final CustomLessonCubit cubit;
   final ClassModel classModel;
+  final ListLessonCubitV2 listLessonCubit;
 
 
   @override
@@ -65,7 +67,9 @@ class AddCustomLessonDialog extends StatelessWidget {
                           constraints: BoxConstraints(
                               minWidth: Resizable.size(context, 100)),
                           child: SubmitButton(
-                              onPressed: () {}, title: AppText.btnAdd.text),
+                              onPressed: () {
+                                cubit.updateClass(context,listLessonCubit);
+                              }, title: AppText.btnAdd.text),
                         ),
                       ],
                     ))

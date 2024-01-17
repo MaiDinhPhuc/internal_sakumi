@@ -20,6 +20,7 @@ class CollapseLessonItemV2 extends StatelessWidget {
           '${AppText.txtLesson.text} ${index + 1 < 10 ? '0${index + 1}' : '${index + 1}'}'
               .toUpperCase(),
           style: TextStyle(
+              color: cubit.lesson.isCustom ? primaryColor : Colors.black,
               fontWeight: FontWeight.w700,
               fontSize: Resizable.font(context, 20))),
       name: Padding(
@@ -27,6 +28,7 @@ class CollapseLessonItemV2 extends StatelessWidget {
           child: Text(cubit.lesson.title.toUpperCase(),
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
+                  color: cubit.lesson.isCustom ? primaryColor : Colors.black,
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 16)))),
       sensei: Align(
@@ -54,37 +56,67 @@ class CollapseLessonItemV2 extends StatelessWidget {
             ),
       submit: cubit.stdLessons == null || cubit.lessonResult == null
           ? Container()
-          : CircleProgress(
-              title:
-                  '${(cubit.getHwPercent() * 100).toStringAsFixed(0)} %',
-              lineWidth: Resizable.size(context, 3),
-              percent: cubit.getHwPercent(),
-              radius: Resizable.size(context, 16),
-              fontSize: Resizable.font(context, 14),
-            ), //Text(cubit.listRateSubmit![index].toStringAsFixed(2).toString()),
+          : cubit.lesson.isCustom
+              ? CircleProgress(
+                  title:
+                      '${(cubit.getHwPercentCustom() * 100).toStringAsFixed(0)} %',
+                  lineWidth: Resizable.size(context, 3),
+                  percent: cubit.getHwPercentCustom(),
+                  radius: Resizable.size(context, 16),
+                  fontSize: Resizable.font(context, 14),
+                )
+              : CircleProgress(
+                  title: '${(cubit.getHwPercent() * 100).toStringAsFixed(0)} %',
+                  lineWidth: Resizable.size(context, 3),
+                  percent: cubit.getHwPercent(),
+                  radius: Resizable.size(context, 16),
+                  fontSize: Resizable.font(context, 14),
+                ),
       mark: cubit.lessonResult == null
           ? Container()
-          : cubit.checkGrading() == null
-              ? Container()
-              : Container(
-                  padding: EdgeInsets.symmetric(
-                      vertical: Resizable.padding(context, 4),
-                      horizontal: Resizable.padding(context, 10)),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10000),
-                      color: cubit.checkGrading()! == true
-                          ? greenColor
-                          : redColor),
-                  child: Text(
-                    (cubit.checkGrading()! == true
-                            ? AppText.txtMarked.text
-                            : AppText.txtNotMark.text)
-                        .toUpperCase(),
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: Resizable.font(context, 14),
-                        fontWeight: FontWeight.w800),
-                  )),
+          : cubit.lesson.isCustom
+              ? cubit.checkGradingCustom() == null
+                  ? Container()
+                  : Container(
+                      padding: EdgeInsets.symmetric(
+                          vertical: Resizable.padding(context, 4),
+                          horizontal: Resizable.padding(context, 10)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10000),
+                          color: cubit.checkGradingCustom()! == true
+                              ? greenColor
+                              : redColor),
+                      child: Text(
+                        (cubit.checkGradingCustom()! == true
+                                ? AppText.txtMarked.text
+                                : AppText.txtNotMark.text)
+                            .toUpperCase(),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: Resizable.font(context, 14),
+                            fontWeight: FontWeight.w800),
+                      ))
+              : cubit.checkGrading() == null
+                  ? Container()
+                  : Container(
+                      padding: EdgeInsets.symmetric(
+                          vertical: Resizable.padding(context, 4),
+                          horizontal: Resizable.padding(context, 10)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10000),
+                          color: cubit.checkGrading()! == true
+                              ? greenColor
+                              : redColor),
+                      child: Text(
+                        (cubit.checkGrading()! == true
+                                ? AppText.txtMarked.text
+                                : AppText.txtNotMark.text)
+                            .toUpperCase(),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: Resizable.font(context, 14),
+                            fontWeight: FontWeight.w800),
+                      )),
       dropdown: Container(),
     );
   }

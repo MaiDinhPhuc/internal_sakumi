@@ -158,6 +158,11 @@ abstract class NetworkProvider {
 
   Future<List<ClassModel>> getListClassForTeacherV2(List<int> ids, List<String> listStatus);
 
+  Future<DetailGradingDataModel> getDataForDetailGradingCustom(
+      int classId, int lessonId,int customLessonId, String type);
+
+  Future<List<AnswerModel>> getListCustomAnswer(int lessonId, int classId, int customLessonId);
+
   //admin
   Future<List<ClassModel>> getListClassNotRemove();
 

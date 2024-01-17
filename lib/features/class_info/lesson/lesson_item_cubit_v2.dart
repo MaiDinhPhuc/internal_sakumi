@@ -121,6 +121,42 @@ class LessonItemCubitV2 extends Cubit<int> {
     return status;
   }
 
+  bool? checkGradingCustom() {
+    var stdIds = getStudentId();
+    bool? status;
+    List<StudentLessonModel> tempList = stdLessons!
+        .where((e) => e.timekeeping != 0 && stdIds.contains(e.studentId))
+        .toList();
+    if (tempList.isEmpty) {
+      status = null;
+    } else {
+      List<double> listHws = tempList.map((e) => getHwCustomPoint(e.studentId)).toList();
+      int submitCount = 0;
+      int checkCount = 0;
+      int notSubmitCount = 0;
+      for (var k in listHws) {
+        if (k != -2) {
+          submitCount++;
+        }
+        if (k > -1) {
+          checkCount++;
+        }
+        if (k == -2) {
+          notSubmitCount++;
+        }
+      }
+      if (checkCount == submitCount) {
+        status = true;
+      } else {
+        status = false;
+      }
+      if (notSubmitCount == tempList.length) {
+        status = null;
+      }
+    }
+    return status;
+  }
+
   double getHwPercent() {
     var stdIds = getStudentId();
     List<StudentLessonModel> tempList = stdLessons!
@@ -129,6 +165,21 @@ class LessonItemCubitV2 extends Cubit<int> {
     double tempHw = 0;
     for (var j in tempList) {
       if (j.hw != -2) {
+        tempHw++;
+      }
+    }
+    return tempHw / (tempList.isEmpty ? 1 : tempList.length);
+  }
+
+  double getHwPercentCustom() {
+    var stdIds = getStudentId();
+    List<StudentLessonModel> tempList = stdLessons!
+        .where((e) => e.timekeeping != 0 && stdIds.contains(e.studentId))
+        .toList();
+    List<double> listHws = tempList.map((e) => getHwCustomPoint(e.studentId)).toList();
+    double tempHw = 0;
+    for (var j in listHws) {
+      if (j != -2) {
         tempHw++;
       }
     }
@@ -166,5 +217,21 @@ class LessonItemCubitV2 extends Cubit<int> {
       return students;
     }
     return [];
+  }
+
+  double getHwCustomPoint(int stdId){
+    List<StudentLessonModel> stdLesson = stdLessons!.where((e) => e.studentId == stdId).toList();
+
+    if(stdLesson.isEmpty){
+      return -2;
+    }
+    List<dynamic> listHws = stdLesson.first.hws.map((e) => e['hw']).toList();
+
+    if(listHws.every((e) => e == -2)){
+      return -2;
+    }else if(listHws.every((e) => e > 0)){
+      return listHws.reduce((value, element) => value + element) / listHws.length;
+    }
+      return -1;
   }
 }

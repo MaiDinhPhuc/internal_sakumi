@@ -26,47 +26,79 @@ class NoteWidget extends StatelessWidget {
 class TrackingItem extends StatelessWidget {
   final bool isSubmit;
   final dynamic condition;
-  const TrackingItem(this.condition, {this.isSubmit = false, Key? key})
+  final bool isCustom;
+  const TrackingItem(this.condition,
+      {this.isSubmit = false, this.isCustom = false, Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: BoxConstraints(minWidth: Resizable.size(context, 50)),
-      padding: EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(1000),
-          color: isSubmit
-              ? condition == null
-                  ? const Color(0xff9E9E9E)
-                  : condition! == -1
-                      ? const Color(0xffF57F17)
-                      : condition! > -1
-                          ? const Color(0xff33691E)
-                          : const Color(0xffB71C1C)
-              : condition == null || condition == 0
-                  ? const Color(0xff9E9E9E)
-                  : (condition! > 0 && condition! < 5)
-                      ? const Color(0xff33691E)
-                      : const Color(0xffB71C1C)),
-      child: Text(
-        (isSubmit
-                ? condition == null
-                    ? AppText.txtNull.text
-                    : condition! == -1
-                        ? AppText.textNotMarked.text
-                        : condition! > -1
-                            ? condition.toStringAsFixed(1)
-                            : AppText.txtNotSubmit.text
-                : getAttendance(condition))
-            .toUpperCase(),
-        textAlign: TextAlign.center,
-        style: TextStyle(
-            fontSize: (getAttendance(condition) == AppText.txtNotAttendance.text && isSubmit == false) ? Resizable.font(context, 10) : Resizable.font(context, 12),
-            fontWeight: FontWeight.w800,
-            color: Colors.white),
-      ),
-    );
+    return isCustom
+        ? Container(
+            constraints: BoxConstraints(minWidth: Resizable.size(context, 50)),
+            padding:
+                EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(1000),
+                color: condition! == -1
+                    ? const Color(0xffF57F17)
+                    : condition! > -1
+                        ? const Color(0xff33691E)
+                        : const Color(0xffB71C1C)),
+            child: Text(
+              condition! == -1
+                  ? AppText.txtDoing.text
+                  : condition! > -1
+                      ? condition.toStringAsFixed(1)
+                      : AppText.txtNotSubmit.text,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: Resizable.font(context, 12),
+                  fontWeight: FontWeight.w800,
+                  color: Colors.white),
+            ),
+          )
+        : Container(
+            constraints: BoxConstraints(minWidth: Resizable.size(context, 50)),
+            padding:
+                EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(1000),
+                color: isSubmit
+                    ? condition == null
+                        ? const Color(0xff9E9E9E)
+                        : condition! == -1
+                            ? const Color(0xffF57F17)
+                            : condition! > -1
+                                ? const Color(0xff33691E)
+                                : const Color(0xffB71C1C)
+                    : condition == null || condition == 0
+                        ? const Color(0xff9E9E9E)
+                        : (condition! > 0 && condition! < 5)
+                            ? const Color(0xff33691E)
+                            : const Color(0xffB71C1C)),
+            child: Text(
+              (isSubmit
+                      ? condition == null
+                          ? AppText.txtNull.text
+                          : condition! == -1
+                              ? AppText.textNotMarked.text
+                              : condition! > -1
+                                  ? condition.toStringAsFixed(1)
+                                  : AppText.txtNotSubmit.text
+                      : getAttendance(condition))
+                  .toUpperCase(),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: (getAttendance(condition) ==
+                              AppText.txtNotAttendance.text &&
+                          isSubmit == false)
+                      ? Resizable.font(context, 10)
+                      : Resizable.font(context, 12),
+                  fontWeight: FontWeight.w800,
+                  color: Colors.white),
+            ),
+          );
   }
 
   static String getAttendance(dynamic s) {
@@ -91,4 +123,3 @@ class TrackingItem extends StatelessWidget {
     }
   }
 }
-

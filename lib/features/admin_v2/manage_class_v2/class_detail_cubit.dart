@@ -49,7 +49,7 @@ class ClassDetailCubit extends Cubit<int> {
   onCourseLoaded(Object course) {
     title =
     "${(course as CourseModel).name} ${(course).level} ${(course).termName}";
-    lessonCount = course.lessonCount;
+    lessonCount = course.lessonCount + classModel.customLessons.length;
     emit(state + 1);
   }
 
@@ -65,6 +65,33 @@ class ClassDetailCubit extends Cubit<int> {
 
   loadLessonInClass(Object lessons) {
     this.lessons = lessons as List<LessonModel>;
+
+    var lessonId = lessons.map((e) => e.lessonId).toList();
+
+    if(classModel.customLessons.isNotEmpty){
+      for(var i in classModel.customLessons){
+        if(!lessonId.contains(i['custom_lesson_id'])){
+          this.lessons!.add(LessonModel(
+              lessonId: i['custom_lesson_id'],
+              courseId: -1,
+              description: i['description'],
+              content: "",
+              title: i['title'],
+              btvn: -1,
+              vocabulary: 0,
+              listening: 0,
+              kanji: 0,
+              grammar: 0,
+              flashcard: 0,
+              alphabet: 0,
+              order: 0,
+              reading: 0,
+              enable: true,
+              customLessonInfo: i['lessons_info'],
+              isCustom: true));
+        }
+      }
+    }
     emit(state + 1);
   }
 

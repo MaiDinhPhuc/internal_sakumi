@@ -118,7 +118,7 @@ class LessonWaitingViewV2 extends StatelessWidget {
                             teacherNote:
                                 cubit.listNoteForEachStudent[index],
                             supportNote: stdLesson.supportNote,
-                            time: {}));
+                            time: {}, hws: stdLesson.hws));
                   }
                   cubit.updateStatus('Complete');
                   if (context.mounted) {

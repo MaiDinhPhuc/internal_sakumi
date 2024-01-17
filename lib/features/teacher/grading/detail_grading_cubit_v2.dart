@@ -15,8 +15,8 @@ import 'package:internal_sakumi/utils/text_utils.dart';
 
 import 'detail_grading_view.dart';
 
-class DetailGradingCubit extends Cubit<int> {
-  DetailGradingCubit() : super(-1);
+class DetailGradingCubitV2 extends Cubit<int> {
+  DetailGradingCubitV2() : super(-1);
 
   DetailGradingDataModel? data;
 
@@ -35,17 +35,13 @@ class DetailGradingCubit extends Cubit<int> {
   List<StudentLessonModel>? stdLessons;
   List<StudentTestModel>? stdTests;
 
-  init(String type) async {
-    if (type == "type=test") {
-      gradingType = "test";
-    } else {
-      gradingType = "btvn";
-    }
-
-    data = await FireBaseProvider.instance.getDataForDetailGrading(
+  initCustom() async {
+    gradingType = "btvn";
+    data = await FireBaseProvider.instance.getDataForDetailGradingCustom(
         int.parse(TextUtils.getName(position: 1)),
         int.parse(TextUtils.getName()),
-        type);
+        int.parse(TextUtils.getName(position: 3)),
+        "btvn");
     listQuestions = data!.listQuestions;
     classModel = data!.classModel;
     courseModel = data!.courseModel;
@@ -146,6 +142,10 @@ class DetailGradingCubit extends Cubit<int> {
   }
 
   Future<void> submit(context, CheckActiveCubit checkCubit, String type) async {
+    int lessonId = int.parse(TextUtils.getName());
+    int classId = int.parse(TextUtils.getName(position: 1));
+    int customLessonId = int.parse(TextUtils.getName(position: 3));
+
     loadingState();
     for (var i in answers) {
       if (i.listImagePicker.isNotEmpty) {
@@ -164,13 +164,10 @@ class DetailGradingCubit extends Cubit<int> {
     }
 
     for (var i in answers) {
-      debugPrint(
-          "student_${i.studentId}_homework_question_${i.questionId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}");
       FirebaseFirestore.instance
-          .collection('answer')
-          .doc(type == "test"
-              ? 'student_${i.studentId}_test_question_${i.questionId}_class_${TextUtils.getName(position: 1)}'
-              : 'student_${i.studentId}_homework_question_${i.questionId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}')
+          .collection('answer_v2')
+          .doc(
+              'student_${i.studentId}_homework_question_${i.questionId}_custom_lesson_${customLessonId}_lesson_${lessonId}_class_$classId')
           .update({
         'score': listAnswer![listAnswer!.indexOf(i)].newScore,
         'teacher_note': listAnswer![listAnswer!.indexOf(i)].newTeacherNote,
@@ -208,51 +205,47 @@ class DetailGradingCubit extends Cubit<int> {
           }
         }
         dynamic submitScore = (temp / listQuestions!.length).round();
-        if (type == "test") {
-          FirebaseFirestore.instance
-              .collection('student_test')
-              .doc(
-                  'student_${i.userId}_test_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}')
-              .update({
-            'score': temp == 0 ? -1 : submitScore,
-          });
-          var index = stdTests!.indexOf(stdTests!.firstWhere((e) =>
-              e.studentId == i.userId &&
-              e.testID == int.parse(TextUtils.getName())));
-          stdTests![index] = StudentTestModel(
-              classId: stdTests![index].classId,
-              score: temp == 0 ? -1 : submitScore,
-              studentId: stdTests![index].studentId,
-              testID: stdTests![index].testID,
-              time: stdTests![index].time);
-          DataProvider.updateStudentTest(stdTests![index].classId, stdTests!);
-        } else {
-          FirebaseFirestore.instance
-              .collection('student_lesson')
-              .doc(
-                  'student_${i.userId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}')
-              .update({
-            'hw': temp == 0 ? -1 : submitScore,
-          });
-          var index = stdLessons!.indexOf(stdLessons!.firstWhere((e) =>
-              e.studentId == i.userId &&
-              e.lessonId == int.parse(TextUtils.getName())));
-          stdLessons![index] = StudentLessonModel(
-              grammar: stdLessons![index].grammar,
-              hw: temp == 0 ? -1 : submitScore,
-              id: stdLessons![index].id,
-              classId: stdLessons![index].classId,
-              kanji:stdLessons![index].kanji,
-              lessonId: stdLessons![index].lessonId,
-              listening: stdLessons![index].listening,
-              studentId: stdLessons![index].studentId,
-              timekeeping: stdLessons![index].timekeeping,
-              vocabulary: stdLessons![index].vocabulary,
-              teacherNote: stdLessons![index].teacherNote,
-              supportNote: stdLessons![index].supportNote,
-              time: stdLessons![index].time, hws: stdLessons![index].hws);
-          DataProvider.updateStdLesson(stdLessons![index].classId, stdLessons!);
+
+        var index = stdLessons!.indexOf(stdLessons!.firstWhere((e) =>
+        e.studentId == i.userId &&
+            e.lessonId == customLessonId));
+
+        List<dynamic> listHws = stdLessons![index].hws;
+
+        for(int i = 0; i<listHws.length; i++){
+          if(listHws[i]['lesson_id'] == lessonId){
+            listHws[i] = {
+              'lesson_id' : lessonId,
+              'hw': submitScore
+            };
+          }
         }
+
+        FirebaseFirestore.instance
+            .collection('student_lesson')
+            .doc(
+                'student_${i.userId}_lesson_${customLessonId}_class_$classId')
+            .update({
+          'hws': listHws,
+        });
+
+
+        stdLessons![index] = StudentLessonModel(
+            grammar: stdLessons![index].grammar,
+            hw: stdLessons![index].hw,
+            id: stdLessons![index].id,
+            classId: stdLessons![index].classId,
+            kanji: stdLessons![index].kanji,
+            lessonId: stdLessons![index].lessonId,
+            listening: stdLessons![index].listening,
+            studentId: stdLessons![index].studentId,
+            timekeeping: stdLessons![index].timekeeping,
+            vocabulary: stdLessons![index].vocabulary,
+            teacherNote: stdLessons![index].teacherNote,
+            supportNote: stdLessons![index].supportNote,
+            time: stdLessons![index].time,
+            hws: listHws);
+        DataProvider.updateStdLesson(stdLessons![index].classId, stdLessons!);
       }
     }
   }

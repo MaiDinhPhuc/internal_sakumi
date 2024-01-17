@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AnswerModel {
-  final int  studentId, questionId, questionType, parentId;
+  final int  studentId, questionId, questionType, parentId, customLessonId;
   final double score;
   final String teacherNote, type;
   final List answer, images, records;
@@ -23,7 +23,8 @@ class AnswerModel {
     required this.teacherNote,
     required this.type,
     required this.images,
-    required this.records
+    required this.records,
+    required this.customLessonId
   });
 
   List<dynamic> get listImagePicker => _listImagePicker ?? images;
@@ -100,7 +101,8 @@ class AnswerModel {
       parentId: data['parent_id'],
       type: data['type'],
       images: data['teacher_images_note']??[],
-      records: data['teacher_records_note']??[]
+      records: data['teacher_records_note']??[],
+      customLessonId: data['custom_lesson_id']??-1
     );
   }
 }

@@ -28,13 +28,43 @@ class ListLessonCubitV2 extends Cubit<int>{
 
     emit(state+1);
 
+    await DataProvider.lessonByCourseId(classModel!.courseId, loadLessonInClass);
+
+    var lessonId = lessons!.map((e) => e.lessonId).toList();
+
+    if(classModel!.customLessons.isNotEmpty){
+      for(var i in classModel!.customLessons){
+        if(!lessonId.contains(i['custom_lesson_id'])){
+          lessons!.add(LessonModel(
+              lessonId: i['custom_lesson_id'],
+              courseId: -1,
+              description: i['description'],
+              content: "",
+              title: i['title'],
+              btvn: -1,
+              vocabulary: 0,
+              listening: 0,
+              kanji: 0,
+              grammar: 0,
+              flashcard: 0,
+              alphabet: 0,
+              order: 0,
+              reading: 0,
+              enable: true,
+              customLessonInfo: i['lessons_info'],
+              isCustom: true));
+        }
+      }
+    }
+
     await DataProvider.stdClassByClassId(classId, loadStudentClass);
 
     await DataProvider.stdLessonByClassId(classId, loadStdLesson);
 
     await DataProvider.lessonResultByClassId(classId, loadLessonResult);
 
-    await DataProvider.lessonByCourseId(classModel!.courseId, loadLessonInClass);
+    await sortLessons();
+
 
     await Future.delayed(const Duration(milliseconds: 500));
 
@@ -54,6 +84,25 @@ class ListLessonCubitV2 extends Cubit<int>{
       DataProvider.teacherById(i, loadTeacherInfo);
     }
 
+  }
+
+  sortLessons(){
+    var listId = lessonResults!.map((e) => e.lessonId).toList();
+
+    List<LessonModel> listTemp1 = List.of(lessons!).where((e) => listId.contains(e.lessonId)).toList();
+
+    List<LessonModel> listTemp2 = List.of(lessons!).where((e) => !listId.contains(e.lessonId)).toList();
+
+    lessons = listTemp1;
+
+    lessons!.addAll(listTemp2);
+
+    emit(state+1);
+  }
+
+  addNewLesson(LessonModel lesson){
+    lessons!.add(lesson);
+    emit(state+1);
   }
 
   update()async{

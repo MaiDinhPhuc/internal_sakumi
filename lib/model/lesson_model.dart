@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:internal_sakumi/model/custom_lesson_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class LessonModel {
@@ -16,7 +17,8 @@ class LessonModel {
       vocabulary,
       reading;
   final String description, content, title;
-  final bool enable;
+  final bool enable, isCustom;
+  final List<dynamic> customLessonInfo;
 
   LessonModel(
       {required this.lessonId,
@@ -33,7 +35,9 @@ class LessonModel {
       required this.alphabet,
       required this.order,
       required this.reading,
-      required this.enable});
+      required this.enable,
+      required this.customLessonInfo,
+      required this.isCustom});
 
   static Future<bool> check(String jsonData) async {
     final data = json.decode(jsonData);
@@ -45,6 +49,27 @@ class LessonModel {
       }
     }
     return true;
+  }
+
+  LessonModel copyWith({CustomLessonsModel? customLesson}) {
+    return LessonModel(
+        lessonId: customLesson!.customLessonId,
+        courseId: -1,
+        description: customLesson.description,
+        content: "",
+        title: customLesson.title,
+        btvn: 0,
+        vocabulary: 0,
+        listening: 0,
+        kanji: 0,
+        grammar: 0,
+        flashcard: 0,
+        alphabet: 0,
+        order: 0,
+        reading: 0,
+        enable: true,
+        customLessonInfo: customLesson.lessonInfo,
+        isCustom: true);
   }
 
   factory LessonModel.fromSnapshot(
@@ -65,6 +90,8 @@ class LessonModel {
         alphabet: data['alphabet'] ?? 0,
         order: data['order'] ?? 0,
         reading: data['reading'] ?? 0,
-        enable: data['enable'] ?? true);
+        enable: data['enable'] ?? true,
+        customLessonInfo: [],
+        isCustom: false);
   }
 }

@@ -202,7 +202,10 @@ void alertAddNewLesson(BuildContext context, LessonModel? lessonModel,
                                                     flashcard: int.parse(flCardCon.text),
                                                     alphabet: int.parse(alphaCon.text),
                                                     order: int.parse(orderCon.text),
-                                                    reading: int.parse(readingCon.text), enable: true));
+                                                    reading: int.parse(readingCon.text),
+                                                    enable: true,
+                                                    customLessonInfo: [],
+                                                    isCustom: false));
                                             if (context.mounted) {
                                               Navigator.pop(context);
                                               if (check == true) {
@@ -242,7 +245,10 @@ void alertAddNewLesson(BuildContext context, LessonModel? lessonModel,
                                                         alphaCon.text),
                                                     order:
                                                         int.parse(orderCon.text),
-                                                    reading: int.parse(readingCon.text), enable: lessonModel!.enable));
+                                                    reading: int.parse(readingCon.text),
+                                                    enable: lessonModel!.enable,
+                                                    customLessonInfo: [],
+                                                    isCustom: false));
                                             if (context.mounted) {
                                               Navigator.pop(context);
                                               cubit.loadLessonInCourse(

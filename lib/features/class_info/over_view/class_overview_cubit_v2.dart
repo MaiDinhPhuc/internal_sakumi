@@ -332,8 +332,8 @@ class ClassOverViewCubitV2 extends Cubit<int> {
       if (i.classStatus == "UpSale" || i.classStatus == "Force") {
         upNumber++;
       }
-      if ((i.classStatus != "Remove" ||
-          i.classStatus != "Moved" ||
+      if ((i.classStatus != "Remove" &&
+          i.classStatus != "Moved" &&
           i.classStatus != "Viewer")) {
         temp++;
       }

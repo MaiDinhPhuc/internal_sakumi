@@ -237,6 +237,7 @@ enum AppText {
   txtConfirmChangeStatus,
   txtLoadMore,
   txtSearch,
+  txtDoing,
 
   //master
   txtManageCourse,
@@ -404,6 +405,7 @@ enum AppText {
 }
 
 Map<AppText, String> texts = {
+  AppText.txtDoing : "Đang làm",
   AppText.txtSurveyEmpty: 'Không có bài khảo sát phù hợp để thêm vào lớp!',
   AppText.txtSubmitNumber: 'Có @ người trên # người trả lời câu hỏi này.',
   AppText.txtConfirmRecallSurvey: 'SS chắc chắn muốn thu hồi bài khảo sát này???',

@@ -515,7 +515,7 @@ class DataCubit extends Cubit<int> {
           vocabulary: stdLesson.vocabulary,
           teacherNote: stdLesson.teacherNote,
           supportNote: stdLesson.supportNote,
-          time: stdLesson.time));
+          time: stdLesson.time, hws: stdLesson.hws));
     } else {
       var i = stdLessons.indexOf(stdLessons.firstWhere((e) =>
           e.lessonId == stdLesson.lessonId &&
@@ -533,7 +533,7 @@ class DataCubit extends Cubit<int> {
           vocabulary: stdLesson.vocabulary,
           teacherNote: stdLesson.teacherNote,
           supportNote: stdLesson.supportNote,
-          time: stdLesson.time);
+          time: stdLesson.time, hws: stdLesson.hws);
     }
     classes[index] = classes[index].copyWith(stdLessons: stdLessons);
   }

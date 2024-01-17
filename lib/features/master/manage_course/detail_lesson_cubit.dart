@@ -30,7 +30,7 @@ class DetailLessonCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  update(String type, int value,ManageCourseCubit cubit) async {
+  update(String type, int value, ManageCourseCubit cubit) async {
     switch (type) {
       case "vocabulary":
         vocabulary = value;
@@ -65,7 +65,9 @@ class DetailLessonCubit extends Cubit<int> {
         alphabet: alphabet!,
         order: lessonModel!.order,
         reading: reading!,
-        enable: lessonModel!.enable));
+        enable: lessonModel!.enable,
+        customLessonInfo: [],
+        isCustom: false));
     await cubit.updateLesson(LessonModel(
         lessonId: lessonModel!.lessonId,
         courseId: lessonModel!.courseId,
@@ -81,6 +83,8 @@ class DetailLessonCubit extends Cubit<int> {
         alphabet: alphabet!,
         order: lessonModel!.order,
         reading: reading!,
-        enable: lessonModel!.enable));
+        enable: lessonModel!.enable,
+        customLessonInfo: [],
+        isCustom: false));
   }
 }

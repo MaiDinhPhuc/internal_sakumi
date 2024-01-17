@@ -7,6 +7,7 @@ import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
+import 'choose_custom_lesson.dart';
 import 'collapse_lesson_item_v2.dart';
 import 'lesson_item_cubit_v2.dart';
 import 'expand_lesson_item_v2.dart';
@@ -81,14 +82,24 @@ class LessonItemV2 extends StatelessWidget {
                                 child: Material(
                               color: Colors.transparent,
                               child: InkWell(
-                                  onDoubleTap: () {},
                                   onTap: () async {
-                                    if (detailCubit.lessonResult == null || detailCubit.lessonResult!.status != "Complete" ) {
+                                    if (detailCubit.lessonResult == null ||
+                                        detailCubit.lessonResult!.status !=
+                                            "Complete") {
                                       await Navigator.pushNamed(c,
                                           "/teacher/lesson/class=${cubit.classId}/lesson=${lesson.lessonId}");
                                     } else {
+                                      if (detailCubit.lesson.isCustom) {
+                                        if(detailCubit.lesson.customLessonInfo.length == 1){
+                                          await Navigator.pushNamed(c,
+                                              "/teacher/grading/class=${cubit.classId}/type=btvn/customLesson=${lesson.lessonId}/lesson=${detailCubit.lesson.customLessonInfo.first['lesson_id']}");
+                                        }else{
+                                          selectionCustomLessonDialog(c,detailCubit.lesson.customLessonInfo,cubit.classId,lesson.lessonId);
+                                        }
+                                      } else {
                                         await Navigator.pushNamed(c,
                                             "/teacher/grading/class=${cubit.classId}/type=btvn/lesson=${lesson.lessonId}");
+                                      }
                                     }
                                   },
                                   borderRadius: BorderRadius.circular(
@@ -131,3 +142,5 @@ class LessonItemV2 extends StatelessWidget {
         });
   }
 }
+
+

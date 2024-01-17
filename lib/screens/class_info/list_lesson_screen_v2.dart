@@ -59,7 +59,7 @@ class ListLessonScreenV2 extends StatelessWidget {
                                             onPressed: () {
                                               showDialog(
                                                   context: context,
-                                                  builder: (context) => AddCustomLessonDialog(classModel: cubit.classModel!));
+                                                  builder: (context) => AddCustomLessonDialog(cubit,classModel: cubit.classModel!));
                                             },
                                             title: AppText.btnAddNewLesson.text)
                                       ])),

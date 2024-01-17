@@ -387,6 +387,21 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getListAnswerCustom(
+      int id, int classId, int customLessonId) async {
+    final snapshot = await db
+        .collection('answer_v2')
+        .where('parent_id', isEqualTo: id)
+        .where('class_id', isEqualTo: classId)
+        .where('custom_lesson_id', isEqualTo: customLessonId)
+        .get();
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListAnswerCustom answer_v2 $id $classId $customLessonId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    // debugPrint("==========>get db from \"answer\" : ${snapshot.docs.length}");
+    return snapshot;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getLesson(
       int courseId, int lessonId) async {
     final snapshot = await db
@@ -1459,7 +1474,8 @@ class FireStoreDb {
       'class_code': model.classCode,
       'class_status': model.classStatus,
       'class_type': model.classType,
-      'link': model.link
+      'link': model.link,
+      'custom_lesson':model.customLessons
     });
     debugPrint("==========>update db for \"class\"");
   }

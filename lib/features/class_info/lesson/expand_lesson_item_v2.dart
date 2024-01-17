@@ -54,6 +54,17 @@ class ExpandLessonItemV2 extends StatelessWidget {
                 NoteWidget(detailCubit.lessonResult!.noteForTeacher!),
               ],
             ),
+          if (detailCubit.lessonResult!.supportNoteForTeacher != "")
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(AppText.txtNoteSpForTeacher.text,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: Resizable.font(context, 19))),
+                NoteWidget(detailCubit.lessonResult!.supportNoteForTeacher!),
+              ],
+            ),
           if (role == "admin")
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,17 +210,20 @@ class ExpandLessonItemV2 extends StatelessWidget {
                                           .first
                                           .timekeeping),
                               submit: TrackingItem(
-                                  detailCubit.lesson.btvn == 0
-                                      ? null
-                                      : detailCubit
-                                              .getStudentLesson(e.userId)
-                                              .isEmpty
-                                          ? -2
+                                  detailCubit.lesson.isCustom
+                                      ? detailCubit.getHwCustomPoint(e.userId)
+                                      : (detailCubit.lesson.btvn == 0
+                                          ? null
                                           : detailCubit
-                                              .getStudentLesson(e.userId)
-                                              .first
-                                              .hw,
-                                  isSubmit: true),
+                                                  .getStudentLesson(e.userId)
+                                                  .isEmpty
+                                              ? -2
+                                              : detailCubit
+                                                  .getStudentLesson(e.userId)
+                                                  .first
+                                                  .hw),
+                                  isSubmit: true,
+                                  isCustom: detailCubit.lesson.isCustom),
                               note: NoteWidget(
                                   detailCubit.getStudentLesson(e.userId).isEmpty
                                       ? ""
