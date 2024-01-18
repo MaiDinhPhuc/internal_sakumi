@@ -106,7 +106,6 @@ class GradingCubitV2 extends Cubit<int>{
     listLessonResult = lessonResults as List<LessonResultModel>;
   }
 
-
   loadLessonInClass(Object lessons) {
     this.lessons = lessons as List<LessonModel>;
   }
@@ -118,6 +117,7 @@ class GradingCubitV2 extends Cubit<int>{
   loadTestResultInClass(Object testResults) {
     listTestResult = testResults as List<TestResultModel>;
   }
+
   loadStdTestInClass(Object stdTests) {
     listStudentTests = stdTests as List<StudentTestModel>;
   }

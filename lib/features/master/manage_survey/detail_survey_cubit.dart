@@ -53,6 +53,7 @@ class DetailSurveyCubit extends Cubit<int> {
     if (type == 1) return AppText.txtSurveyType1.text;
     if (type == 2) return AppText.txtSurveyType2.text;
     if (type == 3) return AppText.txtSurveyType3.text;
+    if (type == 4) return AppText.txtSurveyType4.text;
     return "";
   }
 
@@ -109,16 +110,18 @@ class DetailSurveyCubit extends Cubit<int> {
         ? 1
         : value == AppText.txtSurveyType2.text
             ? 2
-            : 3);
+            : value == AppText.txtSurveyType3.text
+                ? 3
+                : 4);
     Map question = {
       "id": selector,
       "type": temp,
       "question": surveyModel!.detail[index]["question"],
-      "answer": temp == 3 ? [] :surveyModel!.detail[index]["answer"],
+      "answer": temp > 2  ? [] : surveyModel!.detail[index]["answer"],
       "force": surveyModel!.detail[index]["force"],
-      "another": temp == 3 ? false :surveyModel!.detail[index]["another"]
+      "another": temp > 2 ? false : surveyModel!.detail[index]["another"]
     };
-    if(temp == 3){
+    if (temp > 2) {
       answerCon[index] = [];
     }
     surveyModel!.detail[index] = question;

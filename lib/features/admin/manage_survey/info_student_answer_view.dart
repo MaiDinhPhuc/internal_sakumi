@@ -37,6 +37,39 @@ void alertStudentInfo(
       });
 }
 
+void alertStudentInfoType4(
+    BuildContext context, DetailSurveyAdminCubit cubit, int id, String answer) {
+  showDialog(
+      context: context,
+      builder: (_) {
+        return Dialog(
+          child: Container(
+              width: Resizable.size(context, 150),
+              padding: EdgeInsets.all(Resizable.padding(context, 10)),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ...cubit
+                        .getInfoType4(id, answer)
+                        .map((e) => Row(
+                      children: [
+                        SmallAvatar(e["avt"]),
+                        SizedBox(width: Resizable.padding(context, 10)),
+                        Text(e['name'],
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xff131111),
+                                fontSize: Resizable.font(context, 17)))
+                      ],
+                    ))
+                        .toList()
+                  ],
+                ),
+              )),
+        );
+      });
+}
+
 void alertStudentInfoWithAnotherAnswer(
     BuildContext context, DetailSurveyAdminCubit cubit, int id) {
   showDialog(

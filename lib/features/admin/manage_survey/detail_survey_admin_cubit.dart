@@ -12,6 +12,7 @@ class DetailSurveyAdminCubit extends Cubit<int>{
   int index = 0;
   List<SurveyAnswerModel>? listSurveyAnswer;
   List<StudentClassModel>? stdClasses;
+  List<String> listVote = ["1","2","3","4","5"];
 
   load(int surveyId, int classId)async{
     surveyModel = await FireBaseProvider.instance.getSurveyById(surveyId);
@@ -49,6 +50,16 @@ class DetailSurveyAdminCubit extends Cubit<int>{
     return x;
   }
 
+  int getNumberAnswerType4ByAnswerId(int id, String answer){
+    int x = 0;
+    for(var i in listSurveyAnswer!){
+      if(i.detail[index]["id"] == id && double.parse(i.detail[index]["answer"].first) == double.parse(answer)){
+        x++;
+      }
+    }
+    return x;
+  }
+
   int getNumberAnotherAnswerByAnswerId(int id){
     int x = 0;
     List<dynamic> listAnswer = surveyModel!.detail[index]['answer'].map((e)=>e.toString()).toList();
@@ -72,6 +83,19 @@ class DetailSurveyAdminCubit extends Cubit<int>{
 
     for(var i in listSurveyAnswer!){
       if(i.detail[index]["id"] == id && i.detail[index]["answer"].contains(answer)){
+        listInfo.add({"name": i.studentName,"avt" :i.studentAvt});
+      }
+    }
+
+    return listInfo;
+  }
+
+  List<dynamic> getInfoType4(int id,String answer){
+
+    var listInfo = [];
+
+    for(var i in listSurveyAnswer!){
+      if(i.detail[index]["id"] == id && double.parse(i.detail[index]["answer"].first) == double.parse(answer)){
         listInfo.add({"name": i.studentName,"avt" :i.studentAvt});
       }
     }

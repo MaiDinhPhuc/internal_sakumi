@@ -49,15 +49,15 @@ class BTVNItem extends StatelessWidget {
                                   (element) => e.lessonId == element.lessonId)]
                               .title,
                           receiveTitle:
-                              '${cubit.getBTVNResultCount(e.lessonId, 1)}/${cubit.students!.length}',
+                              '${cubit.getBTVNResultCount(e.lessonId, 1)}/${cubit.students.length}',
                           gradingTitle:
-                              '${cubit.getBTVNResultCount(e.lessonId, 0)}/${cubit.students!.length}',
+                              '${cubit.getBTVNResultCount(e.lessonId, 0)}/${cubit.students.length}',
                           receivePercent:
                               cubit.getBTVNResultCount(e.lessonId, 1) /
-                                  cubit.students!.length,
+                                  cubit.students.length,
                           gradingPercent:
                               cubit.getBTVNResultCount(e.lessonId, 0) /
-                                  cubit.students!.length,
+                                  cubit.students.length,
                         ),
                         secondChild: Column(
                           children: [
@@ -68,15 +68,15 @@ class BTVNItem extends StatelessWidget {
                                           e.lessonId == element.lessonId)]
                                   .title,
                               receiveTitle:
-                                  '${cubit.getBTVNResultCount(e.lessonId, 1)}/${cubit.students!.length}',
+                                  '${cubit.getBTVNResultCount(e.lessonId, 1)}/${cubit.students.length}',
                               gradingTitle:
-                                  '${cubit.getBTVNResultCount(e.lessonId, 0)}/${cubit.students!.length}',
+                                  '${cubit.getBTVNResultCount(e.lessonId, 0)}/${cubit.students.length}',
                               receivePercent:
                                   cubit.getBTVNResultCount(e.lessonId, 1) /
-                                      cubit.students!.length,
+                                      cubit.students.length,
                               gradingPercent:
                                   cubit.getBTVNResultCount(e.lessonId, 0) /
-                                      cubit.students!.length,
+                                      cubit.students.length,
                             ),
                             Container(
                               height: Resizable.size(context, 1),

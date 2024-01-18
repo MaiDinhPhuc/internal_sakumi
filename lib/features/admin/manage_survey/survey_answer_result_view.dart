@@ -220,7 +220,93 @@ class SurveyAnswerResultView extends StatelessWidget {
                                             .detail[cubit.index]["id"]))))
                           ],
                         )))
-                    .toList()
+                    .toList(),
+              if (cubit.surveyModel!.detail[cubit.index]['type'] == 4)
+                Column(
+                    children: [
+                      ...cubit.listVote
+                          .map((e) => Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: Resizable.size(context, 10),
+                              vertical: Resizable.size(context, 5)),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                      flex: 5,
+                                      child: Row(
+                                        children: [
+                                          for (int i = 0; i < int.parse(e); i++)
+                                            Padding(
+                                                padding: EdgeInsets.only(
+                                                    right: Resizable.padding(
+                                                        context, 10)),
+                                                child: Image.asset('assets/images/star.png',
+                                                    height: Resizable.size(context, 30),
+                                                    width: Resizable.size(context, 30))
+                                            )
+                                        ],
+                                      )),
+                                  Expanded(
+                                      flex: 2,
+                                      child: Align(
+                                          alignment: Alignment.bottomRight,
+                                          child: TextButton(
+                                            onPressed: () {
+                                              if(cubit.getNumberAnswerType4ByAnswerId(cubit.surveyModel!.detail[cubit.index]["id"], e)!=0){
+                                                alertStudentInfoType4(
+                                                    context,
+                                                    cubit,
+                                                    cubit.surveyModel!
+                                                        .detail[cubit.index]["id"],e);
+                                              }
+                                            },
+                                            child: Text(
+                                                "${cubit.getNumberAnswerType4ByAnswerId(cubit.surveyModel!.detail[cubit.index]["id"], e)} người chọn",
+                                                style: TextStyle(
+                                                    color: greyColor.shade600,
+                                                    fontSize: Resizable.size(
+                                                        context, 20),
+                                                    fontWeight: FontWeight.w500)),
+                                          ))),
+                                  Expanded(
+                                      flex: 1,
+                                      child: Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: Text(
+                                            "${((cubit.getNumberAnswerType4ByAnswerId(cubit.surveyModel!.detail[cubit.index]["id"], e) / cubit.getNumberAnswer()) * 100).toStringAsFixed(0)}%",
+                                            style: TextStyle(
+                                                fontSize:
+                                                Resizable.size(context, 20),
+                                                fontWeight: FontWeight.w700)),
+                                      ))
+                                ],
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: Resizable.padding(context, 5)),
+                                  child: LinearPercentIndicator(
+                                    padding: EdgeInsets.zero,
+                                    animation: true,
+                                    lineHeight: Resizable.size(context, 15),
+                                    animationDuration: 2000,
+                                    percent: (cubit.getNumberAnswerType4ByAnswerId(
+                                        cubit.surveyModel!.detail[cubit.index]
+                                        ["id"],
+                                        e) /
+                                        cubit.getNumberAnswer()),
+                                    center: const SizedBox(),
+                                    barRadius: const Radius.circular(5),
+                                    backgroundColor: greyColor.shade100,
+                                    progressColor: primaryColor,
+                                  )),
+                            ],
+                          )))
+                          .toList()
+                    ]
+                ),
             ],
           ),
         ))

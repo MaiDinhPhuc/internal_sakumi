@@ -25,7 +25,8 @@ class EditSurveyQuestionView extends StatelessWidget {
                         items: [
                             AppText.txtSurveyType1.text,
                             AppText.txtSurveyType2.text,
-                            AppText.txtSurveyType3.text
+                            AppText.txtSurveyType3.text,
+                            AppText.txtSurveyType4.text
                           ],
                         onChanged: (value) {
                           if (!detailSurveyCubit.surveyModel!.active) {
@@ -74,8 +75,7 @@ class EditSurveyQuestionView extends StatelessWidget {
                     .toList(),
                 if (!detailSurveyCubit.surveyModel!.active &&
                     detailSurveyCubit.surveyModel!
-                            .detail[detailSurveyCubit.index]["type"] !=
-                        3)
+                            .detail[detailSurveyCubit.index]["type"] < 3)
                   Padding(
                       padding: EdgeInsets.symmetric(
                           vertical: Resizable.padding(context, 10)),
@@ -120,8 +120,7 @@ class EditSurveyQuestionView extends StatelessWidget {
                           ),
                         ),
                         if (detailSurveyCubit.surveyModel!
-                                .detail[detailSurveyCubit.index]["type"] !=
-                            3)
+                                .detail[detailSurveyCubit.index]["type"] < 3)
                           Container(
                             margin: EdgeInsets.only(
                                 left: Resizable.padding(context, 15)),

@@ -54,7 +54,7 @@ class ExpandLessonItemV2 extends StatelessWidget {
                 NoteWidget(detailCubit.lessonResult!.noteForTeacher!),
               ],
             ),
-          if (detailCubit.lessonResult!.supportNoteForTeacher != "")
+          if (role == "teacher" && detailCubit.lessonResult!.supportNoteForTeacher != "")
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
