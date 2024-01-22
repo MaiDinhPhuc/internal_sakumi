@@ -2,7 +2,7 @@ import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
+import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_cubit.dart';
 import 'package:internal_sakumi/features/teacher/overview/collapse_learned_lesson_item.dart';
 import 'package:internal_sakumi/features/teacher/overview/expand_learned_lesson_item.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';

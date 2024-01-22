@@ -1,13 +1,12 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
+import 'package:internal_sakumi/features/master/manage_survey/edit_survey_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-
-import 'detail_survey_cubit.dart';
 
 class InputAnswerView extends StatelessWidget {
   const InputAnswerView(
       {super.key,
-      required this.detailSurveyCubit,
+      required this.editSurveyCubit,
       required this.type,
       required this.isExpand,
       this.hintText,
@@ -17,7 +16,7 @@ class InputAnswerView extends StatelessWidget {
       required this.controller,
       required this.index});
   final TextEditingController controller;
-  final DetailSurveyCubit detailSurveyCubit;
+  final EditSurveyCubit editSurveyCubit;
   final int type, index;
   final bool isExpand;
   final String? hintText;
@@ -68,7 +67,7 @@ class InputAnswerView extends StatelessWidget {
                     suffixIcon: enabled
                         ? InkWell(
                             onTap: () {
-                              detailSurveyCubit.deleteAnswer(index);
+                              editSurveyCubit.deleteAnswer(index);
                             },
                             child: const Icon(
                               Icons.delete,

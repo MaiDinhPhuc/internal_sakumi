@@ -101,8 +101,8 @@ class SurveyItemAdmin extends StatelessWidget {
                             result.status == 'done') {
                           await Navigator.pushNamed(context,
                               "/admin/survey/class=${result.classId}/surveyId=${result.surveyId}");
-                          await Navigator.pushNamed(context,
-                              "/admin/survey/class=${result.classId}/surveyId=${result.surveyId}");
+                          // await Navigator.pushNamed(context,
+                          //     "/admin/survey/class=${result.classId}/surveyId=${result.surveyId}");
                         } else {
                           showDialog(
                               context: context,

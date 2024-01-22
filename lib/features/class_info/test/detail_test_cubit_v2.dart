@@ -25,6 +25,11 @@ class DetailTestV2 extends Cubit<int> {
   List<StudentClassModel>? listStdClass;
 
   loadData() async {
+
+    if (cubit.listStdClass != null) {
+      listStdClass = cubit.listStdClass!;
+    }
+
     if (cubit.listTestResult != null) {
       listTestResult =
           cubit.listTestResult!.where((e) => e.testId == testModel.id).toList();
@@ -33,10 +38,6 @@ class DetailTestV2 extends Cubit<int> {
     if (cubit.stdTests != null) {
       stdTests =
           cubit.stdTests!.where((e) => e.testID == testModel.id).toList();
-    }
-
-    if (cubit.listStdClass != null) {
-      listStdClass = cubit.listStdClass!;
     }
 
     if (cubit.students.isNotEmpty) {
@@ -161,10 +162,12 @@ class DetailTestV2 extends Cubit<int> {
   double getSubmitPercent() {
     List<StudentModel> listStudents =
         students!.where((e) => getStudentId().contains(e.userId)).toList();
+
     int temp = 0;
     double sum = 0;
     if (stdTests!.isNotEmpty) {
-      for (var j in stdTests!) {
+      List<StudentTestModel> listStdTest = stdTests!.where((e) => getStudentId().contains(e.studentId)).toList();
+      for (var j in listStdTest) {
         if (j.score > -2) {
           temp++;
           if (j.score > -1) {

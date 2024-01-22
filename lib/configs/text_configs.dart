@@ -240,6 +240,7 @@ enum AppText {
   txtDoing,
 
   //master
+  txtOption,
   txtManageCourse,
   txtAnother,
   txtSurvey,
@@ -402,10 +403,19 @@ enum AppText {
   txtSeeResult,
   txtConfirmAssignSurvey,
   txtConfirmRecallSurvey,
-  txtSubmitNumber, txtSurveyEmpty
+  txtSubmitNumber, txtSurveyEmpty,
+  txtChooseQuestion,
+  txtChooseAnswer,
+  txtQuestion,
+  txtAnswer
 }
 
 Map<AppText, String> texts = {
+  AppText.txtQuestion : "Câu hỏi",
+  AppText.txtAnswer : "Câu trả lời",
+  AppText.txtChooseQuestion : "Chọn câu hỏi",
+  AppText.txtChooseAnswer : "Chọn câu trả lời",
+  AppText.txtOption : "Điều kiện hiển thị",
   AppText.txtDoing : "Đang làm",
   AppText.txtSurveyEmpty: 'Không có bài khảo sát phù hợp để thêm vào lớp!',
   AppText.txtSubmitNumber: 'Có @ người trên # người trả lời câu hỏi này.',

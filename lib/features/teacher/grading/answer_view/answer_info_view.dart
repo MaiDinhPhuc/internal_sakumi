@@ -8,7 +8,7 @@ import 'package:internal_sakumi/features/teacher/grading/detail_grading_cubit.da
 import 'package:internal_sakumi/features/teacher/grading/detail_grading_cubit_v2.dart';
 import 'package:internal_sakumi/features/teacher/grading/detail_grading_view.dart';
 import 'package:internal_sakumi/features/teacher/grading/sound/sound_cubit.dart';
-import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
+import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_cubit.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 

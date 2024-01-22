@@ -7,7 +7,7 @@ import 'package:internal_sakumi/features/class_info/over_view/collapse_overview_
 import 'package:internal_sakumi/features/class_info/over_view/expanded_overview_student_v2.dart';
 import 'package:internal_sakumi/features/class_info/over_view/statistic_class_view.dart';
 import 'package:internal_sakumi/features/teacher/app_bar/class_appbar.dart';
-import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/detail_lesson_cubit.dart';
+import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_cubit.dart';
 import 'package:internal_sakumi/features/teacher/overview/overview_chart.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
 import 'package:internal_sakumi/utils/resizable.dart';

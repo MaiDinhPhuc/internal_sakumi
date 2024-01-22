@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:internal_sakumi/widget/circle_progress.dart';
+
 
 class LessonItemRowLayout extends StatelessWidget {
   final Widget lesson, name, submit, attend, mark, sensei, dropdown;

@@ -8,7 +8,6 @@ import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
-import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
 import 'package:internal_sakumi/features/teacher/profile/app_bar_info_teacher_cubit.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
@@ -177,7 +176,6 @@ class FireBaseProvider extends NetworkProvider {
     sharedPreferences.setString(PrefKeyConfigs.email, '');
     sharedPreferences.setString(PrefKeyConfigs.role, '');
     sharedPreferences.setString(PrefKeyConfigs.logoutYet, 'true');
-    BlocProvider.of<DataCubit>(context).changeNull();
     Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
   }
 
