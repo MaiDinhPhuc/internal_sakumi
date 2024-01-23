@@ -694,7 +694,13 @@ class FireBaseProvider extends NetworkProvider {
     list.sort((a, b) {
       DateTime dateA = DateFormat("dd/MM/yyyy").parse(a.date);
       DateTime dateB = DateFormat("dd/MM/yyyy").parse(b.date);
-      return dateA.compareTo(dateB);
+      int compare = dateA.compareTo(dateB);
+      if (compare == 0) {
+        int indexA = list.indexOf(a);
+        int indexB = list.indexOf(b);
+        return indexA.compareTo(indexB);
+      }
+      return compare;
     });
     return list;
   }
