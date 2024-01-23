@@ -690,7 +690,12 @@ class FireBaseProvider extends NetworkProvider {
             .docs
             .map((e) => TestResultModel.fromSnapshot(e))
             .toList();
-    list.sort((a, b) => a.testId.compareTo(b.testId));
+    // list.sort((a, b) => a.testId.compareTo(b.testId));
+    list.sort((a, b) {
+      DateTime dateA = DateFormat("dd/MM/yyyy").parse(a.date);
+      DateTime dateB = DateFormat("dd/MM/yyyy").parse(b.date);
+      return dateA.compareTo(dateB);
+    });
     return list;
   }
 

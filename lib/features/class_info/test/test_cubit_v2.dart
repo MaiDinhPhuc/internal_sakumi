@@ -48,6 +48,20 @@ class TestCubitV2 extends Cubit<int>{
 
   loadTest(Object test) {
     listTest = test as List<TestModel>;
+    sortTest();
+  }
+
+  sortTest(){
+    var listId = listTestResult!.map((e) => e.testId).toList();
+
+    List<TestModel> listTemp1 = List.of(listTest!).where((e) => listId.contains(e.id)).toList();
+
+    List<TestModel> listTemp2 = List.of(listTest!).where((e) => !listId.contains(e.id)).toList();
+
+    listTest = listTemp1;
+
+    listTest!.addAll(listTemp2);
+
     emit(state+1);
   }
 

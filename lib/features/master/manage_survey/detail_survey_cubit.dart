@@ -45,6 +45,13 @@ class DetailSurveyCubit extends Cubit<int> {
   }
 
   save() async {
+    for(int i= 1; i<surveyModel!.detail.length; i++){
+      if(surveyModel!.detail[i]["option"].length != 0){
+        if(surveyModel!.detail[i]["option"][0]["id"] == -1){
+          surveyModel!.detail[i]["option"] = [];
+        }
+      }
+    }
     await FireBaseProvider.instance.saveSurvey(surveyModel!.id, surveyModel!);
     emit(state + 1);
   }
