@@ -1,4 +1,5 @@
 import 'package:flutter/Material.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_date.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_dropdown.dart';
@@ -128,29 +129,64 @@ class InfoClassView extends StatelessWidget {
             ),
           )),
       if (isEdit == false)
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        Row(
           children: [
-            Text(AppText.txtClassType.text,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: Resizable.font(context, 18),
-                    color: const Color(0xff757575))),
-            InputDropdown(
-                title: AppText.txtClassType.text,
-                hint: AppText.txtChooseClassType.text,
-                errorText: AppText.txtPleaseChooseType.text,
-                onChanged: (v) {
-                  cubit.classType = cubit.chooseType(v);
-                },
-                items: List.generate(cubit.listClassType.length,
-                    (index) => (cubit.listClassType[index])).toList())
+            Expanded(
+                flex: 5,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(AppText.txtClassType.text,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: Resizable.font(context, 18),
+                            color: const Color(0xff757575))),
+                    InputDropdown(
+                        title: AppText.txtClassType.text,
+                        hint: AppText.txtChooseClassType.text,
+                        errorText: AppText.txtPleaseChooseType.text,
+                        onChanged: (v) {
+                          cubit.classType = cubit.chooseType(v);
+                        },
+                        items: List.generate(cubit.listClassType.length,
+                            (index) => (cubit.listClassType[index])).toList())
+                  ],
+                )),
+            SizedBox(width: Resizable.size(context, 20)),
+            Expanded(
+                flex: 3,
+                child: Padding(
+                  padding: EdgeInsets.only(top: Resizable.padding(context, 10)),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: (){
+                          cubit.updateInformal();
+                        },
+                        child: Icon(
+                            cubit.informal
+                                ? Icons.check_box
+                                : Icons.check_box_outline_blank_outlined,
+                            color: primaryColor),
+                      ),
+                      Padding(
+                          padding: EdgeInsets.only(
+                              left: Resizable.padding(context, 5)),
+                          child: Text(AppText.txtInformal.text,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: Resizable.font(context, 18),
+                                  color: const Color(0xff757575))))
+                    ],
+                  ),
+                ))
           ],
         ),
       if (isEdit)
         Row(children: [
           Expanded(
-              flex: 5,
+              flex: 3,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -192,6 +228,35 @@ class InfoClassView extends StatelessWidget {
                               cubit.listClassStatusMenu[index]))).toList())
                 ],
               )),
+          SizedBox(width: Resizable.size(context, 20)),
+          Expanded(
+              flex: 3,
+              child: Padding(
+                padding: EdgeInsets.only(top: Resizable.padding(context, 10)),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: (){
+                        cubit.updateInformal();
+                      },
+                      child: Icon(
+                          cubit.informal
+                              ? Icons.check_box
+                              : Icons.check_box_outline_blank_outlined,
+                          color: primaryColor),
+                    ),
+                    Padding(
+                        padding: EdgeInsets.only(
+                            left: Resizable.padding(context, 5)),
+                        child: Text(AppText.txtInformal.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 18),
+                                color: const Color(0xff757575))))
+                  ],
+                ),
+              ))
         ]),
       InputItem(
           title: AppText.txtDescription.text,

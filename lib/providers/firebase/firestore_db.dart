@@ -1330,7 +1330,8 @@ class FireStoreDb {
       'class_code': model.classCode,
       'class_status': model.classStatus,
       'class_type': model.classType,
-      'link': model.link
+      'link': model.link,
+      'informal': model.informal
     });
     debugPrint("==========>add db for \"class\"");
   }
@@ -1475,7 +1476,8 @@ class FireStoreDb {
       'class_status': model.classStatus,
       'class_type': model.classType,
       'link': model.link,
-      'custom_lesson':model.customLessons
+      'custom_lesson':model.customLessons,
+      'informal': model.informal
     });
     debugPrint("==========>update db for \"class\"");
   }

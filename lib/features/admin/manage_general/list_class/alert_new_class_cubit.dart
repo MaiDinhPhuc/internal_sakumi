@@ -19,11 +19,25 @@ class AlertNewClassCubit extends Cubit<int> {
   List<String> listClassStatusMenu = ["Preparing", "InProgress", "Completed", "Cancel"];
   int? classType ;
   String? classStatus;
+  bool informal = false;
 
-  loadCourse() async {
-    classCount = (await FireStoreDb.instance.getCount("class")).count;
-    listCourse = await FireBaseProvider.instance.getAllCourseEnable();
+  loadCourse(ClassModel? classModel, bool isEdit) async {
+
+    if(isEdit){
+      listCourse = await FireBaseProvider.instance.getAllCourse();
+    }else{
+      classCount = (await FireStoreDb.instance.getCount("class")).count;
+      listCourse = await FireBaseProvider.instance.getAllCourseEnable();
+    }
+    if(classModel != null){
+      informal = classModel.informal;
+    }
     emit(state + 1);
+  }
+
+  updateInformal(){
+    informal = !informal;
+    emit(state+1);
   }
 
   chooseCourse(String? text) async {

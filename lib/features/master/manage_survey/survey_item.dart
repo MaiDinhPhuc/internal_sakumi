@@ -59,8 +59,8 @@ class SurveyItem extends StatelessWidget {
                         //Navigator.pop(context);
                         Navigator.pushNamed(context,
                             '${Routes.master}/manageSurvey/id=${surveyModel.id}');
-                        // Navigator.pushNamed(context,
-                        //     '${Routes.master}/manageSurvey/id=${surveyModel.id}');
+                        Navigator.pushNamed(context,
+                            '${Routes.master}/manageSurvey/id=${surveyModel.id}');
                       },
                       padding: EdgeInsets.zero,
                       child: Center(

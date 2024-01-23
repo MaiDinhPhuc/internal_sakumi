@@ -39,7 +39,7 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
           DateTimeCubit.endDay = DateTime.now();
         }
         return BlocProvider(
-            create: (context) => AlertNewClassCubit()..loadCourse(),
+            create: (context) => AlertNewClassCubit()..loadCourse(classModel, isEdit),
             child: BlocBuilder<AlertNewClassCubit, int>(
               builder: (c, _) {
                 var cubit = BlocProvider.of<AlertNewClassCubit>(c);
@@ -180,7 +180,7 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                                     classType: cubit
                                                                         .classType!,
                                                                     link: linkCon
-                                                                        .text, customLessons: []));
+                                                                        .text, customLessons: [], informal: cubit.informal!));
                                                             if (context
                                                                 .mounted) {
                                                               Navigator.pop(
@@ -236,7 +236,7 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                                     classType: cubit
                                                                         .classType!,
                                                                     link: linkCon
-                                                                        .text, customLessons: []));
+                                                                        .text, customLessons: [], informal: cubit.informal!));
                                                             if (context
                                                                 .mounted) {
                                                               Navigator.pop(

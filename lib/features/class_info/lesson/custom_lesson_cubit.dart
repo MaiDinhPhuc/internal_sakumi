@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
-import 'package:internal_sakumi/model/custom_lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
@@ -141,7 +140,7 @@ class CustomLessonCubit extends Cubit<int> {
             classStatus: classModel.classStatus,
             classType: classModel.classType,
             link: classModel.link,
-            customLessons: listCustomLesson))
+            customLessons: listCustomLesson, informal: classModel.informal))
         .whenComplete(() {
       listLessonCubit.addNewLesson(LessonModel(
           lessonId: millisecondsSinceEpoch,

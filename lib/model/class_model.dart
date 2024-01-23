@@ -11,6 +11,7 @@ class ClassModel {
       classStatus,
       link;
   List<dynamic> customLessons;
+  final bool informal;
 
   Color getColor() {
     switch (classStatus) {
@@ -51,7 +52,7 @@ class ClassModel {
       required this.classStatus,
       required this.classType,
       required this.link,
-      required this.customLessons});
+      required this.customLessons, required this.informal});
   factory ClassModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
@@ -66,6 +67,7 @@ class ClassModel {
         classStatus: data['class_status'] ?? '',
         classType: data['class_type'] ?? 0,
         link: data['link'] ?? '',
-        customLessons: data['custom_lesson'] ?? []);
+        customLessons: data['custom_lesson'] ?? [],
+        informal: data['informal'] ?? false);
   }
 }

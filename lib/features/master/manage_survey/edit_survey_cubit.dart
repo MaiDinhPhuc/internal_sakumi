@@ -26,47 +26,47 @@ class EditSurveyCubit extends Cubit<int> {
   bool? option;
 
   loadData() {
-    quesCon = TextEditingController(
-        text: detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-            ["question"]);
-    for (var j in detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-        ["answer"]) {
-      var newAnsCon = TextEditingController(text: j);
-      answerCon.add(newAnsCon);
-    }
-    force =
-        detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]["force"];
-    another = detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-        ["another"];
-    List listOption = detailSurveyCubit
-        .surveyModel!.detail[detailSurveyCubit.index]["option"];
-    option = listOption.isNotEmpty;
-    List<dynamic> listQuestion = detailSurveyCubit.surveyModel!.detail
-        .where((e) => e["type"] == 1 || e["type"] == 4)
-        .toList();
-    for (var i in listQuestion) {
-      if (i["id"] != detailSurveyCubit.selector) {
-        this.listQuestion.add(i["question"] as String);
-        listQuestionId.add(i["id"] as int);
-        listType.add(i["type"] as int);
+    if(detailSurveyCubit.surveyModel!.detail.isNotEmpty){
+      quesCon = TextEditingController(
+          text: detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
+          ["question"]);
+      for (var j in detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
+      ["answer"]) {
+        var newAnsCon = TextEditingController(text: j);
+        answerCon.add(newAnsCon);
       }
-    }
-    if (option == true && listOption.first["question"] != "empty") {
-      var index = this.listQuestion.indexOf(listOption.first["question"]);
-      optionId = listQuestionId[index];
-      if (listType[index] == 4) {
-        listAnswer = ["1", "2", "3", "4", "5"];
-      } else {
-        listAnswer = [];
-        var list = detailSurveyCubit.surveyModel!.detail
-            .firstWhere((e) => e["id"] == listQuestionId[index])["answer"];
-        for (var i in list) {
-          listAnswer.add(i.toString());
+      force =
+      detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]["force"];
+      another = detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
+      ["another"];
+      List listOption = detailSurveyCubit
+          .surveyModel!.detail[detailSurveyCubit.index]["option"];
+      option = listOption.isNotEmpty;
+      List<dynamic> listQuestion = detailSurveyCubit.surveyModel!.detail
+          .where((e) => e["type"] == 1 || e["type"] == 4)
+          .toList();
+      for (var i in listQuestion) {
+        if (i["id"] != detailSurveyCubit.selector) {
+          this.listQuestion.add(i["question"] as String);
+          listQuestionId.add(i["id"] as int);
+          listType.add(i["type"] as int);
+        }
+      }
+      if (option == true && listOption.first["question"] != "empty") {
+        var index = this.listQuestion.indexOf(listOption.first["question"]);
+        optionId = listQuestionId[index];
+        if (listType[index] == 4) {
+          listAnswer = ["1", "2", "3", "4", "5"];
+        } else {
+          listAnswer = [];
+          var list = detailSurveyCubit.surveyModel!.detail
+              .firstWhere((e) => e["id"] == listQuestionId[index])["answer"];
+          for (var i in list) {
+            listAnswer.add(i.toString());
+          }
         }
       }
     }
-    print(optionId);
-    print(detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]);
   }
 
   chooseOption(String value) {

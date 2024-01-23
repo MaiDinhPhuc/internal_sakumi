@@ -407,10 +407,12 @@ enum AppText {
   txtChooseQuestion,
   txtChooseAnswer,
   txtQuestion,
-  txtAnswer
+  txtAnswer,
+  txtInformal
 }
 
 Map<AppText, String> texts = {
+  AppText.txtInformal : "Lớp không chính thức",
   AppText.txtQuestion : "Câu hỏi",
   AppText.txtAnswer : "Câu trả lời",
   AppText.txtChooseQuestion : "Chọn câu hỏi",
