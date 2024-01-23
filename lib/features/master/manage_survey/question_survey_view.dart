@@ -47,8 +47,8 @@ class QuestionSurveyView extends StatelessWidget {
                 child: InkWell(
                     borderRadius:
                         BorderRadius.circular(Resizable.size(context, 5)),
-                    onTap: () {
-                      detailSurveyCubit.select(number);
+                    onTap: () async {
+                      await detailSurveyCubit.select(number);
                     },
                     child: Padding(
                         padding: EdgeInsets.symmetric(

@@ -77,6 +77,7 @@ class DetailSurveyCubit extends Cubit<int> {
     if (number == selector) {
       selector = -1;
     }
+    index = 0;
     emit(state + 1);
   }
 }

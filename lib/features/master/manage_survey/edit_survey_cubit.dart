@@ -37,19 +37,19 @@ class EditSurveyCubit extends Cubit<int> {
       }
       force =
       detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]["force"];
-      another = detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-      ["another"];
-      List listOption = detailSurveyCubit
-          .surveyModel!.detail[detailSurveyCubit.index]["option"];
+      another = detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]["another"];
+      List listOption = detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]["option"];
       option = listOption.isNotEmpty;
       List<dynamic> listQuestion = detailSurveyCubit.surveyModel!.detail
           .where((e) => e["type"] == 1 || e["type"] == 4)
           .toList();
       for (var i in listQuestion) {
         if (i["id"] != detailSurveyCubit.selector) {
-          this.listQuestion.add(i["question"] as String);
-          listQuestionId.add(i["id"] as int);
-          listType.add(i["type"] as int);
+          if(i["question"] != ""){
+            this.listQuestion.add(i["question"] as String);
+            listQuestionId.add(i["id"] as int);
+            listType.add(i["type"] as int);
+          }
         }
       }
       if (option == true && listOption.first["question"] != "empty") {
