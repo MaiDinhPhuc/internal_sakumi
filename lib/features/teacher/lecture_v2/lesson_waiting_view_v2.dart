@@ -82,16 +82,8 @@ class LessonWaitingViewV2 extends StatelessWidget {
               onPressed: () => alertCompleteWaitingView(context, () async {
                 Navigator.pop(context);
                 waitingDialog(context);
-                await cubit.noteForSupport(
-                    cubit.noteSupport.isNotEmpty
-                        ? cubit.noteSupport
-                        : '');
-                if (context.mounted) {
-                  await cubit.noteForAnotherSensei(
-                      cubit.noteSupport.isNotEmpty
-                          ? cubit.noteSensei
-                          : '');
-                }
+                await cubit.noteForSupport(cubit.noteSupport);
+                await cubit.noteForAnotherSensei(cubit.noteSensei);
                 if (context.mounted) {
                   for (var std in cubit.students) {
                     var index = cubit.students.indexOf(std);
@@ -99,8 +91,9 @@ class LessonWaitingViewV2 extends StatelessWidget {
                     updateTeacherNote(
                         std.userId, cubit.listNoteForEachStudent[index]);
 
-                    var stdLesson = cubit.stdLessons!
-                        .firstWhere((e) => e.studentId == std.userId && e.lessonId == cubit.lessonId);
+                    var stdLesson = cubit.stdLessons!.firstWhere((e) =>
+                        e.studentId == std.userId &&
+                        e.lessonId == cubit.lessonId);
 
                     cubit.updateStudentLesson(
                         std.userId,
@@ -115,10 +108,10 @@ class LessonWaitingViewV2 extends StatelessWidget {
                             studentId: stdLesson.studentId,
                             timekeeping: stdLesson.timekeeping,
                             vocabulary: stdLesson.vocabulary,
-                            teacherNote:
-                                cubit.listNoteForEachStudent[index],
+                            teacherNote: cubit.listNoteForEachStudent[index],
                             supportNote: stdLesson.supportNote,
-                            time: {}, hws: stdLesson.hws));
+                            time: {},
+                            hws: stdLesson.hws));
                   }
                   cubit.updateStatus('Complete');
                   if (context.mounted) {

@@ -148,7 +148,7 @@ class ExpandedTimeView extends StatelessWidget {
                             color: primaryColor,
                             fontWeight: FontWeight.w600,
                             fontSize: Resizable.font(context, 20))),
-                    Text(flipFlashCard.isEmpty? "00:00:00" :flipFlashCard,
+                    Text(flipFlashCard.isEmpty? "0" :flipFlashCard,
                         style: TextStyle(
                             color: const Color(0xff757575),
                             fontWeight: FontWeight.w600,

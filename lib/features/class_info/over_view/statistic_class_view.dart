@@ -44,7 +44,7 @@ class StatisticClassViewV2 extends StatelessWidget {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Expanded(
-                            child: cubit.listStdClass == null
+                            child: cubit.loaded == false
                                 ? Align(
                               alignment: Alignment.centerRight,
                               child: Transform.scale(
@@ -94,7 +94,7 @@ class StatisticClassViewV2 extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Expanded(
-                          child: cubit.listStdClass == null
+                          child: cubit.loaded == false
                               ? Align(
                             alignment: Alignment.centerRight,
                             child: Transform.scale(
@@ -126,7 +126,7 @@ class StatisticClassViewV2 extends StatelessWidget {
                     color: const Color(0xffE0E0E0),
                     width: Resizable.size(context, 0.5),
                   )),
-              child: cubit.listStdClass == null || cubit.classModel!.classStatus != "Completed" ? Column(
+              child: cubit.loaded == false || cubit.classModel!.classStatus != "Completed" ? Column(
                 children: [
                   Align(
                     alignment: Alignment.topLeft,

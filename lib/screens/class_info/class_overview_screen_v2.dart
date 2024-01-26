@@ -1,13 +1,10 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/class_info/over_view/class_overview_cubit_v2.dart';
-import 'package:internal_sakumi/features/class_info/over_view/collapse_overview_student_v2.dart';
-import 'package:internal_sakumi/features/class_info/over_view/expanded_overview_student_v2.dart';
 import 'package:internal_sakumi/features/class_info/over_view/statistic_class_view.dart';
+import 'package:internal_sakumi/features/class_info/over_view/student_item_overview.dart';
 import 'package:internal_sakumi/features/teacher/app_bar/class_appbar.dart';
-import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_cubit.dart';
 import 'package:internal_sakumi/features/teacher/overview/overview_chart.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -98,36 +95,7 @@ class ClassOverViewScreenV2 extends StatelessWidget {
                                 : Column(
                                     children: [
                                       ...cubit.listStdClass!
-                                          .map((e) => Container(
-                                                margin: EdgeInsets.symmetric(
-                                                    vertical: Resizable.padding(
-                                                        context, 5)),
-                                                child: BlocProvider(
-                                                    create: (context) =>
-                                                        DropdownCubit(),
-                                                    child: BlocBuilder<
-                                                            DropdownCubit, int>(
-                                                        builder: (c, state) =>
-                                                            Container(
-                                                                alignment: Alignment
-                                                                    .centerLeft,
-                                                                decoration: BoxDecoration(
-                                                                    border: Border.all(
-                                                                        width: Resizable.size(
-                                                                            context, 1),
-                                                                        color: state % 2 == 0 ? greyColor.shade100 : Colors.black),
-                                                                    borderRadius: BorderRadius.circular(Resizable.size(context, 5))),
-                                                                child: AnimatedCrossFade(
-                                                                    firstChild: CollapseOverviewStudentV2(cubit: cubit, role: role, stdClass: e),
-                                                                    secondChild: Column(
-                                                                      children: [
-                                                                        CollapseOverviewStudentV2(cubit: cubit, role: role, stdClass: e),
-                                                                        ExpandedOverViewStudentV2(stdClass: e, cubit: cubit)
-                                                                      ],
-                                                                    ),
-                                                                    crossFadeState: state % 2 == 1 ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                                                                    duration: const Duration(milliseconds: 100))))),
-                                              ))
+                                          .map((e) => StudentItemOverView(cubit: cubit, stdClass: e, role: role))
                                           .toList(),
                                       SizedBox(
                                           height: Resizable.size(context, 50))

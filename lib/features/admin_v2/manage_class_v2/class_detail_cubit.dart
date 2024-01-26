@@ -34,7 +34,41 @@ class ClassDetailCubit extends Cubit<int> {
 
     await DataProvider.stdClassByClassId(classModel.classId, loadStudentClass);
 
-    await DataProvider.lessonByCourseId(classModel.courseId, loadLessonInClass);
+    if(classModel.customLessons.isEmpty){
+      await DataProvider.lessonByCourseId(classModel.courseId, loadLessonInClass);
+    }else{
+      await DataProvider.lessonByCourseAndClassId(classModel.courseId,classModel.classId, loadLessonInClass);
+
+      var lessonId = lessons!.map((e) => e.lessonId).toList();
+
+      if(classModel.customLessons.isNotEmpty){
+        for(var i in classModel.customLessons){
+          if(!lessonId.contains(i['custom_lesson_id'])){
+            lessons!.add(LessonModel(
+                lessonId: i['custom_lesson_id'],
+                courseId: -1,
+                description: i['description'],
+                content: "",
+                title: i['title'],
+                btvn: -1,
+                vocabulary: 0,
+                listening: 0,
+                kanji: 0,
+                grammar: 0,
+                flashcard: 0,
+                alphabet: 0,
+                order: 0,
+                reading: 0,
+                enable: true,
+                customLessonInfo: i['lessons_info'],
+                isCustom: true));
+          }
+        }
+      }
+    }
+
+
+    emit(state + 1);
 
     await DataProvider.stdLessonByClassId(classModel.classId, loadStdLesson);
 
@@ -65,34 +99,6 @@ class ClassDetailCubit extends Cubit<int> {
 
   loadLessonInClass(Object lessons) {
     this.lessons = lessons as List<LessonModel>;
-
-    var lessonId = lessons.map((e) => e.lessonId).toList();
-
-    if(classModel.customLessons.isNotEmpty){
-      for(var i in classModel.customLessons){
-        if(!lessonId.contains(i['custom_lesson_id'])){
-          this.lessons!.add(LessonModel(
-              lessonId: i['custom_lesson_id'],
-              courseId: -1,
-              description: i['description'],
-              content: "",
-              title: i['title'],
-              btvn: -1,
-              vocabulary: 0,
-              listening: 0,
-              kanji: 0,
-              grammar: 0,
-              flashcard: 0,
-              alphabet: 0,
-              order: 0,
-              reading: 0,
-              enable: true,
-              customLessonInfo: i['lessons_info'],
-              isCustom: true));
-        }
-      }
-    }
-    emit(state + 1);
   }
 
   loadStdLesson(Object stdLessons) {

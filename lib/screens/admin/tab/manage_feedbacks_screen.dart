@@ -6,15 +6,14 @@ import 'package:internal_sakumi/features/admin/app_bar/admin_appbar.dart';
 import 'package:internal_sakumi/features/admin/manage_feedback/feedback_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_feedback/feedback_navigation_item.dart';
 import 'package:internal_sakumi/features/admin/manage_feedback/list_feedback_view.dart';
-import 'package:internal_sakumi/features/teacher/grading/detail_grading_view.dart';
 import 'package:internal_sakumi/model/navigation/feedback_navigation.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/title_widget.dart';
 
 class ManageFeedBacksScreen extends StatelessWidget {
-  ManageFeedBacksScreen({super.key}) : cubit = FeedBackCubit(), dropdownCubit = DropdownGradingCubit(AppText.txtUnread.text);
+  ManageFeedBacksScreen({super.key})
+      : cubit = FeedBackCubit();
   final FeedBackCubit cubit;
-  final DropdownGradingCubit dropdownCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -54,19 +53,22 @@ class ManageFeedBacksScreen extends StatelessWidget {
                                       flex: 1,
                                       child: Column(
                                         children: [
-                                          TitleWidget(AppText.titleListFeedBack.text.toUpperCase()),
-                                          Expanded(child: SingleChildScrollView(
+                                          TitleWidget(AppText
+                                              .titleListFeedBack.text
+                                              .toUpperCase()),
+                                          Expanded(
+                                              child: SingleChildScrollView(
                                             child: Column(
                                               children: [
                                                 ...listFeedBack.map((e) =>
                                                     FeedBackNavigationItem(
-                                                      number: cubit
-                                                          .getCountUnRead(e.type),
+                                                      number:
+                                                          cubit.getCount(
+                                                              e.type),
                                                       navigation: e,
                                                       type: cubit.type,
                                                       onTap: () {
                                                         cubit.changeType(e.type);
-                                                        dropdownCubit.change(AppText.txtUnread.text);
                                                       },
                                                     ))
                                               ],
@@ -76,7 +78,8 @@ class ManageFeedBacksScreen extends StatelessWidget {
                                       )),
                                   Expanded(
                                       flex: 2,
-                                      child: ListFeedBackView(cubit: cubit, dropdownCubit: dropdownCubit))
+                                      child: ListFeedBackView(
+                                          cubit: cubit))
                                 ],
                               );
                       },

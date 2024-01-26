@@ -14,37 +14,57 @@ class ClassOverViewCubitV2 extends Cubit<int> {
   }
   final int classId;
   ClassModel? classModel;
-  List<StudentModel>? students;
+  List<StudentModel> students = [];
   List<double> listAttendance = [], listHomework = [];
   int countAvailable = 0;
   List<LessonResultModel>? lessonResults;
   List<StudentLessonModel>? stdLessons;
   List<LessonModel>? lessons;
   List<StudentClassModel>? listStdClass;
-  List<Map<String, dynamic>> listStdDetail = [];
   double percentHw = 0;
 
   bool loaded = false;
 
-  List<String> listStudentStatusMenu = [
-    "Completed",
-    "InProgress",
-    "Viewer",
-    "ReNew",
-    "UpSale",
-    "Moved",
-    "Retained",
-    "Dropped",
-    "Deposit",
-    "Force",
-    "Remove"
-  ];
 
   update() async {
     await DataProvider.stdClassByClassId(classId, loadStudentClass);
 
-    await DataProvider.lessonByCourseId(
-        classModel!.courseId, loadLessonInClass);
+    if(classModel!.customLessons.isEmpty){
+      await DataProvider.lessonByCourseId(
+          classModel!.courseId, loadLessonInClass);
+    }else{
+
+      await DataProvider.lessonByCourseAndClassId(
+          classModel!.courseId,classId, loadLessonInClass);
+
+      var lessonId = lessons!.map((e) => e.lessonId).toList();
+
+      if(classModel!.customLessons.isNotEmpty){
+        for(var i in classModel!.customLessons){
+          if(!lessonId.contains(i['custom_lesson_id'])){
+            lessons!.add(LessonModel(
+                lessonId: i['custom_lesson_id'],
+                courseId: -1,
+                description: i['description'],
+                content: "",
+                title: i['title'],
+                btvn: -1,
+                vocabulary: 0,
+                listening: 0,
+                kanji: 0,
+                grammar: 0,
+                flashcard: 0,
+                alphabet: 0,
+                order: 0,
+                reading: 0,
+                enable: true,
+                customLessonInfo: i['lessons_info'],
+                isCustom: true));
+          }
+        }
+      }
+    }
+
 
     await DataProvider.stdLessonByClassId(classId, loadStdLesson);
 
@@ -58,7 +78,6 @@ class ClassOverViewCubitV2 extends Cubit<int> {
 
     loadListPercent();
 
-    loadDetail();
     emit(state + 1);
   }
 
@@ -71,7 +90,40 @@ class ClassOverViewCubitV2 extends Cubit<int> {
 
     DataProvider.stdLessonByClassId(classId, loadStdLesson);
 
-    DataProvider.lessonByCourseId(classModel!.courseId, loadLessonInClass);
+    if(classModel!.customLessons.isEmpty){
+      DataProvider.lessonByCourseId(classModel!.courseId,loadLessonInClass);
+    }else{
+      DataProvider.lessonByCourseAndClassId(classModel!.courseId,classId,loadLessonInClass);
+
+      var lessonId = lessons!.map((e) => e.lessonId).toList();
+
+      if(classModel!.customLessons.isNotEmpty){
+        for(var i in classModel!.customLessons){
+          if(!lessonId.contains(i['custom_lesson_id'])){
+            lessons!.add(LessonModel(
+                lessonId: i['custom_lesson_id'],
+                courseId: -1,
+                description: i['description'],
+                content: "",
+                title: i['title'],
+                btvn: -1,
+                vocabulary: 0,
+                listening: 0,
+                kanji: 0,
+                grammar: 0,
+                flashcard: 0,
+                alphabet: 0,
+                order: 0,
+                reading: 0,
+                enable: true,
+                customLessonInfo: i['lessons_info'],
+                isCustom: true));
+          }
+        }
+      }
+    }
+
+
 
     DataProvider.lessonResultByClassId(classId, loadLessonResult);
 
@@ -85,139 +137,11 @@ class ClassOverViewCubitV2 extends Cubit<int> {
 
     loadListPercent();
 
-    loadDetail();
-
     loaded = true;
 
     emit(state + 1);
   }
 
-  loadDetail() async {
-    List<int> listStdIdsEnable = [];
-    for (var element in listStdClass!) {
-      if (element.classStatus != "Remove" &&
-          element.classStatus != "Moved" &&
-          element.classStatus != "Retained" &&
-          element.classStatus != "Dropped" &&
-          element.classStatus != "Deposit" &&
-          element.classStatus != "Viewer") {
-        listStdIdsEnable.add(element.userId);
-      }
-    }
-    List<LessonModel> lessonTemp =
-        lessons!.where((element) => element.btvn == 0).toList();
-    List<int> lessonExceptionIds = [];
-    for (var i in lessonTemp) {
-      lessonExceptionIds.add(i.lessonId);
-    }
-    for (var i in listStdClass!) {
-      List<StudentLessonModel> stdLesson = stdLessons!
-          .where((element) => element.studentId == i.userId)
-          .toList();
-
-      List<int> listAttendance = [];
-      List<double?> listHw = [];
-      List<String> title = [];
-      List<String> senseiNote = [];
-      List<String> spNote = [];
-      for (var j in stdLesson) {
-        listAttendance.add(j.timekeeping);
-        if (lessonExceptionIds.contains(j.lessonId)) {
-          listHw.add(null);
-        } else {
-          listHw.add(j.hw);
-        }
-        title.add(lessons!
-            .where((element) => element.lessonId == j.lessonId)
-            .single
-            .title);
-
-        senseiNote.add(j.teacherNote);
-        spNote.add(j.supportNote);
-      }
-      int tempAttendance = 0;
-      int tempHw = 0;
-      int countHw = 0;
-      for (int j = 0; j < listAttendance.length; j++) {
-        if (listAttendance[j] != 6 &&
-            listAttendance[j] != 5 &&
-            listAttendance[j] != 0) {
-          tempAttendance++;
-        }
-        if (listAttendance[j] != 0) {
-          if (listHw[j] != -2 && listHw[j] != null) {
-            tempHw++;
-          }
-          if (listHw[j] != null) {
-            countHw++;
-          }
-        }
-      }
-
-      int count = listAttendance.where((element) => element != 0).length;
-
-      if (stdLesson.isEmpty) {
-        listStdDetail.add({
-          'id': i.userId,
-          'status': i.classStatus,
-          'attendance': listAttendance,
-          'title': title,
-          'hw': listHw,
-          'attendancePercent': 0,
-          'hwPercent': 0,
-          'teacherNote': senseiNote,
-          'spNote': spNote,
-          'doingTime': getTime(stdLesson, "time_btvn"),
-          'ignore': getNumber(stdLesson, "skip_btvn"),
-          'time_alphabet': getTime(stdLesson, "time_alphabet"),
-          'time_flashcard': getTime(stdLesson, "time_flashcard"),
-          'time_grammar': getTime(stdLesson, "time_grammar"),
-          'time_kanji': getTime(stdLesson, "time_kanji"),
-          'time_listening': getTime(stdLesson, "time_listening"),
-          'time_reading': getTime(stdLesson, "time_reading"),
-          'time_vocabulary': getTime(stdLesson, "time_vocabulary"),
-          'flip_flashcard': getNumber(stdLesson, "flip_flashcard")
-        });
-      } else {
-        listStdDetail.add({
-          'id': i.userId,
-          'status': i.classStatus,
-          'attendance': listAttendance,
-          'title': title,
-          'hw': listHw,
-          'attendancePercent': tempAttendance / (count == 0 ? 1 : count),
-          'hwPercent': tempHw / (countHw == 0 ? 1 : countHw),
-          'teacherNote': senseiNote,
-          'spNote': spNote,
-          'doingTime': getTime(stdLesson, "time_btvn"),
-          'ignore': getNumber(stdLesson, "skip_btvn"),
-          'time_alphabet': getTime(stdLesson, "time_alphabet"),
-          'time_flashcard': getTime(stdLesson, "time_flashcard"),
-          'time_grammar': getTime(stdLesson, "time_grammar"),
-          'time_kanji': getTime(stdLesson, "time_kanji"),
-          'time_listening': getTime(stdLesson, "time_listening"),
-          'time_reading': getTime(stdLesson, "time_reading"),
-          'time_vocabulary': getTime(stdLesson, "time_vocabulary"),
-          'flip_flashcard': getNumber(stdLesson, "flip_flashcard")
-        });
-      }
-      emit(state + 1);
-    }
-    double count1 = 0;
-    double total1 = 0;
-    for (var i in stdLessons!) {
-      if (listStdIdsEnable.contains(i.studentId) && i.timekeeping != 0) {
-        if (lessonExceptionIds.contains(i.lessonId) == false) {
-          total1++;
-          if (i.hw != -2) {
-            count1++;
-          }
-        }
-      }
-    }
-    percentHw = count1 / (total1 == 0 ? 1 : total1);
-    emit(state + 1);
-  }
 
   loadListPercent() async {
     listAttendance = [];
@@ -271,7 +195,26 @@ class ClassOverViewCubitV2 extends Cubit<int> {
       listAttendance.add(tempAtt);
       listHomework.add(tempHw);
     }
-    emit(state + 1);
+
+    List<LessonModel> lessonTemp =
+    lessons!.where((element) => element.btvn == 0).toList();
+    List<int> lessonExceptionIds = [];
+    for (var i in lessonTemp) {
+      lessonExceptionIds.add(i.lessonId);
+    }
+    double count1 = 0;
+    double total1 = 0;
+    for (var i in stdLessons!) {
+      if (listStdIdsEnable.contains(i.studentId) && i.timekeeping != 0) {
+        if (lessonExceptionIds.contains(i.lessonId) == false) {
+          total1++;
+          if (i.hw != -2) {
+            count1++;
+          }
+        }
+      }
+    }
+    percentHw = count1 / (total1 == 0 ? 1 : total1);
   }
 
   loadStudentClass(Object studentClass) {
@@ -341,23 +284,12 @@ class ClassOverViewCubitV2 extends Cubit<int> {
     return ((upNumber / temp) * 100).roundToDouble();
   }
 
-  double? getGPAPoint(int index) {
-    double temp = 0;
-    double count = 0;
-    for (int i = 0; i < listStdDetail[index]["hw"].length; i++) {
-      if (listStdDetail[index]["hw"][i] != null &&
-          listStdDetail[index]["hw"][i] > -1) {
-        temp += listStdDetail[index]["hw"][i];
-        count++;
-      }
-    }
-    return count == 0 ? null : temp / count;
-  }
+
 
   loadStudentInfo(Object student) {
-    students!.add(student as StudentModel);
-    if (students!.length == listStdClass!.length) {
-      emit(state + 1);
+    students.add(student as StudentModel);
+    if(students.length == listStdClass!.length){
+      emit(state+1);
     }
   }
 

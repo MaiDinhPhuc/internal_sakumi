@@ -113,6 +113,7 @@ class DetailLessonCubitV2 extends Cubit<int> {
         isNoteSupport = true;
       } else {
         isNoteSupport = false;
+        noteSupport = "";
       }
     }
     emit(state + 1);
@@ -124,6 +125,7 @@ class DetailLessonCubitV2 extends Cubit<int> {
         isNoteSensei = true;
       } else {
         isNoteSensei = false;
+        noteSensei = "";
       }
     }
     emit(state + 1);

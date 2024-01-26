@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/feedback_model.dart';
@@ -18,13 +19,10 @@ class FeedBackCubit extends Cubit<int> {
 
   List<CourseModel>? courses;
 
-  List<int> listClassId = [];
-
-  List<int> listStdId = [];
-
   bool isLoading = true;
 
   List<FeedBackModel>? listFeedBack;
+
   String type = "general";
 
   List<String> listStatus = ["unread", "waiting", "done"];
@@ -33,27 +31,20 @@ class FeedBackCubit extends Cubit<int> {
 
   List<String> listStatusCheck = ["unread"];
 
+  String filterState = AppText.txtUnread.text;
+
   loadData() async {
     courses ??= await FireBaseProvider.instance.getAllCourse();
     listFeedBack ??=
-        await FireBaseProvider.instance.getListFeedBack(listStatusCheck.first);
-    var listStdId =
-    (getFeedBack().where((e) => e.userId != -1)).map((e) => e.userId).toList();
+        await FireBaseProvider.instance.getListFeedBack(statusNow);
+    List<int> listStdId = (getFeedBack().where((e) => e.userId != -1)).map((e) => e.userId).toList();
     List<int> listClassId = [];
     for (var i in getFeedBack()) {
       if (!listClassId.contains(i.classId)) {
         listClassId.add(i.classId);
       }
     }
-    List<int> listClassTemp = listClassId
-        .where((element) => !this.listClassId.contains(element))
-        .toList();
-    List<int> listStdTemp = listStdId
-        .where((element) => !this.listStdId.contains(element))
-        .toList();
-    this.listClassId.addAll(listClassTemp);
-    this.listStdId.addAll(listStdTemp);
-    getStudents(listStdTemp, listClassTemp);
+    getStudents(listStdId, listClassId);
     emit(state + 1);
   }
 
@@ -70,15 +61,15 @@ class FeedBackCubit extends Cubit<int> {
     if (!listStatusCheck.contains(check)) {
       listStatusCheck.add(check);
       var listData = await FireBaseProvider.instance.getListFeedBack(check);
-      for(int i=0; i< listData.length; i++){
-        for(int j=0; j< listFeedBack!.length; j++){
-          if(listData[i].date == listFeedBack![j].date && listData[i].classId == listFeedBack![j].classId){
-            listFeedBack!.remove(listFeedBack![j]);
-            break;
-          }
+      listFeedBack!.addAll(listData);
+      List<int> listStdId = (listData.where((e) => e.userId != -1)).map((e) => e.userId).toList();
+      List<int> listClassId = [];
+      for (var i in listData) {
+        if (!listClassId.contains(i.classId)) {
+          listClassId.add(i.classId);
         }
       }
-      listFeedBack!.addAll(listData);
+      getStudents(listStdId, listClassId);
     }
     emit(state + 1);
   }
@@ -122,10 +113,6 @@ class FeedBackCubit extends Cubit<int> {
   String getCourse(int classId) {
     if (courses == null || classes.isEmpty) {
       return "";
-    }
-
-    for(var i in classes){
-
     }
 
     var courseId = classes.firstWhere((e) => e.classId == classId).courseId;
@@ -176,16 +163,23 @@ class FeedBackCubit extends Cubit<int> {
         : students.where((e) => e.userId == stdId).first.name;
   }
 
-
   getStudents(List<int> listStdId, List<int> listClassId) async {
     isLoading = true;
     emit(state+1);
     var stdTemp =
         await FireBaseProvider.instance.getAllStudentInFoInClass(listStdId);
-    students.addAll(stdTemp);
+    for(var i in stdTemp){
+      if(!students.contains(i)){
+        students.add(i);
+      }
+    }
     var classTemp =
         await FireBaseProvider.instance.getListClassForTeacher(listClassId);
-    classes.addAll(classTemp);
+    for(var i in classTemp){
+      if(!classes.contains(i)){
+        classes.add(i);
+      }
+    }
     isLoading = false;
     emit(state+1);
   }
@@ -199,20 +193,18 @@ class FeedBackCubit extends Cubit<int> {
       case "Đã xử lí":
         statusNow = "done";
     }
-    loadData();
+    filterState = value;
     emit(state + 1);
   }
 
   changeType(String newType)async {
     type = newType;
-    await loadData();
-    statusNow = "unread";
     emit(state + 1);
   }
 
-  int getCountUnRead(String type) {
+  int getCount(String type) {
     var list = listFeedBack!
-        .where((e) => e.category == type && e.status == "unread")
+        .where((e) => e.category == type && e.status == statusNow)
         .toList();
     return list.length;
   }

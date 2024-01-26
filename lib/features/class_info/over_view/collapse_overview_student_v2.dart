@@ -1,6 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
+import 'package:internal_sakumi/features/class_info/over_view/student_item_overview_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_cubit.dart';
 import 'package:internal_sakumi/features/teacher/overview/overview_chart.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
@@ -15,29 +16,29 @@ class CollapseOverviewStudentV2 extends StatelessWidget {
       {Key? key,
       required this.role,
       required this.stdClass,
-      required this.cubit})
+      required this.cubit, required this.studentCubit})
       : super(key: key);
   final String role;
   final StudentClassModel stdClass;
   final ClassOverViewCubitV2 cubit;
+  final StudentItemOverViewCubit studentCubit;
   @override
   Widget build(BuildContext context) {
-    int index = cubit.listStdClass!.indexOf(stdClass);
     return Container(
         padding: EdgeInsets.only(
           right: Resizable.padding(context, 15),
         ),
         child: OverviewItemRowLayout(
-            icon: IconToolTipV2(role: role, cubit: cubit, stdClass: stdClass),
+            icon: IconToolTipV2(role: role, cubit: cubit, stdClass: stdClass, studentCubit: studentCubit),
             name: Text(
-                cubit.students!.length - 1 < index
+                studentCubit.studentModel == null
                     ? ""
-                    : "${cubit.students![index].name} - ${cubit.students![index].studentCode}",
+                    : "${studentCubit.studentModel!.name} - ${studentCubit.studentModel!.studentCode}",
                 style: TextStyle(
                     fontSize: Resizable.font(context, 20),
                     color: const Color(0xff131111),
                     fontWeight: FontWeight.w500)),
-            attend: cubit.listStdDetail.length - 1 < index
+            attend: studentCubit.studentModel == null
                 ? CircleProgress(
                     title: '0 %',
                     lineWidth: Resizable.size(context, 3),
@@ -47,13 +48,13 @@ class CollapseOverviewStudentV2 extends StatelessWidget {
                   )
                 : CircleProgress(
                     title:
-                        '${(cubit.listStdDetail[index]["attendancePercent"] * 100).toStringAsFixed(0)} %',
+                        '${(studentCubit.getAttendancePercent() * 100).toStringAsFixed(0)} %',
                     lineWidth: Resizable.size(context, 3),
-                    percent: cubit.listStdDetail[index]["attendancePercent"],
+                    percent: studentCubit.getAttendancePercent(),
                     radius: Resizable.size(context, 16),
                     fontSize: Resizable.font(context, 14),
                   ),
-            submit: cubit.listStdDetail.length - 1 < index
+            submit: studentCubit.studentModel == null
                 ? CircleProgress(
                     title: '0 %',
                     lineWidth: Resizable.size(context, 3),
@@ -63,15 +64,13 @@ class CollapseOverviewStudentV2 extends StatelessWidget {
                   )
                 : CircleProgress(
                     title:
-                        '${(cubit.listStdDetail[index]["hwPercent"] * 100).toStringAsFixed(0)} %',
+                        '${(studentCubit.getHwPercent() * 100).toStringAsFixed(0)} %',
                     lineWidth: Resizable.size(context, 3),
-                    percent: cubit.listStdDetail[index]["hwPercent"],
+                    percent: studentCubit.getHwPercent(),
                     radius: Resizable.size(context, 16),
                     fontSize: Resizable.font(context, 14),
                   ),
-            point: cubit.listStdDetail.length - 1 < index
-                ? Container()
-                : cubit.getGPAPoint(index) == null
+            point: studentCubit.getGPAPoint() == null
                     ? Container()
                     : Container(
                         height: Resizable.size(context, 30),
@@ -83,7 +82,7 @@ class CollapseOverviewStudentV2 extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10)),
                         child: Center(
                             child: Text(
-                          cubit.getGPAPoint(index)!.toStringAsFixed(1),
+                              studentCubit.getGPAPoint()!.toStringAsFixed(1),
                           style: TextStyle(
                               color: primaryColor,
                               fontSize: Resizable.font(context, 18),

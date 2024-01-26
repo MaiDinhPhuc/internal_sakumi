@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
+import 'package:internal_sakumi/features/class_info/over_view/student_item_overview_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_cubit.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/screens/class_info/detail_grading_screen_v2.dart';
@@ -17,10 +18,11 @@ class IconToolTipV2 extends StatelessWidget {
       {super.key,
         required this.role,
         required this.cubit,
-        required this.stdClass});
+        required this.stdClass, required this.studentCubit});
   final String role;
   final ClassOverViewCubitV2 cubit;
   final StudentClassModel stdClass;
+  final StudentItemOverViewCubit studentCubit;
   @override
   Widget build(BuildContext context) {
     return role == "admin"
@@ -31,7 +33,7 @@ class IconToolTipV2 extends StatelessWidget {
           var popupCubit = BlocProvider.of<MenuPopupCubit>(c);
           return PopupMenuButton(
             itemBuilder: (context) => [
-              ...cubit.listStudentStatusMenu.map((e) => PopupMenuItem(
+              ...studentCubit.listStudentStatusMenu.map((e) => PopupMenuItem(
                   padding: EdgeInsets.zero,
                   child: BlocProvider(
                       create: (context) =>
@@ -48,7 +50,7 @@ class IconToolTipV2 extends StatelessWidget {
                                           ConfirmChangeStudentClassStatusV2(
                                             e,
                                             stdClass,
-                                            cubit.students!.firstWhere((e) =>
+                                            cubit.students.firstWhere((e) =>
                                             e.userId == stdClass.userId),
                                             popupCubit, cubit: cubit,
                                           ));

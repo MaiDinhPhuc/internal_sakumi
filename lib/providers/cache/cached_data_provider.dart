@@ -257,13 +257,49 @@ class DataProvider {
     }
   }
 
+  static Future<void> lessonByCourseAndClassId(
+      int courseId,int classId, Function(Object) onLoaded) async {
+    var key = 'lessons_${classId}_$courseId';
+    if (cached[key] == null) {
+      cached[key] = CacheObject(DateTime.now(), callbacks: [onLoaded]);
+      cached[key]!.data =
+          await FireBaseProvider.instance.getLessonsByCourseId(courseId);
+      for (var element in cached[key]!.callbacks) {
+        element.call(cached[key]!.data!);
+      }
+      cached[key]!.callbacks = [];
+    } else if (cached[key]!.data == null) {
+      cached[key]!.callbacks.add(onLoaded);
+    } else {
+      onLoaded.call(cached[key]!.data!);
+    }
+  }
+
   static Future<void> lessonByCourseId(
       int courseId, Function(Object) onLoaded) async {
     var key = 'lessons_$courseId';
     if (cached[key] == null) {
       cached[key] = CacheObject(DateTime.now(), callbacks: [onLoaded]);
       cached[key]!.data =
-          await FireBaseProvider.instance.getLessonsByCourseId(courseId);
+      await FireBaseProvider.instance.getLessonsByCourseId(courseId);
+      for (var element in cached[key]!.callbacks) {
+        element.call(cached[key]!.data!);
+      }
+      cached[key]!.callbacks = [];
+    } else if (cached[key]!.data == null) {
+      cached[key]!.callbacks.add(onLoaded);
+    } else {
+      onLoaded.call(cached[key]!.data!);
+    }
+  }
+
+  static Future<void> customLessons(
+      int courseId, Function(Object) onLoaded) async {
+    var key = 'custom_lessons_$courseId';
+    if (cached[key] == null) {
+      cached[key] = CacheObject(DateTime.now(), callbacks: [onLoaded]);
+      cached[key]!.data =
+      await FireBaseProvider.instance.getLessonsByCourseId(courseId);
       for (var element in cached[key]!.callbacks) {
         element.call(cached[key]!.data!);
       }

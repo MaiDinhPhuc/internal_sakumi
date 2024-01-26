@@ -41,7 +41,7 @@ class CustomLessonCubit extends Cubit<int> {
     } else {
       listLessonInfo[index] = {"courseId": courseId};
     }
-    DataProvider.lessonByCourseId(courseId, loadLesson);
+    DataProvider.customLessons(courseId, loadLesson);
   }
 
   chooseLesson(String? text, int index) async {
