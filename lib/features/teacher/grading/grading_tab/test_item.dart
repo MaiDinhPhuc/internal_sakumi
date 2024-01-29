@@ -108,7 +108,7 @@ class TestGradingItem extends StatelessWidget {
                         style: ButtonStyle(
                             shadowColor: MaterialStateProperty.all(
                                 cubit.getTestResultCount(e.testId, 1) ==
-                                    cubit.getBTVNResultCount(e.testId, 0)
+                                    cubit.getTestResultCount(e.testId, 0)
                                     ? greenColor
                                     : primaryColor),
                             shape:

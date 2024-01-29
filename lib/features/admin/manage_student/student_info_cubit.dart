@@ -36,14 +36,9 @@ class StudentInfoCubit extends Cubit<int> {
   String stdCode = "";
   String phone = "";
   String note = "";
-  loadStudent(int studentId,SearchCubit searchController) async {
-    if(searchController.students!=null){
-      student = searchController.students!.firstWhere((e) => e.userId == studentId);
-      user = searchController.users!.firstWhere((e) => e.id == studentId);
-    }else{
+  loadStudent(int studentId) async {
       student = await FireBaseProvider.instance.getStudentById(studentId);
       user = await FireBaseProvider.instance.getUserById(studentId);
-    }
     inJapan = student!.inJapan;
     name = student!.name;
     stdCode = student!.studentCode;

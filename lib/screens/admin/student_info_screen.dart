@@ -15,7 +15,7 @@ class StudentInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var dataController = BlocProvider.of<DataCubit>(context);
+    //var dataController = BlocProvider.of<DataCubit>(context);
     return Scaffold(
       body: Column(
         children: [
@@ -24,7 +24,7 @@ class StudentInfoScreen extends StatelessWidget {
               child: BlocBuilder(
             bloc: cubit
               ..loadStudent(
-                  int.parse(TextUtils.getName()), dataController.searchCubit),
+                  int.parse(TextUtils.getName())),
             builder: (c, s) {
               return cubit.student == null || cubit.user == null
                   ? const Center(
@@ -41,8 +41,7 @@ class StudentInfoScreen extends StatelessWidget {
                             Expanded(
                                 flex: 3,
                                 child: InfoStudentView(
-                                    cubit: cubit,
-                                    searchCubit: dataController.searchCubit)),
+                                    cubit: cubit)),
                             Expanded(
                                 flex: 5,
                                 child: ListStudentClassView(cubit: cubit))

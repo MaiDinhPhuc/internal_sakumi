@@ -73,7 +73,8 @@ class LessonItemCubitV2 extends Cubit<int> {
   }
 
   double getAttendancePercent() {
-    var stdIds = getStudentId();
+    List<int> stdIds = getStudentId();
+    if(stdIds.isEmpty) return 0;
     List<StudentLessonModel> tempList = stdLessons!
         .where((e) => e.timekeeping != 0 && stdIds.contains(e.studentId))
         .toList();
@@ -87,7 +88,8 @@ class LessonItemCubitV2 extends Cubit<int> {
   }
 
   bool? checkGrading() {
-    var stdIds = getStudentId();
+    List<int> stdIds = getStudentId();
+    if(stdIds.isEmpty) return null;
     bool? status;
     List<StudentLessonModel> tempList = stdLessons!
         .where((e) => e.timekeeping != 0 && stdIds.contains(e.studentId))
@@ -122,7 +124,8 @@ class LessonItemCubitV2 extends Cubit<int> {
   }
 
   bool? checkGradingCustom() {
-    var stdIds = getStudentId();
+    List<int> stdIds = getStudentId();
+    if(stdIds.isEmpty) return null;
     bool? status;
     List<StudentLessonModel> tempList = stdLessons!
         .where((e) => e.timekeeping != 0 && stdIds.contains(e.studentId))
@@ -158,7 +161,8 @@ class LessonItemCubitV2 extends Cubit<int> {
   }
 
   double getHwPercent() {
-    var stdIds = getStudentId();
+    List<int> stdIds = getStudentId();
+    if(stdIds.isEmpty) return 0;
     List<StudentLessonModel> tempList = stdLessons!
         .where((e) => e.timekeeping != 0 && stdIds.contains(e.studentId))
         .toList();
@@ -172,7 +176,8 @@ class LessonItemCubitV2 extends Cubit<int> {
   }
 
   double getHwPercentCustom() {
-    var stdIds = getStudentId();
+    List<int> stdIds = getStudentId();
+    if(stdIds.isEmpty) return 0;
     List<StudentLessonModel> tempList = stdLessons!
         .where((e) => e.timekeeping != 0 && stdIds.contains(e.studentId))
         .toList();
@@ -188,6 +193,7 @@ class LessonItemCubitV2 extends Cubit<int> {
 
   List<int> getStudentId() {
     List<int> studentIds = [];
+    if(stdClasses == null) return [];
     for (var i in stdClasses!) {
       if (i.classStatus != "Remove" &&
           i.classStatus != "Dropped" &&
@@ -197,7 +203,6 @@ class LessonItemCubitV2 extends Cubit<int> {
         studentIds.add(i.userId);
       }
     }
-
     return studentIds;
   }
 
@@ -209,9 +214,11 @@ class LessonItemCubitV2 extends Cubit<int> {
 
   List<StudentModel> getStudents() {
     if (students != null) {
+      List<int> stdIds = getStudentId();
+      if(stdIds.isEmpty) return [];
       List<StudentModel> students = this
           .students!
-          .where((e) => getStudentId().contains(e.userId))
+          .where((e) => stdIds.contains(e.userId))
           .toList();
       students.sort((a, b) => a.userId.compareTo(b.userId));
       return students;
@@ -232,6 +239,6 @@ class LessonItemCubitV2 extends Cubit<int> {
     }else if(listHws.every((e) => e > 0)){
       return listHws.reduce((value, element) => value + element) / listHws.length;
     }
-      return -1;
+    return -1;
   }
 }

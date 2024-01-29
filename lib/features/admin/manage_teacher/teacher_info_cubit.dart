@@ -36,14 +36,9 @@ class TeacherInfoCubit extends Cubit<int> {
   String phone = "";
   String note = "";
 
-  loadStudent(int teacherId,SearchCubit searchController) async {
-    if(searchController.students!=null){
-      teacher = searchController.teachers!.firstWhere((e) => e.userId == teacherId);
-      user = searchController.users!.firstWhere((e) => e.id == teacherId);
-    }else{
-      teacher = await FireBaseProvider.instance.getTeacherById(teacherId);
-      user = await FireBaseProvider.instance.getUserById(teacherId);
-    }
+  loadStudent(int teacherId) async {
+    teacher = await FireBaseProvider.instance.getTeacherById(teacherId);
+    user = await FireBaseProvider.instance.getUserById(teacherId);
 
     name = teacher!.name;
     teacherCode = teacher!.teacherCode;
@@ -62,7 +57,8 @@ class TeacherInfoCubit extends Cubit<int> {
     listTeacherInfo = await TeacherInfoModel.loadInfo(teacherClasses!, classes!,
         courses, stdLessons, stdTests, lessonResults, lessons, stdClasses);
     emit(state + 1);
-    stdClasses = await FireBaseProvider.instance.getStudentClassByListId(listClassId);
+    stdClasses =
+        await FireBaseProvider.instance.getStudentClassByListId(listClassId);
     listTeacherInfo = await TeacherInfoModel.loadInfo(teacherClasses!, classes!,
         courses, stdLessons, stdTests, lessonResults, lessons, stdClasses);
     emit(state + 1);
@@ -76,9 +72,10 @@ class TeacherInfoCubit extends Cubit<int> {
     listTeacherInfo = await TeacherInfoModel.loadInfo(teacherClasses!, classes!,
         courses, stdLessons, stdTests, lessonResults, lessons, stdClasses);
     emit(state + 1);
-    stdLessons =
-        await FireBaseProvider.instance.getAllStudentLessonsInListClassId(listClassId);
-    stdTests = await FireBaseProvider.instance.getListStudentTestByIDs(listClassId);
+    stdLessons = await FireBaseProvider.instance
+        .getAllStudentLessonsInListClassId(listClassId);
+    stdTests =
+        await FireBaseProvider.instance.getListStudentTestByIDs(listClassId);
     lessonResults = await FireBaseProvider.instance
         .getLessonsResultsByListClassIds(listClassId);
     listTeacherInfo = await TeacherInfoModel.loadInfo(teacherClasses!, classes!,

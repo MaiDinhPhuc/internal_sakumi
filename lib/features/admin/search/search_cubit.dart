@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/class_model.dart';
@@ -11,70 +13,26 @@ class SearchCubit extends Cubit<int>{
 
   String type = AppText.txtClass.text;
 
-  List<ClassModel>? classes;
-  List<StudentModel>? students;
-  List<TeacherModel>? teachers;
-  List<UserModel>? users;
+  String typeQuery = "class";
 
-  List<StudentModel> studentsNow = [];
-  List<TeacherModel> teachersNow = [];
-  List<ClassModel> classesNow = [];
-
-  load() async{
-    if(type == AppText.txtStudent.text && students != null) return;
-    if(type == AppText.txtClass.text && classes != null) return;
-    if(type == AppText.txtTeacher.text && teachers != null) return;
-    classes = await FireBaseProvider.instance.getListClassNotRemove();
-    emit(state+1);
-    students = await FireBaseProvider.instance.getAllStudent();
-  }
-
-  search(String value){
-    if(value == ""){
-      studentsNow = [];
-      teachersNow = [];
-      classesNow = [];
-      emit(state+1);
-    }
-    if(type == AppText.txtStudent.text){
-      var studentIds = (users!.where((e) => e.email.toUpperCase().contains(value.toUpperCase())).toList()).map((e) => e.id).toList();
-      studentsNow = students!.where((e) => studentIds.contains(e.userId) || e.studentCode.toUpperCase().contains(value.toUpperCase())).toList();
-      emit(state+1);
-    }
-    if(type == AppText.txtTeacher.text){
-      var teacherIds = (users!.where((e) => e.email.toUpperCase().contains(value.toUpperCase())).toList()).map((e) => e.id).toList();
-      teachersNow = teachers!.where((e) => teacherIds.contains(e.userId) || e.teacherCode.toUpperCase().contains(value.toUpperCase())).toList();
-      emit(state+1);
-    }
-    if(type == AppText.txtClass.text){
-      var classIds = (classes!.where((e) => e.classCode.toUpperCase().contains(value.toUpperCase())).toList()).map((e) => e.classId).toList();
-      classesNow = classes!.where((e) => classIds.contains(e.classId)).toList();
-      emit(state+1);
-    }
-  }
-
-  updateStudent(StudentModel student){
-    var index = students!
-        .indexOf(students!.firstWhere((e) => e.userId == student.userId));
-    students![index] = student;
-  }
-
-
-  updateTeacher(TeacherModel teacher){
-    var index = teachers!
-        .indexOf(teachers!.firstWhere((e) => e.userId == teacher.userId));
-    teachers![index] = teacher;
-  }
+  String searchValue = "";
 
   changeType(String? value)async{
     type = value!;
-    if(type == AppText.txtStudent.text && students != null) {
-      users = await FireBaseProvider.instance.getAllUser();
+    if(value == AppText.txtClass.text){
+      typeQuery = "class";
     }
-    if(type == AppText.txtTeacher.text && teachers == null){
-      teachers = await FireBaseProvider.instance.getAllTeacher();
-      users = await FireBaseProvider.instance.getAllUser();
+    if(value == AppText.txtStudent.text){
+      typeQuery = "students";
     }
+    if(value == AppText.txtTeacher.text){
+      typeQuery = "teacher";
+    }
+    emit(state+1);
+  }
+
+  updateSearchValue(String newValue){
+    searchValue = newValue;
     emit(state+1);
   }
 }

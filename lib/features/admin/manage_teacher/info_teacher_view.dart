@@ -13,9 +13,8 @@ import 'package:internal_sakumi/widget/waiting_dialog.dart';
 import 'list_info_teacher.dart';
 
 class InfoTeacherView extends StatelessWidget {
-  const InfoTeacherView({super.key, required this.cubit, required this.searchCubit});
+  const InfoTeacherView({super.key, required this.cubit});
   final TeacherInfoCubit cubit;
-  final SearchCubit searchCubit;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -71,19 +70,6 @@ class InfoTeacherView extends StatelessWidget {
                           phone: cubit.phone,
                           status:
                           cubit.teacher!.status, teacherCode: cubit.teacherCode));
-                  if(searchCubit.teachers!=null){
-                    searchCubit.updateTeacher(
-                        TeacherModel(
-                            name: cubit.name,
-                            url: cubit.teacher!.url,
-                            note: cubit.note,
-                            userId:
-                            cubit.teacher!.userId,
-                            phone: cubit.phone,
-                            status:
-                            cubit.teacher!.status, teacherCode: cubit.teacherCode)
-                    );
-                  }
                   Navigator.pop(context);
                   notificationDialog(context,
                       AppText.txtUpdateTeacherDone.text);

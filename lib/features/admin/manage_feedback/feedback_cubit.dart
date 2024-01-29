@@ -37,15 +37,14 @@ class FeedBackCubit extends Cubit<int> {
     courses ??= await FireBaseProvider.instance.getAllCourse();
     listFeedBack ??=
         await FireBaseProvider.instance.getListFeedBack(statusNow);
-    List<int> listStdId = (getFeedBack().where((e) => e.userId != -1)).map((e) => e.userId).toList();
+    List<int> listStdId = (listFeedBack!.where((e) => e.userId != -1)).map((e) => e.userId).toList();
     List<int> listClassId = [];
-    for (var i in getFeedBack()) {
+    for (var i in listFeedBack!) {
       if (!listClassId.contains(i.classId)) {
         listClassId.add(i.classId);
       }
     }
-    getStudents(listStdId, listClassId);
-    emit(state + 1);
+    await getStudents(listStdId, listClassId);
   }
 
   checkData(String value) async {
@@ -69,9 +68,8 @@ class FeedBackCubit extends Cubit<int> {
           listClassId.add(i.classId);
         }
       }
-      getStudents(listStdId, listClassId);
+      await getStudents(listStdId, listClassId);
     }
-    emit(state + 1);
   }
 
   List<FeedBackModel> getFeedBack() {
@@ -114,7 +112,6 @@ class FeedBackCubit extends Cubit<int> {
     if (courses == null || classes.isEmpty) {
       return "";
     }
-
     var courseId = classes.firstWhere((e) => e.classId == classId).courseId;
     String name = courses!.where((e) => e.courseId == courseId).isEmpty
         ? ""

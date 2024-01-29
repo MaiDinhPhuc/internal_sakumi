@@ -16,9 +16,9 @@ import 'list_info_student.dart';
 
 class InfoStudentView extends StatelessWidget {
   const InfoStudentView(
-      {super.key, required this.cubit, required this.searchCubit});
+      {super.key, required this.cubit});
   final StudentInfoCubit cubit;
-  final SearchCubit searchCubit;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -102,19 +102,6 @@ class InfoStudentView extends StatelessWidget {
                           phone: cubit.phone,
                           studentCode: cubit.stdCode,
                           status: cubit.student!.status));
-                  if(searchCubit.students!=null){
-                    searchCubit.updateStudent(
-                        StudentModel(
-                            name: cubit.name,
-                            url: cubit.student!.url,
-                            note: cubit.note,
-                            userId: cubit.student!.userId,
-                            inJapan: cubit.inJapan,
-                            phone: cubit.phone,
-                            studentCode: cubit.stdCode,
-                            status: cubit.student!.status)
-                    );
-                  }
                   Navigator.pop(context);
                   notificationDialog(
                       context, AppText.txtUpdateStudentDone.text);

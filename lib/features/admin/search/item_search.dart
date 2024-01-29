@@ -10,15 +10,12 @@ import 'package:internal_sakumi/utils/resizable.dart';
 class ItemSearch extends StatelessWidget {
   const ItemSearch(
       {super.key,
-      this.teacherModel,
-      this.studentModel,
-      this.classModel,
       required this.type,
-      required this.isLast});
+      required this.isLast, this.url, this.name, this.code, this.classStatus, this.classType,required this.id});
   final String type;
-  final TeacherModel? teacherModel;
-  final StudentModel? studentModel;
-  final ClassModel? classModel;
+  final String? url, name, code, classStatus;
+  final int? classType;
+  final int id;
   final bool isLast;
   @override
   Widget build(BuildContext context) {
@@ -26,13 +23,13 @@ class ItemSearch extends StatelessWidget {
         onTap: () async {
           if (type == AppText.txtClass.text) {
             await Navigator.pushNamed(context,
-                "${Routes.admin}/overview/class=${classModel!.classId}");
+                "${Routes.admin}/overview/class=$id");
           } else if (type == AppText.txtStudent.text) {
             await Navigator.pushNamed(context,
-                "${Routes.admin}/studentInfo/student=${studentModel!.userId}");
+                "${Routes.admin}/studentInfo/student=$id");
           } else {
             await Navigator.pushNamed(context,
-                "${Routes.admin}/teacherInfo/teacher=${teacherModel!.userId}");
+                "${Routes.admin}/teacherInfo/teacher=$id");
           }
         },
         child: type != AppText.txtClass.text
@@ -52,16 +49,12 @@ class ItemSearch extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: Resizable.padding(context, 5)),
                                 child: SmallAvatar(
-                                    type == AppText.txtStudent.text
-                                        ? studentModel!.url
-                                        : teacherModel!.url)),
+                                    url!)),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                    type == AppText.txtStudent.text
-                                        ? studentModel!.name
-                                        : teacherModel!.name,
+                                    name!,
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: Resizable.size(context, 14),
@@ -69,8 +62,8 @@ class ItemSearch extends StatelessWidget {
                                 SizedBox(height: Resizable.padding(context, 2)),
                                 Text(
                                     type == AppText.txtStudent.text
-                                        ? "${AppText.txtStudentCode.text}: ${studentModel!.studentCode}"
-                                        : "${AppText.txtTeacherCode.text}: ${teacherModel!.teacherCode}",
+                                        ? "${AppText.txtStudentCode.text}: ${code!}"
+                                        : "${AppText.txtTeacherCode.text}: ${code!}",
                                     style: TextStyle(
                                         color: const Color(0xFF757575),
                                         fontSize: Resizable.size(context, 10),
@@ -123,7 +116,7 @@ class ItemSearch extends StatelessWidget {
                                       BoxShadow(
                                           blurRadius: 5,
                                           color:
-                                              getColor(classModel!.classStatus))
+                                              getColor(classStatus!))
                                     ],
                                   ),
                                   child: ClipRRect(
@@ -151,9 +144,7 @@ class ItemSearch extends StatelessWidget {
                                                 children: [
                                                   RichText(
                                                     text: TextSpan(
-                                                      text: vietnameseSubText(
-                                                          classModel!
-                                                              .classStatus),
+                                                      text: vietnameseSubText(classStatus!),
                                                       style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.w600,
@@ -170,13 +161,13 @@ class ItemSearch extends StatelessWidget {
                                             child: Container(
                                               decoration: BoxDecoration(
                                                   color: getColor(
-                                                      classModel!.classStatus),
+                                                      classStatus!),
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           1000)),
                                               child: Center(
                                                 child: Image.asset(
-                                                  'assets/images/ic_${getIcon(classModel!.classStatus)}.png',
+                                                  'assets/images/ic_${getIcon(classStatus!)}.png',
                                                   scale: 50,
                                                 ),
                                               ),
@@ -187,13 +178,13 @@ class ItemSearch extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                    "${AppText.txtClassCode.text}: ${classModel!.classCode}",
+                                    "${AppText.txtClassCode.text}: ${code!}",
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: Resizable.size(context, 14),
                                         fontWeight: FontWeight.w600)),
                                 Text(
-                                    "${AppText.txtClassType.text}: ${classModel!.classType == 0 ? "Lớp Chung" : "Lớp 1-1"}",
+                                    "${AppText.txtClassType.text}: ${classType! == 0 ? "Lớp Chung" : "Lớp 1-1"}",
                                     style: TextStyle(
                                         color: const Color(0xFF757575),
                                         fontSize: Resizable.size(context, 10),

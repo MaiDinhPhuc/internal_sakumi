@@ -15,14 +15,13 @@ class TeacherInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var dataController = BlocProvider.of<DataCubit>(context);
     return Scaffold(
       body: Column(
         children: [
           const DetailAppBar(),
           Expanded(
               child: BlocBuilder(
-                bloc: cubit..loadStudent(int.parse(TextUtils.getName()), dataController.searchCubit),
+                bloc: cubit..loadStudent(int.parse(TextUtils.getName())),
                 builder: (c, s) {
                   return cubit.teacher == null || cubit.user == null
                       ? const Center(
@@ -38,7 +37,7 @@ class TeacherInfoScreen extends StatelessWidget {
                         children: [
                           Expanded(
                               flex:1,
-                              child: InfoTeacherView(cubit: cubit, searchCubit: dataController.searchCubit)),
+                              child: InfoTeacherView(cubit: cubit)),
                           Expanded(
                               flex:2,
                               child: ListTeacherClassView(cubit: cubit))

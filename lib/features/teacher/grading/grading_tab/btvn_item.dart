@@ -2,12 +2,12 @@ import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/class_info/lesson/choose_custom_lesson.dart';
 import 'package:internal_sakumi/features/teacher/grading/grading_cubit_v2.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_cubit.dart';
-import 'package:internal_sakumi/model/lesson_result_model.dart';
+import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:internal_sakumi/utils/text_utils.dart';
 
 import 'collapse_grading_item.dart';
 import 'expand_BTVN_item.dart';
@@ -16,7 +16,7 @@ import 'grading_item_layout.dart';
 class BTVNItem extends StatelessWidget {
   const BTVNItem(this.e, {super.key, required this.cubit});
   final GradingCubitV2 cubit;
-  final LessonResultModel e;
+  final LessonModel e;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -49,14 +49,14 @@ class BTVNItem extends StatelessWidget {
                                   (element) => e.lessonId == element.lessonId)]
                               .title,
                           receiveTitle:
-                              '${cubit.getBTVNResultCount(e.lessonId, 1)}/${cubit.students.length}',
+                              '${cubit.getBTVNResultCount(e, 1)}/${cubit.students.length}',
                           gradingTitle:
-                              '${cubit.getBTVNResultCount(e.lessonId, 0)}/${cubit.students.length}',
+                              '${cubit.getBTVNResultCount(e, 0)}/${cubit.students.length}',
                           receivePercent:
-                              cubit.getBTVNResultCount(e.lessonId, 1) /
+                              cubit.getBTVNResultCount(e, 1) /
                                   cubit.students.length,
                           gradingPercent:
-                              cubit.getBTVNResultCount(e.lessonId, 0) /
+                              cubit.getBTVNResultCount(e, 0) /
                                   cubit.students.length,
                         ),
                         secondChild: Column(
@@ -68,14 +68,14 @@ class BTVNItem extends StatelessWidget {
                                           e.lessonId == element.lessonId)]
                                   .title,
                               receiveTitle:
-                                  '${cubit.getBTVNResultCount(e.lessonId, 1)}/${cubit.students.length}',
+                                  '${cubit.getBTVNResultCount(e, 1)}/${cubit.students.length}',
                               gradingTitle:
-                                  '${cubit.getBTVNResultCount(e.lessonId, 0)}/${cubit.students.length}',
+                                  '${cubit.getBTVNResultCount(e, 0)}/${cubit.students.length}',
                               receivePercent:
-                                  cubit.getBTVNResultCount(e.lessonId, 1) /
+                                  cubit.getBTVNResultCount(e, 1) /
                                       cubit.students.length,
                               gradingPercent:
-                                  cubit.getBTVNResultCount(e.lessonId, 0) /
+                                  cubit.getBTVNResultCount(e, 0) /
                                       cubit.students.length,
                             ),
                             Container(
@@ -84,7 +84,7 @@ class BTVNItem extends StatelessWidget {
                                   vertical: Resizable.padding(context, 15)),
                               color: const Color(0xffD9D9D9),
                             ),
-                            ExpandBTVNItem(cubit: cubit, lessonId: e.lessonId)
+                            ExpandBTVNItem(cubit: cubit, lesson: e)
                           ],
                         ),
                         crossFadeState: state % 2 == 1
@@ -101,13 +101,17 @@ class BTVNItem extends StatelessWidget {
                       gradingNumber: Container(),
                       button: ElevatedButton(
                         onPressed: () async {
-                          await Navigator.pushNamed(context,
-                              "${Routes.teacher}/grading/class=${TextUtils.getName()}/type=btvn/parent=${e.lessonId}");
+                          if(e.isCustom){
+                            selectionCustomLessonDialog(c,e.customLessonInfo,cubit.classId,e.lessonId);
+                          }else{
+                            await Navigator.pushNamed(context,
+                                "${Routes.teacher}/grading/class=${cubit.classId}/type=btvn/parent=${e.lessonId}");
+                          }
                         },
                         style: ButtonStyle(
                             shadowColor: MaterialStateProperty.all(
-                                cubit.getBTVNResultCount(e.lessonId, 1) ==
-                                        cubit.getBTVNResultCount(e.lessonId, 0)
+                                cubit.getBTVNResultCount(e, 1) ==
+                                        cubit.getBTVNResultCount(e, 0)
                                     ? greenColor
                                     : primaryColor),
                             shape:
@@ -115,14 +119,14 @@ class BTVNItem extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(
                                         Resizable.padding(context, 1000)))),
                             backgroundColor: MaterialStateProperty.all(
-                                cubit.getBTVNResultCount(e.lessonId, 1) ==
-                                        cubit.getBTVNResultCount(e.lessonId, 0)
+                                cubit.getBTVNResultCount(e, 1) ==
+                                        cubit.getBTVNResultCount(e, 0)
                                     ? greenColor
                                     : primaryColor),
                             padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: Resizable.padding(context, 30)))),
                         child: Text(
-                            cubit.getBTVNResultCount(e.lessonId, 1) ==
-                                    cubit.getBTVNResultCount(e.lessonId, 0)
+                            cubit.getBTVNResultCount(e, 1) ==
+                                    cubit.getBTVNResultCount(e, 0)
                                 ? AppText.textDetail.text
                                 : AppText.titleGrading.text.toUpperCase(),
                             style: TextStyle(

@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => AppBarInfoTeacherCubit()),
-          BlocProvider<DataCubit>(create: (context) => DataCubit()),
+          //BlocProvider<DataCubit>(create: (context) => DataCubit()),
           BlocProvider<ManageSurveyCubit>(create: (context) => ManageSurveyCubit()),
           BlocProvider<AdminClassFilterCubit>(create: (context)=>AdminClassFilterCubit()),
           BlocProvider<TeacherClassFilterCubit>(create: (context)=>TeacherClassFilterCubit())

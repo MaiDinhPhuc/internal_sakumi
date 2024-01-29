@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
@@ -6,17 +7,17 @@ import 'package:internal_sakumi/features/admin/search/drop_down_search.dart';
 import 'package:internal_sakumi/features/admin/search/item_search_list.dart';
 import 'package:internal_sakumi/features/admin/search/search_cubit.dart';
 import 'package:internal_sakumi/features/admin/search/search_field.dart';
-import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class SearchGeneralScreen extends StatelessWidget {
   SearchGeneralScreen({Key? key})
-      : searchTextController = TextEditingController(),
+      : searchCubit = SearchCubit(),
+  controller = TextEditingController(),
         super(key: key);
-  final TextEditingController searchTextController;
+  final SearchCubit searchCubit;
+  final TextEditingController controller;
   @override
   Widget build(BuildContext context) {
-    var dataController = BlocProvider.of<DataCubit>(context);
     return Scaffold(
       body: Column(
         children: [
@@ -39,19 +40,16 @@ class SearchGeneralScreen extends StatelessWidget {
                       )),
                 ),
                 BlocBuilder<SearchCubit, int>(
-                    bloc: dataController.searchCubit..load(),
+                    bloc: searchCubit,
                     builder: (c, s) {
                       return Column(
                         children: [
                           SearchField(
                             AppText.txtSearch.text,
-                            txt: searchTextController,
+                            txt: controller,
                             suffixIcon: IconButton(
                                 tooltip: AppText.txtSearch.text,
-                                onPressed: () {
-                                  dataController.searchCubit
-                                      .search(searchTextController.text);
-                                },
+                                onPressed: () {},
                                 icon: Icon(
                                   Icons.search,
                                   color: Colors.grey.shade600,
@@ -65,21 +63,28 @@ class SearchGeneralScreen extends StatelessWidget {
                                     AppText.txtTeacher.text
                                   ],
                                   onChanged: (value) {
-                                    dataController.searchCubit
-                                        .changeType(value);
-                                    searchTextController.text = "";
+                                    searchCubit.changeType(value);
+                                    searchCubit.updateSearchValue("");
+                                    controller.text = "";
                                   },
-                                  value: dataController.searchCubit.type),
+                                  value: searchCubit.type),
                             ),
                             onChanged: (String value) {
-                              dataController.searchCubit.search(value);
+                              searchCubit.updateSearchValue(value);
                             },
                           ),
-                          ItemSearchList(
-                            searchCubit: dataController.searchCubit,
-                            type: dataController.searchCubit.type,
-                            text: searchTextController.text,
-                          )
+                          StreamBuilder<QuerySnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .collection(searchCubit.typeQuery)
+                                  .snapshots(),
+                              builder: (c, snapshots) {
+                                return (snapshots.connectionState ==
+                                        ConnectionState.waiting)
+                                    ? Container()
+                                    : ItemSearchList(
+                                        searchCubit: searchCubit,
+                                        snapshots: snapshots);
+                              })
                         ],
                       );
                     })

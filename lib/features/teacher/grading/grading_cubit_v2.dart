@@ -85,10 +85,7 @@ class GradingCubitV2 extends Cubit<int>{
 
     await DataProvider.stdTestByClassId(classId, loadStdTestInClass);
 
-    var listStdId = this.listStdClass!.map((e) => e.userId).toList();
-    for(var i in listStdId){
-      DataProvider.studentById(i, loadStudentInfo);
-    }
+
 
     List<int> listLessonId =
     listLessonResult!.map((e) => e.lessonId).toList();
@@ -105,13 +102,14 @@ class GradingCubitV2 extends Cubit<int>{
       "Retained",
       "Moved"
     ];
+
     var listStdClass =  this.listStdClass!
         .where((e) => !listStatus.contains(e.classStatus))
         .toList();
     var listStdIds = listStdClass.map((e) => e.userId).toList();
-    students = students
-        .where((e) => listStdIds.contains(e.userId))
-        .toList();
+    for(var i in listStdIds){
+      DataProvider.studentById(i, loadStudentInfo);
+    }
 
     loading = false;
 
@@ -242,20 +240,17 @@ class GradingCubitV2 extends Cubit<int>{
     return number.toString();
   }
 
-  dynamic getBTVNPoint(int stdId, int lessonId) {
+  dynamic getBTVNPoint(int stdId, LessonModel lesson) {
     var stdLesson = listStudentLessons!
-        .where((e) => e.studentId == stdId && e.lessonId == lessonId)
+        .where((e) => e.studentId == stdId && e.lessonId == lesson.lessonId)
         .toList();
     if (stdLesson.isEmpty) {
       return -2;
     }
-    if (stdLesson.first.hw == -2) {
-      return -2;
-    }
-    if (stdLesson.first.hw == -1) {
-      return -1;
-    }
 
+    if(lesson.isCustom){
+      return getHwCustomPoint(stdId, lesson.lessonId);
+    }
     return stdLesson.first.hw;
   }
 
@@ -263,23 +258,51 @@ class GradingCubitV2 extends Cubit<int>{
     emit(state + 2);
   }
 
-  dynamic getBTVNResultCount(int lessonId, int type) {
+  double getHwCustomPoint(int stdId, int lessonId){
+    List<StudentLessonModel> stdLesson = listStudentLessons!.where((e) => e.studentId == stdId && e.lessonId == lessonId).toList();
+
+    if(stdLesson.isEmpty){
+      return -2;
+    }
+    List<dynamic> listHws = stdLesson.first.hws.map((e) => e['hw']).toList();
+
+    if(listHws.every((e) => e == -2)){
+      return -2;
+    }else if(listHws.every((e) => e > 0)){
+      return listHws.reduce((value, element) => value + element) / listHws.length;
+    }
+    return -1;
+  }
+
+  dynamic getBTVNResultCount(LessonModel lesson, int type) {
     int temp = 0;
     var stdIds = students.map((e) => e.userId).toList();
 
     var listStudentLesson =
-    listStudentLessons!.where((e) => stdIds.contains(e.studentId));
+    listStudentLessons!.where((e) => stdIds.contains(e.studentId) && e.lessonId == lesson.lessonId);
 
     if (type == 1) {
       for (var i in listStudentLesson) {
-        if (i.hw != -2 && i.lessonId == lessonId) {
-          temp++;
+        if(lesson.isCustom){
+          if (getHwCustomPoint(i.studentId,i.lessonId) != -2) {
+            temp++;
+          }
+        }else{
+          if (i.hw != -2) {
+            temp++;
+          }
         }
       }
     } else {
       for (var i in listStudentLesson) {
-        if (i.hw > -1 && i.lessonId == lessonId) {
-          temp++;
+        if(lesson.isCustom){
+          if (getHwCustomPoint(i.studentId,i.lessonId) > -1) {
+            temp++;
+          }
+        }else{
+          if (i.hw > -1) {
+            temp++;
+          }
         }
       }
     }
@@ -309,19 +332,19 @@ class GradingCubitV2 extends Cubit<int>{
     return temp;
   }
 
-  List<LessonResultModel> filterListLesson() {
-    List<LessonResultModel> list = [];
+  List<LessonModel> filterListLesson() {
+    List<LessonModel> list = [];
     if (isNotGrading) {
-      for (var i in listLessonResult!) {
-        if (getBTVNResultCount(i.lessonId, 1) !=
-            getBTVNResultCount(i.lessonId, 0)) {
+      for (var i in lessons!) {
+        if (getBTVNResultCount(i, 1) !=
+            getBTVNResultCount(i, 0)) {
           list.add(i);
         }
       }
     } else {
-      for (var i in listLessonResult!) {
-        if (getBTVNResultCount(i.lessonId, 1) ==
-            getBTVNResultCount(i.lessonId, 0)) {
+      for (var i in lessons!) {
+        if (getBTVNResultCount(i, 1) ==
+            getBTVNResultCount(i, 0)) {
           list.add(i);
         }
       }

@@ -3,15 +3,16 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/small_avt.dart';
 import 'package:internal_sakumi/features/teacher/grading/grading_cubit_v2.dart';
+import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/note_widget.dart';
 import 'grading_item_layout.dart';
 
 class ExpandBTVNItem extends StatelessWidget {
   const ExpandBTVNItem(
-      {super.key, required this.cubit, required this.lessonId});
+      {super.key, required this.cubit, required this.lesson});
   final GradingCubitV2 cubit;
-  final int lessonId;
+  final LessonModel lesson;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -41,7 +42,7 @@ class ExpandBTVNItem extends StatelessWidget {
                     fontSize: Resizable.font(context, 17))),
             dropdown: Container()),
         SizedBox(height: Resizable.padding(context, 10)),
-        ...cubit.students!.map((e) => Container(
+        ...cubit.students.map((e) => Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(bottom: Resizable.padding(context, 5)),
             padding: EdgeInsets.symmetric(
@@ -68,7 +69,7 @@ class ExpandBTVNItem extends StatelessWidget {
                                 fontSize: Resizable.font(context, 17)))
                       ],
                     )),
-                receivedNUmber: Text(cubit.getBTVNTime(e.userId, lessonId),
+                receivedNUmber: Text(cubit.getBTVNTime(e.userId, lesson.lessonId),
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: const Color(0xff757575),
@@ -76,12 +77,12 @@ class ExpandBTVNItem extends StatelessWidget {
                 gradingNumber: Padding(
                     padding:
                         EdgeInsets.only(left: Resizable.padding(context, 10)),
-                    child: TrackingItem(cubit.getBTVNPoint(e.userId, lessonId),
-                        isSubmit: true)),
+                    child: TrackingItem(cubit.getBTVNPoint(e.userId, lesson),
+                        isSubmit: true, isCustom: lesson.isCustom)),
                 button: Padding(
                     padding:
                         EdgeInsets.only(left: Resizable.padding(context, 10)),
-                    child: Text(cubit.getNumberIgnore(e.userId, lessonId),
+                    child: Text(cubit.getNumberIgnore(e.userId, lesson.lessonId),
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
                             color: primaryColor,
