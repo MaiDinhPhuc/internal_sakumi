@@ -1,4 +1,5 @@
 import 'package:flutter/Material.dart';
+import 'package:internal_sakumi/providers/cache/filter_manage_bill_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -6,9 +7,10 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'manage_bill_cubit.dart';
 
 class DateFilter extends StatelessWidget {
-  const DateFilter({super.key, required this.cubit, required this.isStartDay});
+  const DateFilter({super.key, required this.cubit, required this.isStartDay, required this.filterController});
   final ManageBillCubit cubit;
   final bool isStartDay;
+  final BillFilterCubit filterController;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -35,6 +37,7 @@ class DateFilter extends StatelessWidget {
                         } else {
                           cubit.updateEndDay(v.value);
                         }
+                        cubit.checkLoad(filterController);
                         Navigator.pop(context);
                       },
                       selectionMode: DateRangePickerSelectionMode.single,
@@ -64,26 +67,6 @@ class DateFilter extends StatelessWidget {
             isDense: true,
             fillColor: Colors.white,
             hoverColor: Colors.transparent,
-            // enabledBorder: OutlineInputBorder(
-            //   borderSide: BorderSide(
-            //       color: const Color(0xffE0E0E0),
-            //       width: Resizable.size(context, 0.5)),
-            //   borderRadius:
-            //   BorderRadius.circular(Resizable.padding(context, 50)),
-            // ),
-            // focusedBorder: OutlineInputBorder(
-            //   borderSide: BorderSide(
-            //       color: const Color(0xffE0E0E0),
-            //       width: Resizable.size(context, 0.5)),
-            //   borderRadius:
-            //   BorderRadius.circular(Resizable.padding(context, 50)),
-            // ),
-            // border: OutlineInputBorder(
-            //     borderRadius:
-            //     BorderRadius.circular(Resizable.padding(context, 50)),
-            //     borderSide: BorderSide(
-            //         color: const Color(0xFFE0E0E0),
-            //         width: Resizable.size(context, 0.5))),
           ),
           maxLines: 1,
         ),

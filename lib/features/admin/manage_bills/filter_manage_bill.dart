@@ -34,7 +34,7 @@ class FilterManageBill extends StatelessWidget {
                   ),
                 ),
                 width: Resizable.size(context, 110),
-                child: DateFilter(cubit: cubit, isStartDay: true)),
+                child: DateFilter(cubit: cubit, isStartDay: true, filterController: filterController)),
             Container(
               margin: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 5)),
               width: 15,
@@ -61,7 +61,7 @@ class FilterManageBill extends StatelessWidget {
                   ),
                 ),
                 width: Resizable.size(context, 110),
-                child: DateFilter(cubit: cubit, isStartDay: false)),
+                child: DateFilter(cubit: cubit, isStartDay: false,filterController: filterController)),
             if(cubit.startDay != null && cubit.endDay != null)
               SubmitButton(onPressed: (){
                 cubit.clearDate();

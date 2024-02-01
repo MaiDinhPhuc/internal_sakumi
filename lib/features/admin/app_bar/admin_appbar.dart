@@ -14,16 +14,13 @@ class AdminAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
-          bottom: Resizable.padding(context, 10),
-          // left: Resizable.padding(context, 100),
-          right: Resizable.padding(context, 60),
-          top: Resizable.padding(context, 10)),
+      padding: EdgeInsets.symmetric(
+          vertical: Resizable.padding(context, 10)),
       decoration: const BoxDecoration(color: Colors.white, boxShadow: [
         BoxShadow(offset: Offset(0, 1), color: Colors.grey, blurRadius: 2)
       ]),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ... buttonAdminList
               .map((e) => AdminAppBarItem(

@@ -4,21 +4,23 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/bill_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/note_widget.dart';
+import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:intl/intl.dart';
 
 import 'bill_layout.dart';
 import 'manage_bill_cubit.dart';
 
-class CollapseBillView extends StatelessWidget {
-  const CollapseBillView(
+class BillView extends StatelessWidget {
+  const BillView(
       {super.key,
       required this.onTap,
       required this.onPressed,
       this.isExpand = false,
       required this.billModel,
-      required this.cubit});
+      required this.cubit, required this.onCheck});
   final Function() onPressed;
   final Function() onTap;
+  final Function() onCheck;
   final bool isExpand;
   final ManageBillCubit cubit;
   final BillModel billModel;
@@ -98,24 +100,58 @@ class CollapseBillView extends StatelessWidget {
                             NoteWidget(billModel.note),
                             Row(
                               children: [
-                                Text(AppText.txtNote.text,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: Resizable.font(context, 19))),
+                                RichText(
+                                    text: TextSpan(
+                                        text: AppText.txtRefund.text,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize:
+                                            Resizable.font(context, 19)), children: [
+                                      TextSpan(
+                                          text: "  ${NumberFormat('#,##0').format(billModel.refund)}đ",
+                                          style: TextStyle(
+                                              color: primaryColor,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: Resizable.font(context, 19)))])
+                                    ),
+                                Padding(padding: EdgeInsets.only(left: Resizable.size(context, 10)),child: RichText(
+                                    text: TextSpan(
+                                        text: AppText.txtRevenue.text,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize:
+                                            Resizable.font(context, 19)), children: [
+                                      TextSpan(
+                                          text: "  ${NumberFormat('#,##0').format(billModel.payment - billModel.refund)}đ",
+                                          style: TextStyle(
+                                              color: primaryColor,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: Resizable.font(context, 19)))])
+                                ))
                               ],
-                            )
+                            ),
+                            Padding(padding: EdgeInsets.only(top: Resizable.padding(context, 10)),child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SubmitButton(
+                                    onPressed: onTap, title: AppText.txtEdit.text),
+                                SubmitButton(
+                                    isActive: !billModel.check,
+                                    onPressed: onCheck, title: AppText.txtChecked.text)
+                              ],
+                            ))
                           ],
                         ))
                 ],
               )),
-          Positioned.fill(
-              child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: onTap,
-              borderRadius: BorderRadius.circular(Resizable.size(context, 5)),
-            ),
-          )),
+          // Positioned.fill(
+          //     child: Material(
+          //   color: Colors.transparent,
+          //   child: InkWell(
+          //     onTap: onTap,
+          //     borderRadius: BorderRadius.circular(Resizable.size(context, 5)),
+          //   ),
+          // )),
           Container(
               margin: EdgeInsets.only(
                   right: Resizable.padding(context, 20),

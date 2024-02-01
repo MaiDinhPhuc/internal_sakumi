@@ -4,6 +4,7 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/app_bar/admin_appbar.dart';
 import 'package:internal_sakumi/features/admin/manage_bills/add_bill_button.dart';
+import 'package:internal_sakumi/features/admin/manage_bills/bill_dialog.dart';
 import 'package:internal_sakumi/features/admin/manage_bills/bill_item.dart';
 import 'package:internal_sakumi/features/admin/manage_bills/bill_layout.dart';
 import 'package:internal_sakumi/features/admin/manage_bills/filter_manage_bill.dart';
@@ -50,7 +51,11 @@ class ManageBillScreen extends StatelessWidget {
                                         fontWeight: FontWeight.w800,
                                         fontSize: Resizable.font(context, 30))),
                                 AddBillButton(
-                                  onTap: () {},
+                                  onTap: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => BillDialog(isEdit: false, cubit: cubit));
+                                  },
                                 )
                               ],
                             ))),

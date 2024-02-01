@@ -416,10 +416,26 @@ enum AppText {
   txtPaymentDate,
   txtPayment,
   txtRenewDate,
-  txtNotBill
+  txtNotBill,
+  txtRefund,
+  txtRevenue,
+  txtChecked,
+  txtEdit,
+  titleBillDialog,
+  txtDeleteBill,
+  txtConfirmCheckBill,
+  txtConfirmDeleteBill
 }
 
 Map<AppText, String> texts = {
+  AppText.txtConfirmDeleteBill : "Xác nhận xóa hóa đơn. Vui lòng kiểm tra kĩ trước khi xóa!",
+  AppText.txtConfirmCheckBill : "Xác nhận đối xoát hóa đơn. Vui lòng kiểm tra kĩ trước khi đối xoát!",
+  AppText.txtDeleteBill : "Xóa hóa đơn",
+  AppText.titleBillDialog : "GHI NHẬN HÓA ĐƠN THANH TOÁN",
+  AppText.txtEdit : "Chỉnh sửa",
+  AppText.txtChecked : "Đã đối soát",
+  AppText.txtRefund : "Tiền hoàn (refund): ",
+  AppText.txtRevenue : "Ghi nhận doanh thu:",
   AppText.txtNotBill : "Hiện tại không có hoá đơn thoả mãn điều kiện, vui lòng chọn lại filter...",
   AppText.txtPaymentDate : "Ngày đóng tiền",
   AppText.txtPayment : "Số tiền đã đóng",
@@ -914,7 +930,7 @@ String vietnameseSubText(String text) {
 }
 
 String priceVND(String text) {
-  if (text != null && text.length > 3) {
+  if ( text.length > 3) {
     int count = 0;
     List<String> price = [];
     do {
