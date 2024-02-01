@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
+import 'package:internal_sakumi/model/bill_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/detail_grading_data_model.dart';
@@ -48,7 +49,8 @@ abstract class NetworkProvider {
 
   Future<UserModel> getUser(String email);
 
-  Future<List<ClassModel2>> getClassByTeacherId(int teacherId, List<ClassModel>? listClasses);
+  Future<List<ClassModel2>> getClassByTeacherId(
+      int teacherId, List<ClassModel>? listClasses);
 
   Future<List<LessonResultModel>> getLessonsResultsByListClassIds(
       List<int> ids);
@@ -156,12 +158,14 @@ abstract class NetworkProvider {
 
   Future<LessonModel> getLessonById(int lessonId);
 
-  Future<List<ClassModel>> getListClassForTeacherV2(List<int> ids, List<String> listStatus);
+  Future<List<ClassModel>> getListClassForTeacherV2(
+      List<int> ids, List<String> listStatus);
 
   Future<DetailGradingDataModel> getDataForDetailGradingCustom(
-      int classId, int lessonId,int customLessonId, String type);
+      int classId, int lessonId, int customLessonId, String type);
 
-  Future<List<AnswerModel>> getListCustomAnswer(int lessonId, int classId, int customLessonId);
+  Future<List<AnswerModel>> getListCustomAnswer(
+      int lessonId, int classId, int customLessonId);
 
   //admin
   Future<List<ClassModel>> getListClassNotRemove();
@@ -183,8 +187,6 @@ abstract class NetworkProvider {
   Future<List<TeacherModel>> getAllTeacher();
 
   // Future<List<TagModel>> getTags();
-
-
 
   Future<void> updateLessonInfo(LessonModel lessonModel);
 
@@ -208,7 +210,6 @@ abstract class NetworkProvider {
   Future<void> updateCourseInfo(CourseModel courseModel);
 
   Future<bool> checkExistVoucher(String voucherCode);
-
 
   Future<void> addNewVoucher(VoucherModel model);
 
@@ -268,11 +269,26 @@ abstract class NetworkProvider {
 
   Future<void> assignSurveyResult(SurveyResultModel result);
 
-  Future<List<SurveyAnswerModel>> getSurveyAnswerByClassId(int classId,int surveyId);
+  Future<List<SurveyAnswerModel>> getSurveyAnswerByClassId(
+      int classId, int surveyId);
 
   Future<List<SurveyAnswerModel>> getSurveyAnswerInClass(int classId);
 
-  Future<List<ClassModel>> getMoreClassWithFilter(List<String> listStatusFilter, List<int> listTypeFilter, int lastId,List<int> listCourseId);
+  Future<List<ClassModel>> getMoreClassWithFilter(List<String> listStatusFilter,
+      List<int> listTypeFilter, int lastId, List<int> listCourseId);
 
-  Future<List<ClassModel>> getListClassWithFilter(List<String> listStatusFilter, List<int> listTypeFilter, List<int> listCourseId);
+  Future<List<ClassModel>> getListClassWithFilter(List<String> listStatusFilter,
+      List<int> listTypeFilter, List<int> listCourseId);
+
+  Future<List<BillModel>> getListBillWithFilter(
+      List<String> listStatusFilter, List<String> listTypeFilter);
+
+  Future<List<BillModel>> getListBillWithFilterAndDate(List<String> listStatusFilter,
+      List<String> listTypeFilter, int startDate, int endDate);
+
+  Future<List<BillModel>> getMoreListBillWithFilter(List<String> listStatusFilter,
+      List<String> listTypeFilter, int lastItem);
+
+  Future<List<BillModel>> getMoreListBillWithFilterAndDate(List<String> listStatusFilter,
+      List<String> listTypeFilter, int lastItem, int startDate, int endDate);
 }

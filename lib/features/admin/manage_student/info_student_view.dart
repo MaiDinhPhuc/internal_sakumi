@@ -5,6 +5,7 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_student/student_info_cubit.dart';
 import 'package:internal_sakumi/features/admin/search/search_cubit.dart';
 import 'package:internal_sakumi/model/student_model.dart';
+import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
@@ -103,6 +104,15 @@ class InfoStudentView extends StatelessWidget {
                           studentCode: cubit.stdCode,
                           status: cubit.student!.status));
                   Navigator.pop(context);
+                  DataProvider.updateStudentInfo(cubit.student!.userId,StudentModel(
+                      name: cubit.name,
+                      url: cubit.student!.url,
+                      note: cubit.note,
+                      userId: cubit.student!.userId,
+                      inJapan: cubit.inJapan,
+                      phone: cubit.phone,
+                      studentCode: cubit.stdCode,
+                      status: cubit.student!.status));
                   notificationDialog(
                       context, AppText.txtUpdateStudentDone.text);
                 },

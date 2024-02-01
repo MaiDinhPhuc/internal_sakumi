@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/providers/cache/filter_admin_provider.dart';
+import 'package:internal_sakumi/providers/cache/filter_manage_bill_provider.dart';
 import 'package:internal_sakumi/providers/cache/filter_teacher_provider.dart';
 import 'package:internal_sakumi/screens/class_info/detail_grading_screen_v2.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -97,6 +98,77 @@ class SelectFilterCubit extends Cubit<int>{
   List<FilterClassCourse> listCourse = [FilterClassCourse.general,FilterClassCourse.kaiwa,FilterClassCourse.jlpt,FilterClassCourse.kid];
   List<FilterClassLevel> listLevel = [FilterClassLevel.n5, FilterClassLevel.n4, FilterClassLevel.n3, FilterClassLevel.n2, FilterClassLevel.n1];
   List<FilterTeacherClassStatus> listStatusTeacher = [FilterTeacherClassStatus.preparing,FilterTeacherClassStatus.studying,FilterTeacherClassStatus.completed];
+
+  List<FilterBillStatus> listBillStatus = [FilterBillStatus.refund, FilterBillStatus.notRefund];
+  List<FilterBillType> listBillType = [FilterBillType.saleFull, FilterBillType.salePart,FilterBillType.saleFillFull, FilterBillType.upSaleFull, FilterBillType.upSalePart,FilterBillType.upSaleFillFull, FilterBillType.renewFull, FilterBillType.renewPart,  FilterBillType.renewFillFull];
+
+
+  loadBillType(List<dynamic> list){
+    for(var i in listBillType){
+      if(list.contains(i)){
+        listSelect.add(true);
+      }else{
+        listSelect.add(false);
+      }
+    }
+    emit(state+1);
+  }
+
+  loadBillStatus(List<dynamic> list){
+    for(var i in listBillStatus){
+      if(list.contains(i)){
+        listSelect.add(true);
+      }else{
+        listSelect.add(false);
+      }
+    }
+    emit(state+1);
+  }
+
+  List<FilterBillStatus> convertBillStatus(){
+    List<FilterBillStatus> filter = [];
+    if(listSelect[0] == true){
+      filter.add(FilterBillStatus.refund);
+    }
+    if(listSelect[1] == true){
+      filter.add(FilterBillStatus.notRefund);
+    }
+    return filter;
+  }
+
+  List<FilterBillType> convertBillType(){
+    List<FilterBillType> filter = [];
+    if(listSelect[0] == true){
+      filter.add(FilterBillType.saleFull);
+    }
+    if(listSelect[1] == true){
+      filter.add(FilterBillType.salePart);
+    }
+    if(listSelect[2] == true){
+      filter.add(FilterBillType.saleFillFull);
+    }
+    if(listSelect[3] == true){
+      filter.add(FilterBillType.upSaleFull);
+    }
+    if(listSelect[4] == true){
+      filter.add(FilterBillType.upSalePart);
+    }
+    if(listSelect[5] == true){
+      filter.add(FilterBillType.upSaleFillFull);
+    }
+    if(listSelect[6] == true){
+      filter.add(FilterBillType.renewFull);
+    }
+    if(listSelect[7] == true){
+      filter.add(FilterBillType.renewPart);
+    }
+    if(listSelect[8] == true){
+      filter.add(FilterBillType.renewFillFull);
+    }
+    return filter;
+  }
+
+
 
   loadLevel(List<dynamic> list){
     for(var i in listLevel){

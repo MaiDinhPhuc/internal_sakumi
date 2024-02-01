@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:internal_sakumi/screens/admin/detail_survey_screen.dart';
 import 'package:internal_sakumi/screens/admin/manage_general_screen.dart';
 import 'package:internal_sakumi/screens/admin/student_info_screen.dart';
+import 'package:internal_sakumi/screens/admin/tab/manage_bill_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_feedbacks_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_statistics_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_survey_tab.dart';
+import 'package:internal_sakumi/screens/admin/tab/manage_teacher_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/search_general_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_tags_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/tool_screen.dart';
@@ -81,6 +83,10 @@ class Routes {
         handler: manageClassesHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/manageTags',
         handler: manageTagsHandler, transitionType: TransitionType.fadeIn);
+    router.define('$admin/manageBills',
+        handler: manageBillsHandler, transitionType: TransitionType.fadeIn);
+    router.define('$admin/manageTeachers',
+        handler: manageTeacherHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/manageStatistics',
         handler: manageStatisticsHandler,
         transitionType: TransitionType.fadeIn);
@@ -171,6 +177,14 @@ var manageClassesHandler =
 var manageTagsHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return ManageTagsScreen();
+});
+var manageBillsHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return ManageBillScreen();
+});
+var manageTeacherHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return const ManageTeacherScreen();
 });
 var manageStatisticsHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {

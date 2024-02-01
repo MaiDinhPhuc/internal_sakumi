@@ -1,10 +1,13 @@
+import 'package:internal_sakumi/model/bill_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
+import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
+import 'package:internal_sakumi/providers/cache/filter_manage_bill_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firestore_db.dart';
 
@@ -40,6 +43,65 @@ class DataProvider {
         .getListClassWithFilter(listStatusQuery, listTypeQuery, listCourseId);
   }
 
+  static Future<List<BillModel>> listBill(
+      Map<BillFilter, List> filter,
+      {BillModel? lastItem, int? startDate, int? endDate}) async {
+    List? listType = filter[BillFilter.type];
+    List? listStatus = filter[BillFilter.status];
+    List<String> listTypeQuery = listType!.map((e) => billType(e)).toList();
+    List<String> listStatusQuery =
+        listStatus!.map((e) => billStatus(e)).toList();
+    if (lastItem == null && startDate != null && endDate != null) {
+      var listBill = await FireBaseProvider.instance.getListBillWithFilterAndDate(
+          listStatusQuery, listTypeQuery, startDate, endDate);
+      return listBill;
+    }
+    if (lastItem != null && startDate == null && endDate == null) {
+      var listBill = await FireBaseProvider.instance.getMoreListBillWithFilter(
+          listStatusQuery, listTypeQuery, lastItem.createDate);
+      return listBill;
+    }
+    if (lastItem != null && startDate != null && endDate != null) {
+      var listBill = await FireBaseProvider.instance.getMoreListBillWithFilter(
+          listStatusQuery, listTypeQuery, lastItem.paymentDate);
+      return listBill;
+    }
+    return await FireBaseProvider.instance
+        .getListBillWithFilter(listStatusQuery, listTypeQuery);
+  }
+
+  static String billStatus(FilterBillStatus status) {
+    switch (status) {
+      case FilterBillStatus.refund:
+        return "refund";
+      case FilterBillStatus.notRefund:
+        return "notRefund";
+    }
+  }
+
+  static String billType(FilterBillType type) {
+    switch (type) {
+      case FilterBillType.saleFull:
+        return "sale_full";
+      case FilterBillType.salePart:
+        return "sale_part";
+      case FilterBillType.upSaleFull:
+        return "upSale_full";
+      case FilterBillType.upSalePart:
+        return "upSale_part";
+      case FilterBillType.renewFull:
+        return "renew_full";
+      case FilterBillType.renewPart:
+        return "renew_part";
+      case FilterBillType.saleFillFull:
+        return "sale_fill_full";
+      case FilterBillType.upSaleFillFull:
+        return "upSale_fill_full";
+      case FilterBillType.renewFillFull:
+        return "renew_fill_full";
+    }
+  }
+
   static Future<List<ClassModel>> classListTeacher(
       int teacherId, Map<TeacherFilter, List> filter) async {
     var teacherClassIDs =
@@ -51,7 +113,7 @@ class DataProvider {
     List<String> listStatusQuery =
         listStatus!.map((e) => statusTeacher(e)).toList();
     var classes = (await FireBaseProvider.instance
-            .getListClassForTeacherV2(teacherClassIDs,listStatusQuery))
+            .getListClassForTeacherV2(teacherClassIDs, listStatusQuery))
         .where((e) => listStatusQuery.contains(e.classStatus))
         .toList();
 
@@ -159,8 +221,7 @@ class DataProvider {
     }
   }
 
-  static void updateTestResult(
-      int classId, List<TestResultModel> testResults) {
+  static void updateTestResult(int classId, List<TestResultModel> testResults) {
     var key = 'testResult_$classId';
     cached[key]!.data = testResults;
   }
@@ -183,8 +244,7 @@ class DataProvider {
     }
   }
 
-  static void updateStudentTest(
-      int classId, List<StudentTestModel> stdTests) {
+  static void updateStudentTest(int classId, List<StudentTestModel> stdTests) {
     var key = 'stdTest_$classId';
     cached[key]!.data = stdTests;
   }
@@ -257,8 +317,29 @@ class DataProvider {
     }
   }
 
+  static void updateStudentInfo(int id, StudentModel student) {
+    var key = 'student_$id';
+    cached[key]!.data = student;
+  }
+
+  static Future<void> userById(int id, Function(Object) onLoaded) async {
+    var key = 'user_$id';
+    if (cached[key] == null) {
+      cached[key] = CacheObject(DateTime.now(), callbacks: [onLoaded]);
+      cached[key]!.data = await FireBaseProvider.instance.getUserById(id);
+      for (var element in cached[key]!.callbacks) {
+        element.call(cached[key]!.data!);
+      }
+      cached[key]!.callbacks = [];
+    } else if (cached[key]!.data == null) {
+      cached[key]!.callbacks.add(onLoaded);
+    } else {
+      onLoaded.call(cached[key]!.data!);
+    }
+  }
+
   static Future<void> lessonByCourseAndClassId(
-      int courseId,int classId, Function(Object) onLoaded) async {
+      int courseId, int classId, Function(Object) onLoaded) async {
     var key = 'lessons_${classId}_$courseId';
     if (cached[key] == null) {
       cached[key] = CacheObject(DateTime.now(), callbacks: [onLoaded]);
@@ -281,7 +362,7 @@ class DataProvider {
     if (cached[key] == null) {
       cached[key] = CacheObject(DateTime.now(), callbacks: [onLoaded]);
       cached[key]!.data =
-      await FireBaseProvider.instance.getLessonsByCourseId(courseId);
+          await FireBaseProvider.instance.getLessonsByCourseId(courseId);
       for (var element in cached[key]!.callbacks) {
         element.call(cached[key]!.data!);
       }
@@ -299,7 +380,7 @@ class DataProvider {
     if (cached[key] == null) {
       cached[key] = CacheObject(DateTime.now(), callbacks: [onLoaded]);
       cached[key]!.data =
-      await FireBaseProvider.instance.getLessonsByCourseId(courseId);
+          await FireBaseProvider.instance.getLessonsByCourseId(courseId);
       for (var element in cached[key]!.callbacks) {
         element.call(cached[key]!.data!);
       }

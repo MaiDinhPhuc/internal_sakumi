@@ -17,14 +17,15 @@ class ClassOverViewV2 extends StatelessWidget {
   final ClassDetailCubit cubit;
   @override
   Widget build(BuildContext context) {
-    var detailController = BlocProvider.of<ClassDetailCubit>(context);
-    return BlocBuilder<ClassDetailCubit, int>(builder: (c,s){
+    return BlocBuilder<ClassDetailCubit, int>(
+        bloc: cubit,
+        builder: (c,s){
       return ClassItemRowLayout(
           widgetClassCode: AutoSizeText(classModel.classCode.toUpperCase(),
               style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: Resizable.font(context, 20))),
-          widgetCourse: Text(detailController.title ?? "",
+          widgetCourse: Text(cubit.title ?? "",
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 16))),

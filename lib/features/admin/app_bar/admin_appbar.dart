@@ -16,50 +16,39 @@ class AdminAppBar extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(
           bottom: Resizable.padding(context, 10),
-          left: Resizable.padding(context, 100),
-          right: Resizable.padding(context, 100),
+          // left: Resizable.padding(context, 100),
+          right: Resizable.padding(context, 60),
           top: Resizable.padding(context, 10)),
       decoration: const BoxDecoration(color: Colors.white, boxShadow: [
         BoxShadow(offset: Offset(0, 1), color: Colors.grey, blurRadius: 2)
       ]),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Expanded(
-              flex: 10,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-            ... buttonAdminList
-                .map((e) => AdminAppBarItem(
-              title: e.button,
-              color: index == e.id
-                  ? primaryColor
-                  : Colors.transparent,
-              id: e.id,
-            ))
-                .toList(),
-          ],)),
-          const Expanded(
-              flex: 3,
-              child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              LogOutButton()
-            ],
+          ... buttonAdminList
+              .map((e) => AdminAppBarItem(
+            title: e.button,
+            color: index == e.id
+                ? primaryColor
+                : Colors.transparent,
+            id: e.id,
           ))
-        ],
-      ),
+              .toList(),
+          const LogOutButton()
+        ],)
     );
   }
 }
 List<NavigationModel> buttonAdminList = [
   NavigationModel(0, AppText.titleSearch.text),
   NavigationModel(1, AppText.titleManageClass.text),
+  NavigationModel(8, AppText.titleManageBill.text),
   NavigationModel(2, AppText.titleManageTag.text),
   NavigationModel(3, AppText.titleStatistics.text),
   NavigationModel(4, AppText.titleManageFeedBack.text),
   NavigationModel(5, AppText.txtTool.text),
-  NavigationModel(6, AppText.txtVoucher.text)
+  NavigationModel(6, AppText.txtVoucher.text),
+  NavigationModel(7, AppText.titleManageTeacher.text)
 ];
 
 class DetailAppBar extends StatelessWidget {

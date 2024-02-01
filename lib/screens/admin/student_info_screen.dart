@@ -4,7 +4,6 @@ import 'package:internal_sakumi/features/admin/app_bar/admin_appbar.dart';
 import 'package:internal_sakumi/features/admin/manage_student/info_student_view.dart';
 import 'package:internal_sakumi/features/admin/manage_student/list_student_class_view.dart';
 import 'package:internal_sakumi/features/admin/manage_student/student_info_cubit.dart';
-import 'package:internal_sakumi/features/teacher/cubit/data_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
@@ -15,16 +14,13 @@ class StudentInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //var dataController = BlocProvider.of<DataCubit>(context);
     return Scaffold(
       body: Column(
         children: [
           const DetailAppBar(),
           Expanded(
               child: BlocBuilder(
-            bloc: cubit
-              ..loadStudent(
-                  int.parse(TextUtils.getName())),
+            bloc: cubit..loadStudent(int.parse(TextUtils.getName())),
             builder: (c, s) {
               return cubit.student == null || cubit.user == null
                   ? const Center(

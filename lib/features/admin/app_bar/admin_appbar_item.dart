@@ -72,6 +72,14 @@ class AdminAppBarItem extends StatelessWidget {
                       await Navigator.pushNamed(
                           context, '${Routes.admin}/voucher');
                       break;
+                    case 7:
+                      await Navigator.pushNamed(
+                          context, '${Routes.admin}/manageTeachers');
+                      break;
+                    case 8:
+                      await Navigator.pushNamed(
+                          context, '${Routes.admin}/manageBills');
+                      break;
                   }
                 },
                 child: Container(

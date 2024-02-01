@@ -1,17 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/features/admin/search/search_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
-import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
-import 'package:internal_sakumi/model/student_info_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
+import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class StudentInfoCubit extends Cubit<int> {
@@ -22,23 +20,21 @@ class StudentInfoCubit extends Cubit<int> {
 
   List<StudentClassModel>? stdClasses;
   List<ClassModel>? classes;
-  List<CourseModel>? courses;
+  List<CourseModel> courses = [];
   List<StudentLessonModel>? stdLessons;
   List<StudentTestModel>? stdTests;
   List<LessonResultModel>? lessonResults;
-  List<LessonModel>? lessons;
-
-  List<StudentInfoModel>? listStdInfo;
-
+  List<int> listCourseIds = [];
 
   bool inJapan = false;
   String name = "";
   String stdCode = "";
   String phone = "";
   String note = "";
+  bool isLoading = true;
   loadStudent(int studentId) async {
-      student = await FireBaseProvider.instance.getStudentById(studentId);
-      user = await FireBaseProvider.instance.getUserById(studentId);
+    await DataProvider.studentById(studentId, loadStudentInfo);
+    await DataProvider.userById(studentId, loadUserInfo);
     inJapan = student!.inJapan;
     name = student!.name;
     stdCode = student!.studentCode;
@@ -48,31 +44,42 @@ class StudentInfoCubit extends Cubit<int> {
     loadInFoStudentInSystem(studentId);
   }
 
+  loadStudentInfo(Object student) {
+    this.student = student as StudentModel;
+  }
+
+  loadUserInfo(Object user) {
+    this.user = user as UserModel;
+  }
+
+  onCourseLoaded(Object course) {
+    courses.add(course as CourseModel);
+    if(courses.length == listCourseIds.length){
+      emit(state + 1);
+    }
+  }
+
+
   loadInFoStudentInSystem(int studentId) async {
-    stdClasses =
-        await FireBaseProvider.instance.getStudentClassByStdId(studentId);
+    stdClasses = await FireBaseProvider.instance.getStudentClassByStdId(studentId);
     var listClassId = stdClasses!.map((e) => e.classId).toList();
     classes =
         await FireBaseProvider.instance.getListClassForTeacher(listClassId);
-    listStdInfo = await StudentInfoModel.loadInfo(stdClasses!,classes!,courses,stdLessons,stdTests,lessonResults,lessons);
-    emit(state+1);
-    List<int> listCourseIds = [];
     for (var i in classes!) {
       if (listCourseIds.contains(i.courseId) == false) {
+        DataProvider.courseById(i.courseId, onCourseLoaded);
         listCourseIds.add(i.courseId);
       }
     }
-    courses = await FireBaseProvider.instance.getCourseByListId(listCourseIds);
-    listStdInfo = await StudentInfoModel.loadInfo(stdClasses!,classes!,courses,stdLessons,stdTests,lessonResults,lessons);
-    emit(state+1);
-    stdLessons = await FireBaseProvider.instance.getStudentLessonByStdId(studentId);
+
+    stdLessons =
+        await FireBaseProvider.instance.getStudentLessonByStdId(studentId);
     stdTests = await FireBaseProvider.instance.getStudentTestByStdId(studentId);
-    lessonResults = await FireBaseProvider.instance.getLessonsResultsByListClassIds(listClassId);
-    listStdInfo = await StudentInfoModel.loadInfo(stdClasses!,classes!,courses,stdLessons,stdTests,lessonResults,lessons);
-    emit(state+1);
-    lessons = await FireBaseProvider.instance.getLessonsByListCourseId(listCourseIds);
-    listStdInfo = await StudentInfoModel.loadInfo(stdClasses!,classes!,courses,stdLessons,stdTests,lessonResults,lessons);
-    emit(state+1);
+    lessonResults = await FireBaseProvider.instance
+        .getLessonsResultsByListClassIds(listClassId);
+
+    isLoading = false;
+    emit(state + 1);
   }
 
   resetPassword() async {
@@ -108,4 +115,6 @@ class StudentInfoCubit extends Cubit<int> {
     name = newValue;
     emit(state + 1);
   }
+
+
 }

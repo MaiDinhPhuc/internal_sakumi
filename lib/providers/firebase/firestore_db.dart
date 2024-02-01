@@ -107,7 +107,7 @@ class FireStoreDb {
 
   Future<QuerySnapshot<Map<String, dynamic>>> getLessonById(int id) async {
     final snapshot =
-    await db.collection("lessons").where('lesson_id', isEqualTo: id).get();
+        await db.collection("lessons").where('lesson_id', isEqualTo: id).get();
     // debugPrint("==========>get db from \"class\" : ${snapshot.docs.length}");
 
     debugPrint(
@@ -1096,6 +1096,85 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getListBillWithFilter(
+      List<String> listStatusFilter, List<String> listTypeFilter) async {
+    final snapshot = await db
+        .collection("bill")
+        .orderBy('create_date')
+        .where(Filter.and(Filter("status", whereIn: listStatusFilter),
+            Filter("type", whereIn: listTypeFilter)))
+        .limit(10)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListBillWithFilter ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getMoreListBillWithFilter(
+      List<String> listStatusFilter, List<String> listTypeFilter, int lastItem) async {
+    final snapshot = await db
+        .collection("bill")
+        .orderBy('create_date')
+        .where(Filter.and(Filter("status", whereIn: listStatusFilter),
+        Filter("type", whereIn: listTypeFilter)))
+        .startAfter([lastItem])
+        .limit(10)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListBillWithFilter ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getMoreListBillWithFilterAndDate(
+      List<String> listStatusFilter,
+      List<String> listTypeFilter,
+      int lastItem,
+      int startDate,
+      int endDate) async {
+    final snapshot = await db
+        .collection("bill")
+        .orderBy('payment_date')
+        .where(Filter.and(
+        Filter("status", whereIn: listStatusFilter),
+        Filter("payment_date", isGreaterThanOrEqualTo: startDate),
+        Filter("payment_date", isLessThanOrEqualTo: endDate),
+        Filter("type", whereIn: listTypeFilter)))
+        .startAfter([lastItem])
+        .limit(10)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListBillWithFilterAndDate ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getListBillWithFilterAndDate(
+      List<String> listStatusFilter,
+      List<String> listTypeFilter,
+      int startDate,
+      int endDate) async {
+    final snapshot = await db
+        .collection("bill")
+        .orderBy('payment_date')
+        .where(Filter.and(
+            Filter("status", whereIn: listStatusFilter),
+            Filter("payment_date", isGreaterThanOrEqualTo: startDate),
+            Filter("payment_date", isLessThanOrEqualTo: endDate),
+            Filter("type", whereIn: listTypeFilter)))
+        .limit(10)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListBillWithFilterAndDate ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getListClassForAdmin() async {
     final snapshot = await db.collection("class").where("class_status",
         whereNotIn: ["Remove", "Completed", "Cancel"]).get();
@@ -1125,9 +1204,8 @@ class FireStoreDb {
       List<int> listIds, List<String> listStatus) async {
     final snapshot = await db
         .collection("class")
-        .where(Filter.and(
-        Filter("class_id", whereIn: listIds),
-        Filter("class_status", whereIn: listStatus)))
+        .where(Filter.and(Filter("class_id", whereIn: listIds),
+            Filter("class_status", whereIn: listStatus)))
         .get();
 
     debugPrint(
@@ -1476,7 +1554,7 @@ class FireStoreDb {
       'class_status': model.classStatus,
       'class_type': model.classType,
       'link': model.link,
-      'custom_lesson':model.customLessons,
+      'custom_lesson': model.customLessons,
       'informal': model.informal
     });
     debugPrint("==========>update db for \"class\"");

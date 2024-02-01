@@ -11,13 +11,13 @@ import 'package:internal_sakumi/utils/resizable.dart';
 
 class SearchGeneralScreen extends StatelessWidget {
   SearchGeneralScreen({Key? key})
-      : searchCubit = SearchCubit(),
-  controller = TextEditingController(),
+      :
+        controller = TextEditingController(),
         super(key: key);
-  final SearchCubit searchCubit;
   final TextEditingController controller;
   @override
   Widget build(BuildContext context) {
+    var searchCubit = BlocProvider.of<SearchCubit>(context);
     return Scaffold(
       body: Column(
         children: [

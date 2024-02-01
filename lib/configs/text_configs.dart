@@ -50,6 +50,8 @@ enum AppText {
   titleManageStudent,
   titleManageClass,
   titleManageTag,
+  titleManageBill,
+  titleManageTeacher,
   titleManageFeedBack,
   titleRole,
   titleUserId,
@@ -408,10 +410,22 @@ enum AppText {
   txtChooseAnswer,
   txtQuestion,
   txtAnswer,
-  txtInformal
+  txtInformal,
+  txtBillType,
+  txtStdName,
+  txtPaymentDate,
+  txtPayment,
+  txtRenewDate,
+  txtNotBill
 }
 
 Map<AppText, String> texts = {
+  AppText.txtNotBill : "Hiện tại không có hoá đơn thoả mãn điều kiện, vui lòng chọn lại filter...",
+  AppText.txtPaymentDate : "Ngày đóng tiền",
+  AppText.txtPayment : "Số tiền đã đóng",
+  AppText.txtRenewDate : "Ngày Renew",
+  AppText.txtStdName : "Tên học viên",
+  AppText.txtBillType : "Loại hoá đơn",
   AppText.txtInformal : "Lớp không chính thức",
   AppText.txtQuestion : "Câu hỏi",
   AppText.txtAnswer : "Câu trả lời",
@@ -692,6 +706,8 @@ Map<AppText, String> texts = {
   AppText.titleManageStudent: 'Danh sách học viên',
   AppText.titleManageClass: 'Danh sách lớp học',
   AppText.titleManageTag: 'Quản lý tag',
+  AppText.titleManageTeacher: 'Quản lý giáo viên',
+  AppText.titleManageBill: 'Quản lý hoá đơn',
   AppText.titleRole: 'Vai trò',
   AppText.titleUserId: 'Mã người dùng',
   AppText.btnSignUp: 'Đăng ký',

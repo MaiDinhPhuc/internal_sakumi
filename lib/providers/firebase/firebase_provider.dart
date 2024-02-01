@@ -11,6 +11,7 @@ import 'package:internal_sakumi/features/admin/manage_general/manage_general_cub
 import 'package:internal_sakumi/features/teacher/profile/app_bar_info_teacher_cubit.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
+import 'package:internal_sakumi/model/bill_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/detail_grading_data_model.dart';
@@ -1809,5 +1810,49 @@ class FireBaseProvider extends NetworkProvider {
         .toList();
     listClass.sort((a, b) => a.classId.compareTo(b.classId));
     return listClass;
+  }
+
+  @override
+  Future<List<BillModel>> getListBillWithFilter(List<String> listStatusFilter,
+      List<String> listTypeFilter) async {
+    final listBill = (await FireStoreDb.instance.getListBillWithFilter(
+        listStatusFilter, listTypeFilter))
+        .docs
+        .map((e) => BillModel.fromSnapshot(e))
+        .toList();
+    return listBill;
+  }
+
+  @override
+  Future<List<BillModel>> getMoreListBillWithFilter(List<String> listStatusFilter,
+      List<String> listTypeFilter, int lastItem) async {
+    final listBill = (await FireStoreDb.instance.getMoreListBillWithFilter(
+        listStatusFilter, listTypeFilter, lastItem))
+        .docs
+        .map((e) => BillModel.fromSnapshot(e))
+        .toList();
+    return listBill;
+  }
+
+  @override
+  Future<List<BillModel>> getMoreListBillWithFilterAndDate(List<String> listStatusFilter,
+      List<String> listTypeFilter, int lastItem, int startDate, int endDate) async {
+    final listBill = (await FireStoreDb.instance.getMoreListBillWithFilterAndDate(
+        listStatusFilter, listTypeFilter, lastItem, startDate, endDate))
+        .docs
+        .map((e) => BillModel.fromSnapshot(e))
+        .toList();
+    return listBill;
+  }
+
+  @override
+  Future<List<BillModel>> getListBillWithFilterAndDate(List<String> listStatusFilter,
+      List<String> listTypeFilter, int startDate, int endDate) async {
+    final listBill = (await FireStoreDb.instance.getListBillWithFilterAndDate(
+        listStatusFilter, listTypeFilter, startDate, endDate))
+        .docs
+        .map((e) => BillModel.fromSnapshot(e))
+        .toList();
+    return listBill;
   }
 }
