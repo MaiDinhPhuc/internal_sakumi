@@ -108,14 +108,13 @@ class InputDropdownV2 extends StatelessWidget {
 }
 class InputDropdown extends StatelessWidget {
   final List<String> items;
-  final String title, hint;
+  final String hint;
   final String? errorText;
   final Function(String?)? onChanged;
   final int height;
   final bool isCircleBorder;
   const InputDropdown(
       {required this.onChanged,
-        required this.title,
         required this.hint,
         required this.items,
         this.errorText,

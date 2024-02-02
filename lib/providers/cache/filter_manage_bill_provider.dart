@@ -4,23 +4,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum FilterBillStatus { refund, notRefund }
+enum FilterBillStatus { check, notCheck }
 extension FilterBillStatusEx on FilterBillStatus {
   String get status {
     switch (this) {
-      case FilterBillStatus.refund:
-        return "refund";
-      case FilterBillStatus.notRefund:
-        return "notRefund";
+      case FilterBillStatus.check:
+        return "check";
+      case FilterBillStatus.notCheck:
+        return "notCheck";
     }
   }
 
   String get title {
     switch (this) {
-      case FilterBillStatus.refund:
-        return "Đã hoàn tiền";
-      case FilterBillStatus.notRefund:
-        return "Chưa hoàn tiền";
+      case FilterBillStatus.check:
+        return "Đã đối xoát";
+      case FilterBillStatus.notCheck:
+        return "Chưa đối xoát";
     }
   }
 }
@@ -83,8 +83,8 @@ class BillFilterCubit extends Cubit<int> {
 
   static const Map<BillFilter, List> defaultFilter = {
     BillFilter.status: [
-      FilterBillStatus.refund,
-      FilterBillStatus.notRefund
+      FilterBillStatus.check,
+      FilterBillStatus.notCheck
     ],
     BillFilter.type:[
       FilterBillType.saleFull,
@@ -120,11 +120,11 @@ class BillFilterCubit extends Cubit<int> {
     var listStatus = [];
     for (var i in json["status"]) {
       switch (i) {
-        case "Đã hoàn tiền":
-          listStatus.add(FilterBillStatus.refund);
+        case "Đã đối xoát":
+          listStatus.add(FilterBillStatus.check);
           break;
-        case "Chưa hoàn tiền":
-          listStatus.add(FilterBillStatus.notRefund);
+        case "Chưa đối xoát":
+          listStatus.add(FilterBillStatus.notCheck);
           break;
       }
     }

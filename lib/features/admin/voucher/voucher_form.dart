@@ -35,7 +35,6 @@ class VoucherForm extends StatelessWidget {
                     fontSize: Resizable.font(context, 18),
                     color: const Color(0xff757575))),
             InputDropdown(
-                title: '',
                 hint: cubit.priceVoucher,
                 onChanged: (v) {
                   cubit.selectPrice(v.toString());
@@ -57,7 +56,7 @@ class VoucherForm extends StatelessWidget {
               children: [
                 Expanded(
                     child: InputDropdown(
-                        title: '',
+
                         hint: cubit.courseVoucher,
                         onChanged: (v) {
                           cubit.selectCourse(v.toString());

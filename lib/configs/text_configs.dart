@@ -424,15 +424,23 @@ enum AppText {
   titleBillDialog,
   txtDeleteBill,
   txtConfirmCheckBill,
-  txtConfirmDeleteBill
+  txtConfirmDeleteBill,
+  txtCheck,
+  txtMoney,
+  txtErrorPaymentDate,
+  txtErrorRenewDate,
 }
 
 Map<AppText, String> texts = {
+  AppText.txtErrorPaymentDate: 'Vui lòng chọn ngày đóng tiền trước ngày renew',
+  AppText.txtErrorRenewDate: 'Vui lòng chọn ngày renew sau ngày đóng tiền',
+  AppText.txtMoney : "Số tiền(vnđ)",
   AppText.txtConfirmDeleteBill : "Xác nhận xóa hóa đơn. Vui lòng kiểm tra kĩ trước khi xóa!",
   AppText.txtConfirmCheckBill : "Xác nhận đối xoát hóa đơn. Vui lòng kiểm tra kĩ trước khi đối xoát!",
   AppText.txtDeleteBill : "Xóa hóa đơn",
   AppText.titleBillDialog : "GHI NHẬN HÓA ĐƠN THANH TOÁN",
   AppText.txtEdit : "Chỉnh sửa",
+  AppText.txtCheck : "Đối soát",
   AppText.txtChecked : "Đã đối soát",
   AppText.txtRefund : "Tiền hoàn (refund): ",
   AppText.txtRevenue : "Ghi nhận doanh thu:",

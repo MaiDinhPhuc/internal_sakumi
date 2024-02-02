@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
+import 'package:internal_sakumi/model/bill_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
@@ -478,7 +479,7 @@ class FireStoreDb {
     await db.collection('courses').doc("course_${model.courseId}").update({
       "enable": state,
     });
-    debugPrint("==========>update db from \"student_class\"");
+    debugPrint("==========>update db from \"course\"");
   }
 
   Future<void> changeStatusLesson(
@@ -661,6 +662,42 @@ class FireStoreDb {
       "suffix": model.suffix
     });
     debugPrint("==========> add db for \"courses\"");
+  }
+
+  Future<void> addBill(BillModel model) async {
+    await db.collection("bill").doc("bill_${model.createDate}").set({
+      'check': model.check,
+      'class_id': model.classId,
+      'create_date': model.createDate,
+      'delete': model.delete,
+      'note': model.note,
+      'payment': model.payment,
+      'payment_date': model.paymentDate,
+      'refund': model.refund,
+      'renew_date': model.renewDate,
+      'status': model.status,
+      'type': model.type,
+      'user_id': model.userId
+    });
+    debugPrint("==========> add db for \"bill\"");
+  }
+
+  Future<void> updateBill(BillModel model) async {
+    await db.collection("bill").doc("bill_${model.createDate}").update({
+      'check': model.check,
+      'class_id': model.classId,
+      'create_date': model.createDate,
+      'delete': model.delete,
+      'note': model.note,
+      'payment': model.payment,
+      'payment_date': model.paymentDate,
+      'refund': model.refund,
+      'renew_date': model.renewDate,
+      'status': model.status,
+      'type': model.type,
+      'user_id': model.userId
+    });
+    debugPrint("==========> update db for \"bill\"");
   }
 
   Future<void> addLesson(LessonModel model) async {
@@ -1101,7 +1138,7 @@ class FireStoreDb {
     final snapshot = await db
         .collection("bill")
         .orderBy('create_date')
-        .where(Filter.and(Filter("status", whereIn: listStatusFilter),
+        .where(Filter.and(Filter("check", whereIn: listStatusFilter),
             Filter("type", whereIn: listTypeFilter)))
         .limit(10)
         .get();
@@ -1117,7 +1154,7 @@ class FireStoreDb {
     final snapshot = await db
         .collection("bill")
         .orderBy('create_date')
-        .where(Filter.and(Filter("status", whereIn: listStatusFilter),
+        .where(Filter.and(Filter("check", whereIn: listStatusFilter),
         Filter("type", whereIn: listTypeFilter)))
         .startAfter([lastItem])
         .limit(10)
@@ -1139,7 +1176,7 @@ class FireStoreDb {
         .collection("bill")
         .orderBy('payment_date')
         .where(Filter.and(
-        Filter("status", whereIn: listStatusFilter),
+        Filter("check", whereIn: listStatusFilter),
         Filter("payment_date", isGreaterThanOrEqualTo: startDate),
         Filter("payment_date", isLessThanOrEqualTo: endDate),
         Filter("type", whereIn: listTypeFilter)))
@@ -1162,7 +1199,7 @@ class FireStoreDb {
         .collection("bill")
         .orderBy('payment_date')
         .where(Filter.and(
-            Filter("status", whereIn: listStatusFilter),
+            Filter("check", whereIn: listStatusFilter),
             Filter("payment_date", isGreaterThanOrEqualTo: startDate),
             Filter("payment_date", isLessThanOrEqualTo: endDate),
             Filter("type", whereIn: listTypeFilter)))
@@ -1191,6 +1228,20 @@ class FireStoreDb {
         .collection("class")
         .where("class_id", whereIn: listIds)
         .where("class_status", isNotEqualTo: "Remove")
+        .get();
+    // debugPrint("==========>get db from \"class\": ${snapshot.docs.length}");
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListClassAvailableForTeacher ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getListClassListIds(
+      List<int> listIds) async {
+    final snapshot = await db
+        .collection("class")
+        .where("class_id", whereIn: listIds)
         .get();
     // debugPrint("==========>get db from \"class\": ${snapshot.docs.length}");
 

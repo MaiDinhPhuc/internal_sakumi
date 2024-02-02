@@ -81,7 +81,8 @@ class ItemStudentClass extends StatelessWidget {
                           widgetStatus: StatusClassItem(
                               status: itemCubit.stdClass.classStatus,
                               color: itemCubit.getColor(),
-                              icon: itemCubit.getIcon()))
+                              icon: itemCubit.getIcon())),
+
                     ],
                   ),
                   crossFadeState: state % 2 == 1

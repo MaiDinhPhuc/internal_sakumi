@@ -8,8 +8,8 @@ class BillModel {
       payment,
       refund,
       createDate;
-  final String type, status, note;
-  final bool check, delete;
+  final String type, status, note,check;
+  final bool delete;
 
   BillModel(
       {required this.classId,
@@ -37,7 +37,7 @@ class BillModel {
         refund: data['refund'] ?? 0,
         type: data['type'] ?? 'sale_full',
         status: data['status'] ?? "notRefund",
-        check: data['check'] ?? false,
+        check: data['check'] ?? "notCheck",
         createDate: data['create_date'] ?? 0,
         delete: data['delete'] ?? false);
   }

@@ -77,9 +77,9 @@ class BillView extends StatelessWidget {
                             fontSize: Resizable.font(context, 18),
                             color: primaryColor)),
                     widgetStatus: Image.asset(
-                      billModel.status == "notRefund"
-                          ? "assets/images/ic_not_refund.png"
-                          : "assets/images/ic_refund.png",
+                      billModel.check == "notCheck"
+                          ? "assets/images/ic_not_check_bill.png"
+                          : "assets/images/ic_check_bill.png",
                       height: Resizable.size(context, 30),
                       width: Resizable.size(context, 30),
                     ),
@@ -133,25 +133,22 @@ class BillView extends StatelessWidget {
                             Padding(padding: EdgeInsets.only(top: Resizable.padding(context, 10)),child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                billModel.delete ? Text(AppText.stsRemove.text,
+                                    style: TextStyle(
+                                        color: redColor,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: Resizable.font(context, 19))) :
                                 SubmitButton(
                                     onPressed: onTap, title: AppText.txtEdit.text),
                                 SubmitButton(
-                                    isActive: !billModel.check,
-                                    onPressed: onCheck, title: AppText.txtChecked.text)
+                                    isActive: billModel.check == "notCheck",
+                                    onPressed: onCheck, title: billModel.check == "notCheck" ? AppText.txtCheck.text :AppText.txtChecked.text)
                               ],
                             ))
                           ],
                         ))
                 ],
               )),
-          // Positioned.fill(
-          //     child: Material(
-          //   color: Colors.transparent,
-          //   child: InkWell(
-          //     onTap: onTap,
-          //     borderRadius: BorderRadius.circular(Resizable.size(context, 5)),
-          //   ),
-          // )),
           Container(
               margin: EdgeInsets.only(
                   right: Resizable.padding(context, 20),

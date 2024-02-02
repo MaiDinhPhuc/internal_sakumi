@@ -11,6 +11,7 @@ import 'package:internal_sakumi/features/admin/manage_bills/filter_manage_bill.d
 import 'package:internal_sakumi/features/admin/manage_bills/manage_bill_cubit.dart';
 import 'package:internal_sakumi/providers/cache/filter_manage_bill_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:internal_sakumi/widget/submit_button.dart';
 
 class ManageBillScreen extends StatelessWidget {
   ManageBillScreen({super.key}) : cubit = ManageBillCubit();
@@ -84,72 +85,80 @@ class ManageBillScreen extends StatelessWidget {
                                         top: Resizable.padding(context, 50)),
                                     child: Text(AppText.txtNotBill.text))
                                 : Column(
-                                    children: [
-                                      Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: Resizable.padding(
-                                                  context, 10)),
-                                          child: BillLayout(
-                                            widgetStdName: Text(
-                                                AppText.txtStdName.text,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: Resizable.font(
-                                                        context, 17),
-                                                    color: greyColor.shade600)),
-                                            widgetClassCode: Text(
-                                                AppText.txtClassCode.text,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: Resizable.font(
-                                                        context, 17),
-                                                    color: greyColor.shade600)),
-                                            widgetPaymentDate: Text(
-                                                AppText.txtPaymentDate.text,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: Resizable.font(
-                                                        context, 17),
-                                                    color: greyColor.shade600)),
-                                            widgetPayment: Text(
-                                                AppText.txtPayment.text,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: Resizable.font(
-                                                        context, 17),
-                                                    color: greyColor.shade600)),
-                                            widgetRenewDate: Text(
-                                                AppText.txtRenewDate.text,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: Resizable.font(
-                                                        context, 17),
-                                                    color: greyColor.shade600)),
-                                            widgetType: Text(
-                                                AppText.txtBillType.text,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: Resizable.font(
-                                                        context, 17),
-                                                    color: greyColor.shade600)),
-                                            widgetStatus: Text(
-                                                AppText.titleStatus.text,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: Resizable.font(
-                                                        context, 17),
-                                                    color: greyColor.shade600)), widgetDropdown: Container(),
-                                          )),
-                                      SingleChildScrollView(
-                                        child: Column(
-                                          children: [
-                                            ...cubit.listBill!
-                                                .map((e) => BillItem(billModel: e, cubit: cubit)).toList()
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ))
+                          children: [
+                            Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: Resizable.padding(
+                                        context, 10)),
+                                child: BillLayout(
+                                  widgetStdName: Text(
+                                      AppText.txtStdName.text,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: Resizable.font(
+                                              context, 17),
+                                          color: greyColor.shade600)),
+                                  widgetClassCode: Text(
+                                      AppText.txtClassCode.text,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: Resizable.font(
+                                              context, 17),
+                                          color: greyColor.shade600)),
+                                  widgetPaymentDate: Text(
+                                      AppText.txtPaymentDate.text,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: Resizable.font(
+                                              context, 17),
+                                          color: greyColor.shade600)),
+                                  widgetPayment: Text(
+                                      AppText.txtPayment.text,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: Resizable.font(
+                                              context, 17),
+                                          color: greyColor.shade600)),
+                                  widgetRenewDate: Text(
+                                      AppText.txtRenewDate.text,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: Resizable.font(
+                                              context, 17),
+                                          color: greyColor.shade600)),
+                                  widgetType: Text(
+                                      AppText.txtBillType.text,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: Resizable.font(
+                                              context, 17),
+                                          color: greyColor.shade600)),
+                                  widgetStatus: Text(
+                                      AppText.titleStatus.text,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: Resizable.font(
+                                              context, 17),
+                                          color: greyColor.shade600)), widgetDropdown: Container(),
+                                )),
+                            Expanded(child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  ...cubit.listBill!
+                                      .map((e) => BillItem(billModel: e, cubit: cubit)).toList(),
+                                  SizedBox(height: Resizable.size(context, 5)),
+                                  cubit.isLastPage
+                                      ? Container()
+                                      : SubmitButton(
+                                      onPressed: () {
+                                        cubit.loadMore(filterController);
+                                      },
+                                      title: AppText.txtLoadMore.text),
+                                ],
+                              ),
+                            ))
+                          ],
+                        ))
                   ],
                 );
               },

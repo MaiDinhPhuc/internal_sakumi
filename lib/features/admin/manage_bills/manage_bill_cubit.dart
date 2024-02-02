@@ -18,10 +18,12 @@ class ManageBillCubit extends Cubit<int> {
   List<int> listStdId = [];
   List<int> listClassId = [];
   List<BillModel>? listBill;
+  bool isLastPage = false;
 
-  updateListBill(BillModel billModel, BillModel newBill) {
+  updateListBill(BillModel billModel, BillModel newBill) async {
     var index = listBill!.indexOf(billModel);
     listBill![index] = newBill;
+    await loadStudentAndClass([newBill.userId], [newBill.classId]);
     emit(state+1);
   }
 
@@ -54,6 +56,7 @@ class ManageBillCubit extends Cubit<int> {
   }
 
   loadData(BillFilterCubit filterController) async {
+    isLastPage = false;
     if (startDay != null && endDay != null) {
       int startDate = startDay!.millisecondsSinceEpoch;
       int endDate = endDay!.millisecondsSinceEpoch;
@@ -61,6 +64,10 @@ class ManageBillCubit extends Cubit<int> {
           startDate: startDate, endDate: endDate);
     } else {
       listBill = await DataProvider.listBill(filterController.filter);
+    }
+
+    if(listBill!.length <10){
+      isLastPage = true;
     }
 
     List<int> stdIdTemp = [];
@@ -79,13 +86,27 @@ class ManageBillCubit extends Cubit<int> {
     loadStudentAndClass(stdIdTemp, classIdTemp);
   }
 
+  addNewBill(BillModel newBill){
+    listBill!.add(newBill);
+    loadStudentAndClass([newBill.userId], [newBill.classId]);
+    emit(state+1);
+  }
+
   loadStudentAndClass(List<int> stdIds, List<int> classIds) async {
+    var listStdId = students.map((e) => e.userId).toList();
     for (var i in stdIds) {
-      DataProvider.studentById(i, loadStudentInfo);
+      if(listStdId.contains(i) == false){
+        DataProvider.studentById(i, loadStudentInfo);
+      }
     }
     List<ClassModel> listClassNew =
-        await FireBaseProvider.instance.getListClassForTeacher(classIds);
-    listClass.addAll(listClassNew);
+        await FireBaseProvider.instance.getListClassByListId(classIds);
+    var listClassId = listClass.map((e) => e.classId).toList();
+    for(var i in listClassNew){
+      if(listClassId.contains(i.classId) == false){
+        listClass.add(i);
+      }
+    }
     emit(state + 1);
   }
 
@@ -127,11 +148,23 @@ class ManageBillCubit extends Cubit<int> {
           endDate: endDate,
           lastItem: lastBill);
       listBill!.addAll(newListBill);
+      var stdIds = newListBill.map((e) => e.userId).toList();
+      var classIds = newListBill.map((e) => e.classId).toList();
+      loadStudentAndClass(stdIds,classIds);
+      if (newListBill.isEmpty) {
+        isLastPage = true;
+      }
     } else {
       List<BillModel> newListBill = await DataProvider.listBill(
           filterController.filter,
           lastItem: lastBill);
       listBill!.addAll(newListBill);
+      var stdIds = newListBill.map((e) => e.userId).toList();
+      var classIds = newListBill.map((e) => e.classId).toList();
+      loadStudentAndClass(stdIds,classIds);
+      if (newListBill.isEmpty) {
+        isLastPage = true;
+      }
     }
     emit(state + 1);
   }

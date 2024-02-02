@@ -291,4 +291,7 @@ abstract class NetworkProvider {
 
   Future<List<BillModel>> getMoreListBillWithFilterAndDate(List<String> listStatusFilter,
       List<String> listTypeFilter, int lastItem, int startDate, int endDate);
+  Future<void> addNewBill(BillModel model);
+  Future<void> updateBill(BillModel model);
+  Future<List<ClassModel>> getListClassByListId(List<int> ids);
 }

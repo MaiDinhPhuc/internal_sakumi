@@ -41,7 +41,7 @@ class ConfirmCheckBill extends StatelessWidget {
               FirebaseFirestore.instance
                   .collection('bill')
                   .doc('bill_${billModel.createDate}')
-                  .update({'check': !billModel.check}).whenComplete(() {
+                  .update({'check': "check"}).whenComplete(() {
                 cubit.updateListBill(
                     billModel,
                     BillModel(
@@ -54,7 +54,7 @@ class ConfirmCheckBill extends StatelessWidget {
                         refund: billModel.refund,
                         type: billModel.type,
                         status: billModel.status,
-                        check: !billModel.check,
+                        check: "check",
                         createDate: billModel.createDate,
                         delete: billModel.delete));
                 Navigator.pop(context);

@@ -54,7 +54,7 @@ class ConfirmChangeStudentClassStatusV2 extends StatelessWidget {
                   .collection('student_class')
                   .doc(
                       'student_${student.userId}_class_${studentClassModel.classId}')
-                  .update({'class_status': newStatus}).whenComplete(() async {
+                  .update({'class_status': newStatus, "last_time_change": DateTime.now().millisecondsSinceEpoch}).whenComplete(() async {
                 if (newStatus == "Remove") {
                   List<StudentClassModel> list = [];
 

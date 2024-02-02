@@ -49,7 +49,6 @@ class InfoClassView extends StatelessWidget {
                                   fontSize: Resizable.font(context, 18),
                                   color: const Color(0xff757575))),
                           InputDropdown(
-                              title: AppText.txtCourse.text,
                               hint: cubit.findCourse(classModel == null
                                   ? -1
                                   : classModel!.courseId),
@@ -142,7 +141,6 @@ class InfoClassView extends StatelessWidget {
                             fontSize: Resizable.font(context, 18),
                             color: const Color(0xff757575))),
                     InputDropdown(
-                        title: AppText.txtClassType.text,
                         hint: AppText.txtChooseClassType.text,
                         errorText: AppText.txtPleaseChooseType.text,
                         onChanged: (v) {
@@ -196,7 +194,6 @@ class InfoClassView extends StatelessWidget {
                           fontSize: Resizable.font(context, 18),
                           color: const Color(0xff757575))),
                   InputDropdown(
-                      title: AppText.txtClassType.text,
                       hint: cubit.findClassType(classModel!.classType),
                       onChanged: (v) {
                         cubit.classType = cubit.chooseType(v);
@@ -217,7 +214,6 @@ class InfoClassView extends StatelessWidget {
                           fontSize: Resizable.font(context, 18),
                           color: const Color(0xff757575))),
                   InputDropdown(
-                      title: AppText.titleStatus.text,
                       hint: cubit.findStatus(classModel!.classStatus),
                       onChanged: (v) {
                         cubit.classStatus = cubit.chooseStatus(v);

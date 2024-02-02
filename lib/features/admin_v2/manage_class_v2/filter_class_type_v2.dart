@@ -99,7 +99,7 @@ class SelectFilterCubit extends Cubit<int>{
   List<FilterClassLevel> listLevel = [FilterClassLevel.n5, FilterClassLevel.n4, FilterClassLevel.n3, FilterClassLevel.n2, FilterClassLevel.n1];
   List<FilterTeacherClassStatus> listStatusTeacher = [FilterTeacherClassStatus.preparing,FilterTeacherClassStatus.studying,FilterTeacherClassStatus.completed];
 
-  List<FilterBillStatus> listBillStatus = [FilterBillStatus.refund, FilterBillStatus.notRefund];
+  List<FilterBillStatus> listBillStatus = [FilterBillStatus.check, FilterBillStatus.notCheck];
   List<FilterBillType> listBillType = [FilterBillType.saleFull, FilterBillType.salePart,FilterBillType.saleFillFull, FilterBillType.upSaleFull, FilterBillType.upSalePart,FilterBillType.upSaleFillFull, FilterBillType.renewFull, FilterBillType.renewPart,  FilterBillType.renewFillFull];
 
 
@@ -128,10 +128,10 @@ class SelectFilterCubit extends Cubit<int>{
   List<FilterBillStatus> convertBillStatus(){
     List<FilterBillStatus> filter = [];
     if(listSelect[0] == true){
-      filter.add(FilterBillStatus.refund);
+      filter.add(FilterBillStatus.check);
     }
     if(listSelect[1] == true){
-      filter.add(FilterBillStatus.notRefund);
+      filter.add(FilterBillStatus.notCheck);
     }
     return filter;
   }

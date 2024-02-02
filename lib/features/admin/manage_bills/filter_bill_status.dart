@@ -17,7 +17,7 @@ class FilterBillStatusView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SelectFilterCubit, int>(
-        bloc: selectCubit..loadBillStatus(filterController.filter[BillFilter.status] == null ? [FilterBillStatus.refund, FilterBillStatus.notRefund] :filterController.filter[BillFilter.status]!),
+        bloc: selectCubit..loadBillStatus(filterController.filter[BillFilter.status] == null ? [FilterBillStatus.check, FilterBillStatus.notCheck] :filterController.filter[BillFilter.status]!),
         builder: (c,s){
           return  Container(
               margin: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 10)),

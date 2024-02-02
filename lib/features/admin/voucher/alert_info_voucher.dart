@@ -122,7 +122,6 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                             InputDropdown(
                                 onChanged: (v) =>
                                     cubit.selectStatus(v.toString()),
-                                title: '',
                                 hint: items.first,
                                 items: items),
                           ],

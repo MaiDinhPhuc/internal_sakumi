@@ -72,10 +72,10 @@ class DataProvider {
 
   static String billStatus(FilterBillStatus status) {
     switch (status) {
-      case FilterBillStatus.refund:
-        return "refund";
-      case FilterBillStatus.notRefund:
-        return "notRefund";
+      case FilterBillStatus.check:
+        return "check";
+      case FilterBillStatus.notCheck:
+        return "notCheck";
     }
   }
 

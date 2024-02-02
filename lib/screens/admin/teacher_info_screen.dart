@@ -38,9 +38,9 @@ class TeacherInfoScreen extends StatelessWidget {
                           Expanded(
                               flex:1,
                               child: InfoTeacherView(cubit: cubit)),
-                          Expanded(
-                              flex:2,
-                              child: ListTeacherClassView(cubit: cubit))
+                          // Expanded(
+                          //     flex:2,
+                          //     child: ListTeacherClassView(cubit: cubit))
                         ],
                       ),
                     ),
