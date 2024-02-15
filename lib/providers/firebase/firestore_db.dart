@@ -1212,6 +1212,19 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getListBillByStdId(
+      int stdId) async {
+    final snapshot = await db
+        .collection("bill")
+        .where("user_id",isEqualTo: stdId)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListBillByStdId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getListClassForAdmin() async {
     final snapshot = await db.collection("class").where("class_status",
         whereNotIn: ["Remove", "Completed", "Cancel"]).get();

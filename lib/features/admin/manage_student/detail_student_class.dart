@@ -19,12 +19,13 @@ class DetailStudentClassInfo extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: Resizable.padding(context, 10)),
-                // ...itemCubit.lessonResults!.map((e) => DetailStudentLessonItem(
-                //       title: stdInFo.getTitle(e.lessonId),
-                //       index: stdInFo.lessonResults!.indexOf(e) + 1,
-                //       attendance:stdInFo.getStudentLesson(e.lessonId) == null? null : stdInFo.getStudentLesson(e.lessonId)!.timekeeping,
-                //       hw: stdInFo.getStudentLesson(e.lessonId) == null? null :stdInFo.getStudentLesson(e.lessonId)!.hw,
-                //     ))
+                ...itemCubit.lessonResults!.map((e) => DetailStudentLessonItem(
+                      title: itemCubit.getTitle(e.lessonId),
+                      index: itemCubit.lessonResults!.indexOf(e) + 1,
+                      attendance:itemCubit.getStudentLesson(e.lessonId) == null ? null : itemCubit.getStudentLesson(e.lessonId)!.timekeeping,
+                      hw: itemCubit.getLesson(e.lessonId) == null? null :itemCubit.getPoint(e.lessonId),
+                      isCustom: itemCubit.getLesson(e.lessonId) == null ? false : itemCubit.getLesson(e.lessonId)!.isCustom,
+                    ))
               ],
             ));
   }

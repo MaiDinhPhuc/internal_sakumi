@@ -26,43 +26,22 @@ class ItemStudentClass extends StatelessWidget {
           BlocProvider(create: (context) => DropdownCubit()),
           BlocProvider.value(value: itemCubit..loadData()),
         ],
-        child:  BlocBuilder<StudentClasItemCubit, int>(builder: (c,s){
+        child: BlocBuilder<StudentClasItemCubit, int>(builder: (c, s) {
           return BlocBuilder<DropdownCubit, int>(
-            builder: (c, state) =>Container(
-                margin: EdgeInsets.only(bottom: Resizable.padding(context, 10)),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        width: Resizable.size(context, 1),
-                        color: state % 2 == 0
-                            ? greyColor.shade100
-                            : Colors.black),
-                    borderRadius: BorderRadius.circular(
-                        Resizable.size(context, 5))),
-              child: AnimatedCrossFade(
-                  firstChild: CardStudentClassItem(
-                      widget: StudentClassOverview(
-                        model: itemCubit.classModel!,
-                        courseTitle: itemCubit.courseModel == null
-                            ? ""
-                            : "${itemCubit.courseModel!.name} ${itemCubit.courseModel!.level} ${itemCubit.courseModel!.termName}",
-                        lessonPercent: itemCubit.getLessonPercent(),
-                        lessonCountTitle: itemCubit.courseModel == null
-                            ? ""
-                            : itemCubit.countTitle!,
-                        attendancePercent: itemCubit.getAttendancePercent(),
-                        hwPercent: itemCubit.lessons == null? 0 : itemCubit.getHwPercent(),
-                      ),
-                      onPressed: () {
-                        BlocProvider.of<DropdownCubit>(c).update();
-                      },
-                      widgetStatus: StatusClassItem(
-                          status: itemCubit.stdClass.classStatus,
-                          color: itemCubit.getColor(),
-                          icon: itemCubit.getIcon())),
-                  secondChild: Column(
-                    children: [
-                      CardStudentClassItem(
+              builder: (c, state) => Container(
+                  margin:
+                      EdgeInsets.only(bottom: Resizable.padding(context, 10)),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          width: Resizable.size(context, 1),
+                          color: state % 2 == 0
+                              ? greyColor.shade100
+                              : Colors.black),
+                      borderRadius:
+                          BorderRadius.circular(Resizable.size(context, 5))),
+                  child: AnimatedCrossFade(
+                      firstChild: CardStudentClassItem(
                           widget: StudentClassOverview(
                             model: itemCubit.classModel!,
                             courseTitle: itemCubit.courseModel == null
@@ -73,7 +52,9 @@ class ItemStudentClass extends StatelessWidget {
                                 ? ""
                                 : itemCubit.countTitle!,
                             attendancePercent: itemCubit.getAttendancePercent(),
-                            hwPercent: itemCubit.lessons == null? 0 : itemCubit.getHwPercent(),
+                            hwPercent: itemCubit.lessons == null
+                                ? 0
+                                : itemCubit.getHwPercent(),
                           ),
                           onPressed: () {
                             BlocProvider.of<DropdownCubit>(c).update();
@@ -82,15 +63,38 @@ class ItemStudentClass extends StatelessWidget {
                               status: itemCubit.stdClass.classStatus,
                               color: itemCubit.getColor(),
                               icon: itemCubit.getIcon())),
-
-                    ],
-                  ),
-                  crossFadeState: state % 2 == 1
-                      ? CrossFadeState.showSecond
-                      : CrossFadeState.showFirst,
-                  duration: const Duration(milliseconds: 100))
-            )
-          );
+                      secondChild: Column(
+                        children: [
+                          CardStudentClassItem(
+                              widget: StudentClassOverview(
+                                model: itemCubit.classModel!,
+                                courseTitle: itemCubit.courseModel == null
+                                    ? ""
+                                    : "${itemCubit.courseModel!.name} ${itemCubit.courseModel!.level} ${itemCubit.courseModel!.termName}",
+                                lessonPercent: itemCubit.getLessonPercent(),
+                                lessonCountTitle: itemCubit.courseModel == null
+                                    ? ""
+                                    : itemCubit.countTitle!,
+                                attendancePercent:
+                                    itemCubit.getAttendancePercent(),
+                                hwPercent: itemCubit.lessons == null
+                                    ? 0
+                                    : itemCubit.getHwPercent(),
+                              ),
+                              onPressed: () {
+                                BlocProvider.of<DropdownCubit>(c).update();
+                              },
+                              widgetStatus: StatusClassItem(
+                                  status: itemCubit.stdClass.classStatus,
+                                  color: itemCubit.getColor(),
+                                  icon: itemCubit.getIcon())),
+                          DetailStudentClassInfo(itemCubit: itemCubit)
+                        ],
+                      ),
+                      crossFadeState: state % 2 == 1
+                          ? CrossFadeState.showSecond
+                          : CrossFadeState.showFirst,
+                      duration: const Duration(milliseconds: 100))));
         }));
   }
 }

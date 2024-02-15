@@ -110,6 +110,34 @@ class StudentClasItemCubit extends Cubit<int> {
     }
   }
 
+  String getTitle(int lessonId){
+
+    if(lessons == null) return "";
+
+    var lesson = lessons!.where((e) => e.lessonId == lessonId).toList();
+    if(lesson.isEmpty) return "";
+
+    return lesson.first.title;
+  }
+
+  StudentLessonModel? getStudentLesson(int lessonId){
+
+    if(stdLessons == null) return null;
+
+    var stdLesson = stdLessons!.where((e) => e.lessonId == lessonId).toList();
+
+    if(stdLesson.isEmpty) return null;
+
+    return stdLesson.first;
+  }
+
+  LessonModel? getLesson(int lessonId){
+    if(lessons == null) return null;
+    var lesson = lessons!.where((e) => e.lessonId == lessonId).toList();
+    if(lesson.isEmpty) return null;
+    return lesson.first;
+  }
+
   double getLessonPercent() {
     return cubit.lessonResults == null
         ? 0
@@ -166,12 +194,14 @@ class StudentClasItemCubit extends Cubit<int> {
   double getPoint(int lessonId) {
     bool isCustom =
         lessons!.firstWhere((e) => e.lessonId == lessonId).isCustom;
-    StudentLessonModel stdLesson =
-    stdLessons!.firstWhere((e) => e.lessonId == lessonId);
+
+    List<StudentLessonModel> stdLesson =
+    stdLessons!.where((e) => e.lessonId == lessonId).toList();
     if (isCustom) {
       return getHwCustomPoint(lessonId);
     }
-    return stdLesson.hw;
+    if(stdLesson.isEmpty) return -2;
+    return stdLesson.first.hw;
   }
 
   double getHwCustomPoint(int lessonId) {

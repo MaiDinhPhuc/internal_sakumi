@@ -294,4 +294,5 @@ abstract class NetworkProvider {
   Future<void> addNewBill(BillModel model);
   Future<void> updateBill(BillModel model);
   Future<List<ClassModel>> getListClassByListId(List<int> ids);
+  Future<List<BillModel>> getListBillByStdId(int stdId);
 }

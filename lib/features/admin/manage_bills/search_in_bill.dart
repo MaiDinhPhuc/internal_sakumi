@@ -50,3 +50,44 @@ class SearchInBill extends StatelessWidget {
     );
   }
 }
+
+class SearchInBillV2 extends StatelessWidget {
+  const SearchInBillV2({super.key, required this.billDialogCubit, required this.controller});
+  final BillDialogCubit billDialogCubit;
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: AlignmentDirectional.centerEnd,
+      children: [
+        TextFormField(
+          controller: controller,
+          enabled:false,
+          style: TextStyle(
+              fontSize: Resizable.font(context, 18),
+              fontWeight: FontWeight.w500),
+          decoration: InputDecoration(
+            isDense: true,
+            fillColor: Colors.white,
+            hoverColor: Colors.transparent,
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: const Color(0xffE0E0E0),
+                  width: Resizable.size(context, 0.5)),
+              borderRadius: BorderRadius.circular(
+                  Resizable.padding(context, 5)),
+            ),
+            filled: true,
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(
+                    Resizable.padding(context, 5)),
+                borderSide: BorderSide(
+                    color: const Color(0xffE0E0E0),
+                    width: Resizable.size(context, 0.5))),
+          ),
+        ),
+      ],
+    );
+  }
+}

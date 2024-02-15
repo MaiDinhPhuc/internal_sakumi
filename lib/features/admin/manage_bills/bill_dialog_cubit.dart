@@ -1,15 +1,18 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/features/admin/manage_student/manage_std_bill_cubit.dart';
 import 'package:internal_sakumi/model/bill_model.dart';
+import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 import 'manage_bill_cubit.dart';
 
 class BillDialogCubit extends Cubit<int> {
-  BillDialogCubit(this.billModel) : super(0) {
+  BillDialogCubit(this.billModel, this.std) : super(0) {
     load();
   }
 
+  final StudentModel? std;
   final BillModel? billModel;
   int? classId, userId, paymentDate, renewDate, payment, refund;
   String? type, note;
@@ -17,6 +20,7 @@ class BillDialogCubit extends Cubit<int> {
   String stdSearchValue = "";
   TextEditingController classSearch = TextEditingController();
   String classSearchValue = "";
+  TextEditingController stdCtrl = TextEditingController();
 
   List<String> listType = [
     "sale_full",
@@ -39,11 +43,15 @@ class BillDialogCubit extends Cubit<int> {
       renewDate = billModel!.renewDate;
       refund = billModel!.refund;
       type = billModel!.type;
+      note = billModel!.note;
       var student = await FireBaseProvider.instance.getStudentById(userId!);
       var classNow = await FireBaseProvider.instance.getClassById(classId!);
       stdSearch.text = "${student.name}-${student.studentCode}";
       classSearch.text = classNow.classCode;
       emit(state + 1);
+    }
+    if(std != null){
+      stdCtrl.text = "${std!.name}-${std!.studentCode}";
     }
   }
 
@@ -149,7 +157,43 @@ class BillDialogCubit extends Cubit<int> {
         check: billModel!.check,
         createDate: billModel!.createDate,
         delete: billModel!.delete);
+    await FireBaseProvider.instance.updateBill(newBill);
+    await cubit.updateListBill(billModel!,newBill);
+  }
+
+  addNewBillV2(ManageStdBillCubit cubit) async {
+    BillModel newBill = BillModel(
+        classId: classId!,
+        userId: cubit.student!.userId,
+        paymentDate: paymentDate!,
+        renewDate: renewDate!,
+        payment: payment!,
+        note: note??"",
+        refund: 0,
+        type: type!,
+        status: "notRefund",
+        check: "notCheck",
+        createDate: DateTime.now().millisecondsSinceEpoch,
+        delete: false);
     await FireBaseProvider.instance.addNewBill(newBill);
+    await cubit.addNewBill(newBill);
+  }
+
+  updateBillV2(ManageStdBillCubit cubit) async {
+    BillModel newBill = BillModel(
+        classId: classId!,
+        userId:  cubit.student!.userId,
+        paymentDate: paymentDate!,
+        renewDate: renewDate!,
+        payment: payment!,
+        note: note??"",
+        refund: refund!,
+        type: type!,
+        status: billModel!.status,
+        check: billModel!.check,
+        createDate: billModel!.createDate,
+        delete: billModel!.delete);
+    await FireBaseProvider.instance.updateBill(newBill);
     await cubit.updateListBill(billModel!,newBill);
   }
 }

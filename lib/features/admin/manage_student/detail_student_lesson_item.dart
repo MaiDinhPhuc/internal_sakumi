@@ -11,10 +11,11 @@ class DetailStudentLessonItem extends StatelessWidget {
       required this.title,
       required this.index,
       required this.attendance,
-      required this.hw});
+      required this.hw, required this.isCustom});
   final String title;
   final int index;
   final dynamic attendance, hw;
+  final bool isCustom;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class DetailStudentLessonItem extends StatelessWidget {
             ],
           ),
           widgetAttendance: Padding(padding: EdgeInsets.only(left: Resizable.padding(context, 10)),child: TrackingItem(attendance)),
-          widgetSubmit: TrackingItem(hw, isSubmit: true),
+          widgetSubmit: TrackingItem(hw, isSubmit: true, isCustom: isCustom),
         ));
   }
 }

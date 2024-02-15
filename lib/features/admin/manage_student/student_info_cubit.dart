@@ -12,11 +12,17 @@ import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
+import 'manage_std_bill_cubit.dart';
+
 class StudentInfoCubit extends Cubit<int> {
   StudentInfoCubit() : super(0);
 
   StudentModel? student;
   UserModel? user;
+
+  bool firstTab = true;
+
+  final ManageStdBillCubit billCubit = ManageStdBillCubit();
 
   List<StudentClassModel>? stdClasses;
   List<ClassModel>? classes;
@@ -32,6 +38,12 @@ class StudentInfoCubit extends Cubit<int> {
   String phone = "";
   String note = "";
   bool isLoading = true;
+
+  changeTab(){
+    firstTab = !firstTab;
+    emit(state+1);
+  }
+
   loadStudent(int studentId) async {
     await DataProvider.studentById(studentId, loadStudentInfo);
     await DataProvider.userById(studentId, loadUserInfo);

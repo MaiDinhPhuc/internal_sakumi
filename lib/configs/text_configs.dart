@@ -429,9 +429,13 @@ enum AppText {
   txtMoney,
   txtErrorPaymentDate,
   txtErrorRenewDate,
+  txtTabBill,
+  txtBillEmpty
 }
 
 Map<AppText, String> texts = {
+  AppText.txtBillEmpty : "Chưa có hoá đơn nào trong hệ thống!",
+  AppText.txtTabBill : "Ghi nhận hóa đơn",
   AppText.txtErrorPaymentDate: 'Vui lòng chọn ngày đóng tiền trước ngày renew',
   AppText.txtErrorRenewDate: 'Vui lòng chọn ngày renew sau ngày đóng tiền',
   AppText.txtMoney : "Số tiền(vnđ)",
