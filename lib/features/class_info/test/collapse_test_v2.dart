@@ -15,30 +15,32 @@ class CollapseTestV2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TestItemRowLayout(
-      test: Padding(
-          padding: EdgeInsets.only(left: Resizable.padding(context, 10)),
-          child: Text(
-              '${AppText.textLesson.text} ${index + 1 < 10 ? '0${index + 1}' : '${index + 1}'}'
-                  .toUpperCase(),
+    return Column(
+      children: [
+        TestItemRowLayout(
+          test: Padding(
+              padding: EdgeInsets.only(left: Resizable.padding(context, 10)),
+              child: Text(
+                  '${AppText.textLesson.text} ${index + 1 < 10 ? '0${index + 1}' : '${index + 1}'}'
+                      .toUpperCase(),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: Resizable.font(context, 20)))),
+          name: Text(detailCubit.testModel.title.toUpperCase(),
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                   fontWeight: FontWeight.w700,
-                  fontSize: Resizable.font(context, 20)))),
-      name: Text(detailCubit.testModel.title.toUpperCase(),
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: Resizable.font(context, 16))),
-      submit: CircleProgress(
-        title: '${(detailCubit.getSubmitPercent() * 100).toStringAsFixed(0)} %',
-        lineWidth: Resizable.size(context, 3),
-        percent: detailCubit.getSubmitPercent(),
-        radius: Resizable.size(context, 16),
-        fontSize: Resizable.font(context, 14),
-      ),
-      mark: detailCubit.getGPA() == 0
-          ? Container()
-          : Container(
+                  fontSize: Resizable.font(context, 16))),
+          submit: CircleProgress(
+            title: '${(detailCubit.getSubmitPercent() * 100).toStringAsFixed(0)} %',
+            lineWidth: Resizable.size(context, 3),
+            percent: detailCubit.getSubmitPercent(),
+            radius: Resizable.size(context, 16),
+            fontSize: Resizable.font(context, 14),
+          ),
+          mark: detailCubit.getGPA() == 0
+              ? Container()
+              : Container(
               height: Resizable.size(context, 30),
               width: Resizable.size(context, 30),
               decoration: BoxDecoration(
@@ -48,15 +50,15 @@ class CollapseTestV2 extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10)),
               child: Center(
                   child: Text(
-                detailCubit.getGPA().toStringAsFixed(1),
-                style: TextStyle(
-                    color: primaryColor,
-                    fontSize: Resizable.font(context, 18),
-                    fontWeight: FontWeight.w800),
-              ))),
-      status: detailCubit.checkGrading() == null
-          ? Container()
-          : Container(
+                    detailCubit.getGPA().toStringAsFixed(1),
+                    style: TextStyle(
+                        color: primaryColor,
+                        fontSize: Resizable.font(context, 18),
+                        fontWeight: FontWeight.w800),
+                  ))),
+          status: detailCubit.checkGrading() == null
+              ? Container()
+              : Container(
               padding: EdgeInsets.symmetric(
                   vertical: Resizable.padding(context, 4),
                   horizontal: Resizable.padding(context, 10)),
@@ -67,15 +69,22 @@ class CollapseTestV2 extends StatelessWidget {
                       : redColor),
               child: Text(
                 (detailCubit.checkGrading() == true
-                        ? AppText.txtMarked.text
-                        : AppText.txtNotMark.text)
+                    ? AppText.txtMarked.text
+                    : AppText.txtNotMark.text)
                     .toUpperCase(),
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: Resizable.font(context, 14),
                     fontWeight: FontWeight.w800),
               )),
-      dropdown: Container(),
+          dropdown: Container(),
+        ),
+        Text(detailCubit.testModel.description,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: Resizable.font(context, 16)))
+      ],
     );
   }
 }
