@@ -156,9 +156,11 @@ class ManageClassScreenV2 extends StatelessWidget {
                                 title: AppText.txtLoadMore.text),
                             SizedBox(height: Resizable.size(context, 50))
                           ]))
-                          : const Center(
-                        child: CircularProgressIndicator(),
-                      )))
+                          : Text(AppText.txtNoClass.text,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: Resizable.font(context, 17),
+                              color: greyColor.shade600))))
             ],
           ))
         ],

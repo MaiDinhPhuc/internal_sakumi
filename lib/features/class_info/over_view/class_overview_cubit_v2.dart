@@ -165,10 +165,6 @@ class ClassOverViewCubitV2 extends Cubit<int> {
     List<int> listStdIdsEnable = [];
     for (var element in listStdClass!) {
       if (element.classStatus != "Remove" &&
-          element.classStatus != "Moved" &&
-          element.classStatus != "Retained" &&
-          element.classStatus != "Dropped" &&
-          element.classStatus != "Deposit" &&
           element.classStatus != "Viewer") {
         listStdIdsEnable.add(element.userId);
       }
@@ -208,13 +204,44 @@ class ClassOverViewCubitV2 extends Cubit<int> {
       if (listStdIdsEnable.contains(i.studentId) && i.timekeeping != 0) {
         if (lessonExceptionIds.contains(i.lessonId) == false) {
           total1++;
-          if (i.hw != -2) {
+          if (getPoint(i.lessonId, i.studentId) != -2) {
             count1++;
           }
         }
       }
     }
     percentHw = count1 / (total1 == 0 ? 1 : total1);
+  }
+
+  double getPoint(int lessonId, int stdId) {
+    bool isCustom =
+        lessons!.firstWhere((e) => e.lessonId == lessonId).isCustom;
+
+    List<StudentLessonModel> stdLesson =
+    stdLessons!.where((e) => e.lessonId == lessonId && e.studentId == stdId).toList();
+    if (isCustom) {
+      return getHwCustomPoint(lessonId, stdId);
+    }
+    if(stdLesson.isEmpty) return -2;
+    return stdLesson.first.hw;
+  }
+
+  double getHwCustomPoint(int lessonId, int stdId) {
+    List<StudentLessonModel> stdLesson =
+    stdLessons!.where((e) => e.lessonId == lessonId && e.studentId == stdId).toList();
+
+    if (stdLesson.isEmpty) {
+      return -2;
+    }
+    List<dynamic> listHws = stdLesson.first.hws.map((e) => e['hw']).toList();
+
+    if (listHws.every((e) => e == -2)) {
+      return -2;
+    } else if (listHws.every((e) => e > 0)) {
+      return listHws.reduce((value, element) => value + element) /
+          listHws.length;
+    }
+    return -1;
   }
 
   loadStudentClass(Object studentClass) {

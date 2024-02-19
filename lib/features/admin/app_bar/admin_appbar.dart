@@ -101,7 +101,7 @@ class DetailAppBar extends StatelessWidget {
                           primaryColor
                               .withAlpha(30)),
                       onTap: ()  {
-                        Navigator.pushReplacementNamed(context, '${Routes.admin}/searchGeneral');
+                        Navigator.pop(context);
                       },
                       child: Container(
                         margin:

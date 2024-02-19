@@ -83,7 +83,7 @@ class ConfirmChangeStudentClassStatusV2 extends StatelessWidget {
                           moveTo: studentClassModel.moveTo,
                           userId: studentClassModel.userId,
                           classStatus: newStatus,
-                          date: studentClassModel.date));
+                          date: studentClassModel.date, timeChange: studentClassModel.timeChange));
                     }
                   }
                   DataProvider.updateStdClass(

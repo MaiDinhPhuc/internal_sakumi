@@ -37,7 +37,7 @@ class ClassItemV2 extends StatelessWidget {
                   ),
                   onTap: () async {
                     await Navigator.pushNamed(context,
-                        "${classCubit.role!}/overview/class=${classModel.classId}");
+                        "/${classCubit.role!}/overview/class=${classModel.classId}");
                   },
                   onPressed: () {
                     BlocProvider.of<DropdownCubit>(c).update();
@@ -111,7 +111,7 @@ class ClassItemV2 extends StatelessWidget {
                   ),
                   onTap: () async {
                     await Navigator.pushNamed(context,
-                        "${classCubit.role!}/overview/class=${classModel.classId}");
+                        "/${classCubit.role!}/overview/class=${classModel.classId}");
                   },
                   onPressed: () => BlocProvider.of<DropdownCubit>(c).update(),
                   widgetStatus: StatusClassItemV2(

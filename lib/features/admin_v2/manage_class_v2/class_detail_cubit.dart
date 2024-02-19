@@ -112,10 +112,6 @@ class ClassDetailCubit extends Cubit<int> {
 
     for (var element in stdClasses!) {
       if (element.classStatus != "Remove" &&
-          element.classStatus != "Moved" &&
-          element.classStatus != "Retained" &&
-          element.classStatus != "Dropped" &&
-          element.classStatus != "Deposit" &&
           element.classStatus != "Viewer") {
         listStdIdsEnable.add(element.userId);
       }
@@ -148,7 +144,7 @@ class ClassDetailCubit extends Cubit<int> {
       }
       if (lessonExceptionIds.contains(i.lessonId) == false) {
         countHw++;
-        if (i.hw != -2) {
+        if (getPoint(i.lessonId, i.studentId) != -2) {
           hwPercentTemp++;
         }
       }
@@ -162,6 +158,37 @@ class ClassDetailCubit extends Cubit<int> {
     e.lessonId == lessonResults!.last.lessonId);
     this.lastLesson = lastLesson.title;
     emit(state + 1);
+  }
+
+  double getPoint(int lessonId, int stdId) {
+    bool isCustom =
+        lessons!.firstWhere((e) => e.lessonId == lessonId).isCustom;
+
+    List<StudentLessonModel> stdLesson =
+    stdLessons!.where((e) => e.lessonId == lessonId && e.studentId == stdId).toList();
+    if (isCustom) {
+      return getHwCustomPoint(lessonId, stdId);
+    }
+    if(stdLesson.isEmpty) return -2;
+    return stdLesson.first.hw;
+  }
+
+  double getHwCustomPoint(int lessonId, int stdId) {
+    List<StudentLessonModel> stdLesson =
+    stdLessons!.where((e) => e.lessonId == lessonId && e.studentId == stdId).toList();
+
+    if (stdLesson.isEmpty) {
+      return -2;
+    }
+    List<dynamic> listHws = stdLesson.first.hws.map((e) => e['hw']).toList();
+
+    if (listHws.every((e) => e == -2)) {
+      return -2;
+    } else if (listHws.every((e) => e > 0)) {
+      return listHws.reduce((value, element) => value + element) /
+          listHws.length;
+    }
+    return -1;
   }
 
   loadStatistic() async {

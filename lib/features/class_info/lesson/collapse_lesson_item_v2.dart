@@ -1,7 +1,9 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/class_info/lesson/sensei_item_v2.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
+import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
 
@@ -9,10 +11,11 @@ import 'lesson_item_cubit_v2.dart';
 
 class CollapseLessonItemV2 extends StatelessWidget {
   const CollapseLessonItemV2(
-      {Key? key, required this.cubit, required this.index})
+      {Key? key, required this.cubit, required this.index, required this.role})
       : super(key: key);
   final LessonItemCubitV2 cubit;
   final int index;
+  final String role;
   @override
   Widget build(BuildContext context) {
     return LessonItemRowLayout(
@@ -31,19 +34,9 @@ class CollapseLessonItemV2 extends StatelessWidget {
                   color: cubit.lesson.isCustom ? primaryColor : Colors.black,
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 16)))),
-      sensei: Align(
-        alignment: Alignment.center,
-        child: Opacity(
-          opacity: 0,
-          child: CircleProgress(
-            title: '0 %',
-            lineWidth: Resizable.size(context, 3),
-            percent: 0,
-            radius: Resizable.size(context, 16),
-            fontSize: Resizable.font(context, 14),
-          ),
-        ),
-      ),
+      sensei: cubit.lessonResult == null
+          ? Container()
+          : SenseiItemV2(cubit: cubit),
       attend: cubit.stdLessons == null || cubit.lessonResult == null
           ? Container()
           : CircleProgress(

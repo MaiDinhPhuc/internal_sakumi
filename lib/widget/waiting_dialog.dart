@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -77,7 +78,7 @@ class WaitingAlert extends StatelessWidget {
               child: Transform.scale(
                 scale: 0.75,
                 child: const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(color: primaryColor),
                 ),
               )),
         ));

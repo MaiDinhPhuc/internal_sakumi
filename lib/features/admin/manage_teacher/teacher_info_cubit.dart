@@ -1,17 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/features/admin/search/search_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
-import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
-import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
-import 'package:internal_sakumi/model/teacher_info_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
+import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class TeacherInfoCubit extends Cubit<int> {
@@ -22,23 +18,21 @@ class TeacherInfoCubit extends Cubit<int> {
 
   List<TeacherClassModel>? teacherClasses;
   List<ClassModel>? classes;
-  List<CourseModel>? courses;
+  List<CourseModel> courses = [];
   List<StudentLessonModel>? stdLessons;
-  List<StudentTestModel>? stdTests;
   List<LessonResultModel>? lessonResults;
-  List<LessonModel>? lessons;
   List<StudentClassModel>? stdClasses;
-
-  List<TeacherInfoModel>? listTeacherInfo;
+  List<int> listCourseIds = [];
+  bool isLoading = true;
 
   String name = "";
   String teacherCode = "";
   String phone = "";
   String note = "";
 
-  loadStudent(int teacherId) async {
-    teacher = await FireBaseProvider.instance.getTeacherById(teacherId);
-    user = await FireBaseProvider.instance.getUserById(teacherId);
+  loadTeacher(int teacherId) async {
+    await DataProvider.teacherById(teacherId, loadStudentInfo);
+    await DataProvider.userById(teacherId, loadUserInfo);
 
     name = teacher!.name;
     teacherCode = teacher!.teacherCode;
@@ -48,43 +42,42 @@ class TeacherInfoCubit extends Cubit<int> {
     loadInFoTeacherInSystem(teacherId);
   }
 
+  loadStudentInfo(Object teacher) {
+    this.teacher = teacher as TeacherModel;
+  }
+
+  loadUserInfo(Object user) {
+    this.user = user as UserModel;
+  }
+
+  onCourseLoaded(Object course) {
+    courses.add(course as CourseModel);
+    if (courses.length == listCourseIds.length) {
+      emit(state + 1);
+    }
+  }
+
   loadInFoTeacherInSystem(int teacherId) async {
     teacherClasses =
         await FireBaseProvider.instance.getTeacherClassById(teacherId);
     var listClassId = teacherClasses!.map((e) => e.classId).toList();
     classes =
-        await FireBaseProvider.instance.getListClassForTeacher(listClassId);
-    listTeacherInfo = await TeacherInfoModel.loadInfo(teacherClasses!, classes!,
-        courses, stdLessons, stdTests, lessonResults, lessons, stdClasses);
-    emit(state + 1);
-    stdClasses =
-        await FireBaseProvider.instance.getStudentClassByListId(listClassId);
-    listTeacherInfo = await TeacherInfoModel.loadInfo(teacherClasses!, classes!,
-        courses, stdLessons, stdTests, lessonResults, lessons, stdClasses);
-    emit(state + 1);
-    List<int> listCourseIds = [];
+        await FireBaseProvider.instance.getListClassByListIdV2(listClassId);
     for (var i in classes!) {
       if (listCourseIds.contains(i.courseId) == false) {
+        DataProvider.courseById(i.courseId, onCourseLoaded);
         listCourseIds.add(i.courseId);
       }
     }
-    courses = await FireBaseProvider.instance.getCourseByListId(listCourseIds);
-    listTeacherInfo = await TeacherInfoModel.loadInfo(teacherClasses!, classes!,
-        courses, stdLessons, stdTests, lessonResults, lessons, stdClasses);
-    emit(state + 1);
+
+    stdClasses =
+        await FireBaseProvider.instance.getStudentClassByListId(listClassId);
     stdLessons = await FireBaseProvider.instance
         .getAllStudentLessonsInListClassId(listClassId);
-    stdTests =
-        await FireBaseProvider.instance.getListStudentTestByIDs(listClassId);
     lessonResults = await FireBaseProvider.instance
         .getLessonsResultsByListClassIds(listClassId);
-    listTeacherInfo = await TeacherInfoModel.loadInfo(teacherClasses!, classes!,
-        courses, stdLessons, stdTests, lessonResults, lessons, stdClasses);
-    emit(state + 1);
-    lessons =
-        await FireBaseProvider.instance.getLessonsByListCourseId(listCourseIds);
-    listTeacherInfo = await TeacherInfoModel.loadInfo(teacherClasses!, classes!,
-        courses, stdLessons, stdTests, lessonResults, lessons, stdClasses);
+
+    isLoading = false;
     emit(state + 1);
   }
 

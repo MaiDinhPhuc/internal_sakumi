@@ -1,31 +1,32 @@
-import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/features/admin/manage_student/student_info_cubit.dart';
+import 'package:internal_sakumi/features/admin/manage_teacher/teacher_info_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
+import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
-class StudentClasItemCubit extends Cubit<int> {
-  StudentClasItemCubit(this.classId, this.cubit, this.stdClass) : super(0);
+class TeacherClassItemCubit extends Cubit<int>{
+  TeacherClassItemCubit(this.classId, this.cubit, this.teacherClass):super(0);
 
-  ClassModel? classModel;
-  CourseModel? courseModel;
-  final StudentClassModel stdClass;
+  final TeacherClassModel teacherClass;
+  final int classId;
+  final TeacherInfoCubit cubit;
   List<LessonModel>? lessons;
   List<LessonResultModel>? lessonResults;
   List<StudentLessonModel>? stdLessons;
+  List<StudentClassModel>? stdClasses;
   String? countTitle;
+  CourseModel? courseModel;
+  ClassModel? classModel;
 
-  final int classId;
-  final StudentInfoCubit cubit;
-  loadData() async {
+  loadData()async{
     classModel = cubit.classes!.firstWhere((e) => e.classId == classId);
-    courseModel =
-        cubit.courses.firstWhere((e) => e.courseId == classModel!.courseId);
+    courseModel = cubit.courses.firstWhere((e) => e.courseId == classModel!.courseId);
+    stdClasses = cubit.stdClasses!.where((e) => e.classId == classId).toList();
     lessonResults =
         cubit.lessonResults!.where((e) => e.classId == classId).toList();
     countTitle =
@@ -60,89 +61,12 @@ class StudentClasItemCubit extends Cubit<int> {
     }
     emit(state+1);
   }
-
-  String getIcon() {
-    switch (stdClass.classStatus) {
-      case 'Completed':
-        return 'check';
-      case 'Moved':
-        return 'moved';
-      case 'Retained':
-        return 'retained';
-      case 'Dropped':
-      case 'Deposit':
-      case 'Remove':
-        return 'dropped';
-      case 'Viewer':
-        return 'viewer';
-      case 'UpSale':
-      case "Force":
-        return 'up_sale';
-      case 'ReNew':
-        return 're_new';
-      default:
-        return 'in_progress';
-    }
-  }
-
-  Color getColor() {
-    switch (stdClass.classStatus) {
-      case 'Completed':
-      case 'Moved':
-        return const Color(0xffF57F17);
-      case 'Retained':
-      case 'UpSale':
-        return const Color(0xffE65100);
-      case 'ReNew':
-      case 'Dropped':
-      case 'Remove':
-        return const Color(0xffB71C1C);
-      case 'Viewer':
-        return const Color(0xff757575);
-      case 'Deposit':
-        return Colors.black;
-      case 'Force':
-        return Colors.blue;
-      default:
-        return const Color(0xff33691e);
-    }
-  }
-
-  String getTitle(int lessonId){
-
-    if(lessons == null) return "";
-
-    var lesson = lessons!.where((e) => e.lessonId == lessonId).toList();
-    if(lesson.isEmpty) return "";
-
-    return lesson.first.title;
-  }
-
-  StudentLessonModel? getStudentLesson(int lessonId){
-
-    if(stdLessons == null) return null;
-
-    var stdLesson = stdLessons!.where((e) => e.lessonId == lessonId).toList();
-
-    if(stdLesson.isEmpty) return null;
-
-    return stdLesson.first;
-  }
-
-  LessonModel? getLesson(int lessonId){
-    if(lessons == null) return null;
-    var lesson = lessons!.where((e) => e.lessonId == lessonId).toList();
-    if(lesson.isEmpty) return null;
-    return lesson.first;
-  }
-
   double getLessonPercent() {
     return cubit.lessonResults == null
         ? 0
         : lessonResults!.length /
-            (courseModel!.lessonCount + classModel!.customLessons.length);
+        (courseModel!.lessonCount + classModel!.customLessons.length);
   }
-
   double getAttendancePercent() {
     if (stdLessons == null || stdLessons!.isEmpty) {
       return 0;
@@ -190,9 +114,14 @@ class StudentClasItemCubit extends Cubit<int> {
   }
 
   double getPoint(int lessonId) {
-    bool isCustom =
-        lessons!.firstWhere((e) => e.lessonId == lessonId).isCustom;
 
+    if(lessons == null) return -2;
+
+    var lesson = lessons!.where((e) => e.lessonId == lessonId).toList();
+    bool isCustom = false;
+    if(lesson.isNotEmpty){
+      isCustom = lesson.first.isCustom;
+    }
     List<StudentLessonModel> stdLesson =
     stdLessons!.where((e) => e.lessonId == lessonId).toList();
     if (isCustom) {
@@ -218,5 +147,81 @@ class StudentClasItemCubit extends Cubit<int> {
           listHws.length;
     }
     return -1;
+  }
+
+  String getTitle(int lessonId){
+
+    if(lessons == null) return "";
+
+    var lesson = lessons!.where((e) => e.lessonId == lessonId).toList();
+    if(lesson.isEmpty) return "";
+
+    return lesson.first.title;
+  }
+
+  double getAttendanceForLesson(int lessonId){
+    if (stdLessons == null || stdLessons!.isEmpty) {
+      return 0;
+    }
+    var listStdId = stdClasses!.map((e) => e.userId).toList();
+
+    if(listStdId.isEmpty){
+      return 0;
+    }
+
+    var listStdLesson = stdLessons!.where((e) => e.lessonId == lessonId).toList();
+
+    int temp1 = 0;
+    int temp2 = 0;
+    for (var i in listStdLesson) {
+      if(listStdId.contains(i.studentId)){
+        if (i.timekeeping != 0 && i.timekeeping != 5 && i.timekeeping != 6) {
+          temp1++;
+        }
+        if (i.timekeeping != 0) {
+          temp2++;
+        }
+      }
+    }
+
+    if (temp2 == 0) {
+      return 0;
+    }
+
+    double attendancePercent = temp1 / temp2;
+
+    return attendancePercent;
+  }
+
+  double getHwForLesson(int lessonId){
+    if (stdLessons == null || stdLessons!.isEmpty) {
+      return 0;
+    }
+    var listStdId = stdClasses!.map((e) => e.userId).toList();
+
+    if(listStdId.isEmpty){
+      return 0;
+    }
+
+    var listStdLesson = stdLessons!.where((e) => e.lessonId == lessonId).toList();
+    int temp1 = 0;
+    int temp2 = 0;
+    for (var i in listStdLesson) {
+      if(listStdId.contains(i.studentId)){
+        if (getPoint(i.lessonId) != -2 && i.timekeeping != 0) {
+          temp1++;
+        }
+        if (i.timekeeping != 0) {
+          temp2++;
+        }
+      }
+    }
+    if (temp2 == 0) {
+      return 0;
+    }
+
+    double hwPercent = temp1 / temp2;
+
+    return hwPercent;
   }
 }

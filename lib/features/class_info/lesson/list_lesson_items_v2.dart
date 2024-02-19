@@ -1,11 +1,12 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
-import 'package:internal_sakumi/features/class_info/lesson/sensei_item_v2.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
+import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:internal_sakumi/widget/circle_progress.dart';
 
 import 'choose_custom_lesson.dart';
 import 'collapse_lesson_item_v2.dart';
@@ -55,13 +56,14 @@ class LessonItemV2 extends StatelessWidget {
                               child: AnimatedCrossFade(
                                   firstChild: CollapseLessonItemV2(
                                       cubit: detailCubit,
-                                      index: cubit.lessons!.indexOf(lesson)),
+                                      index: cubit.lessons!.indexOf(lesson),
+                                      role: role),
                                   secondChild: Column(
                                     children: [
                                       CollapseLessonItemV2(
                                           cubit: detailCubit,
-                                          index:
-                                              cubit.lessons!.indexOf(lesson)),
+                                          index: cubit.lessons!.indexOf(lesson),
+                                          role: role),
                                       detailCubit.lessonResult == null
                                           ? const CircularProgressIndicator()
                                           : detailCubit.lessonResult!.status !=
@@ -90,11 +92,18 @@ class LessonItemV2 extends StatelessWidget {
                                           "/teacher/lesson/class=${cubit.classId}/lesson=${lesson.lessonId}");
                                     } else {
                                       if (detailCubit.lesson.isCustom) {
-                                        if(detailCubit.lesson.customLessonInfo.length == 1){
+                                        if (detailCubit.lesson.customLessonInfo
+                                                .length ==
+                                            1) {
                                           await Navigator.pushNamed(c,
                                               "/teacher/grading/class=${cubit.classId}/type=btvn/customLesson=${lesson.lessonId}/lesson=${detailCubit.lesson.customLessonInfo.first['lesson_id']}");
-                                        }else{
-                                          selectionCustomLessonDialog(c,detailCubit.lesson.customLessonInfo,cubit.classId,lesson.lessonId);
+                                        } else {
+                                          selectionCustomLessonDialog(
+                                              c,
+                                              detailCubit
+                                                  .lesson.customLessonInfo,
+                                              cubit.classId,
+                                              lesson.lessonId);
                                         }
                                       } else {
                                         await Navigator.pushNamed(c,
@@ -114,9 +123,31 @@ class LessonItemV2 extends StatelessWidget {
                                 name: Container(),
                                 attend: Container(),
                                 submit: Container(),
-                                sensei: detailCubit.lessonResult == null
-                                    ? Container()
-                                    : SenseiItemV2(cubit: detailCubit),
+                                sensei: Container(
+                                    height: Resizable.size(context, 32),
+                                    width: Resizable.size(context, 32),
+                                    child: InkWell(
+                                  borderRadius: BorderRadius.circular(100),
+                                  onTap: () async {
+                                    if (role == "admin" && detailCubit.teacher != null) {
+                                      await Navigator.pushNamed(context,
+                                          "${Routes.admin}/teacherInfo/teacher=${detailCubit.teacher!.userId}");
+                                    }
+                                  },
+                                  child: Align(
+                                      alignment: Alignment.center,
+                                      child: Opacity(
+                                          opacity: 0,
+                                          child: CircleProgress(
+                                              title: '0 %',
+                                              lineWidth:
+                                              Resizable.size(context, 3),
+                                              percent: 0,
+                                              radius:
+                                              Resizable.size(context, 16),
+                                              fontSize: Resizable.font(
+                                                  context, 14)))),
+                                )),
                                 mark: Container(),
                                 dropdown: detailCubit.lessonResult == null
                                     ? Container()
@@ -142,5 +173,3 @@ class LessonItemV2 extends StatelessWidget {
         });
   }
 }
-
-

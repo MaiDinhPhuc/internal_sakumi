@@ -1,6 +1,5 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/features/admin/manage_student/student_class_item_cubit.dart';
-import 'package:internal_sakumi/model/student_info_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'detail_student_lesson_item.dart';

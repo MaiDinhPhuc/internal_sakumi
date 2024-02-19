@@ -10,7 +10,6 @@ import 'package:url_strategy/url_strategy.dart';
 
 import 'configs/color_configs.dart';
 import 'features/master/manage_survey/manage_survey_cubit.dart';
-import 'features/teacher/cubit/data_cubit.dart';
 import 'features/teacher/profile/app_bar_info_teacher_cubit.dart';
 import 'firebase_options.dart';
 
@@ -49,6 +48,7 @@ class MyApp extends StatelessWidget {
               fontSizeFactor: 1.0,
               fontFamily: "Montserrat",
             ),
+            useMaterial3: false
           ),
           onGenerateRoute: Routes.router.generator,
         ));

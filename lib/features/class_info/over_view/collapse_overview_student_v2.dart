@@ -5,6 +5,7 @@ import 'package:internal_sakumi/features/class_info/over_view/student_item_overv
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_cubit.dart';
 import 'package:internal_sakumi/features/teacher/overview/overview_chart.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
+import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
 
@@ -30,14 +31,29 @@ class CollapseOverviewStudentV2 extends StatelessWidget {
         ),
         child: OverviewItemRowLayout(
             icon: IconToolTipV2(role: role, cubit: cubit, stdClass: stdClass, studentCubit: studentCubit),
-            name: Text(
-                studentCubit.studentModel == null
-                    ? ""
-                    : "${studentCubit.studentModel!.name} - ${studentCubit.studentModel!.studentCode}",
-                style: TextStyle(
-                    fontSize: Resizable.font(context, 20),
-                    color: const Color(0xff131111),
-                    fontWeight: FontWeight.w500)),
+            name: Material(
+                color: Colors.transparent,
+                child: InkWell(
+              borderRadius: BorderRadius.circular(100),
+              overlayColor:
+              MaterialStateProperty.all(primaryColor.withAlpha(30)),
+              onTap: ()async{
+                if(studentCubit.studentModel != null && role == "admin"){
+                  await Navigator.pushNamed(context,
+                      "${Routes.admin}/studentInfo/student=${studentCubit.studentModel!.userId}");
+                }
+              },
+              child: Padding(
+                  padding: EdgeInsets.all( Resizable.size(context, 5)),
+                  child: Text(
+                  studentCubit.studentModel == null
+                      ? ""
+                      : "${studentCubit.studentModel!.name} - ${studentCubit.studentModel!.studentCode}",
+                  style: TextStyle(
+                      fontSize: Resizable.font(context, 20),
+                      color: const Color(0xff131111),
+                      fontWeight: FontWeight.w500))),
+            )),
             attend: studentCubit.studentModel == null
                 ? CircleProgress(
                     title: '0 %',

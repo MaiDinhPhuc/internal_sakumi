@@ -20,7 +20,7 @@ class TeacherInfoScreen extends StatelessWidget {
           const DetailAppBar(),
           Expanded(
               child: BlocBuilder(
-                bloc: cubit..loadStudent(int.parse(TextUtils.getName())),
+                bloc: cubit..loadTeacher(int.parse(TextUtils.getName())),
                 builder: (c, s) {
                   return cubit.teacher == null || cubit.user == null
                       ? const Center(

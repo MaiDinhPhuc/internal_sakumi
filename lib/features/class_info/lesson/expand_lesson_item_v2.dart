@@ -1,4 +1,5 @@
 import 'package:flutter/Material.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/lecture_v2/session_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/input_sp_note_for_ss.dart';
@@ -6,6 +7,7 @@ import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
+import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/note_widget.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
@@ -54,7 +56,8 @@ class ExpandLessonItemV2 extends StatelessWidget {
                 NoteWidget(detailCubit.lessonResult!.noteForTeacher!),
               ],
             ),
-          if (role == "teacher" && detailCubit.lessonResult!.supportNoteForTeacher != "")
+          if (role == "teacher" &&
+              detailCubit.lessonResult!.supportNoteForTeacher != "")
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -196,12 +199,29 @@ class ExpandLessonItemV2 extends StatelessWidget {
                     children: [
                       ...detailCubit.getStudents().map((e) =>
                           TrackStudentItemRowLayout(
-                              name: Text(
-                                e.name,
-                                style: TextStyle(
-                                    fontSize: Resizable.font(context, 20),
-                                    fontWeight: FontWeight.w500),
-                              ),
+                              name: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    borderRadius: BorderRadius.circular(100),
+                                    overlayColor: MaterialStateProperty.all(
+                                        primaryColor.withAlpha(30)),
+                                    onTap: () async {
+                                      if (role == "admin") {
+                                        await Navigator.pushNamed(context,
+                                            "${Routes.admin}/studentInfo/student=${e.userId}");
+                                      }
+                                    },
+                                    child: Padding(
+                                        padding: EdgeInsets.all(
+                                            Resizable.size(context, 5)),
+                                        child: Text(
+                                          e.name,
+                                          style: TextStyle(
+                                              fontSize:
+                                                  Resizable.font(context, 20),
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                  )),
                               attendance: TrackingItem(
                                   detailCubit.getStudentLesson(e.userId).isEmpty
                                       ? null

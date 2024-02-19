@@ -7,7 +7,6 @@ import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
-import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
@@ -28,7 +27,6 @@ class StudentInfoCubit extends Cubit<int> {
   List<ClassModel>? classes;
   List<CourseModel> courses = [];
   List<StudentLessonModel>? stdLessons;
-  List<StudentTestModel>? stdTests;
   List<LessonResultModel>? lessonResults;
   List<int> listCourseIds = [];
 
@@ -76,7 +74,7 @@ class StudentInfoCubit extends Cubit<int> {
     stdClasses = await FireBaseProvider.instance.getStudentClassByStdId(studentId);
     var listClassId = stdClasses!.map((e) => e.classId).toList();
     classes =
-        await FireBaseProvider.instance.getListClassForTeacher(listClassId);
+        await FireBaseProvider.instance.getListClassByListIdV2(listClassId);
     for (var i in classes!) {
       if (listCourseIds.contains(i.courseId) == false) {
         DataProvider.courseById(i.courseId, onCourseLoaded);
@@ -86,7 +84,7 @@ class StudentInfoCubit extends Cubit<int> {
 
     stdLessons =
         await FireBaseProvider.instance.getStudentLessonByStdId(studentId);
-    stdTests = await FireBaseProvider.instance.getStudentTestByStdId(studentId);
+
     lessonResults = await FireBaseProvider.instance
         .getLessonsResultsByListClassIds(listClassId);
 

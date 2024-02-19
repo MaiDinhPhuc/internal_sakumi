@@ -1663,6 +1663,45 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<List<ClassModel>> getListClassByListIdV2(List<int> ids) async {
+    if (ids.isEmpty) {
+      return [];
+    }
+    if (ids.length <= 10) {
+      return (await FireStoreDb.instance.getListClassListIds(ids))
+          .docs
+          .map((e) => ClassModel.fromSnapshot(e))
+          .toList();
+    }
+    List<List<int>> subLists = [];
+    for (int i = 0; i < ids.length; i += 10) {
+      List<int> subList =
+      ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
+      subLists.add(subList);
+    }
+
+    List<ClassModel> temp = [];
+
+    List<Future<QuerySnapshot<Map<String, dynamic>>>> tempX = [];
+
+    for (int i = 0; i < subLists.length; i++) {
+      tempX.add(FireStoreDb.instance.getListClassListIds(subLists[i]));
+    }
+    List<QuerySnapshot<Map<String, dynamic>>> responses =
+    await Future.wait(tempX);
+
+    temp = responses.fold(
+        [],
+            (pre, res) => [
+          ...pre,
+          ...res.docs.map((e) => ClassModel.fromSnapshot(e)).toList()
+        ]);
+
+
+    return temp;
+  }
+
+  @override
   Future<List<ClassModel>> getListClassForTeacherV2(
       List<int> ids, List<String> listStatus) async {
     if (ids.isEmpty) {

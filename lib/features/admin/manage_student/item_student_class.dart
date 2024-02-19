@@ -7,7 +7,6 @@ import 'package:internal_sakumi/features/admin/manage_student/student_info_cubit
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_cubit.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/class_status_item.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
-import 'package:internal_sakumi/model/student_info_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'card_student_class_item.dart';

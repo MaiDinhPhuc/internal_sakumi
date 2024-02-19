@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/Material.dart';
 
 class StudentClassModel {
-  final int activeStatus, classId, id, learningStatus, moveTo, userId;
+  final int activeStatus, classId, id, learningStatus, moveTo, userId, timeChange;
   final String classStatus, date;
   String? _status;
   StudentClassModel(
@@ -13,7 +13,7 @@ class StudentClassModel {
       required this.moveTo,
       required this.userId,
       required this.classStatus,
-      required this.date});
+      required this.date, required this.timeChange});
 
 
   String get status => _status ?? classStatus;
@@ -80,6 +80,6 @@ class StudentClassModel {
         moveTo: data['move_to'],
         userId: data['user_id'],
         classStatus: data['class_status'] ?? '',
-        date: data['date'] ?? '');
+        date: data['date'] ?? '', timeChange : data['last_time_change'] ?? 0);
   }
 }

@@ -192,7 +192,7 @@ void alertCheckBoxStudent(
                                                           date: DateFormat(
                                                                   'dd/MM/yyyy')
                                                               .format(DateTime
-                                                                  .now())));
+                                                                  .now()), timeChange: 0));
                                                 }
                                                 if (context.mounted) {
                                                   Navigator.pop(context);

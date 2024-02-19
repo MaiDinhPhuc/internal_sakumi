@@ -3,7 +3,9 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_teacher/teacher_info_cubit.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
+import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'item_teacher_class.dart';
 
@@ -12,11 +14,24 @@ class ListTeacherClassView extends StatelessWidget {
   final TeacherInfoCubit cubit;
   @override
   Widget build(BuildContext context) {
-    return cubit.listTeacherInfo == null
-        ? const Center(
-            child: CircularProgressIndicator(),
+    final shimmerList = List.generate(5, (index) => index);
+    return cubit.isLoading == true
+        ? Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: Resizable.size(context, 10)),
+                  ...shimmerList.map((e) => Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: Resizable.size(context, 0)),
+                      child: const ItemShimmer()))
+                ],
+              ),
+            ),
           )
-        : cubit.listTeacherInfo!.isEmpty
+        : cubit.teacherClasses!.isEmpty
             ? Text(AppText.txtNotTeacherClass.text,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
@@ -65,7 +80,8 @@ class ListTeacherClassView extends StatelessWidget {
                             fontSize: Resizable.font(context, 17),
                             color: greyColor.shade600)),
                   ),
-                  ...cubit.listTeacherInfo!.map((e) => ItemTeacherClass(teacherInFo: e))
+                  ...cubit.teacherClasses!.map(
+                      (e) => ItemTeacherClass(teacherClass: e, cubit: cubit))
                 ],
               );
   }

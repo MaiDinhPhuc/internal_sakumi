@@ -5,10 +5,8 @@ import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class StatusTeacherClass extends StatelessWidget {
-  const StatusTeacherClass({super.key, required this.status, required this.color, required this.icon});
+  const StatusTeacherClass({super.key, required this.status,});
   final String status;
-  final Color color;
-  final String icon;
   @override
   Widget build(BuildContext context) {
     return Tooltip(
@@ -43,7 +41,7 @@ class StatusTeacherClass extends StatelessWidget {
             width: Resizable.size(context, 20),
             padding: EdgeInsets.all(Resizable.padding(context, 10)),
             decoration: BoxDecoration(
-                color: color,
+                color: getColor(),
                 borderRadius:
                 BlocProvider.of<DropdownCubit>(context).state %
                     2 ==
@@ -54,8 +52,38 @@ class StatusTeacherClass extends StatelessWidget {
                     : BorderRadius.only(
                     topLeft: Radius.circular(
                         Resizable.padding(context, 5)))),
-            child: Image.asset('assets/images/ic_$icon.png'),
+            child: Image.asset('assets/images/ic_${getIcon()}.png'),
           ),
         ));
+  }
+
+  Color getColor() {
+    switch (status) {
+      case 'InProgress':
+        return const Color(0xff33691e);
+      case 'Cancel':
+      case 'Remove':
+        return const Color(0xffB71C1C);
+      case 'Completed':
+      case 'Preparing':
+        return const Color(0xff757575);
+      default:
+        return const Color(0xff33691e);
+    }
+  }
+
+  String getIcon() {
+    switch (status) {
+      case 'InProgress':
+      case 'Preparing':
+        return "in_progress";
+      case 'Cancel':
+      case 'Remove':
+        return "dropped";
+      case 'Completed':
+        return "check";
+      default:
+        return "in_progress";
+    }
   }
 }

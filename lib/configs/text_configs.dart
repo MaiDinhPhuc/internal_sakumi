@@ -775,7 +775,7 @@ Map<AppText, String> texts = {
   AppText.titleAddTeacherToClass: 'Thêm giáo viên vào lớp',
   AppText.txtNoStudent: 'Không có học viên',
   AppText.txtNoTeacher: 'Không có giáo viên',
-  AppText.txtNoClass: 'Không có lớp học',
+  AppText.txtNoClass: 'Không có lớp học thoả mãn điều kiện, vui lòng chọn lại filter...',
   AppText.txtNoTag: 'Không có thẻ',
   AppText.titleTagName: 'Tên thẻ',
   AppText.titleChooseBackground: 'Chọn màu nền',
