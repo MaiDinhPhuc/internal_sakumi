@@ -35,7 +35,19 @@ class CollapseLessonItemV2 extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 16)))),
       sensei: cubit.lessonResult == null
-          ? Container()
+          ? Align(
+          alignment: Alignment.center,
+          child: Opacity(
+              opacity: 0,
+              child: CircleProgress(
+                  title: '0 %',
+                  lineWidth:
+                  Resizable.size(context, 3),
+                  percent: 0,
+                  radius:
+                  Resizable.size(context, 16),
+                  fontSize: Resizable.font(
+                      context, 14))))
           : SenseiItemV2(cubit: cubit),
       attend: cubit.stdLessons == null || cubit.lessonResult == null
           ? Container()

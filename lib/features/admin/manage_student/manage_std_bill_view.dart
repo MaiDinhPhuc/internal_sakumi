@@ -91,8 +91,8 @@ class ManageStdBillView extends StatelessWidget {
                           fontSize: Resizable.font(
                               context, 17),
                           color: greyColor.shade600)),
-                  widgetStatus: Text(
-                      AppText.titleStatus.text,
+                  widgetCreator: Text(
+                      AppText.txtCreator.text,
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: Resizable.font(

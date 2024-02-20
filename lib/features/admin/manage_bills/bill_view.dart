@@ -29,6 +29,7 @@ class BillView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
       margin: EdgeInsets.only(bottom: Resizable.padding(context, 10)),
       decoration: BoxDecoration(
           border: Border.all(
@@ -77,13 +78,12 @@ class BillView extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                             fontSize: Resizable.font(context, 18),
                             color: primaryColor)),
-                    widgetStatus: Image.asset(
-                      billModel.check == "notCheck"
-                          ? "assets/images/ic_not_check_bill.png"
-                          : "assets/images/ic_check_bill.png",
-                      height: Resizable.size(context, 30),
-                      width: Resizable.size(context, 30),
-                    ),
+                    widgetCreator: Text(
+                        billModel.creator,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: Resizable.font(context, 18),
+                            color: Colors.black)),
                     widgetDropdown: Container(),
                   ),
                   if (isExpand)
@@ -153,7 +153,7 @@ class BillView extends StatelessWidget {
           Container(
               margin: EdgeInsets.only(
                   right: Resizable.padding(context, 20),
-                  top: Resizable.padding(context, 10)),
+                  top: Resizable.padding(context, 0)),
               alignment: Alignment.centerRight,
               child: IconButton(
                   onPressed: onPressed,
@@ -188,6 +188,7 @@ class BillViewV2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(bottom: Resizable.padding(context, 10)),
+      padding: EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
       decoration: BoxDecoration(
           border: Border.all(
               width: Resizable.size(context, 1),
@@ -235,13 +236,11 @@ class BillViewV2 extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                             fontSize: Resizable.font(context, 18),
                             color: primaryColor)),
-                    widgetStatus: Image.asset(
-                      billModel.check == "notCheck"
-                          ? "assets/images/ic_not_check_bill.png"
-                          : "assets/images/ic_check_bill.png",
-                      height: Resizable.size(context, 30),
-                      width: Resizable.size(context, 30),
-                    ),
+                    widgetCreator: Text(billModel.creator,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: Resizable.font(context, 18),
+                            color: Colors.black)),
                     widgetDropdown: Container(),
                   ),
                   if (isExpand)
@@ -310,8 +309,8 @@ class BillViewV2 extends StatelessWidget {
               )),
           Container(
               margin: EdgeInsets.only(
-                  right: Resizable.padding(context, 10),
-                  top: Resizable.padding(context, 10)),
+                  right: Resizable.padding(context, 5),
+                  ),
               alignment: Alignment.centerRight,
               child: IconButton(
                   onPressed: onPressed,

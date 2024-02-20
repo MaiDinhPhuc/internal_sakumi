@@ -32,8 +32,8 @@ class ManageBillScreen extends StatelessWidget {
             padding: EdgeInsets.only(
                 top: Resizable.padding(context, 20),
                 bottom: Resizable.padding(context, 40),
-                left: Resizable.padding(context, 100),
-                right: Resizable.padding(context, 100)),
+                left: Resizable.padding(context, 50),
+                right: Resizable.padding(context, 50)),
             child: BlocBuilder<ManageBillCubit, int>(
               bloc: cubit,
               builder: (c, s) {
@@ -133,8 +133,8 @@ class ManageBillScreen extends StatelessWidget {
                                           fontSize: Resizable.font(
                                               context, 17),
                                           color: greyColor.shade600)),
-                                  widgetStatus: Text(
-                                      AppText.titleStatus.text,
+                                  widgetCreator: Text(
+                                      AppText.txtCreator.text,
                                       style: TextStyle(
                                           fontWeight: FontWeight.w600,
                                           fontSize: Resizable.font(

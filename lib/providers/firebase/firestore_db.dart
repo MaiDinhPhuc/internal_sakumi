@@ -677,7 +677,8 @@ class FireStoreDb {
       'renew_date': model.renewDate,
       'status': model.status,
       'type': model.type,
-      'user_id': model.userId
+      'user_id': model.userId,
+      'creator': model.creator
     });
     debugPrint("==========> add db for \"bill\"");
   }
@@ -695,7 +696,8 @@ class FireStoreDb {
       'renew_date': model.renewDate,
       'status': model.status,
       'type': model.type,
-      'user_id': model.userId
+      'user_id': model.userId,
+      'creator': model.creator
     });
     debugPrint("==========> update db for \"bill\"");
   }

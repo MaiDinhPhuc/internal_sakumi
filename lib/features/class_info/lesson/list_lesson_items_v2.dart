@@ -123,7 +123,7 @@ class LessonItemV2 extends StatelessWidget {
                                 name: Container(),
                                 attend: Container(),
                                 submit: Container(),
-                                sensei: Container(
+                                sensei: SizedBox(
                                     height: Resizable.size(context, 32),
                                     width: Resizable.size(context, 32),
                                     child: InkWell(

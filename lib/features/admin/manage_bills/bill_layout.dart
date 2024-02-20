@@ -9,7 +9,7 @@ class BillLayout extends StatelessWidget {
       required this.widgetPayment,
       required this.widgetRenewDate,
       required this.widgetType,
-      required this.widgetStatus,
+      required this.widgetCreator,
       required this.widgetDropdown});
   final Widget widgetStdName,
       widgetClassCode,
@@ -17,7 +17,7 @@ class BillLayout extends StatelessWidget {
       widgetPayment,
       widgetRenewDate,
       widgetType,
-      widgetStatus,
+      widgetCreator,
       widgetDropdown;
   @override
   Widget build(BuildContext context) {
@@ -25,6 +25,15 @@ class BillLayout extends StatelessWidget {
       children: [
         Expanded(
             flex: 3,
+            child: Container(
+              alignment: Alignment.center,
+              child: widgetCreator,
+            )),
+        Expanded(
+            flex: 3,
+            child: Container(alignment: Alignment.center, child: widgetType)),
+        Expanded(
+            flex: 4,
             child: Container(
               alignment: Alignment.center,
               child: widgetStdName,
@@ -45,12 +54,6 @@ class BillLayout extends StatelessWidget {
             flex: 3,
             child:
                 Container(alignment: Alignment.center, child: widgetRenewDate)),
-        Expanded(
-            flex: 3,
-            child: Container(alignment: Alignment.center, child: widgetType)),
-        Expanded(
-            flex: 2,
-            child: Container(alignment: Alignment.center, child: widgetStatus)),
         Expanded(
             flex: 1,
             child:

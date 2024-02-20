@@ -15,7 +15,7 @@ class BillDialogCubit extends Cubit<int> {
   final StudentModel? std;
   final BillModel? billModel;
   int? classId, userId, paymentDate, renewDate, payment, refund;
-  String? type, note;
+  String? type, note, creator;
   TextEditingController stdSearch = TextEditingController();
   String stdSearchValue = "";
   TextEditingController classSearch = TextEditingController();
@@ -44,6 +44,7 @@ class BillDialogCubit extends Cubit<int> {
       refund = billModel!.refund;
       type = billModel!.type;
       note = billModel!.note;
+      creator = billModel!.creator;
       var student = await FireBaseProvider.instance.getStudentById(userId!);
       var classNow = await FireBaseProvider.instance.getClassById(classId!);
       stdSearch.text = "${student.name}-${student.studentCode}";
@@ -62,6 +63,11 @@ class BillDialogCubit extends Cubit<int> {
 
   inputRefund(String newValue){
     refund = int.parse(newValue);
+    emit(state + 1);
+  }
+
+  inputCreator(String newValue){
+    creator = newValue;
     emit(state + 1);
   }
 
@@ -138,7 +144,7 @@ class BillDialogCubit extends Cubit<int> {
         status: "notRefund",
         check: "notCheck",
         createDate: DateTime.now().millisecondsSinceEpoch,
-        delete: false);
+        delete: false, creator: creator!);
     await FireBaseProvider.instance.addNewBill(newBill);
     await cubit.addNewBill(newBill);
   }
@@ -156,7 +162,7 @@ class BillDialogCubit extends Cubit<int> {
         status: billModel!.status,
         check: billModel!.check,
         createDate: billModel!.createDate,
-        delete: billModel!.delete);
+        delete: billModel!.delete,creator:creator!);
     await FireBaseProvider.instance.updateBill(newBill);
     await cubit.updateListBill(billModel!,newBill);
   }
@@ -174,7 +180,7 @@ class BillDialogCubit extends Cubit<int> {
         status: "notRefund",
         check: "notCheck",
         createDate: DateTime.now().millisecondsSinceEpoch,
-        delete: false);
+        delete: false,creator:creator!);
     await FireBaseProvider.instance.addNewBill(newBill);
     await cubit.addNewBill(newBill);
   }
@@ -192,7 +198,7 @@ class BillDialogCubit extends Cubit<int> {
         status: billModel!.status,
         check: billModel!.check,
         createDate: billModel!.createDate,
-        delete: billModel!.delete);
+        delete: billModel!.delete,creator:creator!);
     await FireBaseProvider.instance.updateBill(newBill);
     await cubit.updateListBill(billModel!,newBill);
   }

@@ -57,7 +57,7 @@ class ConfirmCheckBill extends StatelessWidget {
                         status: billModel.status,
                         check: "check",
                         createDate: billModel.createDate,
-                        delete: billModel.delete));
+                        delete: billModel.delete, creator: billModel.creator));
                 Navigator.pop(context);
               });
             },
@@ -117,7 +117,7 @@ class ConfirmCheckBillV2 extends StatelessWidget {
                         status: billModel.status,
                         check: "check",
                         createDate: billModel.createDate,
-                        delete: billModel.delete));
+                        delete: billModel.delete, creator: billModel.creator));
                 Navigator.pop(context);
               });
             },

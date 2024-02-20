@@ -162,6 +162,22 @@ class InfoBillView extends StatelessWidget {
                           Padding(
                               padding: EdgeInsets.symmetric(
                                   vertical: Resizable.padding(context, 5)),
+                              child: Text(AppText.txtCreator.text,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: Resizable.font(context, 18),
+                                      color: const Color(0xff757575)))),
+                          InputInBill(
+                              initialValue: billDialogCubit.billModel == null ? "":billDialogCubit.billModel!.creator,
+                              enable: true,
+                              onChange: (value) {
+                                billDialogCubit.inputCreator(value);
+                              },
+                              isNote:false
+                          ),
+                          Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: Resizable.padding(context, 5)),
                               child: Text(AppText.txtNote.text,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
@@ -358,6 +374,22 @@ class InfoBillViewV2 extends StatelessWidget {
                                 },
                                 isNote:false
                             ),
+                          Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: Resizable.padding(context, 5)),
+                              child: Text(AppText.txtCreator.text,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: Resizable.font(context, 18),
+                                      color: const Color(0xff757575)))),
+                          InputInBill(
+                              initialValue: billDialogCubit.billModel == null ? "":billDialogCubit.billModel!.creator,
+                              enable: true,
+                              onChange: (value) {
+                                billDialogCubit.inputCreator(value);
+                              },
+                              isNote:false
+                          ),
                           Padding(
                               padding: EdgeInsets.symmetric(
                                   vertical: Resizable.padding(context, 5)),
