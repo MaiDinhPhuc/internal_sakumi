@@ -5,8 +5,7 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'bill_dialog_cubit.dart';
 
 class SearchInBill extends StatelessWidget {
-  const SearchInBill({super.key, required this.billDialogCubit, required this.onDelete, required this.onChange, required this.controller, required this.enable});
-  final BillDialogCubit billDialogCubit;
+  const SearchInBill({super.key, required this.onDelete, required this.onChange, required this.controller, required this.enable});
   final Function() onDelete;
   final Function(String) onChange;
   final TextEditingController controller;
@@ -52,8 +51,8 @@ class SearchInBill extends StatelessWidget {
 }
 
 class SearchInBillV2 extends StatelessWidget {
-  const SearchInBillV2({super.key, required this.billDialogCubit, required this.controller});
-  final BillDialogCubit billDialogCubit;
+  const SearchInBillV2({super.key, required this.controller});
+
   final TextEditingController controller;
 
   @override

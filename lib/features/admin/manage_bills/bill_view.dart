@@ -62,7 +62,7 @@ class BillView extends StatelessWidget {
                             fontSize: Resizable.font(context, 18),
                             color: Colors.black)),
                     widgetPayment: Text(
-                        "${NumberFormat('#,##0').format(billModel.payment)}đ",
+                        "${NumberFormat('#,##0').format(billModel.payment)}${billModel.currency == "Tiền Việt(vnđ)" ? "đ" : "¥"}",
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: Resizable.font(context, 18),
@@ -109,7 +109,7 @@ class BillView extends StatelessWidget {
                                             fontSize:
                                             Resizable.font(context, 19)), children: [
                                       TextSpan(
-                                          text: "  ${NumberFormat('#,##0').format(billModel.refund)}đ",
+                                          text: "  ${NumberFormat('#,##0').format(billModel.refund)}${billModel.currency == "Tiền Việt(vnđ)" ? "đ" : "¥"}",
                                           style: TextStyle(
                                               color: primaryColor,
                                               fontWeight: FontWeight.w700,
@@ -123,7 +123,7 @@ class BillView extends StatelessWidget {
                                             fontSize:
                                             Resizable.font(context, 19)), children: [
                                       TextSpan(
-                                          text: "  ${NumberFormat('#,##0').format(billModel.payment - billModel.refund)}đ",
+                                          text: "  ${NumberFormat('#,##0').format(billModel.payment - billModel.refund)}${billModel.currency == "Tiền Việt(vnđ)" ? "đ" : "¥"}",
                                           style: TextStyle(
                                               color: primaryColor,
                                               fontWeight: FontWeight.w700,
@@ -220,7 +220,7 @@ class BillViewV2 extends StatelessWidget {
                             fontSize: Resizable.font(context, 18),
                             color: Colors.black)),
                     widgetPayment: Text(
-                        "${NumberFormat('#,##0').format(billModel.payment)}đ",
+                        "${NumberFormat('#,##0').format(billModel.payment)}${billModel.currency == "Tiền Việt(vnđ)" ? "đ" : "¥"}",
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: Resizable.font(context, 18),
@@ -266,7 +266,7 @@ class BillViewV2 extends StatelessWidget {
                                             fontSize:
                                             Resizable.font(context, 19)), children: [
                                       TextSpan(
-                                          text: "  ${NumberFormat('#,##0').format(billModel.refund)}đ",
+                                          text: "  ${NumberFormat('#,##0').format(billModel.refund)}${billModel.currency == "Tiền Việt(vnđ)" ? "đ" : "¥"}",
                                           style: TextStyle(
                                               color: primaryColor,
                                               fontWeight: FontWeight.w700,
@@ -280,7 +280,7 @@ class BillViewV2 extends StatelessWidget {
                                             fontSize:
                                             Resizable.font(context, 19)), children: [
                                       TextSpan(
-                                          text: "  ${NumberFormat('#,##0').format(billModel.payment - billModel.refund)}đ",
+                                          text: "  ${NumberFormat('#,##0').format(billModel.payment - billModel.refund)}${billModel.currency == "Tiền Việt(vnđ)" ? "đ" : "¥"}",
                                           style: TextStyle(
                                               color: primaryColor,
                                               fontWeight: FontWeight.w700,

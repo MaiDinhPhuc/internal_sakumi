@@ -14,8 +14,8 @@ class BillDialogCubit extends Cubit<int> {
 
   final StudentModel? std;
   final BillModel? billModel;
-  int? classId, userId, paymentDate, renewDate, payment, refund;
-  String? type, note, creator;
+  int? classId, userId, paymentDate, renewDate, refund, payment;
+  String? type, note, creator,currency;
   TextEditingController stdSearch = TextEditingController();
   String stdSearchValue = "";
   TextEditingController classSearch = TextEditingController();
@@ -23,18 +23,43 @@ class BillDialogCubit extends Cubit<int> {
   TextEditingController stdCtrl = TextEditingController();
 
   List<String> listType = [
-    "sale_full",
-    "sale_part",
-    "sale_fill_full",
-    "upSale_full",
-    "upSale_part",
-    "upSale_fill_full",
-    "renew_full",
-    "renew_part",
-    "renew_fill_full"
+    "SALE - 1 KÌ",
+    "SALE - FULL KHOÁ",
+    "SALE - CỌC 1 KÌ",
+    "SALE - CỌC FULL KHOÁ",
+    "SALE - BSHP 1 KÌ",
+    "SALE - BSHP FULL KHOÁ",
+    "COMBO",
+    "SALE - CỌC 1:1",
+    "UPSALE - FULL KHOÁ",
+    "UPSALE - 1 KÌ",
+    "UPSALE - TỪ NHÓM QUA 1:1",
+    "UPSALE - CỌC 1 KÌ",
+    "UPSALE - CỌC FULL KHOÁ",
+    "UPSALE - BSHP 1 KÌ",
+    "UPSALE - BSHP FULL KHOÁ",
+    "RENEW - 1 KÌ",
+    "RENEW - 2 KÌ",
+    "RENEW - CỌC 1 KÌ",
+    "RENEW - CỌC 2 KÌ",
+    "RENEW - BSHP 1 KÌ",
+    "RENEW - BSHP 2 KÌ"
   ];
 
-  load()async{
+  List<String> listCreator = [
+    "Vũ",
+    "Yến",
+    "Phương",
+    "Thuỷ",
+    "Thơ"
+  ];
+
+  List<String> listCurrency = [
+    "Tiền Việt(vnđ)",
+    "Yên Nhật(¥)"
+  ];
+
+  load() async {
     if (billModel != null) {
       classId = billModel!.classId;
       userId = billModel!.userId;
@@ -45,30 +70,36 @@ class BillDialogCubit extends Cubit<int> {
       type = billModel!.type;
       note = billModel!.note;
       creator = billModel!.creator;
+      currency = billModel!.currency;
       var student = await FireBaseProvider.instance.getStudentById(userId!);
       var classNow = await FireBaseProvider.instance.getClassById(classId!);
       stdSearch.text = "${student.name}-${student.studentCode}";
       classSearch.text = classNow.classCode;
       emit(state + 1);
     }
-    if(std != null){
+    if (std != null) {
       stdCtrl.text = "${std!.name}-${std!.studentCode}";
     }
   }
 
-  inputPayment(String newValue) {
-    payment = int.parse(newValue);
+  inputRefund(String newValue) {
+    refund = int.parse(newValue.replaceAll(",", ""));
     emit(state + 1);
   }
 
-  inputRefund(String newValue){
-    refund = int.parse(newValue);
-    emit(state + 1);
-  }
-
-  inputCreator(String newValue){
+  inputCreator(String newValue) {
     creator = newValue;
     emit(state + 1);
+  }
+
+  inputCurrency(String newValue) {
+    currency = newValue;
+    emit(state + 1);
+  }
+
+  inputPayment(String newValue){
+    payment = int.parse(newValue.replaceAll(",", ""));
+    emit(state+1);
   }
 
   inputNote(String newValue) {
@@ -138,13 +169,14 @@ class BillDialogCubit extends Cubit<int> {
         paymentDate: paymentDate!,
         renewDate: renewDate!,
         payment: payment!,
-        note: note??"",
+        note: note ?? "",
         refund: 0,
         type: type!,
         status: "notRefund",
         check: "notCheck",
         createDate: DateTime.now().millisecondsSinceEpoch,
-        delete: false, creator: creator!);
+        delete: false,
+        creator: creator!,currency: currency ?? "Tiền Việt(vnđ)");
     await FireBaseProvider.instance.addNewBill(newBill);
     await cubit.addNewBill(newBill);
   }
@@ -156,15 +188,16 @@ class BillDialogCubit extends Cubit<int> {
         paymentDate: paymentDate!,
         renewDate: renewDate!,
         payment: payment!,
-        note: note??"",
+        note: note ?? "",
         refund: refund!,
         type: type!,
         status: billModel!.status,
         check: billModel!.check,
         createDate: billModel!.createDate,
-        delete: billModel!.delete,creator:creator!);
+        delete: billModel!.delete,
+        creator: creator!,currency:currency?? "Tiền Việt(vnđ)");
     await FireBaseProvider.instance.updateBill(newBill);
-    await cubit.updateListBill(billModel!,newBill);
+    await cubit.updateListBill(billModel!, newBill);
   }
 
   addNewBillV2(ManageStdBillCubit cubit) async {
@@ -174,13 +207,14 @@ class BillDialogCubit extends Cubit<int> {
         paymentDate: paymentDate!,
         renewDate: renewDate!,
         payment: payment!,
-        note: note??"",
+        note: note ?? "",
         refund: 0,
         type: type!,
         status: "notRefund",
         check: "notCheck",
         createDate: DateTime.now().millisecondsSinceEpoch,
-        delete: false,creator:creator!);
+        delete: false,
+        creator: creator!,currency:currency?? "Tiền Việt(vnđ)");
     await FireBaseProvider.instance.addNewBill(newBill);
     await cubit.addNewBill(newBill);
   }
@@ -188,18 +222,19 @@ class BillDialogCubit extends Cubit<int> {
   updateBillV2(ManageStdBillCubit cubit) async {
     BillModel newBill = BillModel(
         classId: classId!,
-        userId:  cubit.student!.userId,
+        userId: cubit.student!.userId,
         paymentDate: paymentDate!,
         renewDate: renewDate!,
         payment: payment!,
-        note: note??"",
+        note: note ?? "",
         refund: refund!,
         type: type!,
         status: billModel!.status,
         check: billModel!.check,
         createDate: billModel!.createDate,
-        delete: billModel!.delete,creator:creator!);
+        delete: billModel!.delete,
+        creator: creator!,currency:currency ?? "Tiền Việt(vnđ)");
     await FireBaseProvider.instance.updateBill(newBill);
-    await cubit.updateListBill(billModel!,newBill);
+    await cubit.updateListBill(billModel!, newBill);
   }
 }

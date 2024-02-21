@@ -678,7 +678,8 @@ class FireStoreDb {
       'status': model.status,
       'type': model.type,
       'user_id': model.userId,
-      'creator': model.creator
+      'creator': model.creator,
+      'currency' : model.currency
     });
     debugPrint("==========> add db for \"bill\"");
   }
@@ -697,7 +698,8 @@ class FireStoreDb {
       'status': model.status,
       'type': model.type,
       'user_id': model.userId,
-      'creator': model.creator
+      'creator': model.creator,
+      'currency' : model.currency
     });
     debugPrint("==========> update db for \"bill\"");
   }

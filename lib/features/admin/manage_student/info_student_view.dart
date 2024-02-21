@@ -83,13 +83,20 @@ class InfoStudentView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              DialogButton(AppText.txtReloadPass.text, onPressed: () {
+              Expanded(
+                  flex: 4,
+                  child: ResetPassButton(AppText.txtReloadPass.text, onPressed: () {
                 waitingDialog(context);
                 cubit.resetPassword();
                 Navigator.pop(context);
                 notificationDialog(context, AppText.txtSendReloadPassDone.text);
-              }),
-              SubmitButton(
+              })),
+              Expanded(
+                  flex: 1,
+                  child: Container()),
+              Expanded(
+                  flex: 4,
+                  child: SubmitButton(
                 onPressed: () async {
                   waitingDialog(context);
                   await FireBaseProvider.instance.updateProfileStudent(
@@ -117,7 +124,7 @@ class InfoStudentView extends StatelessWidget {
                       context, AppText.txtUpdateStudentDone.text);
                 },
                 title: AppText.txtUpdate.text,
-              )
+              ))
             ],
           )
         ],

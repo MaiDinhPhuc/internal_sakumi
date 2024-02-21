@@ -81,24 +81,48 @@ class DataProvider {
 
   static String billType(FilterBillType type) {
     switch (type) {
+      case FilterBillType.sale1Term:
+        return "SALE - 1 KÌ";
       case FilterBillType.saleFull:
-        return "sale_full";
-      case FilterBillType.salePart:
-        return "sale_part";
+        return "SALE - FULL KHOÁ";
+      case FilterBillType.saleDeposit1:
+        return "SALE - CỌC 1 KÌ";
+      case FilterBillType.saleDepositFull:
+        return "SALE - CỌC FULL KHOÁ";
+      case FilterBillType.saleBSHP1:
+        return "SALE - BSHP 1 KÌ";
+      case FilterBillType.saleBSHPFull:
+        return "SALE - BSHP FULL KHOÁ";
+      case FilterBillType.combo:
+        return "COMBO";
+      case FilterBillType.saleDeposit1And1:
+        return "SALE - CỌC 1:1";
       case FilterBillType.upSaleFull:
-        return "upSale_full";
-      case FilterBillType.upSalePart:
-        return "upSale_part";
-      case FilterBillType.renewFull:
-        return "renew_full";
-      case FilterBillType.renewPart:
-        return "renew_part";
-      case FilterBillType.saleFillFull:
-        return "sale_fill_full";
-      case FilterBillType.upSaleFillFull:
-        return "upSale_fill_full";
-      case FilterBillType.renewFillFull:
-        return "renew_fill_full";
+        return "UPSALE - FULL KHOÁ";
+      case FilterBillType.upSale1Term:
+        return "UPSALE - 1 KÌ";
+      case FilterBillType.upSaleTo1And1:
+        return "UPSALE - TỪ NHÓM QUA 1:1";
+      case FilterBillType.upSaleDeposit1:
+        return "UPSALE - CỌC 1 KÌ";
+      case FilterBillType.upSaleDepositFull:
+        return "UPSALE - CỌC FULL KHOÁ";
+      case FilterBillType.upSaleBSHP1:
+        return "UPSALE - BSHP 1 KÌ";
+      case FilterBillType.upSaleBSHPFull:
+        return "UPSALE - BSHP FULL KHOÁ";
+      case FilterBillType.renew1Term:
+        return "RENEW - 1 KÌ";
+      case FilterBillType.renew2Term:
+        return "RENEW - 2 KÌ";
+      case FilterBillType.renewDeposit1:
+        return "RENEW - CỌC 1 KÌ";
+      case FilterBillType.renewDeposit2:
+        return "RENEW - CỌC 2 KÌ";
+      case FilterBillType.renewBSHP1:
+        return "RENEW - BSHP 1 KÌ";
+      case FilterBillType.renewBSHP2:
+        return "RENEW - BSHP 2 KÌ";
     }
   }
 

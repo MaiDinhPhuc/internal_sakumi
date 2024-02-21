@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum FilterBillStatus { check, notCheck }
+
 extension FilterBillStatusEx on FilterBillStatus {
   String get status {
     switch (this) {
@@ -25,56 +26,127 @@ extension FilterBillStatusEx on FilterBillStatus {
   }
 }
 
-enum FilterBillType { saleFull, salePart,saleFillFull, upSaleFull, upSalePart,upSaleFillFull, renewFull, renewPart, renewFillFull}
+enum FilterBillType {
+  sale1Term,
+  saleFull,
+  saleDeposit1,
+  saleDepositFull,
+  saleBSHP1,
+  saleBSHPFull,
+  combo,
+  saleDeposit1And1,
+  upSaleFull,
+  upSale1Term,
+  upSaleTo1And1,
+  upSaleDeposit1,
+  upSaleDepositFull,
+  upSaleBSHP1,
+  upSaleBSHPFull,
+  renew1Term,
+  renew2Term,
+  renewDeposit1,
+  renewDeposit2,
+  renewBSHP1,
+  renewBSHP2
+}
+
 extension FilterBillTypeEx on FilterBillType {
   String get status {
     switch (this) {
+      case FilterBillType.sale1Term:
+        return "SALE - 1 KÌ";
       case FilterBillType.saleFull:
-        return "sale_full";
-      case FilterBillType.salePart:
-        return "sale_part";
+        return "SALE - FULL KHOÁ";
+      case FilterBillType.saleDeposit1:
+        return "SALE - CỌC 1 KÌ";
+      case FilterBillType.saleDepositFull:
+        return "SALE - CỌC FULL KHOÁ";
+      case FilterBillType.saleBSHP1:
+        return "SALE - BSHP 1 KÌ";
+      case FilterBillType.saleBSHPFull:
+        return "SALE - BSHP FULL KHOÁ";
+      case FilterBillType.combo:
+        return "COMBO";
+      case FilterBillType.saleDeposit1And1:
+        return "SALE - CỌC 1:1";
       case FilterBillType.upSaleFull:
-        return "upSale_full";
-      case FilterBillType.upSalePart:
-        return "upSale_part";
-      case FilterBillType.renewFull:
-        return "renew_full";
-      case FilterBillType.renewPart:
-        return "renew_part";
-      case FilterBillType.saleFillFull:
-        return "sale_fill_full";
-      case FilterBillType.upSaleFillFull:
-        return "upSale_fill_full";
-      case FilterBillType.renewFillFull:
-        return "renew_fill_full";
+        return "UPSALE - FULL KHOÁ";
+      case FilterBillType.upSale1Term:
+        return "UPSALE - 1 KÌ";
+      case FilterBillType.upSaleTo1And1:
+        return "UPSALE - TỪ NHÓM QUA 1:1";
+      case FilterBillType.upSaleDeposit1:
+        return "UPSALE - CỌC 1 KÌ";
+      case FilterBillType.upSaleDepositFull:
+        return "UPSALE - CỌC FULL KHOÁ";
+      case FilterBillType.upSaleBSHP1:
+        return "UPSALE - BSHP 1 KÌ";
+      case FilterBillType.upSaleBSHPFull:
+        return "UPSALE - BSHP FULL KHOÁ";
+      case FilterBillType.renew1Term:
+        return "RENEW - 1 KÌ";
+      case FilterBillType.renew2Term:
+        return "RENEW - 2 KÌ";
+      case FilterBillType.renewDeposit1:
+        return "RENEW - CỌC 1 KÌ";
+      case FilterBillType.renewDeposit2:
+        return "RENEW - CỌC 2 KÌ";
+      case FilterBillType.renewBSHP1:
+        return "RENEW - BSHP 1 KÌ";
+      case FilterBillType.renewBSHP2:
+        return "RENEW - BSHP 2 KÌ";
     }
   }
 
   String get title {
     switch (this) {
+      case FilterBillType.sale1Term:
+        return "SALE - 1 KÌ";
       case FilterBillType.saleFull:
-        return "sale_full";
-      case FilterBillType.salePart:
-        return "sale_part";
+        return "SALE - FULL KHOÁ";
+      case FilterBillType.saleDeposit1:
+        return "SALE - CỌC 1 KÌ";
+      case FilterBillType.saleDepositFull:
+        return "SALE - CỌC FULL KHOÁ";
+      case FilterBillType.saleBSHP1:
+        return "SALE - BSHP 1 KÌ";
+      case FilterBillType.saleBSHPFull:
+        return "SALE - BSHP FULL KHOÁ";
+      case FilterBillType.combo:
+        return "COMBO";
+      case FilterBillType.saleDeposit1And1:
+        return "SALE - CỌC 1:1";
       case FilterBillType.upSaleFull:
-        return "upSale_full";
-      case FilterBillType.upSalePart:
-        return "upSale_part";
-      case FilterBillType.renewFull:
-        return "renew_full";
-      case FilterBillType.renewPart:
-        return "renew_part";
-      case FilterBillType.saleFillFull:
-        return "sale_fill_full";
-      case FilterBillType.upSaleFillFull:
-        return "upSale_fill_full";
-      case FilterBillType.renewFillFull:
-        return "renew_fill_full";
+        return "UPSALE - FULL KHOÁ";
+      case FilterBillType.upSale1Term:
+        return "UPSALE - 1 KÌ";
+      case FilterBillType.upSaleTo1And1:
+        return "UPSALE - TỪ NHÓM QUA 1:1";
+      case FilterBillType.upSaleDeposit1:
+        return "UPSALE - CỌC 1 KÌ";
+      case FilterBillType.upSaleDepositFull:
+        return "UPSALE - CỌC FULL KHOÁ";
+      case FilterBillType.upSaleBSHP1:
+        return "UPSALE - BSHP 1 KÌ";
+      case FilterBillType.upSaleBSHPFull:
+        return "UPSALE - BSHP FULL KHOÁ";
+      case FilterBillType.renew1Term:
+        return "RENEW - 1 KÌ";
+      case FilterBillType.renew2Term:
+        return "RENEW - 2 KÌ";
+      case FilterBillType.renewDeposit1:
+        return "RENEW - CỌC 1 KÌ";
+      case FilterBillType.renewDeposit2:
+        return "RENEW - CỌC 2 KÌ";
+      case FilterBillType.renewBSHP1:
+        return "RENEW - BSHP 1 KÌ";
+      case FilterBillType.renewBSHP2:
+        return "RENEW - BSHP 2 KÌ";
     }
   }
 }
 
-enum BillFilter { status, type}
+enum BillFilter { status, type }
 
 class BillFilterCubit extends Cubit<int> {
   BillFilterCubit() : super(0) {
@@ -82,14 +154,8 @@ class BillFilterCubit extends Cubit<int> {
   }
 
   static const Map<BillFilter, List> defaultFilter = {
-    BillFilter.status: [
-      FilterBillStatus.check,
-      FilterBillStatus.notCheck
-    ],
-    BillFilter.type:[
-      FilterBillType.saleFull,
-      FilterBillType.salePart
-    ]
+    BillFilter.status: [FilterBillStatus.check, FilterBillStatus.notCheck],
+    BillFilter.type: [FilterBillType.sale1Term, FilterBillType.saleFull]
   };
 
   Map<BillFilter, List> _filter = {};
@@ -110,10 +176,7 @@ class BillFilterCubit extends Cubit<int> {
         .map((e) => (e as FilterBillType).title)
         .toList();
 
-    return {
-      "status": listStatus,
-      "type": listType
-    };
+    return {"status": listStatus, "type": listType};
   }
 
   Map<BillFilter, List> convertFilterDecode(dynamic json) {
@@ -132,39 +195,72 @@ class BillFilterCubit extends Cubit<int> {
     var listType = [];
     for (var i in json["type"]) {
       switch (i) {
-        case "sale_full":
+        case "SALE - 1 KÌ":
+          listType.add(FilterBillType.sale1Term);
+          break;
+        case "SALE - FULL KHOÁ":
           listType.add(FilterBillType.saleFull);
           break;
-        case "sale_part":
-          listType.add(FilterBillType.salePart);
+        case "SALE - CỌC 1 KÌ":
+          listType.add(FilterBillType.saleDeposit1);
           break;
-        case "sale_fill_full":
-          listType.add(FilterBillType.saleFillFull);
+        case "SALE - CỌC FULL KHOÁ":
+          listType.add(FilterBillType.saleDepositFull);
           break;
-        case "upSale_full":
+        case "SALE - BSHP 1 KÌ":
+          listType.add(FilterBillType.saleBSHP1);
+          break;
+        case "SALE - BSHP FULL KHOÁ":
+          listType.add(FilterBillType.saleBSHPFull);
+          break;
+        case "COMBO":
+          listType.add(FilterBillType.combo);
+          break;
+        case "SALE - CỌC 1:1":
+          listType.add(FilterBillType.saleDeposit1And1);
+          break;
+        case "UPSALE - FULL KHOÁ":
           listType.add(FilterBillType.upSaleFull);
           break;
-        case "upSale_part":
-          listType.add(FilterBillType.upSalePart);
+        case "UPSALE - 1 KÌ":
+          listType.add(FilterBillType.upSale1Term);
           break;
-        case "upSale_fill_full":
-          listType.add(FilterBillType.upSaleFillFull);
+        case "UPSALE - TỪ NHÓM QUA 1:1":
+          listType.add(FilterBillType.upSaleTo1And1);
           break;
-        case "renew_full":
-          listType.add(FilterBillType.renewFull);
+        case "UPSALE - CỌC 1 KÌ":
+          listType.add(FilterBillType.upSaleDeposit1);
           break;
-        case "renew_part":
-          listType.add(FilterBillType.renewPart);
+        case "UPSALE - CỌC FULL KHOÁ":
+          listType.add(FilterBillType.upSaleDepositFull);
           break;
-        case "renew_fill_full":
-          listType.add(FilterBillType.renewFillFull);
+        case "UPSALE - BSHP 1 KÌ":
+          listType.add(FilterBillType.upSaleBSHP1);
+          break;
+        case "UPSALE - BSHP FULL KHOÁ":
+          listType.add(FilterBillType.upSaleBSHPFull);
+          break;
+        case "RENEW - 1 KÌ":
+          listType.add(FilterBillType.renew1Term);
+          break;
+        case "RENEW - 2 KÌ":
+          listType.add(FilterBillType.renew2Term);
+          break;
+        case "RENEW - CỌC 1 KÌ":
+          listType.add(FilterBillType.renewDeposit1);
+          break;
+        case "RENEW - CỌC 2 KÌ":
+          listType.add(FilterBillType.renewDeposit2);
+          break;
+        case "RENEW - BSHP 1 KÌ":
+          listType.add(FilterBillType.renewBSHP1);
+          break;
+        case "RENEW - BSHP 2 KÌ":
+          listType.add(FilterBillType.renewBSHP2);
           break;
       }
     }
-    return {
-      BillFilter.status: listStatus,
-      BillFilter.type: listType
-    };
+    return {BillFilter.status: listStatus, BillFilter.type: listType};
   }
 
   Future<Map<BillFilter, List>?> _fromPref() async {
@@ -187,7 +283,7 @@ class BillFilterCubit extends Cubit<int> {
 
   update(BillFilter billFilter, List selectedList) async {
     bool areListsEqual =
-    const ListEquality().equals(_filter[billFilter], selectedList);
+        const ListEquality().equals(_filter[billFilter], selectedList);
     if (!areListsEqual) {
       _filter[billFilter] = selectedList;
       _saveToPref();

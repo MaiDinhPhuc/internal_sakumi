@@ -35,11 +35,11 @@ class StudentInfoScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
-                                flex: 3,
+                                flex: 4,
                                 child: InfoStudentView(
                                     cubit: cubit)),
                             Expanded(
-                                flex: 5,
+                                flex: 9,
                                 child: ListStudentClassView(cubit: cubit))
                           ],
                         ),
