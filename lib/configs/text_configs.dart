@@ -432,10 +432,12 @@ enum AppText {
   txtTabBill,
   txtBillEmpty,
   txtCreator,
-  txtCurrency
+  txtCurrency,
+  txtCreatorFilter
 }
 
 Map<AppText, String> texts = {
+  AppText.txtCreatorFilter : "Người tạo",
   AppText.txtCurrency : "Tiền tệ",
   AppText.txtCreator : "Người lập hoá đơn",
   AppText.txtBillEmpty : "Chưa có hoá đơn nào trong hệ thống!",

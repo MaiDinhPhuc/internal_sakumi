@@ -26,6 +26,40 @@ extension FilterBillStatusEx on FilterBillStatus {
   }
 }
 
+enum FilterBillCreator { Vu, Yen, Phuong, Thuy, Tho }
+
+extension FilterBillCreatorEx on FilterBillCreator {
+  String get status {
+    switch (this) {
+      case FilterBillCreator.Vu:
+        return "Vũ";
+      case FilterBillCreator.Yen:
+        return "Yến";
+      case FilterBillCreator.Phuong:
+        return "Phương";
+      case FilterBillCreator.Thuy:
+        return "Thuỷ";
+      case FilterBillCreator.Tho:
+        return "Thơ";
+    }
+  }
+
+  String get title {
+    switch (this) {
+      case FilterBillCreator.Vu:
+        return "Vũ";
+      case FilterBillCreator.Yen:
+        return "Yến";
+      case FilterBillCreator.Phuong:
+        return "Phương";
+      case FilterBillCreator.Thuy:
+        return "Thuỷ";
+      case FilterBillCreator.Tho:
+        return "Thơ";
+    }
+  }
+}
+
 enum FilterBillType {
   sale1Term,
   saleFull,
@@ -146,7 +180,7 @@ extension FilterBillTypeEx on FilterBillType {
   }
 }
 
-enum BillFilter { status, type }
+enum BillFilter { status, type, creator }
 
 class BillFilterCubit extends Cubit<int> {
   BillFilterCubit() : super(0) {
@@ -155,7 +189,8 @@ class BillFilterCubit extends Cubit<int> {
 
   static const Map<BillFilter, List> defaultFilter = {
     BillFilter.status: [FilterBillStatus.check, FilterBillStatus.notCheck],
-    BillFilter.type: [FilterBillType.sale1Term, FilterBillType.saleFull]
+    BillFilter.type: [FilterBillType.sale1Term, FilterBillType.saleFull, FilterBillType.saleDeposit1,FilterBillType.saleDepositFull],
+    BillFilter.creator: [FilterBillCreator.Vu, FilterBillCreator.Yen, FilterBillCreator.Phuong, FilterBillCreator.Thuy, FilterBillCreator.Tho],
   };
 
   Map<BillFilter, List> _filter = {};
@@ -175,8 +210,11 @@ class BillFilterCubit extends Cubit<int> {
     var listType = filter[BillFilter.type]!
         .map((e) => (e as FilterBillType).title)
         .toList();
+    var listCreator = filter[BillFilter.creator]!
+        .map((e) => (e as FilterBillCreator).title)
+        .toList();
 
-    return {"status": listStatus, "type": listType};
+    return {"status": listStatus, "type": listType, "creator" : listCreator};
   }
 
   Map<BillFilter, List> convertFilterDecode(dynamic json) {
@@ -260,7 +298,28 @@ class BillFilterCubit extends Cubit<int> {
           break;
       }
     }
-    return {BillFilter.status: listStatus, BillFilter.type: listType};
+
+    var listCreator = [];
+    for (var i in json["creator"]) {
+      switch (i) {
+        case "Vũ":
+          listCreator.add(FilterBillCreator.Vu);
+          break;
+        case "Yến":
+          listCreator.add(FilterBillCreator.Yen);
+          break;
+        case "Phương":
+          listCreator.add(FilterBillCreator.Phuong);
+          break;
+        case "Thuỷ":
+          listCreator.add(FilterBillCreator.Thuy);
+          break;
+        case "Thơ":
+          listCreator.add(FilterBillCreator.Tho);
+          break;
+      }
+    }
+    return {BillFilter.status: listStatus, BillFilter.type: listType, BillFilter.creator: listCreator};
   }
 
   Future<Map<BillFilter, List>?> _fromPref() async {

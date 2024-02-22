@@ -281,16 +281,16 @@ abstract class NetworkProvider {
       List<int> listTypeFilter, List<int> listCourseId);
 
   Future<List<BillModel>> getListBillWithFilter(
-      List<String> listStatusFilter, List<String> listTypeFilter);
+      List<String> listStatusFilter, List<String> listTypeFilter, List<String> listCreatorFilter);
 
   Future<List<BillModel>> getListBillWithFilterAndDate(List<String> listStatusFilter,
-      List<String> listTypeFilter, int startDate, int endDate);
+      List<String> listTypeFilter,List<String> listCreatorFilter, int startDate, int endDate);
 
   Future<List<BillModel>> getMoreListBillWithFilter(List<String> listStatusFilter,
-      List<String> listTypeFilter, int lastItem);
+      List<String> listTypeFilter,List<String> listCreatorFilter, int lastItem);
 
   Future<List<BillModel>> getMoreListBillWithFilterAndDate(List<String> listStatusFilter,
-      List<String> listTypeFilter, int lastItem, int startDate, int endDate);
+      List<String> listTypeFilter,List<String> listCreatorFilter, int lastItem, int startDate, int endDate);
   Future<void> addNewBill(BillModel model);
   Future<void> updateBill(BillModel model);
   Future<List<ClassModel>> getListClassByListId(List<int> ids);

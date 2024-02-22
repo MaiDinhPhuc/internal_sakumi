@@ -5,6 +5,7 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 
 import 'date_filter.dart';
+import 'filter_bill_creator.dart';
 import 'filter_bill_status.dart';
 import 'filter_bill_type.dart';
 import 'manage_bill_cubit.dart';
@@ -79,6 +80,7 @@ class FilterManageBill extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  FilterBillCreatorView(filterController: filterController, cubit: cubit),
                   FilterBillTypeView(filterController: filterController, cubit: cubit),
                   FilterBillStatusView(filterController: filterController, cubit: cubit)
                 ],

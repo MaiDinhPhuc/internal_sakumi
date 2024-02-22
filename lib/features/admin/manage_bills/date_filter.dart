@@ -31,7 +31,7 @@ class DateFilter extends StatelessWidget {
                               fontSize: Resizable.font(context, 24),
                               color: Colors.black)),
                       showNavigationArrow: true,
-                      onSelectionChanged: (v) {
+                      onSelectionChanged: (v) async {
                         if (isStartDay) {
                           cubit.updateStartDay(v.value);
                         } else {

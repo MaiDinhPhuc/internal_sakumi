@@ -9,15 +9,15 @@ import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'manage_bill_cubit.dart';
 
-class FilterBillTypeView extends StatelessWidget {
-  FilterBillTypeView({super.key, required this.filterController, required this.cubit}): selectCubit = SelectFilterCubit();
+class FilterBillCreatorView extends StatelessWidget {
+  FilterBillCreatorView({super.key, required this.filterController, required this.cubit}): selectCubit = SelectFilterCubit();
   final SelectFilterCubit selectCubit;
   final BillFilterCubit filterController;
   final ManageBillCubit cubit;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SelectFilterCubit, int>(
-        bloc: selectCubit..loadBillType(filterController.filter[BillFilter.type] == null ? [FilterBillType.sale1Term, FilterBillType.saleFull, FilterBillType.saleDeposit1, FilterBillType.saleDepositFull] :filterController.filter[BillFilter.type]!),
+        bloc: selectCubit..loadBillCreator(filterController.filter[BillFilter.creator] == null ? [FilterBillCreator.Vu, FilterBillCreator.Yen, FilterBillCreator.Phuong, FilterBillCreator.Thuy, FilterBillCreator.Tho] :filterController.filter[BillFilter.creator]!),
         builder: (c,s){
           return  Container(
               margin: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 10)),
@@ -28,20 +28,20 @@ class FilterBillTypeView extends StatelessWidget {
                   color: Colors.transparent,
                   child: PopupMenuButton(
                       onCanceled: (){
-                        filterController.update(BillFilter.type, selectCubit.convertBillType());
+                        filterController.update(BillFilter.creator, selectCubit.convertBillCreator());
                       },
                       itemBuilder: (context) => [
-                        ...selectCubit.listBillType.map((e) => PopupMenuItem(
+                        ...selectCubit.listBillCreator.map((e) => PopupMenuItem(
                             padding: EdgeInsets.zero,
-                            child: BlocProvider(create: (c)=>CheckBoxFilterCubit(selectCubit.listSelect[selectCubit.listBillType.indexOf(e)]),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
+                            child: BlocProvider(create: (c)=>CheckBoxFilterCubit(selectCubit.listSelect[selectCubit.listBillCreator.indexOf(e)]),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
                               return CheckboxListTile(
                                 controlAffinity: ListTileControlAffinity.leading,
                                 title: Text(e.title),
                                 value: state,
                                 onChanged: (newValue) {
-                                  selectCubit.listSelect[selectCubit.listBillType.indexOf(e)] = newValue!;
+                                  selectCubit.listSelect[selectCubit.listBillCreator.indexOf(e)] = newValue!;
                                   if(selectCubit.listSelect.every((element) => element == false)){
-                                    selectCubit.listSelect[selectCubit.listBillType.indexOf(e)] = !newValue;
+                                    selectCubit.listSelect[selectCubit.listBillCreator.indexOf(e)] = !newValue;
                                   }else{
                                     BlocProvider.of<CheckBoxFilterCubit>(cc).update();
                                   }
@@ -70,7 +70,7 @@ class FilterBillTypeView extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Expanded(child: Center(
-                                child: Text(AppText.txtBillType.text,
+                                child: Text(AppText.txtCreatorFilter.text,
                                     style: TextStyle(
                                         fontSize: Resizable.font(context, 18),
                                         fontWeight: FontWeight.w500))

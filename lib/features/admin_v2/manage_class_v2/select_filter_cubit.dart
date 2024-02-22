@@ -61,6 +61,25 @@ class SelectFilterCubit extends Cubit<int> {
     FilterBillType.renewBSHP2
   ];
 
+  List<FilterBillCreator> listBillCreator = [
+    FilterBillCreator.Vu,
+    FilterBillCreator.Yen,
+    FilterBillCreator.Phuong,
+    FilterBillCreator.Thuy,
+    FilterBillCreator.Tho
+  ];
+
+  loadBillCreator(List<dynamic> list) {
+    for (var i in listBillCreator) {
+      if (list.contains(i)) {
+        listSelect.add(true);
+      } else {
+        listSelect.add(false);
+      }
+    }
+    emit(state + 1);
+  }
+
   loadBillType(List<dynamic> list) {
     for (var i in listBillType) {
       if (list.contains(i)) {
@@ -158,6 +177,27 @@ class SelectFilterCubit extends Cubit<int> {
     }
     if (listSelect[20] == true) {
       filter.add(FilterBillType.renewBSHP2);
+    }
+
+    return filter;
+  }
+
+  List<FilterBillCreator> convertBillCreator() {
+    List<FilterBillCreator> filter = [];
+    if (listSelect[0] == true) {
+      filter.add(FilterBillCreator.Vu);
+    }
+    if (listSelect[1] == true) {
+      filter.add(FilterBillCreator.Yen);
+    }
+    if (listSelect[2] == true) {
+      filter.add(FilterBillCreator.Phuong);
+    }
+    if (listSelect[3] == true) {
+      filter.add(FilterBillCreator.Thuy);
+    }
+    if (listSelect[4] == true) {
+      filter.add(FilterBillCreator.Tho);
     }
 
     return filter;
