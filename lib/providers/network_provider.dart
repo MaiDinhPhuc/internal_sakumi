@@ -212,7 +212,7 @@ abstract class NetworkProvider {
 
   Future<void> addNewVoucher(VoucherModel model);
 
-  Future<List<FeedBackModel>> getListStudentFeedBack(String status);
+  Future<List<FeedBackModel>> getListFeedBack(String status, String role);
 
   Future<StudentModel> getStudentById(int studentId);
 

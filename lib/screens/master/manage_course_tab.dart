@@ -23,6 +23,7 @@ class ManageCourseTab extends StatelessWidget {
           CustomAppbar(buttonList: [
             AppText.txtManageCourse.text,
             AppText.txtSurvey.text,
+            AppText.titleManageFeedBack.text
           ], s: 0),
           Expanded(
               child: Padding(

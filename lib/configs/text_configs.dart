@@ -445,7 +445,8 @@ enum AppText {
   txtFeedBack,
   txtPleaseInputFeedBack,
   txtAnonymous,
-  txtAnonymousNote
+  txtAnonymousNote,
+  titleFeedBackFromTeacher
 }
 
 Map<AppText, String> texts = {
@@ -591,11 +592,12 @@ Map<AppText, String> texts = {
   AppText.txtLetNote: 'Hãy điền ghi chú vào đây',
   AppText.txtAddNote: 'Thêm ghi chú',
   AppText.txtFeedBackEmpty:
-      'Đang không có ý, vui lòng chọn lại mục góp ý hoặc filter phù hợp...',
+      'Đang không có góp ý, vui lòng chọn lại mục góp ý hoặc filter phù hợp...',
   AppText.titleListFeedBack: 'Danh sách góp ý',
   AppText.txtUnread: 'Chưa đọc',
   AppText.txtWaiting: 'Đang chờ được xử lí',
   AppText.txtDone: 'Đã xử lí',
+  AppText.titleFeedBackFromTeacher: 'Góp ý từ sensei',
   AppText.titleFeedBackFromStd: 'Góp ý từ học viên',
   AppText.titleGeneralFeedBack: 'Góp ý Chung',
   AppText.titleCurriculumFeedBack: 'Góp ý về Giáo Trình',

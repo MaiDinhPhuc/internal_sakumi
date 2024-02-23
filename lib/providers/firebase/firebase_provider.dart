@@ -1770,8 +1770,8 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<FeedBackModel>> getListStudentFeedBack(String status) async {
-    final listFeedBack = (await FireStoreDb.instance.getListStudentFeedBack(status))
+  Future<List<FeedBackModel>> getListFeedBack(String status, String role) async {
+    final listFeedBack = (await FireStoreDb.instance.getListFeedBack(status, role))
         .docs
         .map((e) => FeedBackModel.fromSnapshot(e))
         .toList();

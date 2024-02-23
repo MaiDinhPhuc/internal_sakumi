@@ -79,12 +79,19 @@ class CustomAppbar extends StatelessWidget {
                                     MaterialStateProperty.all(
                                         primaryColor.withAlpha(30)),
                                     onTap: (){
-                                      if(buttonList.indexOf(e) == 0){
-                                        Navigator.pushNamed(context,
-                                            '${Routes.master}/manageCourse');
-                                      }else{
-                                        Navigator.pushNamed(context,
-                                            '${Routes.master}/manageSurvey');
+                                      switch (buttonList.indexOf(e)){
+                                        case 0:
+                                          Navigator.pushNamed(context,
+                                              '${Routes.master}/manageCourse');
+                                          break;
+                                        case 1:
+                                          Navigator.pushNamed(context,
+                                              '${Routes.master}/manageSurvey');
+                                          break;
+                                        case 2:
+                                          Navigator.pushNamed(context,
+                                              '${Routes.master}/manageTeacherFeedBack');
+                                          break;
                                       }
                                     },
                                     child: Container(

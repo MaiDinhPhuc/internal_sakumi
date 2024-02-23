@@ -1342,12 +1342,12 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getListStudentFeedBack(
-      String status) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getListFeedBack(
+      String status, String role) async {
     final snapshot = await db
         .collection("feedbacks")
         .where('status', isEqualTo: status)
-        .where('role', isEqualTo: 'student')
+        .where('role', isEqualTo: role)
         .get();
 
     debugPrint(

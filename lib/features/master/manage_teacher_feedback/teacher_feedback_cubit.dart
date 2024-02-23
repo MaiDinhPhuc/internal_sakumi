@@ -1,23 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/model/class_model.dart';
-import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/feedback_model.dart';
-import 'package:internal_sakumi/model/student_model.dart';
+import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firestore_db.dart';
 import 'package:intl/intl.dart';
 
-class FeedBackCubit extends Cubit<int> {
-  FeedBackCubit() : super(0) {
+class TeacherFeedBackCubit extends Cubit<int> {
+  TeacherFeedBackCubit() : super(0) {
     loadData();
   }
 
-  List<StudentModel> students = [];
-
-  List<ClassModel> classes = [];
-
-  List<CourseModel>? courses;
+  List<TeacherModel> teachers = [];
 
   bool isLoading = true;
 
@@ -34,17 +28,13 @@ class FeedBackCubit extends Cubit<int> {
   String filterState = AppText.txtUnread.text;
 
   loadData() async {
-    courses ??= await FireBaseProvider.instance.getAllCourse();
     listFeedBack ??=
-        await FireBaseProvider.instance.getListFeedBack(statusNow, 'student');
-    List<int> listStdId = (listFeedBack!.where((e) => e.userId != -1)).map((e) => e.userId).toList();
-    List<int> listClassId = [];
-    for (var i in listFeedBack!) {
-      if (!listClassId.contains(i.classId)) {
-        listClassId.add(i.classId);
-      }
-    }
-    await getStudents(listStdId, listClassId);
+        await FireBaseProvider.instance.getListFeedBack(statusNow, 'teacher');
+    List<int> listTeacherId = (listFeedBack!.where((e) => e.userId != -1))
+        .map((e) => e.userId)
+        .toList();
+
+    await getTeachers(listTeacherId);
   }
 
   checkData(String value) async {
@@ -59,16 +49,11 @@ class FeedBackCubit extends Cubit<int> {
     }
     if (!listStatusCheck.contains(check)) {
       listStatusCheck.add(check);
-      var listData = await FireBaseProvider.instance.getListFeedBack(check, 'student');
+      var listData = await FireBaseProvider.instance.getListFeedBack(check,'teacher');
       listFeedBack!.addAll(listData);
-      List<int> listStdId = (listData.where((e) => e.userId != -1)).map((e) => e.userId).toList();
-      List<int> listClassId = [];
-      for (var i in listData) {
-        if (!listClassId.contains(i.classId)) {
-          listClassId.add(i.classId);
-        }
-      }
-      await getStudents(listStdId, listClassId);
+      List<int> listTeacherId =
+          (listData.where((e) => e.userId != -1)).map((e) => e.userId).toList();
+      await getTeachers(listTeacherId);
     }
   }
 
@@ -89,7 +74,8 @@ class FeedBackCubit extends Cubit<int> {
         note: feedBack.note,
         status: status,
         content: feedBack.content,
-        category: feedBack.category, role: feedBack.role);
+        category: feedBack.category,
+        role: feedBack.role);
     await FireStoreDb.instance
         .updateFeedBackStatus(feedBack.classId, feedBack.date, status);
     emit(state + 1);
@@ -97,7 +83,7 @@ class FeedBackCubit extends Cubit<int> {
 
   changeNote(FeedBackModel feedBack, List<dynamic> note) async {
     var index = listFeedBack!.indexOf(listFeedBack!.firstWhere(
-            (e) => e.date == feedBack.date && e.classId == feedBack.classId));
+        (e) => e.date == feedBack.date && e.classId == feedBack.classId));
     listFeedBack![index] = FeedBackModel(
         userId: feedBack.userId,
         classId: feedBack.classId,
@@ -105,19 +91,8 @@ class FeedBackCubit extends Cubit<int> {
         note: note,
         status: feedBack.status,
         content: feedBack.content,
-        category: feedBack.category,role: feedBack.role);
-  }
-
-  String getCourse(int classId) {
-    if (courses == null || classes.isEmpty) {
-      return "";
-    }
-    var courseId = classes.firstWhere((e) => e.classId == classId).courseId;
-    String name = courses!.where((e) => e.courseId == courseId).isEmpty
-        ? ""
-        : "${courses!.where((e) => e.courseId == courseId).first.title} - ${courses!.where((e) => e.courseId == courseId).first.level}";
-
-    return name;
+        category: feedBack.category,
+        role: feedBack.role);
   }
 
   String getDate(int value) {
@@ -127,58 +102,42 @@ class FeedBackCubit extends Cubit<int> {
     return formattedDateTime;
   }
 
-  String getClassCode(int classId) {
-    if (classes.isEmpty) {
-      return "";
-    }
-    return classes.where((e) => e.classId == classId).isEmpty
-        ? ""
-        : classes.where((e) => e.classId == classId).first.classCode;
-  }
-
   String getAvt(int stdId) {
-    if (students.isEmpty) {
+    if (teachers.isEmpty) {
       return "";
     }
     if (stdId == -1) {
       return "";
     }
-    return students.where((e) => e.userId == stdId).isEmpty
+    return teachers.where((e) => e.userId == stdId).isEmpty
         ? ""
-        : students.where((e) => e.userId == stdId).first.url;
+        : teachers.where((e) => e.userId == stdId).first.url;
   }
 
   String getName(int stdId) {
-    if (students.isEmpty) {
+    if (teachers.isEmpty) {
       return "Ẩn danh";
     }
     if (stdId == -1) {
       return "Ẩn danh";
     }
-    return students.where((e) => e.userId == stdId).isEmpty
+    return teachers.where((e) => e.userId == stdId).isEmpty
         ? ""
-        : students.where((e) => e.userId == stdId).first.name;
+        : teachers.where((e) => e.userId == stdId).first.name;
   }
 
-  getStudents(List<int> listStdId, List<int> listClassId) async {
+  getTeachers(List<int> listTeacherId) async {
     isLoading = true;
-    emit(state+1);
-    var stdTemp =
-        await FireBaseProvider.instance.getAllStudentInFoInClass(listStdId);
-    for(var i in stdTemp){
-      if(!students.contains(i)){
-        students.add(i);
-      }
-    }
-    var classTemp =
-        await FireBaseProvider.instance.getListClassForTeacher(listClassId);
-    for(var i in classTemp){
-      if(!classes.contains(i)){
-        classes.add(i);
+    emit(state + 1);
+    var teacherTemp =
+        await FireBaseProvider.instance.getListTeacherByListId(listTeacherId);
+    for (var i in teacherTemp) {
+      if (!teachers.contains(i)) {
+        teachers.add(i);
       }
     }
     isLoading = false;
-    emit(state+1);
+    emit(state + 1);
   }
 
   filter(String value) {
@@ -194,7 +153,7 @@ class FeedBackCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  changeType(String newType)async {
+  changeType(String newType) async {
     type = newType;
     emit(state + 1);
   }

@@ -25,6 +25,7 @@ class SurveyTab extends StatelessWidget {
           CustomAppbar(buttonList: [
             AppText.txtManageCourse.text,
             AppText.txtSurvey.text,
+            AppText.titleManageFeedBack.text
           ], s: 1),
           Container(
             margin:
