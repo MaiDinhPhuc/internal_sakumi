@@ -21,7 +21,6 @@ import 'package:internal_sakumi/model/survey_answer_model.dart';
 import 'package:internal_sakumi/model/survey_model.dart';
 import 'package:internal_sakumi/model/survey_result_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
-import 'package:internal_sakumi/model/teacher_home_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
@@ -213,7 +212,7 @@ abstract class NetworkProvider {
 
   Future<void> addNewVoucher(VoucherModel model);
 
-  Future<List<FeedBackModel>> getListFeedBack(String status);
+  Future<List<FeedBackModel>> getListStudentFeedBack(String status);
 
   Future<StudentModel> getStudentById(int studentId);
 
@@ -296,4 +295,5 @@ abstract class NetworkProvider {
   Future<List<ClassModel>> getListClassByListId(List<int> ids);
   Future<List<BillModel>> getListBillByStdId(int stdId);
   Future<List<ClassModel>> getListClassByListIdV2(List<int> ids);
+  Future<void> addNewFeedBack(FeedBackModel model);
 }

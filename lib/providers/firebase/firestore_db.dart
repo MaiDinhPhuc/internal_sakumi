@@ -5,6 +5,7 @@ import 'package:internal_sakumi/features/admin/manage_general/manage_general_cub
 import 'package:internal_sakumi/model/bill_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
+import 'package:internal_sakumi/model/feedback_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
@@ -684,6 +685,21 @@ class FireStoreDb {
     debugPrint("==========> add db for \"bill\"");
   }
 
+
+  Future<void> addFeedBack(FeedBackModel model) async {
+    await db.collection("feedbacks").doc("feedback_classId_${model.classId}_${model.date}").set({
+      'category': model.category,
+      'class_id': model.classId,
+      'content': model.content,
+      'date': model.date,
+      'note': model.note,
+      'role': model.role,
+      'status': model.status,
+      'user_id': model.userId,
+    });
+    debugPrint("==========> add db for \"bill\"");
+  }
+
   Future<void> updateBill(BillModel model) async {
     await db.collection("bill").doc("bill_${model.createDate}").update({
       'check': model.check,
@@ -1322,16 +1338,16 @@ class FireStoreDb {
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllLessonNotBTVN ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
-
-    // debugPrint("==========>get db from \"teacher_class\": ${snapshot.docs.length}");
+    
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getListFeedBack(
+  Future<QuerySnapshot<Map<String, dynamic>>> getListStudentFeedBack(
       String status) async {
     final snapshot = await db
         .collection("feedbacks")
         .where('status', isEqualTo: status)
+        .where('role', isEqualTo: 'student')
         .get();
 
     debugPrint(

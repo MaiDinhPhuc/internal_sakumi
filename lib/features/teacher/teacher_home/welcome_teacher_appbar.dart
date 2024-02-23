@@ -4,10 +4,13 @@ import 'package:image_network/image_network.dart';
 import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/admin/manage_bills/add_bill_button.dart';
 import 'package:internal_sakumi/features/teacher/profile/app_bar_info_teacher_cubit.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+
+import 'feedback_dialog.dart';
 
 class WelComeTeacherAppBar extends StatelessWidget {
   const WelComeTeacherAppBar({super.key});
@@ -86,6 +89,13 @@ class WelComeTeacherAppBar extends StatelessWidget {
                       ],
                     )
                   ],
+                ),
+                AddButton(
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => FeedBackDialog());
+                  }, title: AppText.titleSendFeedback.text,
                 )
               ],
             ),

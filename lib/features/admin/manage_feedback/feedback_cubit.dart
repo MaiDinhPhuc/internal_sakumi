@@ -36,7 +36,7 @@ class FeedBackCubit extends Cubit<int> {
   loadData() async {
     courses ??= await FireBaseProvider.instance.getAllCourse();
     listFeedBack ??=
-        await FireBaseProvider.instance.getListFeedBack(statusNow);
+        await FireBaseProvider.instance.getListStudentFeedBack(statusNow);
     List<int> listStdId = (listFeedBack!.where((e) => e.userId != -1)).map((e) => e.userId).toList();
     List<int> listClassId = [];
     for (var i in listFeedBack!) {
@@ -59,7 +59,7 @@ class FeedBackCubit extends Cubit<int> {
     }
     if (!listStatusCheck.contains(check)) {
       listStatusCheck.add(check);
-      var listData = await FireBaseProvider.instance.getListFeedBack(check);
+      var listData = await FireBaseProvider.instance.getListStudentFeedBack(check);
       listFeedBack!.addAll(listData);
       List<int> listStdId = (listData.where((e) => e.userId != -1)).map((e) => e.userId).toList();
       List<int> listClassId = [];
@@ -89,7 +89,7 @@ class FeedBackCubit extends Cubit<int> {
         note: feedBack.note,
         status: status,
         content: feedBack.content,
-        category: feedBack.category);
+        category: feedBack.category, role: feedBack.role);
     await FireStoreDb.instance
         .updateFeedBackStatus(feedBack.classId, feedBack.date, status);
     emit(state + 1);
@@ -105,7 +105,7 @@ class FeedBackCubit extends Cubit<int> {
         note: note,
         status: feedBack.status,
         content: feedBack.content,
-        category: feedBack.category);
+        category: feedBack.category,role: feedBack.role);
   }
 
   String getCourse(int classId) {

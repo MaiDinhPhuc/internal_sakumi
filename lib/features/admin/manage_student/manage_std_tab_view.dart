@@ -99,12 +99,12 @@ class ManageStdTabView extends StatelessWidget {
           ),
         ),
         if(!cubit.firstTab)
-          AddBillButton(
+          AddButton(
           onTap: () {
             showDialog(
                 context: context,
                 builder: (context) => BillDialogV2(isEdit: false, cubit: cubit.billCubit));
-          },
+          }, title: AppText.titleAddBill.text,
         )
       ],
     );

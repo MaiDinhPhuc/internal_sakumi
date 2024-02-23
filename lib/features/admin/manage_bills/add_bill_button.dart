@@ -1,8 +1,9 @@
 import 'package:flutter/Material.dart';
 
-class AddBillButton extends StatelessWidget {
-  const AddBillButton({super.key, required this.onTap});
+class AddButton extends StatelessWidget {
+  const AddButton({super.key, required this.onTap, required this.title});
   final Function() onTap;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -11,19 +12,18 @@ class AddBillButton extends StatelessWidget {
       child: Container(
         width: 230,
         height: 52,
-        padding:
-        const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
         decoration: ShapeDecoration(
           color: Colors.white,
           shape: RoundedRectangleBorder(
-            side: BorderSide(
+            side: const BorderSide(
               width: 1,
               strokeAlign: BorderSide.strokeAlignOutside,
               color: Color(0xFFDADADA),
             ),
             borderRadius: BorderRadius.circular(10),
           ),
-          shadows: [
+          shadows: const [
             BoxShadow(
               color: Color(0x3F000000),
               blurRadius: 2,
@@ -32,23 +32,17 @@ class AddBillButton extends StatelessWidget {
             )
           ],
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '+ THÊM HÓA ĐƠN',
-              style: TextStyle(
-                color: Color(0xFF757575),
-                fontSize: 18,
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.w700,
-                height: 0,
-              ),
-            ),
-          ],
-        ),
+        child: Center(
+            child: Text(
+          title,
+          style: const TextStyle(
+            color: Color(0xFF757575),
+            fontSize: 18,
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w700,
+            height: 0,
+          ),
+        )),
       ),
     );
   }

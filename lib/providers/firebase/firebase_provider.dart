@@ -1434,6 +1434,11 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<void> addNewFeedBack(FeedBackModel model) async {
+    await FireStoreDb.instance.addFeedBack(model);
+  }
+
+  @override
   Future<void> updateBill(BillModel model) async {
     await FireStoreDb.instance.updateBill(model);
   }
@@ -1765,8 +1770,8 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<FeedBackModel>> getListFeedBack(String status) async {
-    final listFeedBack = (await FireStoreDb.instance.getListFeedBack(status))
+  Future<List<FeedBackModel>> getListStudentFeedBack(String status) async {
+    final listFeedBack = (await FireStoreDb.instance.getListStudentFeedBack(status))
         .docs
         .map((e) => FeedBackModel.fromSnapshot(e))
         .toList();

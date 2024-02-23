@@ -51,12 +51,12 @@ class ManageBillScreen extends StatelessWidget {
                                     style: TextStyle(
                                         fontWeight: FontWeight.w800,
                                         fontSize: Resizable.font(context, 30))),
-                                AddBillButton(
+                                AddButton(
                                   onTap: () {
                                     showDialog(
                                         context: context,
                                         builder: (context) => BillDialog(isEdit: false, cubit: cubit));
-                                  },
+                                  }, title: AppText.titleAddBill.text,
                                 )
                               ],
                             ))),
