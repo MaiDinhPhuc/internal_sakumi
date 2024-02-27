@@ -46,6 +46,8 @@ class ConfirmDeleteBill extends StatelessWidget {
                 cubit.updateListBill(
                     billModel,
                     BillModel(
+                        classType: billModel.classType,
+                        courseId: billModel.courseId,
                         classId: billModel.classId,
                         userId: billModel.userId,
                         paymentDate: billModel.paymentDate,
@@ -107,6 +109,8 @@ class ConfirmDeleteBillV2 extends StatelessWidget {
                 cubit.updateListBill(
                     billModel,
                     BillModel(
+                        classType: billModel.classType,
+                        courseId: billModel.courseId,
                         classId: billModel.classId,
                         userId: billModel.userId,
                         paymentDate: billModel.paymentDate,

@@ -1973,6 +1973,20 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<List<BillModel>> getListBillInStatistic(
+      List<int> listTypeFilter,
+      List<int> listCourseId,
+      int startDate,
+      int endDate) async {
+    final listBill = (await FireStoreDb.instance.getListBillStatistic(
+         listTypeFilter,listCourseId, startDate, endDate))
+        .docs
+        .map((e) => BillModel.fromSnapshot(e))
+        .toList();
+    return listBill;
+  }
+
+  @override
   Future<List<BillModel>> getListBillByStdId(int stdId) async {
     final listBill = (await FireStoreDb.instance.getListBillByStdId(stdId))
         .docs

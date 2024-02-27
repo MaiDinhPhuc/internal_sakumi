@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/features/admin/search/search_cubit.dart';
 import 'package:internal_sakumi/providers/cache/filter_admin_provider.dart';
 import 'package:internal_sakumi/providers/cache/filter_manage_bill_provider.dart';
+import 'package:internal_sakumi/providers/cache/filter_statistic_provider.dart';
 import 'package:internal_sakumi/providers/cache/filter_teacher_provider.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:url_strategy/url_strategy.dart';
@@ -37,7 +38,8 @@ class MyApp extends StatelessWidget {
           BlocProvider<ManageSurveyCubit>(create: (context) => ManageSurveyCubit()),
           BlocProvider<AdminClassFilterCubit>(create: (context)=>AdminClassFilterCubit()),
           BlocProvider<BillFilterCubit>(create: (context)=>BillFilterCubit()),
-          BlocProvider<TeacherClassFilterCubit>(create: (context)=>TeacherClassFilterCubit())
+          BlocProvider<TeacherClassFilterCubit>(create: (context)=>TeacherClassFilterCubit()),
+          BlocProvider<StatisticFilterCubit>(create: (context)=>StatisticFilterCubit())
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

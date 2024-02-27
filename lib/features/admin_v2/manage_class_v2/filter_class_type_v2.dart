@@ -104,5 +104,3 @@ class FilterTypeAdminV2 extends StatelessWidget {
         });
   }
 }
-
-

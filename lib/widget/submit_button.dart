@@ -39,10 +39,7 @@ class SubmitButton extends StatelessWidget {
 class DeleteButton extends StatelessWidget {
   final Function() onPressed;
   final String title;
-  const DeleteButton(
-      {required this.onPressed,
-        required this.title,
-        Key? key})
+  const DeleteButton({required this.onPressed, required this.title, Key? key})
       : super(key: key);
 
   @override
@@ -50,13 +47,11 @@ class DeleteButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ButtonStyle(
-          shadowColor: MaterialStateProperty.all(
-               redColor),
+          shadowColor: MaterialStateProperty.all(redColor),
           shape: MaterialStateProperty.all(RoundedRectangleBorder(
               borderRadius:
-              BorderRadius.circular(Resizable.padding(context, 1000)))),
-          backgroundColor: MaterialStateProperty.all(
-              redColor),
+                  BorderRadius.circular(Resizable.padding(context, 1000)))),
+          backgroundColor: MaterialStateProperty.all(redColor),
           padding: MaterialStateProperty.all(EdgeInsets.symmetric(
               horizontal: Resizable.padding(context, 30)))),
       child: Text(title.toUpperCase(),
@@ -64,6 +59,36 @@ class DeleteButton extends StatelessWidget {
               fontWeight: FontWeight.w700,
               fontSize: Resizable.font(context, 16),
               color: Colors.white)),
+    );
+  }
+}
+
+class DetailButton extends StatelessWidget {
+  final Function() onPressed;
+  final String title;
+  const DetailButton({required this.onPressed, required this.title, Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ButtonStyle(
+          shadowColor: MaterialStateProperty.all(primaryColor),
+          backgroundColor: MaterialStateProperty.all(primaryColor),
+          padding: MaterialStateProperty.all(EdgeInsets.symmetric(
+              horizontal: Resizable.padding(context, 10)))),
+      child: Row(
+        children: [
+          Icon(Icons.library_books,color: Colors.white, size: Resizable.size(context, 16)),
+          SizedBox(width: Resizable.size(context, 5)),
+          Text(title.toUpperCase(),
+              style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: Resizable.font(context, 16),
+                  color: Colors.white))
+        ],
+      ),
     );
   }
 }

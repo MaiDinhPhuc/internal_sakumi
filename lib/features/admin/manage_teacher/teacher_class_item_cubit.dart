@@ -94,15 +94,30 @@ class TeacherClassItemCubit extends Cubit<int>{
     if (stdLessons == null || stdLessons!.isEmpty) {
       return 0;
     }
+    List<int> listStdIdsEnable = [];
+    for (var element in stdClasses!) {
+      if (element.classStatus != "Remove" &&
+          element.classStatus != "Viewer") {
+        listStdIdsEnable.add(element.userId);
+      }
+    }
+    List<LessonModel> lessonTemp =
+    lessons!.where((element) => element.btvn == 0).toList();
+    List<int> lessonExceptionIds = [];
+    for (var i in lessonTemp) {
+      lessonExceptionIds.add(i.lessonId);
+    }
 
     int temp1 = 0;
     int temp2 = 0;
     for (var i in stdLessons!) {
-      if (getPoint(i.lessonId) != -2 && i.timekeeping != 0) {
-        temp1++;
-      }
-      if (i.timekeeping != 0) {
-        temp2++;
+      if (lessonExceptionIds.contains(i.lessonId) == false){
+        if (listStdIdsEnable.contains(i.studentId) && getPoint(i.lessonId) != -2 && i.timekeeping != 0) {
+          temp1++;
+        }
+        if (listStdIdsEnable.contains(i.studentId) && i.timekeeping != 0) {
+          temp2++;
+        }
       }
     }
     if (temp2 == 0) {

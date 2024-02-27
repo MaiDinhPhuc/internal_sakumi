@@ -161,7 +161,7 @@ class ClassSearchListV2 extends StatelessWidget {
                     classStatus: data["class_status"],
                     code: data["class_code"] ?? "",
                     classType: data["class_type"] ?? 0, id: data["class_id"], onTap: () {
-                  billDialogCubit.chooseClass("${data["class_code"] ?? ""}", data["class_id"]);
+                  billDialogCubit.chooseClass("${data["class_code"] ?? ""}", data["class_id"], data['course_id'], data['class_type']);
                 },
                 );
               }

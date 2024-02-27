@@ -680,14 +680,18 @@ class FireStoreDb {
       'type': model.type,
       'user_id': model.userId,
       'creator': model.creator,
-      'currency': model.currency
+      'currency': model.currency,
+      'course_id': model.courseId,
+      'class_type': model.classType
     });
     debugPrint("==========> add db for \"bill\"");
   }
 
-
   Future<void> addFeedBack(FeedBackModel model) async {
-    await db.collection("feedbacks").doc("feedback_classId_${model.classId}_${model.date}").set({
+    await db
+        .collection("feedbacks")
+        .doc("feedback_classId_${model.classId}_${model.date}")
+        .set({
       'category': model.category,
       'class_id': model.classId,
       'content': model.content,
@@ -715,7 +719,9 @@ class FireStoreDb {
       'type': model.type,
       'user_id': model.userId,
       'creator': model.creator,
-      'currency': model.currency
+      'currency': model.currency,
+      'course_id': model.courseId,
+      'class_type': model.classType
     });
     debugPrint("==========> update db for \"bill\"");
   }
@@ -1204,11 +1210,11 @@ class FireStoreDb {
       int endDate) async {
     final snapshot = await db
         .collection("bill")
-        .orderBy('payment_date')
+        .orderBy('create_date')
         .where(Filter.and(
             Filter("check", whereIn: listStatusFilter),
-            Filter("payment_date", isGreaterThanOrEqualTo: startDate),
-            Filter("payment_date", isLessThanOrEqualTo: endDate),
+            Filter("create_date", isGreaterThanOrEqualTo: startDate),
+            Filter("create_date", isLessThanOrEqualTo: endDate),
             Filter("type", whereIn: listTypeFilter),
             Filter("creator", whereIn: listCreatorFilter)))
         .startAfter([lastItem])
@@ -1229,11 +1235,11 @@ class FireStoreDb {
       int endDate) async {
     final snapshot = await db
         .collection("bill")
-        .orderBy('payment_date')
+        .orderBy('create_date')
         .where(Filter.and(
             Filter("check", whereIn: listStatusFilter),
-            Filter("payment_date", isGreaterThanOrEqualTo: startDate),
-            Filter("payment_date", isLessThanOrEqualTo: endDate),
+            Filter("create_date", isGreaterThanOrEqualTo: startDate),
+            Filter("create_date", isLessThanOrEqualTo: endDate),
             Filter("type", whereIn: listTypeFilter),
             Filter("creator", whereIn: listCreatorFilter)))
         .limit(10)
@@ -1241,6 +1247,24 @@ class FireStoreDb {
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListBillWithFilterAndDate ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getListBillStatistic(
+      List<int> listTypeFilter,
+      List<int> listCourseId,
+      int startDate,
+      int endDate) async {
+    final snapshot = await db
+        .collection("bill")
+        .orderBy('create_date')
+        .where(Filter.and(
+          Filter("create_date", isGreaterThanOrEqualTo: startDate),
+          Filter("create_date", isLessThanOrEqualTo: endDate),
+          Filter("class_type", whereIn: listTypeFilter),
+          Filter("course_id", whereIn: listCourseId),
+        )).get();
 
     return snapshot;
   }
@@ -1338,7 +1362,7 @@ class FireStoreDb {
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllLessonNotBTVN ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
-    
+
     return snapshot;
   }
 
@@ -1415,6 +1439,15 @@ class FireStoreDb {
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCount $tableName - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return count;
+  }
+
+  Future<AggregateQuerySnapshot> getCountBill(int startDate, int endDate) async {
+    final count = await db.collection('bill').where(Filter.and(
+      Filter("create_date", isGreaterThanOrEqualTo: startDate),
+      Filter("create_date", isLessThanOrEqualTo: endDate),
+    )).count().get();
 
     return count;
   }

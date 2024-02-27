@@ -279,21 +279,35 @@ abstract class NetworkProvider {
   Future<List<ClassModel>> getListClassWithFilter(List<String> listStatusFilter,
       List<int> listTypeFilter, List<int> listCourseId);
 
-  Future<List<BillModel>> getListBillWithFilter(
-      List<String> listStatusFilter, List<String> listTypeFilter, List<String> listCreatorFilter);
+  Future<List<BillModel>> getListBillWithFilter(List<String> listStatusFilter,
+      List<String> listTypeFilter, List<String> listCreatorFilter);
 
-  Future<List<BillModel>> getListBillWithFilterAndDate(List<String> listStatusFilter,
-      List<String> listTypeFilter,List<String> listCreatorFilter, int startDate, int endDate);
+  Future<List<BillModel>> getListBillWithFilterAndDate(
+      List<String> listStatusFilter,
+      List<String> listTypeFilter,
+      List<String> listCreatorFilter,
+      int startDate,
+      int endDate);
 
-  Future<List<BillModel>> getMoreListBillWithFilter(List<String> listStatusFilter,
-      List<String> listTypeFilter,List<String> listCreatorFilter, int lastItem);
+  Future<List<BillModel>> getMoreListBillWithFilter(
+      List<String> listStatusFilter,
+      List<String> listTypeFilter,
+      List<String> listCreatorFilter,
+      int lastItem);
 
-  Future<List<BillModel>> getMoreListBillWithFilterAndDate(List<String> listStatusFilter,
-      List<String> listTypeFilter,List<String> listCreatorFilter, int lastItem, int startDate, int endDate);
+  Future<List<BillModel>> getMoreListBillWithFilterAndDate(
+      List<String> listStatusFilter,
+      List<String> listTypeFilter,
+      List<String> listCreatorFilter,
+      int lastItem,
+      int startDate,
+      int endDate);
   Future<void> addNewBill(BillModel model);
   Future<void> updateBill(BillModel model);
   Future<List<ClassModel>> getListClassByListId(List<int> ids);
   Future<List<BillModel>> getListBillByStdId(int stdId);
   Future<List<ClassModel>> getListClassByListIdV2(List<int> ids);
   Future<void> addNewFeedBack(FeedBackModel model);
+  Future<List<BillModel>> getListBillInStatistic(List<int> listTypeFilter,
+      List<int> listCourseId, int startDate, int endDate);
 }

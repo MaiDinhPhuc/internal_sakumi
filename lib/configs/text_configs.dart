@@ -446,10 +446,18 @@ enum AppText {
   txtPleaseInputFeedBack,
   txtAnonymous,
   txtAnonymousNote,
-  titleFeedBackFromTeacher
+  titleFeedBackFromTeacher,
+  titleStatisticsDashboard,
+  txtBill,
+  txtTotalBill,
+  txtTotalBillThisMonth
 }
 
 Map<AppText, String> texts = {
+  AppText.txtTotalBillThisMonth : "Hóa đơn tháng này",
+  AppText.txtTotalBill : "Tổng số hóa đơn",
+  AppText.txtBill : "Hoá đơn",
+  AppText.titleStatisticsDashboard : "DASHBOARD THỐNG KÊ",
   AppText.txtAnonymousNote : "Chọn \"Ẩn Danh\" để góp ý không gửi kèm thông tin cá nhân",
   AppText.txtAnonymous : "Ẩn danh",
   AppText.txtPleaseInputFeedBack : "Vui lòng gửi góp ý cho trung tâm nếu có gì sensei thấy sai sót nhé...",

@@ -32,8 +32,8 @@ class ManageBillScreen extends StatelessWidget {
             padding: EdgeInsets.only(
                 top: Resizable.padding(context, 20),
                 bottom: Resizable.padding(context, 40),
-                left: Resizable.padding(context, 50),
-                right: Resizable.padding(context, 50)),
+                left: Resizable.padding(context, 70),
+                right: Resizable.padding(context, 70)),
             child: BlocBuilder<ManageBillCubit, int>(
               bloc: cubit,
               builder: (c, s) {

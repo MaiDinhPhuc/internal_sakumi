@@ -26,7 +26,7 @@ class CustomLessonCubit extends Cubit<int> {
 
   loadData() async {
     courses = (await FireBaseProvider.instance.getAllCourseEnable())
-        .where((e) => e.courseId != classModel.courseId)
+        //.where((e) => e.courseId != classModel.courseId)
         .toList();
     emit(state + 1);
   }

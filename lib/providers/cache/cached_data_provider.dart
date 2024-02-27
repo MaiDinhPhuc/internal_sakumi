@@ -12,6 +12,7 @@ import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firestore_db.dart';
 
 import 'filter_admin_provider.dart';
+import 'filter_statistic_provider.dart';
 import 'filter_teacher_provider.dart';
 
 class CacheObject {
@@ -41,6 +42,15 @@ class DataProvider {
     }
     return await FireBaseProvider.instance
         .getListClassWithFilter(listStatusQuery, listTypeQuery, listCourseId);
+  }
+
+  static Future<List<BillModel>> billStatistic(
+      Map<StatisticFilter, List> filter, int admin, List<int> listCourseId, int startDay, int endDay) async {
+    List? listType = filter[StatisticFilter.type];
+    List<int> listTypeQuery = listType!.map((e) => type(e)).toList();
+
+    return await FireBaseProvider.instance
+        .getListBillInStatistic(listTypeQuery, listCourseId, startDay, endDay);
   }
 
   static Future<List<ClassModel>> classListTeacher(

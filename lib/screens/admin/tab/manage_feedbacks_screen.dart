@@ -25,7 +25,7 @@ class ManageFeedBacksScreen extends StatelessWidget {
               child: Center(
             child: Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: Resizable.padding(context, 80)),
+                    horizontal: Resizable.padding(context, 50)),
                 child: Column(
                   children: [
                     Container(

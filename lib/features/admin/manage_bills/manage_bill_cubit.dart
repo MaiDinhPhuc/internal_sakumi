@@ -266,66 +266,6 @@ class ManageBillCubit extends Cubit<int> {
   }
 
 
-  // Future<List<BillModel>> getListBill(Map<BillFilter, List> filter,
-  //     {BillModel? lastItem, int? startDate, int? endDate}) async {
-  //
-  //
-  //   List<BillModel> listBills = [];
-  //
-  //   if (lastItem == null && startDate != null && endDate != null) {
-  //     List<BillModel> lastBills = [];
-  //     for (int i = 0; i < subLists.length; i++) {
-  //       var listBill = await FireBaseProvider.instance
-  //           .getListBillWithFilterAndDate(listStatusQuery, subLists[i],
-  //           listCreatorQuery, startDate, endDate);
-  //       listBills.addAll(listBill);
-  //       lastBills.add(listBill.last);
-  //     }
-  //     listLastBill.add(lastBills);
-  //   } else if (lastItem != null && startDate == null && endDate == null) {
-  //     List<BillModel> lastBills = listLastBill.last;
-  //     List<BillModel> lastBillNew = [];
-  //     for (int i = 0; i < subLists.length; i++) {
-  //       var listBill = await FireBaseProvider.instance
-  //           .getMoreListBillWithFilter(listStatusQuery, subLists[i],
-  //           listCreatorQuery, lastBills[i].createDate);
-  //       if(listBill.isNotEmpty){
-  //         listBills.addAll(listBill);
-  //         lastBillNew.add(listBill.last);
-  //       }
-  //     }
-  //     if(lastBillNew.isNotEmpty){
-  //       listLastBill.add(lastBillNew);
-  //     }
-  //   } else if (lastItem != null && startDate != null && endDate != null) {
-  //     List<BillModel> lastBills = listLastBill.last;
-  //     List<BillModel> lastBillNew = [];
-  //     for (int i = 0; i < subLists.length; i++) {
-  //       var listBill = await FireBaseProvider.instance
-  //           .getMoreListBillWithFilter(listStatusQuery, subLists[i],
-  //           listCreatorQuery, lastBills[i].createDate);
-  //       if(listBill.isNotEmpty){
-  //         listBills.addAll(listBill);
-  //         lastBillNew.add(listBill.last);
-  //       }
-  //     }
-  //     if(lastBillNew.isNotEmpty){
-  //       listLastBill.add(lastBillNew);
-  //     }
-  //   } else {
-  //     List<BillModel> lastBills = [];
-  //     for (int i = 0; i < subLists.length; i++) {
-  //       var listBill = await FireBaseProvider.instance.getListBillWithFilter(
-  //           listStatusQuery, subLists[i], listCreatorQuery);
-  //       listBills.addAll(listBill);
-  //       lastBills.add(listBill.last);
-  //     }
-  //     listLastBill.add(lastBills);
-  //   }
-  //
-  //   return listBills;
-  // }
-
   static String billStatus(FilterBillStatus status) {
     switch (status) {
       case FilterBillStatus.check:

@@ -49,7 +49,7 @@ class ManageClassScreenV2 extends StatelessWidget {
               ),
               Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: Resizable.padding(context, 150)),
+                      horizontal: Resizable.padding(context, 70)),
                   child: BlocListener<AdminClassFilterCubit, int>(
                       listener: (context, _) {
                         cubit.loadDataAdmin(filterController);
@@ -68,7 +68,7 @@ class ManageClassScreenV2 extends StatelessWidget {
                       ))),
               Container(
                   margin: EdgeInsets.symmetric(
-                      horizontal: Resizable.padding(context, 150)),
+                      horizontal: Resizable.padding(context, 70)),
                   child: ClassItemRowLayout(
                     widgetClassCode: Text(AppText.txtClassCode.text,
                         style: TextStyle(
@@ -109,7 +109,7 @@ class ManageClassScreenV2 extends StatelessWidget {
               Padding(
                   padding: EdgeInsets.symmetric(
                       vertical: Resizable.size(context, 5),
-                      horizontal: Resizable.padding(context, 150)),
+                      horizontal: Resizable.padding(context, 70)),
                   child: DottedBorderButton(
                       AppText.btnManageClass.text.toUpperCase(), onPressed: () {
                     Navigator.pushNamed(
@@ -128,7 +128,7 @@ class ManageClassScreenV2 extends StatelessWidget {
                               ...shimmerList.map((e) => Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal:
-                                      Resizable.size(context, 150)),
+                                      Resizable.size(context, 70)),
                                   child: const ItemShimmer()))
                             ],
                           ),
@@ -141,7 +141,7 @@ class ManageClassScreenV2 extends StatelessWidget {
                                 .map((e) => Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal:
-                                    Resizable.size(context, 150)),
+                                    Resizable.size(context, 70)),
                                 child: ClassItemV2(
                                     classModel: e,
                                     classCubit: cubit)))

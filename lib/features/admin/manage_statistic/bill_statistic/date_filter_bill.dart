@@ -1,17 +1,13 @@
 import 'package:flutter/Material.dart';
-import 'package:internal_sakumi/providers/cache/filter_manage_bill_provider.dart';
 import 'package:internal_sakumi/providers/cache/filter_statistic_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-import 'manage_bill_cubit.dart';
-
-class DateFilter extends StatelessWidget {
-  const DateFilter({super.key, required this.cubit, required this.isStartDay, required this.filterController});
-  final ManageBillCubit cubit;
+class DateFilterBill extends StatelessWidget {
+  const DateFilterBill({super.key, required this.isStartDay, required this.filterController});
   final bool isStartDay;
-  final BillFilterCubit filterController;
+  final StatisticFilterCubit filterController;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -34,11 +30,11 @@ class DateFilter extends StatelessWidget {
                       showNavigationArrow: true,
                       onSelectionChanged: (v) async {
                         if (isStartDay) {
-                          cubit.updateStartDay(v.value);
+                          filterController.billStatisticCubit.updateStartDay(v.value);
                         } else {
-                          cubit.updateEndDay(v.value);
+                          filterController.billStatisticCubit.updateEndDay(v.value);
                         }
-                        cubit.checkLoad(filterController);
+                        filterController.billStatisticCubit.checkLoad(filterController);
                         Navigator.pop(context);
                       },
                       selectionMode: DateRangePickerSelectionMode.single,
@@ -55,16 +51,16 @@ class DateFilter extends StatelessWidget {
             border: InputBorder.none,
             icon: const Icon(Icons.calendar_month_outlined),
             hintText: isStartDay
-                ? cubit.startDay == null
+                ? filterController.billStatisticCubit.startDay == null
                 ? "dd/MM/yyyy"
                 : DateFormat('dd/MM/yyyy').format(DateTime(
-                cubit.startDay!.year,
-                cubit.startDay!.month,
-                cubit.startDay!.day))
-                : cubit.endDay == null
+                filterController.billStatisticCubit.startDay!.year,
+                filterController.billStatisticCubit.startDay!.month,
+                filterController.billStatisticCubit.startDay!.day))
+                : filterController.billStatisticCubit.endDay == null
                 ? "dd/MM/yyyy"
-                : DateFormat('dd/MM/yyyy').format(DateTime(cubit.endDay!.year,
-                cubit.endDay!.month, cubit.endDay!.day)),
+                : DateFormat('dd/MM/yyyy').format(DateTime(filterController.billStatisticCubit.endDay!.year,
+                filterController.billStatisticCubit.endDay!.month, filterController.billStatisticCubit.endDay!.day)),
             isDense: true,
             fillColor: Colors.white,
             hoverColor: Colors.transparent,
@@ -75,7 +71,3 @@ class DateFilter extends StatelessWidget {
     );
   }
 }
-
-
-
-

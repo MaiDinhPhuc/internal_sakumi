@@ -7,7 +7,8 @@ class BillModel {
       renewDate,
       payment,
       refund,
-      createDate;
+      createDate,
+      courseId, classType;
   final String type, status, note, check, creator, currency;
   final bool delete;
 
@@ -25,7 +26,8 @@ class BillModel {
       required this.createDate,
       required this.delete,
       required this.creator,
-      required this.currency});
+      required this.currency,
+      required this.courseId, required this.classType});
   factory BillModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
@@ -43,6 +45,7 @@ class BillModel {
         createDate: data['create_date'] ?? 0,
         delete: data['delete'] ?? false,
         creator: data["creator"] ?? "Empty",
-        currency: data["currency"] ?? "Tiền Việt(vnđ)");
+        currency: data["currency"] ?? "Tiền Việt(vnđ)",
+        courseId: data['courseId'] ?? -1, classType: data['class_type'] ?? 0);
   }
 }

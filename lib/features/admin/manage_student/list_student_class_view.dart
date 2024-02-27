@@ -12,7 +12,7 @@ class ListStudentClassView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ManageStdTabView( cubit: cubit,),
+        ManageStdTabView( cubit: cubit),
         cubit.firstTab
             ? ManageStdClassView(cubit: cubit)
             : ManageStdBillView(cubit: cubit)

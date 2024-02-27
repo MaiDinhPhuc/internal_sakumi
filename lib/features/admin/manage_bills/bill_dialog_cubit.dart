@@ -14,7 +14,7 @@ class BillDialogCubit extends Cubit<int> {
 
   final StudentModel? std;
   final BillModel? billModel;
-  int? classId, userId, paymentDate, renewDate, refund, payment;
+  int? classId,courseId, userId, paymentDate, renewDate, refund, payment, classType;
   String? type, note, creator,currency;
   TextEditingController stdSearch = TextEditingController();
   String stdSearchValue = "";
@@ -62,6 +62,7 @@ class BillDialogCubit extends Cubit<int> {
   load() async {
     if (billModel != null) {
       classId = billModel!.classId;
+      courseId = billModel!.courseId;
       userId = billModel!.userId;
       paymentDate = billModel!.paymentDate;
       payment = billModel!.payment;
@@ -71,6 +72,7 @@ class BillDialogCubit extends Cubit<int> {
       note = billModel!.note;
       creator = billModel!.creator;
       currency = billModel!.currency;
+      classType = billModel!.classType;
       var student = await FireBaseProvider.instance.getStudentById(userId!);
       var classNow = await FireBaseProvider.instance.getClassById(classId!);
       stdSearch.text = "${student.name}-${student.studentCode}";
@@ -130,14 +132,18 @@ class BillDialogCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  chooseClass(String className, int classId) {
+  chooseClass(String className, int classId, int courseId, int classType) {
     this.classId = classId;
+    this.courseId = courseId;
+    this.classType = classType;
     classSearch.text = className;
     emit(state + 1);
   }
 
   deleteClass() {
     classId = null;
+    courseId = null;
+    classType = null;
     classSearch.text = "";
     classSearchValue = "";
     emit(state + 1);
@@ -164,6 +170,8 @@ class BillDialogCubit extends Cubit<int> {
 
   addNewBill(ManageBillCubit cubit) async {
     BillModel newBill = BillModel(
+        classType: classType!,
+        courseId: courseId!,
         classId: classId!,
         userId: userId!,
         paymentDate: paymentDate!,
@@ -183,6 +191,8 @@ class BillDialogCubit extends Cubit<int> {
 
   updateBill(ManageBillCubit cubit) async {
     BillModel newBill = BillModel(
+        classType: classType!,
+        courseId: courseId!,
         classId: classId!,
         userId: userId!,
         paymentDate: paymentDate!,
@@ -202,6 +212,8 @@ class BillDialogCubit extends Cubit<int> {
 
   addNewBillV2(ManageStdBillCubit cubit) async {
     BillModel newBill = BillModel(
+        classType: classType!,
+        courseId: courseId!,
         classId: classId!,
         userId: cubit.student!.userId,
         paymentDate: paymentDate!,
@@ -221,6 +233,8 @@ class BillDialogCubit extends Cubit<int> {
 
   updateBillV2(ManageStdBillCubit cubit) async {
     BillModel newBill = BillModel(
+        classType: classType!,
+        courseId: courseId!,
         classId: classId!,
         userId: cubit.student!.userId,
         paymentDate: paymentDate!,
