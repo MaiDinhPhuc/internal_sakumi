@@ -450,10 +450,14 @@ enum AppText {
   titleStatisticsDashboard,
   txtBill,
   txtTotalBill,
-  txtTotalBillThisMonth
+  txtTotalBillThisMonth,
+  txtNotCheck,
+  txtTag
 }
 
 Map<AppText, String> texts = {
+  AppText.txtTag : "Tag",
+  AppText.txtNotCheck : "Chưa đối xoát",
   AppText.txtTotalBillThisMonth : "Hóa đơn tháng này",
   AppText.txtTotalBill : "Tổng số hóa đơn",
   AppText.txtBill : "Hoá đơn",
@@ -484,7 +488,7 @@ Map<AppText, String> texts = {
   AppText.titleBillDialog : "GHI NHẬN HÓA ĐƠN THANH TOÁN",
   AppText.txtEdit : "Chỉnh sửa",
   AppText.txtCheck : "Đối soát",
-  AppText.txtChecked : "Đã đối soát",
+  AppText.txtChecked : "Đã đối xoát",
   AppText.txtRefund : "Tiền hoàn (refund): ",
   AppText.txtRevenue : "Ghi nhận doanh thu:",
   AppText.txtNotBill : "Hiện tại không có hoá đơn thoả mãn điều kiện, vui lòng chọn lại filter...",

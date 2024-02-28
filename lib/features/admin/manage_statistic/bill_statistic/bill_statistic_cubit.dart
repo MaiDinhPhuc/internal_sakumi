@@ -3,6 +3,7 @@ import 'package:internal_sakumi/model/bill_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/cache/filter_statistic_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firestore_db.dart';
+import 'package:intl/intl.dart';
 
 import 'chart_bill_view.dart';
 
@@ -77,6 +78,36 @@ class BillStatisticCubit extends Cubit<int> {
     if (endDay != null && startDay != null) {
       await loadData(filterController);
     }
+  }
+
+  String getTotalVnd(int index){
+    var type = listType[index];
+
+    String currency = "Tiền Việt(vnđ)";
+
+    var listBill = this.listBill.where((e) => e.type == type && e.currency == currency).toList();
+
+    int sum = 0;
+    for(var i in listBill){
+      sum = sum + i.payment;
+    }
+
+    return "${NumberFormat('#,##0').format(sum)}đ";
+  }
+
+  String getTotalYen(int index){
+    var type = listType[index];
+
+    String currency = "Yên Nhật(¥)";
+
+    var listBill = this.listBill.where((e) => e.type == type && e.currency == currency).toList();
+
+    int sum = 0;
+    for(var i in listBill){
+      sum = sum + i.payment;
+    }
+
+    return "${NumberFormat('#,##0').format(sum)}¥";
   }
 
   getCount()async{

@@ -1309,10 +1309,6 @@ class FireStoreDb {
       List<int> listIds) async {
     final snapshot =
         await db.collection("class").where("class_id", whereIn: listIds).get();
-    // debugPrint("==========>get db from \"class\": ${snapshot.docs.length}");
-
-    debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListClassAvailableForTeacher ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }

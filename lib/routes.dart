@@ -6,6 +6,7 @@ import 'package:internal_sakumi/screens/admin/student_info_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_bill_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_feedbacks_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_statistics_screen.dart';
+import 'package:internal_sakumi/screens/admin/tab/manage_student_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_survey_tab.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_teacher_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/search_general_screen.dart';
@@ -90,6 +91,8 @@ class Routes {
         handler: manageBillsHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/manageTeachers',
         handler: manageTeacherHandler, transitionType: TransitionType.fadeIn);
+    router.define('$admin/manageStudents',
+        handler: manageStudentHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/manageStatistics',
         handler: manageStatisticsHandler,
         transitionType: TransitionType.fadeIn);
@@ -193,6 +196,10 @@ Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
 var manageTeacherHandler =
 Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return const ManageTeacherScreen();
+});
+var manageStudentHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return const ManageStudentScreen();
 });
 var manageStatisticsHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {

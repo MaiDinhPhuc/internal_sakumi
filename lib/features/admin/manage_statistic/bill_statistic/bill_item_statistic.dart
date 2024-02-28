@@ -1,18 +1,15 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/features/admin/manage_statistic/bill_statistic/detail_bill_statistic_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_cubit.dart';
 import 'package:internal_sakumi/model/bill_model.dart';
 
-import 'bill_dialog.dart';
-import 'bill_view.dart';
-import 'confirm_check_bill.dart';
-import 'manage_bill_cubit.dart';
+import 'detail_bill_statistic_cubit.dart';
+import 'detail_statistic_bill_view.dart';
 
-class BillItem extends StatelessWidget {
-  const BillItem({super.key, required this.billModel, required this.cubit});
+class BillItemStatistic extends StatelessWidget {
+  const BillItemStatistic({super.key, required this.billModel, required this.detailCubit});
   final BillModel billModel;
-  final ManageBillCubit cubit;
+  final DetailBillStatisticCubit detailCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -20,35 +17,21 @@ class BillItem extends StatelessWidget {
       create: (context) => DropdownCubit(),
       child: BlocBuilder<DropdownCubit, int>(
         builder: (c, state) => AnimatedCrossFade(
-            firstChild: BillView(
-              onTap: () {},
+            firstChild: DetailBillStatisticView(
               onPressed: () {
                 BlocProvider.of<DropdownCubit>(c).update();
               },
               billModel: billModel,
-              cubit: cubit,
+              cubit: detailCubit,
               isExpand: state % 2 == 1,
-              onCheck: () {},
             ),
-            secondChild: BillView(
-              onTap: () async {
-                showDialog(
-                    context: context,
-                    builder: (context) =>
-                        BillDialog(isEdit: true, cubit: cubit, billModel: billModel));
-              },
+            secondChild: DetailBillStatisticView(
               onPressed: () {
                 BlocProvider.of<DropdownCubit>(c).update();
               },
               billModel: billModel,
-              cubit: cubit,
+              cubit: detailCubit,
               isExpand: state % 2 == 1,
-              onCheck: () {
-                showDialog(
-                    context: context,
-                    builder: (context) =>
-                        ConfirmCheckBill(cubit: cubit, billModel: billModel));
-              },
             ),
             crossFadeState: state % 2 == 1
                 ? CrossFadeState.showSecond
@@ -58,4 +41,3 @@ class BillItem extends StatelessWidget {
     );
   }
 }
-

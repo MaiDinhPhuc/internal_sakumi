@@ -5,6 +5,7 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 
 import 'date_filter_bill.dart';
+import 'detail_bill_statistic_dialog.dart';
 
 class HeaderBillStatistic extends StatelessWidget {
   const HeaderBillStatistic({super.key, required this.filterController});
@@ -100,7 +101,9 @@ class HeaderBillStatistic extends StatelessWidget {
             ),
             SizedBox(width: Resizable.size(context, 80),height: Resizable.size(context, 60),child: DetailButton(
                 onPressed: () {
-
+                  if(filterController.billStatisticCubit.listBill.isNotEmpty){
+                    showDialog(context: context, builder: (context) => DetailBillStatisticDialog(listBill: filterController.billStatisticCubit.listBill));
+                  }
                 },
                 title: AppText.textDetail.text))
           ],

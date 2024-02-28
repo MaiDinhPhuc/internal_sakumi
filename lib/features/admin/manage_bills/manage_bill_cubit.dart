@@ -150,7 +150,7 @@ class ManageBillCubit extends Cubit<int> {
       }
     }
     List<ClassModel> listClassNew =
-        await FireBaseProvider.instance.getListClassByListId(classIds);
+        await FireBaseProvider.instance.getListClassByListIdV2(classIds);
     var listClassId = listClass.map((e) => e.classId).toList();
     for (var i in listClassNew) {
       if (listClassId.contains(i.classId) == false) {
