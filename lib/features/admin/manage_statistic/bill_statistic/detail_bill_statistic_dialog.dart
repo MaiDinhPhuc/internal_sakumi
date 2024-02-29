@@ -3,11 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_bills/bill_layout.dart';
+import 'package:internal_sakumi/features/admin/manage_bills/filter_bill_creator.dart';
+import 'package:internal_sakumi/features/admin/manage_bills/filter_bill_type.dart';
 import 'package:internal_sakumi/model/bill_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'bill_item_statistic.dart';
 import 'detail_bill_statistic_cubit.dart';
+import 'filter_bill_currency.dart';
 
 class DetailBillStatisticDialog extends StatelessWidget {
   DetailBillStatisticDialog({super.key, required this.listBill})
@@ -48,8 +51,16 @@ class DetailBillStatisticDialog extends StatelessWidget {
                         )
                       ],
                     ),
+                    Padding(padding: EdgeInsets.symmetric(vertical: Resizable.padding(context, 15)),child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        FilterBillCreatorDetail(detailCubit: detailCubit),
+                        FilterBillTypeDetail(detailCubit: detailCubit),
+                        FilterBillCurrencyDetail(detailCubit: detailCubit)
+                      ],
+                    )),
                     Expanded(
-                        child: Column(
+                        child:detailCubit.getListBill().isNotEmpty? Column(
                       children: [
                         Padding(
                             padding: EdgeInsets.symmetric(
@@ -94,18 +105,20 @@ class DetailBillStatisticDialog extends StatelessWidget {
                               widgetDropdown: Container(),
                             )),
                         Expanded(
-                            child: SingleChildScrollView(
+                            child:  SingleChildScrollView(
                           child: Column(
                             children: [
-                              ...detailCubit.listBill
+                              ...detailCubit.getListBill()
                                   .map((e) => BillItemStatistic(
                                       billModel: e, detailCubit: detailCubit))
                                   .toList(),
                             ],
                           ),
-                        ))
+                        ) )
                       ],
-                    ))
+                    ): Center(
+                          child: Text(AppText.txtNotBill.text),
+                        ))
                   ],
                 ),
               ));

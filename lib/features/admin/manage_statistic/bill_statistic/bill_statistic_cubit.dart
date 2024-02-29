@@ -113,7 +113,7 @@ class BillStatisticCubit extends Cubit<int> {
   getCount()async{
     DateTime now = DateTime.now();
     DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
-    DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
+    DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 1);
     int startDate = firstDayOfMonth.millisecondsSinceEpoch;
     int endDate = lastDayOfMonth.millisecondsSinceEpoch;
     totalBill = (await FireStoreDb.instance.getCount("bill")).count;
@@ -157,7 +157,7 @@ class BillStatisticCubit extends Cubit<int> {
     } else {
       DateTime now = DateTime.now();
       DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
-      DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
+      DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 1);
       int startDate = firstDayOfMonth.millisecondsSinceEpoch;
       int endDate = lastDayOfMonth.millisecondsSinceEpoch;
       for (int i = 0; i < subLists.length; i++) {
