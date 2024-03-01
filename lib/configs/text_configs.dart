@@ -452,10 +452,14 @@ enum AppText {
   txtTotalBill,
   txtTotalBillThisMonth,
   txtNotCheck,
-  txtTag
+  txtTag,
+  txtTotalClass,
+  txtTotalClassThisMonth
 }
 
 Map<AppText, String> texts = {
+  AppText.txtTotalClassThisMonth : "Số lớp mở tháng này",
+  AppText.txtTotalClass : "Tổng số lớp",
   AppText.txtTag : "Tag",
   AppText.txtNotCheck : "Chưa đối xoát",
   AppText.txtTotalBillThisMonth : "Hóa đơn tháng này",

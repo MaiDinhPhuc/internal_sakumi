@@ -1264,7 +1264,44 @@ class FireStoreDb {
           Filter("create_date", isLessThanOrEqualTo: endDate),
           Filter("class_type", whereIn: listTypeFilter),
           Filter("course_id", whereIn: listCourseId),
-        )).get();
+        ))
+        .get();
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getListClassStatistic0(
+      List<int> listTypeFilter,
+      List<int> listCourseId,
+      int startDate,
+      int endDate) async {
+    final snapshot = await db
+        .collection("class")
+        .orderBy('start_time')
+        .where(Filter.and(
+      Filter("start_time", isGreaterThanOrEqualTo: startDate),
+      Filter("start_time", isLessThanOrEqualTo: endDate),
+      Filter("class_status", whereIn: ['Preparing','InProgress'])
+    ))
+        .get();
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getListClassStatistic1(
+      List<int> listTypeFilter,
+      List<int> listCourseId,
+      int startDate,
+      int endDate) async {
+    final snapshot = await db
+        .collection("class")
+        .orderBy('end_time')
+        .where(Filter.and(
+        Filter("end_time", isGreaterThanOrEqualTo: startDate),
+        Filter("end_time", isLessThanOrEqualTo: endDate),
+        Filter("class_status", whereIn: ['Completed','Cancel'])
+    ))
+        .get();
 
     return snapshot;
   }
@@ -1281,11 +1318,10 @@ class FireStoreDb {
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getListClassForAdmin() async {
-    final snapshot = await db.collection("class").where("class_status",
-        whereNotIn: ["Remove", "Completed", "Cancel"]).get();
+    final snapshot = await db.collection("class").get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListClassForAdmin ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> allClass ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -1439,12 +1475,40 @@ class FireStoreDb {
     return count;
   }
 
-  Future<AggregateQuerySnapshot> getCountBill(int startDate, int endDate) async {
-    final count = await db.collection('bill').where(Filter.and(
-      Filter("create_date", isGreaterThanOrEqualTo: startDate),
-      Filter("create_date", isLessThanOrEqualTo: endDate),
-    )).count().get();
+  Future<AggregateQuerySnapshot> getCountBill(
+      int startDate, int endDate) async {
+    final count = await db
+        .collection('bill')
+        .where(Filter.and(
+          Filter("create_date", isGreaterThanOrEqualTo: startDate),
+          Filter("create_date", isLessThanOrEqualTo: endDate),
+        ))
+        .count()
+        .get();
 
+    return count;
+  }
+
+  Future<AggregateQuerySnapshot> getCountClass(
+      int startDate, int endDate) async {
+    final count = await db
+        .collection('class')
+        .where(Filter.and(
+          Filter("start_time", isGreaterThanOrEqualTo: startDate),
+          Filter("start_time", isLessThanOrEqualTo: endDate),
+           Filter("class_status", whereIn: ['Preparing','InProgress']),
+        ))
+        .count()
+        .get();
+    return count;
+  }
+
+  Future<AggregateQuerySnapshot> getCountLessonResult(int classId) async {
+    final count = await db
+        .collection('lesson_result')
+        .where('class_id', isEqualTo: classId)
+        .count()
+        .get();
     return count;
   }
 

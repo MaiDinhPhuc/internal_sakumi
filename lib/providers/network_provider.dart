@@ -44,8 +44,6 @@ abstract class NetworkProvider {
   Future<int> getCountWithCondition(
       String tableName, String field, dynamic condition);
 
-  Future<List<ClassModel2>> getClassByAdmin(List<ClassModel>? listClasses);
-
   Future<UserModel> getUser(String email);
 
   Future<List<ClassModel2>> getClassByTeacherId(
@@ -310,4 +308,9 @@ abstract class NetworkProvider {
   Future<void> addNewFeedBack(FeedBackModel model);
   Future<List<BillModel>> getListBillInStatistic(List<int> listTypeFilter,
       List<int> listCourseId, int startDate, int endDate);
+  Future<List<ClassModel>> getListClassInStatistic(
+      List<int> listTypeFilter,
+      List<int> listCourseId,
+      int startDate,
+      int endDate, int type);
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
-import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'bill_statistic_cubit.dart';

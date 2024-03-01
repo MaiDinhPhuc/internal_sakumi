@@ -944,20 +944,6 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<ClassModel2>> getClassByAdmin(
-      List<ClassModel>? listClasses) async {
-    if (listClasses != null) {
-      var classes = listClasses
-          .where(
-              (e) => !["Remove", "Completed", "Cancel"].contains(e.classStatus))
-          .toList();
-      return ClassModel2.loadClass(classes);
-    }
-    var classes = await FireBaseProvider.instance.getListClassForAdmin();
-    return ClassModel2.loadClass(classes);
-  }
-
-  @override
   Future<List<StudentModel>> getAllStudentInFoInClass(
       List<int> listStdId) async {
     if (listStdId.isEmpty) {
@@ -1984,6 +1970,28 @@ class FireBaseProvider extends NetworkProvider {
         .map((e) => BillModel.fromSnapshot(e))
         .toList();
     return listBill;
+  }
+
+  @override
+  Future<List<ClassModel>> getListClassInStatistic(
+      List<int> listTypeFilter,
+      List<int> listCourseId,
+      int startDate,
+      int endDate, int type) async {
+    if(type == 0){
+      final listClass = (await FireStoreDb.instance.getListClassStatistic0(
+          listTypeFilter,listCourseId, startDate, endDate))
+          .docs
+          .map((e) => ClassModel.fromSnapshot(e))
+          .toList();
+      return listClass;
+    }
+    final listClass = (await FireStoreDb.instance.getListClassStatistic1(
+        listTypeFilter,listCourseId, startDate, endDate))
+        .docs
+        .map((e) => ClassModel.fromSnapshot(e))
+        .toList();
+    return listClass;
   }
 
   @override

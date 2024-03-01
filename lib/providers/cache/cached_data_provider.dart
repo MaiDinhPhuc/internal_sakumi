@@ -53,6 +53,15 @@ class DataProvider {
         .getListBillInStatistic(listTypeQuery, listCourseId, startDay, endDay);
   }
 
+  static Future<List<ClassModel>> classStatistic(
+      Map<StatisticFilter, List> filter, int admin, List<int> listCourseId, int startDay, int endDay, int columType) async {
+    List? listType = filter[StatisticFilter.type];
+    List<int> listTypeQuery = listType!.map((e) => type(e)).toList();
+
+    return await FireBaseProvider.instance
+        .getListClassInStatistic(listTypeQuery, listCourseId, startDay, endDay, columType);
+  }
+
   static Future<List<ClassModel>> classListTeacher(
       int teacherId, Map<TeacherFilter, List> filter) async {
     var teacherClassIDs =

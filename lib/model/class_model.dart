@@ -2,10 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/Material.dart';
 
 class ClassModel {
-  final int classId, courseId, classType;
+  final int classId, courseId, classType,endTime,startTime;
   final String description,
-      endTime,
-      startTime,
       note,
       classCode,
       classStatus,
@@ -60,8 +58,8 @@ class ClassModel {
         classId: data['class_id'] ?? -1,
         courseId: data['course_id'] ?? -1,
         description: data['description'] ?? '',
-        endTime: data['end_time'] ?? '',
-        startTime: data['start_time'] ?? '',
+        endTime: data['end_time'] ?? 0,
+        startTime: data['start_time'] ?? 0,
         note: data['note'] ?? '',
         classCode: data['class_code'] ?? '',
         classStatus: data['class_status'] ?? '',

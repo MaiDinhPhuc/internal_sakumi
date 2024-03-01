@@ -46,27 +46,55 @@ class ConfirmChangeClassStatusV2 extends StatelessWidget {
             text: AppText.txtBack.text),
         CustomButton(
             onPress: () async {
-              FirebaseFirestore.instance
-                  .collection('class')
-                  .doc(
-                      'class_${classModel.classId}_course_${classModel.courseId}')
-                  .update({'class_status': newStatus}).whenComplete(() {
-                classCubit.updateClass(ClassModel(
-                    classId: classModel.classId,
-                    courseId: classModel.courseId,
-                    description: classModel.description,
-                    endTime: classModel.endTime,
-                    startTime: classModel.startTime,
-                    note: classModel.note,
-                    classCode: classModel.classCode,
-                    classStatus: newStatus,
-                    classType: classModel.classType,
-                    link: classModel.link,
-                    customLessons: classModel.customLessons,
-                    informal: classModel.informal));
-                popupCubit.update();
-                Navigator.pop(context);
-              });
+
+              int now = DateTime.now().millisecondsSinceEpoch;
+
+              if(newStatus == 'Preparing' || newStatus == 'InProgress'){
+                FirebaseFirestore.instance
+                    .collection('class')
+                    .doc(
+                    'class_${classModel.classId}_course_${classModel.courseId}')
+                    .update({'class_status': newStatus, 'start_time' : now}).whenComplete(() {
+                  classCubit.updateClass(ClassModel(
+                      classId: classModel.classId,
+                      courseId: classModel.courseId,
+                      description: classModel.description,
+                      endTime: classModel.endTime,
+                      startTime: now,
+                      note: classModel.note,
+                      classCode: classModel.classCode,
+                      classStatus: newStatus,
+                      classType: classModel.classType,
+                      link: classModel.link,
+                      customLessons: classModel.customLessons,
+                      informal: classModel.informal));
+                  popupCubit.update();
+                  Navigator.pop(context);
+                });
+              }else{
+                FirebaseFirestore.instance
+                    .collection('class')
+                    .doc(
+                    'class_${classModel.classId}_course_${classModel.courseId}')
+                    .update({'class_status': newStatus, 'end_time' : now}).whenComplete(() {
+                  classCubit.updateClass(ClassModel(
+                      classId: classModel.classId,
+                      courseId: classModel.courseId,
+                      description: classModel.description,
+                      endTime: now,
+                      startTime: classModel.startTime,
+                      note: classModel.note,
+                      classCode: classModel.classCode,
+                      classStatus: newStatus,
+                      classType: classModel.classType,
+                      link: classModel.link,
+                      customLessons: classModel.customLessons,
+                      informal: classModel.informal));
+                  popupCubit.update();
+                  Navigator.pop(context);
+                });
+              }
+
             },
             bgColor: primaryColor.shade500,
             foreColor: Colors.white,

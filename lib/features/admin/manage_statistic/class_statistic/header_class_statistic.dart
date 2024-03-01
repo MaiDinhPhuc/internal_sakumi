@@ -1,14 +1,15 @@
+
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/providers/cache/filter_statistic_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 
-import 'date_filter_bill.dart';
-import 'detail_bill_statistic_dialog.dart';
+import 'date_filter_class.dart';
+import 'detail_class_statistic_dialog.dart';
 
-class HeaderBillStatistic extends StatelessWidget {
-  const HeaderBillStatistic({super.key, required this.filterController});
+class HeaderClassStatistic extends StatelessWidget {
+  const HeaderClassStatistic({super.key, required this.filterController});
   final StatisticFilterCubit filterController;
 
   @override
@@ -40,7 +41,7 @@ class HeaderBillStatistic extends StatelessWidget {
                       ),
                     ),
                     width: Resizable.size(context, 110),
-                    child: DateFilterBill(
+                    child: DateFilterClass(
                         isStartDay: true,
                         filterController:
                         filterController)),
@@ -79,21 +80,21 @@ class HeaderBillStatistic extends StatelessWidget {
                       ),
                     ),
                     width: Resizable.size(context, 110),
-                    child: DateFilterBill(
+                    child: DateFilterClass(
                         isStartDay: false,
                         filterController:
                         filterController)),
                 if (filterController
-                    .billStatisticCubit.startDay !=
+                    .classStatisticCubit.startDay !=
                     null &&
                     filterController
-                        .billStatisticCubit.endDay !=
+                        .classStatisticCubit.endDay !=
                         null)
                   SubmitButton(
                       onPressed: () {
-                        filterController.billStatisticCubit
+                        filterController.classStatisticCubit
                             .clearDate();
-                        filterController.billStatisticCubit
+                        filterController.classStatisticCubit
                             .loadData(filterController);
                       },
                       title: "clear")
@@ -101,8 +102,8 @@ class HeaderBillStatistic extends StatelessWidget {
             ),
             SizedBox(width: Resizable.size(context, 80),height: Resizable.size(context, 60),child: DetailButton(
                 onPressed: () {
-                  if(filterController.billStatisticCubit.loading == false){
-                    showDialog(context: context, builder: (context) => DetailBillStatisticDialog(listBill: filterController.billStatisticCubit.listBill));
+                  if(filterController.classStatisticCubit.loading == false){
+                    showDialog(context: context, builder: (context) => DetailClassStatisticDialog(filterController: filterController));
                   }
                 },
                 title: AppText.textDetail.text))

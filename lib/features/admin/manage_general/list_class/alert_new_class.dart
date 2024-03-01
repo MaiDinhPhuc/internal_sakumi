@@ -10,7 +10,6 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
-import 'package:intl/intl.dart';
 
 import 'alert_confirm_delete_class.dart';
 import 'info_class_view.dart';
@@ -30,16 +29,15 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
       context: context,
       builder: (_) {
         if (classModel != null) {
-          DateTimeCubit.startDay =
-              DateFormat('dd/MM/yyyy').parse(classModel.startTime);
-          DateTimeCubit.endDay =
-              DateFormat('dd/MM/yyyy').parse(classModel.endTime);
+          DateTimeCubit.startDay = DateTime.fromMillisecondsSinceEpoch(classModel.startTime);
+          DateTimeCubit.endDay =DateTime.fromMillisecondsSinceEpoch(classModel.endTime);
         } else {
           DateTimeCubit.startDay = DateTime.now();
           DateTimeCubit.endDay = DateTime.now();
         }
         return BlocProvider(
-            create: (context) => AlertNewClassCubit()..loadCourse(classModel, isEdit),
+            create: (context) =>
+                AlertNewClassCubit()..loadCourse(classModel, isEdit),
             child: BlocBuilder<AlertNewClassCubit, int>(
               builder: (c, _) {
                 var cubit = BlocProvider.of<AlertNewClassCubit>(c);
@@ -161,26 +159,28 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                                         .classCount!,
                                                                     courseId: cubit
                                                                         .courseId!,
-                                                                    description: desCon
-                                                                        .text,
-                                                                    endTime: DateFormat('dd/MM/yyyy').format(DateTimeCubit
-                                                                        .endDay),
-                                                                    startTime: DateFormat(
-                                                                            'dd/MM/yyyy')
-                                                                        .format(
-                                                                            DateTimeCubit
-                                                                                .startDay),
+                                                                    description:
+                                                                        desCon
+                                                                            .text,
+                                                                    endTime: DateTimeCubit
+                                                                        .endDay
+                                                                        .millisecondsSinceEpoch,
+                                                                    startTime: DateTimeCubit
+                                                                        .startDay
+                                                                        .millisecondsSinceEpoch,
                                                                     note: noteCon
                                                                         .text,
-                                                                    classCode:
-                                                                        codeCon
-                                                                            .text,
+                                                                    classCode: codeCon
+                                                                        .text,
                                                                     classStatus:
                                                                         'Preparing',
                                                                     classType: cubit
                                                                         .classType!,
                                                                     link: linkCon
-                                                                        .text, customLessons: [], informal: cubit.informal!));
+                                                                        .text,
+                                                                    customLessons: [],
+                                                                    informal: cubit
+                                                                        .informal));
                                                             if (context
                                                                 .mounted) {
                                                               Navigator.pop(
@@ -219,12 +219,12 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                                     description:
                                                                         desCon
                                                                             .text,
-                                                                    endTime: DateFormat('dd/MM/yyyy').format(
-                                                                        DateTimeCubit
-                                                                            .endDay),
-                                                                    startTime: DateFormat('dd/MM/yyyy')
-                                                                        .format(DateTimeCubit
-                                                                            .startDay),
+                                                                    endTime: DateTimeCubit
+                                                                        .endDay
+                                                                        .millisecondsSinceEpoch,
+                                                                    startTime: DateTimeCubit
+                                                                        .startDay
+                                                                        .millisecondsSinceEpoch,
                                                                     note: noteCon
                                                                         .text,
                                                                     classCode:
@@ -236,7 +236,10 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                                     classType: cubit
                                                                         .classType!,
                                                                     link: linkCon
-                                                                        .text, customLessons: [], informal: cubit.informal!));
+                                                                        .text,
+                                                                    customLessons: [],
+                                                                    informal: cubit
+                                                                        .informal));
                                                             if (context
                                                                 .mounted) {
                                                               Navigator.pop(

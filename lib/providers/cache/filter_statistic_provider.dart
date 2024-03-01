@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/features/admin/manage_statistic/bill_statistic/bill_statistic_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_statistic/class_statistic/class_statistic_cubit.dart';
-import 'package:internal_sakumi/features/admin/manage_statistic/student_statistic_cubit.dart';
+import 'package:internal_sakumi/features/admin/manage_statistic/student_statistic/student_statistic_cubit.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -69,6 +69,9 @@ class StatisticFilterCubit extends Cubit<int> {
   loadData(StatisticFilterCubit filterController)async{
     if(tabType == 'bill'){
       billStatisticCubit.loadData(filterController);
+    }
+    if(tabType == 'class'){
+      classStatisticCubit.loadData(filterController);
     }
   }
 

@@ -6,7 +6,7 @@ import 'package:internal_sakumi/features/admin/app_bar/admin_appbar.dart';
 import 'package:internal_sakumi/features/admin/manage_statistic/bill_statistic/bill_statistic_view.dart';
 import 'package:internal_sakumi/features/admin/manage_statistic/class_statistic/class_statistic_view.dart';
 import 'package:internal_sakumi/features/admin/manage_statistic/filter_manage_statistic_view.dart';
-import 'package:internal_sakumi/features/admin/manage_statistic/student_statistic_view.dart';
+import 'package:internal_sakumi/features/admin/manage_statistic/student_statistic/student_statistic_view.dart';
 import 'package:internal_sakumi/providers/cache/filter_statistic_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 

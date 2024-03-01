@@ -122,6 +122,8 @@ class BillStatisticCubit extends Cubit<int> {
   }
 
   loadData(StatisticFilterCubit filterController) async {
+    loading = true;
+    emit(state+1);
     List<int> listCourseId = filterController.getCourseId(
         filterController.filter[StatisticFilter.course]!,
         filterController.filter[StatisticFilter.level]!);
