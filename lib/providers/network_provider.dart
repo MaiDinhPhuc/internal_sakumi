@@ -13,6 +13,7 @@ import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
+import 'package:internal_sakumi/model/student_class_log.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
@@ -313,4 +314,11 @@ abstract class NetworkProvider {
       List<int> listCourseId,
       int startDate,
       int endDate, int type);
+  Future<List<StudentClassModel>> getAllStudentClass();
+  Future<List<StudentClassLogModel>> getListStudentClassLogInStatistic(
+      List<int> listTypeFilter,
+      List<int> listCourseId,
+      int startDate,
+      int endDate);
+  Future<void> addNewLog(StudentClassLogModel model);
 }

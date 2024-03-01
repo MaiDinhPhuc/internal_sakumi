@@ -10,6 +10,7 @@ import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
 import 'package:internal_sakumi/model/response_model.dart';
+import 'package:internal_sakumi/model/student_class_log.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
@@ -274,6 +275,19 @@ class FireStoreDb {
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getStudentClassInClass $classId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    // debugPrint("==========>get db from \"student_class\" : ${snapshot.docs.length}");
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentClass() async {
+    final snapshot = await db
+        .collection("student_class")
+        .where("class_status", whereNotIn: ['Remove','Retained','Dropped','Cancel','Deposit'])
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentClass ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     // debugPrint("==========>get db from \"student_class\" : ${snapshot.docs.length}");
     return snapshot;
@@ -1270,6 +1284,28 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getListStudentClassLogStatistic(
+      List<int> listTypeFilter,
+      List<int> listCourseId,
+      int startDate,
+      int endDate) async {
+    final snapshot = await db
+        .collection("student_class_log")
+        .orderBy('id')
+        .where(Filter.and(
+      Filter("id", isGreaterThanOrEqualTo: startDate),
+      Filter("id", isLessThanOrEqualTo: endDate),
+      Filter("class_type", whereIn: listTypeFilter),
+      Filter("course_id", whereIn: listCourseId),
+    ))
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> get log ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getListClassStatistic0(
       List<int> listTypeFilter,
       List<int> listCourseId,
@@ -1637,6 +1673,22 @@ class FireStoreDb {
       'learning_status': model.learningStatus,
       'move_to': model.moveTo,
       'user_id': model.userId,
+    });
+    debugPrint("==========>add db for \"student_class\"");
+  }
+
+  Future<void> addNewLog(StudentClassLogModel model) async {
+    await db
+        .collection("student_class_log")
+        .doc("log_${model.id}")
+        .set({
+      'id': model.id,
+      'class_id': model.classId,
+      'course_id': model.courseId,
+      'class_type': model.classType,
+      'user_id': model.userId,
+      'from': model.from,
+      'to': model.to
     });
     debugPrint("==========>add db for \"student_class\"");
   }

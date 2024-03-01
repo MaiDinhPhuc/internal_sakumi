@@ -3,8 +3,10 @@ import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
+import 'package:internal_sakumi/model/student_class_log.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/custom_button.dart';
 
@@ -46,6 +48,15 @@ class ConfirmChangeStudentStatus extends StatelessWidget {
             text: AppText.txtBack.text),
         CustomButton(
             onPress: () async {
+              var classModel = await FireBaseProvider.instance.getClassById(studentClassModel.classId);
+              FireBaseProvider.instance.addNewLog(StudentClassLogModel(
+                  id: DateTime.now().millisecondsSinceEpoch,
+                  classId: studentClassModel.classId,
+                  courseId: classModel.courseId,
+                  from: studentClassModel.status,
+                  to: newStatus,
+                  userId: studentClassModel.userId,
+                  classType: classModel.classType));
               FirebaseFirestore.instance
                   .collection('student_class')
                   .doc(

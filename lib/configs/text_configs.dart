@@ -454,10 +454,20 @@ enum AppText {
   txtNotCheck,
   txtTag,
   txtTotalClass,
-  txtTotalClassThisMonth
+  txtTotalClassThisMonth,
+  txtTotalStudent,
+  txtTotalStudentLearning,
+  txtNotLog,
+  txtStudentAddToClass,
+  txtContentLog
 }
 
 Map<AppText, String> texts = {
+  AppText.txtContentLog : "Học viên được chuyển từ @ sang #",
+  AppText.txtStudentAddToClass : "Học viên được thêm mới vào lớp",
+  AppText.txtNotLog : "Hiện tại không có ghi chép thay đổi của học viên phù hợp...",
+  AppText.txtTotalStudentLearning : "Học viên Đang học",
+  AppText.txtTotalStudent : "Tổng số học viên",
   AppText.txtTotalClassThisMonth : "Số lớp mở tháng này",
   AppText.txtTotalClass : "Tổng số lớp",
   AppText.txtTag : "Tag",

@@ -46,12 +46,6 @@ class BillStatisticCubit extends Cubit<int> {
     "RENEW - BSHP 2 KÌ"
   ];
 
-  resetData(){
-    vndData = [];
-    yenData = [];
-    listBill = [];
-  }
-
   clearDate() {
     startDay = null;
     endDay = null;

@@ -20,6 +20,7 @@ import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
+import 'package:internal_sakumi/model/student_class_log.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
@@ -524,6 +525,14 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<List<StudentClassModel>> getAllStudentClass() async {
+    return (await FireStoreDb.instance.getAllStudentClass())
+        .docs
+        .map((e) => StudentClassModel.fromSnapshot(e))
+        .toList();
+  }
+
+  @override
   Future<List<StudentClassModel>> getStudentClassByStdId(int studentId) async {
     return (await FireStoreDb.instance.getStudentClassByStdId(studentId))
         .docs
@@ -852,6 +861,10 @@ class FireBaseProvider extends NetworkProvider {
     }
     await FireStoreDb.instance.updateStudentToClass(model);
     return false;
+  }
+  @override
+  Future<void> addNewLog(StudentClassLogModel model) async {
+    await FireStoreDb.instance.addNewLog(model);
   }
 
   @override
@@ -1968,6 +1981,20 @@ class FireBaseProvider extends NetworkProvider {
          listTypeFilter,listCourseId, startDate, endDate))
         .docs
         .map((e) => BillModel.fromSnapshot(e))
+        .toList();
+    return listBill;
+  }
+
+  @override
+  Future<List<StudentClassLogModel>> getListStudentClassLogInStatistic(
+      List<int> listTypeFilter,
+      List<int> listCourseId,
+      int startDate,
+      int endDate) async {
+    final listBill = (await FireStoreDb.instance.getListStudentClassLogStatistic(
+        listTypeFilter,listCourseId, startDate, endDate))
+        .docs
+        .map((e) => StudentClassLogModel.fromSnapshot(e))
         .toList();
     return listBill;
   }

@@ -173,8 +173,7 @@ void alertCheckBoxStudent(
                                                       context,
                                                       StudentClassModel(
                                                           id: cubit
-                                                                  .studentClassCount! +
-                                                              1,
+                                                                  .studentClassCount!,
                                                           classId:
                                                               manageGeneralCubit
                                                                   .selector,

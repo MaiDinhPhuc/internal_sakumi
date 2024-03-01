@@ -2,6 +2,7 @@ import 'package:internal_sakumi/model/bill_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
+import 'package:internal_sakumi/model/student_class_log.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
@@ -51,6 +52,15 @@ class DataProvider {
 
     return await FireBaseProvider.instance
         .getListBillInStatistic(listTypeQuery, listCourseId, startDay, endDay);
+  }
+
+  static Future<List<StudentClassLogModel>> studentClassLogStatistic(
+      Map<StatisticFilter, List> filter, int admin, List<int> listCourseId, int startDay, int endDay) async {
+    List? listType = filter[StatisticFilter.type];
+    List<int> listTypeQuery = listType!.map((e) => type(e)).toList();
+
+    return await FireBaseProvider.instance
+        .getListStudentClassLogInStatistic(listTypeQuery, listCourseId, startDay, endDay);
   }
 
   static Future<List<ClassModel>> classStatistic(
