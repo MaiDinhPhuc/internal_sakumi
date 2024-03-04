@@ -1,6 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
+import 'package:internal_sakumi/features/class_info/lesson/sensei_item_v2.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
@@ -134,7 +135,8 @@ class LessonItemV2 extends StatelessWidget {
                                           "${Routes.admin}/teacherInfo/teacher=${detailCubit.teacher!.userId}");
                                     }
                                   },
-                                  child: Align(
+                                  child: detailCubit.lessonResult == null
+                                      ? Align(
                                       alignment: Alignment.center,
                                       child: Opacity(
                                           opacity: 0,
@@ -146,7 +148,8 @@ class LessonItemV2 extends StatelessWidget {
                                               radius:
                                               Resizable.size(context, 16),
                                               fontSize: Resizable.font(
-                                                  context, 14)))),
+                                                  context, 14))))
+                                      : SenseiItemV2(cubit: detailCubit),
                                 )),
                                 mark: Container(),
                                 dropdown: detailCubit.lessonResult == null

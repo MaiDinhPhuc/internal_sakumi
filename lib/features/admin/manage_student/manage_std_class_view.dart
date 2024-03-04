@@ -80,8 +80,8 @@ class ManageStdClassView extends StatelessWidget {
                             fontSize: Resizable.font(context, 17),
                             color: greyColor.shade600)),
                   ),
-                  ...cubit.stdClasses!
-                      .map((e) => ItemStudentClass(cubit: cubit, stdClass: e))
+                  ...cubit.classes!
+                      .map((e) => ItemStudentClass(cubit: cubit, classModel: e, stdClass: cubit.stdClasses!.firstWhere((element) => e.classId == element.classId)))
                 ],
               );
   }

@@ -72,7 +72,11 @@ class ClassOverViewV2 extends StatelessWidget {
             radius: Resizable.size(context, 15),
             fontSize: Resizable.font(context, 14),
           ),
-          widgetEvaluate: Container(
+          widgetEvaluate:classModel.classStatus == 'Completed'? Text('${cubit.getPercentUpSale()}%',
+              style: TextStyle(
+                  fontWeight: FontWeight.w800,
+                  color: primaryColor,
+                  fontSize: Resizable.font(context, 30))) : Container(
             width: Resizable.size(context, 20),
             height: Resizable.size(context, 20),
             alignment: Alignment.center,

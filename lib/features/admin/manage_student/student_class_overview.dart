@@ -56,7 +56,7 @@ class StudentClassOverview extends StatelessWidget {
               constraints:
                   BoxConstraints(minWidth: Resizable.size(context, 50)),
               child: Text(
-                  '$lessonCountTitle ${AppText.txtLesson.text.toLowerCase()}',
+                  lessonCountTitle,
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: Resizable.font(context, 16))),

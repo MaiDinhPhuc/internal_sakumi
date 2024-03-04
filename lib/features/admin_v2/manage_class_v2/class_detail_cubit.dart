@@ -249,4 +249,24 @@ class ClassDetailCubit extends Cubit<int> {
     this.hwChart = hwChart;
     this.stds = stds;
   }
+
+  double getPercentUpSale() {
+    if (stdClasses == null) {
+      return 0;
+    }
+
+    double upNumber = 0;
+    int temp = 0;
+    for (var i in stdClasses!) {
+      if (i.classStatus == "UpSale" || i.classStatus == "Force") {
+        upNumber++;
+      }
+      if ((i.classStatus != "Remove" &&
+          i.classStatus != "Moved" &&
+          i.classStatus != "Viewer")) {
+        temp++;
+      }
+    }
+    return ((upNumber / temp) * 100).roundToDouble();
+  }
 }

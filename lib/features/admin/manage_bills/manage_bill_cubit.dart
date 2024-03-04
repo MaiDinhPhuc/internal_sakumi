@@ -220,11 +220,16 @@ class ManageBillCubit extends Cubit<int> {
             .getMoreListBillWithFilterAndDate(listStatusQuery, subLists[i],
             listCreatorQuery, lastBills[i], startDate, endDate);
         if(listBillTemp.isNotEmpty){
-          listBill!.addAll(listBillTemp);
+          for(var i in listBillTemp){
+            if(listBill!.contains(i) == false){
+              listBill!.add(i);
+              newListBill.add(i);
+            }
+          }
           lastBillNew.add(listBillTemp.last.createDate);
-          newListBill.addAll(listBillTemp);
+          //newListBill.addAll(listBillTemp);
         }else{
-          lastBills.add(9999999999999);
+          lastBillNew.add(9999999999999);
         }
       }
       if(lastBillNew.isNotEmpty){
@@ -245,11 +250,15 @@ class ManageBillCubit extends Cubit<int> {
             .getMoreListBillWithFilter(listStatusQuery, subLists[i],
             listCreatorQuery, lastBills[i]);
         if(listBillTemp.isNotEmpty){
-          listBill!.addAll(listBillTemp);
+          for(var i in listBillTemp){
+            if(listBill!.contains(i) == false){
+              listBill!.add(i);
+              newListBill.add(i);
+            }
+          }
           lastBillNew.add(listBillTemp.last.createDate);
-          newListBill.addAll(listBillTemp);
         }else{
-          lastBills.add(9999999999999);
+          lastBillNew.add(9999999999999);
         }
       }
       if(lastBillNew.isNotEmpty){

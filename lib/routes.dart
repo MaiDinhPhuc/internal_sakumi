@@ -14,7 +14,7 @@ import 'package:internal_sakumi/screens/admin/tab/manage_tags_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/tool_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/voucher_screen.dart';
 import 'package:internal_sakumi/screens/admin/teacher_info_screen.dart';
-import 'package:internal_sakumi/screens/admin_v2/tab/manage_class_screen_v2.dart';
+import 'package:internal_sakumi/screens/admin/tab/manage_class_screen.dart';
 import 'package:internal_sakumi/screens/class_info/class_overview_screen_v2.dart';
 import 'package:internal_sakumi/screens/class_info/detail_grading_custom_screen.dart';
 import 'package:internal_sakumi/screens/class_info/detail_lesson_v2.dart';

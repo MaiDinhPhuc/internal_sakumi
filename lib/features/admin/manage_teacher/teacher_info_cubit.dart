@@ -18,11 +18,6 @@ class TeacherInfoCubit extends Cubit<int> {
 
   List<TeacherClassModel>? teacherClasses;
   List<ClassModel>? classes;
-  List<CourseModel> courses = [];
-  List<StudentLessonModel>? stdLessons;
-  List<LessonResultModel>? lessonResults;
-  List<StudentClassModel>? stdClasses;
-  List<int> listCourseIds = [];
   bool isLoading = true;
 
   String name = "";
@@ -31,7 +26,7 @@ class TeacherInfoCubit extends Cubit<int> {
   String note = "";
 
   loadTeacher(int teacherId) async {
-    await DataProvider.teacherById(teacherId, loadStudentInfo);
+    await DataProvider.teacherById(teacherId, loadTeacherInfo);
     await DataProvider.userById(teacherId, loadUserInfo);
 
     name = teacher!.name;
@@ -42,7 +37,7 @@ class TeacherInfoCubit extends Cubit<int> {
     loadInFoTeacherInSystem(teacherId);
   }
 
-  loadStudentInfo(Object teacher) {
+  loadTeacherInfo(Object teacher) {
     this.teacher = teacher as TeacherModel;
   }
 
@@ -50,12 +45,6 @@ class TeacherInfoCubit extends Cubit<int> {
     this.user = user as UserModel;
   }
 
-  onCourseLoaded(Object course) {
-    courses.add(course as CourseModel);
-    if (courses.length == listCourseIds.length) {
-      emit(state + 1);
-    }
-  }
 
   loadInFoTeacherInSystem(int teacherId) async {
     teacherClasses =
@@ -63,20 +52,6 @@ class TeacherInfoCubit extends Cubit<int> {
     var listClassId = teacherClasses!.map((e) => e.classId).toList();
     classes =
         await FireBaseProvider.instance.getListClassByListIdV2(listClassId);
-    for (var i in classes!) {
-      if (listCourseIds.contains(i.courseId) == false) {
-        DataProvider.courseById(i.courseId, onCourseLoaded);
-        listCourseIds.add(i.courseId);
-      }
-    }
-
-    stdClasses =
-        await FireBaseProvider.instance.getStudentClassByListId(listClassId);
-    stdLessons = await FireBaseProvider.instance
-        .getAllStudentLessonsInListClassId(listClassId);
-    lessonResults = await FireBaseProvider.instance
-        .getLessonsResultsByListClassIds(listClassId);
-
     isLoading = false;
     emit(state + 1);
   }

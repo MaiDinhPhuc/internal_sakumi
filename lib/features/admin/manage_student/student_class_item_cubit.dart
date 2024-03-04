@@ -10,9 +10,9 @@ import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class StudentClasItemCubit extends Cubit<int> {
-  StudentClasItemCubit(this.classId, this.cubit, this.stdClass) : super(0);
+  StudentClasItemCubit( this.cubit, this.stdClass, this.classModel) : super(0);
 
-  ClassModel? classModel;
+  final ClassModel classModel;
   CourseModel? courseModel;
   final StudentClassModel stdClass;
   List<LessonModel>? lessons;
@@ -20,22 +20,20 @@ class StudentClasItemCubit extends Cubit<int> {
   List<StudentLessonModel>? stdLessons;
   String? countTitle;
 
-  final int classId;
   final StudentInfoCubit cubit;
   loadData() async {
-    classModel = cubit.classes!.firstWhere((e) => e.classId == classId);
     courseModel =
-        cubit.courses.firstWhere((e) => e.courseId == classModel!.courseId);
+        cubit.courses.firstWhere((e) => e.courseId == classModel.courseId);
     lessonResults =
-        cubit.lessonResults!.where((e) => e.classId == classId).toList();
+        cubit.lessonResults!.where((e) => e.classId == classModel.classId).toList();
     countTitle =
-    "${lessonResults!.length}/${courseModel!.lessonCount + classModel!.customLessons.length}";
-    stdLessons = cubit.stdLessons!.where((e) => e.classId == classId).toList();
+    "${lessonResults!.length}/${courseModel!.lessonCount + classModel.customLessons.length}";
+    stdLessons = cubit.stdLessons!.where((e) => e.classId == classModel.classId).toList();
     lessons = await FireBaseProvider.instance.getLessonsByCourseId(courseModel!.courseId);
     var lessonId = lessons!.map((e) => e.lessonId).toList();
 
-    if (classModel!.customLessons.isNotEmpty) {
-      for (var i in classModel!.customLessons) {
+    if (classModel.customLessons.isNotEmpty) {
+      for (var i in classModel.customLessons) {
         if (!lessonId.contains(i['custom_lesson_id'])) {
           lessons!.add(LessonModel(
               lessonId: i['custom_lesson_id'],
@@ -140,7 +138,7 @@ class StudentClasItemCubit extends Cubit<int> {
     return cubit.lessonResults == null
         ? 0
         : lessonResults!.length /
-            (courseModel!.lessonCount + classModel!.customLessons.length);
+            (courseModel!.lessonCount + classModel.customLessons.length);
   }
 
   double getAttendancePercent() {

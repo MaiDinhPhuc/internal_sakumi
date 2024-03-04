@@ -6,6 +6,7 @@ import 'package:internal_sakumi/features/admin/manage_student/student_class_over
 import 'package:internal_sakumi/features/admin/manage_student/student_info_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_cubit.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/class_status_item.dart';
+import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
@@ -13,11 +14,12 @@ import 'card_student_class_item.dart';
 import 'detail_student_class.dart';
 
 class ItemStudentClass extends StatelessWidget {
-  ItemStudentClass({super.key, required this.cubit, required this.stdClass})
-      : itemCubit = StudentClasItemCubit(stdClass.classId, cubit, stdClass);
+  ItemStudentClass({super.key, required this.cubit, required this.stdClass, required this.classModel})
+      : itemCubit = StudentClasItemCubit(cubit, stdClass, classModel);
   final StudentInfoCubit cubit;
   final StudentClasItemCubit itemCubit;
   final StudentClassModel stdClass;
+  final ClassModel classModel;
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -42,7 +44,7 @@ class ItemStudentClass extends StatelessWidget {
                   child: AnimatedCrossFade(
                       firstChild: CardStudentClassItem(
                           widget: StudentClassOverview(
-                            model: itemCubit.classModel!,
+                            model: itemCubit.classModel,
                             courseTitle: itemCubit.courseModel == null
                                 ? ""
                                 : "${itemCubit.courseModel!.name} ${itemCubit.courseModel!.level} ${itemCubit.courseModel!.termName}",
@@ -61,12 +63,12 @@ class ItemStudentClass extends StatelessWidget {
                           widgetStatus: StatusClassItem(
                               status: itemCubit.stdClass.classStatus,
                               color: itemCubit.getColor(),
-                              icon: itemCubit.getIcon())),
+                              icon: itemCubit.getIcon()), onTap: () {}),
                       secondChild: Column(
                         children: [
                           CardStudentClassItem(
                               widget: StudentClassOverview(
-                                model: itemCubit.classModel!,
+                                model: itemCubit.classModel,
                                 courseTitle: itemCubit.courseModel == null
                                     ? ""
                                     : "${itemCubit.courseModel!.name} ${itemCubit.courseModel!.level} ${itemCubit.courseModel!.termName}",
@@ -86,7 +88,7 @@ class ItemStudentClass extends StatelessWidget {
                               widgetStatus: StatusClassItem(
                                   status: itemCubit.stdClass.classStatus,
                                   color: itemCubit.getColor(),
-                                  icon: itemCubit.getIcon())),
+                                  icon: itemCubit.getIcon()), onTap: () {}),
                           DetailStudentClassInfo(itemCubit: itemCubit)
                         ],
                       ),

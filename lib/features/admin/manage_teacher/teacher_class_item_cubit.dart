@@ -6,149 +6,167 @@ import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
-import 'package:internal_sakumi/model/teacher_class_model.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
+import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 
 class TeacherClassItemCubit extends Cubit<int>{
-  TeacherClassItemCubit(this.classId, this.cubit, this.teacherClass):super(0);
+  TeacherClassItemCubit( this.cubit, this.classModel):super(0){
+    loadData();
+  }
 
-  final TeacherClassModel teacherClass;
-  final int classId;
+
   final TeacherInfoCubit cubit;
+  final ClassModel classModel;
+
   List<LessonModel>? lessons;
   List<LessonResultModel>? lessonResults;
   List<StudentLessonModel>? stdLessons;
   List<StudentClassModel>? stdClasses;
-  String? countTitle;
-  CourseModel? courseModel;
-  ClassModel? classModel;
+
+  String? title;
+  int? lessonCount;
+  String? lessonCountTitle;
+  double? hwPercent, attendancePercent;
+
+  onCourseLoaded(Object course) {
+    title =
+    "${(course as CourseModel).name} ${(course).level} ${(course).termName}";
+    lessonCount = course.lessonCount + classModel.customLessons.length;
+    emit(state + 1);
+  }
+
+  loadLessonResult(Object lessonResults) {
+    this.lessonResults = lessonResults as List<LessonResultModel>;
+    lessonCountTitle = "${this.lessonResults!.length}/$lessonCount";
+    emit(state + 1);
+  }
+
+  loadStudentClass(Object studentClass) {
+    stdClasses = studentClass as List<StudentClassModel>;
+  }
+
+  loadLessonInClass(Object lessons) {
+    this.lessons = lessons as List<LessonModel>;
+  }
+
+  loadStdLesson(Object stdLessons) {
+    this.stdLessons = stdLessons as List<StudentLessonModel>;
+    emit(state + 1);
+  }
+
+
 
   loadData()async{
-    classModel = cubit.classes!.firstWhere((e) => e.classId == classId);
-    courseModel = cubit.courses.firstWhere((e) => e.courseId == classModel!.courseId);
-    stdClasses = cubit.stdClasses!.where((e) => e.classId == classId).toList();
-    lessonResults =
-        cubit.lessonResults!.where((e) => e.classId == classId).toList();
-    countTitle =
-    "${lessonResults!.length}/${courseModel!.lessonCount + classModel!.customLessons.length}";
-    stdLessons = cubit.stdLessons!.where((e) => e.classId == classId).toList();
-    lessons = await FireBaseProvider.instance.getLessonsByCourseId(courseModel!.courseId);
-    var lessonId = lessons!.map((e) => e.lessonId).toList();
+    DataProvider.courseById(classModel.courseId, onCourseLoaded);
 
-    if (classModel!.customLessons.isNotEmpty) {
-      for (var i in classModel!.customLessons) {
-        if (!lessonId.contains(i['custom_lesson_id'])) {
-          lessons!.add(LessonModel(
-              lessonId: i['custom_lesson_id'],
-              courseId: -1,
-              description: i['description'],
-              content: "",
-              title: i['title'],
-              btvn: -1,
-              vocabulary: 0,
-              listening: 0,
-              kanji: 0,
-              grammar: 0,
-              flashcard: 0,
-              alphabet: 0,
-              order: 0,
-              reading: 0,
-              enable: true,
-              customLessonInfo: i['lessons_info'],
-              isCustom: true));
+    await DataProvider.stdClassByClassId(classModel.classId, loadStudentClass);
+
+    if(classModel.customLessons.isEmpty){
+      await DataProvider.lessonByCourseId(classModel.courseId, loadLessonInClass);
+    }else{
+      await DataProvider.lessonByCourseAndClassId(classModel.courseId,classModel.classId, loadLessonInClass);
+
+      var lessonId = lessons!.map((e) => e.lessonId).toList();
+
+      if(classModel.customLessons.isNotEmpty){
+        for(var i in classModel.customLessons){
+          if(!lessonId.contains(i['custom_lesson_id'])){
+            lessons!.add(LessonModel(
+                lessonId: i['custom_lesson_id'],
+                courseId: -1,
+                description: i['description'],
+                content: "",
+                title: i['title'],
+                btvn: -1,
+                vocabulary: 0,
+                listening: 0,
+                kanji: 0,
+                grammar: 0,
+                flashcard: 0,
+                alphabet: 0,
+                order: 0,
+                reading: 0,
+                enable: true,
+                customLessonInfo: i['lessons_info'],
+                isCustom: true));
+          }
         }
       }
     }
     emit(state+1);
-  }
-  double getLessonPercent() {
-    return cubit.lessonResults == null
-        ? 0
-        : lessonResults!.length /
-        (courseModel!.lessonCount + classModel!.customLessons.length);
-  }
-  double getAttendancePercent() {
-    if (stdLessons == null || stdLessons!.isEmpty) {
-      return 0;
-    }
+    await DataProvider.stdLessonByClassId(classModel.classId, loadStdLesson);
 
-    int temp1 = 0;
-    int temp2 = 0;
-    for (var i in stdLessons!) {
-      if (i.timekeeping != 0 && i.timekeeping != 5 && i.timekeeping != 6) {
-        temp1++;
-      }
-      if (i.timekeeping != 0) {
-        temp2++;
-      }
-    }
-    if (temp2 == 0) {
-      return 0;
-    }
-    double attendancePercent = temp1 / temp2;
-
-    return attendancePercent;
+    await DataProvider.lessonResultByClassId(
+        classModel.classId, loadLessonResult);
+    await loadPercent();
   }
 
-  double getHwPercent() {
-    if (stdLessons == null || stdLessons!.isEmpty) {
-      return 0;
-    }
+  loadPercent() async {
+    await Future.delayed(const Duration(milliseconds: 500));
     List<int> listStdIdsEnable = [];
+
     for (var element in stdClasses!) {
       if (element.classStatus != "Remove" &&
           element.classStatus != "Viewer") {
         listStdIdsEnable.add(element.userId);
       }
     }
+
+
+    var stdLessons = this.stdLessons!
+        .where(
+            (e) => listStdIdsEnable.contains(e.studentId) && e.timekeeping != 0)
+        .toList();
+
+    double attendancePercent = 0;
+    double hwPercent = 0;
     List<LessonModel> lessonTemp =
     lessons!.where((element) => element.btvn == 0).toList();
     List<int> lessonExceptionIds = [];
     for (var i in lessonTemp) {
       lessonExceptionIds.add(i.lessonId);
     }
-
-    int temp1 = 0;
-    int temp2 = 0;
-    for (var i in stdLessons!) {
-      if (lessonExceptionIds.contains(i.lessonId) == false){
-        if (listStdIdsEnable.contains(i.studentId) && getPoint(i.lessonId) != -2 && i.timekeeping != 0) {
-          temp1++;
-        }
-        if (listStdIdsEnable.contains(i.studentId) && i.timekeeping != 0) {
-          temp2++;
+    int count = stdLessons
+        .where((element) => element.timekeeping != 0)
+        .toList()
+        .length;
+    int countHw = 0;
+    double attendanceTemp = 0;
+    double hwPercentTemp = 0;
+    for (var i in stdLessons) {
+      if (i.timekeeping < 5) {
+        attendanceTemp++;
+      }
+      if (lessonExceptionIds.contains(i.lessonId) == false) {
+        countHw++;
+        if (getPoint(i.lessonId, i.studentId) != -2) {
+          hwPercentTemp++;
         }
       }
     }
-    if (temp2 == 0) {
-      return 0;
-    }
-    double attendancePercent = temp1 / temp2;
+    attendancePercent = attendanceTemp / (count == 0 ? 1 : count);
+    hwPercent = hwPercentTemp / (countHw == 0 ? 1 : countHw);
+    this.attendancePercent = attendancePercent;
+    this.hwPercent = hwPercent;
 
-    return attendancePercent;
+    emit(state + 1);
   }
 
-  double getPoint(int lessonId) {
+  double getPoint(int lessonId, int stdId) {
+    bool isCustom =
+        lessons!.firstWhere((e) => e.lessonId == lessonId).isCustom;
 
-    if(lessons == null) return -2;
-
-    var lesson = lessons!.where((e) => e.lessonId == lessonId).toList();
-    bool isCustom = false;
-    if(lesson.isNotEmpty){
-      isCustom = lesson.first.isCustom;
-    }
     List<StudentLessonModel> stdLesson =
-    stdLessons!.where((e) => e.lessonId == lessonId).toList();
+    stdLessons!.where((e) => e.lessonId == lessonId && e.studentId == stdId).toList();
     if (isCustom) {
-      return getHwCustomPoint(lessonId);
+      return getHwCustomPoint(lessonId, stdId);
     }
     if(stdLesson.isEmpty) return -2;
     return stdLesson.first.hw;
   }
 
-  double getHwCustomPoint(int lessonId) {
+  double getHwCustomPoint(int lessonId, int stdId) {
     List<StudentLessonModel> stdLesson =
-    stdLessons!.where((e) => e.lessonId == lessonId).toList();
+    stdLessons!.where((e) => e.lessonId == lessonId && e.studentId == stdId).toList();
 
     if (stdLesson.isEmpty) {
       return -2;
@@ -223,7 +241,7 @@ class TeacherClassItemCubit extends Cubit<int>{
     int temp2 = 0;
     for (var i in listStdLesson) {
       if(listStdId.contains(i.studentId)){
-        if (getPoint(i.lessonId) != -2 && i.timekeeping != 0) {
+        if (getPoint(i.lessonId, i.studentId) != -2 && i.timekeeping != 0) {
           temp1++;
         }
         if (i.timekeeping != 0) {

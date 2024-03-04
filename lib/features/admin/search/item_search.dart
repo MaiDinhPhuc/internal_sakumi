@@ -1,9 +1,6 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/small_avt.dart';
-import 'package:internal_sakumi/model/class_model.dart';
-import 'package:internal_sakumi/model/student_model.dart';
-import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
@@ -220,6 +217,7 @@ class ItemSearch extends StatelessWidget {
       case 'InProgress':
         return const Color(0xff33691e);
       case 'Cancel':
+      case 'Remove':
         return const Color(0xffB71C1C);
       case 'Completed':
       case 'Preparing':
@@ -235,6 +233,7 @@ class ItemSearch extends StatelessWidget {
       case 'Preparing':
         return "in_progress";
       case 'Cancel':
+      case 'Remove':
         return "dropped";
       case 'Completed':
         return "check";

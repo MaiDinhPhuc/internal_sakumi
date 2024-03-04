@@ -80,8 +80,8 @@ class ListTeacherClassView extends StatelessWidget {
                             fontSize: Resizable.font(context, 17),
                             color: greyColor.shade600)),
                   ),
-                  ...cubit.teacherClasses!.map(
-                      (e) => ItemTeacherClass(teacherClass: e, cubit: cubit))
+                  ...cubit.classes!.map(
+                      (e) => ItemTeacherClass(classModel: e, cubit: cubit))
                 ],
               );
   }
