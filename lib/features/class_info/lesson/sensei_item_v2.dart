@@ -84,7 +84,9 @@ class SenseiItemV2 extends StatelessWidget {
               )
             ],
           )),
-      child: SmallAvatar(cubit.teacher == null ? "" : cubit.teacher!.url),
+      child: IgnorePointer(
+          ignoring: true,
+          child: SmallAvatar(cubit.teacher == null ? "" : cubit.teacher!.url)),
     );
   }
 }

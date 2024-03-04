@@ -11,7 +11,6 @@ import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:internal_sakumi/widget/card_item.dart';
 
 import 'detail_teacher_class.dart';
 

@@ -1,4 +1,3 @@
-
 import 'package:flutter/Material.dart';
 import 'package:image_network/image_network.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
