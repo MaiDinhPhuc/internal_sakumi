@@ -7,6 +7,7 @@ import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:shimmer/shimmer.dart';
 
+import 'filter_class_status_manage_teacher.dart';
 import 'item_teacher_class.dart';
 
 class ListTeacherClassView extends StatelessWidget {
@@ -47,6 +48,12 @@ class ListTeacherClassView extends StatelessWidget {
                               fontWeight: FontWeight.w700,
                               fontSize: Resizable.font(context, 24),
                               color: greyColor.shade600))),
+                  Padding(padding: EdgeInsets.symmetric(vertical: Resizable.padding(context, 15)),child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      FilterClassStatusManageTeacher(cubit: cubit)
+                    ],
+                  )),
                   ClassItemRowLayout(
                     widgetClassCode: Text(AppText.txtClassCode.text,
                         style: TextStyle(
@@ -80,7 +87,7 @@ class ListTeacherClassView extends StatelessWidget {
                             fontSize: Resizable.font(context, 17),
                             color: greyColor.shade600)),
                   ),
-                  ...cubit.classes!.map(
+                  ...cubit.getClasses().map(
                       (e) => ItemTeacherClass(classModel: e, cubit: cubit))
                 ],
               );

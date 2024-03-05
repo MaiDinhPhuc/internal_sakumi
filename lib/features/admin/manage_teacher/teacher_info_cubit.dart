@@ -25,6 +25,16 @@ class TeacherInfoCubit extends Cubit<int> {
   String phone = "";
   String note = "";
 
+  List<String> listStatus = ['Preparing', 'InProgress', 'Completed', 'Cancel', 'Remove'];
+
+  List<bool> status = [true, true, false, false, false];
+
+  List<String> listStatusSub = ['Mới tạo', 'Đang học', 'Hoàn thành', 'Huỷ', 'Xoá'];
+
+  update() {
+    emit(state + 1);
+  }
+
   loadTeacher(int teacherId) async {
     await DataProvider.teacherById(teacherId, loadTeacherInfo);
     await DataProvider.userById(teacherId, loadUserInfo);
@@ -45,7 +55,6 @@ class TeacherInfoCubit extends Cubit<int> {
     this.user = user as UserModel;
   }
 
-
   loadInFoTeacherInSystem(int teacherId) async {
     teacherClasses =
         await FireBaseProvider.instance.getTeacherClassById(teacherId);
@@ -54,6 +63,16 @@ class TeacherInfoCubit extends Cubit<int> {
         await FireBaseProvider.instance.getListClassByListIdV2(listClassId);
     isLoading = false;
     emit(state + 1);
+  }
+  
+  List<ClassModel> getClasses(){
+    List<String> listStatusChoose = [];
+    for(int i = 0; i < status.length; i++){
+      if(status[i]){
+        listStatusChoose.add(listStatus[i]);
+      }
+    }
+    return classes!.where((e) => listStatusChoose.contains(e.classStatus)).toList();
   }
 
   changeNote(String newValue) {
