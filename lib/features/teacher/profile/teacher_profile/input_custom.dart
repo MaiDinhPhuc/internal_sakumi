@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:internal_sakumi/features/teacher/profile/teacher_profile_cubit.dart';
+import 'package:internal_sakumi/features/teacher/profile/teacher_profile/teacher_profile_cubit.dart';
 
-import '../../../configs/color_configs.dart';
-import '../../../utils/resizable.dart';
+import '../../../../configs/color_configs.dart';
+import '../../../../utils/resizable.dart';
 
 class InputCustom extends StatelessWidget {
   const InputCustom(
@@ -56,20 +56,6 @@ class InputCustom extends StatelessWidget {
         ),
         Container(
           color: Colors.transparent,
-          // decoration: BoxDecoration(
-          //
-          //   // boxShadow: (isEdit && isFocus)
-          //   //     ? [
-          //   //         BoxShadow(
-          //   //           color: Colors.black.withOpacity(0.3),
-          //   //           spreadRadius: 2,
-          //   //           blurRadius: 4,
-          //   //           offset: const Offset(
-          //   //               0, 4), // changes the position of the shadow
-          //   //         ),
-          //   //       ]
-          //   //     : null,
-          // ),
           child: TextFormField(
             decoration: InputDecoration(
               border: const OutlineInputBorder(),

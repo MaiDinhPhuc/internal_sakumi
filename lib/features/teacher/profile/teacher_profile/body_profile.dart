@@ -6,31 +6,39 @@ import 'package:image_network/image_network.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/teacher/profile/info_form.dart';
-import 'package:internal_sakumi/features/teacher/profile/info_pass.dart';
-import 'package:internal_sakumi/features/teacher/profile/log_out_dialog.dart';
-import 'package:internal_sakumi/features/teacher/profile/teacher_profile_cubit.dart';
+import 'package:internal_sakumi/features/teacher/profile/teacher_profile/info_form.dart';
+import 'package:internal_sakumi/features/teacher/profile/teacher_profile/info_pass.dart';
+import 'package:internal_sakumi/features/teacher/profile/teacher_profile/log_out_dialog.dart';
+import 'package:internal_sakumi/features/teacher/profile/teacher_profile/teacher_profile_cubit.dart';
 import 'package:internal_sakumi/widget/custom_button.dart';
 
-import '../../../configs/color_configs.dart';
-import '../../../utils/resizable.dart';
+import '../../../../configs/color_configs.dart';
+import '../../../../utils/resizable.dart';
 
 class BodyProfile extends StatelessWidget {
-  const BodyProfile({Key? key}) : super(key: key);
-
+  BodyProfile({Key? key}) : profileCubit = TeacherProfileCubit(), super(key: key);
+  final TeacherProfileCubit profileCubit;
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => TeacherProfileCubit()..load(context),
-      child: BlocBuilder<TeacherProfileCubit, int>(
-        builder: (context, state) {
-          if (state == 0) return const CircularProgressIndicator();
-          final profileCubit = context.read<TeacherProfileCubit>();
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                  child: Column(
+    return BlocBuilder<TeacherProfileCubit, int>(
+      bloc: profileCubit..load(context),
+      builder: (c, state) {
+        if (state == 0) return const Center(child: CircularProgressIndicator());
+        return SingleChildScrollView(
+          child: Container(
+              margin: EdgeInsets.only(right: Resizable.padding(context, 30)),
+              padding: EdgeInsets.only(
+                  top: Resizable.padding(context, 15),
+                  left: Resizable.padding(context, 10),
+                  right: Resizable.padding(context, 10)),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 0.5,
+                  color: const Color(0xffE0E0E0),
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CircleAvatar(
@@ -53,39 +61,34 @@ class BodyProfile extends StatelessWidget {
                   CustomButton(
                       onPress: () async {
                         Uint8List? imgData =
-                            await ImagePickerWeb.getImageAsBytes();
+                        await ImagePickerWeb.getImageAsBytes();
                         if (imgData != null) {
-                          profileCubit.changeAvatar(context, imgData!);
+                          profileCubit.changeAvatar(c, imgData);
                         }
                       },
                       bgColor: Colors.white,
                       foreColor: Colors.black,
-                      text: AppText.txtChangeImage.text)
-                ],
-              )),
-              Expanded(
-                  flex: 2,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                      text: AppText.txtChangeImage.text),
+                  InfoForm(profileCubit: profileCubit),
+                  InfoPass(profileCubit: profileCubit),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      const InfoForm(),
-                      const InfoPass(),
                       CustomButton(
                           onPress: () async {
                             showDialog(
                                 context: context,
                                 builder: (context) => const LogOutDialog());
-
                           },
                           bgColor: primaryColor.shade500,
                           foreColor: Colors.white,
-                          text: AppText.txtLogout.text),
+                          text: AppText.txtLogout.text)
                     ],
-                  ))
-            ],
-          );
-        },
-      ),
+                  ),
+                ],
+              )),
+        );
+      },
     );
   }
 }

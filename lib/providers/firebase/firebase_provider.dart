@@ -8,7 +8,7 @@ import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
-import 'package:internal_sakumi/features/teacher/profile/app_bar_info_teacher_cubit.dart';
+import 'package:internal_sakumi/features/teacher/profile/teacher_profile/app_bar_info_teacher_cubit.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/bill_model.dart';
@@ -16,10 +16,10 @@ import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/detail_grading_data_model.dart';
 import 'package:internal_sakumi/model/feedback_model.dart';
-import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
+import 'package:internal_sakumi/model/report_model.dart';
 import 'package:internal_sakumi/model/student_class_log.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
@@ -81,11 +81,6 @@ class FireBaseProvider extends NetworkProvider {
           sharedPreferences.setString(PrefKeyConfigs.role, "admin");
           if (context.mounted) {
             Navigator.pop(context);
-            // var logoutYet =
-            //     sharedPreferences.getString(PrefKeyConfigs.logoutYet);
-            // if (logoutYet == "true") {
-            //   BlocProvider.of<DataCubit>(context).loadClass();
-            // }
             Navigator.pushReplacementNamed(
                 context, '${Routes.admin}/searchGeneral');
           }
@@ -102,11 +97,6 @@ class FireBaseProvider extends NetworkProvider {
           sharedPreferences.setString(PrefKeyConfigs.role, "teacher");
           if (context.mounted) {
             Navigator.pop(context);
-            // var logoutYet =
-            //     sharedPreferences.getString(PrefKeyConfigs.logoutYet);
-            // if (logoutYet == "true") {
-            //   BlocProvider.of<DataCubit>(context).loadClass();
-            // }
             await context.read<AppBarInfoTeacherCubit>().load();
           }
 
@@ -124,8 +114,6 @@ class FireBaseProvider extends NetworkProvider {
         }
         email.clear();
         password.clear();
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //     SnackBar(content: Text('You are Logged in ${user.role}')));
       } else {
         FirebaseAuth.instance.signOut().then((value) {
           if (context.mounted) {
@@ -411,6 +399,14 @@ class FireBaseProvider extends NetworkProvider {
         .docs
         .map((e) => ClassModel.fromSnapshot(e))
         .single;
+  }
+
+  @override
+  Future<List<ReportModel>> getReportByTeacherId(int id) async {
+    return (await FireStoreDb.instance.getReportByTeacherId(id))
+        .docs
+        .map((e) => ReportModel.fromSnapshot(e))
+        .toList();
   }
 
   @override
@@ -929,31 +925,6 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<void> updateTestInfo(TestModel testModel) async {
     await FireStoreDb.instance.updateTestInfo(testModel);
-  }
-
-  @override
-  Future<List<ClassModel2>> getClassByTeacherId(
-      int teacherId, List<ClassModel>? listClasses) async {
-    var teacherClassIDs =
-        (await FireStoreDb.instance.getTeacherClassById(teacherId))
-            .docs
-            .map((e) => e.data()['class_id'] as int)
-            .toList();
-    if (listClasses != null) {
-      var classes = listClasses
-          .where((e) => teacherClassIDs.contains(e.classId))
-          .toList()
-          .where((e) =>
-              e.classStatus == "Preparing" || e.classStatus == "InProgress")
-          .toList();
-      return ClassModel2.loadClass(classes);
-    }
-    var classes = (await FireBaseProvider.instance
-            .getListClassForTeacher(teacherClassIDs))
-        .where((e) =>
-            e.classStatus == "Preparing" || e.classStatus == "InProgress")
-        .toList();
-    return ClassModel2.loadClass(classes);
   }
 
   @override
@@ -1898,7 +1869,6 @@ class FireBaseProvider extends NetworkProvider {
         .docs
         .map((e) => ClassModel.fromSnapshot(e))
         .toList();
-    listClass.sort((a, b) => a.classId.compareTo(b.classId));
     return listClass;
   }
 
@@ -1910,7 +1880,6 @@ class FireBaseProvider extends NetworkProvider {
         .docs
         .map((e) => ClassModel.fromSnapshot(e))
         .toList();
-    listClass.sort((a, b) => a.classId.compareTo(b.classId));
     return listClass;
   }
 

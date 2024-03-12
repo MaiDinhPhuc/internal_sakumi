@@ -263,5 +263,5 @@ var detailSurveyHandler =
 });
 var profileTeacherHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return const TeacherProfile();
+  return TeacherProfile();
 });

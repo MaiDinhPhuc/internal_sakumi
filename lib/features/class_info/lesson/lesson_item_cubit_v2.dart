@@ -195,11 +195,7 @@ class LessonItemCubitV2 extends Cubit<int> {
     List<int> studentIds = [];
     if(stdClasses == null) return [];
     for (var i in stdClasses!) {
-      if (i.classStatus != "Remove" &&
-          i.classStatus != "Dropped" &&
-          i.classStatus != "Deposit" &&
-          i.classStatus != "Retained" &&
-          i.classStatus != "Moved") {
+      if (i.classStatus != "Remove" && i.classStatus != "Viewer") {
         studentIds.add(i.userId);
       }
     }
@@ -214,7 +210,7 @@ class LessonItemCubitV2 extends Cubit<int> {
 
   List<StudentModel> getStudents() {
     if (students != null) {
-      List<int> stdIds = getStudentId();
+      List<int> stdIds = stdLessons!.map((e) => e.studentId).toList();
       if(stdIds.isEmpty) return [];
       List<StudentModel> students = this
           .students!

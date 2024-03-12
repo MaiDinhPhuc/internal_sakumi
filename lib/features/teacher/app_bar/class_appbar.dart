@@ -13,7 +13,7 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/back_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../profile/app_bar_info_teacher_cubit.dart';
+import '../profile/teacher_profile/app_bar_info_teacher_cubit.dart';
 import 'home_teacher_button.dart';
 import 'teacher_appbar_item.dart';
 

@@ -3,6 +3,7 @@ import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/calculator/calculator.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -72,7 +73,7 @@ class ClassOverViewV2 extends StatelessWidget {
             radius: Resizable.size(context, 15),
             fontSize: Resizable.font(context, 14),
           ),
-          widgetEvaluate:classModel.classStatus == 'Completed'? Text('${cubit.getPercentUpSale()}%',
+          widgetEvaluate:classModel.classStatus == 'Completed'? Text('${Calculator.getPercentUpSale(cubit.stdClasses)}%',
               style: TextStyle(
                   fontWeight: FontWeight.w800,
                   color: primaryColor,

@@ -11,7 +11,7 @@ import 'package:url_strategy/url_strategy.dart';
 
 import 'configs/color_configs.dart';
 import 'features/master/manage_survey/manage_survey_cubit.dart';
-import 'features/teacher/profile/app_bar_info_teacher_cubit.dart';
+import 'features/teacher/profile/teacher_profile/app_bar_info_teacher_cubit.dart';
 import 'firebase_options.dart';
 
 void main() async {

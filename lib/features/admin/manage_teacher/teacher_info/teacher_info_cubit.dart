@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
@@ -9,6 +10,7 @@ import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TeacherInfoCubit extends Cubit<int> {
   TeacherInfoCubit() : super(0);
@@ -19,6 +21,8 @@ class TeacherInfoCubit extends Cubit<int> {
   List<TeacherClassModel>? teacherClasses;
   List<ClassModel>? classes;
   bool isLoading = true;
+
+  String role = "";
 
   String name = "";
   String teacherCode = "";
@@ -31,6 +35,12 @@ class TeacherInfoCubit extends Cubit<int> {
 
   List<String> listStatusSub = ['Mới tạo', 'Đang học', 'Hoàn thành', 'Huỷ', 'Xoá'];
 
+  List<String> listStatusV2 = ['Preparing', 'InProgress', 'Completed'];
+
+  List<bool> statusV2 = [true, true, false];
+
+  List<String> listStatusSubV2 = ['Mới tạo', 'Đang học', 'Hoàn thành'];
+
   update() {
     emit(state + 1);
   }
@@ -39,6 +49,7 @@ class TeacherInfoCubit extends Cubit<int> {
     await DataProvider.teacherById(teacherId, loadTeacherInfo);
     await DataProvider.userById(teacherId, loadUserInfo);
 
+    role = 'admin';
     name = teacher!.name;
     teacherCode = teacher!.teacherCode;
     phone = teacher!.phone;
@@ -64,12 +75,35 @@ class TeacherInfoCubit extends Cubit<int> {
     isLoading = false;
     emit(state + 1);
   }
+
+  loadInFoTeacherInSystemV2() async {
+    SharedPreferences localData = await SharedPreferences.getInstance();
+    var teacherId = localData.getInt(PrefKeyConfigs.userId);
+    role = 'teacher';
+    teacherClasses =
+    await FireBaseProvider.instance.getTeacherClassById(teacherId!);
+    var listClassId = teacherClasses!.map((e) => e.classId).toList();
+    classes =
+    await FireBaseProvider.instance.getListClassByListIdV2(listClassId);
+    isLoading = false;
+    emit(state + 1);
+  }
   
   List<ClassModel> getClasses(){
     List<String> listStatusChoose = [];
     for(int i = 0; i < status.length; i++){
       if(status[i]){
         listStatusChoose.add(listStatus[i]);
+      }
+    }
+    return classes!.where((e) => listStatusChoose.contains(e.classStatus)).toList();
+  }
+
+  List<ClassModel> getClassesV2(){
+    List<String> listStatusChoose = [];
+    for(int i = 0; i < statusV2.length; i++){
+      if(statusV2[i]){
+        listStatusChoose.add(listStatusV2[i]);
       }
     }
     return classes!.where((e) => listStatusChoose.contains(e.classStatus)).toList();

@@ -1,6 +1,8 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/app_bar/admin_appbar.dart';
+import 'package:internal_sakumi/features/admin/manage_bills/add_bill_button.dart';
+import 'package:internal_sakumi/features/admin/manage_teacher/manage_teacher/alert_add_new_teacher_account.dart';
 
 class ManageTeacherScreen extends StatelessWidget {
   const ManageTeacherScreen({super.key});
@@ -11,7 +13,11 @@ class ManageTeacherScreen extends StatelessWidget {
       body: Column(
         children: [
           const AdminAppBar(index: 7),
-          Expanded(child: Center(child: Text(AppText.titleManageTeacher.text)))
+          Expanded(child: Center(child: AddButton(
+            onTap: () {
+              alertAddNewTeacherAccount(context);
+            }, title: " + ${AppText.btnAddNewTeacher.text}",
+          )))
         ],
       ),
     );

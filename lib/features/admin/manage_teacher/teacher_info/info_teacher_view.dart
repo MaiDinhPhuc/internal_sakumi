@@ -1,8 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:image_network/image_network.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/admin/manage_teacher/teacher_info_cubit.dart';
-import 'package:internal_sakumi/features/admin/search/search_cubit.dart';
+import 'package:internal_sakumi/features/admin/manage_teacher/teacher_info/teacher_info_cubit.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -10,7 +9,7 @@ import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
-import 'list_info_teacher.dart';
+import '../class_tab/list_info_teacher.dart';
 
 class InfoTeacherView extends StatelessWidget {
   const InfoTeacherView({super.key, required this.cubit});

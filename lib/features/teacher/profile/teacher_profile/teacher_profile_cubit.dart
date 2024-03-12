@@ -7,7 +7,7 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
-import '../../../model/teacher_model.dart';
+import '../../../../model/teacher_model.dart';
 import 'app_bar_info_teacher_cubit.dart';
 
 class TeacherProfileCubit extends Cubit<int> {

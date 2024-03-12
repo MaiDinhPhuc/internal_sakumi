@@ -3,7 +3,7 @@ import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../configs/prefKey_configs.dart';
+import '../../../../configs/prefKey_configs.dart';
 
 class AppBarInfoTeacherCubit extends Cubit<TeacherModel?> {
   AppBarInfoTeacherCubit() : super(null);

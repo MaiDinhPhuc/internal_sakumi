@@ -4,9 +4,9 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_student/card_student_class_item.dart';
 import 'package:internal_sakumi/features/admin/manage_student/student_class_overview.dart';
-import 'package:internal_sakumi/features/admin/manage_teacher/status_class_item.dart';
-import 'package:internal_sakumi/features/admin/manage_teacher/teacher_class_item_cubit.dart';
-import 'package:internal_sakumi/features/admin/manage_teacher/teacher_info_cubit.dart';
+import 'package:internal_sakumi/features/admin/manage_teacher/class_tab/status_class_item.dart';
+import 'package:internal_sakumi/features/admin/manage_teacher/class_tab/teacher_class_item_cubit.dart';
+import 'package:internal_sakumi/features/admin/manage_teacher/teacher_info/teacher_info_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/routes.dart';
@@ -65,8 +65,14 @@ class ItemTeacherClass extends StatelessWidget {
                         widgetStatus: StatusTeacherClass(
                             status: itemCubit.classModel.classStatus),
                         onTap: () async {
-                          await Navigator.pushNamed(context,
-                              "${Routes.admin}/overview/class=${classModel.classId}");
+                          if(cubit.role == 'admin'){
+                            await Navigator.pushNamed(context,
+                                "${Routes.admin}/overview/class=${classModel.classId}");
+                          }else{
+                            await Navigator.pushNamed(context,
+                                "${Routes.teacher}/overview/class=${classModel.classId}");
+                          }
+
                         }),
                     secondChild: CardStudentClassItem(
                         canTap: true,
@@ -99,8 +105,13 @@ class ItemTeacherClass extends StatelessWidget {
                         widgetStatus: StatusTeacherClass(
                             status: itemCubit.classModel.classStatus),
                         onTap: () async {
-                          await Navigator.pushNamed(context,
-                              "${Routes.admin}/overview/class=${classModel.classId}");
+                          if(cubit.role == 'admin'){
+                            await Navigator.pushNamed(context,
+                                "${Routes.admin}/overview/class=${classModel.classId}");
+                          }else{
+                            await Navigator.pushNamed(context,
+                                "${Routes.teacher}/overview/class=${classModel.classId}");
+                          }
                         }),
                     crossFadeState: state % 2 == 1
                         ? CrossFadeState.showSecond
