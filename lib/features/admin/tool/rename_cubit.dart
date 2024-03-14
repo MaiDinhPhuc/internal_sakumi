@@ -164,7 +164,6 @@ class RenameCubit extends Cubit<int> {
     lessons.clear();
     lessonIds.clear();
     listSubmit.clear();
-    debugPrint('==========> class ids 0000 $classIds');
     List<LessonResultModel> lessonResults = await FireBaseProvider.instance
         .getLessonsResultsByListClassIds(classIds);
 
