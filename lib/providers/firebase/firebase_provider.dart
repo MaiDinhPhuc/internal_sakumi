@@ -1916,6 +1916,9 @@ class FireBaseProvider extends NetworkProvider {
       int lastItem,
       int startDate,
       int endDate) async {
+
+    if(lastItem == 9999999999999) return [];
+
     final listBill = (await FireStoreDb.instance
             .getMoreListBillWithFilterAndDate(
                 listStatusFilter, listTypeFilter,listCreatorFilter, lastItem, startDate, endDate))

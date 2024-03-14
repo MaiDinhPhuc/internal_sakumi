@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
+import 'package:internal_sakumi/features/admin/manage_bills/date_choose_cubit.dart';
 import 'package:internal_sakumi/model/report_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
@@ -14,6 +15,8 @@ class TeacherReportCubit extends Cubit<int> {
 
   DateTime? startDate;
   DateTime? endDate;
+
+  final DateChooseCubit dateChooseCubit = DateChooseCubit();
 
   bool changeDate = false;
 
@@ -75,9 +78,9 @@ class TeacherReportCubit extends Cubit<int> {
     return true;
   }
 
-  setDateTime(String startDate, String endDate){
-    this.startDate = DateTime.parse(startDate);
-    this.endDate = DateTime.parse(endDate);
+  setDateTime(DateTime startDate, DateTime endDate){
+    this.startDate = startDate;
+    this.endDate = endDate;
     changeDate = true;
     emit(state+1);
   }

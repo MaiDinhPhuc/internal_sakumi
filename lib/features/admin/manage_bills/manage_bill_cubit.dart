@@ -7,8 +7,12 @@ import 'package:internal_sakumi/providers/cache/filter_manage_bill_provider.dart
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:intl/intl.dart';
 
+import 'date_choose_cubit.dart';
+
 class ManageBillCubit extends Cubit<int> {
-  ManageBillCubit() : super(0);
+  ManageBillCubit() : super(0){
+    setUpDate();
+  }
 
   DateTime? startDay;
   DateTime? endDay;
@@ -19,8 +23,12 @@ class ManageBillCubit extends Cubit<int> {
   List<int> listClassId = [];
   List<BillModel>? listBill;
   bool isLastPage = false;
+  bool isChooseDate = false;
+  DateTime now = DateTime.now();
 
   List<List<int>> listLastBill = [];
+
+  final DateChooseCubit dateChooseCubit = DateChooseCubit();
 
   updateListBill(BillModel billModel, BillModel newBill) async {
     var index = listBill!.indexOf(billModel);
@@ -29,31 +37,27 @@ class ManageBillCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  updateStartDay(DateTime newValue) {
-    if (endDay == null ||
-        newValue.millisecondsSinceEpoch < endDay!.millisecondsSinceEpoch) {
-      startDay = newValue;
-      emit(state + 1);
-    }
-  }
-
-  updateEndDay(DateTime newValue) {
-    if (startDay == null ||
-        newValue.millisecondsSinceEpoch > startDay!.millisecondsSinceEpoch) {
-      endDay = newValue;
-      emit(state + 1);
-    }
-  }
-
   checkLoad(BillFilterCubit filterController) async{
-    if (endDay != null && startDay != null) {
-      await loadData(filterController);
-    }
+    await loadData(filterController);
+  }
+
+  setDate(DateTime start, DateTime end){
+    isChooseDate = true;
+    startDay = start;
+    endDay = end;
+    emit(state+1);
+  }
+
+  setUpDate(){
+    startDay = DateTime(now.year, now.month - 1, 21);
+    endDay = DateTime(now.year, now.month, 20);
   }
 
   clearDate() {
-    startDay = null;
-    endDay = null;
+    isChooseDate = false;
+
+    setUpDate();
+
     emit(state + 1);
   }
 
@@ -84,36 +88,20 @@ class ManageBillCubit extends Cubit<int> {
       subLists.add(subList);
     }
     listBill = [];
-    if (startDay != null && endDay != null) {
-      int startDate = startDay!.millisecondsSinceEpoch;
-      int endDate = endDay!.millisecondsSinceEpoch;
-      List<int> lastBills = [];
-      for (int i = 0; i < subLists.length; i++) {
-        var listBillTemp = await FireBaseProvider.instance
-            .getListBillWithFilterAndDate(listStatusQuery, subLists[i],
-            listCreatorQuery, startDate, endDate);
-        if(listBillTemp.isNotEmpty){
-          listBill!.addAll(listBillTemp);
-          lastBills.add(listBillTemp.last.createDate);
-        }else{
-          lastBills.add(9999999999999);
-        }
+
+    List<int> lastBills = [];
+    for (int i = 0; i < subLists.length; i++) {
+      var listBillTemp = await FireBaseProvider.instance
+          .getListBillWithFilterAndDate(listStatusQuery, subLists[i],
+          listCreatorQuery, startDay!.millisecondsSinceEpoch, endDay!.millisecondsSinceEpoch);
+      if(listBillTemp.isNotEmpty){
+        listBill!.addAll(listBillTemp);
+        lastBills.add(listBillTemp.last.createDate);
+      }else{
+        lastBills.add(9999999999999);
       }
-      listLastBill.add(lastBills);
-    } else {
-      List<int> lastBills = [];
-      for (int i = 0; i < subLists.length; i++) {
-        var listBillTemp = await FireBaseProvider.instance.getListBillWithFilter(
-            listStatusQuery, subLists[i], listCreatorQuery);
-        if(listBillTemp.isNotEmpty){
-          listBill!.addAll(listBillTemp);
-          lastBills.add(listBillTemp.last.createDate);
-        }else{
-          lastBills.add(9999999999999);
-        }
-      }
-      listLastBill.add(lastBills);
     }
+    listLastBill.add(lastBills);
 
     if (listBill!.length < 10) {
       isLastPage = true;
@@ -209,67 +197,35 @@ class ManageBillCubit extends Cubit<int> {
               : i + typeSize);
       subLists.add(subList);
     }
-    if (startDay != null && endDay != null) {
-      int startDate = startDay!.millisecondsSinceEpoch;
-      int endDate = endDay!.millisecondsSinceEpoch;
-      List<BillModel> newListBill = [];
-      List<int> lastBills = listLastBill.last;
-      List<int> lastBillNew = [];
-      for (int i = 0; i < subLists.length; i++) {
-        var listBillTemp = await FireBaseProvider.instance
-            .getMoreListBillWithFilterAndDate(listStatusQuery, subLists[i],
-            listCreatorQuery, lastBills[i], startDate, endDate);
-        if(listBillTemp.isNotEmpty){
-          for(var i in listBillTemp){
-            if(listBill!.contains(i) == false){
-              listBill!.add(i);
-              newListBill.add(i);
-            }
+
+    List<BillModel> newListBill = [];
+    List<int> lastBills = listLastBill.last;
+    List<int> lastBillNew = [];
+    for (int i = 0; i < subLists.length; i++) {
+      var listBillTemp = await FireBaseProvider.instance
+          .getMoreListBillWithFilterAndDate(listStatusQuery, subLists[i],
+          listCreatorQuery, lastBills[i], startDay!.millisecondsSinceEpoch, endDay!.millisecondsSinceEpoch);
+      if(listBillTemp.isNotEmpty){
+        for(var i in listBillTemp){
+          if(listBill!.contains(i) == false){
+            listBill!.add(i);
+            newListBill.add(i);
           }
-          lastBillNew.add(listBillTemp.last.createDate);
-          //newListBill.addAll(listBillTemp);
-        }else{
-          lastBillNew.add(9999999999999);
         }
+        lastBillNew.add(listBillTemp.last.createDate);
+      }else{
+        lastBillNew.add(9999999999999);
       }
-      if(lastBillNew.isNotEmpty){
-        listLastBill.add(lastBillNew);
-      }
-      var stdIds = newListBill.map((e) => e.userId).toList();
-      var classIds = newListBill.map((e) => e.classId).toList();
-      loadStudentAndClass(stdIds, classIds);
-      if (newListBill.isEmpty) {
-        isLastPage = true;
-      }
-    } else {
-      List<BillModel> newListBill = [];
-      List<int> lastBills = listLastBill.last;
-      List<int> lastBillNew = [];
-      for (int i = 0; i < subLists.length; i++) {
-        var listBillTemp = await FireBaseProvider.instance
-            .getMoreListBillWithFilter(listStatusQuery, subLists[i],
-            listCreatorQuery, lastBills[i]);
-        if(listBillTemp.isNotEmpty){
-          for(var i in listBillTemp){
-            if(listBill!.contains(i) == false){
-              listBill!.add(i);
-              newListBill.add(i);
-            }
-          }
-          lastBillNew.add(listBillTemp.last.createDate);
-        }else{
-          lastBillNew.add(9999999999999);
-        }
-      }
-      if(lastBillNew.isNotEmpty){
-        listLastBill.add(lastBillNew);
-      }
-      var stdIds = newListBill.map((e) => e.userId).toList();
-      var classIds = newListBill.map((e) => e.classId).toList();
-      loadStudentAndClass(stdIds, classIds);
-      if (newListBill.isEmpty) {
-        isLastPage = true;
-      }
+    }
+
+    if(lastBillNew.isNotEmpty){
+      listLastBill.add(lastBillNew);
+    }
+    var stdIds = newListBill.map((e) => e.userId).toList();
+    var classIds = newListBill.map((e) => e.classId).toList();
+    loadStudentAndClass(stdIds, classIds);
+    if (newListBill.isEmpty) {
+      isLastPage = true;
     }
     emit(state + 1);
   }

@@ -85,11 +85,7 @@ class HeaderClassStatistic extends StatelessWidget {
                         filterController:
                         filterController)),
                 if (filterController
-                    .classStatisticCubit.startDay !=
-                    null &&
-                    filterController
-                        .classStatisticCubit.endDay !=
-                        null)
+                    .classStatisticCubit.isChooseDate)
                   SubmitButton(
                       onPressed: () {
                         filterController.classStatisticCubit

@@ -1,5 +1,6 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/admin/manage_bills/choose_date_dialog.dart';
 import 'package:internal_sakumi/features/teacher/profile/report_tab/teacher_report_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
@@ -33,41 +34,55 @@ class DateFilterReport extends StatelessWidget {
               onTap: () async {
                 showDialog(
                     context: context,
-                    builder: (_) {
-                      return Dialog(
-                          child: SizedBox(
-                            height: Resizable.size(context, 250),
-                            width: Resizable.size(context, 250),
-                            child: SfDateRangePicker(
-                              cancelText: AppText.textCancel.text,
-                              onCancel: (){
-                                Navigator.pop(context);
-                              },
-                              onSubmit: (v) async {
-                                String str = v.toString();
-                                int startIndex = str.indexOf("(");
-                                int endIndex = str.indexOf(")");
-                                String substring = str.substring(startIndex + 1, endIndex);
-                                List<String> sub = substring.split(",");
-                                String startDate = sub[0].split("startDate: ")[1];
-                                String endDate = sub[1].split('endDate: ')[1];
-                                if(endDate != "null"){
-                                  await cubit.setDateTime(startDate, endDate);
-                                  Navigator.pop(context);
-                                }
-                              },
-                              showActionButtons: true,
-                              headerHeight: Resizable.size(context, 50),
-                              headerStyle: DateRangePickerHeaderStyle(
-                                  textStyle: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: Resizable.font(context, 24),
-                                      color: Colors.black)),
-                              showNavigationArrow: true,
-                              selectionMode: DateRangePickerSelectionMode.range,
-                            ),
-                          ));
-                    });
+                    builder: (context) => ChooseDateDialog(
+                      dateChooseCubit: cubit.dateChooseCubit,
+                      onSubmit: () async {
+                        if(cubit.dateChooseCubit.startDate != null && cubit.dateChooseCubit.endDate != null){
+                          cubit.setDateTime(cubit.dateChooseCubit.startDate!, cubit.dateChooseCubit.endDate!);
+                        }
+                        Navigator.of(context).pop();
+                      },
+                      onChooseCustom: () {
+                        cubit.dateChooseCubit.chooseCustom();
+                        showDialog(
+                            context: context,
+                            builder: (_) {
+                              return Dialog(
+                                  child: SizedBox(
+                                    height: Resizable.size(context, 250),
+                                    width: Resizable.size(context, 250),
+                                    child: SfDateRangePicker(
+                                      cancelText: AppText.textCancel.text,
+                                      onCancel: (){
+                                        Navigator.pop(context);
+                                      },
+                                      onSubmit: (v) {
+                                        String str = v.toString();
+                                        int startIndex = str.indexOf("(");
+                                        int endIndex = str.indexOf(")");
+                                        String substring = str.substring(startIndex + 1, endIndex);
+                                        List<String> sub = substring.split(",");
+                                        String startDate = sub[0].split("startDate: ")[1];
+                                        String endDate = sub[1].split('endDate: ')[1];
+                                        if(endDate != "null"){
+                                          cubit.dateChooseCubit.setDateTime(startDate, endDate);
+                                        }
+                                        Navigator.pop(context);
+                                      },
+                                      showActionButtons: true,
+                                      headerHeight: Resizable.size(context, 50),
+                                      headerStyle: DateRangePickerHeaderStyle(
+                                          textStyle: TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: Resizable.font(context, 24),
+                                              color: Colors.black)),
+                                      showNavigationArrow: true,
+                                      selectionMode: DateRangePickerSelectionMode.range,
+                                    ),
+                                  ));
+                            });
+                      }, type: 2,
+                    ));
               },
               child: IgnorePointer(
                 child: TextFormField(
@@ -122,41 +137,93 @@ class DateFilterReport extends StatelessWidget {
               onTap: () async {
                 showDialog(
                     context: context,
-                    builder: (_) {
-                      return Dialog(
-                          child: SizedBox(
-                            height: Resizable.size(context, 250),
-                            width: Resizable.size(context, 250),
-                            child: SfDateRangePicker(
-                              cancelText: AppText.textCancel.text,
-                              onCancel: (){
-                                Navigator.pop(context);
-                              },
-                              onSubmit: (v) async {
-                                String str = v.toString();
-                                int startIndex = str.indexOf("(");
-                                int endIndex = str.indexOf(")");
-                                String substring = str.substring(startIndex + 1, endIndex);
-                                List<String> sub = substring.split(",");
-                                String startDate = sub[0].split("startDate: ")[1];
-                                String endDate = sub[1].split('endDate: ')[1];
-                                if(endDate != "null"){
-                                  await cubit.setDateTime(startDate, endDate);
-                                  Navigator.pop(context);
-                                }
-                              },
-                              showActionButtons: true,
-                              headerHeight: Resizable.size(context, 50),
-                              headerStyle: DateRangePickerHeaderStyle(
-                                  textStyle: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: Resizable.font(context, 24),
-                                      color: Colors.black)),
-                              showNavigationArrow: true,
-                              selectionMode: DateRangePickerSelectionMode.range,
-                            ),
-                          ));
-                    });
+                    builder: (context) => ChooseDateDialog(
+                      type: 2,
+                      dateChooseCubit: cubit.dateChooseCubit,
+                      onSubmit: () async {
+                        if(cubit.dateChooseCubit.startDate != null && cubit.dateChooseCubit.endDate != null){
+                          cubit.setDateTime(cubit.dateChooseCubit.startDate!, cubit.dateChooseCubit.endDate!);
+                        }
+                        Navigator.of(context).pop();
+                      },
+                      onChooseCustom: () {
+                        cubit.dateChooseCubit.chooseCustom();
+                        showDialog(
+                            context: context,
+                            builder: (_) {
+                              return Dialog(
+                                  child: SizedBox(
+                                    height: Resizable.size(context, 250),
+                                    width: Resizable.size(context, 250),
+                                    child: SfDateRangePicker(
+                                      cancelText: AppText.textCancel.text,
+                                      onCancel: (){
+                                        Navigator.pop(context);
+                                      },
+                                      onSubmit: (v) {
+                                        String str = v.toString();
+                                        int startIndex = str.indexOf("(");
+                                        int endIndex = str.indexOf(")");
+                                        String substring = str.substring(startIndex + 1, endIndex);
+                                        List<String> sub = substring.split(",");
+                                        String startDate = sub[0].split("startDate: ")[1];
+                                        String endDate = sub[1].split('endDate: ')[1];
+                                        if(endDate != "null"){
+                                          cubit.dateChooseCubit.setDateTime(startDate, endDate);
+                                        }
+                                        Navigator.pop(context);
+                                      },
+                                      showActionButtons: true,
+                                      headerHeight: Resizable.size(context, 50),
+                                      headerStyle: DateRangePickerHeaderStyle(
+                                          textStyle: TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: Resizable.font(context, 24),
+                                              color: Colors.black)),
+                                      showNavigationArrow: true,
+                                      selectionMode: DateRangePickerSelectionMode.range,
+                                    ),
+                                  ));
+                            });
+                      },
+                    ));
+                // showDialog(
+                //     context: context,
+                //     builder: (_) {
+                //       return Dialog(
+                //           child: SizedBox(
+                //             height: Resizable.size(context, 250),
+                //             width: Resizable.size(context, 250),
+                //             child: SfDateRangePicker(
+                //               cancelText: AppText.textCancel.text,
+                //               onCancel: (){
+                //                 Navigator.pop(context);
+                //               },
+                //               onSubmit: (v) async {
+                //                 String str = v.toString();
+                //                 int startIndex = str.indexOf("(");
+                //                 int endIndex = str.indexOf(")");
+                //                 String substring = str.substring(startIndex + 1, endIndex);
+                //                 List<String> sub = substring.split(",");
+                //                 String startDate = sub[0].split("startDate: ")[1];
+                //                 String endDate = sub[1].split('endDate: ')[1];
+                //                 if(endDate != "null"){
+                //                   await cubit.setDateTime(startDate, endDate);
+                //                   Navigator.pop(context);
+                //                 }
+                //               },
+                //               showActionButtons: true,
+                //               headerHeight: Resizable.size(context, 50),
+                //               headerStyle: DateRangePickerHeaderStyle(
+                //                   textStyle: TextStyle(
+                //                       fontWeight: FontWeight.w700,
+                //                       fontSize: Resizable.font(context, 24),
+                //                       color: Colors.black)),
+                //               showNavigationArrow: true,
+                //               selectionMode: DateRangePickerSelectionMode.range,
+                //             ),
+                //           ));
+                //     });
               },
               child: IgnorePointer(
                 child: TextFormField(

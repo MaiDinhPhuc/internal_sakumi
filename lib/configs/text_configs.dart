@@ -475,11 +475,13 @@ enum AppText {
   txtPleaseInputReportCreator,
   txtAddImage,
   txtAddReportImage,
-  txtConfirmDeleteReport
+  txtConfirmDeleteReport,
+  txtFilterDate
 
 }
 
 Map<AppText, String> texts = {
+  AppText.txtFilterDate : "Chọn ngày lọc: ",
   AppText.txtConfirmDeleteReport : "Xác nhận xoá biên bản...",
   AppText.txtAddReportImage : "Ảnh đính kèm",
   AppText.txtAddImage : "+THÊM ẢNH",

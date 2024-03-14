@@ -84,11 +84,7 @@ class HeaderBillStatistic extends StatelessWidget {
                         filterController:
                         filterController)),
                 if (filterController
-                    .billStatisticCubit.startDay !=
-                    null &&
-                    filterController
-                        .billStatisticCubit.endDay !=
-                        null)
+                    .billStatisticCubit.isChooseDate)
                   SubmitButton(
                       onPressed: () {
                         filterController.billStatisticCubit

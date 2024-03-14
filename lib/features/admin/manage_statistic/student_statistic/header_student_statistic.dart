@@ -70,8 +70,7 @@ class HeaderStudentStatistic extends StatelessWidget {
                     width: Resizable.size(context, 110),
                     child: DateFilterStudent(
                         isStartDay: false, filterController: filterController)),
-                if (filterController.studentStatisticCubit.startDay != null &&
-                    filterController.studentStatisticCubit.endDay != null)
+                if (filterController.studentStatisticCubit.isChooseDate)
                   SubmitButton(
                       onPressed: () {
                         filterController.studentStatisticCubit.clearDate();
