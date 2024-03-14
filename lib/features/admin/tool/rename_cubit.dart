@@ -39,7 +39,6 @@ class RenameCubit extends Cubit<int> {
     });
     await _googleSignIn.signInSilently();
     buildUI();
-    await getAllFileInDrive();
   }
 
   handleSignIn() async {
@@ -76,13 +75,13 @@ class RenameCubit extends Cubit<int> {
     }
   }
 
-  String _changeDateForFiles(String date){
+  String _changeDateForFiles(String date) {
     List<String> temp1 = (date.split(' ').first).split('/');
     List<String> temp2 = [];
-    for(var i in temp1){
-      if(i.length > 2){
+    for (var i in temp1) {
+      if (i.length > 2) {
         temp2.add(i.substring(2, 4));
-      }else {
+      } else {
         temp2.add(i);
       }
     }
@@ -109,32 +108,65 @@ class RenameCubit extends Cubit<int> {
     return source.first;
   }
 
-  getFoldersName() async {
+  _getAllFilesOnDrive() async {
     drives.clear();
-    classIds.clear();
-    var allClass = await FireBaseProvider.instance.getAllClassInProgress();
-    for (var i in allClass) {
-      for (var file in allDriveFiles) {
-        String temp = _split(file.name.toString().trim());
-        if (i.link.contains(temp.trim())) {
-          drives.add(DriveModel(file, i));
-          classIds.add(i.classId);
-          debugPrint(
-              '==========> class ${i.link} -- ${i.classCode} -- ${i.classId}');
-          break;
+    await _queryDrive(
+        "mimeType='video/mp4' and '${AppConfigs.meetRecordingsId}' in parents",
+        allDriveFiles);
+
+    for (var file in allDriveFiles) {
+      drives.add(DriveModel(file));
+    }
+
+    for (var i in drives) {
+      int count = 0;
+      for (var j in drives) {
+        if (i.file.name == j.file.name) {
+          count++;
         }
+      }
+      if (count > 1) {
+        i.error = 1;
       }
     }
   }
 
-  getTitleLessons() async {
+  _getFoldersName() async {
+    classIds.clear();
+    var allClass = await FireBaseProvider.instance.getAllClassInProgress();
+
+    for (var drive in drives) {
+      int count = 0;
+      for (var i in allClass) {
+        String temp = _split(drive.file.name.toString().trim());
+        if (i.link.contains(temp.trim()) && drive.error == null) {
+          count++;
+          debugPrint(
+              '==========> class ${i.link} -- ${i.classCode} -- ${i.classId} -- ${drive.file.name}');
+          drives[drives.indexOf(drive)].classModel = i;
+          classIds.add(i.classId);
+        }
+      }
+
+      if (count > 1) {
+        drives[drives.indexOf(drive)].error = 2;
+      }
+    }
+
+    for (var drive in drives) {
+      if (drive.classModel == null && drive.error == null) {
+        drive.error = 3;
+      }
+    }
+  }
+
+  _getTitleLessons() async {
     lessons.clear();
     lessonIds.clear();
     listSubmit.clear();
-    debugPrint(
-        '==========> class ids 0000 $classIds');
-    List<LessonResultModel> lessonResults =
-        await FireBaseProvider.instance.getLessonsResultsByListClassIds(classIds);
+    debugPrint('==========> class ids 0000 $classIds');
+    List<LessonResultModel> lessonResults = await FireBaseProvider.instance
+        .getLessonsResultsByListClassIds(classIds);
 
     debugPrint(
         '==========> class ids ${lessonResults.length} -- ${drives.length}');
@@ -144,25 +176,28 @@ class RenameCubit extends Cubit<int> {
         DateTime first =
             DateFormat('dd/MM/yyyy HH:mm:ss').parse(i.date.toString());
         Duration duration = last.difference(first);
-        if (duration.inHours <= 12 && i.classId == drive.classModel.classId) {
-          folders.clear();
-          debugPrint(
-              '===========> ${i.date} -- ${i.lessonId} -- ${i.classId} -- ${drive.file.name}');
-          await _queryDrive(
-              "mimeType='application/vnd.google-apps.folder' and name='${drive.classModel.classCode}'",
-              folders);
-          if (folders == null || folders.isEmpty) {
-            debugPrint('=======> ahihi');
-          } else {
-            lessonIds.add(i.lessonId);
-            String dateTime = _changeDateForFiles('${i.date}');
-            String name =
-                '$dateTime-${drive.classModel.classCode}';
-            String fileId = '${drive.file.id}';
-            String folderId = '${folders.first.id}';
-            listSubmit.add(SubmitModel(name, fileId, folderId));
+        if (drive.classModel != null) {
+          if (duration.inHours <= 12 &&
+              i.classId == drive.classModel!.classId) {
+            folders.clear();
+            debugPrint(
+                '===========> ${i.date} -- ${i.lessonId} -- ${i.classId} -- ${drive.file.name}');
+            await _queryDrive(
+                "mimeType='application/vnd.google-apps.folder' and name='${drive.classModel!.classCode}'",
+                folders);
+            if (folders == null || folders.isEmpty) {
+              drive.error = 4;
+            } else {
+              lessonIds.add(i.lessonId);
+              drive.lessonId = i.lessonId;
+              String dateTime = _changeDateForFiles('${i.date}');
+              String name = '$dateTime-${drive.classModel!.classCode}';
+              String fileId = '${drive.file.id}';
+              String folderId = '${folders.first.id}';
+              listSubmit.add(SubmitModel(name, fileId, folderId));
+            }
+            break;
           }
-          break;
         }
       }
     }
@@ -172,43 +207,56 @@ class RenameCubit extends Cubit<int> {
       listSubmit[lessons.indexOf(lesson)].name += '-${lesson.title}';
       debugPrint(
           '=======> list submit ${listSubmit[lessons.indexOf(lesson)].name}');
+      for (var drive in drives) {
+        if (drive.lessonId == lesson.lessonId) {
+          drive.name =
+              listSubmit[lessons.indexOf(lesson)].name += '-${lesson.title}';
+        }
+      }
     }
   }
 
   submit(BuildContext context) async {
-    // waitingDialog(context);
+    waitingDialog(context);
     for (var i in listSubmit) {
       debugPrint(
           '===========> file file file ${i.name} == ${i.fileId} == ${i.folderId}');
       var fileMetadata = drive.File();
       fileMetadata.name = i.name;
       fileMetadata.mimeType = 'application/vnd.google-apps.folder';
-      // await drive.DriveApi(
-      //     AuthClient(http.Client(), await currentUser!.authHeaders))
-      //     .files
-      //     .update(fileMetadata, i.fileId,
-      //     removeParents: AppConfigs.meetRecordingsId,
-      //     addParents: i.folderId);
+      await drive.DriveApi(
+              AuthClient(http.Client(), await currentUser!.authHeaders))
+          .files
+          .update(fileMetadata, i.fileId,
+              removeParents: AppConfigs.meetRecordingsId,
+              addParents: i.folderId);
     }
-    // if (context.mounted) {
-    //   Navigator.pop(context);
-      // listSubmit.removeRange(0, listSubmit.length);
-      // listSubmit.clear();
-    //   buildUI();
-    //   notificationDialog(context, AppText.txtSuccessfullyUpdateVideo.text);
-    // }
+    if (context.mounted) {
+      Navigator.pop(context);
+      listSubmit.clear();
+      allDriveFiles.clear();
+      drives.clear();
+      buildUI();
+      notificationDialog(context, AppText.txtSuccessfullyUpdateVideo.text);
+    }
   }
 
-  getAllFileInDrive() async {
-    await _queryDrive(
-        "mimeType='video/mp4' and '${AppConfigs.meetRecordingsId}' in parents",
-        allDriveFiles);
-    await getFoldersName();
-    await getTitleLessons();
-    // if(context.mounted){
-    //   await submit(context);
-    // }
+  verify(BuildContext context) async {
+    waitingDialog(context);
+    await _getAllFilesOnDrive();
+    await _getFoldersName();
+    await _getTitleLessons();
+    if (context.mounted) {
+      Navigator.pop(context);
+    }
     buildUI();
+  }
+
+  reload(BuildContext context)async{
+    allDriveFiles.clear();
+    drives.clear();
+    listSubmit.clear();
+    await verify(context);
   }
 
   buildUI() => emit(state + 1);
