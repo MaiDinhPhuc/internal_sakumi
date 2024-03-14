@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/features/admin/manage_teacher/teacher_info_cubit.dart';
+import 'package:internal_sakumi/features/admin/manage_teacher/teacher_info/teacher_info_cubit.dart';
+import 'package:internal_sakumi/features/calculator/calculator.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
@@ -12,7 +13,6 @@ class TeacherClassItemCubit extends Cubit<int>{
   TeacherClassItemCubit( this.cubit, this.classModel):super(0){
     loadData();
   }
-
 
   final TeacherInfoCubit cubit;
   final ClassModel classModel;
@@ -102,84 +102,12 @@ class TeacherClassItemCubit extends Cubit<int>{
 
   loadPercent() async {
     await Future.delayed(const Duration(milliseconds: 500));
-    List<int> listStdIdsEnable = [];
 
-    for (var element in stdClasses!) {
-      if (element.classStatus != "Remove" &&
-          element.classStatus != "Viewer") {
-        listStdIdsEnable.add(element.userId);
-      }
-    }
+    attendancePercent = Calculator.classAttendancePercent(stdClasses!, stdLessons!, lessons!);
 
-
-    var stdLessons = this.stdLessons!
-        .where(
-            (e) => listStdIdsEnable.contains(e.studentId) && e.timekeeping != 0)
-        .toList();
-
-    double attendancePercent = 0;
-    double hwPercent = 0;
-    List<LessonModel> lessonTemp =
-    lessons!.where((element) => element.btvn == 0).toList();
-    List<int> lessonExceptionIds = [];
-    for (var i in lessonTemp) {
-      lessonExceptionIds.add(i.lessonId);
-    }
-    int count = stdLessons
-        .where((element) => element.timekeeping != 0)
-        .toList()
-        .length;
-    int countHw = 0;
-    double attendanceTemp = 0;
-    double hwPercentTemp = 0;
-    for (var i in stdLessons) {
-      if (i.timekeeping < 5) {
-        attendanceTemp++;
-      }
-      if (lessonExceptionIds.contains(i.lessonId) == false) {
-        countHw++;
-        if (getPoint(i.lessonId, i.studentId) != -2) {
-          hwPercentTemp++;
-        }
-      }
-    }
-    attendancePercent = attendanceTemp / (count == 0 ? 1 : count);
-    hwPercent = hwPercentTemp / (countHw == 0 ? 1 : countHw);
-    this.attendancePercent = attendancePercent;
-    this.hwPercent = hwPercent;
+    hwPercent = Calculator.classHwPercent(stdClasses!, stdLessons!, lessons!);
 
     emit(state + 1);
-  }
-
-  double getPoint(int lessonId, int stdId) {
-    bool isCustom =
-        lessons!.firstWhere((e) => e.lessonId == lessonId).isCustom;
-
-    List<StudentLessonModel> stdLesson =
-    stdLessons!.where((e) => e.lessonId == lessonId && e.studentId == stdId).toList();
-    if (isCustom) {
-      return getHwCustomPoint(lessonId, stdId);
-    }
-    if(stdLesson.isEmpty) return -2;
-    return stdLesson.first.hw;
-  }
-
-  double getHwCustomPoint(int lessonId, int stdId) {
-    List<StudentLessonModel> stdLesson =
-    stdLessons!.where((e) => e.lessonId == lessonId && e.studentId == stdId).toList();
-
-    if (stdLesson.isEmpty) {
-      return -2;
-    }
-    List<dynamic> listHws = stdLesson.first.hws.map((e) => e['hw']).toList();
-
-    if (listHws.every((e) => e == -2)) {
-      return -2;
-    } else if (listHws.every((e) => e > 0)) {
-      return listHws.reduce((value, element) => value + element) /
-          listHws.length;
-    }
-    return -1;
   }
 
   String getTitle(int lessonId){
@@ -241,7 +169,7 @@ class TeacherClassItemCubit extends Cubit<int>{
     int temp2 = 0;
     for (var i in listStdLesson) {
       if(listStdId.contains(i.studentId)){
-        if (getPoint(i.lessonId, i.studentId) != -2 && i.timekeeping != 0) {
+        if (Calculator.getPoint(i.lessonId, i.studentId,lessons!,stdLessons!) != -2 && i.timekeeping != 0) {
           temp1++;
         }
         if (i.timekeeping != 0) {

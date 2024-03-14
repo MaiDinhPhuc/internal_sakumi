@@ -2,7 +2,7 @@ import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_student/info_field.dart';
-import 'package:internal_sakumi/features/admin/manage_teacher/teacher_info_cubit.dart';
+import 'package:internal_sakumi/features/admin/manage_teacher/teacher_info/teacher_info_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class TeacherInfo extends StatelessWidget {

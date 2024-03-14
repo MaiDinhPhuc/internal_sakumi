@@ -1,38 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/teacher/profile/body_profile.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/features/teacher/app_bar/class_appbar.dart';
+import 'package:internal_sakumi/features/teacher/profile/list_tab_view.dart';
+import 'package:internal_sakumi/features/teacher/profile/teacher_profile/body_profile.dart';
+import 'package:internal_sakumi/features/teacher/profile/manage_teacher_tab_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
-import '../../features/teacher/app_bar/class_appbar.dart';
-
 class TeacherProfile extends StatelessWidget {
-  const TeacherProfile({Key? key}) : super(key: key);
+  TeacherProfile({Key? key})
+      : cubit = ManageTeacherTabCubit(),
+        super(key: key);
+  final ManageTeacherTabCubit cubit;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const HeaderTeacher(
-              index: -1,
-              classId: "empty",
-              role: "teacher",
-            ),
-            SizedBox(
-              height: Resizable.size(context, 20),
-            ),
-            Text(AppText.txtTeacherProfile.text.toUpperCase() , style:
-              TextStyle(
-                fontSize: Resizable.font(context, 30),
-                fontWeight: FontWeight.bold
-              ),),
-            SizedBox(
-              height: Resizable.size(context, 20),
-            ),
-            const BodyProfile()
-          ],
+        body: Column(
+      children: [
+        const HeaderTeacher(
+          index: -1,
+          classId: "empty",
+          role: "teacher",
         ),
-      ),
-    );
+        Expanded(
+            child:
+            Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: Resizable.padding(context, 20),
+                    horizontal: Resizable.padding(context, 30)),
+                child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(flex: 4, child: BodyProfile()),
+                      Expanded(
+                          flex: 9,
+                          child: BlocBuilder<ManageTeacherTabCubit, int>(
+                            bloc: cubit,
+                            builder: (c, s) {
+                              return ListTabView(cubit: cubit) ;
+                            },
+                          ))
+
+                    ])))
+      ],
+    ));
   }
 }

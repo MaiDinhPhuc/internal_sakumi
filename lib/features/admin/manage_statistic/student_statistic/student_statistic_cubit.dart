@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/features/admin/manage_bills/date_choose_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_statistic/bill_statistic/chart_bill_view.dart';
 import 'package:internal_sakumi/model/student_class_log.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
@@ -8,10 +9,13 @@ import 'package:internal_sakumi/providers/firebase/firestore_db.dart';
 
 class StudentStatisticCubit extends Cubit<int>{
   StudentStatisticCubit() : super(0){
+    setUpDate();
     getCount();
   }
 
-
+  final DateChooseCubit dateChooseCubit = DateChooseCubit();
+  DateTime now = DateTime.now();
+  bool isChooseDate = false;
   int? totalStudent;
   int? totalStudentLearning;
 
@@ -70,32 +74,29 @@ class StudentStatisticCubit extends Cubit<int>{
     emit(state+1);
   }
 
+
+  setDate(DateTime start, DateTime end){
+    isChooseDate = true;
+    startDay = start;
+    endDay = end;
+    emit(state+1);
+  }
+
+  setUpDate(){
+    startDay = DateTime(now.year, now.month, 1);
+    endDay = DateTime(now.year, now.month +1 , 1);
+  }
+
   clearDate() {
-    startDay = null;
-    endDay = null;
+    isChooseDate = false;
+
+    setUpDate();
+
     emit(state + 1);
   }
 
-  updateStartDay(DateTime newValue) {
-    if (endDay == null ||
-        newValue.millisecondsSinceEpoch < endDay!.millisecondsSinceEpoch) {
-      startDay = newValue;
-      emit(state + 1);
-    }
-  }
-
-  updateEndDay(DateTime newValue) {
-    if (startDay == null ||
-        newValue.millisecondsSinceEpoch > startDay!.millisecondsSinceEpoch) {
-      endDay = newValue;
-      emit(state + 1);
-    }
-  }
-
   checkLoad(StatisticFilterCubit filterController) async{
-    if (endDay != null && startDay != null) {
       await loadData(filterController);
-    }
   }
 
   loadData(StatisticFilterCubit filterController) async {
@@ -119,33 +120,14 @@ class StudentStatisticCubit extends Cubit<int>{
               : i + courseSize);
       subLists.add(subList);
     }
-    if (startDay != null && endDay != null) {
-      int startDate = startDay!.millisecondsSinceEpoch;
-      int endDate = endDay!.millisecondsSinceEpoch;
-      for (int i = 0; i < subLists.length; i++) {
-        var listLogTemp = await DataProvider.studentClassLogStatistic(
-            filterController.filter, 1, subLists[i], startDate, endDate);
-        var listId = listLog.map((e) => e.id).toList();
-        for(var i in listLogTemp){
-          if(listId.contains(i.id) == false){
-            listLog.add(i);
-          }
-        }
-      }
-    } else {
-      DateTime now = DateTime.now();
-      DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
-      DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 1);
-      int startDate = firstDayOfMonth.millisecondsSinceEpoch;
-      int endDate = lastDayOfMonth.millisecondsSinceEpoch;
-      for (int i = 0; i < subLists.length; i++) {
-        var listLogTemp = await DataProvider.studentClassLogStatistic(
-            filterController.filter, 1, subLists[i], startDate, endDate);
-        var listId = listLog.map((e) => e.id).toList();
-        for(var i in listLogTemp){
-          if(listId.contains(i.id) == false){
-            listLog.add(i);
-          }
+
+    for (int i = 0; i < subLists.length; i++) {
+      var listLogTemp = await DataProvider.studentClassLogStatistic(
+          filterController.filter, 1, subLists[i], startDay!.millisecondsSinceEpoch, endDay!.millisecondsSinceEpoch);
+      var listId = listLog.map((e) => e.id).toList();
+      for(var i in listLogTemp){
+        if(listId.contains(i.id) == false){
+          listLog.add(i);
         }
       }
     }

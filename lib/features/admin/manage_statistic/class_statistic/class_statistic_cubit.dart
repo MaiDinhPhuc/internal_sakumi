@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/features/admin/manage_bills/date_choose_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_statistic/bill_statistic/chart_bill_view.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
@@ -7,6 +8,7 @@ import 'package:internal_sakumi/providers/firebase/firestore_db.dart';
 
 class ClassStatisticCubit extends Cubit<int>{
   ClassStatisticCubit() : super(0){
+    setUpDate();
     getCount();
   }
 
@@ -17,6 +19,10 @@ class ClassStatisticCubit extends Cubit<int>{
   List<ClassModel> listClass0 = [];
   List<ClassModel> listClass1 = [];
   bool loading = true;
+  DateTime now = DateTime.now();
+  bool isChooseDate = false;
+
+  final DateChooseCubit dateChooseCubit = DateChooseCubit();
 
   List<ChartStatisticData> classData = [];
 
@@ -34,33 +40,29 @@ class ClassStatisticCubit extends Cubit<int>{
     'Huỷ'
   ];
 
-  checkLoad(StatisticFilterCubit filterController) async{
-    if (endDay != null && startDay != null) {
-      await loadData(filterController);
-    }
+
+  setDate(DateTime start, DateTime end){
+    isChooseDate = true;
+    startDay = start;
+    endDay = end;
+    emit(state+1);
   }
 
+  setUpDate(){
+    startDay = DateTime(now.year, now.month, 1);
+    endDay = DateTime(now.year, now.month +1 , 1);
+  }
 
   clearDate() {
-    startDay = null;
-    endDay = null;
+    isChooseDate = false;
+
+    setUpDate();
+
     emit(state + 1);
   }
 
-  updateStartDay(DateTime newValue) {
-    if (endDay == null ||
-        newValue.millisecondsSinceEpoch < endDay!.millisecondsSinceEpoch) {
-      startDay = newValue;
-      emit(state + 1);
-    }
-  }
-
-  updateEndDay(DateTime newValue) {
-    if (startDay == null ||
-        newValue.millisecondsSinceEpoch > startDay!.millisecondsSinceEpoch) {
-      endDay = newValue;
-      emit(state + 1);
-    }
+  checkLoad(StatisticFilterCubit filterController) async{
+    await loadData(filterController);
   }
 
   getCount()async{

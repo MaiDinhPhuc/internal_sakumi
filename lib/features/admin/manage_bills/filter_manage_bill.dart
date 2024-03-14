@@ -63,7 +63,7 @@ class FilterManageBill extends StatelessWidget {
                 ),
                 width: Resizable.size(context, 110),
                 child: DateFilter(cubit: cubit, isStartDay: false,filterController: filterController)),
-            if(cubit.startDay != null && cubit.endDay != null)
+            if(cubit.isChooseDate)
               SubmitButton(onPressed: (){
                 cubit.clearDate();
                 cubit.loadData(filterController);

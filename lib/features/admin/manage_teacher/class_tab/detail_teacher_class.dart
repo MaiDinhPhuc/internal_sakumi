@@ -1,5 +1,5 @@
 import 'package:flutter/Material.dart';
-import 'package:internal_sakumi/features/admin/manage_teacher/teacher_class_item_cubit.dart';
+import 'package:internal_sakumi/features/admin/manage_teacher/class_tab/teacher_class_item_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'detail_teacher_class_item.dart';

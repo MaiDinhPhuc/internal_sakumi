@@ -1,7 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/teacher/profile/log_out_dialog.dart';
+import 'package:internal_sakumi/features/teacher/profile/teacher_profile/log_out_dialog.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class LogOutButton extends StatelessWidget {

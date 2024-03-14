@@ -17,6 +17,7 @@ class AlertAddTeacherCubit extends Cubit<int> {
   List<TeacherModel>? listAllTeacher, listSensei, listSelectedTeacher = [];
   bool? checkCreate, checkAdd;
   final TextEditingController searchTextController = TextEditingController();
+
   loadAllUser(BuildContext context, ManageGeneralCubit cubit) async {
     teacherClassCount = (await FireStoreDb.instance.getCount("teacher_class")).count;
     listAllTeacher = await FireBaseProvider.instance.getAllTeacher();
@@ -35,6 +36,7 @@ class AlertAddTeacherCubit extends Cubit<int> {
     }
     emit(state + 1);
   }
+
   search(String text, ManageGeneralCubit cubit){
     if(text!=""){
       listSensei = [];

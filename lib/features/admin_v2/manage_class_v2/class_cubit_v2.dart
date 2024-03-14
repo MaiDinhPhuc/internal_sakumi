@@ -54,6 +54,7 @@ class ClassCubit extends Cubit<int> {
       }
       listLastClass.add(lastClasses);
     }
+
     role = "admin";
     emit(state + 1);
   }
@@ -89,6 +90,7 @@ class ClassCubit extends Cubit<int> {
         lastClassesNew.add(list.last);
       }
     }
+
     if(lastClassesNew.isNotEmpty){
       listLastClass.add(lastClassesNew);
     }

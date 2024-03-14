@@ -465,10 +465,75 @@ enum AppText {
   txtTotalStudentLearning,
   txtNotLog,
   txtStudentAddToClass,
-  txtContentLog
+  txtContentLog,
+  txtSchedule,
+  txtReport,
+  txtNoReport,
+  txtAdd,
+  txtEditReport,
+  txtAddNewReport,
+  txtDeleteReport,
+  txtTitleReport,
+  txtPleaseInputReportTitle,
+  txtContentReport,
+  txtPleaseInputReportContent,
+  txtCreatorReport,
+  txtPleaseInputReportCreator,
+  txtAddImage,
+  txtAddReportImage,
+  txtConfirmDeleteReport,
+  txtFilterDate
+
 }
 
 Map<AppText, String> texts = {
+  AppText.txtFilterDate : "Chọn ngày lọc: ",
+  AppText.txtConfirmDeleteReport : "Xác nhận xoá biên bản...",
+  AppText.txtAddReportImage : "Ảnh đính kèm",
+  AppText.txtAddImage : "+THÊM ẢNH",
+  AppText.txtPleaseInputReportCreator : "Vui lòng nhập tên người lập biên bản",
+  AppText.txtCreatorReport : "Người lập biên bản",
+  AppText.txtPleaseInputReportContent : "Vui lòng nhập tiêu đề biên bản",
+  AppText.txtContentReport : "Nội dung biên bản",
+  AppText.txtPleaseInputReportTitle : "Vui lòng nhập tiêu đề biên bản",
+  AppText.txtTitleReport : "Tiêu đề biên bản",
+  AppText.txtDeleteReport : "Xoá biên bản",
+  AppText.txtAddNewReport : "Thêm biên bản mới",
+  AppText.txtEditReport : "Chỉnh sửa biên bản",
+  AppText.txtAdd : "+THÊM",
+  AppText.txtNoReport : "Hiện sensei chưa có biên bản nào trong thời gian và trạng thái được chọn...",
+  AppText.txtReport : "Biên bản",
+  AppText.txtSchedule : "Lịch dạy",
+  AppText.txtContentLog : "Học viên được chuyển từ @ sang #",
+  AppText.txtStudentAddToClass : "Học viên được thêm mới vào lớp",
+  AppText.txtNotLog : "Hiện tại không có ghi chép thay đổi của học viên phù hợp...",
+  AppText.txtTotalStudentLearning : "Học viên Đang học",
+  AppText.txtTotalStudent : "Tổng số học viên",
+  AppText.txtTotalClassThisMonth : "Số lớp mở tháng này",
+  AppText.txtTotalClass : "Tổng số lớp",
+  AppText.txtTag : "Tag",
+  AppText.txtNotCheck : "Chưa đối xoát",
+  AppText.txtTotalBillThisMonth : "Hóa đơn tháng này",
+  AppText.txtTotalBill : "Tổng số hóa đơn",
+  AppText.txtBill : "Hoá đơn",
+  AppText.titleStatisticsDashboard : "DASHBOARD THỐNG KÊ",
+  AppText.txtAnonymousNote : "Chọn \"Ẩn Danh\" để góp ý không gửi kèm thông tin cá nhân",
+  AppText.txtAnonymous : "Ẩn danh",
+  AppText.txtPleaseInputFeedBack : "Vui lòng gửi góp ý cho trung tâm nếu có gì sensei thấy sai sót nhé...",
+  AppText.txtFeedBack : "Góp ý",
+  AppText.txtFeedBackType : "Loại Góp ý",
+  AppText.txtSupportFeedBack : "Góp ý về Team Support",
+  AppText.txtTeachingFeedBack : "Góp ý về Cách giảng dạy",
+  AppText.txtCentreFeedBack : "Góp ý về Trung tâm",
+  AppText.txtSendFeedBackToCentre : "Gửi góp ý đến trung tâm",
+  AppText.txtSendFeedback : "Gửi Góp ý",
+  AppText.titleSendFeedback : "GỬI GÓP Ý",
+  AppText.titleAddBill : "+ THÊM HÓA ĐƠN",
+  AppText.txtCreatorFilter : "Người tạo",
+  AppText.txtCurrency : "Tiền tệ",
+  AppText.txtCreator : "Người lập hoá đơn",
+  AppText.txtBillEmpty : "Chưa có hoá đơn nào trong hệ thống!",
+  AppText.txtTabBill : "Ghi nhận hóa đơn",
   AppText.txtContentLog: "Học viên được chuyển từ @ sang #",
   AppText.txtStudentAddToClass: "Học viên được thêm mới vào lớp",
   AppText.txtNotLog:
@@ -854,8 +919,7 @@ Map<AppText, String> texts = {
   AppText.titleAddTeacherToClass: 'Thêm giáo viên vào lớp',
   AppText.txtNoStudent: 'Không có học viên',
   AppText.txtNoTeacher: 'Không có giáo viên',
-  AppText.txtNoClass:
-      'Không có lớp học thoả mãn điều kiện, vui lòng chọn lại filter...',
+  AppText.txtNoClass: 'Không có lớp học thoả mãn điều kiện, vui lòng chọn lại filter...',
   AppText.txtNoTag: 'Không có thẻ',
   AppText.titleTagName: 'Tên thẻ',
   AppText.titleChooseBackground: 'Chọn màu nền',
@@ -1022,7 +1086,7 @@ String vietnameseSubText(String text) {
 }
 
 String priceVND(String text) {
-  if (text.length > 3) {
+  if ( text.length > 3) {
     int count = 0;
     List<String> price = [];
     do {

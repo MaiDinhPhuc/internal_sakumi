@@ -11,7 +11,7 @@ import 'package:internal_sakumi/widget/dialog_button.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
-void alertAddNewAccount(
+void alertAddNewStdAccount(
     BuildContext context) {
   final TextEditingController nameCon = TextEditingController();
   final TextEditingController stdCodeCon = TextEditingController();

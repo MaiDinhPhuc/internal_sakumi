@@ -72,9 +72,9 @@ class DetailSurveyAdminCubit extends Cubit<int>{
     return x;
   }
 
-  String getAnswerInput(int id){
-    var answer = listSurveyAnswer!.firstWhere((e) => e.detail[index]["id"] == id);
-    return answer.detail[index]["answer"].first;
+  String getAnswerInput(int id, int studentId){
+    var answer = listSurveyAnswer!.firstWhere((e) => e.detail[index]["id"] == id && e.studentId == studentId);
+    return "${answer.studentName}: ${answer.detail[index]["answer"].first}";
   }
 
   List<dynamic> getInfo(int id,String answer){

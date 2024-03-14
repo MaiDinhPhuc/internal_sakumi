@@ -12,7 +12,7 @@ class AddButton extends StatelessWidget {
       child: Container(
         width: 230,
         height: 52,
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: ShapeDecoration(
           color: Colors.white,
           shape: RoundedRectangleBorder(

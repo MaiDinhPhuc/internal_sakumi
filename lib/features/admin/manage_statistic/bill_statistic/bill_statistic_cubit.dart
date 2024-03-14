@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/features/admin/manage_bills/date_choose_cubit.dart';
 import 'package:internal_sakumi/model/bill_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/cache/filter_statistic_provider.dart';
@@ -8,7 +9,8 @@ import 'package:intl/intl.dart';
 import 'chart_bill_view.dart';
 
 class BillStatisticCubit extends Cubit<int> {
-  BillStatisticCubit() : super(0){
+  BillStatisticCubit() : super(0) {
+    setUpDate();
     getCount();
   }
 
@@ -18,6 +20,10 @@ class BillStatisticCubit extends Cubit<int> {
   bool loading = true;
   int? totalBill;
   int? totalBillThisMonth;
+  bool isChooseDate = false;
+  DateTime now = DateTime.now();
+
+  final DateChooseCubit dateChooseCubit = DateChooseCubit();
 
   List<ChartStatisticData> vndData = [];
   List<ChartStatisticData> yenData = [];
@@ -46,78 +52,81 @@ class BillStatisticCubit extends Cubit<int> {
     "RENEW - BSHP 2 KÌ"
   ];
 
+  setDate(DateTime start, DateTime end){
+    isChooseDate = true;
+    startDay = start;
+    endDay = end;
+    emit(state+1);
+  }
+
+  setUpDate(){
+    startDay = DateTime(now.year, now.month , 1);
+    endDay = DateTime(now.year, now.month + 1, 1);
+  }
+
   clearDate() {
-    startDay = null;
-    endDay = null;
+    isChooseDate = false;
+
+    setUpDate();
+
     emit(state + 1);
   }
 
-  updateStartDay(DateTime newValue) {
-    if (endDay == null ||
-        newValue.millisecondsSinceEpoch < endDay!.millisecondsSinceEpoch) {
-      startDay = newValue;
-      emit(state + 1);
-    }
+  checkLoad(StatisticFilterCubit filterController) async {
+    await loadData(filterController);
   }
 
-  updateEndDay(DateTime newValue) {
-    if (startDay == null ||
-        newValue.millisecondsSinceEpoch > startDay!.millisecondsSinceEpoch) {
-      endDay = newValue;
-      emit(state + 1);
-    }
-  }
-
-  checkLoad(StatisticFilterCubit filterController) async{
-    if (endDay != null && startDay != null) {
-      await loadData(filterController);
-    }
-  }
-
-  String getTotalVnd(int index){
+  String getTotalVnd(int index) {
     var type = listType[index];
 
     String currency = "Tiền Việt(vnđ)";
 
-    var listBill = this.listBill.where((e) => e.type == type && e.currency == currency).toList();
+    var listBill = this
+        .listBill
+        .where((e) => e.type == type && e.currency == currency)
+        .toList();
 
     int sum = 0;
-    for(var i in listBill){
+    for (var i in listBill) {
       sum = sum + i.payment;
     }
 
     return "${NumberFormat('#,##0').format(sum)}đ";
   }
 
-  String getTotalYen(int index){
+  String getTotalYen(int index) {
     var type = listType[index];
 
     String currency = "Yên Nhật(¥)";
 
-    var listBill = this.listBill.where((e) => e.type == type && e.currency == currency).toList();
+    var listBill = this
+        .listBill
+        .where((e) => e.type == type && e.currency == currency)
+        .toList();
 
     int sum = 0;
-    for(var i in listBill){
+    for (var i in listBill) {
       sum = sum + i.payment;
     }
 
     return "${NumberFormat('#,##0').format(sum)}¥";
   }
 
-  getCount()async{
+  getCount() async {
     DateTime now = DateTime.now();
     DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
     DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 1);
     int startDate = firstDayOfMonth.millisecondsSinceEpoch;
     int endDate = lastDayOfMonth.millisecondsSinceEpoch;
     totalBill = (await FireStoreDb.instance.getCount("bill")).count;
-    totalBillThisMonth = (await FireStoreDb.instance.getCountBill(startDate, endDate)).count;
-    emit(state+1);
+    totalBillThisMonth =
+        (await FireStoreDb.instance.getCountBill(startDate, endDate)).count;
+    emit(state + 1);
   }
 
   loadData(StatisticFilterCubit filterController) async {
     loading = true;
-    emit(state+1);
+    emit(state + 1);
     List<int> listCourseId = filterController.getCourseId(
         filterController.filter[StatisticFilter.course]!,
         filterController.filter[StatisticFilter.level]!);
@@ -137,46 +146,25 @@ class BillStatisticCubit extends Cubit<int> {
               : i + courseSize);
       subLists.add(subList);
     }
-    if (startDay != null && endDay != null) {
-      int startDate = startDay!.millisecondsSinceEpoch;
-      int endDate = endDay!.millisecondsSinceEpoch;
-      for (int i = 0; i < subLists.length; i++) {
-        var listBillTemp = await DataProvider.billStatistic(
-            filterController.filter, 1, subLists[i], startDate, endDate);
-        var listId = listBill.map((e) => e.createDate).toList();
-        for(var i in listBillTemp){
-          if(listId.contains(i.createDate) == false){
-            listBill.add(i);
-          }
-        }
-      }
-    } else {
-      DateTime now = DateTime.now();
-      DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
-      DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 1);
-      int startDate = firstDayOfMonth.millisecondsSinceEpoch;
-      int endDate = lastDayOfMonth.millisecondsSinceEpoch;
-      for (int i = 0; i < subLists.length; i++) {
-        var listBillTemp = await DataProvider.billStatistic(
-            filterController.filter, 1, subLists[i], startDate, endDate);
-        var listId = listBill.map((e) => e.createDate).toList();
-        for(var i in listBillTemp){
-          if(listId.contains(i.createDate) == false){
-            listBill.add(i);
-          }
+    for (int i = 0; i < subLists.length; i++) {
+      var listBillTemp = await DataProvider.billStatistic(
+          filterController.filter, 1, subLists[i], startDay!.millisecondsSinceEpoch, endDay!.millisecondsSinceEpoch);
+      var listId = listBill.map((e) => e.createDate).toList();
+      for (var i in listBillTemp) {
+        if (listId.contains(i.createDate) == false) {
+          listBill.add(i);
         }
       }
     }
 
-
     for (var i in listType) {
       int vndSum = 0;
       int yenSum = 0;
-      for(var j in listBill){
-        if(j.type == i && j.currency == "Tiền Việt(vnđ)"){
+      for (var j in listBill) {
+        if (j.type == i && j.currency == "Tiền Việt(vnđ)") {
           vndSum++;
         }
-        if(j.type == i && j.currency == "Yên Nhật(¥)"){
+        if (j.type == i && j.currency == "Yên Nhật(¥)") {
           yenSum++;
         }
       }

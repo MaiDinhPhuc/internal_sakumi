@@ -201,7 +201,7 @@ class SurveyAnswerResultView extends StatelessWidget {
                           children: [
                             cubit
                                     .getAnswerInput(cubit
-                                        .surveyModel!.detail[cubit.index]["id"])
+                                        .surveyModel!.detail[cubit.index]["id"], e.studentId)
                                     .isEmpty
                                 ? Container()
                                 : Expanded(
@@ -217,7 +217,7 @@ class SurveyAnswerResultView extends StatelessWidget {
                                         ),
                                         child: Text(cubit.getAnswerInput(cubit
                                             .surveyModel!
-                                            .detail[cubit.index]["id"]))))
+                                            .detail[cubit.index]["id"], e.studentId))))
                           ],
                         )))
                     .toList(),

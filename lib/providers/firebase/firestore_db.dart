@@ -108,6 +108,13 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getReportByTeacherId(int id) async {
+    final snapshot =
+    await db.collection("reports").where('teacher_id', isEqualTo: id).get();
+
+    return snapshot;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getLessonById(int id) async {
     final snapshot =
         await db.collection("lessons").where('lesson_id', isEqualTo: id).get();
@@ -1140,9 +1147,10 @@ class FireStoreDb {
       List<int> listTypeFilter,
       int lastId,
       List<int> listCourseId) async {
+
     final snapshot = await db
         .collection("class")
-        .orderBy('class_id')
+        .orderBy('class_id', descending: true)
         .where(Filter.and(
             Filter("class_status", whereIn: listStatusFilter),
             Filter("course_id", whereIn: listCourseId),
@@ -1150,9 +1158,6 @@ class FireStoreDb {
         .startAfter([lastId])
         .limit(10)
         .get();
-
-    debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListClassWithFilter ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -1163,7 +1168,7 @@ class FireStoreDb {
       List<int> listCourseId) async {
     final snapshot = await db
         .collection("class")
-        .orderBy('class_id')
+        .orderBy('class_id', descending: true)
         .where(Filter.and(
             Filter("class_status", whereIn: listStatusFilter),
             Filter("course_id", whereIn: listCourseId),
@@ -1183,7 +1188,7 @@ class FireStoreDb {
       List<String> listCreatorFilter) async {
     final snapshot = await db
         .collection("bill")
-        .orderBy('create_date')
+        .orderBy('create_date', descending: true)
         .where(Filter.and(
             Filter("check", whereIn: listStatusFilter),
             Filter("type", whereIn: listTypeFilter),
@@ -1204,7 +1209,7 @@ class FireStoreDb {
       int lastItem) async {
     final snapshot = await db
         .collection("bill")
-        .orderBy('create_date')
+        .orderBy('create_date', descending: true)
         .where(Filter.and(
             Filter("check", whereIn: listStatusFilter),
             Filter("type", whereIn: listTypeFilter),
@@ -1228,7 +1233,7 @@ class FireStoreDb {
       int endDate) async {
     final snapshot = await db
         .collection("bill")
-        .orderBy('create_date')
+        .orderBy('create_date', descending: true)
         .where(Filter.and(
             Filter("check", whereIn: listStatusFilter),
             Filter("create_date", isGreaterThanOrEqualTo: startDate),
@@ -1253,7 +1258,7 @@ class FireStoreDb {
       int endDate) async {
     final snapshot = await db
         .collection("bill")
-        .orderBy('create_date')
+        .orderBy('create_date', descending: true)
         .where(Filter.and(
             Filter("check", whereIn: listStatusFilter),
             Filter("create_date", isGreaterThanOrEqualTo: startDate),

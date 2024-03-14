@@ -1,11 +1,14 @@
 import 'package:flutter/Material.dart';
+import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/admin/manage_bills/choose_date_dialog.dart';
 import 'package:internal_sakumi/providers/cache/filter_statistic_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class DateFilterClass extends StatelessWidget {
-  const DateFilterClass({super.key, required this.isStartDay, required this.filterController});
+  const DateFilterClass(
+      {super.key, required this.isStartDay, required this.filterController});
   final bool isStartDay;
   final StatisticFilterCubit filterController;
   @override
@@ -15,32 +18,62 @@ class DateFilterClass extends StatelessWidget {
       onTap: () async {
         showDialog(
             context: context,
-            builder: (_) {
-              return Dialog(
-                  child: SizedBox(
-                    height: Resizable.size(context, 250),
-                    width: Resizable.size(context, 250),
-                    child: SfDateRangePicker(
-                      headerHeight: Resizable.size(context, 50),
-                      headerStyle: DateRangePickerHeaderStyle(
-                          textStyle: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: Resizable.font(context, 24),
-                              color: Colors.black)),
-                      showNavigationArrow: true,
-                      onSelectionChanged: (v) async {
-                        if (isStartDay) {
-                          filterController.classStatisticCubit.updateStartDay(v.value);
-                        } else {
-                          filterController.classStatisticCubit.updateEndDay(v.value);
-                        }
-                        filterController.classStatisticCubit.checkLoad(filterController);
-                        Navigator.pop(context);
-                      },
-                      selectionMode: DateRangePickerSelectionMode.single,
-                    ),
-                  ));
-            });
+            builder: (context) => ChooseDateDialog(
+              type: 2,
+              dateChooseCubit: filterController.classStatisticCubit.dateChooseCubit,
+              onSubmit: () async {
+                if (filterController.classStatisticCubit.dateChooseCubit.startDate != null &&
+                    filterController.classStatisticCubit.dateChooseCubit.endDate != null) {
+                  filterController.classStatisticCubit.setDate(filterController.classStatisticCubit.dateChooseCubit.startDate!,
+                      filterController.classStatisticCubit.dateChooseCubit.endDate!);
+                  filterController.classStatisticCubit.checkLoad(filterController);
+                }
+                Navigator.of(context).pop();
+              },
+              onChooseCustom: () {
+                filterController.classStatisticCubit.dateChooseCubit.chooseCustom();
+                showDialog(
+                    context: context,
+                    builder: (_) {
+                      return Dialog(
+                          child: SizedBox(
+                            height: Resizable.size(context, 250),
+                            width: Resizable.size(context, 250),
+                            child: SfDateRangePicker(
+                              cancelText: AppText.textCancel.text,
+                              onCancel: () {
+                                Navigator.pop(context);
+                              },
+                              onSubmit: (v) {
+                                String str = v.toString();
+                                int startIndex = str.indexOf("(");
+                                int endIndex = str.indexOf(")");
+                                String substring =
+                                str.substring(startIndex + 1, endIndex);
+                                List<String> sub = substring.split(",");
+                                String startDate =
+                                sub[0].split("startDate: ")[1];
+                                String endDate = sub[1].split('endDate: ')[1];
+                                if (endDate != "null") {
+                                  filterController.classStatisticCubit.dateChooseCubit
+                                      .setDateTime(startDate, endDate);
+                                }
+                                Navigator.pop(context);
+                              },
+                              showActionButtons: true,
+                              headerHeight: Resizable.size(context, 50),
+                              headerStyle: DateRangePickerHeaderStyle(
+                                  textStyle: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: Resizable.font(context, 24),
+                                      color: Colors.black)),
+                              showNavigationArrow: true,
+                              selectionMode: DateRangePickerSelectionMode.range,
+                            ),
+                          ));
+                    });
+              },
+            ));
       },
       child: IgnorePointer(
         child: TextFormField(
@@ -51,16 +84,14 @@ class DateFilterClass extends StatelessWidget {
             border: InputBorder.none,
             icon: const Icon(Icons.calendar_month_outlined),
             hintText: isStartDay
-                ? filterController.classStatisticCubit.startDay == null
-                ? "dd/MM/yyyy"
+                ? DateFormat('dd/MM/yyyy').format(DateTime(
+                    filterController.classStatisticCubit.startDay!.year,
+                    filterController.classStatisticCubit.startDay!.month,
+                    filterController.classStatisticCubit.startDay!.day))
                 : DateFormat('dd/MM/yyyy').format(DateTime(
-                filterController.classStatisticCubit.startDay!.year,
-                filterController.classStatisticCubit.startDay!.month,
-                filterController.classStatisticCubit.startDay!.day))
-                : filterController.classStatisticCubit.endDay == null
-                ? "dd/MM/yyyy"
-                : DateFormat('dd/MM/yyyy').format(DateTime(filterController.classStatisticCubit.endDay!.year,
-                filterController.classStatisticCubit.endDay!.month, filterController.classStatisticCubit.endDay!.day)),
+                    filterController.classStatisticCubit.endDay!.year,
+                    filterController.classStatisticCubit.endDay!.month,
+                    filterController.classStatisticCubit.endDay!.day)),
             isDense: true,
             fillColor: Colors.white,
             hoverColor: Colors.transparent,

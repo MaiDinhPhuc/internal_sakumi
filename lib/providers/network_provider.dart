@@ -9,10 +9,10 @@ import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/detail_grading_data_model.dart';
 import 'package:internal_sakumi/model/feedback_model.dart';
-import 'package:internal_sakumi/model/home_teacher/class_model2.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
+import 'package:internal_sakumi/model/report_model.dart';
 import 'package:internal_sakumi/model/student_class_log.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
@@ -47,8 +47,10 @@ abstract class NetworkProvider {
 
   Future<UserModel> getUser(String email);
 
-  Future<List<ClassModel2>> getClassByTeacherId(
-      int teacherId, List<ClassModel>? listClasses);
+  Future<List<VoucherModel>> searchVoucher(String text, String type);
+
+  Future<void> updateVoucher(
+      String usedUserCode, String noted, String voucherCode, String date);
 
   Future<List<LessonResultModel>> getLessonsResultsByListClassIds(
       List<int> ids);
@@ -209,6 +211,8 @@ abstract class NetworkProvider {
 
   Future<bool> checkExistVoucher(String voucherCode);
 
+  Future<VoucherModel> getVoucherByVoucherCode(String code);
+
   Future<void> addNewVoucher(VoucherModel model);
 
   Future<List<FeedBackModel>> getListFeedBack(String status, String role);
@@ -302,23 +306,32 @@ abstract class NetworkProvider {
       int startDate,
       int endDate);
   Future<void> addNewBill(BillModel model);
+
   Future<void> updateBill(BillModel model);
+
   Future<List<ClassModel>> getListClassByListId(List<int> ids);
+
   Future<List<BillModel>> getListBillByStdId(int stdId);
+
   Future<List<ClassModel>> getListClassByListIdV2(List<int> ids);
+
   Future<void> addNewFeedBack(FeedBackModel model);
+
   Future<List<BillModel>> getListBillInStatistic(List<int> listTypeFilter,
       List<int> listCourseId, int startDate, int endDate);
-  Future<List<ClassModel>> getListClassInStatistic(
-      List<int> listTypeFilter,
-      List<int> listCourseId,
-      int startDate,
-      int endDate, int type);
+
+  Future<List<ClassModel>> getListClassInStatistic(List<int> listTypeFilter,
+      List<int> listCourseId, int startDate, int endDate, int type);
+
   Future<List<StudentClassModel>> getAllStudentClass();
+
   Future<List<StudentClassLogModel>> getListStudentClassLogInStatistic(
       List<int> listTypeFilter,
       List<int> listCourseId,
       int startDate,
       int endDate);
+
   Future<void> addNewLog(StudentClassLogModel model);
+
+  Future<List<ReportModel>> getReportByTeacherId(int id);
 }
