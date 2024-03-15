@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/class_info/test/test_cubit_v2.dart';
 import 'package:internal_sakumi/features/class_info/test/test_item_v2.dart';
+import 'package:internal_sakumi/features/footer/footer_view.dart';
 import 'package:internal_sakumi/features/teacher/app_bar/class_appbar.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
@@ -26,10 +27,11 @@ class ListTestScreenV2 extends StatelessWidget {
               bloc: cubit,
               builder: (cc, s) {
                 return cubit.classModel == null
-                    ? Transform.scale(
-                        scale: 0.75,
-                        child: const CircularProgressIndicator(),
-                      )
+                    ? Expanded(
+                        child: Center(
+                            child: Transform.scale(
+                                scale: 0.75,
+                                child: const CircularProgressIndicator())))
                     : Expanded(
                         child: SingleChildScrollView(
                         child: Column(
@@ -140,7 +142,8 @@ class ListTestScreenV2 extends StatelessWidget {
                           ],
                         ),
                       ));
-              })
+              }),
+          if (role == 'teacher') FooterView()
         ],
       ),
     );

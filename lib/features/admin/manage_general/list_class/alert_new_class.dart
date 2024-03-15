@@ -148,6 +148,7 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                           context, 100)),
                                                   child: SubmitButton(
                                                       onPressed: () async {
+                                                        DateTime now = DateTime.now();
                                                         if (formKey
                                                             .currentState!
                                                             .validate()) {
@@ -155,8 +156,7 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                             await cubit.addNewClass(
                                                                 c,
                                                                 ClassModel(
-                                                                    classId: cubit
-                                                                        .classCount!,
+                                                                    classId: now.millisecondsSinceEpoch,
                                                                     courseId: cubit
                                                                         .courseId!,
                                                                     description:
@@ -237,7 +237,7 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                                         .classType!,
                                                                     link: linkCon
                                                                         .text,
-                                                                    customLessons: [],
+                                                                    customLessons: classModel.customLessons,
                                                                     informal: cubit
                                                                         .informal));
                                                             if (context

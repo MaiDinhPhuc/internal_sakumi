@@ -4,6 +4,7 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/class_info/lesson/add_custom_lesson_dialog.dart';
 import 'package:internal_sakumi/features/class_info/lesson/list_lesson_cubit_v2.dart';
 import 'package:internal_sakumi/features/class_info/lesson/list_lesson_items_v2.dart';
+import 'package:internal_sakumi/features/footer/footer_view.dart';
 import 'package:internal_sakumi/features/teacher/app_bar/class_appbar.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
@@ -29,10 +30,12 @@ class ListLessonScreenV2 extends StatelessWidget {
               bloc: cubit,
               builder: (c, s) {
                 return cubit.classModel == null
-                    ? Transform.scale(
+                    ? Expanded(
+                        child: Center(
+                            child: Transform.scale(
                         scale: 0.75,
                         child: const CircularProgressIndicator(),
-                      )
+                      )))
                     : Expanded(
                         key: const Key('aa'),
                         child: Column(
@@ -49,9 +52,9 @@ class ListLessonScreenV2 extends StatelessWidget {
                             if (role == "admin")
                               Padding(
                                   padding: EdgeInsets.only(
-                                    bottom:Resizable.padding(context, 10),
+                                      bottom: Resizable.padding(context, 10),
                                       left: Resizable.padding(context, 150),
-                                  right: Resizable.padding(context, 150)),
+                                      right: Resizable.padding(context, 150)),
                                   child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
@@ -59,7 +62,11 @@ class ListLessonScreenV2 extends StatelessWidget {
                                             onPressed: () {
                                               showDialog(
                                                   context: context,
-                                                  builder: (context) => AddCustomLessonDialog(cubit,classModel: cubit.classModel!));
+                                                  builder: (context) =>
+                                                      AddCustomLessonDialog(
+                                                          cubit,
+                                                          classModel: cubit
+                                                              .classModel!));
                                             },
                                             title: AppText.btnAddNewLesson.text)
                                       ])),
@@ -130,6 +137,7 @@ class ListLessonScreenV2 extends StatelessWidget {
                           ],
                         ));
               }),
+          if (role == 'teacher') FooterView()
         ],
       ),
     );

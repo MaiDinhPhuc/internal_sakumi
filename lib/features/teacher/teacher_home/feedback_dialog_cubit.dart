@@ -37,6 +37,11 @@ class FeedBackDialogCubit extends Cubit<int> {
     emit(state + 1);
   }
 
+  clearContent(){
+    content = "";
+    emit(state+1);
+  }
+
   sendFeedBack() async {
     SharedPreferences localData = await SharedPreferences.getInstance();
     var userId = localData.getInt(PrefKeyConfigs.userId);

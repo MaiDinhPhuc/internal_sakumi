@@ -77,7 +77,7 @@ class FeedBackDialog extends StatelessWidget {
                                                     fontWeight: FontWeight.w600,
                                                     fontSize: Resizable.font(context, 15),
                                                     color: Colors.white))),
-                                        child: Image.asset('assets/images/ic_warning.png', height: Resizable.font(context, 20)),
+                                        child: Image.asset('assets/images/ic_anonymous.png', height: Resizable.font(context, 20)),
                                       )
                                     ],
                                   ),
