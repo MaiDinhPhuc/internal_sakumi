@@ -476,11 +476,13 @@ enum AppText {
   txtAddImage,
   txtAddReportImage,
   txtConfirmDeleteReport,
-  txtFilterDate
+  txtFilterDate,
+  txtHintFeedBack
 
 }
 
 Map<AppText, String> texts = {
+  AppText.txtHintFeedBack : "Có gì bất cập, sai sót hoặc cần cải tiến, ss góp ý để khoá học ngày càng tốt hơn nha...",
   AppText.txtFilterDate : "Chọn ngày lọc: ",
   AppText.txtConfirmDeleteReport : "Xác nhận xoá biên bản...",
   AppText.txtAddReportImage : "Ảnh đính kèm",

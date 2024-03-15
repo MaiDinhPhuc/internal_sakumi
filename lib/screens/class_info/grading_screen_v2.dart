@@ -1,6 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/footer/footer_view.dart';
 import 'package:internal_sakumi/features/teacher/app_bar/class_appbar.dart';
 import 'package:internal_sakumi/features/teacher/grading/grading_tab/filter_grading_tab.dart';
 import 'package:internal_sakumi/features/teacher/grading/grading_tab/list_grading_item.dart';
@@ -26,10 +27,10 @@ class GradingScreen extends StatelessWidget {
               bloc: cubit,
               builder: (c, s) {
                 return cubit.classModel == null
-                    ? Transform.scale(
+                    ? Expanded(child: Center(child: Transform.scale(
                   scale: 0.75,
                   child: const CircularProgressIndicator(),
-                )
+                )))
                     :  Expanded(child: SingleChildScrollView(
                   child: Column(
                     children: [
@@ -68,6 +69,7 @@ class GradingScreen extends StatelessWidget {
                   ),
                 ));
               }),
+          FooterView()
         ],
       ),
     );
