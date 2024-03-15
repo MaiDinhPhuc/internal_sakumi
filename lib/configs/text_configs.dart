@@ -338,6 +338,7 @@ enum AppText {
   txtUpdateTeacherDone,
   txtPleaseInputLinkAndTitle,
   txtSuccessfullyUpdateVideo,
+  txtStillSomeErrorVideo,
   txtSuccessfullyUpdateVoucher,
   btnVerify,
   btnReVerify,
@@ -348,6 +349,8 @@ enum AppText {
   txtErrorInvalidFile,
   txtErrorNotFoundLinkGGMeetOnDB,
   txtErrorNotFoundFolderOnDrive,
+  txtErrorNotFoundClassInLimitTime,
+  txtErrorFoundTooLessonsInSamePeriod,
   txtErrorDuplicateLink,
   txtErrorDuplicateVideo,
   txtDuplicateLinkOrVideo,
@@ -681,6 +684,10 @@ Map<AppText, String> texts = {
       'Trùng link Google Meet giữa các lớp trên Database',
   AppText.txtErrorNotFoundFolderOnDrive:
       'Không tìm thấy folder trong drive SCREEN RECORDING',
+  AppText.txtErrorNotFoundClassInLimitTime:
+  'Không tìm thấy lớp học trong thời gian cho phép (17 giờ <=)',
+  AppText.txtErrorFoundTooLessonsInSamePeriod:
+  'Tìm thấy quá nhiều buổi học trong cùng 1 khoảng thời gian',
   AppText.txtErrorDuplicateLink: 'Trùng link meet trong sheet RENAME RECORD',
   AppText.txtErrorDuplicateVideo:
       'Trùng tên file video trong drive MEET RECORDINGS SS',
@@ -691,6 +698,7 @@ Map<AppText, String> texts = {
   AppText.btnReVerify: 'Xác minh lại',
   AppText.btnRenameAndMove: 'Đổi tên & di chuyển',
   AppText.txtSuccessfullyUpdateVideo: 'Đổi tên và di chuyển video thành công',
+  AppText.txtStillSomeErrorVideo: 'Vẫn còn một số link video bị lỗi, vui lòng kiểm tra lại',
   AppText.txtSuccessfullyUpdateVoucher: 'Cập nhật voucher thành công',
   AppText.txtPleaseInputLinkAndTitle: 'Vui lòng nhập đường dẫn và tiêu đề',
   AppText.txtPleaseCheckListTest:

@@ -23,7 +23,7 @@ class DriveModel {
   drive.File file;
   ClassModel? classModel;
   int? error, lessonId;
-  String? name;
+  String? name, folder;
 
   String getErrorName() {
     switch (error) {
@@ -35,11 +35,15 @@ class DriveModel {
         return AppText.txtErrorNotFoundLinkGGMeetOnDB.text;
       case 4:
         return AppText.txtErrorNotFoundFolderOnDrive.text;
+      case 5:
+        return AppText.txtErrorNotFoundClassInLimitTime.text;
+      case 6:
+        return AppText.txtErrorFoundTooLessonsInSamePeriod.text;
       default:
         return '';
     }
   }
 
   DriveModel(this.file,
-      {this.error, this.classModel, this.lessonId, this.name});
+      {this.error, this.classModel, this.lessonId, this.name, this.folder});
 }
