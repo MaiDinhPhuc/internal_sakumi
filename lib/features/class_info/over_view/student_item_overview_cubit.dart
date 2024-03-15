@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/features/calculator/calculator.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
+import 'package:internal_sakumi/model/student_test_model.dart';
 
 import 'class_overview_cubit_v2.dart';
 
@@ -12,9 +16,12 @@ class StudentItemOverViewCubit extends Cubit<int> {
 
   final ClassOverViewCubitV2 cubit;
   StudentModel? studentModel;
+
   final StudentClassModel stdClassModel;
 
   List<StudentLessonModel>? stdLessons;
+
+  List<StudentTestModel>? stdTests;
 
   List<String> listStudentStatusMenu = [
     "Completed",
@@ -37,6 +44,9 @@ class StudentItemOverViewCubit extends Cubit<int> {
       studentModel = std.first;
     }
     stdLessons = cubit.stdLessons!
+        .where((e) => e.studentId == stdClassModel.userId)
+        .toList();
+    stdTests = cubit.stdTests!
         .where((e) => e.studentId == stdClassModel.userId)
         .toList();
     emit(state + 1);
@@ -82,6 +92,49 @@ class StudentItemOverViewCubit extends Cubit<int> {
     }
     return count == 0 ? null : temp / count;
   }
+
+  double getGPATestPoint() {
+    double temp = 0;
+    double count = 0;
+    for (int i = 0; i < stdTests!.length; i++) {
+      if (stdTests![i].score > -1) {
+        temp += stdTests![i].score;
+        count++;
+      }
+    }
+    return count == 0 ? 10 : temp / count;
+  }
+
+  String getEvaluate(){
+    double X = getAttendancePercent() * 10;
+    double Y = getHwPercent() * 10;
+    double Z1 = getGPAPoint() == null ? 10 : getGPAPoint()!;
+    double Z2 = getGPATestPoint();
+    double Z3 = Calculator.convertToPoint(stdClassModel.learningStatus);
+    double Z4 = Calculator.convertToPoint(stdClassModel.activeStatus);
+
+    double Z = (Z1+Z2+Z3+Z4)/4;
+
+    double R = (X+Y+Z)/3;
+
+    while(R - min(X, min(Y,Z)) > 2){
+      R = R - 1;
+    }
+    if(R >= 8.5) return "A";
+
+    if(R >= 7) return "B";
+
+    if(R >= 5.5) return "C";
+
+    if(R >= 4) return "D";
+
+    if(R >= 2) return "E";
+
+    return "F";
+  }
+
+  //1-A, 2-B, 3-C, 4-D, 5-E, 0-A
+
 
   double getPoint(int lessonId) {
     bool isCustom =
