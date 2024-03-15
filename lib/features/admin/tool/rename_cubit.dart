@@ -69,10 +69,6 @@ class RenameCubit extends Cubit<int> {
 
       docs.addAll(fileList.files?.toList() ?? []);
     } while (pageToken != null);
-
-    for (var i in docs) {
-      debugPrint('===========> demo doc ${i.name}');
-    }
   }
 
   String _changeDateForFiles(String date) {
@@ -121,7 +117,9 @@ class RenameCubit extends Cubit<int> {
     for (var i in drives) {
       int count = 0;
       for (var j in drives) {
-        if (i.file.name == j.file.name) {
+        String temp1 = _split(i.file.name.toString());
+        String temp2 = _split(j.file.name.toString());
+        if (temp1 == temp2) {
           count++;
         }
       }
@@ -144,6 +142,20 @@ class RenameCubit extends Cubit<int> {
           debugPrint(
               '==========> class ${i.link} -- ${i.classCode} -- ${i.classId} -- ${drive.file.name}');
           drives[drives.indexOf(drive)].classModel = i;
+          drives[drives.indexOf(drive)].folder = i.classCode;
+
+          if (i.classCode.contains('NS1')) {
+            String temp0 = '';
+            try {
+              temp0 = (i.classCode.split('-').first.trim());
+            } catch (err) {
+              temp0 = i.classCode.trim();
+              debugPrint('=========> error $err');
+            }
+            String temp1 = temp0.substring(0, 4);
+            String temp2 = temp0.substring(4, temp0.length);
+            drives[drives.indexOf(drive)].folder = '$temp1-$temp2';
+          }
           classIds.add(i.classId);
         }
       }
@@ -168,48 +180,97 @@ class RenameCubit extends Cubit<int> {
         .getLessonsResultsByListClassIds(classIds);
 
     debugPrint(
-        '==========> class ids ${lessonResults.length} -- ${drives.length}');
+        '==========> lesson ids ${lessonResults.length} -- ${drives.length}');
+
     for (var drive in drives) {
-      for (var i in lessonResults) {
-        DateTime last = drive.file.createdTime!;
-        DateTime first =
-            DateFormat('dd/MM/yyyy HH:mm:ss').parse(i.date.toString());
-        Duration duration = last.difference(first);
-        if (drive.classModel != null) {
-          if (duration.inHours <= 12 &&
-              i.classId == drive.classModel!.classId) {
-            folders.clear();
-            debugPrint(
-                '===========> ${i.date} -- ${i.lessonId} -- ${i.classId} -- ${drive.file.name}');
-            await _queryDrive(
-                "mimeType='application/vnd.google-apps.folder' and name='${drive.classModel!.classCode}'",
-                folders);
-            if (folders == null || folders.isEmpty) {
-              drive.error = 4;
-            } else {
-              lessonIds.add(i.lessonId);
-              drive.lessonId = i.lessonId;
-              String dateTime = _changeDateForFiles('${i.date}');
-              String name = '$dateTime-${drive.classModel!.classCode}';
-              String fileId = '${drive.file.id}';
-              String folderId = '${folders.first.id}';
-              listSubmit.add(SubmitModel(name, fileId, folderId));
+      if (drive.classModel != null) {
+        int count = 0;
+        int lessonId = 0;
+        String? date;
+
+        for (var i in lessonResults) {
+          if (i.classId == drive.classModel!.classId) {
+            DateTime last = drive.file.createdTime!;
+            DateTime first =
+                DateFormat('dd/MM/yyyy HH:mm:ss').parse(i.date.toString());
+            Duration duration = last.difference(first);
+            if (duration.inHours <= 17 && duration.inHours >= 0) {
+              lessonId = i.lessonId;
+              date = i.date;
+              count++;
             }
-            break;
           }
+        }
+
+        if (count == 1) {
+          folders.clear();
+          await _queryDrive(
+              "mimeType='application/vnd.google-apps.folder' and name='${drive.folder}'",
+              folders);
+          if (folders == null || folders.isEmpty) {
+            drive.error = 4;
+          } else {
+            lessonIds.add(lessonId);
+            drive.lessonId = lessonId;
+            String dateTime = _changeDateForFiles('$date');
+            String name = '$dateTime-${drive.classModel!.classCode}';
+            String fileId = '${drive.file.id}';
+            String folderId = '${folders.first.id}';
+            listSubmit.add(SubmitModel(name, fileId, folderId));
+          }
+        }
+
+        if (count == 0) {
+          drive.error = 5;
+        }
+
+        if (count > 1) {
+          drive.error = 6;
         }
       }
     }
 
     lessons = await FireBaseProvider.instance.getLessonsByLessonId(lessonIds);
-    for (var lesson in lessons) {
-      listSubmit[lessons.indexOf(lesson)].name += '-${lesson.title}';
-      debugPrint(
-          '=======> list submit ${listSubmit[lessons.indexOf(lesson)].name}');
-      for (var drive in drives) {
-        if (drive.lessonId == lesson.lessonId) {
-          drive.name =
-              listSubmit[lessons.indexOf(lesson)].name += '-${lesson.title}';
+
+    debugPrint('=======> so sanh ${lessons.length} -- ${listSubmit.length}');
+    debugPrint('=======> lesson ida $lessonIds');
+
+    int ind = -1;
+
+    for (var drive in drives) {
+      for (var id in lessonIds) {
+        List<LessonModel> list =
+            lessons.fold([], (pre, e) => [...pre, if (e.lessonId == id) e]);
+        if (list.isEmpty) {
+          if (drive.error == null &&
+              drive.classModel != null &&
+              drive.classModel!.customLessons.isNotEmpty) {
+            debugPrint('==========> class model ${drive.classModel!.classId}');
+            for (var i in drive.classModel!.customLessons) {
+              for (var id in lessonIds) {
+                debugPrint(
+                    '=========> custom lesson ${i['custom_lesson_id']} -- ${id}');
+                if (id == i['custom_lesson_id']) {
+                  ind++;
+                  listSubmit[ind].name += '-${i['title']}';
+                  drive.name = listSubmit[ind].name;
+                  debugPrint('==========> ind 1 $ind -- ${drive.name}');
+                  break;
+                }
+              }
+            }
+          }
+        } else {
+          for (var lesson in list) {
+            if (drive.lessonId == lesson.lessonId && ind < listSubmit.length) {
+              ind++;
+              listSubmit[ind].name += '-${lesson.title}';
+              drive.name = listSubmit[ind].name;
+              debugPrint(
+                  '========> oooooo =====> $ind ${drive.lessonId} -- ${listSubmit[ind].name}');
+              break;
+            }
+          }
         }
       }
     }
@@ -233,10 +294,19 @@ class RenameCubit extends Cubit<int> {
     if (context.mounted) {
       Navigator.pop(context);
       listSubmit.clear();
-      allDriveFiles.clear();
-      drives.clear();
+      // allDriveFiles.clear();
+      for (var drive in drives) {
+        if (drive.error == null) {
+          drives.remove(drive);
+        }
+      }
+      // drives.clear();
       buildUI();
-      notificationDialog(context, AppText.txtSuccessfullyUpdateVideo.text);
+      notificationDialog(
+          context,
+          drives.length == allDriveFiles.length
+              ? AppText.txtSuccessfullyUpdateVideo.text
+              : AppText.txtStillSomeErrorVideo.text);
     }
   }
 
@@ -245,16 +315,18 @@ class RenameCubit extends Cubit<int> {
     await _getAllFilesOnDrive();
     await _getFoldersName();
     await _getTitleLessons();
+
     if (context.mounted) {
       Navigator.pop(context);
     }
     buildUI();
   }
 
-  reload(BuildContext context)async{
+  reload(BuildContext context) async {
     allDriveFiles.clear();
     drives.clear();
     listSubmit.clear();
+
     await verify(context);
   }
 

@@ -21,13 +21,13 @@ class ToolView extends StatefulWidget {
 }
 
 class ToolViewState extends State<ToolView> {
-  List<drive.File> documents = [];
-  List<drive.File> folders = [];
-
-  TextEditingController controller = TextEditingController();
-  String editString = '';
-  List<RenameModel> listRename = [];
-  List<SubmitModel> listSubmit = [];
+  // List<drive.File> documents = [];
+  // List<drive.File> folders = [];
+  //
+  // TextEditingController controller = TextEditingController();
+  // String editString = '';
+  // List<RenameModel> listRename = [];
+  // List<SubmitModel> listSubmit = [];
   RenameCubit cubit = RenameCubit();
 
   // @override
@@ -42,266 +42,266 @@ class ToolViewState extends State<ToolView> {
   //   // debugPrint('=============> current ${_currentUser?.email}');
   // }
 
-  List<RenameModel> splitString(String text) {
-    List<String> list = text.split('\n');
-    List<String> listTemp = list
-        .map((string) =>
-            string.replaceAllMapped(RegExp(r'^\s+|\s+$'), (match) => "*"))
-        .toList();
-    List<String> listString = [];
-    for (var i in listTemp) {
-      if (i != '*') {
-        listString.add(i);
-      }
-    }
-
-    for (var e in listString) {
-      List<String> splitString = e.split('|');
-      String link = splitString.first.trim().split('/').last;
-      String name = splitString.last.trim();
-      List<String> nameSplit = [];
-      String folder = '';
-      try {
-        nameSplit = name.trim().split('-');
-        folder = _getFolderName(nameSplit[1].toUpperCase().trim(),
-            nameSplit[2].toUpperCase().trim());
-      } catch (err) {
-        debugPrint('=========> error $err');
-      }
-
-      listRename.add(RenameModel(link, name, folder));
-    }
-
-    return listRename;
-  }
-
-  String _getFolderName(String textSource, String term) {
-    String targetFolder = '';
-    String text = textSource.replaceAll(' ', '');
-    if (textSource.contains('NS')) {
-      switch (text.substring(2, 3)) {
-        case '1':
-          {
-            targetFolder =
-                '${text.substring(0, 4)}-${text.substring(4, text.length)}';
-            break;
-          }
-        case 'R':
-          {
-            if (text.substring(3, 4) == 'N') {
-              targetFolder = text;
-              break;
-            } else {
-              targetFolder = '$text-$term';
-              break;
-            }
-          }
-        case 'K':
-          {
-            targetFolder = text;
-            break;
-          }
-        default:
-          {
-            targetFolder = '$text-$term';
-            break;
-          }
-      }
-    } else if (textSource.contains('LT')) {
-      targetFolder =
-          '${text.substring(0, 2)} ${text.substring(2, text.length)} - $term';
-    } else {}
-    debugPrint('============> target folder $targetFolder');
-    return targetFolder;
-  }
-
-  _queryDrive(String query, List<drive.File> docs) async {
-    final client = http.Client();
-    var header = await cubit.currentUser!.authHeaders;
-    var authClient = AuthClient(client, header);
-    var api = drive.DriveApi(authClient);
-
-    String? pageToken;
-
-    debugPrint('======> googleDriver4');
-    do {
-      debugPrint('======> googleDriver 000 ${docs.length}');
-      var fileList = await api.files.list(
-          q: query,
-          pageSize: 1000,
-          pageToken: pageToken,
-          $fields:
-              "nextPageToken, files(id, name, mimeType, thumbnailLink, parents)");
-      pageToken = fileList.nextPageToken;
-
-      docs.addAll(fileList.files?.toList() ?? []);
-    } while (pageToken != null);
-
-    for (var i in docs) {
-      debugPrint('===========> demo doc ${i.name}');
-    }
-  }
-
-  Future<void> _reCheckInvalid() async {
-    Navigator.pop(context);
-
-    for (var i in listRename) {
-      int count = 0;
-      for (var j in listRename) {
-        if (i.link == j.link) {
-          count++;
-        }
-      }
-      if (count > 1) {
-        i.invalid = 4;
-      }
-    }
-
-    for (var r in listRename) {
-      int count = 0;
-      String fileName = r.name;
-      String fileId = '';
-
-      for (var f in documents) {
-        if (f.name!.contains(r.link) && r.invalid == null) {
-          count++;
-          fileId = f.id.toString();
-        }
-      }
-      if (count == 0) {
-        r.invalid = 1;
-      }
-      if (count > 1) {
-        r.invalid = 3;
-      }
-      if (r.invalid == null) {
-        folders.clear();
-        String nameOfFolder = r.folder.trim();
-        await _queryDrive(
-            "mimeType='application/vnd.google-apps.folder' and name='$nameOfFolder'",
-            folders);
-        debugPrint('=======> folder: $nameOfFolder');
-        if (folders == null || folders.isEmpty) {
-          r.invalid = 2;
-        } else {
-          for (var i in folders) {
-            debugPrint('=======> folder ${i.name}');
-          }
-          String folderId = '${folders.first.id}';
-          listSubmit.add(SubmitModel(fileName, fileId, folderId));
-        }
-      }
-      cubit.buildUI();
-    }
-  }
-
-  Future<void> _checkInvalid() async {
-    Navigator.pop(context);
-    waitingDialog(context);
-    debugPrint('============> controller.text ${controller.text}');
-
-    if (controller.text == null || controller.text.isEmpty) {
-      Navigator.pop(context);
-      notificationDialog(context, AppText.txtPleaseInput.text);
-    } else {
-      List<RenameModel> listRename = splitString(controller.text);
-
-      documents!.clear();
-      await _queryDrive(
-          "mimeType='video/mp4' and '${AppConfigs.meetRecordingsId}' in parents",
-          documents);
-
-      debugPrint('======> googleDriver ${documents.length}');
-
-      for (var i in listRename) {
-        int count = 0;
-        for (var j in listRename) {
-          if (i.link == j.link) {
-            count++;
-          }
-        }
-        if (count > 1) {
-          i.invalid = 4;
-        }
-      }
-
-      for (var r in listRename) {
-        int count = 0;
-        String fileName = r.name;
-        String fileId = '';
-        for (var f in documents) {
-          if (f.name!.contains(r.link) && r.invalid == null) {
-            count++;
-            fileId = f.id.toString();
-          }
-        }
-        if (count == 0 && r.invalid == null) {
-          r.invalid = 1;
-        }
-        if (count > 1) {
-          r.invalid = 3;
-        }
-        if (r.invalid == null) {
-          folders.clear();
-          String nameOfFolder = r.folder.trim();
-          await _queryDrive(
-              "mimeType='application/vnd.google-apps.folder' and name='$nameOfFolder'",
-              folders);
-          debugPrint('=======> folder: $nameOfFolder');
-          if (folders == null || folders.isEmpty) {
-            r.invalid = 2;
-          } else {
-            for (var i in folders) {
-              debugPrint('=======> folder ${i.name}');
-            }
-            String folderId = '${folders.first.id}';
-            listSubmit.add(SubmitModel(fileName, fileId, folderId));
-          }
-        }
-        // setState(() {});
-        cubit.buildUI();
-      }
-
-      if (context.mounted) {
-        Navigator.pop(context);
-      }
-    }
-  }
-
-  _delete() {
-    controller.text = '';
-    debugPrint('===========> delete ListSubmit before ${listSubmit.length}');
-    listRename.removeRange(0, listRename.length);
-    listSubmit.removeRange(0, listSubmit.length);
-    debugPrint('===========> delete ListSubmit after ${listSubmit.length}');
-    // setState(() {});
-    cubit.buildUI();
-  }
-
-  Future<void> _submit() async {
-    waitingDialog(context);
-
-    for (var i in listSubmit) {
-      debugPrint(
-          '===========> file file file ${i.name} == ${i.fileId} == ${i.folderId}');
-      var fileMetadata = drive.File();
-      fileMetadata.name = i.name;
-      fileMetadata.mimeType = 'application/vnd.google-apps.folder';
-      await drive.DriveApi(
-              AuthClient(http.Client(), await cubit.currentUser!.authHeaders))
-          .files
-          .update(fileMetadata, i.fileId,
-              removeParents: AppConfigs.meetRecordingsId,
-              addParents: i.folderId);
-    }
-    if (context.mounted) {
-      Navigator.pop(context);
-      listSubmit.removeRange(0, listSubmit.length);
-      // setState(() {});
-      cubit.buildUI();
-      notificationDialog(context, AppText.txtSuccessfullyUpdateVideo.text);
-    }
-  }
+  // List<RenameModel> splitString(String text) {
+  //   List<String> list = text.split('\n');
+  //   List<String> listTemp = list
+  //       .map((string) =>
+  //           string.replaceAllMapped(RegExp(r'^\s+|\s+$'), (match) => "*"))
+  //       .toList();
+  //   List<String> listString = [];
+  //   for (var i in listTemp) {
+  //     if (i != '*') {
+  //       listString.add(i);
+  //     }
+  //   }
+  //
+  //   for (var e in listString) {
+  //     List<String> splitString = e.split('|');
+  //     String link = splitString.first.trim().split('/').last;
+  //     String name = splitString.last.trim();
+  //     List<String> nameSplit = [];
+  //     String folder = '';
+  //     try {
+  //       nameSplit = name.trim().split('-');
+  //       folder = _getFolderName(nameSplit[1].toUpperCase().trim(),
+  //           nameSplit[2].toUpperCase().trim());
+  //     } catch (err) {
+  //       debugPrint('=========> error $err');
+  //     }
+  //
+  //     listRename.add(RenameModel(link, name, folder));
+  //   }
+  //
+  //   return listRename;
+  // }
+  //
+  // String _getFolderName(String textSource, String term) {
+  //   String targetFolder = '';
+  //   String text = textSource.replaceAll(' ', '');
+  //   if (textSource.contains('NS')) {
+  //     switch (text.substring(2, 3)) {
+  //       case '1':
+  //         {
+  //           targetFolder =
+  //               '${text.substring(0, 4)}-${text.substring(4, text.length)}';
+  //           break;
+  //         }
+  //       case 'R':
+  //         {
+  //           if (text.substring(3, 4) == 'N') {
+  //             targetFolder = text;
+  //             break;
+  //           } else {
+  //             targetFolder = '$text-$term';
+  //             break;
+  //           }
+  //         }
+  //       case 'K':
+  //         {
+  //           targetFolder = text;
+  //           break;
+  //         }
+  //       default:
+  //         {
+  //           targetFolder = '$text-$term';
+  //           break;
+  //         }
+  //     }
+  //   } else if (textSource.contains('LT')) {
+  //     targetFolder =
+  //         '${text.substring(0, 2)} ${text.substring(2, text.length)} - $term';
+  //   } else {}
+  //   debugPrint('============> target folder $targetFolder');
+  //   return targetFolder;
+  // }
+  //
+  // _queryDrive(String query, List<drive.File> docs) async {
+  //   final client = http.Client();
+  //   var header = await cubit.currentUser!.authHeaders;
+  //   var authClient = AuthClient(client, header);
+  //   var api = drive.DriveApi(authClient);
+  //
+  //   String? pageToken;
+  //
+  //   debugPrint('======> googleDriver4');
+  //   do {
+  //     debugPrint('======> googleDriver 000 ${docs.length}');
+  //     var fileList = await api.files.list(
+  //         q: query,
+  //         pageSize: 1000,
+  //         pageToken: pageToken,
+  //         $fields:
+  //             "nextPageToken, files(id, name, mimeType, thumbnailLink, parents)");
+  //     pageToken = fileList.nextPageToken;
+  //
+  //     docs.addAll(fileList.files?.toList() ?? []);
+  //   } while (pageToken != null);
+  //
+  //   for (var i in docs) {
+  //     debugPrint('===========> demo doc ${i.name}');
+  //   }
+  // }
+  //
+  // Future<void> _reCheckInvalid() async {
+  //   Navigator.pop(context);
+  //
+  //   for (var i in listRename) {
+  //     int count = 0;
+  //     for (var j in listRename) {
+  //       if (i.link == j.link) {
+  //         count++;
+  //       }
+  //     }
+  //     if (count > 1) {
+  //       i.invalid = 4;
+  //     }
+  //   }
+  //
+  //   for (var r in listRename) {
+  //     int count = 0;
+  //     String fileName = r.name;
+  //     String fileId = '';
+  //
+  //     for (var f in documents) {
+  //       if (f.name!.contains(r.link) && r.invalid == null) {
+  //         count++;
+  //         fileId = f.id.toString();
+  //       }
+  //     }
+  //     if (count == 0) {
+  //       r.invalid = 1;
+  //     }
+  //     if (count > 1) {
+  //       r.invalid = 3;
+  //     }
+  //     if (r.invalid == null) {
+  //       folders.clear();
+  //       String nameOfFolder = r.folder.trim();
+  //       await _queryDrive(
+  //           "mimeType='application/vnd.google-apps.folder' and name='$nameOfFolder'",
+  //           folders);
+  //       debugPrint('=======> folder: $nameOfFolder');
+  //       if (folders == null || folders.isEmpty) {
+  //         r.invalid = 2;
+  //       } else {
+  //         for (var i in folders) {
+  //           debugPrint('=======> folder ${i.name}');
+  //         }
+  //         String folderId = '${folders.first.id}';
+  //         listSubmit.add(SubmitModel(fileName, fileId, folderId));
+  //       }
+  //     }
+  //     cubit.buildUI();
+  //   }
+  // }
+  //
+  // Future<void> _checkInvalid() async {
+  //   Navigator.pop(context);
+  //   waitingDialog(context);
+  //   debugPrint('============> controller.text ${controller.text}');
+  //
+  //   if (controller.text == null || controller.text.isEmpty) {
+  //     Navigator.pop(context);
+  //     notificationDialog(context, AppText.txtPleaseInput.text);
+  //   } else {
+  //     List<RenameModel> listRename = splitString(controller.text);
+  //
+  //     documents!.clear();
+  //     await _queryDrive(
+  //         "mimeType='video/mp4' and '${AppConfigs.meetRecordingsId}' in parents",
+  //         documents);
+  //
+  //     debugPrint('======> googleDriver ${documents.length}');
+  //
+  //     for (var i in listRename) {
+  //       int count = 0;
+  //       for (var j in listRename) {
+  //         if (i.link == j.link) {
+  //           count++;
+  //         }
+  //       }
+  //       if (count > 1) {
+  //         i.invalid = 4;
+  //       }
+  //     }
+  //
+  //     for (var r in listRename) {
+  //       int count = 0;
+  //       String fileName = r.name;
+  //       String fileId = '';
+  //       for (var f in documents) {
+  //         if (f.name!.contains(r.link) && r.invalid == null) {
+  //           count++;
+  //           fileId = f.id.toString();
+  //         }
+  //       }
+  //       if (count == 0 && r.invalid == null) {
+  //         r.invalid = 1;
+  //       }
+  //       if (count > 1) {
+  //         r.invalid = 3;
+  //       }
+  //       if (r.invalid == null) {
+  //         folders.clear();
+  //         String nameOfFolder = r.folder.trim();
+  //         await _queryDrive(
+  //             "mimeType='application/vnd.google-apps.folder' and name='$nameOfFolder'",
+  //             folders);
+  //         debugPrint('=======> folder: $nameOfFolder');
+  //         if (folders == null || folders.isEmpty) {
+  //           r.invalid = 2;
+  //         } else {
+  //           for (var i in folders) {
+  //             debugPrint('=======> folder ${i.name}');
+  //           }
+  //           String folderId = '${folders.first.id}';
+  //           listSubmit.add(SubmitModel(fileName, fileId, folderId));
+  //         }
+  //       }
+  //       // setState(() {});
+  //       cubit.buildUI();
+  //     }
+  //
+  //     if (context.mounted) {
+  //       Navigator.pop(context);
+  //     }
+  //   }
+  // }
+  //
+  // _delete() {
+  //   controller.text = '';
+  //   debugPrint('===========> delete ListSubmit before ${listSubmit.length}');
+  //   listRename.removeRange(0, listRename.length);
+  //   listSubmit.removeRange(0, listSubmit.length);
+  //   debugPrint('===========> delete ListSubmit after ${listSubmit.length}');
+  //   // setState(() {});
+  //   cubit.buildUI();
+  // }
+  //
+  // Future<void> _submit() async {
+  //   waitingDialog(context);
+  //
+  //   for (var i in listSubmit) {
+  //     debugPrint(
+  //         '===========> file file file ${i.name} == ${i.fileId} == ${i.folderId}');
+  //     var fileMetadata = drive.File();
+  //     fileMetadata.name = i.name;
+  //     fileMetadata.mimeType = 'application/vnd.google-apps.folder';
+  //     await drive.DriveApi(
+  //             AuthClient(http.Client(), await cubit.currentUser!.authHeaders))
+  //         .files
+  //         .update(fileMetadata, i.fileId,
+  //             removeParents: AppConfigs.meetRecordingsId,
+  //             addParents: i.folderId);
+  //   }
+  //   if (context.mounted) {
+  //     Navigator.pop(context);
+  //     listSubmit.removeRange(0, listSubmit.length);
+  //     // setState(() {});
+  //     cubit.buildUI();
+  //     notificationDialog(context, AppText.txtSuccessfullyUpdateVideo.text);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -324,7 +324,7 @@ class ToolViewState extends State<ToolView> {
                           decoration: BoxDecoration(
                               color: const Color(0xfff5f5f5),
                               borderRadius: BorderRadius.circular(
-                                  Resizable.padding(context, 20))),
+                                  Resizable.padding(context, 10))),
                           padding: EdgeInsets.only(
                               top: Resizable.padding(context, 20),
                               bottom: Resizable.padding(context, 20),
@@ -361,7 +361,9 @@ class ToolViewState extends State<ToolView> {
                                                       cubit.verify(context))
                                               : IntrinsicWidth(
                                                   child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .stretch,
                                                     children: [
                                                       SubmitButton(
                                                           isActive: cubit
@@ -372,7 +374,10 @@ class ToolViewState extends State<ToolView> {
                                                               .text,
                                                           onPressed: () => cubit
                                                               .submit(context)),
-                                                      SizedBox(height: Resizable.padding(context, 10)),
+                                                      SizedBox(
+                                                          height:
+                                                              Resizable.padding(
+                                                                  context, 10)),
                                                       SubmitButton(
                                                           title: AppText
                                                               .btnReVerify.text,
@@ -399,12 +404,14 @@ class ToolViewState extends State<ToolView> {
                                                   context, 20)),
                                           child: SingleChildScrollView(
                                             child: Column(children: [
+                                              ...cubit.listSubmit
+                                                  .map((e) => Text(e.name)),
                                               ...cubit.drives.map((e) => Row(
                                                     children: [
                                                       Expanded(
                                                           flex: 3,
                                                           child: Text(
-                                                              '${e.file.name}',
+                                                              '${e.file.name} ${e.error ?? 0}',
                                                               style: TextStyle(
                                                                   color: e.error !=
                                                                           null
@@ -417,8 +424,9 @@ class ToolViewState extends State<ToolView> {
                                                           child: Text(
                                                               e.classModel == null
                                                                   ? ''
-                                                                  : e.classModel!
-                                                                      .classCode,
+                                                                  : e.folder ??
+                                                                      e.classModel!
+                                                                          .classCode,
                                                               style: TextStyle(
                                                                   color: e.error !=
                                                                           null
@@ -429,9 +437,8 @@ class ToolViewState extends State<ToolView> {
                                                       Expanded(
                                                           flex: 4,
                                                           child: Text(
-                                                              e.error == null
-                                                                  ? (e.name ??
-                                                                      '')
+                                                              e.name != null
+                                                                  ? (e.name!)
                                                                   : e
                                                                       .getErrorName(),
                                                               style: TextStyle(
