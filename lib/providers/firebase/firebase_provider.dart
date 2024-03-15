@@ -858,6 +858,7 @@ class FireBaseProvider extends NetworkProvider {
     await FireStoreDb.instance.updateStudentToClass(model);
     return false;
   }
+
   @override
   Future<void> addNewLog(StudentClassLogModel model) async {
     await FireStoreDb.instance.addNewLog(model);
@@ -1740,11 +1741,13 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<FeedBackModel>> getListFeedBack(String status, String role) async {
-    final listFeedBack = (await FireStoreDb.instance.getListFeedBack(status, role))
-        .docs
-        .map((e) => FeedBackModel.fromSnapshot(e))
-        .toList();
+  Future<List<FeedBackModel>> getListFeedBack(
+      String status, String role) async {
+    final listFeedBack =
+        (await FireStoreDb.instance.getListFeedBack(status, role))
+            .docs
+            .map((e) => FeedBackModel.fromSnapshot(e))
+            .toList();
     return listFeedBack;
   }
 
@@ -1796,6 +1799,16 @@ class FireBaseProvider extends NetworkProvider {
       String voucherCode, String date) async {
     await FireStoreDb.instance
         .updateVoucher(usedUserCode, noted, voucherCode, date);
+  }
+
+  @override
+  Future<List<ClassModel>> getAllClassInProgress() async {
+    final result = (await FireStoreDb.instance.getAllClassInProgress())
+        .docs
+        .map((e) => ClassModel.fromSnapshot(e))
+        .toList();
+    debugPrint('========> list class ${result.length}');
+    return result;
   }
 
   @override
@@ -1886,8 +1899,8 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<List<BillModel>> getListBillWithFilter(List<String> listStatusFilter,
       List<String> listTypeFilter, List<String> listCreatorFilter) async {
-    final listBill = (await FireStoreDb.instance
-            .getListBillWithFilter(listStatusFilter, listTypeFilter,listCreatorFilter))
+    final listBill = (await FireStoreDb.instance.getListBillWithFilter(
+            listStatusFilter, listTypeFilter, listCreatorFilter))
         .docs
         .map((e) => BillModel.fromSnapshot(e))
         .toList();
@@ -1901,7 +1914,7 @@ class FireBaseProvider extends NetworkProvider {
       List<String> listCreatorFilter,
       int lastItem) async {
     final listBill = (await FireStoreDb.instance.getMoreListBillWithFilter(
-            listStatusFilter, listTypeFilter,listCreatorFilter, lastItem))
+            listStatusFilter, listTypeFilter, listCreatorFilter, lastItem))
         .docs
         .map((e) => BillModel.fromSnapshot(e))
         .toList();
@@ -1920,8 +1933,8 @@ class FireBaseProvider extends NetworkProvider {
     if(lastItem == 9999999999999) return [];
 
     final listBill = (await FireStoreDb.instance
-            .getMoreListBillWithFilterAndDate(
-                listStatusFilter, listTypeFilter,listCreatorFilter, lastItem, startDate, endDate))
+            .getMoreListBillWithFilterAndDate(listStatusFilter, listTypeFilter,
+                listCreatorFilter, lastItem, startDate, endDate))
         .docs
         .map((e) => BillModel.fromSnapshot(e))
         .toList();
@@ -1936,7 +1949,11 @@ class FireBaseProvider extends NetworkProvider {
       int startDate,
       int endDate) async {
     final listBill = (await FireStoreDb.instance.getListBillWithFilterAndDate(
-            listStatusFilter, listTypeFilter,listCreatorFilter, startDate, endDate))
+            listStatusFilter,
+            listTypeFilter,
+            listCreatorFilter,
+            startDate,
+            endDate))
         .docs
         .map((e) => BillModel.fromSnapshot(e))
         .toList();
@@ -1944,13 +1961,10 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<BillModel>> getListBillInStatistic(
-      List<int> listTypeFilter,
-      List<int> listCourseId,
-      int startDate,
-      int endDate) async {
+  Future<List<BillModel>> getListBillInStatistic(List<int> listTypeFilter,
+      List<int> listCourseId, int startDate, int endDate) async {
     final listBill = (await FireStoreDb.instance.getListBillStatistic(
-         listTypeFilter,listCourseId, startDate, endDate))
+            listTypeFilter, listCourseId, startDate, endDate))
         .docs
         .map((e) => BillModel.fromSnapshot(e))
         .toList();
@@ -1963,8 +1977,9 @@ class FireBaseProvider extends NetworkProvider {
       List<int> listCourseId,
       int startDate,
       int endDate) async {
-    final listBill = (await FireStoreDb.instance.getListStudentClassLogStatistic(
-        listTypeFilter,listCourseId, startDate, endDate))
+    final listBill = (await FireStoreDb.instance
+            .getListStudentClassLogStatistic(
+                listTypeFilter, listCourseId, startDate, endDate))
         .docs
         .map((e) => StudentClassLogModel.fromSnapshot(e))
         .toList();
@@ -1972,21 +1987,18 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<ClassModel>> getListClassInStatistic(
-      List<int> listTypeFilter,
-      List<int> listCourseId,
-      int startDate,
-      int endDate, int type) async {
-    if(type == 0){
+  Future<List<ClassModel>> getListClassInStatistic(List<int> listTypeFilter,
+      List<int> listCourseId, int startDate, int endDate, int type) async {
+    if (type == 0) {
       final listClass = (await FireStoreDb.instance.getListClassStatistic0(
-          listTypeFilter,listCourseId, startDate, endDate))
+              listTypeFilter, listCourseId, startDate, endDate))
           .docs
           .map((e) => ClassModel.fromSnapshot(e))
           .toList();
       return listClass;
     }
     final listClass = (await FireStoreDb.instance.getListClassStatistic1(
-        listTypeFilter,listCourseId, startDate, endDate))
+            listTypeFilter, listCourseId, startDate, endDate))
         .docs
         .map((e) => ClassModel.fromSnapshot(e))
         .toList();

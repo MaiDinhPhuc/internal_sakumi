@@ -288,10 +288,14 @@ class FireStoreDb {
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentClass() async {
-    final snapshot = await db
-        .collection("student_class")
-        .where("class_status", whereNotIn: ['Remove','Retained','Dropped','Cancel','Deposit'])
-        .get();
+    final snapshot = await db.collection("student_class").where("class_status",
+        whereNotIn: [
+          'Remove',
+          'Retained',
+          'Dropped',
+          'Cancel',
+          'Deposit'
+        ]).get();
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentClass ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
@@ -1298,11 +1302,11 @@ class FireStoreDb {
         .collection("student_class_log")
         .orderBy('id')
         .where(Filter.and(
-      Filter("id", isGreaterThanOrEqualTo: startDate),
-      Filter("id", isLessThanOrEqualTo: endDate),
-      Filter("class_type", whereIn: listTypeFilter),
-      Filter("course_id", whereIn: listCourseId),
-    ))
+          Filter("id", isGreaterThanOrEqualTo: startDate),
+          Filter("id", isLessThanOrEqualTo: endDate),
+          Filter("class_type", whereIn: listTypeFilter),
+          Filter("course_id", whereIn: listCourseId),
+        ))
         .get();
 
     debugPrint(
@@ -1320,10 +1324,9 @@ class FireStoreDb {
         .collection("class")
         .orderBy('start_time')
         .where(Filter.and(
-      Filter("start_time", isGreaterThanOrEqualTo: startDate),
-      Filter("start_time", isLessThanOrEqualTo: endDate),
-      Filter("class_status", whereIn: ['Preparing','InProgress'])
-    ))
+            Filter("start_time", isGreaterThanOrEqualTo: startDate),
+            Filter("start_time", isLessThanOrEqualTo: endDate),
+            Filter("class_status", whereIn: ['Preparing', 'InProgress'])))
         .get();
 
     return snapshot;
@@ -1338,10 +1341,9 @@ class FireStoreDb {
         .collection("class")
         .orderBy('end_time')
         .where(Filter.and(
-        Filter("end_time", isGreaterThanOrEqualTo: startDate),
-        Filter("end_time", isLessThanOrEqualTo: endDate),
-        Filter("class_status", whereIn: ['Completed','Cancel'])
-    ))
+            Filter("end_time", isGreaterThanOrEqualTo: startDate),
+            Filter("end_time", isLessThanOrEqualTo: endDate),
+            Filter("class_status", whereIn: ['Completed', 'Cancel'])))
         .get();
 
     return snapshot;
@@ -1537,7 +1539,7 @@ class FireStoreDb {
         .where(Filter.and(
           Filter("start_time", isGreaterThanOrEqualTo: startDate),
           Filter("start_time", isLessThanOrEqualTo: endDate),
-           Filter("class_status", whereIn: ['Preparing','InProgress']),
+          Filter("class_status", whereIn: ['Preparing', 'InProgress']),
         ))
         .count()
         .get();
@@ -1683,10 +1685,7 @@ class FireStoreDb {
   }
 
   Future<void> addNewLog(StudentClassLogModel model) async {
-    await db
-        .collection("student_class_log")
-        .doc("log_${model.id}")
-        .set({
+    await db.collection("student_class_log").doc("log_${model.id}").set({
       'id': model.id,
       'class_id': model.classId,
       'course_id': model.courseId,
@@ -1913,5 +1912,16 @@ class FireStoreDb {
       'used_user_code': usedUserCode,
       'noted': noted,
     });
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllClassInProgress() async {
+    final snapshot = await db
+        .collection("class")
+        .where("class_status", isEqualTo: 'InProgress')
+        .get();
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllClassInProgress ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
   }
 }
