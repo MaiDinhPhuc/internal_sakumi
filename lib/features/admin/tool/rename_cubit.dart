@@ -295,8 +295,8 @@ class RenameCubit extends Cubit<int> {
       Navigator.pop(context);
       listSubmit.clear();
       // allDriveFiles.clear();
-      for(var drive in drives){
-        if(drive.error == null){
+      for (var drive in drives) {
+        if (drive.error == null) {
           drives.remove(drive);
         }
       }

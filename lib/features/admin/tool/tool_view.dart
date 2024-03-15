@@ -361,7 +361,9 @@ class ToolViewState extends State<ToolView> {
                                                       cubit.verify(context))
                                               : IntrinsicWidth(
                                                   child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .stretch,
                                                     children: [
                                                       SubmitButton(
                                                           isActive: cubit
@@ -372,7 +374,10 @@ class ToolViewState extends State<ToolView> {
                                                               .text,
                                                           onPressed: () => cubit
                                                               .submit(context)),
-                                                      SizedBox(height: Resizable.padding(context, 10)),
+                                                      SizedBox(
+                                                          height:
+                                                              Resizable.padding(
+                                                                  context, 10)),
                                                       SubmitButton(
                                                           title: AppText
                                                               .btnReVerify.text,
@@ -399,7 +404,8 @@ class ToolViewState extends State<ToolView> {
                                                   context, 20)),
                                           child: SingleChildScrollView(
                                             child: Column(children: [
-                                              ...cubit.listSubmit.map((e) => Text(e.name)),
+                                              ...cubit.listSubmit
+                                                  .map((e) => Text(e.name)),
                                               ...cubit.drives.map((e) => Row(
                                                     children: [
                                                       Expanded(
@@ -419,8 +425,8 @@ class ToolViewState extends State<ToolView> {
                                                               e.classModel == null
                                                                   ? ''
                                                                   : e.folder ??
-                                                              e.classModel!
-                                                                      .classCode,
+                                                                      e.classModel!
+                                                                          .classCode,
                                                               style: TextStyle(
                                                                   color: e.error !=
                                                                           null
