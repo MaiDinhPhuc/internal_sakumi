@@ -35,14 +35,14 @@ class TotalClassView extends StatelessWidget {
                   Container(
                     height: Resizable.size(context, 1),
                     margin:
-                    EdgeInsets.symmetric(vertical: Resizable.padding(context, 15)),
+                    EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
                     color: const Color(0xffD9D9D9),
                   ),
-                  Text(filterController.classStatisticCubit.totalClass == null ? "0" :filterController.classStatisticCubit.totalClass!.toString(),
+                  Expanded(child: Center(child: Text(filterController.classStatisticCubit.totalClass == null ? "0" :filterController.classStatisticCubit.totalClass!.toString(),
                       style: TextStyle(
                           fontSize: Resizable.size(context, 60),
                           fontWeight: FontWeight.w700,
-                          color: primaryColor))
+                          color: primaryColor))))
                 ],
               ),
             )),
@@ -69,14 +69,14 @@ class TotalClassView extends StatelessWidget {
                   Container(
                     height: Resizable.size(context, 1),
                     margin:
-                    EdgeInsets.symmetric(vertical: Resizable.padding(context, 15)),
+                    EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
                     color: const Color(0xffD9D9D9),
                   ),
-                  Text(filterController.classStatisticCubit.totalClassThisMonth == null ? "0" :filterController.classStatisticCubit.totalClassThisMonth!.toString(),
+                  Expanded(child: Center(child: Text(filterController.classStatisticCubit.totalClassThisMonth == null ? "0" :filterController.classStatisticCubit.totalClassThisMonth!.toString(),
                       style: TextStyle(
                           fontSize: Resizable.size(context, 60),
                           fontWeight: FontWeight.w700,
-                          color: primaryColor))
+                          color: primaryColor))))
                 ],
               ),
             ))

@@ -87,6 +87,7 @@ class ManageBillCubit extends Cubit<int> {
               : i + typeSize);
       subLists.add(subList);
     }
+
     listBill = [];
 
     List<int> lastBills = [];
@@ -299,6 +300,8 @@ class ManageBillCubit extends Cubit<int> {
         return "RENEW - BSHP 1 KÌ";
       case FilterBillType.renewBSHP2:
         return "RENEW - BSHP 2 KÌ";
+      case FilterBillType.relearn:
+        return "HỌC LẠI";
     }
   }
 }

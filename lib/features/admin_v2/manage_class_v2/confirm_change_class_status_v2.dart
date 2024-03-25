@@ -67,7 +67,7 @@ class ConfirmChangeClassStatusV2 extends StatelessWidget {
                       classType: classModel.classType,
                       link: classModel.link,
                       customLessons: classModel.customLessons,
-                      informal: classModel.informal));
+                      informal: classModel.informal, isSubClass: classModel.isSubClass, subClassId: classModel.subClassId));
                   popupCubit.update();
                   Navigator.pop(context);
                 });
@@ -89,7 +89,7 @@ class ConfirmChangeClassStatusV2 extends StatelessWidget {
                       classType: classModel.classType,
                       link: classModel.link,
                       customLessons: classModel.customLessons,
-                      informal: classModel.informal));
+                      informal: classModel.informal, isSubClass: classModel.isSubClass, subClassId: classModel.subClassId));
                   popupCubit.update();
                   Navigator.pop(context);
                 });

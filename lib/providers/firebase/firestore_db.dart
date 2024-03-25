@@ -108,9 +108,10 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getReportByTeacherId(int id) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getReportByTeacherId(
+      int id) async {
     final snapshot =
-    await db.collection("reports").where('teacher_id', isEqualTo: id).get();
+        await db.collection("reports").where('teacher_id', isEqualTo: id).get();
 
     return snapshot;
   }
@@ -349,6 +350,22 @@ class FireStoreDb {
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentLessonsInListClassId $classIds ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    //list.sort((a, b) => a.studentId.compareTo(b.studentId));
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentTestsInListClassId(
+      List<int> classIds) async {
+    final snapshot = await db
+        .collection('student_test')
+        .where('class_id', whereIn: classIds)
+        .get();
+    // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentTestsInListClassId $classIds ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     //list.sort((a, b) => a.studentId.compareTo(b.studentId));
 
@@ -1147,7 +1164,6 @@ class FireStoreDb {
       List<int> listTypeFilter,
       int lastId,
       List<int> listCourseId) async {
-
     final snapshot = await db
         .collection("class")
         .orderBy('class_id', descending: true)
@@ -1281,10 +1297,10 @@ class FireStoreDb {
       int endDate) async {
     final snapshot = await db
         .collection("bill")
-        .orderBy('create_date')
+        .orderBy('payment_date')
         .where(Filter.and(
-          Filter("create_date", isGreaterThanOrEqualTo: startDate),
-          Filter("create_date", isLessThanOrEqualTo: endDate),
+          Filter("payment_date", isGreaterThanOrEqualTo: startDate),
+          Filter("payment_date", isLessThanOrEqualTo: endDate),
           Filter("class_type", whereIn: listTypeFilter),
           Filter("course_id", whereIn: listCourseId),
         ))
@@ -1326,7 +1342,8 @@ class FireStoreDb {
         .where(Filter.and(
             Filter("start_time", isGreaterThanOrEqualTo: startDate),
             Filter("start_time", isLessThanOrEqualTo: endDate),
-            Filter("class_status", whereIn: ['Preparing', 'InProgress'])))
+            Filter("class_status", whereIn: ['Preparing', 'InProgress']),
+            Filter("informal", isEqualTo: false)))
         .get();
 
     return snapshot;
@@ -1343,7 +1360,8 @@ class FireStoreDb {
         .where(Filter.and(
             Filter("end_time", isGreaterThanOrEqualTo: startDate),
             Filter("end_time", isLessThanOrEqualTo: endDate),
-            Filter("class_status", whereIn: ['Completed', 'Cancel'])))
+            Filter("class_status", whereIn: ['Completed', 'Cancel']),
+            Filter("informal", isEqualTo: false)))
         .get();
 
     return snapshot;
@@ -1540,6 +1558,7 @@ class FireStoreDb {
           Filter("start_time", isGreaterThanOrEqualTo: startDate),
           Filter("start_time", isLessThanOrEqualTo: endDate),
           Filter("class_status", whereIn: ['Preparing', 'InProgress']),
+          Filter("informal", isEqualTo: false),
         ))
         .count()
         .get();
@@ -1573,6 +1592,31 @@ class FireStoreDb {
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllTeacher ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getTeacherWithStatusFilter(
+      List<String> status) async {
+    final snapshot = await db
+        .collection("teacher")
+        .orderBy('user_id', descending: true)
+        .where('status', whereIn: status)
+        .limit(10)
+        .get();
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getMoreTeacherWithStatusFilter(
+      List<String> status, int lastId) async {
+    final snapshot = await db
+        .collection("teacher")
+        .orderBy('user_id', descending: true)
+        .where('status', whereIn: status)
+        .startAfter([lastId])
+        .limit(10)
+        .get();
 
     return snapshot;
   }
@@ -1638,7 +1682,9 @@ class FireStoreDb {
       'class_status': model.classStatus,
       'class_type': model.classType,
       'link': model.link,
-      'informal': model.informal
+      'informal': model.informal,
+      'is_sub_class':model.isSubClass,
+      'sub_class_id':model.subClassId
     });
     debugPrint("==========>add db for \"class\"");
   }
@@ -1797,7 +1843,9 @@ class FireStoreDb {
       'class_type': model.classType,
       'link': model.link,
       'custom_lesson': model.customLessons,
-      'informal': model.informal
+      'informal': model.informal,
+      'is_sub_class': model.isSubClass,
+      'sub_class_id': model.subClassId
     });
     debugPrint("==========>update db for \"class\"");
   }

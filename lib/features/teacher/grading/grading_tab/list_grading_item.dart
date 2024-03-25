@@ -15,7 +15,7 @@ class ListGradingItem extends StatelessWidget {
     return Column(
       children: [
         if ((cubit.isBTVN && cubit.filterListLesson().isNotEmpty) || (!cubit.isBTVN && cubit.filterListTest().isNotEmpty))
-        Padding(padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 80)),
+        Padding(padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 100)),
             child: GradingItemLayout(
                 title: Padding(padding: EdgeInsets.only(left:Resizable.padding(context, 15) ),child: Text(AppText.titleSubject.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17)))),
                 receivedNUmber: Text(AppText.textNumberResultReceive.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17))),

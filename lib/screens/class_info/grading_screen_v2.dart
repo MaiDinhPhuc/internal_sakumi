@@ -54,7 +54,7 @@ class GradingScreen extends StatelessWidget {
                             child: Column(
                               children: [
                                 ...shimmerList.map((e) => Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 80)),
+                                    padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 100)),
                                     child: const ItemShimmer()))
                               ],
                             )),

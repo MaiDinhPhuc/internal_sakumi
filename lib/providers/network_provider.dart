@@ -334,4 +334,12 @@ abstract class NetworkProvider {
   Future<void> addNewLog(StudentClassLogModel model);
 
   Future<List<ReportModel>> getReportByTeacherId(int id);
+
+  Future<List<TeacherModel>> getTeacherWithStatusFilter(List<String> status);
+
+  Future<List<TeacherModel>> getMoreTeacherWithStatusFilter(
+      List<String> status, int lastId);
+
+  Future<List<StudentTestModel>> getAllStudentTestInListClassId(
+      List<int> listClassId);
 }

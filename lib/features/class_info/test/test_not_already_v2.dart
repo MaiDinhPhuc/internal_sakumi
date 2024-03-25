@@ -18,7 +18,7 @@ class TestNotAlreadyV2 extends StatelessWidget {
     return Container(
       alignment: Alignment.centerLeft,
       margin: EdgeInsets.symmetric(
-          horizontal: Resizable.padding(context, 150),
+          horizontal: Resizable.padding(context, 100),
           vertical: Resizable.padding(context, 5)),
       padding: EdgeInsets.symmetric(
           horizontal: Resizable.padding(context, 15),

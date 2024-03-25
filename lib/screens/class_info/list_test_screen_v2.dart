@@ -54,7 +54,7 @@ class ListTestScreenV2 extends StatelessWidget {
                                         ...shimmerList.map((e) => Padding(
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: Resizable.padding(
-                                                    context, 150)),
+                                                    context, 100)),
                                             child: const ItemShimmer()))
                                       ],
                                     ),
@@ -70,7 +70,7 @@ class ListTestScreenV2 extends StatelessWidget {
                                                     context, 10)),
                                             margin: EdgeInsets.symmetric(
                                                 horizontal: Resizable.padding(
-                                                    context, 150)),
+                                                    context, 100)),
                                             child: TestItemRowLayout(
                                               test: Text(AppText.txtTest.text,
                                                   style: TextStyle(

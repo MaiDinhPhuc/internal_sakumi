@@ -113,7 +113,7 @@ class Calculator{
   }
 
   static double getPercentUpSale(List<StudentClassModel>? stdClasses) {
-    if (stdClasses == null) {
+    if (stdClasses == null || stdClasses.isEmpty) {
       return 0;
     }
 

@@ -181,12 +181,11 @@ void alertCheckBoxTeacher(
                                             waitingDialog(context);
                                             for (var i
                                                 in cubit.listSelectedTeacher!) {
+                                              var now = DateTime.now().millisecondsSinceEpoch;
                                               await cubit.addTeacherToClass(
                                                   context,
                                                   TeacherClassModel(
-                                                      id: cubit
-                                                              .teacherClassCount! +
-                                                          1,
+                                                      id: now,
                                                       classId:
                                                           manageGeneralCubit
                                                               .selector,
@@ -202,7 +201,7 @@ void alertCheckBoxTeacher(
                                                       date: DateFormat(
                                                               'dd/MM/yyyy')
                                                           .format(
-                                                              DateTime.now())));
+                                                              DateTime.now()), responsibility: false));
                                             }
                                             if (context.mounted) {
                                               Navigator.pop(context);

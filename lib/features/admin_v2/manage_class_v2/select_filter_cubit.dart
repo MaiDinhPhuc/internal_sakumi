@@ -58,7 +58,8 @@ class SelectFilterCubit extends Cubit<int> {
     FilterBillType.renewDeposit1,
     FilterBillType.renewDeposit2,
     FilterBillType.renewBSHP1,
-    FilterBillType.renewBSHP2
+    FilterBillType.renewBSHP2,
+    FilterBillType.relearn
   ];
 
   List<FilterBillCreator> listBillCreator = [
@@ -177,6 +178,9 @@ class SelectFilterCubit extends Cubit<int> {
     }
     if (listSelect[20] == true) {
       filter.add(FilterBillType.renewBSHP2);
+    }
+    if (listSelect[21] == true) {
+      filter.add(FilterBillType.relearn);
     }
 
     return filter;

@@ -43,7 +43,8 @@ class BillDialogCubit extends Cubit<int> {
     "RENEW - CỌC 1 KÌ",
     "RENEW - CỌC 2 KÌ",
     "RENEW - BSHP 1 KÌ",
-    "RENEW - BSHP 2 KÌ"
+    "RENEW - BSHP 2 KÌ",
+    "HỌC LẠI"
   ];
 
   List<String> listCreator = [

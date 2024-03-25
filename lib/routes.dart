@@ -21,6 +21,7 @@ import 'package:internal_sakumi/screens/class_info/detail_lesson_v2.dart';
 import 'package:internal_sakumi/screens/class_info/grading_screen_v2.dart';
 import 'package:internal_sakumi/screens/class_info/list_lesson_screen_v2.dart';
 import 'package:internal_sakumi/screens/class_info/list_test_screen_v2.dart';
+import 'package:internal_sakumi/screens/class_info/sub_course_screen.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
 import 'package:internal_sakumi/screens/master/detail_survey_screen.dart';
@@ -113,6 +114,8 @@ class Routes {
         handler: overViewHandler, transitionType: TransitionType.fadeIn);
     router.define('/:role/grading/:classId',
         handler: gradingHandler, transitionType: TransitionType.fadeIn);
+    router.define('/:role/subCourse/:classId',
+        handler: subCourseHandler, transitionType: TransitionType.fadeIn);
     router.define('/:role/survey/:classId',
         handler: surveyHandler, transitionType: TransitionType.fadeIn);
     router.define('/:role/lesson/:classId',
@@ -195,7 +198,7 @@ Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
 });
 var manageTeacherHandler =
 Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return const ManageTeacherScreen();
+  return ManageTeacherScreen();
 });
 var manageStudentHandler =
 Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
@@ -215,7 +218,7 @@ var toolsHandler =
 });
 var voucherHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return VoucherScreen();
+  return const VoucherScreen();
 });
 var studentInfoHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
@@ -235,8 +238,13 @@ var overViewHandler =
 });
 var gradingHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return GradingScreen();//ClassGradingTab();
+  return GradingScreen();
 });
+var subCourseHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return SubCourseScreen(role: params['role']?.first);
+});
+
 var testHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return ListTestScreenV2(role: params['role'][0]);//ClassTestTab(params['role'][0]);

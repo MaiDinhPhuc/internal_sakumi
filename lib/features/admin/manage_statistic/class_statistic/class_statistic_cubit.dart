@@ -6,8 +6,8 @@ import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/cache/filter_statistic_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firestore_db.dart';
 
-class ClassStatisticCubit extends Cubit<int>{
-  ClassStatisticCubit() : super(0){
+class ClassStatisticCubit extends Cubit<int> {
+  ClassStatisticCubit() : super(0) {
     setUpDate();
     getCount();
   }
@@ -26,31 +26,20 @@ class ClassStatisticCubit extends Cubit<int>{
 
   List<ChartStatisticData> classData = [];
 
-  List<String> listStatus = [
-    'Preparing',
-    'InProgress',
-    'Completed',
-    'Cancel'
-  ];
+  List<String> listStatus = ['Preparing', 'InProgress', 'Completed', 'Cancel'];
 
-  List<String> listStatusSub = [
-    'Mới tạo',
-    'Đang học',
-    'Hoàn thành',
-    'Huỷ'
-  ];
+  List<String> listStatusSub = ['Mới tạo', 'Đang học', 'Hoàn thành', 'Huỷ'];
 
-
-  setDate(DateTime start, DateTime end){
+  setDate(DateTime start, DateTime end) {
     isChooseDate = true;
     startDay = start;
     endDay = end;
-    emit(state+1);
+    emit(state + 1);
   }
 
-  setUpDate(){
+  setUpDate() {
     startDay = DateTime(now.year, now.month, 1);
-    endDay = DateTime(now.year, now.month +1 , 1);
+    endDay = DateTime(now.year, now.month + 1, 1);
   }
 
   clearDate() {
@@ -61,19 +50,20 @@ class ClassStatisticCubit extends Cubit<int>{
     emit(state + 1);
   }
 
-  checkLoad(StatisticFilterCubit filterController) async{
+  checkLoad(StatisticFilterCubit filterController) async {
     await loadData(filterController);
   }
 
-  getCount()async{
+  getCount() async {
     DateTime now = DateTime.now();
     DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
     DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 1);
     int startDate = firstDayOfMonth.millisecondsSinceEpoch;
     int endDate = lastDayOfMonth.millisecondsSinceEpoch;
     totalClass = (await FireStoreDb.instance.getCount("class")).count;
-    totalClassThisMonth = (await FireStoreDb.instance.getCountClass(startDate, endDate)).count;
-    emit(state+1);
+    totalClassThisMonth =
+        (await FireStoreDb.instance.getCountClass(startDate, endDate)).count;
+    emit(state + 1);
   }
 
   loadData(StatisticFilterCubit filterController) async {
@@ -81,7 +71,7 @@ class ClassStatisticCubit extends Cubit<int>{
         filterController.filter[StatisticFilter.course]!,
         filterController.filter[StatisticFilter.level]!);
     int courseSize =
-    (30 / filterController.filter[StatisticFilter.type]!.length).floor();
+        (30 / filterController.filter[StatisticFilter.type]!.length).floor();
 
     classData = [];
     listClass0 = [];
@@ -96,76 +86,48 @@ class ClassStatisticCubit extends Cubit<int>{
               : i + courseSize);
       subLists.add(subList);
     }
-    if (startDay != null && endDay != null) {
-      int startDate = startDay!.millisecondsSinceEpoch;
-      int endDate = endDay!.millisecondsSinceEpoch;
-      for (int i = 0; i < subLists.length; i++) {
-        var listBillTemp = await DataProvider.classStatistic(
-            filterController.filter, 1, subLists[i], startDate, endDate,0);
-        var listId = listClass0.map((e) => e.classId).toList();
-        for(var i in listBillTemp){
-          if(listId.contains(i.classId) == false){
-            listClass0.add(i);
-          }
-        }
-      }
-    } else {
-      DateTime now = DateTime.now();
-      DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
-      DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 1);
-      int startDate = firstDayOfMonth.millisecondsSinceEpoch;
-      int endDate = lastDayOfMonth.millisecondsSinceEpoch;
-      for (int i = 0; i < subLists.length; i++) {
-        var listBillTemp = await DataProvider.classStatistic(
-            filterController.filter, 1, subLists[i], startDate, endDate,0);
-        var listId = listClass0.map((e) => e.classId).toList();
-        for(var i in listBillTemp){
-          if(listId.contains(i.classId) == false){
-            listClass0.add(i);
-          }
+
+    for (int i = 0; i < subLists.length; i++) {
+      var listBillTemp = await DataProvider.classStatistic(
+          filterController.filter,
+          1,
+          subLists[i],
+          startDay!.millisecondsSinceEpoch,
+          endDay!.millisecondsSinceEpoch,
+          0);
+      var listId = listClass0.map((e) => e.classId).toList();
+      for (var i in listBillTemp) {
+        if (listId.contains(i.classId) == false) {
+          listClass0.add(i);
         }
       }
     }
 
-    if (startDay != null && endDay != null) {
-      int startDate = startDay!.millisecondsSinceEpoch;
-      int endDate = endDay!.millisecondsSinceEpoch;
-      for (int i = 0; i < subLists.length; i++) {
-        var listBillTemp = await DataProvider.classStatistic(
-            filterController.filter, 1, subLists[i], startDate, endDate,1);
-        var listId = listClass1.map((e) => e.classId).toList();
-        for(var i in listBillTemp){
-          if(listId.contains(i.classId) == false){
-            listClass1.add(i);
-          }
-        }
-      }
-    } else {
-      DateTime now = DateTime.now();
-      DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
-      DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 1);
-      int startDate = firstDayOfMonth.millisecondsSinceEpoch;
-      int endDate = lastDayOfMonth.millisecondsSinceEpoch;
-      for (int i = 0; i < subLists.length; i++) {
-        var listBillTemp = await DataProvider.classStatistic(
-            filterController.filter, 1, subLists[i], startDate, endDate,1);
-        var listId = listClass1.map((e) => e.classId).toList();
-        for(var i in listBillTemp){
-          if(listId.contains(i.classId) == false){
-            listClass1.add(i);
-          }
+    for (int i = 0; i < subLists.length; i++) {
+      var listBillTemp = await DataProvider.classStatistic(
+          filterController.filter,
+          1,
+          subLists[i],
+          startDay!.millisecondsSinceEpoch,
+          endDay!.millisecondsSinceEpoch,
+          1);
+      var listId = listClass1.map((e) => e.classId).toList();
+      for (var i in listBillTemp) {
+        if (listId.contains(i.classId) == false) {
+          listClass1.add(i);
         }
       }
     }
-
 
     for (var i in listStatus) {
-      if(i == 'Preparing' || i == 'InProgress'){
+      if (i == 'Preparing' || i == 'InProgress') {
         var classTemp = listClass0.where((e) => e.classStatus == i).toList();
-        classData.add(ChartStatisticData(listStatusSub[listStatus.indexOf(i)], classTemp.length.toDouble()));
-      }else{
+        classData.add(ChartStatisticData(
+            listStatusSub[listStatus.indexOf(i)], classTemp.length.toDouble()));
+      } else {
         var classTemp = listClass1.where((e) => e.classStatus == i).toList();
-        classData.add(ChartStatisticData(listStatusSub[listStatus.indexOf(i)], classTemp.length.toDouble()));
+        classData.add(ChartStatisticData(
+            listStatusSub[listStatus.indexOf(i)], classTemp.length.toDouble()));
       }
     }
 

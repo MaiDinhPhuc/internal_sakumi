@@ -21,8 +21,8 @@ class TestGradingItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-          left: Resizable.padding(context, 80),
-          right: Resizable.padding(context, 80),
+          left: Resizable.padding(context, 100),
+          right: Resizable.padding(context, 100),
           bottom: Resizable.padding(context, 5)),
       child: BlocProvider(
           create: (context) => DropdownCubit(),

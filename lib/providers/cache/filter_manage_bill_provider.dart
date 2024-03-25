@@ -81,7 +81,8 @@ enum FilterBillType {
   renewDeposit1,
   renewDeposit2,
   renewBSHP1,
-  renewBSHP2
+  renewBSHP2,
+  relearn
 }
 
 extension FilterBillTypeEx on FilterBillType {
@@ -129,6 +130,8 @@ extension FilterBillTypeEx on FilterBillType {
         return "RENEW - BSHP 1 KÌ";
       case FilterBillType.renewBSHP2:
         return "RENEW - BSHP 2 KÌ";
+      case FilterBillType.relearn:
+        return "HỌC LẠI";
     }
   }
 
@@ -176,6 +179,8 @@ extension FilterBillTypeEx on FilterBillType {
         return "RENEW - BSHP 1 KÌ";
       case FilterBillType.renewBSHP2:
         return "RENEW - BSHP 2 KÌ";
+      case FilterBillType.relearn:
+        return "HỌC LẠI";
     }
   }
 }

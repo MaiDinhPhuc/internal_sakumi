@@ -97,6 +97,7 @@ void alertNewTeacher(
                                           Resizable.size(context, 100)),
                                       child: SubmitButton(
                                           onPressed: () async {
+                                            var id = DateTime.now().millisecondsSinceEpoch;
                                             if (formKey.currentState!
                                                 .validate()) {
                                               await cubit.createTeacher(
@@ -105,36 +106,34 @@ void alertNewTeacher(
                                                       name: nameCon.text,
                                                       url: '',
                                                       note: noteCon.text,
-                                                      userId:
-                                                      cubit.userCount!,
+                                                      userId: id,
                                                       phone: phoneCon.text,
                                                       teacherCode:
                                                       senseiCodeCon.text,
-                                                      status: AppText.statusInProgress.text),
+                                                      status: 'Chính thức'),
                                                   UserModel(
                                                       email: emailCon.text,
                                                       role: AppText
                                                           .selectorTeacher.text,
-                                                      id:cubit.userCount!));
+                                                      id: id));
                                               if (context.mounted) {
                                                 Navigator.pop(context);
                                                 if (cubit.checkCreate == true) {
+                                                  var now = DateTime.now().millisecondsSinceEpoch;
                                                   await cubit.addTeacherToClass(
                                                       context,
                                                       TeacherClassModel(
-                                                          id: cubit
-                                                              .teacherClassCount! +
-                                                              1,
+                                                          id: now,
                                                           classId:
                                                           manageGeneralCubit
                                                               .selector,
-                                                          userId: cubit.userCount!,
+                                                          userId: id,
                                                           classStatus:
                                                           AppText.statusInProgress.text,
                                                           date: DateFormat(
                                                               'dd/MM/yyyy')
                                                               .format(DateTime
-                                                              .now())));
+                                                              .now()), responsibility: false));
                                                   if (context.mounted) {
                                                     manageGeneralCubit
                                                         .loadTeacherInClass(
@@ -150,7 +149,7 @@ void alertNewTeacher(
                                                 }
                                               }
                                             } else {
-                                              print('Form is invalid');
+                                              debugPrint('Form is invalid');
                                             }
                                           },
                                           title: AppText.btnAdd.text),

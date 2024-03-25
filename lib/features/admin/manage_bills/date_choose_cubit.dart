@@ -46,9 +46,9 @@ class DateChooseCubit extends Cubit<int>{
     return "$start - $end";
   }
 
-  setDateTime(String startDate, String endDate){
-    this.startDate = DateTime.parse(startDate);
-    this.endDate = DateTime.parse(endDate);
+  setDateTime(DateTime startDate, DateTime endDate){
+    this.startDate = startDate;
+    this.endDate = endDate;
     emit(state+1);
   }
 

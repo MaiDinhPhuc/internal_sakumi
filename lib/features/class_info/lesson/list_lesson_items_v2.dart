@@ -34,7 +34,7 @@ class LessonItemV2 extends StatelessWidget {
               SizedBox(height: Resizable.padding(context, 10)),
               Container(
                 margin: EdgeInsets.symmetric(
-                    horizontal: Resizable.padding(context, 150),
+                    horizontal: Resizable.padding(context, 100),
                     vertical: Resizable.padding(context, 5)),
                 child: BlocProvider(
                     create: (context) => DropdownCubit(),

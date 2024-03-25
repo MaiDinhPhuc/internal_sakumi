@@ -54,7 +54,7 @@ class StudentItemOverViewCubit extends Cubit<int> {
 
   double getAttendancePercent() {
     int tempAttendance = 0;
-    int count = stdLessons!.length;
+    int count = stdLessons!.where((e) => e.timekeeping != 0).toList().length;
 
     for (var i in stdLessons!) {
       if (i.timekeeping != 6 && i.timekeeping != 5 && i.timekeeping != 0) {

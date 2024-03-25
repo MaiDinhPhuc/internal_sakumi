@@ -38,7 +38,7 @@ class ItemSearchList extends StatelessWidget {
                     if (data["class_code"]
                         .toString()
                         .toUpperCase()
-                        .contains(searchCubit.searchValue.toUpperCase())) {
+                        .contains(searchCubit.searchValue.toUpperCase()) && data["is_sub_class"] == false) {
                       return ItemSearch(
                         type: searchCubit.type,
                         isLast: index == (snapshots.data!.docs.length - 1),
@@ -173,7 +173,7 @@ class ClassSearchListV2 extends StatelessWidget {
                     return Container();
                   }
                   if (data["class_code"].toString().toLowerCase().contains(
-                      billDialogCubit.classSearchValue.toLowerCase())) {
+                      billDialogCubit.classSearchValue.toLowerCase())&& data["is_sub_class"] == false) {
                     return ItemSearchV2(
                       type: AppText.txtClass.text,
                       isLast: index == (snapshots.data!.docs.length - 1),

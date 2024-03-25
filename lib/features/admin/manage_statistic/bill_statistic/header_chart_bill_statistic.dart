@@ -1,4 +1,5 @@
 import 'package:flutter/Material.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/providers/cache/filter_statistic_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -16,7 +17,7 @@ class HeaderBillStatistic extends StatelessWidget {
     return Padding(
         padding: EdgeInsets.symmetric(
             horizontal: Resizable.padding(context, 20),
-            vertical: Resizable.padding(context, 15)),
+            vertical: Resizable.padding(context, 10)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -95,13 +96,37 @@ class HeaderBillStatistic extends StatelessWidget {
                       title: "clear")
               ],
             ),
-            SizedBox(width: Resizable.size(context, 80),height: Resizable.size(context, 60),child: DetailButton(
-                onPressed: () {
-                  if(filterController.billStatisticCubit.loading == false){
-                    showDialog(context: context, builder: (context) => DetailBillStatisticDialog(listBill: filterController.billStatisticCubit.listBill));
-                  }
-                },
-                title: AppText.textDetail.text))
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(padding: EdgeInsets.only(right: Resizable.padding(context, 10), top: Resizable.padding(context, 5)),child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text("Tiền Việt(VNĐ):  ${filterController.billStatisticCubit.getSumVND()}",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: Resizable.font(context, 18),
+                            color: primaryColor)),
+                    SizedBox(height:  Resizable.padding(context, 2)),
+                    Text("Yên Nhật(¥):  ${filterController.billStatisticCubit.getSumYen()}",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: Resizable.font(context, 18),
+                            color: primaryColor))
+                  ],
+                )),
+                Container(
+                    margin: EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
+                    width: Resizable.size(context, 80),height: Resizable.size(context, 60),child: DetailButton(
+                    onPressed: () {
+                      if(filterController.billStatisticCubit.loading == false){
+                        showDialog(context: context, builder: (context) => DetailBillStatisticDialog(listBill: filterController.billStatisticCubit.listBill));
+                      }
+                    },
+                    title: AppText.textDetail.text))
+              ],
+            )
           ],
         ));
   }

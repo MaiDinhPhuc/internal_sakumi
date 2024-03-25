@@ -53,8 +53,8 @@ class ListLessonScreenV2 extends StatelessWidget {
                               Padding(
                                   padding: EdgeInsets.only(
                                       bottom: Resizable.padding(context, 10),
-                                      left: Resizable.padding(context, 150),
-                                      right: Resizable.padding(context, 150)),
+                                      left: Resizable.padding(context, 100),
+                                      right: Resizable.padding(context, 100)),
                                   child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
@@ -76,7 +76,7 @@ class ListLessonScreenV2 extends StatelessWidget {
                                     left: Resizable.padding(context, 15)),
                                 margin: EdgeInsets.symmetric(
                                     horizontal:
-                                        Resizable.padding(context, 150)),
+                                        Resizable.padding(context, 100)),
                                 child: LessonItemRowLayout(
                                     lesson: Text(AppText.subjectLesson.text,
                                         style: TextStyle(
@@ -119,7 +119,7 @@ class ListLessonScreenV2 extends StatelessWidget {
                                                                 Resizable
                                                                     .padding(
                                                                         context,
-                                                                        150)),
+                                                                        100)),
                                                     child: const ItemShimmer()))
                                               ],
                                             )),

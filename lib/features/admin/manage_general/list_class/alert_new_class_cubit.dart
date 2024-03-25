@@ -22,7 +22,6 @@ class AlertNewClassCubit extends Cubit<int> {
   bool informal = false;
 
   loadCourse(ClassModel? classModel, bool isEdit) async {
-
     if(isEdit){
       listCourse = await FireBaseProvider.instance.getAllCourse();
     }else{
@@ -44,7 +43,6 @@ class AlertNewClassCubit extends Cubit<int> {
     selector = text;
     await getCourseId(selector!);
     emit(state + 1);
-
   }
 
   int chooseType(String? text) {

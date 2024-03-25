@@ -60,8 +60,8 @@ class BillStatisticCubit extends Cubit<int> {
   }
 
   setUpDate(){
-    startDay = DateTime(now.year, now.month , 1);
-    endDay = DateTime(now.year, now.month + 1, 1);
+    startDay = DateTime(now.year, now.month -1 , 21);
+    endDay = DateTime(now.year, now.month , 20);
   }
 
   clearDate() {
@@ -114,8 +114,8 @@ class BillStatisticCubit extends Cubit<int> {
 
   getCount() async {
     DateTime now = DateTime.now();
-    DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
-    DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 1);
+    DateTime firstDayOfMonth = DateTime(now.year, now.month -1, 21);
+    DateTime lastDayOfMonth = DateTime(now.year, now.month , 20);
     int startDate = firstDayOfMonth.millisecondsSinceEpoch;
     int endDate = lastDayOfMonth.millisecondsSinceEpoch;
     totalBill = (await FireStoreDb.instance.getCount("bill")).count;
@@ -174,5 +174,36 @@ class BillStatisticCubit extends Cubit<int> {
     }
     loading = false;
     emit(state + 1);
+  }
+
+  String getSumVND(){
+    String currency = "Tiền Việt(vnđ)";
+
+    var listBill = this
+        .listBill
+        .where((e) => e.currency == currency)
+        .toList();
+
+    int sum = 0;
+    for (var i in listBill) {
+      sum = sum + i.payment;
+    }
+
+    return "${NumberFormat('#,##0').format(sum)}đ";
+  }
+  String getSumYen() {
+    String currency = "Yên Nhật(¥)";
+
+    var listBill = this
+        .listBill
+        .where((e) => e.currency == currency)
+        .toList();
+
+    int sum = 0;
+    for (var i in listBill) {
+      sum = sum + i.payment;
+    }
+
+    return "${NumberFormat('#,##0').format(sum)}¥";
   }
 }

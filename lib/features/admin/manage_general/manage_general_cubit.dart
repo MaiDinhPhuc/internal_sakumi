@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/class_model.dart';
@@ -239,6 +240,18 @@ class ManageGeneralCubit extends Cubit<int> {
       }
     }
     return teacherClassModel!;
+  }
+
+  updateResponsibility(TeacherClassModel newValue){
+    var index = listTeacherClass!.indexOf(getTeacherClass(newValue.userId));
+    listTeacherClass![index] = newValue;
+    emit(state+1);
+    FirebaseFirestore.instance
+        .collection('teacher_class')
+        .doc('teacher_${newValue.userId}_class_${newValue.classId}')
+        .update({
+      'responsibility': newValue.responsibility
+    });
   }
 }
 

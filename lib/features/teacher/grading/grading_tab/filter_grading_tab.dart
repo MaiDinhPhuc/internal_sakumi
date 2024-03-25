@@ -13,7 +13,7 @@ class FilterGradingTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(padding: EdgeInsets.symmetric(horizontal: Resizable.padding(
-        context, 80), vertical: Resizable.padding(
+        context, 100), vertical: Resizable.padding(
         context, 10)),child: Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [

@@ -2,14 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/Material.dart';
 
 class ClassModel {
-  final int classId, courseId, classType,endTime,startTime;
-  final String description,
-      note,
-      classCode,
-      classStatus,
-      link;
+  final int classId, courseId, classType, endTime, startTime, subClassId;
+  final String description, note, classCode, classStatus, link;
   List<dynamic> customLessons;
-  final bool informal;
+  final bool informal, isSubClass;
 
   Color getColor() {
     switch (classStatus) {
@@ -50,7 +46,10 @@ class ClassModel {
       required this.classStatus,
       required this.classType,
       required this.link,
-      required this.customLessons, required this.informal});
+      required this.customLessons,
+      required this.informal,
+      required this.isSubClass,
+      required this.subClassId});
   factory ClassModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
@@ -66,6 +65,8 @@ class ClassModel {
         classType: data['class_type'] ?? 0,
         link: data['link'] ?? '',
         customLessons: data['custom_lesson'] ?? [],
-        informal: data['informal'] ?? false);
+        informal: data['informal'] ?? false,
+        isSubClass: data['is_sub_class'] ?? false,
+        subClassId: data['sub_class_id'] ?? 0);
   }
 }

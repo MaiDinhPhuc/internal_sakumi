@@ -67,6 +67,10 @@ class AppBarTeacherItem extends StatelessWidget {
                       await Navigator.pushNamed(
                           context, role == "teacher" ?"${Routes.teacher}/grading/class=$classId": "${Routes.admin}/survey/class=$classId");
                       break;
+                    case 4:
+                      await Navigator.pushNamed(
+                          context, role == "teacher" ?"${Routes.teacher}/subCourse/class=$classId": "${Routes.admin}/subCourse/class=$classId");
+                      break;
                   }
                 },
                 child: Container(

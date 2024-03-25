@@ -151,13 +151,15 @@ List<NavigationModel> buttonTeacherList = [
   NavigationModel(0, AppText.titleOverView.text),
   NavigationModel(1, AppText.titleLesson.text),
   NavigationModel(2, AppText.titleMultiChoice.text),
-  NavigationModel(3, AppText.titleGrading.text)
+  NavigationModel(3, AppText.titleGrading.text),
+  NavigationModel(4, AppText.txtSubCourse.text),
 ];
 List<NavigationModel> buttonAdminList = [
   NavigationModel(0, AppText.titleOverView.text),
   NavigationModel(1, AppText.titleLesson.text),
   NavigationModel(2, AppText.titleMultiChoice.text),
   NavigationModel(3, AppText.txtSurvey.text),
+  NavigationModel(4, AppText.txtSubCourse.text),
 ];
 
 class NameCubit extends Cubit<String?> {

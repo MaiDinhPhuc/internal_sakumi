@@ -18,7 +18,8 @@ class InfoTeacherView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-        right: Resizable.padding(context, 30),),
+        right: Resizable.padding(context, 30),
+      ),
       padding: EdgeInsets.symmetric(
           vertical: Resizable.padding(context, 15),
           horizontal: Resizable.padding(context, 5)),
@@ -35,43 +36,37 @@ class InfoTeacherView extends StatelessWidget {
           cubit.teacher!.url == ''
               ? Image.asset("assets/images/ic_avt.png")
               : ImageNetwork(
-              borderRadius: const BorderRadius.all(
-                  Radius.circular(1000)),
-              image: cubit.teacher!.url,
-              height: Resizable.size(context, 100),
-              width: Resizable.size(context, 100),
-              onError: Container(),
-              onLoading: Transform.scale(
-                scale: 0.5,
-                child:
-                const CircularProgressIndicator(),
-              )),
+                  borderRadius: const BorderRadius.all(Radius.circular(1000)),
+                  image: cubit.teacher!.url,
+                  height: Resizable.size(context, 100),
+                  width: Resizable.size(context, 100),
+                  onError: Container(),
+                  onLoading: Transform.scale(
+                    scale: 0.5,
+                    child: const CircularProgressIndicator(),
+                  )),
           Padding(
-              padding: EdgeInsets.all(
-                  Resizable.padding(context, 5)),
+              padding: EdgeInsets.all(Resizable.padding(context, 5)),
               child: TeacherInfo(cubit: cubit)),
           Row(
-            mainAxisAlignment:
-            MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               SubmitButton(
                 onPressed: () async {
                   waitingDialog(context);
-                  await FireBaseProvider.instance
-                      .updateProfileTeacher(
+                  await FireBaseProvider.instance.updateProfileTeacher(
                       TextUtils.getName(),
                       TeacherModel(
                           name: cubit.name,
                           url: cubit.teacher!.url,
                           note: cubit.note,
-                          userId:
-                          cubit.teacher!.userId,
+                          userId: cubit.teacher!.userId,
                           phone: cubit.phone,
-                          status:
-                          cubit.teacher!.status, teacherCode: cubit.teacherCode));
+                          status: cubit.teacher!.status,
+                          teacherCode: cubit.teacherCode));
                   Navigator.pop(context);
-                  notificationDialog(context,
-                      AppText.txtUpdateTeacherDone.text);
+                  notificationDialog(
+                      context, AppText.txtUpdateTeacherDone.text);
                 },
                 title: AppText.txtUpdate.text,
               )

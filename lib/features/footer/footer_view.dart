@@ -23,14 +23,14 @@ class FooterView extends StatelessWidget {
             bottom: Resizable.padding(context, 5),
             top: Resizable.padding(context, 5)),
         decoration: const BoxDecoration(color: Colors.white, boxShadow: [
-          BoxShadow(offset: Offset(0, 1), color: Colors.grey, blurRadius: 2)
+          BoxShadow(offset: Offset(5, 0), color: Colors.grey, blurRadius: 2)
         ]),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
               height: Resizable.size(context, 40),
-              width: Resizable.size(context, 600),
+              width: Resizable.size(context, 725),
               child: TextFormField(
                 controller: textEditingController,
                 onChanged: (String value) {

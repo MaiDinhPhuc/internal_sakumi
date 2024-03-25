@@ -12,16 +12,13 @@ import 'package:internal_sakumi/widget/waiting_dialog.dart';
 class AlertAddTeacherCubit extends Cubit<int> {
   AlertAddTeacherCubit() : super(0);
 
-  int? userCount;
-  int? teacherClassCount;
+
   List<TeacherModel>? listAllTeacher, listSensei, listSelectedTeacher = [];
   bool? checkCreate, checkAdd;
   final TextEditingController searchTextController = TextEditingController();
 
   loadAllUser(BuildContext context, ManageGeneralCubit cubit) async {
-    teacherClassCount = (await FireStoreDb.instance.getCount("teacher_class")).count;
     listAllTeacher = await FireBaseProvider.instance.getAllTeacher();
-    userCount = (await FireStoreDb.instance.getCount("users")).count;
     listSensei = [];
     for(var i in listAllTeacher!){
       var count = 0;

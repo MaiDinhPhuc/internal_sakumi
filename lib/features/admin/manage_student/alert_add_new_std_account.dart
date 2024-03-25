@@ -181,11 +181,12 @@ void alertAddNewStdAccount(
                                           Resizable.size(context, 100)),
                                       child: SubmitButton(
                                           onPressed: () async {
+                                            Navigator.pop(context);
+                                            waitingDialog(context);
                                             int millisecondsSinceEpoch = DateTime.now().millisecondsSinceEpoch;
                                             if (formKey.currentState!
                                                 .validate()) {
                                               await cubit.createStudent(
-                                                  context,
                                                   StudentModel(
                                                       name: nameCon.text,
                                                       url: '',

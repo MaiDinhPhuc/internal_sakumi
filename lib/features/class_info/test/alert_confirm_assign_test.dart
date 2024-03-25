@@ -17,7 +17,7 @@ void alertAssignTestView(BuildContext context, Function() onSubmit) {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset("assets/images/ic_thumb_up.png",scale: 10,),
+                  Image.asset("assets/images/ic_thumb_up.png",scale: 10),
                   Padding(padding: EdgeInsets.symmetric(vertical: Resizable.padding(context, 20)),child: Text(
                     AppText.txtSSConfirmAssignTest.text,
                     style: TextStyle(

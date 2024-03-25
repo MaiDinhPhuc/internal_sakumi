@@ -180,7 +180,7 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                                         .text,
                                                                     customLessons: [],
                                                                     informal: cubit
-                                                                        .informal));
+                                                                        .informal, isSubClass: false, subClassId: 0));
                                                             if (context
                                                                 .mounted) {
                                                               Navigator.pop(
@@ -239,7 +239,7 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                                         .text,
                                                                     customLessons: classModel.customLessons,
                                                                     informal: cubit
-                                                                        .informal));
+                                                                        .informal, isSubClass: classModel.isSubClass, subClassId: classModel.subClassId));
                                                             if (context
                                                                 .mounted) {
                                                               Navigator.pop(

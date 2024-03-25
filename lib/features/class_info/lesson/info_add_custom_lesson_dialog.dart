@@ -143,16 +143,15 @@ class InfoAddCustomLesson extends StatelessWidget {
                                           color: greyColor.shade500,
                                           size: Resizable.size(context, 20))),
                                 )),
-
                           ],
                         ),
-                      if (cubit.count < 3)
-                        DottedBorderButton(AppText.btnAddNewLesson.text,
-                            onPressed: () {
-                              if (cubit.listLessonInfo.isNotEmpty) {
-                                cubit.addNewCourse();
-                              }
-                            })
+                      // if (cubit.count < 3)
+                      DottedBorderButton(AppText.btnAddNewLesson.text,
+                          onPressed: () {
+                        if (cubit.listLessonInfo.isNotEmpty) {
+                          cubit.addNewCourse();
+                        }
+                      })
                     ],
                   ))
                 ],
