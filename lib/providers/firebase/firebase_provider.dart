@@ -1414,6 +1414,7 @@ class FireBaseProvider extends NetworkProvider {
   Future<int> getTotalPage(String tableName) async {
     int count = (await FireStoreDb.instance.getCount(tableName)).count ?? 0;
 
+
     if (count <= 10) {
       return 1;
     }
@@ -1433,8 +1434,8 @@ class FireBaseProvider extends NetworkProvider {
   Future<int> getCountWithCondition(
       String tableName, String field, dynamic condition) async {
     int count = (await FireStoreDb.instance
-            .getCountWithCondition(tableName, field, condition))
-        .count ?? 0;
+            .getCountWithCondition(tableName, field, condition)).count ?? 0;
+
     return count;
   }
 

@@ -351,6 +351,7 @@ enum AppText {
   txtErrorNotFoundFolderOnDrive,
   txtErrorNotFoundClassInLimitTime,
   txtErrorFoundTooLessonsInSamePeriod,
+  txtErrorNotFoundCustomLessonId,
   txtErrorDuplicateLink,
   txtErrorDuplicateVideo,
   txtDuplicateLinkOrVideo,
@@ -682,6 +683,8 @@ Map<AppText, String> texts = {
       'Không tìm thấy folder trong drive SCREEN RECORDING',
   AppText.txtErrorNotFoundClassInLimitTime:
       'Không tìm thấy lớp học trong thời gian cho phép (17 giờ <=)',
+  AppText.txtErrorNotFoundCustomLessonId:
+  'Không tìm thấy id của lớp học tuỳ chỉnh',
   AppText.txtErrorFoundTooLessonsInSamePeriod:
       'Tìm thấy quá nhiều buổi học trong cùng 1 khoảng thời gian',
   AppText.txtErrorDuplicateLink: 'Trùng link meet trong sheet RENAME RECORD',

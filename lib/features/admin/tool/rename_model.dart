@@ -39,6 +39,8 @@ class DriveModel {
         return AppText.txtErrorNotFoundClassInLimitTime.text;
       case 6:
         return AppText.txtErrorFoundTooLessonsInSamePeriod.text;
+      case 7:
+        return AppText.txtErrorNotFoundCustomLessonId.text;
       default:
         return '';
     }

@@ -214,7 +214,7 @@ var manageFeedbacksHandler =
 });
 var toolsHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return const ToolScreen();
+  return ToolScreen();
 });
 var voucherHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
