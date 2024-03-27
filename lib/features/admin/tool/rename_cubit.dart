@@ -259,9 +259,9 @@ class RenameCubit extends Cubit<int> {
                 }
               }
             }
-            // else {
-            //   drive.error = 7;
-            // }
+            else {
+              drive.error ??= 7;
+            }
           } else {
             for (var lesson in list) {
               if (drive.lessonId == lesson.lessonId && ind < listSubmit.length) {
