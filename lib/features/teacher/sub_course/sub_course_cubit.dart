@@ -6,6 +6,7 @@ import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
+import 'package:internal_sakumi/providers/firebase/firestore_db.dart';
 
 class SubCourseCubit extends Cubit<int> {
   SubCourseCubit(this.classId) : super(0) {
@@ -70,9 +71,11 @@ class SubCourseCubit extends Cubit<int> {
         isSubClass: false,
         subClassId: subClassId);
 
+
+    await FireStoreDb.instance.createNewClass(subClass);
+
     await FireBaseProvider.instance.updateClassInfo(classModel);
 
-    await FireBaseProvider.instance.createNewClass(subClass);
 
     this.subClassId = subClassId;
 

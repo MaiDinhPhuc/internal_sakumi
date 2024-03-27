@@ -293,8 +293,12 @@ class ClassOverViewCubitV2 extends Cubit<int> {
   }
 
   double getPoint(int lessonId, int stdId) {
-    bool isCustom =
-        lessons!.firstWhere((e) => e.lessonId == lessonId).isCustom;
+
+    var lesson = lessons!.where((e) => e.lessonId == lessonId).toList();
+    bool isCustom = false;
+    if(lesson.isNotEmpty){
+      isCustom = lesson.first.isCustom;
+    }
 
     List<StudentLessonModel> stdLesson =
     stdLessons!.where((e) => e.lessonId == lessonId && e.studentId == stdId).toList();

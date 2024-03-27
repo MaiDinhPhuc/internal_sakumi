@@ -13,15 +13,16 @@ class SmallAvatar extends StatelessWidget {
       backgroundColor: const Color(0xffD9D9D9),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(1000),
-        child: url == '' ? Image.asset("assets/images/ic_avt.png") : ImageNetwork(
-            image: url,
-            height: Resizable.size(context, 32),
-            width: Resizable.size(context, 32),
-            onError: Container(),
-            onLoading: Transform.scale(
-              scale: 0.5,
-              child: const CircularProgressIndicator(),
-            )),
+        child:Image.asset("assets/images/ic_avt.png")
+        // url == '' ? Image.asset("assets/images/ic_avt.png") : ImageNetwork(
+        //     image: url,
+        //     height: Resizable.size(context, 32),
+        //     width: Resizable.size(context, 32),
+        //     onError: Container(),
+        //     onLoading: Transform.scale(
+        //       scale: 0.5,
+        //       child: const CircularProgressIndicator(),
+        //     )),
       ),
     );
   }

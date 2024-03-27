@@ -599,9 +599,9 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<void> updateTeacherInLessonResult(
-      int lessonId, int classId, int studentId) async {
+      int lessonId, int classId, int teacherId) async {
     await FireStoreDb.instance
-        .updateTeacherInLessonResult(lessonId, classId, studentId);
+        .updateTeacherInLessonResult(lessonId, classId, teacherId);
   }
 
   @override

@@ -180,14 +180,17 @@ class Calculator{
   }
 
   static double getStdPoint(int lessonId, List<LessonModel> lessons,List<StudentLessonModel> stdLessons) {
-    bool isCustom =
-        lessons.firstWhere((e) => e.lessonId == lessonId).isCustom;
-    StudentLessonModel stdLesson =
-    stdLessons.firstWhere((e) => e.lessonId == lessonId);
+
+    bool isCustom = lessons.where((e) => e.lessonId == lessonId).toList().isNotEmpty ? lessons.firstWhere((e) => e.lessonId == lessonId).isCustom : false;
+
+    var stdLesson = stdLessons.where((e) => e.lessonId == lessonId).toList();
+
     if (isCustom) {
       return getStdHwCustomPoint(lessonId,stdLessons);
     }
-    return stdLesson.hw;
+
+    if(stdLesson.isEmpty) return -2;
+    return stdLesson.first.hw;
   }
 
   static double getStdHwCustomPoint(int lessonId,List<StudentLessonModel> stdLessons) {

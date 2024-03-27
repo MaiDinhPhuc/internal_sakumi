@@ -23,6 +23,7 @@ import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/model/voucher_model.dart';
 import 'package:internal_sakumi/providers/api/api_provider.dart';
 import 'package:intl/intl.dart';
+import 'package:timezone/browser.dart';
 
 class FireStoreDb {
   FireStoreDb._privateConstructor();
@@ -100,7 +101,6 @@ class FireStoreDb {
   Future<QuerySnapshot<Map<String, dynamic>>> getClassById(int id) async {
     final snapshot =
         await db.collection("class").where('class_id', isEqualTo: id).get();
-    // debugPrint("==========>get db from \"class\" : ${snapshot.docs.length}");
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getClassById $id ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
@@ -527,12 +527,13 @@ class FireStoreDb {
 
   Future<void> changeStatusLesson(
       int lessonId, int classId, String status) async {
+    TZDateTime nowVN = TZDateTime.now(getLocation('Asia/Ho_Chi_Minh'));
     await db
         .collection('lesson_result')
         .doc("lesson_${lessonId}_class_$classId")
         .update({
       'status': status,
-      'date': DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now())
+      'date': DateFormat('dd/MM/yyyy HH:mm:ss').format(nowVN)
     });
     debugPrint("==========>update db from \"lesson_result\"");
   }

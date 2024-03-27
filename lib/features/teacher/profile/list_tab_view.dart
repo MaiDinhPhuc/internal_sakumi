@@ -1,5 +1,6 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/features/teacher/profile/report_tab/list_report_in_profile_view.dart';
+import 'package:internal_sakumi/features/teacher/profile/schedule_tab/schedule_tab_view.dart';
 
 import 'class_tab/list_class_in_profile_view.dart';
 import 'list_tab_profile_teacher.dart';
@@ -19,7 +20,7 @@ class ListTabView extends StatelessWidget {
             child: cubit.tabType == 'class'
                 ? ListClassInProfileView()
                 : cubit.tabType == 'schedule'
-                    ? Center(child: Text("schedule"))
+                    ? ScheduleTabView(role: 'teacher')
                     : cubit.tabType == 'overview'
                         ? OverViewTabInProfile(role: 'teacher')
                         : ListReportInProfileView(role: 'teacher', cubit: cubit.reportCubit))

@@ -137,14 +137,19 @@ class StudentItemOverViewCubit extends Cubit<int> {
 
 
   double getPoint(int lessonId) {
-    bool isCustom =
-        cubit.lessons!.firstWhere((e) => e.lessonId == lessonId).isCustom;
-    StudentLessonModel stdLesson =
-        stdLessons!.firstWhere((e) => e.lessonId == lessonId);
+    var lesson = cubit.lessons!.where((e) => e.lessonId == lessonId).toList();
+    bool isCustom = false;
+    if(lesson.isNotEmpty){
+      isCustom = lesson.first.isCustom;
+    }
+    var stdLesson =
+        stdLessons!.where((e) => e.lessonId == lessonId).toList();
     if (isCustom) {
       return getHwCustomPoint(lessonId);
     }
-    return stdLesson.hw;
+
+    if(stdLesson.isEmpty) return -2;
+    return stdLesson.first.hw;
   }
 
   double getHwCustomPoint(int lessonId) {

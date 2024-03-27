@@ -88,26 +88,28 @@ class SubCourseScreen extends StatelessWidget {
                               horizontal: Resizable.padding(context, 100)),
                           child: Column(
                             children: [
-                              Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: Resizable.padding(context, 10)),
-                                  child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        SubmitButton(
-                                            onPressed: () {
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (context) =>
-                                                      AddCustomLessonSubCourseDialog(
-                                                          cubit,
-                                                          classModel: cubit
-                                                              .subClassModel!));
-                                            },
-                                            title: AppText.btnAddNewLesson.text)
-                                      ])),
+                              if(role == "admin")
+                                Padding(
+                                    padding: EdgeInsets.only(
+                                        top: Resizable.padding(context, 10)),
+                                    child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          SubmitButton(
+                                              onPressed: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        AddCustomLessonSubCourseDialog(
+                                                            cubit,
+                                                            classModel: cubit
+                                                                .subClassModel!));
+                                              },
+                                              title: AppText.btnAddNewLesson.text)
+                                        ])),
                               Container(
                                   padding: EdgeInsets.only(
+                                      top:Resizable.padding(context, 10),
                                       right: Resizable.padding(context, 15)),
                                   child: SubCourseItemLayout(
                                       dropdown: Container(),

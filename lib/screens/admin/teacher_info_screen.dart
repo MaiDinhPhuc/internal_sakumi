@@ -8,6 +8,7 @@ import 'package:internal_sakumi/features/teacher/profile/list_tab_profile_teache
 import 'package:internal_sakumi/features/teacher/profile/manage_teacher_tab_cubit.dart';
 import 'package:internal_sakumi/features/teacher/profile/overview_tab/overview_in_profile.dart';
 import 'package:internal_sakumi/features/teacher/profile/report_tab/list_report_in_profile_view.dart';
+import 'package:internal_sakumi/features/teacher/profile/schedule_tab/schedule_tab_view.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
@@ -59,8 +60,7 @@ class TeacherInfoScreen extends StatelessWidget {
                                               ? ListTeacherClassView(
                                                   cubit: cubit)
                                               : tabCubit.tabType == 'schedule'
-                                                  ? Center(
-                                                      child: Text("schedule"))
+                                                  ? ScheduleTabView(role: 'admin')
                                                   : tabCubit.tabType ==
                                                           'overview'
                                                       ? OverViewTabInProfile(role: 'admin')

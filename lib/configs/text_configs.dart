@@ -496,10 +496,12 @@ enum AppText {
   txtAddNewSubCourse,
   txtHw,
   txtAlphabet,
-  txtReading
+  txtReading,
+  txtRegisterSchedule
 }
 
 Map<AppText, String> texts = {
+  AppText.txtRegisterSchedule: "Đăng ký ca dạy",
   AppText.txtReading: "Luyện đọc",
   AppText.txtAlphabet: "Bảng chữ",
   AppText.txtHw: "Bài tập",
