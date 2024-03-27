@@ -60,7 +60,7 @@ class DetailClassStatisticCubit extends Cubit<int>{
       if(listCourseId.contains(i.courseId) == false){
         listCourseId.add(i.courseId);
       }
-      int count = (await FireStoreDb.instance.getCountLessonResult(i.classId)).count;
+      int count = (await FireStoreDb.instance.getCountLessonResult(i.classId)).count??0;
       listLessonResultCount.add(count);
       DataProvider.courseById(i.courseId, onCourseLoaded);
     }
