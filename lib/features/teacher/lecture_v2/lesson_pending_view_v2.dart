@@ -6,6 +6,7 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 import 'package:intl/intl.dart';
+import 'package:timezone/browser.dart';
 
 import 'detail_lesson_cubit_v2.dart';
 
@@ -44,6 +45,7 @@ class LessonPendingViewV2 extends StatelessWidget {
                     ? true
                     : false,
                 onPressed: () async {
+                  TZDateTime nowVN = TZDateTime.now(getLocation('Asia/Ho_Chi_Minh'));
                   waitingDialog(context);
                   await cubit.addLessonResult(LessonResultModel(
                       id: 1000,
@@ -52,7 +54,7 @@ class LessonPendingViewV2 extends StatelessWidget {
                       teacherId: cubit.teacherId!,
                       status: 'Teaching',
                       date: DateFormat('dd/MM/yyyy HH:mm:ss')
-                          .format(DateTime.now()),
+                          .format(nowVN),
                       noteForStudent: '',
                       noteForSupport: '',
                       noteForTeacher: '',

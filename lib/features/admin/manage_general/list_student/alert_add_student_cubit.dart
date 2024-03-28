@@ -12,13 +12,11 @@ import 'package:internal_sakumi/widget/waiting_dialog.dart';
 class AlertAddStudentCubit extends Cubit<int> {
   AlertAddStudentCubit() : super(0);
 
-  int? studentClassCount;
   List<StudentModel>? listAllStudent, listStd, listSelectedStudent = [];
   bool? checkCreate, checkAdd;
   bool active = false;
   final TextEditingController searchTextController = TextEditingController();
   loadAllUser(ManageGeneralCubit cubit) async {
-    studentClassCount = DateTime.now().millisecondsSinceEpoch;
     listAllStudent = await FireBaseProvider.instance.getAllStudent();
     listStd = [];
     for (var i in listAllStudent!) {
@@ -95,10 +93,7 @@ class AlertAddStudentCubit extends Cubit<int> {
         classType: classModel.classType));
   }
 
-  createStudent(
-      BuildContext context, StudentModel model, UserModel userModel) async {
-    Navigator.pop(context);
-    waitingDialog(context);
+  createStudent(StudentModel model, UserModel userModel) async {
     checkCreate =
         await FireBaseProvider.instance.createNewStudent(model, userModel);
   }

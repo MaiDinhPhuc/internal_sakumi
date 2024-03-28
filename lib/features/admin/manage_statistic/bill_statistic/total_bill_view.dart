@@ -35,14 +35,14 @@ class TotalBillView extends StatelessWidget {
                   Container(
                     height: Resizable.size(context, 1),
                     margin:
-                    EdgeInsets.symmetric(vertical: Resizable.padding(context, 15)),
+                    EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
                     color: const Color(0xffD9D9D9),
                   ),
-                  Text(filterController.billStatisticCubit.totalBill == null ? "0" :filterController.billStatisticCubit.totalBill!.toString(),
+                  Expanded(child: Center(child: Text(filterController.billStatisticCubit.totalBill == null ? "0" :filterController.billStatisticCubit.totalBill!.toString(),
                       style: TextStyle(
                           fontSize: Resizable.size(context, 60),
                           fontWeight: FontWeight.w700,
-                          color: primaryColor))
+                          color: primaryColor))))
                 ],
               ),
             )),
@@ -69,14 +69,14 @@ class TotalBillView extends StatelessWidget {
                   Container(
                     height: Resizable.size(context, 1),
                     margin:
-                    EdgeInsets.symmetric(vertical: Resizable.padding(context, 15)),
+                    EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
                     color: const Color(0xffD9D9D9),
                   ),
-                  Text(filterController.billStatisticCubit.totalBillThisMonth == null ? "0" :filterController.billStatisticCubit.totalBillThisMonth!.toString(),
+                  Expanded(child: Center(child: Text(filterController.billStatisticCubit.totalBillThisMonth == null ? "0" :filterController.billStatisticCubit.totalBillThisMonth!.toString(),
                       style: TextStyle(
                           fontSize: Resizable.size(context, 60),
                           fontWeight: FontWeight.w700,
-                          color: primaryColor))
+                          color: primaryColor))))
                 ],
               ),
             ))

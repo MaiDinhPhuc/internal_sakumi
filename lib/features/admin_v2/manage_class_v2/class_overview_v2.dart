@@ -78,13 +78,14 @@ class ClassOverViewV2 extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                   color: primaryColor,
                   fontSize: Resizable.font(context, 30))) : Container(
-            width: Resizable.size(context, 20),
-            height: Resizable.size(context, 20),
+            padding: EdgeInsets.all(Resizable.padding(context, 5)),
+            width: Resizable.size(context, 30),
+            height: Resizable.size(context, 30),
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 color: primaryColor,
                 borderRadius: BorderRadius.circular(Resizable.size(context, 5))),
-            child: Text('A',
+            child: Text(cubit.stdTests == null ? "A" : cubit.getEvaluate(),
                 style: TextStyle(
                     fontWeight: FontWeight.w800,
                     color: Colors.white,

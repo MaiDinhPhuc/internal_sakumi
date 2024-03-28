@@ -138,11 +138,11 @@ class StatisticClassViewV2 extends StatelessWidget {
                   ),
                   Expanded(
                       child: Center(
-                          child: Text('A',
+                          child: Text(cubit.loaded ? cubit.getEvaluate() : "A",
                               style: TextStyle(
-                                  color: const Color(0xffFFD600),
+                                  color: primaryColor,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: Resizable.font(context, 40)))))
+                                  fontSize: Resizable.font(context, 50)))))
                 ],
               ) : Column(
                 children: [

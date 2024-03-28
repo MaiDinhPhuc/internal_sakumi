@@ -1,11 +1,8 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_field.dart';
-import 'package:internal_sakumi/features/admin/manage_general/list_student/alert_add_student_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_teacher/alert_add_teacher_cubit.dart';
-import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -108,7 +105,7 @@ void alertAddNewTeacherAccount(
                                                       phone: phoneCon.text,
                                                       teacherCode:
                                                       senseiCodeCon.text,
-                                                      status: AppText.statusInProgress.text),
+                                                      status: 'Chính thức'),
                                                   UserModel(
                                                       email: emailCon.text,
                                                       role: AppText
@@ -125,7 +122,7 @@ void alertAddNewTeacherAccount(
                                                 }
                                               }
                                             } else {
-                                              print('Form is invalid');
+                                              debugPrint('Form is invalid');
                                             }
                                           },
                                           title: AppText.btnAdd.text),

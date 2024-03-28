@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/teacher/sub_course/sub_course_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
@@ -26,7 +27,7 @@ class CustomLessonCubit extends Cubit<int> {
 
   loadData() async {
     courses = (await FireBaseProvider.instance.getAllCourseEnable())
-        //.where((e) => e.courseId != classModel.courseId)
+        .where((e) => e.courseId != 999999999)
         .toList();
     emit(state + 1);
   }
@@ -140,9 +141,68 @@ class CustomLessonCubit extends Cubit<int> {
             classStatus: classModel.classStatus,
             classType: classModel.classType,
             link: classModel.link,
-            customLessons: listCustomLesson, informal: classModel.informal))
+            customLessons: listCustomLesson,
+            informal: classModel.informal,
+            isSubClass: classModel.isSubClass,
+            subClassId: classModel.subClassId))
         .whenComplete(() {
       listLessonCubit.addNewLesson(LessonModel(
+          lessonId: millisecondsSinceEpoch,
+          courseId: -1,
+          description: desCon.text,
+          content: "",
+          title: titleCon.text,
+          btvn: -1,
+          vocabulary: 0,
+          listening: 0,
+          kanji: 0,
+          grammar: 0,
+          flashcard: 0,
+          alphabet: 0,
+          order: 0,
+          reading: 0,
+          enable: true,
+          customLessonInfo: list,
+          isCustom: true));
+      Navigator.of(context).pop();
+    });
+  }
+
+  updateSubCourseClass(BuildContext context, SubCourseCubit subCourseCubit) async {
+    int millisecondsSinceEpoch = DateTime.now().millisecondsSinceEpoch;
+    List<dynamic> listCustomLesson = classModel.customLessons;
+
+    List<Map> list = [];
+    for (var i in listLessonInfo) {
+      list.add(
+          {'course_id': i['courseId']['courseId'], 'lesson_id': i['lessonId']});
+    }
+
+    listCustomLesson.add({
+      "custom_lesson_id": millisecondsSinceEpoch,
+      "description": desCon.text,
+      "title": titleCon.text,
+      "lessons_info": list
+    });
+
+    await FireBaseProvider.instance
+        .updateClassInfo(ClassModel(
+        classId: classModel.classId,
+        courseId: classModel.courseId,
+        description: classModel.description,
+        endTime: classModel.endTime,
+        startTime: classModel.startTime,
+        note: classModel.note,
+        classCode: classModel.classCode,
+        classStatus: classModel.classStatus,
+        classType: classModel.classType,
+        link: classModel.link,
+        customLessons: listCustomLesson,
+        informal: classModel.informal,
+        isSubClass: classModel.isSubClass,
+        subClassId: classModel.subClassId))
+        .whenComplete(() {
+      subCourseCubit.addNewLesson(LessonModel(
           lessonId: millisecondsSinceEpoch,
           courseId: -1,
           description: desCon.text,

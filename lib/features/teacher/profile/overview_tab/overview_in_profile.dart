@@ -28,7 +28,7 @@ class OverViewTabInProfile extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   padding: EdgeInsets.symmetric(
                       horizontal: Resizable.padding(context, 10),
-                      vertical: Resizable.padding(context, 10)),
+                      vertical: Resizable.padding(context, 5)),
                   decoration: BoxDecoration(
                       border: Border.all(width: 0.5, color: greyColor.shade600),
                       borderRadius: BorderRadius.all(

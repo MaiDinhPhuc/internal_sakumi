@@ -33,7 +33,7 @@ class BillStatisticChart extends StatelessWidget {
                   '${series.name} : ${billStatisticCubit.getTotalVnd(pointIndex)}',
                   style: const TextStyle(color: Colors.white, fontSize: 14),
                 ),
-                Padding(padding: const EdgeInsets.only(top: 5),child: Text(
+                Padding(padding: const EdgeInsets.only(top: 0),child: Text(
                   '${data.x} : ${data.y.toString()}',
                   style: const TextStyle(color: Colors.white, fontSize: 14),
                 ),)

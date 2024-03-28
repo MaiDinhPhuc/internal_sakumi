@@ -45,18 +45,10 @@ class DateFilterStudent extends StatelessWidget {
                                 Navigator.pop(context);
                               },
                               onSubmit: (v) {
-                                String str = v.toString();
-                                int startIndex = str.indexOf("(");
-                                int endIndex = str.indexOf(")");
-                                String substring =
-                                    str.substring(startIndex + 1, endIndex);
-                                List<String> sub = substring.split(",");
-                                String startDate =
-                                    sub[0].split("startDate: ")[1];
-                                String endDate = sub[1].split('endDate: ')[1];
-                                if (endDate != "null") {
+                                var range = v as PickerDateRange;
+                                if (range.endDate != null) {
                                   filterController.studentStatisticCubit.dateChooseCubit
-                                      .setDateTime(startDate, endDate);
+                                      .setDateTime(range.startDate!, range.endDate!);
                                 }
                                 Navigator.pop(context);
                               },

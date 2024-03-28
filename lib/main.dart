@@ -8,6 +8,7 @@ import 'package:internal_sakumi/providers/cache/filter_statistic_provider.dart';
 import 'package:internal_sakumi/providers/cache/filter_teacher_provider.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:url_strategy/url_strategy.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 import 'configs/color_configs.dart';
 import 'features/master/manage_survey/manage_survey_cubit.dart';
@@ -16,6 +17,7 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  tz.initializeTimeZones();
   Routes.configureRoutes(Routes.router);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

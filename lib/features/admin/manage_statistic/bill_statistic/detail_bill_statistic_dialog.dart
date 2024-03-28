@@ -52,11 +52,32 @@ class DetailBillStatisticDialog extends StatelessWidget {
                       ],
                     ),
                     Padding(padding: EdgeInsets.symmetric(vertical: Resizable.padding(context, 15)),child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        FilterBillCreatorDetail(detailCubit: detailCubit),
-                        FilterBillTypeDetail(detailCubit: detailCubit),
-                        FilterBillCurrencyDetail(detailCubit: detailCubit)
+                        Column(
+                          crossAxisAlignment : CrossAxisAlignment.start,
+                          children: [
+                            Text("Tiền Việt(VNĐ):  ${detailCubit.getSumVND()}",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: Resizable.font(context, 18),
+                                    color: primaryColor)),
+                            SizedBox(height:  Resizable.padding(context, 5)),
+                            Text("Yên Nhật(¥):  ${detailCubit.getSumYen()}",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: Resizable.font(context, 18),
+                                    color: primaryColor))
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            FilterBillCreatorDetail(detailCubit: detailCubit),
+                            FilterBillTypeDetail(detailCubit: detailCubit),
+                            FilterBillCurrencyDetail(detailCubit: detailCubit)
+                          ],
+                        )
                       ],
                     )),
                     Expanded(

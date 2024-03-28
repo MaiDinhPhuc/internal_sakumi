@@ -38,6 +38,7 @@ class DetailBillStatisticCubit extends Cubit<int> {
     true,
     true,
     true,
+    true
   ];
 
   List<bool> creators = [true, true, true, true, true];
@@ -65,7 +66,8 @@ class DetailBillStatisticCubit extends Cubit<int> {
     "RENEW - CỌC 1 KÌ",
     "RENEW - CỌC 2 KÌ",
     "RENEW - BSHP 1 KÌ",
-    "RENEW - BSHP 2 KÌ"
+    "RENEW - BSHP 2 KÌ",
+    'HỌC LẠI'
   ];
 
   List<String> listCreator = ["Vũ", "Yến", "Phương", "Thuỷ", "Thơ"];
@@ -136,5 +138,34 @@ class DetailBillStatisticCubit extends Cubit<int> {
   String convertDate(int date) {
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(date);
     return DateFormat('dd/MM/yyyy').format(dateTime);
+  }
+
+  String getSumVND(){
+    String currency = "Tiền Việt(vnđ)";
+
+    var listBill = getListBill()
+        .where((e) => e.currency == currency)
+        .toList();
+
+    int sum = 0;
+    for (var i in listBill) {
+      sum = sum + i.payment;
+    }
+
+    return "${NumberFormat('#,##0').format(sum)}đ";
+  }
+  String getSumYen() {
+    String currency = "Yên Nhật(¥)";
+
+    var listBill = getListBill()
+        .where((e) => e.currency == currency)
+        .toList();
+
+    int sum = 0;
+    for (var i in listBill) {
+      sum = sum + i.payment;
+    }
+
+    return "${NumberFormat('#,##0').format(sum)}¥";
   }
 }

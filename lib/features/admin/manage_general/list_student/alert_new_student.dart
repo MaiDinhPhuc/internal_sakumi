@@ -186,10 +186,11 @@ void alertNewStudent(
                                       child: SubmitButton(
                                           onPressed: () async {
                                             int millisecondsSinceEpoch = DateTime.now().millisecondsSinceEpoch;
+                                            Navigator.pop(context);
+                                            waitingDialog(context);
                                             if (formKey.currentState!
                                                 .validate()) {
                                               await cubit.createStudent(
-                                                  context,
                                                   StudentModel(
                                                       name: nameCon.text,
                                                       url: '',
@@ -209,14 +210,11 @@ void alertNewStudent(
                                               if (context.mounted) {
                                                 Navigator.pop(context);
                                                 if (cubit.checkCreate == true) {
-                                                  debugPrint(
-                                                      '===========> listStudentClass ${cubit.studentClassCount! + 1}');
-
+                                                  var id = DateTime.now().millisecondsSinceEpoch;
                                                   await cubit.addStudentToClass(
                                                       context,
                                                       StudentClassModel(
-                                                          id: cubit
-                                                                  .studentClassCount!,
+                                                          id: id,
                                                           classId:
                                                               manageGeneralCubit
                                                                   .selector,

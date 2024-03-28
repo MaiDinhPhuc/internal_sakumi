@@ -20,7 +20,7 @@ class TestAlreadyV2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(
-          horizontal: Resizable.padding(context, 150),
+          horizontal: Resizable.padding(context, 100),
           vertical: Resizable.padding(context, 5)),
       child: BlocProvider(
           create: (context) => DropdownCubit(),

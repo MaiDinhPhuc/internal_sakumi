@@ -69,8 +69,6 @@ class ListLessonCubitV2 extends Cubit<int>{
 
     await sortLessons();
 
-
-
     await Future.delayed(const Duration(milliseconds: 500));
 
     var listStdId = listStdClass!.map((e) => e.userId).toList();

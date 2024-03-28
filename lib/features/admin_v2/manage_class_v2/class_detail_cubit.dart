@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/features/calculator/calculator.dart';
 import 'package:internal_sakumi/model/class_model.dart';
@@ -6,6 +8,7 @@ import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
+import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 
 import 'class_cubit_v2.dart';
@@ -21,6 +24,7 @@ class ClassDetailCubit extends Cubit<int> {
   List<StudentLessonModel>? stdLessons;
   List<StudentClassModel>? stdClasses;
   List<LessonModel>? lessons;
+  List<StudentTestModel>? stdTests;
 
   String? title;
   int? lessonCount;
@@ -70,9 +74,11 @@ class ClassDetailCubit extends Cubit<int> {
       }
     }
 
-    emit(state + 1);
-
     await DataProvider.stdLessonByClassId(classModel.classId, loadStdLesson);
+
+    await DataProvider.stdTestByClassId(classModel.classId, loadStdTest);
+
+    emit(state + 1);
 
     await DataProvider.lessonResultByClassId(
         classModel.classId, loadLessonResult);
@@ -80,6 +86,10 @@ class ClassDetailCubit extends Cubit<int> {
     await loadPercent();
 
     await loadStatistic();
+  }
+
+  loadStdTest(Object stdTests) {
+    this.stdTests = stdTests as List<StudentTestModel>;
   }
 
   onCourseLoaded(Object course) {
@@ -106,6 +116,76 @@ class ClassDetailCubit extends Cubit<int> {
   loadStdLesson(Object stdLessons) {
     this.stdLessons = stdLessons as List<StudentLessonModel>;
     emit(state + 1);
+  }
+
+  String getEvaluate(){
+    int countDrop = 0;
+    for (var i in stdClasses!) {
+      if (i.classStatus == "Dropped" ||
+          i.classStatus == "Deposit" ||
+          i.classStatus == "Retained" ||
+          i.classStatus == "Moved") {
+        countDrop++;
+      }
+    }
+    double Z = (countDrop / stdClasses!.length) * 10;
+
+    List<int> listStdId = [];
+    for(var i in stdClasses!){
+      if (i.classStatus != "Remove" &&
+          i.classStatus != "Dropped" &&
+          i.classStatus != "Deposit" &&
+          i.classStatus != "Retained" &&
+          i.classStatus != "Moved" && i.classStatus != "Viewer") {
+        listStdId.add(i.userId);
+      }
+    }
+
+    double sum = 0;
+
+    for(var i in listStdId){
+      var stdLessons = this.stdLessons!
+          .where((e) => e.studentId == i)
+          .toList();
+      var stdTests = this.stdTests!
+          .where((e) => e.studentId == i)
+          .toList();
+      var stdClassModel = stdClasses!.firstWhere((e) => e.userId == i);
+
+      double X = Calculator.getStudentAttendancePercent(stdLessons) * 10;
+      double Y = Calculator.getStudentHwPercent(stdLessons, lessons!) * 10;
+      double Z1 = Calculator.getGPAPoint(stdLessons, lessons!) == null ? 10 : Calculator.getGPAPoint(stdLessons, lessons!)!;
+      double Z2 = Calculator.getStdTestPoint(stdTests);
+      double Z3 = Calculator.convertToPoint(stdClassModel.learningStatus);
+      double Z4 = Calculator.convertToPoint(stdClassModel.activeStatus);
+
+      double Z = (Z1+Z2+Z3+Z4)/4;
+
+      double R = (X+Y+Z)/3;
+
+      while(R - min(X, min(Y,Z)) > 2){
+        R = R - 1;
+      }
+
+      sum = sum+R;
+    }
+
+    double result = sum/listStdId.length;
+
+    double Q = result - Z;
+
+    if(Q >= 8.5) return "A";
+
+    if(Q >= 7) return "B";
+
+    if(Q >= 5.5) return "C";
+
+    if(Q >= 4) return "D";
+
+    if(Q >= 2) return "E";
+
+    return "F";
+
   }
 
   loadPercent() async {

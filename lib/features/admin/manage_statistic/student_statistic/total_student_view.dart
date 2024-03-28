@@ -20,8 +20,7 @@ class TotalStudentView extends StatelessWidget {
                   bottom: Resizable.padding(context, 10),
                   right: Resizable.padding(context, 10)),
               decoration: BoxDecoration(
-                border: Border.all(
-                    width: 0.5, color: const Color(0xffE0E0E0)),
+                border: Border.all(width: 0.5, color: const Color(0xffE0E0E0)),
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Column(
@@ -34,28 +33,32 @@ class TotalStudentView extends StatelessWidget {
                           color: greyColor.shade600)),
                   Container(
                     height: Resizable.size(context, 1),
-                    margin:
-                    EdgeInsets.symmetric(vertical: Resizable.padding(context, 15)),
+                    margin: EdgeInsets.symmetric(
+                        vertical: Resizable.padding(context, 5)),
                     color: const Color(0xffD9D9D9),
                   ),
-                  Text(filterController.studentStatisticCubit.totalStudent == null ? "0" :filterController.studentStatisticCubit.totalStudent!.toString(),
+                  Expanded(child: Center(child: Text(
+                      filterController.studentStatisticCubit.totalStudent ==
+                          null
+                          ? "0"
+                          : filterController.studentStatisticCubit.totalStudent!
+                          .toString(),
                       style: TextStyle(
                           fontSize: Resizable.size(context, 60),
                           fontWeight: FontWeight.w700,
-                          color: primaryColor))
+                          color: primaryColor))))
                 ],
               ),
             )),
         Expanded(
             flex: 1,
-            child: Container  (
+            child: Container(
               padding: EdgeInsets.all(Resizable.padding(context, 10)),
               margin: EdgeInsets.only(
                   bottom: Resizable.padding(context, 10),
                   right: Resizable.padding(context, 10)),
               decoration: BoxDecoration(
-                border: Border.all(
-                    width: 0.5, color: const Color(0xffE0E0E0)),
+                border: Border.all(width: 0.5, color: const Color(0xffE0E0E0)),
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Column(
@@ -68,15 +71,24 @@ class TotalStudentView extends StatelessWidget {
                           color: greyColor.shade600)),
                   Container(
                     height: Resizable.size(context, 1),
-                    margin:
-                    EdgeInsets.symmetric(vertical: Resizable.padding(context, 15)),
+                    margin: EdgeInsets.symmetric(
+                        vertical: Resizable.padding(context, 5)),
                     color: const Color(0xffD9D9D9),
                   ),
-                  Text(filterController.studentStatisticCubit.totalStudentLearning == null ? "0" :filterController.studentStatisticCubit.totalStudentLearning!.toString(),
-                      style: TextStyle(
-                          fontSize: Resizable.size(context, 60),
-                          fontWeight: FontWeight.w700,
-                          color: primaryColor))
+                  Expanded(
+                      child: Center(
+                          child: Text(
+                              filterController.studentStatisticCubit
+                                          .totalStudentLearning ==
+                                      null
+                                  ? "0"
+                                  : filterController.studentStatisticCubit
+                                      .totalStudentLearning!
+                                      .toString(),
+                              style: TextStyle(
+                                  fontSize: Resizable.size(context, 60),
+                                  fontWeight: FontWeight.w700,
+                                  color: primaryColor))))
                 ],
               ),
             ))

@@ -36,7 +36,7 @@ class OverViewTabCubit extends Cubit<int> {
       this.userId = userId;
     }
     teacherClasses =
-    await FireBaseProvider.instance.getTeacherClassById(userId!);
+    (await FireBaseProvider.instance.getTeacherClassById(userId!)).where((e) => e.responsibility == true).toList();
     var listClassId = teacherClasses!.map((e) => e.classId).toList();
     classes =
     await FireBaseProvider.instance.getListClassByListIdV2(listClassId);

@@ -169,11 +169,11 @@ void alertCheckBoxStudent(
                                                 waitingDialog(context);
                                                 for (var i in cubit
                                                     .listSelectedStudent!) {
+                                                  var id = DateTime.now().millisecondsSinceEpoch;
                                                   await cubit.addStudentToClass(
                                                       context,
                                                       StudentClassModel(
-                                                          id: cubit
-                                                                  .studentClassCount!,
+                                                          id: id,
                                                           classId:
                                                               manageGeneralCubit
                                                                   .selector,

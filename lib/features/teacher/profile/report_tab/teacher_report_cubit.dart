@@ -61,6 +61,7 @@ class TeacherReportCubit extends Cubit<int> {
         listStatus.add(this.listStatus[i]);
       }
     }
+
     return listReport!
         .where((e) =>
             listStatus.contains(e.status) &&
