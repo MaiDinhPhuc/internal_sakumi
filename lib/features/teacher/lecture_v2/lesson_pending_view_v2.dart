@@ -53,8 +53,7 @@ class LessonPendingViewV2 extends StatelessWidget {
                       lessonId: cubit.lessonId,
                       teacherId: cubit.teacherId!,
                       status: 'Teaching',
-                      date: DateFormat('dd/MM/yyyy HH:mm:ss')
-                          .format(nowVN),
+                      date: nowVN.millisecondsSinceEpoch,
                       noteForStudent: '',
                       noteForSupport: '',
                       noteForTeacher: '',

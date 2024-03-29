@@ -188,19 +188,28 @@ class RenameCubit extends Cubit<int> {
       if (drive.error == null) {
         int count = 0;
         int lessonId = 0;
-        String? date;
+        int? date;
 
         for (var i in lessonResults) {
           if (i.classId == drive.classModel!.classId) {
-            DateTime last = drive.file.createdTime!;
-            DateTime first =
-                DateFormat('dd/MM/yyyy HH:mm:ss').parse(i.date.toString());
-            Duration duration = last.difference(first);
-            if (duration.inHours <= 17 && duration.inHours >= 0) {
+            // DateTime last = drive.file.createdTime!;
+            // DateTime first =
+            //     DateFormat('dd/MM/yyyy HH:mm:ss').parse(i.date.toString());
+            // Duration duration = last.difference(first);
+            // if (duration.inHours <= 17 && duration.inHours >= 0) {
+            //   lessonId = i.lessonId;
+            //   date = i.date;
+            //   count++;
+            // }
+            int epochVideo = drive.file.createdTime!.millisecondsSinceEpoch;
+            int epochLesson = DateTime.parse(i.date.toString()).millisecondsSinceEpoch;
+            int temp = DateTime.fromMillisecondsSinceEpoch(epochVideo - epochLesson).hour;
+            if (temp <= 24 && temp >= 0) {
               lessonId = i.lessonId;
               date = i.date;
               count++;
             }
+
           }
         }
 
@@ -516,16 +525,16 @@ class RenameCubit extends Cubit<int> {
 //             DateFormat('dd/MM/yyyy HH:mm:ss').parse(i.date.toString());
 //             Duration duration = last.difference(first);
 //
-//             //epoch
-//             // int epochVideo = drive.file.createdTime!.millisecondsSinceEpoch;
-//             // int epochLesson = DateTime.parse(i.date.toString()).millisecondsSinceEpoch;
-//             // int temp = DateTime.fromMillisecondsSinceEpoch(epochVideo - epochLesson).hour;
-//             // if (temp <= 24 && temp >= 0) {
-//             //   lessonId = i.lessonId;
-//             //   date = i.date;
-//             //   count++;
-//             // }
-//
+//             epoch
+//             int epochVideo = drive.file.createdTime!.millisecondsSinceEpoch;
+//             int epochLesson = DateTime.parse(i.date.toString()).millisecondsSinceEpoch;
+//             int temp = DateTime.fromMillisecondsSinceEpoch(epochVideo - epochLesson).hour;
+//             if (temp <= 24 && temp >= 0) {
+//               lessonId = i.lessonId;
+//               date = i.date;
+//               count++;
+//             }
+
 //             if (duration.inHours <= 17 && duration.inHours >= 0) {
 //               lessonId = i.lessonId;
 //               date = i.date;

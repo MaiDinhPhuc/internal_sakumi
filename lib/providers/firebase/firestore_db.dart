@@ -885,7 +885,7 @@ class FireStoreDb {
         .doc("lesson_${model.lessonId}_class_${model.classId}")
         .set({
       'class_id': model.classId,
-      'date': model.date,
+      'date_time': model.date,
       'id': model.id,
       'lesson_id': model.lessonId,
       'status': model.status,
@@ -907,6 +907,7 @@ class FireStoreDb {
       'teacher_code': model.teacherCode,
       'phone': model.phone,
       'user_id': model.userId,
+      'schedule':model.schedule
     });
     debugPrint("==========>update db for \"teacher\"");
   }
@@ -1144,6 +1145,7 @@ class FireStoreDb {
       'teacher_code': model.teacherCode,
       'url': model.url,
       'user_id': model.userId,
+      'schedule': model.schedule
     });
     debugPrint("==========>add db for \"teacher\"");
   }

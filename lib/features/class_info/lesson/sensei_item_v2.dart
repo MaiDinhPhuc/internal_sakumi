@@ -2,6 +2,7 @@ import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/small_avt.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:intl/intl.dart';
 
 import 'lesson_item_cubit_v2.dart';
 
@@ -74,7 +75,7 @@ class SenseiItemV2 extends StatelessWidget {
                     TextSpan(
                         text: cubit.lessonResult == null
                             ? "loading..."
-                            : cubit.lessonResult!.date,
+                            : DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.fromMillisecondsSinceEpoch(cubit.lessonResult!.date)),
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: Resizable.font(context, 18),

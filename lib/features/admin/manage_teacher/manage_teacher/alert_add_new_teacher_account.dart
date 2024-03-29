@@ -105,7 +105,7 @@ void alertAddNewTeacherAccount(
                                                       phone: phoneCon.text,
                                                       teacherCode:
                                                       senseiCodeCon.text,
-                                                      status: 'Chính thức'),
+                                                      status: 'Chính thức',schedule: {}),
                                                   UserModel(
                                                       email: emailCon.text,
                                                       role: AppText

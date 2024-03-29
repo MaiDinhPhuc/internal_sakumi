@@ -3,6 +3,7 @@ import 'package:image_network/image_network.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_teacher/teacher_info/teacher_info_cubit.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
+import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
@@ -54,16 +55,19 @@ class InfoTeacherView extends StatelessWidget {
               SubmitButton(
                 onPressed: () async {
                   waitingDialog(context);
+                  var teacherModel = TeacherModel(
+                      name: cubit.name,
+                      url: cubit.teacher!.url,
+                      note: cubit.note,
+                      userId: cubit.teacher!.userId,
+                      phone: cubit.phone,
+                      status: cubit.teacher!.status,
+                      teacherCode: cubit.teacherCode,
+                      schedule: cubit.teacher!.schedule);
                   await FireBaseProvider.instance.updateProfileTeacher(
-                      TextUtils.getName(),
-                      TeacherModel(
-                          name: cubit.name,
-                          url: cubit.teacher!.url,
-                          note: cubit.note,
-                          userId: cubit.teacher!.userId,
-                          phone: cubit.phone,
-                          status: cubit.teacher!.status,
-                          teacherCode: cubit.teacherCode));
+                      TextUtils.getName(),teacherModel
+                      );
+                  DataProvider.updateTeacherInfo(cubit.teacher!.userId,teacherModel);
                   Navigator.pop(context);
                   notificationDialog(
                       context, AppText.txtUpdateTeacherDone.text);
