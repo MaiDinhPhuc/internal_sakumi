@@ -223,7 +223,7 @@ class FireBaseProvider extends NetworkProvider {
   Future<List<TeacherClassModel>> getTeacherClassById(int id) async {
     return (await FireStoreDb.instance.getTeacherClassById(id))
         .docs
-        .map((e) => TeacherClassModel.fromSnapshot(e))
+        .map((e) => TeacherClassModel.fromSnapshot(e)).where((e) => e.classStatus != 'Remove')
         .toList();
   }
 
@@ -376,20 +376,22 @@ class FireBaseProvider extends NetworkProvider {
               ...res.docs.map((e) => LessonResultModel.fromSnapshot(e)).toList()
             ]);
 
-    list.sort((a, b) {
-      DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm:ss');
-      var tempA = a.date;
-      var tempB = b.date;
-      if (tempA!.length == 10) {
-        tempA += ' 00:00:00';
-      }
-      if (tempB!.length == 10) {
-        tempB += ' 00:00:00';
-      }
-      final dateA = dateFormat.parse(tempA);
-      final dateB = dateFormat.parse(tempB);
-      return dateA.compareTo(dateB);
-    });
+    list.sort((a, b) => a.date.compareTo(b.date));
+    //
+    // list.sort((a, b) {
+    //   DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm:ss');
+    //   var tempA = a.date;
+    //   var tempB = b.date;
+    //   if (tempA!.length == 10) {
+    //     tempA += ' 00:00:00';
+    //   }
+    //   if (tempB!.length == 10) {
+    //     tempB += ' 00:00:00';
+    //   }
+    //   final dateA = dateFormat.parse(tempA);
+    //   final dateB = dateFormat.parse(tempB);
+    //   return dateA.compareTo(dateB);
+    // });
     return list;
   }
 
@@ -431,20 +433,21 @@ class FireBaseProvider extends NetworkProvider {
         .docs
         .map((e) => LessonResultModel.fromSnapshot(e))
         .toList();
-    lesResults.sort((a, b) {
-      DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm:ss');
-      var tempA = a.date;
-      var tempB = b.date;
-      if (tempA!.length == 10) {
-        tempA += ' 00:00:00';
-      }
-      if (tempB!.length == 10) {
-        tempB += ' 00:00:00';
-      }
-      final dateA = dateFormat.parse(tempA);
-      final dateB = dateFormat.parse(tempB);
-      return dateA.compareTo(dateB);
-    });
+    lesResults.sort((a, b) => a.date.compareTo(b.date));
+    // lesResults.sort((a, b) {
+    //   DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm:ss');
+    //   var tempA = a.date;
+    //   var tempB = b.date;
+    //   if (tempA!.length == 10) {
+    //     tempA += ' 00:00:00';
+    //   }
+    //   if (tempB!.length == 10) {
+    //     tempB += ' 00:00:00';
+    //   }
+    //   final dateA = dateFormat.parse(tempA);
+    //   final dateB = dateFormat.parse(tempB);
+    //   return dateA.compareTo(dateB);
+    // });
     return lesResults;
   }
 
@@ -793,7 +796,7 @@ class FireBaseProvider extends NetworkProvider {
   Future<List<TeacherClassModel>> getAllTeacherInClass() async {
     final listSensei = (await FireStoreDb.instance.getAllTeacherInClass())
         .docs
-        .map((e) => TeacherClassModel.fromSnapshot(e))
+        .map((e) => TeacherClassModel.fromSnapshot(e)).where((e) => e.classStatus != 'Remove')
         .toList();
     return listSensei;
   }
@@ -804,7 +807,7 @@ class FireBaseProvider extends NetworkProvider {
     final listTeacher =
         (await FireStoreDb.instance.getAllTeacherInClassByClassId(classId))
             .docs
-            .map((e) => TeacherClassModel.fromSnapshot(e))
+            .map((e) => TeacherClassModel.fromSnapshot(e)).where((e) => e.classStatus != 'Remove')
             .toList();
     return listTeacher;
   }

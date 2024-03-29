@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LessonResultModel {
-  final int id, lessonId, classId, teacherId;
-  final String? noteForTeacher,
+  final int id, lessonId, classId, teacherId,date;
+  final String noteForTeacher,
       noteForStudent,
       noteForSupport,
       status,
-      date,
+
       supportNoteForTeacher;
 
   LessonResultModel(
@@ -46,7 +46,7 @@ class LessonResultModel {
         classId: data['class_id'],
         teacherId: data['teacher_id'],
         status: data['status'],
-        date: data['date'],
+        date: data['date_time'] ?? 0,
         noteForStudent: data['student_note'],
         noteForSupport: data['support_note'],
         noteForTeacher: data['teacher_note'],

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class TeacherModel {
   final String name, note, phone, teacherCode, url, status;
   final int userId;
+  final Map schedule;
 
   const TeacherModel(
       {required this.name,
@@ -12,6 +13,7 @@ class TeacherModel {
       required this.phone,
       required this.teacherCode,
       required this.status,
+        required this.schedule
     });
   TeacherModel copyWith({
     String? name,
@@ -21,7 +23,8 @@ class TeacherModel {
     String? url,
     String? status,
     int? userId,
-    String? type
+    String? type,
+    Map? schedule
   }) {
     return TeacherModel(
       name: name ?? this.name,
@@ -30,7 +33,8 @@ class TeacherModel {
       teacherCode: teacherCode ?? this.teacherCode,
       url: url ?? this.url,
       status: status ?? this.status,
-      userId: userId ?? this.userId
+      userId: userId ?? this.userId,
+      schedule: schedule ?? this.schedule
     );
   }
 
@@ -44,6 +48,15 @@ class TeacherModel {
         phone: data["phone"],
         teacherCode: data["teacher_code"],
         url: data['url'],
-        status: data['status']);
+        status: data['status'],
+        schedule: data['schedule'] ?? {
+          'Mon':[],
+          'Tue':[],
+          'Wed':[],
+          'Thu':[],
+          'Fri':[],
+          'Sat':[],
+          'Sun':[]
+        });
   }
 }
