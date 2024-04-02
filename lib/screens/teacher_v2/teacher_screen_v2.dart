@@ -125,9 +125,11 @@ class TeacherScreenV2 extends StatelessWidget {
                                 child: ClassItemV2(classModel: e, classCubit: cubit)))
                                 .toList()
                           ])
-                              : const Center(
-                            child: CircularProgressIndicator(),
-                          )),
+                              : Text(AppText.txtNoClass.text,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: Resizable.font(context, 17),
+                                  color: greyColor.shade600))),
                       SizedBox(height: Resizable.size(context, 50)),
                     ],
                   ),

@@ -20,6 +20,7 @@ import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
 import 'package:internal_sakumi/model/report_model.dart';
+import 'package:internal_sakumi/model/schedule_model.dart';
 import 'package:internal_sakumi/model/student_class_log.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
@@ -412,6 +413,22 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<List<ScheduleModel>> getTeacherCyclicSchedule(int teacherId) async {
+    return (await FireStoreDb.instance.getTeacherCyclicSchedule(teacherId))
+        .docs
+        .map((e) => ScheduleModel.fromSnapshot(e))
+        .toList();
+  }
+
+  @override
+  Future<List<ScheduleModel>> getTeacherSingleSchedule(List<int> listId, int startDate, int endDate) async {
+    return (await FireStoreDb.instance.getTeacherSingleSchedule(listId,startDate,endDate))
+        .docs
+        .map((e) => ScheduleModel.fromSnapshot(e))
+        .toList();
+  }
+
+  @override
   Future<LessonModel> getLessonById(int lessonId) async {
     return (await FireStoreDb.instance.getLessonById(lessonId))
         .docs
@@ -434,20 +451,16 @@ class FireBaseProvider extends NetworkProvider {
         .map((e) => LessonResultModel.fromSnapshot(e))
         .toList();
     lesResults.sort((a, b) => a.date.compareTo(b.date));
-    // lesResults.sort((a, b) {
-    //   DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm:ss');
-    //   var tempA = a.date;
-    //   var tempB = b.date;
-    //   if (tempA!.length == 10) {
-    //     tempA += ' 00:00:00';
-    //   }
-    //   if (tempB!.length == 10) {
-    //     tempB += ' 00:00:00';
-    //   }
-    //   final dateA = dateFormat.parse(tempA);
-    //   final dateB = dateFormat.parse(tempB);
-    //   return dateA.compareTo(dateB);
-    // });
+    return lesResults;
+  }
+
+  @override
+  Future<List<LessonResultModel>> getLessonResultWithDate(int start, int end,int teacherId) async {
+    var lesResults = (await FireStoreDb.instance.getLessonResultWithDate(start, end, teacherId))
+        .docs
+        .map((e) => LessonResultModel.fromSnapshot(e))
+        .toList();
+    lesResults.sort((a, b) => a.date.compareTo(b.date));
     return lesResults;
   }
 

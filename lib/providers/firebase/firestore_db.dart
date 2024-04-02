@@ -116,6 +116,29 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getTeacherCyclicSchedule(
+      int teacherId) async {
+    final snapshot = await db
+        .collection("schedule")
+        .where('teacher_id', isEqualTo: teacherId)
+        .get();
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getTeacherSingleSchedule(
+      List<int> listId, int startDate, int endDate) async {
+    final snapshot = await db
+        .collection("schedule")
+        .where("type", isEqualTo: "single")
+        .where('class_id', whereIn: listId)
+        .where("date", isGreaterThanOrEqualTo: startDate)
+        .where("date", isLessThanOrEqualTo: endDate)
+        .get();
+
+    return snapshot;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getLessonById(int id) async {
     final snapshot =
         await db.collection("lessons").where('lesson_id', isEqualTo: id).get();
@@ -183,6 +206,22 @@ class FireStoreDb {
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonResultByClassId $id ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    // debugPrint("==========>get db from \"lesson_result\" : ${snapshot.docs.length}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getLessonResultWithDate(
+      int start, int end, int teacherId) async {
+    final snapshot = await db
+        .collection('lesson_result')
+        .orderBy('date_time', descending: true)
+        .where(Filter.and(
+            Filter("date_time", isGreaterThanOrEqualTo: start),
+            Filter("date_time", isLessThanOrEqualTo: end),
+            Filter("teacher_id", isEqualTo: teacherId)))
+        .get();
 
     // debugPrint("==========>get db from \"lesson_result\" : ${snapshot.docs.length}");
 
@@ -907,7 +946,7 @@ class FireStoreDb {
       'teacher_code': model.teacherCode,
       'phone': model.phone,
       'user_id': model.userId,
-      'schedule':model.schedule
+      'schedule': model.schedule
     });
     debugPrint("==========>update db for \"teacher\"");
   }
@@ -1686,8 +1725,8 @@ class FireStoreDb {
       'class_type': model.classType,
       'link': model.link,
       'informal': model.informal,
-      'is_sub_class':model.isSubClass,
-      'sub_class_id':model.subClassId
+      'is_sub_class': model.isSubClass,
+      'sub_class_id': model.subClassId
     });
     debugPrint("==========>add db for \"class\"");
   }

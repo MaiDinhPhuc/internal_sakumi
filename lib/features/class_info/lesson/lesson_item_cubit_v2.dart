@@ -69,7 +69,7 @@ class LessonItemCubitV2 extends Cubit<int> {
         noteForStudent: lessonResult!.noteForStudent,
         noteForSupport: lessonResult!.noteForSupport,
         noteForTeacher: lessonResult!.noteForTeacher,
-        supportNoteForTeacher: value);
+        supportNoteForTeacher: value, dateTime: lessonResult!.dateTime);
   }
 
   double getAttendancePercent() {

@@ -57,7 +57,7 @@ class LessonPendingViewV2 extends StatelessWidget {
                       noteForStudent: '',
                       noteForSupport: '',
                       noteForTeacher: '',
-                      supportNoteForTeacher: ""));
+                      supportNoteForTeacher: "",dateTime: DateFormat('dd/MM/yyyy HH:mm:ss').format(nowVN)));
 
                   if (context.mounted) {
                     Navigator.pop(context);

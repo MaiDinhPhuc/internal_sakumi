@@ -6,8 +6,7 @@ class LessonResultModel {
       noteForStudent,
       noteForSupport,
       status,
-
-      supportNoteForTeacher;
+      supportNoteForTeacher, dateTime;
 
   LessonResultModel(
       {required this.id,
@@ -19,7 +18,7 @@ class LessonResultModel {
       required this.noteForStudent,
       required this.noteForSupport,
       required this.noteForTeacher,
-      required this.supportNoteForTeacher});
+      required this.supportNoteForTeacher, required this.dateTime});
 
   LessonResultModel copyWith({String? supportNoteForTeacher}) {
     return LessonResultModel(
@@ -33,7 +32,7 @@ class LessonResultModel {
       noteForSupport: noteForSupport,
       noteForTeacher: noteForTeacher,
       supportNoteForTeacher:
-          supportNoteForTeacher ?? this.supportNoteForTeacher,
+          supportNoteForTeacher ?? this.supportNoteForTeacher, dateTime: dateTime
     );
   }
 
@@ -50,6 +49,6 @@ class LessonResultModel {
         noteForStudent: data['student_note'],
         noteForSupport: data['support_note'],
         noteForTeacher: data['teacher_note'],
-        supportNoteForTeacher: data["support_note_for_teacher"] ?? "");
+        supportNoteForTeacher: data["support_note_for_teacher"] ?? "", dateTime: data['date'] ?? "");
   }
 }

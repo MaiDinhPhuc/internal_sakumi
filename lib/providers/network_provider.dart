@@ -13,6 +13,7 @@ import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
 import 'package:internal_sakumi/model/report_model.dart';
+import 'package:internal_sakumi/model/schedule_model.dart';
 import 'package:internal_sakumi/model/student_class_log.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
@@ -342,4 +343,10 @@ abstract class NetworkProvider {
 
   Future<List<StudentTestModel>> getAllStudentTestInListClassId(
       List<int> listClassId);
+
+  Future<List<LessonResultModel>> getLessonResultWithDate(int start, int end, int teacherId);
+
+  Future<List<ScheduleModel>> getTeacherCyclicSchedule(int teacherId);
+
+  Future<List<ScheduleModel>> getTeacherSingleSchedule(List<int> listId, int startDate, int endDate);
 }

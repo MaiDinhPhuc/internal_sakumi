@@ -277,7 +277,7 @@ class DetailLessonCubitV2 extends Cubit<int> {
         noteForStudent: lessonResult!.noteForStudent,
         noteForSupport: lessonResult!.noteForSupport,
         noteForTeacher: lessonResult!.noteForTeacher,
-        supportNoteForTeacher: lessonResult!.supportNoteForTeacher);
+        supportNoteForTeacher: lessonResult!.supportNoteForTeacher, dateTime: lessonResult!.dateTime);
 
     listLessonResult![index] = lessonResult!;
 
@@ -366,7 +366,7 @@ class DetailLessonCubitV2 extends Cubit<int> {
         noteForStudent: note,
         noteForSupport: lessonResult!.noteForSupport,
         noteForTeacher: lessonResult!.noteForTeacher,
-        supportNoteForTeacher: lessonResult!.supportNoteForTeacher);
+        supportNoteForTeacher: lessonResult!.supportNoteForTeacher, dateTime: lessonResult!.dateTime);
 
     listLessonResult![index] = lessonResult!;
 
@@ -393,7 +393,7 @@ class DetailLessonCubitV2 extends Cubit<int> {
         noteForStudent: lessonResult!.noteForStudent,
         noteForSupport: note,
         noteForTeacher: lessonResult!.noteForTeacher,
-        supportNoteForTeacher: lessonResult!.supportNoteForTeacher);
+        supportNoteForTeacher: lessonResult!.supportNoteForTeacher,dateTime: lessonResult!.dateTime);
 
     listLessonResult![index] = lessonResult!;
 
@@ -414,7 +414,7 @@ class DetailLessonCubitV2 extends Cubit<int> {
         noteForStudent: lessonResult!.noteForStudent,
         noteForSupport: lessonResult!.noteForSupport,
         noteForTeacher: note,
-        supportNoteForTeacher: lessonResult!.supportNoteForTeacher);
+        supportNoteForTeacher: lessonResult!.supportNoteForTeacher,dateTime: lessonResult!.dateTime);
 
     listLessonResult![index] = lessonResult!;
 

@@ -82,6 +82,7 @@ class DataProvider {
     List? listStatus = filter[TeacherFilter.status];
     List<String> listStatusQuery =
         listStatus!.map((e) => statusTeacher(e)).toList();
+
     var classes = (await FireBaseProvider.instance
             .getListClassForTeacherV2(teacherClassIDs, listStatusQuery))
         .where((e) => listStatusQuery.contains(e.classStatus))
@@ -244,6 +245,24 @@ class DataProvider {
       cached[key] = CacheObject(DateTime.now(), callbacks: [onLoaded]);
       cached[key]!.data =
           await FireBaseProvider.instance.getListTestByCourseId(courseId);
+      for (var element in cached[key]!.callbacks) {
+        element.call(cached[key]!.data!);
+      }
+      cached[key]!.callbacks = [];
+    } else if (cached[key]!.data == null) {
+      cached[key]!.callbacks.add(onLoaded);
+    } else {
+      onLoaded.call(cached[key]!.data!);
+    }
+  }
+
+  static Future<void> classById(
+      int classId, Function(Object) onLoaded) async {
+    var key = 'class_$classId';
+    if (cached[key] == null) {
+      cached[key] = CacheObject(DateTime.now(), callbacks: [onLoaded]);
+      cached[key]!.data =
+      await FireBaseProvider.instance.getClassById(classId);
       for (var element in cached[key]!.callbacks) {
         element.call(cached[key]!.data!);
       }
