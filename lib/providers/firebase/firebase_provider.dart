@@ -413,8 +413,24 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<List<ReportModel>> getReportByClassId(int id) async {
+    return (await FireStoreDb.instance.getReportByClassId(id))
+        .docs
+        .map((e) => ReportModel.fromSnapshot(e))
+        .toList();
+  }
+
+  @override
   Future<List<ScheduleModel>> getTeacherCyclicSchedule(int teacherId) async {
     return (await FireStoreDb.instance.getTeacherCyclicSchedule(teacherId))
+        .docs
+        .map((e) => ScheduleModel.fromSnapshot(e))
+        .toList();
+  }
+
+  @override
+  Future<List<ScheduleModel>> getClassCyclicSchedule(int classId) async {
+    return (await FireStoreDb.instance.getClassCyclicSchedule(classId))
         .docs
         .map((e) => ScheduleModel.fromSnapshot(e))
         .toList();
@@ -455,8 +471,18 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<LessonResultModel>> getLessonResultWithDate(int start, int end,int teacherId) async {
-    var lesResults = (await FireStoreDb.instance.getLessonResultWithDate(start, end, teacherId))
+  Future<List<LessonResultModel>> getLessonResultWithDateAndTeacherId(int start, int end,int teacherId) async {
+    var lesResults = (await FireStoreDb.instance.getLessonResultWithDateAndTeacherId(start, end, teacherId))
+        .docs
+        .map((e) => LessonResultModel.fromSnapshot(e))
+        .toList();
+    lesResults.sort((a, b) => a.date.compareTo(b.date));
+    return lesResults;
+  }
+
+  @override
+  Future<List<LessonResultModel>> getLessonResultWithDateAndClassId(int start, int end,int classId) async {
+    var lesResults = (await FireStoreDb.instance.getLessonResultWithDateAndClassId(start, end, classId))
         .docs
         .map((e) => LessonResultModel.fromSnapshot(e))
         .toList();
@@ -762,8 +788,8 @@ class FireBaseProvider extends NetworkProvider {
   Future<bool> createNewStudent(StudentModel model, UserModel user) async {
     var temp = await FireStoreDb.instance.getUserByEmail(user.email);
     if (temp.docs.isEmpty) {
-      await FireStoreDb.instance.createNewStudent(model, user);
-      await FireBaseProvider.instance
+      FireStoreDb.instance.createNewStudent(model, user);
+      FireBaseProvider.instance
           .saveUser(user.email, user.role, model.userId);
       return true;
     } else {
@@ -776,8 +802,8 @@ class FireBaseProvider extends NetworkProvider {
     var temp = await FireStoreDb.instance.getUserByEmail(user.email);
 
     if (temp.docs.isEmpty) {
-      await FireStoreDb.instance.createNewTeacher(model, user);
-      await FireBaseProvider.instance
+       FireStoreDb.instance.createNewTeacher(model, user);
+       FireBaseProvider.instance
           .saveUser(user.email, user.role, model.userId);
       return true;
     }

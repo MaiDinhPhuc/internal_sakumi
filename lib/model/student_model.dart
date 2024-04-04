@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 
 class StudentModel {
-  final String name, note, phone, studentCode, url, status;
+  final String name, note, phone, studentCode, url, status, email;
   final int userId;
   final bool inJapan;
 
@@ -15,7 +15,8 @@ class StudentModel {
       required this.inJapan,
       required this.phone,
       required this.studentCode,
-      required this.status});
+      required this.status,
+      required this.email});
 
   Color get color {
     switch (status) {
@@ -78,6 +79,7 @@ class StudentModel {
         studentCode: data["student_code"] ?? '',
         url: data['url'] ?? '',
         inJapan: data['in_jp'] ?? false,
-        status: data['status'] ?? '');
+        status: data['status'] ?? '',
+        email: data['email'] ?? "");
   }
 }

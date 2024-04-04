@@ -35,7 +35,15 @@ class DetailGradingCubit extends Cubit<int> {
   List<StudentLessonModel>? stdLessons;
   List<StudentTestModel>? stdTests;
 
+  loading(){
+    emit(-1);
+  }
+
   init(String type) async {
+
+
+
+
     if (type == "type=test") {
       gradingType = "test";
     } else {

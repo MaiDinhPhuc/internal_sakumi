@@ -2,18 +2,16 @@ import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/teacher/profile/report_tab/teacher_report_cubit.dart';
+import 'package:internal_sakumi/features/teacher/profile/report_tab/report_cubit.dart';
 import 'package:internal_sakumi/screens/class_info/detail_grading_screen_v2.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class FilterReportStatus extends StatelessWidget {
   const FilterReportStatus({super.key, required this.cubit});
-  final TeacherReportCubit cubit;
+  final ReportCubit cubit;
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin:
-        EdgeInsets.symmetric(horizontal: Resizable.padding(context, 10)),
         alignment: Alignment.centerRight,
         width: Resizable.size(context, 120),
         child: ClipRRect(

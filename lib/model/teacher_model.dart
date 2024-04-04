@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TeacherModel {
-  final String name, note, phone, teacherCode, url, status;
+  final String name, note, phone, teacherCode, url, status, email;
   final int userId;
   final Map schedule;
 
@@ -13,29 +13,29 @@ class TeacherModel {
       required this.phone,
       required this.teacherCode,
       required this.status,
-        required this.schedule
-    });
-  TeacherModel copyWith({
-    String? name,
-    String? note,
-    String? phone,
-    String? teacherCode,
-    String? url,
-    String? status,
-    int? userId,
-    String? type,
-    Map? schedule
-  }) {
+      required this.schedule,
+      required this.email});
+  TeacherModel copyWith(
+      {String? name,
+      String? note,
+      String? phone,
+      String? teacherCode,
+      String? url,
+      String? status,
+      int? userId,
+      String? type,
+      String? email,
+      Map? schedule}) {
     return TeacherModel(
-      name: name ?? this.name,
-      note: note ?? this.note,
-      phone: phone ?? this.phone,
-      teacherCode: teacherCode ?? this.teacherCode,
-      url: url ?? this.url,
-      status: status ?? this.status,
-      userId: userId ?? this.userId,
-      schedule: schedule ?? this.schedule
-    );
+        name: name ?? this.name,
+        note: note ?? this.note,
+        phone: phone ?? this.phone,
+        teacherCode: teacherCode ?? this.teacherCode,
+        url: url ?? this.url,
+        status: status ?? this.status,
+        userId: userId ?? this.userId,
+        schedule: schedule ?? this.schedule,
+        email: email ?? this.email);
   }
 
   factory TeacherModel.fromSnapshot(
@@ -49,14 +49,16 @@ class TeacherModel {
         teacherCode: data["teacher_code"],
         url: data['url'],
         status: data['status'],
-        schedule: data['schedule'] ?? {
-          'Mon':[],
-          'Tue':[],
-          'Wed':[],
-          'Thu':[],
-          'Fri':[],
-          'Sat':[],
-          'Sun':[]
-        });
+        schedule: data['schedule'] ??
+            {
+              'Mon': [],
+              'Tue': [],
+              'Wed': [],
+              'Thu': [],
+              'Fri': [],
+              'Sat': [],
+              'Sun': []
+            },
+        email: data["email"]);
   }
 }

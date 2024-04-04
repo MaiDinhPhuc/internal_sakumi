@@ -197,7 +197,7 @@ void alertAddNewStdAccount(
                                                       phone: phoneCon.text,
                                                       studentCode:
                                                       stdCodeCon.text,
-                                                      status: AppText.statusInProgress.text),
+                                                      status: AppText.statusInProgress.text, email:  emailCon.text),
                                                   UserModel(
                                                       email: emailCon.text,
                                                       role: AppText

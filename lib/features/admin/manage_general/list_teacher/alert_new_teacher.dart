@@ -100,17 +100,18 @@ void alertNewTeacher(
                                             var id = DateTime.now().millisecondsSinceEpoch;
                                             if (formKey.currentState!
                                                 .validate()) {
+                                              var teacher = TeacherModel(
+                                                  name: nameCon.text,
+                                                  url: '',
+                                                  note: noteCon.text,
+                                                  userId: id,
+                                                  phone: phoneCon.text,
+                                                  teacherCode:
+                                                  senseiCodeCon.text,
+                                                  status: 'Chính thức',schedule: {}, email: emailCon.text);
                                               await cubit.createTeacher(
                                                   context,
-                                                  TeacherModel(
-                                                      name: nameCon.text,
-                                                      url: '',
-                                                      note: noteCon.text,
-                                                      userId: id,
-                                                      phone: phoneCon.text,
-                                                      teacherCode:
-                                                      senseiCodeCon.text,
-                                                      status: 'Chính thức',schedule: {}),
+                                                  teacher,
                                                   UserModel(
                                                       email: emailCon.text,
                                                       role: AppText
@@ -120,26 +121,23 @@ void alertNewTeacher(
                                                 Navigator.pop(context);
                                                 if (cubit.checkCreate == true) {
                                                   var now = DateTime.now().millisecondsSinceEpoch;
-                                                  await cubit.addTeacherToClass(
-                                                      context,
-                                                      TeacherClassModel(
-                                                          id: now,
-                                                          classId:
-                                                          manageGeneralCubit
-                                                              .selector,
-                                                          userId: id,
-                                                          classStatus:
-                                                          AppText.statusInProgress.text,
-                                                          date: DateFormat(
-                                                              'dd/MM/yyyy')
-                                                              .format(DateTime
-                                                              .now()), responsibility: false));
-                                                  if (context.mounted) {
-                                                    manageGeneralCubit
-                                                        .loadTeacherInClass(
-                                                        manageGeneralCubit
-                                                            .selector);
-                                                  }
+                                                  var teacherClass = TeacherClassModel(
+                                                      id: now,
+                                                      classId:
+                                                      manageGeneralCubit
+                                                          .selector,
+                                                      userId: id,
+                                                      classStatus:
+                                                      AppText.statusInProgress.text,
+                                                      date: DateFormat(
+                                                          'dd/MM/yyyy')
+                                                          .format(DateTime
+                                                          .now()), responsibility: false);
+                                                  cubit.addTeacherToClass(
+                                                      context,teacherClass
+                                                      );
+                                                  manageGeneralCubit
+                                                      .addNewTeacherToClass(teacher, teacherClass);
                                                 } else {
                                                   notificationDialog(
                                                       context,

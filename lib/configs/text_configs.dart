@@ -472,7 +472,8 @@ enum AppText {
   txtContentLog,
   txtSchedule,
   txtReport,
-  txtNoReport,
+  txtNoTeacherReport,
+  txtNoClassReport,
   txtAdd,
   txtEditReport,
   txtAddNewReport,
@@ -498,10 +499,14 @@ enum AppText {
   txtHw,
   txtAlphabet,
   txtReading,
-  txtRegisterSchedule
+  txtRegisterSchedule,
+  txtSearchClass,
+  txtSearchStudent
 }
 
 Map<AppText, String> texts = {
+  AppText.txtSearchStudent: "Tìm kiếm học viên...",
+  AppText.txtSearchClass: "Tìm kiếm lớp...",
   AppText.txtRegisterSchedule: "Đăng ký ca dạy",
   AppText.txtReading: "Luyện đọc",
   AppText.txtAlphabet: "Bảng chữ",
@@ -530,8 +535,10 @@ Map<AppText, String> texts = {
   AppText.txtAddNewReport: "Thêm biên bản mới",
   AppText.txtEditReport: "Chỉnh sửa biên bản",
   AppText.txtAdd: "+THÊM",
-  AppText.txtNoReport:
+  AppText.txtNoTeacherReport:
       "Hiện sensei chưa có biên bản nào trong thời gian và trạng thái được chọn...",
+  AppText.txtNoClassReport:
+  "Hiện lớp chưa có biên bản nào trong thời gian và trạng thái được chọn...",
   AppText.txtReport: "Biên bản",
   AppText.txtSchedule: "Lịch dạy",
   AppText.txtContentLog: "Học viên được chuyển từ @ sang #",

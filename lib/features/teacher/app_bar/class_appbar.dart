@@ -55,10 +55,10 @@ class HeaderTeacher extends StatelessWidget {
                         (index == -1 || role == "admin") && role != "teacher"
                             ? const CustomBackHomeButton()
                             : const TeacherHomeButton(),
-                        Expanded(child: Container()),
                         Expanded(
-                            flex: 4,
+                            flex: 5,
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 ...(index == -1
                                         ? []
@@ -79,9 +79,9 @@ class HeaderTeacher extends StatelessWidget {
                             ))
                       ]),
                 )),
-            if (role == "teacher")
+            role == "teacher" ?
               Expanded(
-                flex: 3,
+                flex: 2,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -95,7 +95,7 @@ class HeaderTeacher extends StatelessWidget {
                               textAlign: TextAlign.right,
                               style: TextStyle(
                                   fontWeight: FontWeight.w800,
-                                  fontSize: Resizable.font(context, 36))),
+                                  fontSize: Resizable.font(context, 30))),
                     ),
                     SizedBox(
                       width: Resizable.padding(context, 10),
@@ -114,32 +114,32 @@ class HeaderTeacher extends StatelessWidget {
                               ],
                             ),
                             child: CircleAvatar(
-                              radius: Resizable.size(context, 15),
-                              backgroundColor: greyColor.shade300,
-                              child: ImageNetwork(
-                                key: Key(s.url),
-                                image: s.url.isEmpty
-                                    ? AppConfigs.defaultImage
-                                    : s.url,
-                                height: Resizable.size(context, 30),
-                                borderRadius: BorderRadius.circular(1000),
-                                width: Resizable.size(context, 30),
-                                onLoading: Transform.scale(
-                                  scale: 0.25,
-                                  child: const CircularProgressIndicator(),
-                                ),
-                                duration: 0,
-                                onTap: () {
-                                  var profileUri = '${Routes.teacher}/profile';
-                                  if (classId != "empty") {
-                                    Navigator.pushNamed(context, profileUri);
-                                  }
-                                },
-                              ),
-                            )),
+                                radius: Resizable.size(context, 15),
+                                backgroundColor: greyColor.shade300,
+                                child: GestureDetector(
+                                    onTap: () {
+                                      var profileUri =
+                                          '${Routes.teacher}/profile';
+                                      if (classId != "empty") {
+                                        Navigator.pushNamed(
+                                            context, profileUri);
+                                      }
+                                    },
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(1000),
+                                      child: Image.network(
+                                        key: Key(s.url),
+                                        s.url.isEmpty
+                                            ? AppConfigs.defaultImage
+                                            : 'https://cors-anywhere.herokuapp.com/${s.url}',
+                                        height: Resizable.size(context, 30),
+                                        width: Resizable.size(context, 30),
+                                        errorBuilder: (_, __, ___) => Container(),
+                                      ),
+                                    )))),
                   ],
                 ),
-              )
+              ) : Expanded( flex: 2,child: Container())
           ],
         ),
       );
@@ -153,6 +153,7 @@ List<NavigationModel> buttonTeacherList = [
   NavigationModel(2, AppText.titleMultiChoice.text),
   NavigationModel(3, AppText.titleGrading.text),
   NavigationModel(4, AppText.txtSubCourse.text),
+  NavigationModel(5, AppText.txtReport.text),
 ];
 List<NavigationModel> buttonAdminList = [
   NavigationModel(0, AppText.titleOverView.text),
@@ -160,6 +161,7 @@ List<NavigationModel> buttonAdminList = [
   NavigationModel(2, AppText.titleMultiChoice.text),
   NavigationModel(3, AppText.txtSurvey.text),
   NavigationModel(4, AppText.txtSubCourse.text),
+  NavigationModel(5, AppText.txtReport.text),
 ];
 
 class NameCubit extends Cubit<String?> {

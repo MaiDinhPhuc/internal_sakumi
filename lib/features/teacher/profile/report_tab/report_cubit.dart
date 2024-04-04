@@ -4,14 +4,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_bills/date_choose_cubit.dart';
+import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/report_model.dart';
+import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class TeacherReportCubit extends Cubit<int> {
-  TeacherReportCubit() : super(0);
+class ReportCubit extends Cubit<int> {
+  ReportCubit() : super(0);
 
   DateTime? startDate;
   DateTime? endDate;
@@ -27,12 +29,15 @@ class TeacherReportCubit extends Cubit<int> {
 
   bool isLoading = true;
   int? userId;
+  ClassModel? classModel;
+  String type = "teacher";
+
 
   update() {
     emit(state + 1);
   }
 
-  loadReport(String role) async {
+  loadTeacherReport(String role) async {
     DateTime now = DateTime.now();
     DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
     DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 1);
@@ -52,6 +57,26 @@ class TeacherReportCubit extends Cubit<int> {
 
     isLoading = false;
     emit(state + 1);
+  }
+
+  loadClassReport(int classId) async {
+    DateTime now = DateTime.now();
+    DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
+    DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 1);
+    startDate = firstDayOfMonth;
+    endDate = lastDayOfMonth;
+
+    type = 'class';
+
+    DataProvider.classById(classId, loadClass);
+    listReport = await FireBaseProvider.instance.getReportByClassId(classId);
+
+    isLoading = false;
+    emit(state + 1);
+  }
+
+  loadClass(Object classModel) {
+    this.classModel = classModel as ClassModel;
   }
 
   List<ReportModel> getListReport() {

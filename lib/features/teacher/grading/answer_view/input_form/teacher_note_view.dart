@@ -71,11 +71,12 @@ class TeacherNoteView extends StatelessWidget {
                               borderRadius: BorderRadius.circular(
                                   Resizable.size(context, 10)),
                               child: answerModel.checkIsUrl(listImage[i])
-                                  ? ImageNetwork(
-                                      fitWeb: BoxFitWeb.fill,
-                                      image: listImage[i],
+                                  ? Image.network(
+                                      fit: BoxFit.fill,
+                                      'https://cors-anywhere.herokuapp.com/${listImage[i]}',
                                       height: Resizable.size(context, 250),
                                       width: Resizable.size(context, 200),
+                                      errorBuilder: (_, __, ___) => Container(),
                                     )
                                   : Image.memory(listImage[i],
                                       fit: BoxFit.fill),
@@ -163,17 +164,17 @@ class TeacherNoteView extends StatelessWidget {
 class TeacherNoteViewV2 extends StatelessWidget {
   const TeacherNoteViewV2(
       {super.key,
-        required this.imagePickerCubit,
-        required this.answerModel,
-        required this.cubit,
-        required this.noteController,
-        required this.onChange,
-        required this.onOpenFile,
-        required this.onOpenMic,
-        required this.type,
-        required this.checkActiveCubit,
-        required this.voiceRecordCubit,
-        required this.soundCubit});
+      required this.imagePickerCubit,
+      required this.answerModel,
+      required this.cubit,
+      required this.noteController,
+      required this.onChange,
+      required this.onOpenFile,
+      required this.onOpenMic,
+      required this.type,
+      required this.checkActiveCubit,
+      required this.voiceRecordCubit,
+      required this.soundCubit});
   final ImagePickerCubit imagePickerCubit;
   final VoiceRecordCubit voiceRecordCubit;
   final AnswerModel answerModel;
@@ -202,105 +203,106 @@ class TeacherNoteViewV2 extends StatelessWidget {
             builder: (cc, listImage) => listImage.isEmpty
                 ? Container()
                 : SizedBox(
-                height: Resizable.size(context, 250),
-                child: ListView.builder(
-                  itemCount: listImage.length,
-                  scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.symmetric(
-                      vertical: Resizable.padding(context, 5)),
-                  itemBuilder: (_, i) => Padding(
-                      padding: EdgeInsets.only(
-                          right: Resizable.padding(context, 10)),
-                      child:
-                      Stack(alignment: Alignment.topRight, children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(
-                              Resizable.size(context, 10)),
-                          child: answerModel.checkIsUrl(listImage[i])
-                              ? ImageNetwork(
-                            fitWeb: BoxFitWeb.fill,
-                            image: listImage[i],
-                            height: Resizable.size(context, 250),
-                            width: Resizable.size(context, 200),
-                          )
-                              : Image.memory(listImage[i],
-                              fit: BoxFit.fill),
-                        ),
-                        Container(
-                            height: Resizable.size(context, 20),
-                            width: Resizable.size(context, 25),
-                            decoration: BoxDecoration(
-                              color: primaryColor,
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(
-                                      Resizable.size(context, 10)),
-                                  bottomLeft: Radius.circular(
-                                      Resizable.size(context, 10))),
+                    height: Resizable.size(context, 250),
+                    child: ListView.builder(
+                      itemCount: listImage.length,
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.symmetric(
+                          vertical: Resizable.padding(context, 5)),
+                      itemBuilder: (_, i) => Padding(
+                          padding: EdgeInsets.only(
+                              right: Resizable.padding(context, 10)),
+                          child:
+                              Stack(alignment: Alignment.topRight, children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                  Resizable.size(context, 10)),
+                              child: answerModel.checkIsUrl(listImage[i])
+                                  ? Image.network(
+                                      fit: BoxFit.fill,
+                                      'https://cors-anywhere.herokuapp.com/${listImage[i]}',
+                                      height: Resizable.size(context, 250),
+                                      width: Resizable.size(context, 200),
+                                      errorBuilder: (_, __, ___) => Container(),
+                                    )
+                                  : Image.memory(listImage[i],
+                                      fit: BoxFit.fill),
                             ),
-                            child: GestureDetector(
-                                onTap: () async {
-                                  if (type == 'single') {
-                                    await imagePickerCubit.removeImageV2(
-                                        answerModel,
-                                        listImage[i],
-                                        checkActiveCubit,
-                                        cubit);
-                                  } else {
-                                    imagePickerCubit.removeImageForAllV2(
-                                        cubit.answers,
-                                        listImage[i],
-                                        checkActiveCubit,
-                                        cubit);
-                                  }
-                                },
-                                child: Icon(
-                                  Icons.close_rounded,
-                                  size: Resizable.size(context, 18),
-                                  color: Colors.white,
-                                )))
-                      ])),
-                ))),
+                            Container(
+                                height: Resizable.size(context, 20),
+                                width: Resizable.size(context, 25),
+                                decoration: BoxDecoration(
+                                  color: primaryColor,
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(
+                                          Resizable.size(context, 10)),
+                                      bottomLeft: Radius.circular(
+                                          Resizable.size(context, 10))),
+                                ),
+                                child: GestureDetector(
+                                    onTap: () async {
+                                      if (type == 'single') {
+                                        await imagePickerCubit.removeImageV2(
+                                            answerModel,
+                                            listImage[i],
+                                            checkActiveCubit,
+                                            cubit);
+                                      } else {
+                                        imagePickerCubit.removeImageForAllV2(
+                                            cubit.answers,
+                                            listImage[i],
+                                            checkActiveCubit,
+                                            cubit);
+                                      }
+                                    },
+                                    child: Icon(
+                                      Icons.close_rounded,
+                                      size: Resizable.size(context, 18),
+                                      color: Colors.white,
+                                    )))
+                          ])),
+                    ))),
         BlocBuilder<VoiceRecordCubit, List<dynamic>>(
             bloc: voiceRecordCubit
               ..init(type == 'single' ? answerModel.listRecordUrl : []),
             builder: (cc, listRecord) => listRecord.isEmpty
                 ? Container()
                 : Column(
-              children: [
-                ...listRecord.map((e) => Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                          padding: EdgeInsets.only(
-                              right: Resizable.padding(context, 350)),
-                          child: TeacherSounder(
-                            e,
-                            "network",
-                            listRecord.indexOf(e),
-                            soundCubit: soundCubit,
-                            backgroundColor: primaryColor,
-                            iconColor: Colors.white,
-                            onDelete: () async {
-                              if (type == 'single') {
-                                await voiceRecordCubit.removeRecordV2(
-                                    answerModel,
-                                    e,
-                                    checkActiveCubit,
-                                    cubit);
-                              } else {
-                                voiceRecordCubit.removeRecordForAllV2(
-                                    cubit.answers,
-                                    e,
-                                    checkActiveCubit,
-                                    cubit);
-                              }
-                            },
-                          )),
-                    )
-                  ],
-                ))
-              ],
-            ))
+                    children: [
+                      ...listRecord.map((e) => Row(
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                    padding: EdgeInsets.only(
+                                        right: Resizable.padding(context, 350)),
+                                    child: TeacherSounder(
+                                      e,
+                                      "network",
+                                      listRecord.indexOf(e),
+                                      soundCubit: soundCubit,
+                                      backgroundColor: primaryColor,
+                                      iconColor: Colors.white,
+                                      onDelete: () async {
+                                        if (type == 'single') {
+                                          await voiceRecordCubit.removeRecordV2(
+                                              answerModel,
+                                              e,
+                                              checkActiveCubit,
+                                              cubit);
+                                        } else {
+                                          voiceRecordCubit.removeRecordForAllV2(
+                                              cubit.answers,
+                                              e,
+                                              checkActiveCubit,
+                                              cubit);
+                                        }
+                                      },
+                                    )),
+                              )
+                            ],
+                          ))
+                    ],
+                  ))
       ],
     );
   }

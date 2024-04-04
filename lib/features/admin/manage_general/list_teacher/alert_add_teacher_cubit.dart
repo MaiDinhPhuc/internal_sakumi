@@ -50,7 +50,7 @@ class AlertAddTeacherCubit extends Cubit<int> {
       }
       List<TeacherModel> listTemp = [];
       for(var i in listSensei!){
-        if(i.name.toUpperCase().contains(text.toUpperCase()) || i.teacherCode.toUpperCase().contains(text.toUpperCase())){
+        if(i.name.toUpperCase().contains(text.toUpperCase()) || i.teacherCode.toUpperCase().contains(text.toUpperCase()) || i.email.toUpperCase().contains(text.toUpperCase())){
           listTemp.add(i);
         }
       }

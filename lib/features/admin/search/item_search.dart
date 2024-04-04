@@ -8,9 +8,9 @@ class ItemSearch extends StatelessWidget {
   const ItemSearch(
       {super.key,
       required this.type,
-      required this.isLast, this.url, this.name, this.code, this.classStatus, this.classType,required this.id});
+      required this.isLast, this.url, this.name, this.code, this.classStatus, this.classType,this.email,required this.id});
   final String type;
-  final String? url, name, code, classStatus;
+  final String? url, name, code, classStatus, email;
   final int? classType;
   final int id;
   final bool isLast;
@@ -59,8 +59,8 @@ class ItemSearch extends StatelessWidget {
                                 SizedBox(height: Resizable.padding(context, 2)),
                                 Text(
                                     type == AppText.txtStudent.text
-                                        ? "${AppText.txtStudentCode.text}: ${code!}"
-                                        : "${AppText.txtTeacherCode.text}: ${code!}",
+                                        ? "${AppText.txtStudentCode.text}: ${code!}      Email: ${email!}"
+                                        : "${AppText.txtTeacherCode.text}: ${code!}      Email: ${email!}",
                                     style: TextStyle(
                                         color: const Color(0xFF757575),
                                         fontSize: Resizable.size(context, 10),
@@ -247,9 +247,9 @@ class ItemSearchV2 extends StatelessWidget {
   const ItemSearchV2(
       {super.key,
         required this.type,
-        required this.isLast, this.url, this.name, this.code, this.classStatus, this.classType,required this.id, required this.onTap});
+        required this.isLast, this.url, this.name, this.code, this.classStatus, this.classType,this.email,required this.id, required this.onTap});
   final String type;
-  final String? url, name, code, classStatus;
+  final String? url, name, code, classStatus, email;
   final int? classType;
   final int id;
   final bool isLast;
@@ -288,8 +288,8 @@ class ItemSearchV2 extends StatelessWidget {
                           SizedBox(height: Resizable.padding(context, 2)),
                           Text(
                               type == AppText.txtStudent.text
-                                  ? "${AppText.txtStudentCode.text}: ${code!}"
-                                  : "${AppText.txtTeacherCode.text}: ${code!}",
+                                  ? "${AppText.txtStudentCode.text}: ${code!}     Email: ${email!}"
+                                  : "${AppText.txtTeacherCode.text}: ${code!}     Email: ${email!}",
                               style: TextStyle(
                                   color: const Color(0xFF757575),
                                   fontSize: Resizable.size(context, 10),

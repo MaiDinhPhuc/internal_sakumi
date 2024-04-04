@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ReportModel {
-  final int id, teacherId;
-  final String status, createName, title, content;
+  final int id, teacherId, classId;
+  final String status, createName, title, content, type;
   final bool delete;
   final List images;
 
@@ -14,7 +14,9 @@ class ReportModel {
       required this.title,
       required this.content,
       required this.delete,
-      required this.images});
+      required this.images,
+      required this.type,
+      required this.classId});
   factory ReportModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
@@ -26,6 +28,7 @@ class ReportModel {
         content: data['content'] ?? '',
         delete: data['delete'] ?? false,
         createName: data['create_name'] ?? '',
-        images: data['images'] ?? []);
+        images: data['images'] ?? [],
+        type: data['type'], classId: data['class_id'] ?? 0);
   }
 }

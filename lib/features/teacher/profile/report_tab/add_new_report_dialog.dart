@@ -1,7 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/teacher/profile/report_tab/teacher_report_cubit.dart';
+import 'package:internal_sakumi/features/teacher/profile/report_tab/report_cubit.dart';
 import 'package:internal_sakumi/model/report_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
@@ -17,8 +17,8 @@ class AddNewReportDialog extends StatelessWidget {
       required this.reportCubit,
       required this.isEdit,
       this.reportModel})
-      : cubit = AddNewReportCubit(reportModel, reportCubit.userId!);
-  final TeacherReportCubit reportCubit;
+      : cubit = AddNewReportCubit(reportModel, reportCubit.userId ?? 0, reportCubit.classModel == null ? 0 : reportCubit.classModel!.classId );
+  final ReportCubit reportCubit;
   final AddNewReportCubit cubit;
   final bool isEdit;
   final ReportModel? reportModel;

@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/features/teacher/profile/report_tab/teacher_report_cubit.dart';
+import 'package:internal_sakumi/features/teacher/profile/report_tab/report_cubit.dart';
 
 
 class ManageTeacherTabCubit extends Cubit<int> {
@@ -7,7 +7,7 @@ class ManageTeacherTabCubit extends Cubit<int> {
 
   String tabType = 'class';
 
-  final TeacherReportCubit reportCubit = TeacherReportCubit();
+  final ReportCubit reportCubit = ReportCubit();
 
   changeTab(String value){
     tabType = value;

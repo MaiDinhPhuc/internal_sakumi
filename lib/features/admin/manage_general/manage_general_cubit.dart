@@ -172,6 +172,8 @@ class ManageGeneralCubit extends Cubit<int> {
     return listAllCourse!.firstWhere((e) => e.courseId == courseId);
   }
 
+
+
   loadTeacherInClass(int selector) async {
     listTeacher = null;
     listTeacherClass = null;
@@ -183,6 +185,30 @@ class ManageGeneralCubit extends Cubit<int> {
     }
     listTeacher = await FireBaseProvider.instance.getListTeacherByListId(listTeacherId);
     listTeacherClass = listAllTeacherInClass;
+    emit(state + 2);
+  }
+
+  addListTeacherToClass(List<TeacherModel> listTeacher, List<TeacherClassModel> listTeacherClass){
+    for(var teacher in listTeacher){
+      if(this.listTeacher!.contains(teacher) == false){
+        this.listTeacher!.add(teacher);
+      }
+    }
+    for(var teacherClass in listTeacherClass){
+      if(this.listTeacherClass!.contains(teacherClass) == false){
+        this.listTeacherClass!.add(teacherClass);
+      }
+    }
+    emit(state + 2);
+  }
+
+  addNewTeacherToClass(TeacherModel teacher, TeacherClassModel teacherClass){
+    if(listTeacher!.contains(teacher) == false){
+      listTeacher!.add(teacher);
+    }
+    if(listTeacherClass!.contains(teacherClass) == false){
+      listTeacherClass!.add(teacherClass);
+    }
     emit(state + 2);
   }
 
@@ -217,6 +243,30 @@ class ManageGeneralCubit extends Cubit<int> {
     }
     listStudent = await FireBaseProvider.instance.getAllStudentInFoInClass(listStudentId);
     listStudentClass = listAllStudentInClass;
+    emit(state + 2);
+  }
+
+  addListStudentToClass(List<StudentModel> listStudent, List<StudentClassModel> listStdClass){
+    for(var student in listStudent){
+      if(this.listStudent!.contains(student) == false){
+        this.listStudent!.add(student);
+      }
+    }
+    for(var stdClass in listStdClass){
+      if(listStudentClass!.contains(stdClass) == false){
+        listStudentClass!.add(stdClass);
+      }
+    }
+    emit(state + 2);
+  }
+
+  addNewStudentToClass(StudentModel student, StudentClassModel stdClass){
+    if(listStudent!.contains(student) == false){
+      listStudent!.add(student);
+    }
+    if(listStudentClass!.contains(stdClass) == false){
+      listStudentClass!.add(stdClass);
+    }
     emit(state + 2);
   }
 

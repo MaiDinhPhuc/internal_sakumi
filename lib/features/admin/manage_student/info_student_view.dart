@@ -16,8 +16,7 @@ import 'package:internal_sakumi/widget/waiting_dialog.dart';
 import 'list_info_student.dart';
 
 class InfoStudentView extends StatelessWidget {
-  const InfoStudentView(
-      {super.key, required this.cubit});
+  const InfoStudentView({super.key, required this.cubit});
   final StudentInfoCubit cubit;
 
   @override
@@ -41,16 +40,15 @@ class InfoStudentView extends StatelessWidget {
         children: [
           cubit.student!.url == ''
               ? Image.asset("assets/images/ic_avt.png")
-              : ImageNetwork(
+              : ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(1000)),
-                  image: cubit.student!.url,
-                  height: Resizable.size(context, 100),
-                  width: Resizable.size(context, 100),
-                  onError: Container(),
-                  onLoading: Transform.scale(
-                    scale: 0.5,
-                    child: const CircularProgressIndicator(),
-                  )),
+                  child: Image.network(
+                    'https://cors-anywhere.herokuapp.com/${cubit.student!.url}',
+                    height: Resizable.size(context, 100),
+                    width: Resizable.size(context, 100),
+                    errorBuilder: (_, __, ___) => Container(),
+                  ),
+                ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -85,23 +83,21 @@ class InfoStudentView extends StatelessWidget {
             children: [
               Expanded(
                   flex: 4,
-                  child: ResetPassButton(AppText.txtReloadPass.text, onPressed: () {
-                waitingDialog(context);
-                cubit.resetPassword();
-                Navigator.pop(context);
-                notificationDialog(context, AppText.txtSendReloadPassDone.text);
-              })),
-              Expanded(
-                  flex: 1,
-                  child: Container()),
+                  child: ResetPassButton(AppText.txtReloadPass.text,
+                      onPressed: () {
+                    waitingDialog(context);
+                    cubit.resetPassword();
+                    Navigator.pop(context);
+                    notificationDialog(
+                        context, AppText.txtSendReloadPassDone.text);
+                  })),
+              Expanded(flex: 1, child: Container()),
               Expanded(
                   flex: 4,
                   child: SubmitButton(
-                onPressed: () async {
-                  waitingDialog(context);
-                  await FireBaseProvider.instance.updateProfileStudent(
-                      cubit.student!.userId.toString(),
-                      StudentModel(
+                    onPressed: () async {
+                      waitingDialog(context);
+                      var student = StudentModel(
                           name: cubit.name,
                           url: cubit.student!.url,
                           note: cubit.note,
@@ -109,22 +105,18 @@ class InfoStudentView extends StatelessWidget {
                           inJapan: cubit.inJapan,
                           phone: cubit.phone,
                           studentCode: cubit.stdCode,
-                          status: cubit.student!.status));
-                  Navigator.pop(context);
-                  DataProvider.updateStudentInfo(cubit.student!.userId,StudentModel(
-                      name: cubit.name,
-                      url: cubit.student!.url,
-                      note: cubit.note,
-                      userId: cubit.student!.userId,
-                      inJapan: cubit.inJapan,
-                      phone: cubit.phone,
-                      studentCode: cubit.stdCode,
-                      status: cubit.student!.status));
-                  notificationDialog(
-                      context, AppText.txtUpdateStudentDone.text);
-                },
-                title: AppText.txtUpdate.text,
-              ))
+                          status: cubit.student!.status,
+                          email: cubit.student!.email);
+                      FireBaseProvider.instance.updateProfileStudent(
+                          cubit.student!.userId.toString(), student);
+                      Navigator.pop(context);
+                      DataProvider.updateStudentInfo(
+                          cubit.student!.userId, student);
+                      notificationDialog(
+                          context, AppText.txtUpdateStudentDone.text);
+                    },
+                    title: AppText.txtUpdate.text,
+                  ))
             ],
           )
         ],

@@ -344,9 +344,15 @@ abstract class NetworkProvider {
   Future<List<StudentTestModel>> getAllStudentTestInListClassId(
       List<int> listClassId);
 
-  Future<List<LessonResultModel>> getLessonResultWithDate(int start, int end, int teacherId);
+  Future<List<LessonResultModel>> getLessonResultWithDateAndTeacherId(int start, int end, int teacherId);
 
   Future<List<ScheduleModel>> getTeacherCyclicSchedule(int teacherId);
 
   Future<List<ScheduleModel>> getTeacherSingleSchedule(List<int> listId, int startDate, int endDate);
+
+  Future<List<LessonResultModel>> getLessonResultWithDateAndClassId(int start, int end,int classId);
+
+  Future<List<ScheduleModel>> getClassCyclicSchedule(int classId);
+
+  Future<List<ReportModel>> getReportByClassId(int id);
 }

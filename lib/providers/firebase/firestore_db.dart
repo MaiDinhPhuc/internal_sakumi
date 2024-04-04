@@ -110,8 +110,22 @@ class FireStoreDb {
 
   Future<QuerySnapshot<Map<String, dynamic>>> getReportByTeacherId(
       int id) async {
-    final snapshot =
-        await db.collection("reports").where('teacher_id', isEqualTo: id).get();
+    final snapshot = await db
+        .collection("reports")
+        .where('teacher_id', isEqualTo: id)
+        .where('type', isEqualTo: 'teacher')
+        .get();
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getReportByClassId(
+      int id) async {
+    final snapshot = await db
+        .collection("reports")
+        .where('class_id', isEqualTo: id)
+        .where('type', isEqualTo: 'class')
+        .get();
 
     return snapshot;
   }
@@ -121,6 +135,16 @@ class FireStoreDb {
     final snapshot = await db
         .collection("schedule")
         .where('teacher_id', isEqualTo: teacherId)
+        .get();
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getClassCyclicSchedule(
+      int classId) async {
+    final snapshot = await db
+        .collection("schedule")
+        .where('class_id', isEqualTo: classId)
         .get();
 
     return snapshot;
@@ -212,8 +236,9 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getLessonResultWithDate(
-      int start, int end, int teacherId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>>
+      getLessonResultWithDateAndTeacherId(
+          int start, int end, int teacherId) async {
     final snapshot = await db
         .collection('lesson_result')
         .orderBy('date_time', descending: true)
@@ -221,6 +246,22 @@ class FireStoreDb {
             Filter("date_time", isGreaterThanOrEqualTo: start),
             Filter("date_time", isLessThanOrEqualTo: end),
             Filter("teacher_id", isEqualTo: teacherId)))
+        .get();
+
+    // debugPrint("==========>get db from \"lesson_result\" : ${snapshot.docs.length}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getLessonResultWithDateAndClassId(
+      int start, int end, int classId) async {
+    final snapshot = await db
+        .collection('lesson_result')
+        .orderBy('date_time', descending: true)
+        .where(Filter.and(
+            Filter("date_time", isGreaterThanOrEqualTo: start),
+            Filter("date_time", isLessThanOrEqualTo: end),
+            Filter("class_id", isEqualTo: classId)))
         .get();
 
     // debugPrint("==========>get db from \"lesson_result\" : ${snapshot.docs.length}");
@@ -946,7 +987,8 @@ class FireStoreDb {
       'teacher_code': model.teacherCode,
       'phone': model.phone,
       'user_id': model.userId,
-      'schedule': model.schedule
+      'schedule': model.schedule,
+      'email': model.email
     });
     debugPrint("==========>update db for \"teacher\"");
   }
@@ -961,6 +1003,7 @@ class FireStoreDb {
       'phone': model.phone,
       'user_id': model.userId,
       'in_jp': model.inJapan,
+      'email': model.email
     });
     debugPrint("==========>update db for \"students\"");
   }
@@ -1131,7 +1174,8 @@ class FireStoreDb {
       'student_code': model.studentCode,
       'url': model.url,
       'user_id': model.userId,
-      'status': model.status
+      'status': model.status,
+      'email':model.email
     });
     debugPrint("==========>add db for \"students\"");
   }
@@ -1184,7 +1228,8 @@ class FireStoreDb {
       'teacher_code': model.teacherCode,
       'url': model.url,
       'user_id': model.userId,
-      'schedule': model.schedule
+      'schedule': model.schedule,
+      'email': model.email
     });
     debugPrint("==========>add db for \"teacher\"");
   }

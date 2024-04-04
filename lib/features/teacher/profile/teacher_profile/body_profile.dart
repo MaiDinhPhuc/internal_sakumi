@@ -44,19 +44,18 @@ class BodyProfile extends StatelessWidget {
                   CircleAvatar(
                     radius: Resizable.size(context, 80),
                     backgroundColor: primaryColor.shade50,
-                    child: ImageNetwork(
-                        key: Key(profileCubit.profileTeacher!.url),
-                        image: profileCubit.profileTeacher!.url.isEmpty
+                    child:ClipRRect(
+                      borderRadius: BorderRadius.circular(1000),
+                      child: Image.network(
+                        fit: BoxFit.cover,
+                        profileCubit.profileTeacher!.url.isEmpty
                             ? AppConfigs.defaultImage
-                            : profileCubit.profileTeacher!.url,
+                            : 'https://cors-anywhere.herokuapp.com/${profileCubit.profileTeacher!.url}',
                         height: Resizable.size(context, 160),
-                        borderRadius: BorderRadius.circular(1000),
                         width: Resizable.size(context, 160),
-                        duration: 0,
-                        onLoading: Transform.scale(
-                          scale: 0.5,
-                          child: const CircularProgressIndicator(),
-                        )),
+                        errorBuilder: (_, __, ___) => Container(),
+                      ),
+                    )
                   ),
                   CustomButton(
                       onPress: () async {

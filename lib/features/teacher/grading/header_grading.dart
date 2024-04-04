@@ -4,13 +4,15 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/screens/class_info/detail_grading_screen_v2.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:internal_sakumi/widget/submit_button.dart';
 
 import 'detail_grading_cubit.dart';
 import 'detail_grading_cubit_v2.dart';
 
 class HeaderGrading extends StatelessWidget {
-  const HeaderGrading({super.key, required this.cubit});
+  const HeaderGrading({super.key, required this.cubit, required this.type});
   final DetailGradingCubit cubit;
+  final String type;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -27,8 +29,37 @@ class HeaderGrading extends StatelessWidget {
                         fontSize: Resizable.font(context, 20),
                         fontWeight: FontWeight.w700,
                         color: greyColor.shade500)))),
+        if(type == "type=test")
+          Expanded(
+            flex: 2,
+            child: Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: Resizable.padding(context, 10),
+                  horizontal: Resizable.padding(context, 5)
+                ),
+                child: ElevatedButton(
+                  onPressed: (){
+                    cubit.loading();
+                    cubit.init(type);
+                  },
+                  style: ButtonStyle(
+                      shadowColor: MaterialStateProperty.all(
+                          primaryColor ),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.circular(Resizable.padding(context, 1000)))),
+                      backgroundColor: MaterialStateProperty.all(
+                       primaryColor ),
+                      padding: MaterialStateProperty.all(EdgeInsets.symmetric(
+                          horizontal: Resizable.padding(context, 30)))),
+                  child: Text("Reload",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: Resizable.font(context, 16),
+                          color: Colors.white)),
+                ))),
         Expanded(
-            flex: 1,
+            flex: 2,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(24),
               child: Material(

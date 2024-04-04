@@ -80,53 +80,60 @@ class ScheduleTabCubit extends Cubit<int> {
   }
 
   getSchedule() async {
-    listLessonResult = await FireBaseProvider.instance.getLessonResultWithDate(
+    listLessonResult = await FireBaseProvider.instance.getLessonResultWithDateAndTeacherId(
         startDate!.millisecondsSinceEpoch,
         endDate!.millisecondsSinceEpoch,
         teacherId!);
 
-    listCyclicSchedule = await FireBaseProvider.instance.getTeacherCyclicSchedule(teacherId!);
+    listCyclicSchedule =
+        await FireBaseProvider.instance.getTeacherCyclicSchedule(teacherId!);
 
     var listClassIdTemp = listCyclicSchedule!.map((e) => e.classId).toList();
 
-    listSingleSchedule = await FireBaseProvider.instance.getTeacherSingleSchedule(listClassIdTemp,startDate!.millisecondsSinceEpoch, endDate!.millisecondsSinceEpoch);
+    if (listClassIdTemp.isEmpty) {
+      listSingleSchedule = [];
+    } else {
+      listSingleSchedule = await FireBaseProvider.instance
+          .getTeacherSingleSchedule(
+              listClassIdTemp,
+              startDate!.millisecondsSinceEpoch,
+              endDate!.millisecondsSinceEpoch);
+    }
 
-    for(var i in listLessonResult!){
-      if(listClassId.contains(i.classId) == false){
+    for (var i in listLessonResult!) {
+      if (listClassId.contains(i.classId) == false) {
         listClassId.add(i.classId);
       }
     }
 
-    for(var i in listCyclicSchedule!){
-      if(listClassId.contains(i.classId) == false){
+    for (var i in listCyclicSchedule!) {
+      if (listClassId.contains(i.classId) == false) {
         listClassId.add(i.classId);
       }
     }
 
-    for(var i in listSingleSchedule!){
-      if(listClassId.contains(i.classId) == false){
+    for (var i in listSingleSchedule!) {
+      if (listClassId.contains(i.classId) == false) {
         listClassId.add(i.classId);
       }
     }
 
-    for(var i in listClassId){
-      await DataProvider.classById(i,loadClass);
+    for (var i in listClassId) {
+      DataProvider.classById(i, loadClass);
     }
 
     isLoadingSchedule = false;
     emit(state + 1);
   }
 
-
-
-  String convertTime(int time){
+  String convertTime(int time) {
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(time);
     return DateFormat('HH:mm:ss').format(dateTime);
   }
 
-  String getClassCode(int classId){
+  String getClassCode(int classId) {
     var classModel = listClass.where((e) => e.classId == classId).toList();
-    if(classModel.isEmpty) return "";
+    if (classModel.isEmpty) return "";
     return classModel.first.classCode;
   }
 
@@ -220,37 +227,40 @@ class ScheduleTabCubit extends Cubit<int> {
     return results;
   }
 
-  bool checkExistResult(int index, int classId){
+  bool checkExistResult(int index, int classId) {
     var listResult = getResult(index);
 
-
-    for(var i in listResult){
-      if(i.classId == classId) return true;
+    for (var i in listResult) {
+      if (i.classId == classId) return true;
     }
 
     return false;
   }
 
-  List<ScheduleModel> getScheduleItem(int index, String day){
+  List<ScheduleModel> getScheduleItem(int index, String day) {
     var date = listDate[index];
     DateTime dateTime = DateTime(now.year, now.month, now.day, 0, 0, 0);
 
     DateTime startOfWeek =
-    dateTime.subtract(Duration(days: currentWeekday - 1));
+        dateTime.subtract(Duration(days: currentWeekday - 1));
 
-    if(date.millisecondsSinceEpoch < startOfWeek.millisecondsSinceEpoch) return [];
+    if (date.millisecondsSinceEpoch < startOfWeek.millisecondsSinceEpoch) {
+      return [];
+    }
 
     List<ScheduleModel> list = [];
 
-    for(var i in listCyclicSchedule!){
-      if(i.role.contains(day) && checkExistResult(index, i.classId) == false){
+    for (var i in listCyclicSchedule!) {
+      if (i.role.contains(day) && checkExistResult(index, i.classId) == false) {
         list.add(i);
       }
     }
 
-    for(var i in listSingleSchedule!){
-      if(i.date == date.millisecondsSinceEpoch && checkExistResult(index, i.classId) == false){
-        var temp = listCyclicSchedule!.firstWhere((e) => e.classId == i.classId);
+    for (var i in listSingleSchedule!) {
+      if (i.date == date.millisecondsSinceEpoch &&
+          checkExistResult(index, i.classId) == false) {
+        var temp =
+            listCyclicSchedule!.firstWhere((e) => e.classId == i.classId);
         list.remove(temp);
         list.add(i);
       }
@@ -320,7 +330,7 @@ class ScheduleTabCubit extends Cubit<int> {
         phone: teacher!.phone,
         teacherCode: teacher!.teacherCode,
         status: teacher!.status,
-        schedule: schedule!);
+        schedule: schedule!, email: teacher!.email);
     await FireBaseProvider.instance
         .updateProfileTeacher(teacher!.userId.toString(), teacherModel);
     DataProvider.updateTeacherInfo(teacher!.userId, teacherModel);
@@ -336,6 +346,12 @@ class ScheduleTabCubit extends Cubit<int> {
   }
 
   loadClass(Object classModel) {
-    listClass.add(classModel as ClassModel);
+    var classModelTemp = classModel as ClassModel;
+    if(listClass.contains(classModelTemp) == false){
+      listClass.add(classModelTemp);
+    }
+    if(listClass.length == listClassId.length){
+      emit(state+1);
+    }
   }
 }

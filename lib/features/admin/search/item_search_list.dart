@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_bills/bill_dialog_cubit.dart';
+import 'package:internal_sakumi/features/admin/manage_schedule/manage_schedule_cubit.dart';
 import 'package:internal_sakumi/features/admin/search/search_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
@@ -58,7 +59,10 @@ class ItemSearchList extends StatelessWidget {
                         data["student_code"]
                             .toString()
                             .toLowerCase()
-                            .contains(searchCubit.searchValue.toLowerCase())) {
+                            .contains(searchCubit.searchValue.toLowerCase()) || data["email"]
+                        .toString()
+                        .toLowerCase()
+                        .contains(searchCubit.searchValue.toLowerCase())) {
                       return ItemSearch(
                         type: searchCubit.type,
                         isLast: index == (snapshots.data!.docs.length - 1),
@@ -66,6 +70,7 @@ class ItemSearchList extends StatelessWidget {
                         name: data["name"] ?? "",
                         code: data["student_code"] ?? "",
                         id: data["user_id"],
+                        email: data["email"],
                       );
                     }
                   }
@@ -78,7 +83,10 @@ class ItemSearchList extends StatelessWidget {
                         data["teacher_code"]
                             .toString()
                             .toLowerCase()
-                            .contains(searchCubit.searchValue.toLowerCase())) {
+                            .contains(searchCubit.searchValue.toLowerCase()) || data["email"]
+                        .toString()
+                        .toLowerCase()
+                        .contains(searchCubit.searchValue.toLowerCase())) {
                       return ItemSearch(
                         type: searchCubit.type,
                         isLast: index == (snapshots.data!.docs.length - 1),
@@ -86,6 +94,7 @@ class ItemSearchList extends StatelessWidget {
                         name: data["name"] ?? "",
                         code: data["teacher_code"] ?? "",
                         id: data["user_id"],
+                        email: data["email"],
                       );
                     }
                   }
@@ -126,6 +135,8 @@ class StdSearchListV2 extends StatelessWidget {
                   if (data["name"].toString().toLowerCase().contains(
                           billDialogCubit.stdSearchValue.toLowerCase()) ||
                       data["student_code"].toString().toLowerCase().contains(
+                          billDialogCubit.stdSearchValue.toLowerCase())||
+                      data["email"].toString().toLowerCase().contains(
                           billDialogCubit.stdSearchValue.toLowerCase())) {
                     return ItemSearchV2(
                       type: AppText.txtStudent.text,
@@ -139,6 +150,7 @@ class StdSearchListV2 extends StatelessWidget {
                             "${data["name"] ?? ""}-${data["student_code"] ?? ""}",
                             data["user_id"]);
                       },
+                      email: data["email"],
                     );
                   }
                   return Container();
@@ -192,5 +204,52 @@ class ClassSearchListV2 extends StatelessWidget {
                   }
                   return Container();
                 }));
+  }
+}
+
+class ClassSearchListSchedule extends StatelessWidget {
+  const ClassSearchListSchedule(
+      {super.key, required this.scheduleCubit, required this.snapshots});
+  final ManageScheduleCubit scheduleCubit;
+  final AsyncSnapshot<QuerySnapshot<Object?>> snapshots;
+  @override
+  Widget build(BuildContext context) {
+    return scheduleCubit.classSearchValue == ""
+        ? Container()
+        : Container(
+        constraints: BoxConstraints(
+          maxHeight: Resizable.padding(context, 250), // max height
+        ),
+        margin: EdgeInsets.only(top: Resizable.padding(context, 5)),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: Colors.black),
+            borderRadius: BorderRadius.circular(10)),
+        child: ListView.builder(
+            itemCount: snapshots.data!.docs.length,
+            itemBuilder: (c, index) {
+              var data = snapshots.data!.docs[index].data()
+              as Map<String, dynamic>;
+              if (scheduleCubit.classSearchValue.isEmpty) {
+                return Container();
+              }
+              if (data["class_code"].toString().toLowerCase().contains(
+                  scheduleCubit.classSearchValue.toLowerCase())&& data["is_sub_class"] == false) {
+                return ItemSearchV2(
+                  type: AppText.txtClass.text,
+                  isLast: index == (snapshots.data!.docs.length - 1),
+                  classStatus: data["class_status"],
+                  code: data["class_code"] ?? "",
+                  classType: data["class_type"] ?? 0,
+                  id: data["class_id"],
+                  onTap: () {
+                    scheduleCubit.chooseClass(
+                        "${data["class_code"] ?? ""}",
+                        data["class_id"]);
+                  },
+                );
+              }
+              return Container();
+            }));
   }
 }

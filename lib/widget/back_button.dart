@@ -119,3 +119,56 @@ class CustomBackHomeButton extends StatelessWidget {
     );
   }
 }
+
+class CustomBackTeacherScreenButton extends StatelessWidget {
+  const CustomBackTeacherScreenButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: Resizable.size(
+          context, 30),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.arrow_back_ios_new_rounded , color: primaryColor.shade500,),
+              SizedBox(
+                  width: Resizable.padding(
+                      context, 5)),
+              Text(AppText.txtBack.text,
+                  style: TextStyle(
+                      color: greyColor.shade600,
+                      fontWeight:
+                      FontWeight.w700,
+                      fontSize: 16)),
+            ],
+          ),
+          Positioned.fill(
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius:
+                BorderRadius.circular(100),
+                overlayColor:
+                MaterialStateProperty.all(
+                    primaryColor
+                        .withAlpha(30)),
+                onTap: ()  {
+                  Navigator.pushReplacementNamed(context, '${Routes.admin}/manageTeachers');
+                },
+                child: Container(
+                  margin:
+                  const EdgeInsets.symmetric(
+                      horizontal: 2),
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}

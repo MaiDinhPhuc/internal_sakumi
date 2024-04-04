@@ -1,15 +1,22 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
+import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'bill_dialog_cubit.dart';
 
 class SearchInBill extends StatelessWidget {
-  const SearchInBill({super.key, required this.onDelete, required this.onChange, required this.controller, required this.enable});
+  const SearchInBill(
+      {super.key,
+      required this.onDelete,
+      required this.onChange,
+      required this.controller,
+      required this.enable, required this.hint});
   final Function() onDelete;
   final Function(String) onChange;
   final TextEditingController controller;
   final bool enable;
+  final String hint;
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +25,13 @@ class SearchInBill extends StatelessWidget {
       children: [
         TextFormField(
           controller: controller,
-          enabled:enable ,
+          enabled: enable,
           onChanged: onChange,
           style: TextStyle(
               fontSize: Resizable.font(context, 18),
               fontWeight: FontWeight.w500),
           decoration: InputDecoration(
+            hintText: hint,
             isDense: true,
             fillColor: Colors.white,
             hoverColor: Colors.transparent,
@@ -31,20 +39,28 @@ class SearchInBill extends StatelessWidget {
               borderSide: BorderSide(
                   color: const Color(0xffE0E0E0),
                   width: Resizable.size(context, 0.5)),
-              borderRadius: BorderRadius.circular(
-                  Resizable.padding(context, 5)),
+              borderRadius:
+                  BorderRadius.circular(Resizable.padding(context, 5)),
             ),
             filled: true,
             border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(
-                    Resizable.padding(context, 5)),
+                borderRadius:
+                    BorderRadius.circular(Resizable.padding(context, 5)),
                 borderSide: BorderSide(
                     color: const Color(0xffE0E0E0),
                     width: Resizable.size(context, 0.5))),
           ),
         ),
-        if(!enable)
-          Padding(padding: EdgeInsets.only(right: Resizable.padding(context, 5)),child: InkWell(onTap: onDelete, child: const Icon(Icons.cancel, color: primaryColor))),
+        !enable?
+          Padding(
+              padding: EdgeInsets.only(right: Resizable.padding(context, 5)),
+              child: InkWell(
+                  onTap: onDelete,
+                  child: const Icon(Icons.cancel, color: primaryColor))):Padding(
+            padding: EdgeInsets.only(right: Resizable.padding(context, 5)),
+            child: InkWell(
+                onTap: (){},
+                child: Icon(Icons.search, color: greyColor.shade600))),
       ],
     );
   }
@@ -62,7 +78,7 @@ class SearchInBillV2 extends StatelessWidget {
       children: [
         TextFormField(
           controller: controller,
-          enabled:false,
+          enabled: false,
           style: TextStyle(
               fontSize: Resizable.font(context, 18),
               fontWeight: FontWeight.w500),
@@ -74,13 +90,13 @@ class SearchInBillV2 extends StatelessWidget {
               borderSide: BorderSide(
                   color: const Color(0xffE0E0E0),
                   width: Resizable.size(context, 0.5)),
-              borderRadius: BorderRadius.circular(
-                  Resizable.padding(context, 5)),
+              borderRadius:
+                  BorderRadius.circular(Resizable.padding(context, 5)),
             ),
             filled: true,
             border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(
-                    Resizable.padding(context, 5)),
+                borderRadius:
+                    BorderRadius.circular(Resizable.padding(context, 5)),
                 borderSide: BorderSide(
                     color: const Color(0xffE0E0E0),
                     width: Resizable.size(context, 0.5))),

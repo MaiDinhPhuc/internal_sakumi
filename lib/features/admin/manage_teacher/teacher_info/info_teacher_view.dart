@@ -1,5 +1,4 @@
 import 'package:flutter/Material.dart';
-import 'package:image_network/image_network.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_teacher/teacher_info/teacher_info_cubit.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
@@ -36,16 +35,16 @@ class InfoTeacherView extends StatelessWidget {
         children: [
           cubit.teacher!.url == ''
               ? Image.asset("assets/images/ic_avt.png")
-              : ImageNetwork(
+              : ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(1000)),
-                  image: cubit.teacher!.url,
-                  height: Resizable.size(context, 100),
-                  width: Resizable.size(context, 100),
-                  onError: Container(),
-                  onLoading: Transform.scale(
-                    scale: 0.5,
-                    child: const CircularProgressIndicator(),
-                  )),
+                  child: Image.network(
+                    fit: BoxFit.cover,
+                    'https://cors-anywhere.herokuapp.com/${cubit.teacher!.url}',
+                    height: Resizable.size(context, 100),
+                    width: Resizable.size(context, 100),
+                    errorBuilder: (_, __, ___) => Container(),
+                  ),
+                ),
           Padding(
               padding: EdgeInsets.all(Resizable.padding(context, 5)),
               child: TeacherInfo(cubit: cubit)),
@@ -63,11 +62,11 @@ class InfoTeacherView extends StatelessWidget {
                       phone: cubit.phone,
                       status: cubit.teacher!.status,
                       teacherCode: cubit.teacherCode,
-                      schedule: cubit.teacher!.schedule);
-                  await FireBaseProvider.instance.updateProfileTeacher(
-                      TextUtils.getName(),teacherModel
-                      );
-                  DataProvider.updateTeacherInfo(cubit.teacher!.userId,teacherModel);
+                      schedule: cubit.teacher!.schedule, email: cubit.teacher!.email);
+                  await FireBaseProvider.instance
+                      .updateProfileTeacher(TextUtils.getName(), teacherModel);
+                  DataProvider.updateTeacherInfo(
+                      cubit.teacher!.userId, teacherModel);
                   Navigator.pop(context);
                   notificationDialog(
                       context, AppText.txtUpdateTeacherDone.text);

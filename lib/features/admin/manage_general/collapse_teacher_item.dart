@@ -31,6 +31,12 @@ class CollapseTeacherItem extends StatelessWidget {
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: Resizable.font(context, 13),
+                        color: const Color(0xff757575))),
+                SizedBox(height: Resizable.padding(context, 3)),
+                Text(teacher.email,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: Resizable.font(context, 13),
                         color: const Color(0xff757575)))
               ],
             )

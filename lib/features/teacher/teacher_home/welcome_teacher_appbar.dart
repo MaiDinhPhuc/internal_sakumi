@@ -36,58 +36,51 @@ class WelComeTeacherAppBar extends StatelessWidget {
                           color: primaryColor,
                           shape: BoxShape.circle,
                           boxShadow: [
-                            BoxShadow(
-                                blurRadius: 5, color: Colors.black)
+                            BoxShadow(blurRadius: 5, color: Colors.black)
                           ],
                         ),
                         child: CircleAvatar(
-                          radius: Resizable.size(context, 25),
-                          backgroundColor: greyColor.shade300,
-                          child: s == null
-                              ? Container()
-                              : ImageNetwork(
-                            key: Key(s.url),
-                            image: s.url.isEmpty
-                                ? AppConfigs.defaultImage
-                                : s.url,
-                            height: Resizable.size(context, 50),
-                            borderRadius:
-                            BorderRadius.circular(1000),
-                            width: Resizable.size(context, 50),
-                            onLoading: Transform.scale(
-                              scale: 0.25,
-                              child:
-                              const CircularProgressIndicator(),
-                            ),
-                            duration: 100,
-                            onTap: () {
-                              Navigator.pushNamed(context,
-                                  '${Routes.teacher}/profile');
-                            },
-                          ),
-                        )),
+                            radius: Resizable.size(context, 25),
+                            backgroundColor: greyColor.shade300,
+                            child: s == null
+                                ? Container()
+                                : GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, '${Routes.teacher}/profile');
+                                    },
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(1000),
+                                      child: Image.network(
+                                        key: Key(s.url),
+                                        fit: BoxFit.fill,
+                                        s.url.isEmpty
+                                            ? AppConfigs.defaultImage
+                                            : 'https://cors-anywhere.herokuapp.com/${s.url}',
+                                        height: Resizable.size(context, 50),
+                                        width: Resizable.size(context, 50),
+                                        errorBuilder: (_, __, ___) => Container(),
+                                      ),
+                                    ),
+                                  ))),
                     SizedBox(width: Resizable.size(context, 10)),
                     s == null
                         ? Container()
                         : Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          AppText.txtHello.text,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize:
-                              Resizable.font(context, 24)),
-                        ),
-                        Text(
-                            '${s.name} ${AppText.txtSensei.text}',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w800,
-                                fontSize: Resizable.font(
-                                    context, 40)))
-                      ],
-                    )
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AppText.txtHello.text,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: Resizable.font(context, 24)),
+                              ),
+                              Text('${s.name} ${AppText.txtSensei.text}',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: Resizable.font(context, 40)))
+                            ],
+                          )
                   ],
                 ),
                 AddButton(
@@ -95,7 +88,8 @@ class WelComeTeacherAppBar extends StatelessWidget {
                     showDialog(
                         context: context,
                         builder: (context) => FeedBackDialog());
-                  }, title: AppText.titleSendFeedback.text,
+                  },
+                  title: AppText.titleSendFeedback.text,
                 )
               ],
             ),

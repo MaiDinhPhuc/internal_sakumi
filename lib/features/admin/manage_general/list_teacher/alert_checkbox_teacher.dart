@@ -131,7 +131,7 @@ void alertCheckBoxTeacher(
                                                                   .update(v);
                                                             },
                                                             title: Text(
-                                                                "${cubit.listSensei![index].name} ${cubit.listSensei![index].teacherCode}")),
+                                                                "${cubit.listSensei![index].name} - ${cubit.listSensei![index].teacherCode}\n${cubit.listSensei![index].email}")),
                                                   ))).toList(),
                                           SizedBox(
                                               height:
@@ -179,29 +179,32 @@ void alertCheckBoxTeacher(
                                           onPressed: () async {
                                             Navigator.pop(context);
                                             waitingDialog(context);
+                                            List<TeacherClassModel> listTeacherClass = [];
                                             for (var i
                                                 in cubit.listSelectedTeacher!) {
                                               var now = DateTime.now().millisecondsSinceEpoch;
-                                              await cubit.addTeacherToClass(
-                                                  context,
-                                                  TeacherClassModel(
-                                                      id: now,
-                                                      classId:
-                                                          manageGeneralCubit
-                                                              .selector,
-                                                      userId: cubit
-                                                          .listSelectedTeacher![
-                                                              cubit
-                                                                  .listSelectedTeacher!
-                                                                  .indexOf(i)]
-                                                          .userId,
-                                                      classStatus: AppText
-                                                          .statusInProgress
-                                                          .text,
-                                                      date: DateFormat(
-                                                              'dd/MM/yyyy')
-                                                          .format(
-                                                              DateTime.now()), responsibility: false));
+                                              var teacherClass = TeacherClassModel(
+                                                  id: now,
+                                                  classId:
+                                                  manageGeneralCubit
+                                                      .selector,
+                                                  userId: cubit
+                                                      .listSelectedTeacher![
+                                                  cubit
+                                                      .listSelectedTeacher!
+                                                      .indexOf(i)]
+                                                      .userId,
+                                                  classStatus: AppText
+                                                      .statusInProgress
+                                                      .text,
+                                                  date: DateFormat(
+                                                      'dd/MM/yyyy')
+                                                      .format(
+                                                      DateTime.now()), responsibility: false);
+                                               cubit.addTeacherToClass(
+                                                  context,teacherClass
+                                                  );
+                                              listTeacherClass.add(teacherClass);
                                             }
                                             if (context.mounted) {
                                               Navigator.pop(context);

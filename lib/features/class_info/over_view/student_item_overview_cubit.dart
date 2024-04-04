@@ -171,7 +171,12 @@ class StudentItemOverViewCubit extends Cubit<int> {
   }
 
   String getTitle(int lessonId) {
-    return cubit.lessons!.firstWhere((element) => element.lessonId == lessonId).title;
+
+    var lesson = cubit.lessons!.where((element) => element.lessonId == lessonId).toList();
+
+    if(lesson.isEmpty) return "";
+
+    return lesson.first.title;
   }
 
   int getAttendance(int lessonId){

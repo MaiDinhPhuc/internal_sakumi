@@ -190,18 +190,19 @@ void alertNewStudent(
                                             waitingDialog(context);
                                             if (formKey.currentState!
                                                 .validate()) {
+                                              var student =  StudentModel(
+                                                  name: nameCon.text,
+                                                  url: '',
+                                                  note: noteCon.text,
+                                                  userId:
+                                                  millisecondsSinceEpoch,
+                                                  inJapan: cubit.active,
+                                                  phone: phoneCon.text,
+                                                  studentCode:
+                                                  stdCodeCon.text,
+                                                  status: AppText.statusInProgress.text, email: emailCon.text);
                                               await cubit.createStudent(
-                                                  StudentModel(
-                                                      name: nameCon.text,
-                                                      url: '',
-                                                      note: noteCon.text,
-                                                      userId:
-                                                      millisecondsSinceEpoch,
-                                                      inJapan: cubit.active,
-                                                      phone: phoneCon.text,
-                                                      studentCode:
-                                                          stdCodeCon.text,
-                                                      status: AppText.statusInProgress.text),
+                                                  student,
                                                   UserModel(
                                                       email: emailCon.text,
                                                       role: AppText
@@ -211,29 +212,25 @@ void alertNewStudent(
                                                 Navigator.pop(context);
                                                 if (cubit.checkCreate == true) {
                                                   var id = DateTime.now().millisecondsSinceEpoch;
-                                                  await cubit.addStudentToClass(
-                                                      context,
-                                                      StudentClassModel(
-                                                          id: id,
-                                                          classId:
-                                                              manageGeneralCubit
-                                                                  .selector,
-                                                          activeStatus: 1,
-                                                          learningStatus: 1,
-                                                          moveTo: 0,
-                                                          userId: millisecondsSinceEpoch,
-                                                          classStatus:
-                                                              AppText.statusInProgress.text,
-                                                          date: DateFormat(
-                                                                  'dd/MM/yyyy')
-                                                              .format(DateTime
-                                                                  .now()), timeChange: 0));
-                                                  if (context.mounted) {
-                                                    manageGeneralCubit
-                                                        .loadStudentInClass(
-                                                            manageGeneralCubit
-                                                                .selector);
-                                                  }
+                                                  var stdClass = StudentClassModel(
+                                                      id: id,
+                                                      classId:
+                                                      manageGeneralCubit
+                                                          .selector,
+                                                      activeStatus: 1,
+                                                      learningStatus: 1,
+                                                      moveTo: 0,
+                                                      userId: millisecondsSinceEpoch,
+                                                      classStatus:
+                                                      AppText.statusInProgress.text,
+                                                      date: DateFormat(
+                                                          'dd/MM/yyyy')
+                                                          .format(DateTime
+                                                          .now()), timeChange: 0);
+                                                  cubit.addStudentToClass(
+                                                      context,stdClass);
+                                                  manageGeneralCubit
+                                                      .addNewStudentToClass(student, stdClass);
                                                 } else {
                                                   notificationDialog(
                                                       context,
@@ -243,7 +240,7 @@ void alertNewStudent(
                                                 }
                                               }
                                             } else {
-                                              print('Form is invalid');
+                                              debugPrint('Form is invalid');
                                             }
                                           },
                                           title: AppText.btnAdd.text),

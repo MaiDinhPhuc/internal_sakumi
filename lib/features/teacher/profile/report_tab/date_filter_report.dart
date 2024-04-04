@@ -1,7 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_bills/choose_date_dialog.dart';
-import 'package:internal_sakumi/features/teacher/profile/report_tab/teacher_report_cubit.dart';
+import 'package:internal_sakumi/features/teacher/profile/report_tab/report_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:intl/intl.dart';
@@ -9,7 +9,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class DateFilterReport extends StatelessWidget {
   const DateFilterReport({super.key, required this.cubit});
-  final TeacherReportCubit cubit;
+  final ReportCubit cubit;
   @override
   Widget build(BuildContext context) {
     return Row(

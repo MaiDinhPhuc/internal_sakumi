@@ -1,5 +1,4 @@
 import 'package:flutter/Material.dart';
-import 'package:image_network/image_network.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
@@ -88,11 +87,13 @@ class ReportInfoView extends StatelessWidget {
                                     Resizable.size(context, 10)),
                                 child: cubit
                                         .checkIsUrl(cubit.listPickerImage[i])
-                                    ? ImageNetwork(
-                                        fitWeb: BoxFitWeb.fill,
-                                        image: cubit.listPickerImage[i],
+                                    ? Image.network(
+                                        fit: BoxFit.fill,
+                                        'https://cors-anywhere.herokuapp.com/${cubit.listPickerImage[i]}',
                                         height: Resizable.size(context, 250),
                                         width: Resizable.size(context, 200),
+                                        errorBuilder: (_, __, ___) =>
+                                            Container(),
                                       )
                                     : Image.memory(cubit.listPickerImage[i],
                                         height: Resizable.size(context, 250),

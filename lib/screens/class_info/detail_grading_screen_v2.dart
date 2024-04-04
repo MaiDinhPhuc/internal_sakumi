@@ -67,7 +67,7 @@ class DetailGradingScreen extends StatelessWidget {
                                           flex: 2,
                                           child: Column(
                                             children: [
-                                              HeaderGrading(cubit: cubit),
+                                              HeaderGrading(cubit: cubit, type: type),
                                               Expanded(
                                                   child: Container(
                                                 margin: EdgeInsets.only(

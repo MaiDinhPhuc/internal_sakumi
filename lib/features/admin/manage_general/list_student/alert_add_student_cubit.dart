@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
+import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/student_class_log.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
@@ -15,6 +16,7 @@ class AlertAddStudentCubit extends Cubit<int> {
   List<StudentModel>? listAllStudent, listStd, listSelectedStudent = [];
   bool? checkCreate, checkAdd;
   bool active = false;
+  ClassModel? classModel;
   final TextEditingController searchTextController = TextEditingController();
   loadAllUser(ManageGeneralCubit cubit) async {
     listAllStudent = await FireBaseProvider.instance.getAllStudent();
@@ -50,7 +52,7 @@ class AlertAddStudentCubit extends Cubit<int> {
       List<StudentModel> listTemp = [];
       for (var i in listStd!) {
         if (i.name.toUpperCase().contains(text.toUpperCase()) ||
-            i.studentCode.toUpperCase().contains(text.toUpperCase())) {
+            i.studentCode.toUpperCase().contains(text.toUpperCase()) ||  i.email.toUpperCase().contains(text.toUpperCase())) {
           listTemp.add(i);
         }
       }
@@ -80,17 +82,18 @@ class AlertAddStudentCubit extends Cubit<int> {
   }
 
   addStudentToClass(BuildContext context, StudentClassModel model) async {
-    await FireBaseProvider.instance.addStudentToClass(model);
-    var classModel =
-        await FireBaseProvider.instance.getClassById(model.classId);
-    await FireBaseProvider.instance.addNewLog(StudentClassLogModel(
+    FireBaseProvider.instance.addStudentToClass(model);
+
+    classModel ??= await FireBaseProvider.instance.getClassById(model.classId);
+
+    FireBaseProvider.instance.addNewLog(StudentClassLogModel(
         id: DateTime.now().millisecondsSinceEpoch,
         classId: model.classId,
-        courseId: classModel.courseId,
+        courseId: classModel!.courseId,
         from: 'none',
         to: model.classStatus,
         userId: model.userId,
-        classType: classModel.classType));
+        classType: classModel!.classType));
   }
 
   createStudent(StudentModel model, UserModel userModel) async {

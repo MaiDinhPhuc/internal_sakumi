@@ -44,7 +44,7 @@ class StudentItem extends StatelessWidget {
                           fontSize: Resizable.font(context, 16),
                           color: Colors.black)),
                   SizedBox(height: Resizable.padding(context, 3)),
-                  Text(student.phone,
+                  Text(student.email,
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: Resizable.font(context, 13),

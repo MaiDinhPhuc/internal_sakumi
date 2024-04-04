@@ -4,17 +4,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker_web/image_picker_web.dart';
-import 'package:internal_sakumi/features/teacher/profile/report_tab/teacher_report_cubit.dart';
+import 'package:internal_sakumi/features/teacher/profile/report_tab/report_cubit.dart';
 import 'package:internal_sakumi/model/report_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class AddNewReportCubit extends Cubit<int> {
-  AddNewReportCubit(this.reportModel, this.userId) : super(0) {
+  AddNewReportCubit(this.reportModel, this.userId,this.classId) : super(0) {
     load();
   }
 
   final ReportModel? reportModel;
   final int userId;
+  final int classId;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   TextEditingController titleCon = TextEditingController();
@@ -70,7 +71,7 @@ class AddNewReportCubit extends Cubit<int> {
     }
   }
 
-  addNewReport(TeacherReportCubit reportCubit) async {
+  addNewReport(ReportCubit reportCubit) async {
     if (listPickerImage.isNotEmpty) {
       List<String> list = [];
       for (var j in listPickerImage) {
@@ -93,7 +94,9 @@ class AddNewReportCubit extends Cubit<int> {
       'content': contentCon.text,
       'delete': false,
       'create_name': creatorCon.text,
-      'images': listUrl
+      'images': listUrl,
+      'type': reportCubit.type,
+      'class_id': classId
     });
     reportCubit.addNewReport(ReportModel(
         id: id,
@@ -103,10 +106,10 @@ class AddNewReportCubit extends Cubit<int> {
         title: titleCon.text,
         content: contentCon.text,
         delete: false,
-        images: listUrl));
+        images: listUrl,type:  reportCubit.type,classId: classId));
   }
 
-  updateReport(TeacherReportCubit reportCubit)async{
+  updateReport(ReportCubit reportCubit)async{
     if (listPickerImage.isNotEmpty) {
       List<String> list = [];
       for (var j in listPickerImage) {
@@ -129,7 +132,9 @@ class AddNewReportCubit extends Cubit<int> {
       'content': contentCon.text,
       'delete': reportModel!.delete,
       'create_name': creatorCon.text,
-      'images': listUrl
+      'images': listUrl,
+      'type': reportCubit.type,
+      'class_id':classId
     });
     reportCubit.updateReport(ReportModel(
         id: reportModel!.id,
@@ -139,6 +144,6 @@ class AddNewReportCubit extends Cubit<int> {
         title: titleCon.text,
         content: contentCon.text,
         delete: reportModel!.delete,
-        images: listUrl));
+        images: listUrl,type:  reportCubit.type, classId: classId));
   }
 }

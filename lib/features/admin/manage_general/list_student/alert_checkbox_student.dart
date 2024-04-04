@@ -116,7 +116,7 @@ void alertCheckBoxStudent(
                                                                       .update(v);
                                                                 },
                                                                 title: Text(
-                                                                    "${cubit.listStd![index].name} ${cubit.listStd![index].studentCode}")),
+                                                                    "${cubit.listStd![index].name} - ${cubit.listStd![index].studentCode}\n${cubit.listStd![index].email}")),
                                                       ))).toList(),
                                               SizedBox(
                                                   height: Resizable.size(
@@ -167,39 +167,38 @@ void alertCheckBoxStudent(
                                               onPressed: () async {
                                                 Navigator.pop(context);
                                                 waitingDialog(context);
+                                                List<StudentClassModel> listStdClass = [];
                                                 for (var i in cubit
                                                     .listSelectedStudent!) {
                                                   var id = DateTime.now().millisecondsSinceEpoch;
-                                                  await cubit.addStudentToClass(
-                                                      context,
-                                                      StudentClassModel(
-                                                          id: id,
-                                                          classId:
-                                                              manageGeneralCubit
-                                                                  .selector,
-                                                          activeStatus: 1,
-                                                          learningStatus: 1,
-                                                          moveTo: 0,
-                                                          userId: cubit
-                                                              .listSelectedStudent![cubit
-                                                                  .listSelectedStudent!
-                                                                  .indexOf(i)]
-                                                              .userId,
-                                                          classStatus: AppText
-                                                              .statusInProgress
-                                                              .text,
-                                                          date: DateFormat(
-                                                                  'dd/MM/yyyy')
-                                                              .format(DateTime
-                                                                  .now()), timeChange: 0));
+                                                  var stdClass = StudentClassModel(
+                                                      id: id,
+                                                      classId:
+                                                      manageGeneralCubit
+                                                          .selector,
+                                                      activeStatus: 1,
+                                                      learningStatus: 1,
+                                                      moveTo: 0,
+                                                      userId: cubit
+                                                          .listSelectedStudent![cubit
+                                                          .listSelectedStudent!
+                                                          .indexOf(i)]
+                                                          .userId,
+                                                      classStatus: AppText
+                                                          .statusInProgress
+                                                          .text,
+                                                      date: DateFormat(
+                                                          'dd/MM/yyyy')
+                                                          .format(DateTime
+                                                          .now()), timeChange: 0);
+
+                                                  cubit.addStudentToClass(context,stdClass);
+                                                  listStdClass.add(stdClass);
                                                 }
-                                                if (context.mounted) {
                                                   Navigator.pop(context);
-                                                  manageGeneralCubit
-                                                      .loadStudentInClass(
-                                                          manageGeneralCubit
-                                                              .selector);
-                                                }
+                                                  manageGeneralCubit.addListStudentToClass(
+                                                      cubit.listSelectedStudent!,listStdClass);
+
                                               },
                                               title: AppText.btnAdd.text),
                                         ),

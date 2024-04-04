@@ -29,6 +29,7 @@ class InfoBillView extends StatelessWidget {
                   color: const Color(0xff757575))),
           SizedBox(height: Resizable.padding(context, 5)),
           SearchInBill(
+              hint:AppText.txtSearchStudent.text,
               onDelete: () {
                 billDialogCubit.deleteStd();
               },
@@ -51,6 +52,7 @@ class InfoBillView extends StatelessWidget {
                               fontSize: Resizable.font(context, 18),
                               color: const Color(0xff757575)))),
                   SearchInBill(
+                      hint:AppText.txtSearchClass.text,
                       onDelete: () {
                         billDialogCubit.deleteClass();
                       },
@@ -274,6 +276,7 @@ class InfoBillViewV2 extends StatelessWidget {
                               fontSize: Resizable.font(context, 18),
                               color: const Color(0xff757575)))),
                   SearchInBill(
+                      hint:AppText.txtSearchClass.text,
                       onDelete: () {
                         billDialogCubit.deleteClass();
                       },

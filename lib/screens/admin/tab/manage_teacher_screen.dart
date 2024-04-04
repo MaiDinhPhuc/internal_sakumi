@@ -11,7 +11,7 @@ import 'package:internal_sakumi/features/admin/manage_teacher/list_teacher_tab/t
 import 'package:internal_sakumi/features/admin/manage_teacher/list_teacher_tab/teacher_layout.dart';
 import 'package:internal_sakumi/features/admin/manage_teacher/manage_teacher/alert_add_new_teacher_account.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
+import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:shimmer/shimmer.dart';
@@ -52,8 +52,9 @@ class ManageTeacherScreen extends StatelessWidget {
                         ),
                         SizedBox(width: Resizable.padding(context, 10)),
                         AddButton(
-                          onTap: () async {
-                            // alertAddNewTeacherAccount(context);
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, '${Routes.admin}/${Routes.manageSchedule}');
                           },
                           title: AppText.txtScheduleTeacher.text,
                         )
