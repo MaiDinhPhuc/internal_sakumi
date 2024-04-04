@@ -24,28 +24,25 @@ class LessonPendingViewV2 extends StatelessWidget {
               cubit.updateCheck1();
             }, title: AppText.titleNoteBeforeTeaching.text, isHardCode: true),
             if (cubit.supportNote != "")
-              NoteInPendingCard(
-                  cubit.check2, cubit.supportNote!,
+              NoteInPendingCard(cubit.check2, cubit.supportNote!,
                   onPressed: () {
-                    cubit.updateCheck2();
+                cubit.updateCheck2();
               }, title: AppText.titleNoteFromSupport.text, isHardCode: false),
             if (cubit.teacherNote != "")
-              NoteInPendingCard(
-                  cubit.check3, cubit.teacherNote!,
+              NoteInPendingCard(cubit.check3, cubit.teacherNote!,
                   onPressed: () {
-                    cubit.updateCheck3();
+                cubit.updateCheck3();
               },
                   title: AppText.titleNoteFromAnotherTeacher.text,
                   isHardCode: false),
             SizedBox(height: Resizable.size(context, 20)),
             SubmitButton(
-                isActive: (cubit.check1 &&
-                    cubit.check2 &&
-                    cubit.check3)
+                isActive: (cubit.check1 && cubit.check2 && cubit.check3)
                     ? true
                     : false,
                 onPressed: () async {
-                  TZDateTime nowVN = TZDateTime.now(getLocation('Asia/Ho_Chi_Minh'));
+                  TZDateTime nowVN =
+                      TZDateTime.now(getLocation('Asia/Ho_Chi_Minh'));
                   waitingDialog(context);
                   await cubit.addLessonResult(LessonResultModel(
                       id: 1000,
@@ -57,7 +54,9 @@ class LessonPendingViewV2 extends StatelessWidget {
                       noteForStudent: '',
                       noteForSupport: '',
                       noteForTeacher: '',
-                      supportNoteForTeacher: "",dateTime: DateFormat('dd/MM/yyyy HH:mm:ss').format(nowVN)));
+                      supportNoteForTeacher: "",
+                      dateTime:
+                          DateFormat('dd/MM/yyyy HH:mm:ss').format(nowVN)));
 
                   if (context.mounted) {
                     Navigator.pop(context);

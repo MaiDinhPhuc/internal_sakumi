@@ -17,7 +17,7 @@ class SmallAvatar extends StatelessWidget {
               url == ''
                   ? Image.asset("assets/images/ic_avt.png")
                   : Image.network(
-                      'https://cors-anywhere.herokuapp.com/$url',
+                      '$url',
                       fit: BoxFit.cover,
                       height: Resizable.size(context, 32),
                       width: Resizable.size(context, 32),

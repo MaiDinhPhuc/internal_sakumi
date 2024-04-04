@@ -43,7 +43,7 @@ class InfoStudentView extends StatelessWidget {
               : ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(1000)),
                   child: Image.network(
-                    'https://cors-anywhere.herokuapp.com/${cubit.student!.url}',
+                    '${cubit.student!.url}',
                     height: Resizable.size(context, 100),
                     width: Resizable.size(context, 100),
                     errorBuilder: (_, __, ___) => Container(),

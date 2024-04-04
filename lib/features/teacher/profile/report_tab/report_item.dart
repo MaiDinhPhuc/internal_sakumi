@@ -160,7 +160,7 @@ class ReportItem extends StatelessWidget {
                           child: cubit.checkIsUrl(reportModel.images[i])
                               ? Image.network(
                                   fit: BoxFit.fill,
-                                  'https://cors-anywhere.herokuapp.com/${reportModel.images[i]}',
+                                  '${reportModel.images[i]}',
                                   height: Resizable.size(context, 250),
                                   width: Resizable.size(context, 200),
                                   errorBuilder: (_, __, ___) => Container(),

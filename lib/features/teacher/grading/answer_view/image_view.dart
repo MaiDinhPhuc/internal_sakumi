@@ -54,7 +54,7 @@ class ImageView extends StatelessWidget {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(Resizable.size(context, 10))),
                               child: Image.network(
-                                'https://cors-anywhere.herokuapp.com/${answer.convertAnswer.first}',
+                                '${answer.convertAnswer.first}',
                                 fit: answer.questionType == 4
                                     ? BoxFit.contain
                                     : BoxFit.fill,
@@ -93,7 +93,7 @@ class ImageView extends StatelessWidget {
                             borderRadius: BorderRadius.all(
                                 Radius.circular(Resizable.size(context, 10))),
                             child: Image.network(
-                              'https://cors-anywhere.herokuapp.com/${answer.convertAnswer[1]}',
+                              '${answer.convertAnswer[1]}',
                               fit: answer.questionType == 4
                                   ? BoxFit.contain
                                   : BoxFit.fill,
@@ -110,7 +110,7 @@ class ImageView extends StatelessWidget {
                             borderRadius: BorderRadius.all(
                                 Radius.circular(Resizable.size(context, 10))),
                             child: Image.network(
-                              'https://cors-anywhere.herokuapp.com/${answer.convertAnswer[1]}',
+                              '${answer.convertAnswer[1]}',
                               fit: answer.questionType == 4
                                   ? BoxFit.contain
                                   : BoxFit.fill,

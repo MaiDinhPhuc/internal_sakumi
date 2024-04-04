@@ -90,12 +90,18 @@ class ListLessonCubitV2 extends Cubit<int>{
   }
 
   sortLessons(){
+
     var listId = lessonResults!.map((e) => e.lessonId).toList();
 
     List<LessonModel> listTemp1 = [];
 
     for(var i in lessonResults!){
-      listTemp1.add(lessons!.firstWhere((e) => e.lessonId == i.lessonId));
+
+      var lesson = lessons!.where((e) => e.lessonId == i.lessonId).toList();
+
+      if(lesson.isNotEmpty){
+        listTemp1.add(lesson.first);
+      }
     }
 
     List<LessonModel> listTemp2 = List.of(lessons!).where((e) => !listId.contains(e.lessonId)).toList();

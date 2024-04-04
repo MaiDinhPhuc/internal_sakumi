@@ -39,7 +39,7 @@ class InfoTeacherView extends StatelessWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(1000)),
                   child: Image.network(
                     fit: BoxFit.cover,
-                    'https://cors-anywhere.herokuapp.com/${cubit.teacher!.url}',
+                    '${cubit.teacher!.url}',
                     height: Resizable.size(context, 100),
                     width: Resizable.size(context, 100),
                     errorBuilder: (_, __, ___) => Container(),

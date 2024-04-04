@@ -73,7 +73,7 @@ class TeacherNoteView extends StatelessWidget {
                               child: answerModel.checkIsUrl(listImage[i])
                                   ? Image.network(
                                       fit: BoxFit.fill,
-                                      'https://cors-anywhere.herokuapp.com/${listImage[i]}',
+                                      '${listImage[i]}',
                                       height: Resizable.size(context, 250),
                                       width: Resizable.size(context, 200),
                                       errorBuilder: (_, __, ___) => Container(),
@@ -220,7 +220,7 @@ class TeacherNoteViewV2 extends StatelessWidget {
                               child: answerModel.checkIsUrl(listImage[i])
                                   ? Image.network(
                                       fit: BoxFit.fill,
-                                      'https://cors-anywhere.herokuapp.com/${listImage[i]}',
+                                      '${listImage[i]}',
                                       height: Resizable.size(context, 250),
                                       width: Resizable.size(context, 200),
                                       errorBuilder: (_, __, ___) => Container(),

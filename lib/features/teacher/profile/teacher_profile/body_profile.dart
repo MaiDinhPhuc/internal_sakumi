@@ -50,7 +50,7 @@ class BodyProfile extends StatelessWidget {
                         fit: BoxFit.cover,
                         profileCubit.profileTeacher!.url.isEmpty
                             ? AppConfigs.defaultImage
-                            : 'https://cors-anywhere.herokuapp.com/${profileCubit.profileTeacher!.url}',
+                            : '${profileCubit.profileTeacher!.url}',
                         height: Resizable.size(context, 160),
                         width: Resizable.size(context, 160),
                         errorBuilder: (_, __, ___) => Container(),

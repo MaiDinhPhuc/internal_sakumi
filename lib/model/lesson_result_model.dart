@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LessonResultModel {
-  final int id, lessonId, classId, teacherId,date;
+  final int id, lessonId, classId, teacherId, date;
   final String noteForTeacher,
       noteForStudent,
       noteForSupport,
       status,
-      supportNoteForTeacher, dateTime;
+      supportNoteForTeacher,
+      dateTime;
 
   LessonResultModel(
       {required this.id,
@@ -18,22 +19,23 @@ class LessonResultModel {
       required this.noteForStudent,
       required this.noteForSupport,
       required this.noteForTeacher,
-      required this.supportNoteForTeacher, required this.dateTime});
+      required this.supportNoteForTeacher,
+      required this.dateTime});
 
   LessonResultModel copyWith({String? supportNoteForTeacher}) {
     return LessonResultModel(
-      id: id,
-      classId: classId,
-      lessonId: lessonId,
-      teacherId: teacherId,
-      status: status,
-      date: date,
-      noteForStudent: noteForStudent,
-      noteForSupport: noteForSupport,
-      noteForTeacher: noteForTeacher,
-      supportNoteForTeacher:
-          supportNoteForTeacher ?? this.supportNoteForTeacher, dateTime: dateTime
-    );
+        id: id,
+        classId: classId,
+        lessonId: lessonId,
+        teacherId: teacherId,
+        status: status,
+        date: date,
+        noteForStudent: noteForStudent,
+        noteForSupport: noteForSupport,
+        noteForTeacher: noteForTeacher,
+        supportNoteForTeacher:
+            supportNoteForTeacher ?? this.supportNoteForTeacher,
+        dateTime: dateTime);
   }
 
   factory LessonResultModel.fromSnapshot(
@@ -49,6 +51,7 @@ class LessonResultModel {
         noteForStudent: data['student_note'],
         noteForSupport: data['support_note'],
         noteForTeacher: data['teacher_note'],
-        supportNoteForTeacher: data["support_note_for_teacher"] ?? "", dateTime: data['date'] ?? "");
+        supportNoteForTeacher: data["support_note_for_teacher"] ?? "",
+        dateTime: data['date'] ?? "");
   }
 }

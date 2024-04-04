@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/features/calculator/calculator.dart';
+import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
@@ -66,15 +67,41 @@ class StudentItemOverViewCubit extends Cubit<int> {
   }
 
   double getHwPercent() {
+
+    List<LessonModel> lessonTemp1 =
+    cubit.lessons!.where((element) => element.btvn == 0).toList();
+
+    List<LessonModel> lessonTemp2 = [];
+
+    for(var i in cubit.lessons!){
+      if(i.isCustom == true && i.customLessonInfo.isEmpty){
+        lessonTemp2.add(i);
+      }
+    }
+
+    List<int> lessonExceptionIds = [];
+
+    for (var i in lessonTemp1) {
+      lessonExceptionIds.add(i.lessonId);
+    }
+
+    for(var i in lessonTemp2){
+      if(lessonExceptionIds.contains(i) == false){
+        lessonExceptionIds.add(i.lessonId);
+      }
+    }
+
     int tempHw = 0;
     int countHw = 0;
 
     for (var i in stdLessons!) {
       if (i.timekeeping != 0) {
-        if (getPoint(i.lessonId) != -2) {
-          tempHw++;
+        if(lessonExceptionIds.contains(i.lessonId) == false){
+          if (getPoint(i.lessonId) != -2) {
+            tempHw++;
+          }
+          countHw++;
         }
-        countHw++;
       }
     }
 

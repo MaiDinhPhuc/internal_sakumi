@@ -57,17 +57,32 @@ class Calculator{
         .toList();
 
     double hwPercent = 0;
-    List<LessonModel> lessonTemp =
+    List<LessonModel> lessonTemp1 =
     listLesson.where((element) => element.btvn == 0).toList();
+
+    List<LessonModel> lessonTemp2 = [];
+
+    for(var i in listLesson){
+      if(i.isCustom == true && i.customLessonInfo.isEmpty){
+        lessonTemp2.add(i);
+      }
+    }
+
     List<int> lessonExceptionIds = [];
-    for (var i in lessonTemp) {
+    for (var i in lessonTemp1) {
       lessonExceptionIds.add(i.lessonId);
+    }
+
+    for(var i in lessonTemp2){
+      if(lessonExceptionIds.contains(i) == false){
+        lessonExceptionIds.add(i.lessonId);
+      }
     }
 
     int countHw = 0;
     double hwPercentTemp = 0;
     for (var i in stdLessons) {
-      if (lessonExceptionIds.contains(i.lessonId) == false) {
+      if (lessonExceptionIds.contains(i.lessonId) == false && i.timekeeping != 0) {
         countHw++;
         if (getPoint(i.lessonId, i.studentId, listLesson, listStdLesson) != -2) {
           hwPercentTemp++;

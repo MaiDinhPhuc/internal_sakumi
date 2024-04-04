@@ -973,6 +973,7 @@ class FireStoreDb {
       'support_note': model.noteForSupport,
       'teacher_id': model.teacherId,
       'teacher_note': model.noteForTeacher,
+      'date': model.dateTime
     });
 
     debugPrint("==========>get and add db from \"lesson_result\"");

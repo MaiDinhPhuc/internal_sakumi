@@ -89,7 +89,7 @@ class ReportInfoView extends StatelessWidget {
                                         .checkIsUrl(cubit.listPickerImage[i])
                                     ? Image.network(
                                         fit: BoxFit.fill,
-                                        'https://cors-anywhere.herokuapp.com/${cubit.listPickerImage[i]}',
+                                        '${cubit.listPickerImage[i]}',
                                         height: Resizable.size(context, 250),
                                         width: Resizable.size(context, 200),
                                         errorBuilder: (_, __, ___) =>

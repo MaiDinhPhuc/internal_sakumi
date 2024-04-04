@@ -131,7 +131,7 @@ class HeaderTeacher extends StatelessWidget {
                                         key: Key(s.url),
                                         s.url.isEmpty
                                             ? AppConfigs.defaultImage
-                                            : 'https://cors-anywhere.herokuapp.com/${s.url}',
+                                            : '${s.url}',
                                         height: Resizable.size(context, 30),
                                         width: Resizable.size(context, 30),
                                         errorBuilder: (_, __, ___) => Container(),

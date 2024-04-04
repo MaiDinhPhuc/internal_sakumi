@@ -56,7 +56,7 @@ class WelComeTeacherAppBar extends StatelessWidget {
                                         fit: BoxFit.fill,
                                         s.url.isEmpty
                                             ? AppConfigs.defaultImage
-                                            : 'https://cors-anywhere.herokuapp.com/${s.url}',
+                                            : '${s.url}',
                                         height: Resizable.size(context, 50),
                                         width: Resizable.size(context, 50),
                                         errorBuilder: (_, __, ___) => Container(),

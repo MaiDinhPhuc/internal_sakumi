@@ -84,7 +84,7 @@ class ClassOverViewCubitV2 extends Cubit<int> {
       DataProvider.studentById(i, loadStudentInfo);
     }
 
-    loadListPercent();
+    await loadListPercent();
 
     emit(state + 1);
   }
@@ -101,9 +101,9 @@ class ClassOverViewCubitV2 extends Cubit<int> {
     await DataProvider.stdTestByClassId(classId, loadStdTest);
 
     if(classModel!.customLessons.isEmpty){
-      DataProvider.lessonByCourseId(classModel!.courseId,loadLessonInClass);
+      await DataProvider.lessonByCourseId(classModel!.courseId,loadLessonInClass);
     }else{
-      DataProvider.lessonByCourseAndClassId(classModel!.courseId,classId,loadLessonInClass);
+      await DataProvider.lessonByCourseAndClassId(classModel!.courseId,classId,loadLessonInClass);
 
       var lessonId = lessons!.map((e) => e.lessonId).toList();
 
@@ -145,7 +145,7 @@ class ClassOverViewCubitV2 extends Cubit<int> {
       DataProvider.studentById(i, loadStudentInfo);
     }
 
-    loadListPercent();
+    await loadListPercent();
 
     loaded = true;
 
@@ -271,12 +271,28 @@ class ClassOverViewCubitV2 extends Cubit<int> {
       listHomework.add(tempHw);
     }
 
-    List<LessonModel> lessonTemp =
+    List<LessonModel> lessonTemp1 =
     lessons!.where((element) => element.btvn == 0).toList();
+
+    List<LessonModel> lessonTemp2 = [];
+
+    for(var i in lessons!){
+      if(i.isCustom == true && i.customLessonInfo.isEmpty){
+        lessonTemp2.add(i);
+      }
+    }
+
     List<int> lessonExceptionIds = [];
-    for (var i in lessonTemp) {
+    for (var i in lessonTemp1) {
       lessonExceptionIds.add(i.lessonId);
     }
+
+    for(var i in lessonTemp2){
+      if(lessonExceptionIds.contains(i) == false){
+        lessonExceptionIds.add(i.lessonId);
+      }
+    }
+
     double count1 = 0;
     double total1 = 0;
     for (var i in stdLessons!) {
