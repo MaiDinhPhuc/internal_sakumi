@@ -501,10 +501,28 @@ enum AppText {
   txtReading,
   txtRegisterSchedule,
   txtSearchClass,
-  txtSearchStudent
+  txtSearchStudent,
+  txtSearchTeacher,
+  txtAddNewSchedule,
+  txtTeacherName,
+  txtNoEmptyChooseDay,
+  txtNoChooseTeacher,
+  txtNoChooseClass,
+  txtInPutTimeWrong,
+  txtChooseClassWrong,
+  txtAddScheduleDone
 }
 
 Map<AppText, String> texts = {
+  AppText.txtAddScheduleDone: "Thêm lịch dạy thành công!",
+  AppText.txtChooseClassWrong: "Sensei không được thêm vào lớp này!",
+  AppText.txtInPutTimeWrong: "Nhập sai thời gian dạy!",
+  AppText.txtNoChooseClass: "Chưa chọn lớp!",
+  AppText.txtNoChooseTeacher: "Chưa chọn sensei!",
+  AppText.txtNoEmptyChooseDay: "Chưa chọn ngày dạy cho sensei!",
+  AppText.txtTeacherName: "Họ và tên giáo viên",
+  AppText.txtAddNewSchedule: "THÊM CA DẠY MỚI",
+  AppText.txtSearchTeacher: "Tìm kiếm giáo viên...",
   AppText.txtSearchStudent: "Tìm kiếm học viên...",
   AppText.txtSearchClass: "Tìm kiếm lớp...",
   AppText.txtRegisterSchedule: "Đăng ký ca dạy",

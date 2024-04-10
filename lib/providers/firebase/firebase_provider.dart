@@ -429,6 +429,14 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<List<ScheduleModel>> getTeacherCyclicScheduleInClass(int teacherId,int classId) async {
+    return (await FireStoreDb.instance.getTeacherCyclicScheduleInClass(teacherId, classId))
+        .docs
+        .map((e) => ScheduleModel.fromSnapshot(e))
+        .toList();
+  }
+
+  @override
   Future<List<ScheduleModel>> getClassCyclicSchedule(int classId) async {
     return (await FireStoreDb.instance.getClassCyclicSchedule(classId))
         .docs
@@ -473,6 +481,16 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<List<LessonResultModel>> getLessonResultWithDateAndTeacherId(int start, int end,int teacherId) async {
     var lesResults = (await FireStoreDb.instance.getLessonResultWithDateAndTeacherId(start, end, teacherId))
+        .docs
+        .map((e) => LessonResultModel.fromSnapshot(e))
+        .toList();
+    lesResults.sort((a, b) => a.date.compareTo(b.date));
+    return lesResults;
+  }
+
+  @override
+  Future<List<LessonResultModel>> getLessonResultWithDateAndId(int start, int end,int teacherId, int classId) async {
+    var lesResults = (await FireStoreDb.instance.getLessonResultWithDateAndId(start, end, teacherId, classId))
         .docs
         .map((e) => LessonResultModel.fromSnapshot(e))
         .toList();
@@ -1506,6 +1524,16 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<void> addNewBill(BillModel model) async {
     await FireStoreDb.instance.addBill(model);
+  }
+
+  @override
+  Future<void> addNewCyclicSchedule(ScheduleModel model) async {
+    await FireStoreDb.instance.addNewCyclicSchedule(model);
+  }
+
+  @override
+  Future<void> updateTeacherCyclicSchedule(ScheduleModel model) async {
+    await FireStoreDb.instance.updateCyclicSchedule(model);
   }
 
   @override
