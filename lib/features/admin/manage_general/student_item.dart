@@ -146,8 +146,6 @@ class StudentItem extends StatelessWidget {
                                   ),
                                 ),
                               ))
-
-
                       )
                   ),
                 );

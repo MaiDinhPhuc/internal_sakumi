@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/features/CRUD/create_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/student_class_log.dart';
@@ -81,23 +82,27 @@ class AlertAddStudentCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  addStudentToClass(BuildContext context, StudentClassModel model) async {
-    FireBaseProvider.instance.addStudentToClass(model);
+  addStudentToClass(CreateCubit createController, StudentClassModel model) async {
+    //FireBaseProvider.instance.addStudentToClass(model);
+
+    createController.addStudentToClass(model);
 
     classModel ??= await FireBaseProvider.instance.getClassById(model.classId);
 
-    FireBaseProvider.instance.addNewLog(StudentClassLogModel(
+    StudentClassLogModel stdClassLog = StudentClassLogModel(
         id: DateTime.now().millisecondsSinceEpoch,
         classId: model.classId,
         courseId: classModel!.courseId,
         from: 'none',
         to: model.classStatus,
         userId: model.userId,
-        classType: classModel!.classType));
+        classType: classModel!.classType);
+
+    createController.addNewLog(stdClassLog);
   }
 
-  createStudent(StudentModel model, UserModel userModel) async {
-    checkCreate =
-        await FireBaseProvider.instance.createNewStudent(model, userModel);
+  createStudent(CreateCubit createController, StudentModel model, UserModel userModel) async {
+    checkCreate = await createController.createNewStudent(model, userModel);
+
   }
 }

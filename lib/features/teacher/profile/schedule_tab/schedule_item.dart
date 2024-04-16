@@ -76,64 +76,60 @@ class ScheduleItemV2 extends StatelessWidget {
   final ScheduleModel scheduleModel;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: Resizable.size(context, 130),
-        padding: EdgeInsets.symmetric(
-            horizontal: Resizable.padding(context, 5),
-            vertical: Resizable.padding(context, 3)),
-        decoration: BoxDecoration(
-            color: scheduleModel.type == "single"
-                ? const Color(0xffFDE3E3)
-                : const Color(0xffE3F2FD),
-            border: Border.all(
-                width: Resizable.size(context, 1),
-                color: scheduleModel.type == "single"
-                    ? const Color(0xffFBBBBB)
-                    : const Color(0xff90CAF9)),
-            borderRadius: BorderRadius.circular(Resizable.size(context, 5))),
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: Resizable.padding(context, 5),
-                  vertical: Resizable.padding(context, 2)),
-              decoration: BoxDecoration(
-                  color: scheduleModel.type == "single"
-                      ? const Color(0xffFBBBBB)
-                      : const Color(0xff90CAF9),
-                  border: Border.all(
-                      width: Resizable.size(context, 1),
-                      color: scheduleModel.type == "single"
-                          ? const Color(0xffFBBBBB)
-                          : const Color(0xff90CAF9)),
-                  borderRadius:
-                      BorderRadius.circular(Resizable.size(context, 15))),
-              child: Text(
-                textAlign: TextAlign.center,
-                scheduleModel.type == "single"
-                    ? "Nghỉ"
-                    : "${scheduleModel.startTime} - ${scheduleModel.endTime}",
-                style: TextStyle(
-                    color: scheduleModel.type == "single"
-                        ? const Color(0xffA10D0D)
-                        : const Color(0xff0D47A1),
-                    fontSize: Resizable.font(context, 16),
-                    fontWeight: FontWeight.w700),
-              ),
+    return PopupMenuButton(itemBuilder: (context) => [
+      ...cubit.listMenu.map((e) => PopupMenuItem(
+          padding: EdgeInsets.zero,
+          child: InkWell(
+            onTap: (){
+              Navigator.pop(context);
+            },
+            child: Container(
+                height: Resizable.size(
+                    context, 33),
+                decoration:const BoxDecoration(
+                    color: Colors.white
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: Resizable.padding(
+                      context, 10)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(e, style: TextStyle(
+                          fontWeight: e == "Nghỉ" ? FontWeight.w700 : FontWeight.w500,
+                          fontSize: Resizable.font(
+                              context, 15),color:Colors.black)),
+                    ],
+                  ),
+                )
             ),
-            Expanded(
-                child: Center(
-                    child: Text(
-                textAlign: TextAlign.center,
-              cubit.getClassCode(scheduleModel.classId).toUpperCase(),
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: Resizable.font(context, 20),
-                  fontWeight: FontWeight.w600),
-            ))),
-            Row(
+          )
+      ))
+    ],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(Resizable.size(context, 10)),
+          ),
+        ),
+        child:
+        Container(
+            width: Resizable.size(context, 130),
+            padding: EdgeInsets.symmetric(
+                horizontal: Resizable.padding(context, 5),
+                vertical: Resizable.padding(context, 3)),
+            decoration: BoxDecoration(
+                color: scheduleModel.type == "single"
+                    ? const Color(0xffFDE3E3)
+                    : const Color(0xffE3F2FD),
+                border: Border.all(
+                    width: Resizable.size(context, 1),
+                    color: scheduleModel.type == "single"
+                        ? const Color(0xffFBBBBB)
+                        : const Color(0xff90CAF9)),
+                borderRadius: BorderRadius.circular(Resizable.size(context, 5))),
+            child: Column(
               children: [
-                Expanded(child: Container(
+                Container(
                   padding: EdgeInsets.symmetric(
                       horizontal: Resizable.padding(context, 5),
                       vertical: Resizable.padding(context, 2)),
@@ -150,7 +146,9 @@ class ScheduleItemV2 extends StatelessWidget {
                       BorderRadius.circular(Resizable.size(context, 15))),
                   child: Text(
                     textAlign: TextAlign.center,
-                    cubit.getTeacherName(scheduleModel.teacherId),
+                    scheduleModel.type == "single"
+                        ? "Nghỉ"
+                        : "${scheduleModel.startTime} - ${scheduleModel.endTime}",
                     style: TextStyle(
                         color: scheduleModel.type == "single"
                             ? const Color(0xffA10D0D)
@@ -158,10 +156,49 @@ class ScheduleItemV2 extends StatelessWidget {
                         fontSize: Resizable.font(context, 16),
                         fontWeight: FontWeight.w700),
                   ),
-                ))
+                ),
+                Expanded(
+                    child: Center(
+                        child: Text(
+                          textAlign: TextAlign.center,
+                          cubit.getClassCode(scheduleModel.classId).toUpperCase(),
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: Resizable.font(context, 20),
+                              fontWeight: FontWeight.w600),
+                        ))),
+                Row(
+                  children: [
+                    Expanded(child: Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: Resizable.padding(context, 5),
+                          vertical: Resizable.padding(context, 2)),
+                      decoration: BoxDecoration(
+                          color: scheduleModel.type == "single"
+                              ? const Color(0xffFBBBBB)
+                              : const Color(0xff90CAF9),
+                          border: Border.all(
+                              width: Resizable.size(context, 1),
+                              color: scheduleModel.type == "single"
+                                  ? const Color(0xffFBBBBB)
+                                  : const Color(0xff90CAF9)),
+                          borderRadius:
+                          BorderRadius.circular(Resizable.size(context, 15))),
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        cubit.getTeacherName(scheduleModel.teacherId),
+                        style: TextStyle(
+                            color: scheduleModel.type == "single"
+                                ? const Color(0xffA10D0D)
+                                : const Color(0xff0D47A1),
+                            fontSize: Resizable.font(context, 16),
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ))
+                  ],
+                )
               ],
-            )
-          ],
-        ));
+            ))
+    ) ;
   }
 }

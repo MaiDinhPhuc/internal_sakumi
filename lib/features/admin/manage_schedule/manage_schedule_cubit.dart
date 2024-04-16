@@ -17,6 +17,8 @@ class ManageScheduleCubit extends Cubit<int>{
   final DateTime now = DateTime.now();
   int currentWeekday = DateTime.now().weekday;
 
+  List<String> listMenu = ["Đổi giáo viên", "Nghỉ"];
+
   List<String> listDay = [
     "Thứ HAI",
     "Thứ BA",

@@ -103,10 +103,8 @@ void alertCheckBoxSurvey(BuildContext context,
                                                                         BlocProvider.of<CheckBoxCubit>(cc)
                                                                             .update(v);
                                                                       },
-                                                                      title: Text(cubit
-                                                                          .listSurvey![
-                                                                              index]
-                                                                          .title)),
+                                                                      title: Text(
+                                                                          "${cubit.listSurvey![index].title} - ${cubit.listSurvey![index].surveyCode}")),
                                                             ))).toList(),
                                                     SizedBox(
                                                         height: Resizable.size(

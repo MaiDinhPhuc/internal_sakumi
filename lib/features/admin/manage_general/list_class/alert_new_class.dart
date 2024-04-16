@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/create_cubit.dart';
+import 'package:internal_sakumi/features/CRUD/update_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_class/alert_new_class_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_date.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
@@ -25,6 +27,8 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
   TextEditingController linkCon =
       TextEditingController(text: classModel == null ? "" : classModel.link);
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  var createController = BlocProvider.of<CreateCubit>(context);
+  var updateController = BlocProvider.of<UpdateCubit>(context);
   showDialog(
       context: context,
       builder: (_) {
@@ -153,8 +157,10 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                             .currentState!
                                                             .validate()) {
                                                           if (!isEdit) {
+                                                            Navigator.pop(c);
+                                                            waitingDialog(c);
                                                             await cubit.addNewClass(
-                                                                c,
+                                                                createController,
                                                                 ClassModel(
                                                                     classId: now.millisecondsSinceEpoch,
                                                                     courseId: cubit
@@ -208,38 +214,37 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                             cubit.classType ??=
                                                                 classModel!
                                                                     .classType;
-
-                                                            await cubit.updateClass(
-                                                                c,
-                                                                ClassModel(
-                                                                    classId: classModel!
-                                                                        .classId,
-                                                                    courseId: classModel
-                                                                        .courseId,
-                                                                    description:
-                                                                        desCon
-                                                                            .text,
-                                                                    endTime: DateTimeCubit
-                                                                        .endDay
-                                                                        .millisecondsSinceEpoch,
-                                                                    startTime: DateTimeCubit
-                                                                        .startDay
-                                                                        .millisecondsSinceEpoch,
-                                                                    note: noteCon
-                                                                        .text,
-                                                                    classCode:
-                                                                        codeCon
-                                                                            .text,
-                                                                    classStatus:
-                                                                        cubit
-                                                                            .classStatus!,
-                                                                    classType: cubit
-                                                                        .classType!,
-                                                                    link: linkCon
-                                                                        .text,
-                                                                    customLessons: classModel.customLessons,
-                                                                    informal: cubit
-                                                                        .informal, isSubClass: classModel.isSubClass, subClassId: classModel.subClassId));
+                                                            Navigator.pop(c);
+                                                            waitingDialog(c);
+                                                            updateController.updateClassInfo(ClassModel(
+                                                                classId: classModel!
+                                                                    .classId,
+                                                                courseId: classModel
+                                                                    .courseId,
+                                                                description:
+                                                                desCon
+                                                                    .text,
+                                                                endTime: DateTimeCubit
+                                                                    .endDay
+                                                                    .millisecondsSinceEpoch,
+                                                                startTime: DateTimeCubit
+                                                                    .startDay
+                                                                    .millisecondsSinceEpoch,
+                                                                note: noteCon
+                                                                    .text,
+                                                                classCode:
+                                                                codeCon
+                                                                    .text,
+                                                                classStatus:
+                                                                cubit
+                                                                    .classStatus!,
+                                                                classType: cubit
+                                                                    .classType!,
+                                                                link: linkCon
+                                                                    .text,
+                                                                customLessons: classModel.customLessons,
+                                                                informal: cubit
+                                                                    .informal, isSubClass: classModel.isSubClass, subClassId: classModel.subClassId));
                                                             if (context
                                                                 .mounted) {
                                                               Navigator.pop(

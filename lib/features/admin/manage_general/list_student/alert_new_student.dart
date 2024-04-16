@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/create_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_student/alert_add_student_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_field.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
@@ -23,6 +24,8 @@ void alertNewStudent(
   final TextEditingController emailCon = TextEditingController();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  var createController = BlocProvider.of<CreateCubit>(context);
 
   showDialog(
       context: context,
@@ -201,7 +204,7 @@ void alertNewStudent(
                                                   studentCode:
                                                   stdCodeCon.text,
                                                   status: AppText.statusInProgress.text, email: emailCon.text);
-                                              await cubit.createStudent(
+                                              await cubit.createStudent(createController,
                                                   student,
                                                   UserModel(
                                                       email: emailCon.text,
@@ -227,8 +230,7 @@ void alertNewStudent(
                                                           'dd/MM/yyyy')
                                                           .format(DateTime
                                                           .now()), timeChange: 0);
-                                                  cubit.addStudentToClass(
-                                                      context,stdClass);
+                                                  cubit.addStudentToClass(createController,stdClass);
                                                   manageGeneralCubit
                                                       .addNewStudentToClass(student, stdClass);
                                                 } else {

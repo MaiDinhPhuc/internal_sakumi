@@ -1,6 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/features/CRUD/create_cubit.dart';
+import 'package:internal_sakumi/features/CRUD/delete_cubit.dart';
+import 'package:internal_sakumi/features/admin/manage_general/list_student/alert_edit_student_profile_cubit.dart';
 import 'package:internal_sakumi/features/admin/search/search_cubit.dart';
 import 'package:internal_sakumi/providers/cache/filter_admin_provider.dart';
 import 'package:internal_sakumi/providers/cache/filter_manage_bill_provider.dart';
@@ -41,7 +44,10 @@ class MyApp extends StatelessWidget {
           BlocProvider<AdminClassFilterCubit>(create: (context)=>AdminClassFilterCubit()),
           BlocProvider<BillFilterCubit>(create: (context)=>BillFilterCubit()),
           BlocProvider<TeacherClassFilterCubit>(create: (context)=>TeacherClassFilterCubit()),
-          BlocProvider<StatisticFilterCubit>(create: (context)=>StatisticFilterCubit())
+          BlocProvider<StatisticFilterCubit>(create: (context)=>StatisticFilterCubit()),
+          BlocProvider<CreateCubit>(create: (context)=>CreateCubit()),
+          BlocProvider<UpdateCubit>(create: (context)=>UpdateCubit()),
+          BlocProvider<DeleteCubit>(create: (context)=>DeleteCubit())
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

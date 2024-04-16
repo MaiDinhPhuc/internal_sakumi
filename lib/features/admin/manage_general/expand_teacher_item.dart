@@ -2,6 +2,7 @@ import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/update_cubit.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/screens/class_info/detail_grading_screen_v2.dart';
@@ -17,6 +18,7 @@ class ExpandTeacherItem extends StatelessWidget {
   final TeacherModel teacher;
   @override
   Widget build(BuildContext context) {
+    var updateController = BlocProvider.of<UpdateCubit>(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -28,13 +30,15 @@ class ExpandTeacherItem extends StatelessWidget {
                   style: TextStyle(fontSize: Resizable.font(context, 20))),
               value: cubit.getTeacherClass(teacher.userId).responsibility,
               onChanged: (newValue) {
-                cubit.updateResponsibility(TeacherClassModel(
+                TeacherClassModel teacherClassModel = TeacherClassModel(
                     id: cubit.getTeacherClass(teacher.userId).id,
                     userId: cubit.getTeacherClass(teacher.userId).userId,
                     classId: cubit.getTeacherClass(teacher.userId).classId,
                     classStatus: cubit.getTeacherClass(teacher.userId).classStatus,
                     date: cubit.getTeacherClass(teacher.userId).date,
-                    responsibility: newValue!));
+                    responsibility: newValue!);
+                cubit.updateResponsibility(teacherClassModel);
+                updateController.updateResponsibility(teacherClassModel);
               },
             )),
         BlocProvider(
