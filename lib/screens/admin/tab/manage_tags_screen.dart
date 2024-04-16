@@ -1,20 +1,23 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/Material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/app_bar/admin_appbar.dart';
+import 'package:internal_sakumi/features/admin/manage_tag/group_tag_view.dart';
+import 'package:internal_sakumi/features/admin/manage_tag/manage_tag_cubit.dart';
+import 'package:internal_sakumi/features/admin/manage_tag/tag_view.dart';
 import 'package:internal_sakumi/model/tag_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/textfield_widget.dart';
 
+import '../../../features/admin/manage_general/dotted_border_button.dart';
+import '../../../features/admin/manage_tag/group_item.dart';
+import '../../../providers/firebase/firebase_provider.dart';
+
 class ManageTagsScreen extends StatelessWidget {
-  final ChooseTextColorCubit cubit;
-  final TextEditingController controller;
-  ManageTagsScreen({Key? key})
-      : cubit = ChooseTextColorCubit(),
-        controller = TextEditingController(),
-        super(key: key);
+  const ManageTagsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,79 +25,39 @@ class ManageTagsScreen extends StatelessWidget {
       body: Column(
         children: [
           const AdminAppBar(index: 2),
-          Expanded(child: Center(child: Text(AppText.titleManageTag.text)))
+          Expanded(
+              child: Padding(
+            padding: EdgeInsets.only(
+                top: Resizable.padding(context, 20),
+                bottom: Resizable.padding(context, 20),
+                left: Resizable.padding(context, 70),
+                right: Resizable.padding(context, 70)),
+            child: BlocProvider(
+              create: (context) => ManageTagCubit()..load(),
+              child: BlocBuilder<ManageTagCubit, int>(
+                builder: (context, state) {
+                  final manageTagCubit = context.read<ManageTagCubit>();
+                  return Row(
+                    children: [
+                      Expanded(
+                          child: GroupTagView(
+                            manageTagCubit: manageTagCubit,
+                          )),
+                      SizedBox(width: Resizable.padding(context, 10),),
+                      Expanded(flex: 2, child: TagView(
+                        manageTagCubit: manageTagCubit,
+                      ))
+                    ],
+                  );
+                },
+              ),
+            ),
+          ))
         ],
       ),
     );
   }
 
-  void tagAlert(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (_) {
-          return Dialog(
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(Resizable.size(context, 16))),
-              child: Container(
-                padding: EdgeInsets.all(Resizable.padding(context, 30)),
-                constraints:
-                    BoxConstraints(maxWidth: Resizable.size(context, 400)),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextFieldWidget(AppText.titleTagName.text, Icons.tag, false,
-                        iconColor: primaryColor, controller: controller),
-                    Row(
-                      children: [
-                        Text(AppText.titleChooseTextColor.text),
-                        BlocBuilder<ChooseTextColorCubit, bool>(
-                            bloc: cubit,
-                            builder: (c, color) => DropdownButtonHideUnderline(
-                                  child: DropdownButton2(
-                                    buttonDecoration: BoxDecoration(
-                                        color: primaryColor.withOpacity(0.2),
-                                        borderRadius:
-                                            BorderRadius.circular(1000)),
-                                    dropdownElevation: 0,
-                                    dropdownDecoration: BoxDecoration(
-                                        border: Border.all(color: primaryColor),
-                                        color: primaryColor.shade100,
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    items: [1, 2]
-                                        .map((item) => DropdownMenuItem<int>(
-                                            value: item,
-                                            child: CircleAvatar(
-                                              backgroundColor: item == 1
-                                                  ? Colors.white
-                                                  : Colors.black,
-                                            )))
-                                        .toList(),
-                                    value: color ? 1 : 2,
-                                    onChanged: (v) => cubit.select(),
-                                    buttonWidth: double.maxFinite,
-                                  ),
-                                ))
-                      ],
-                    ),
-                    SizedBox(
-                      height: Resizable.size(context, 30),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ButtonStyle(
-                          padding: MaterialStateProperty.all(
-                              EdgeInsets.symmetric(
-                                  horizontal: Resizable.padding(context, 30)))),
-                      child: Text(AppText.btnAddTag.text),
-                    ),
-                  ],
-                ),
-              ));
-        });
-  }
 }
 
 class ChooseTextColorCubit extends Cubit<bool> {
@@ -102,14 +65,5 @@ class ChooseTextColorCubit extends Cubit<bool> {
 
   select() {
     emit(!state);
-  }
-}
-
-class LoadListTagCubit extends Cubit<List<TagModel>?> {
-  LoadListTagCubit() : super(null);
-
-  load() async {
-    emit([]);
-    //emit(await FireBaseProvider.instance.getTags());
   }
 }

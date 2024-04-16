@@ -30,6 +30,8 @@ import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/model/voucher_model.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
 
+import '../model/group_tag_model.dart';
+
 abstract class NetworkProvider {
   //user
   Future<void> logInUser(TextEditingController email,
@@ -313,6 +315,8 @@ abstract class NetworkProvider {
   Future<List<ClassModel>> getListClassByListId(List<int> ids);
 
   Future<List<BillModel>> getListBillByStdId(int stdId);
+
+  Future<List<GroupTagModel>> getListGroupTags();
 
   Future<List<ClassModel>> getListClassByListIdV2(List<int> ids);
 

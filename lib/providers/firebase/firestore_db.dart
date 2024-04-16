@@ -6,6 +6,7 @@ import 'package:internal_sakumi/model/bill_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/feedback_model.dart';
+import 'package:internal_sakumi/model/group_tag_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
@@ -17,6 +18,7 @@ import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/survey_model.dart';
 import 'package:internal_sakumi/model/survey_result_model.dart';
+import 'package:internal_sakumi/model/tag_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
@@ -120,8 +122,7 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getReportByClassId(
-      int id) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getReportByClassId(int id) async {
     final snapshot = await db
         .collection("reports")
         .where('class_id', isEqualTo: id)
@@ -1230,7 +1231,7 @@ class FireStoreDb {
       'url': model.url,
       'user_id': model.userId,
       'status': model.status,
-      'email':model.email
+      'email': model.email
     });
     debugPrint("==========>add db for \"students\"");
   }
@@ -1516,6 +1517,15 @@ class FireStoreDb {
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListBillByStdId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getListGroupTags() async {
+    final snapshot = await db.collection("tags").get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getGroupTags ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -2114,5 +2124,48 @@ class FireStoreDb {
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllClassInProgress ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
+  }
+
+  Future<bool> updateTag(String id, List<TagModel> tags) async {
+    bool value = true;
+    await db
+        .collection("tags")
+        .doc(id)
+        .update({"tags": tags.map((e) => e.toJson())})
+        .whenComplete(() => value = true)
+        .onError((error, stackTrace) {
+          print(error);
+          value = false;
+        });
+
+    return value;
+  }
+
+  Future<bool> addGroupTag(GroupTagModel groupTag) async {
+    bool value = true;
+    await db
+        .collection("tags")
+        .doc("group_tag_${groupTag.id}")
+        .set(groupTag.toJson())
+        .whenComplete(() => value = true)
+        .onError((error, stackTrace) {
+      print(error);
+      value = false;
+    });
+    return value;
+  }
+
+  Future<bool> deleteGroupTag(String doc)  async {
+    bool value = true;
+    await db
+        .collection("tags")
+        .doc(doc)
+        .delete()
+        .whenComplete(() => value = true)
+        .onError((error, stackTrace) {
+      print(error);
+      value = false;
+    });
+    return value;
   }
 }
