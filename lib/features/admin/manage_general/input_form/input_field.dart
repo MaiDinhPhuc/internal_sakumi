@@ -6,6 +6,7 @@ class InputField extends StatelessWidget {
   final bool isExpand;
   final String? errorText, hintText, initialValue;
   final Function(String)? onChange;
+  final String? Function(String?)? onValidate;
   final bool autoFocus, enabled;
   const InputField(
       {required this.controller,
@@ -13,7 +14,7 @@ class InputField extends StatelessWidget {
       this.autoFocus = true,
       this.enabled = true,
       this.errorText, this.hintText, this.initialValue,
-      this.onChange,
+      this.onChange, this.onValidate,
       Key? key})
       : super(key: key);
 
@@ -23,7 +24,11 @@ class InputField extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
       child: TextFormField(
         enabled: enabled,
-        validator: (value) {
+        validator:(value) {
+          if(onValidate != null) {
+            return onValidate!(value);
+          }
+
           if ((value == null ||
                   ((controller!.text.isEmpty ||
                   controller!.text == null) && controller != null)) &&
@@ -59,6 +64,7 @@ class InputField extends StatelessWidget {
         keyboardType: TextInputType.multiline,
         maxLines: isExpand ? null : 1,
         minLines: isExpand ? 3 : 1,
+
         onChanged: onChange,
       ),
     );
@@ -72,6 +78,7 @@ class InputItem extends StatelessWidget {
   final bool isExpand;
   final bool autoFocus, enabled;
   final Function(String)? onChange;
+  final String? Function(String?)? onValidate;
   const InputItem(
       {required this.title,
       this.controller,
@@ -79,7 +86,7 @@ class InputItem extends StatelessWidget {
       this.autoFocus = true,
       this.enabled = true,
       this.errorText, this.hintText, this.initialValue,
-      this.onChange,
+      this.onChange, this.onValidate,
       Key? key})
       : super(key: key);
 
@@ -105,6 +112,7 @@ class InputItem extends StatelessWidget {
               autoFocus: autoFocus,
               onChange: onChange,
               enabled: enabled,
+              onValidate: onValidate,
             ),
           ],
         ));

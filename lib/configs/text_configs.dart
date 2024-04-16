@@ -44,7 +44,6 @@ enum AppText {
   textOpenCamera,
   textOpenGallery,
   textCancel,
-
   titleAdmin,
   titleMaster,
   titleManageStudent,
@@ -383,7 +382,6 @@ enum AppText {
   txtNew,
   txtUsed,
   txtExpired,
-
   txtRecipientCode,
   txtEditAttendance,
   txtFullCourse,
@@ -501,7 +499,33 @@ enum AppText {
   txtReading,
   txtRegisterSchedule,
   txtSearchClass,
-  txtSearchStudent
+  txtSearchStudent,
+  txtGroup,
+  btnAddGroup,
+  txtManageTag,
+  txtPleaseInputTagCode,
+  txtPleaseInputTagName,
+  txtColor,
+  txtNameTag,
+  txtCodeExist,
+  txtNameColor,
+  txtNoteForAddColor,
+  txtView,
+  btnCancel,
+  btnAddNew,
+  txtPleaseInputNameColor,
+  txtColorWrong,
+  txtColorExist,
+  btnAddGroupTag,
+  txtNameGroup,
+  txtPleaseInputGroupTagCode,
+  txtPleaseInputGroupTagName,
+  txtConfirmDeleteGroupTag,
+  txtYes,
+  txtLoadingAdd,
+  txtAddGroupTagSuccess,
+  txtError,
+  txtAddTagSuccess, txtDeleteSuccess,
 }
 
 Map<AppText, String> texts = {
@@ -538,7 +562,7 @@ Map<AppText, String> texts = {
   AppText.txtNoTeacherReport:
       "Hiện sensei chưa có biên bản nào trong thời gian và trạng thái được chọn...",
   AppText.txtNoClassReport:
-  "Hiện lớp chưa có biên bản nào trong thời gian và trạng thái được chọn...",
+      "Hiện lớp chưa có biên bản nào trong thời gian và trạng thái được chọn...",
   AppText.txtReport: "Biên bản",
   AppText.txtSchedule: "Lịch dạy",
   AppText.txtContentLog: "Học viên được chuyển từ @ sang #",
@@ -691,7 +715,7 @@ Map<AppText, String> texts = {
   AppText.txtErrorNotFoundClassInLimitTime:
       'Không tìm thấy lớp học trong thời gian cho phép (17 giờ <=)',
   AppText.txtErrorNotFoundCustomLessonId:
-  'Không tìm thấy id của lớp học tuỳ chỉnh',
+      'Không tìm thấy id của lớp học tuỳ chỉnh',
   AppText.txtErrorFoundTooLessonsInSamePeriod:
       'Tìm thấy quá nhiều buổi học trong cùng 1 khoảng thời gian',
   AppText.txtErrorDuplicateLink: 'Trùng link meet trong sheet RENAME RECORD',
@@ -1047,6 +1071,34 @@ Map<AppText, String> texts = {
   AppText.stsViewer: 'Người xem',
   AppText.txtWrongPassword: 'Vui lòng kiểm tra lại mật khẩu',
   AppText.txtWrongAccount: 'Vui lòng kiểm tra lại tài khoản',
+  AppText.txtGroup: 'Nhóm',
+  AppText.btnAddGroup: 'Thêm nhóm mới',
+  AppText.btnAddTag: 'thêm tag mới',
+  AppText.txtManageTag: 'QUẢN LÝ TAG',
+  AppText.txtPleaseInputTagCode: 'Vui lòng nhập mã tag',
+  AppText.txtPleaseInputTagName: 'Vui lòng nhập tên tag',
+  AppText.txtColor: 'Màu sắc',
+  AppText.txtNameTag: 'Tên Tag',
+  AppText.txtNameGroup: 'Tên Nhóm',
+  AppText.txtCodeExist: 'Mã Code đã tồn tại',
+  AppText.txtNameColor: 'Nhập mã màu Hex(Ex: #FF0000)',
+  AppText.txtNoteForAddColor: 'Lưu ý: Không nên thêm màu sáng!',
+  AppText.txtView: 'Hiển thị',
+  AppText.btnCancel: 'Huỷ',
+  AppText.btnAddNew: 'Thêm mới',
+  AppText.txtColorWrong: 'Mã màu không hợp lệ',
+  AppText.txtPleaseInputNameColor: 'Vui lòng nhập mã màu',
+  AppText.txtColorExist: 'Mã màu đã tồn tại',
+  AppText.btnAddGroupTag: 'Thêm nhóm mới',
+  AppText.txtPleaseInputGroupTagCode: 'Vui lòng nhập mã nhóm',
+  AppText.txtPleaseInputGroupTagName: 'Vui lòng nhập tên nhóm',
+  AppText.txtConfirmDeleteGroupTag: 'Bạn muốn xoá nhóm tag này ?',
+  AppText.txtLoadingAdd: 'Đang thêm mới...',
+  AppText.txtYes: 'Xác nhận',
+  AppText.txtAddGroupTagSuccess: 'Thêm nhóm tag mới thành công',
+  AppText.txtAddTagSuccess: 'Thêm tag mới thành công',
+  AppText.txtError: 'Có lỗi xảy ra! Thử lại sau',
+  AppText.txtDeleteSuccess: 'Xoá thành công',
 };
 
 extension AppTexts on AppText {

@@ -16,6 +16,7 @@ import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/detail_grading_data_model.dart';
 import 'package:internal_sakumi/model/feedback_model.dart';
+import 'package:internal_sakumi/model/group_tag_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
@@ -41,6 +42,7 @@ import 'package:internal_sakumi/screens/login_screen.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../model/tag_model.dart';
 import 'firebase_authentication.dart';
 import 'firestore_db.dart';
 
@@ -2117,4 +2119,26 @@ class FireBaseProvider extends NetworkProvider {
         .toList();
     return listBill;
   }
+
+  @override
+  Future<List<GroupTagModel>> getListGroupTags() async {
+    final listBill = (await FireStoreDb.instance.getListGroupTags())
+        .docs
+        .map((e) => GroupTagModel.fromSnapshot(e))
+        .toList();
+    return listBill;
+  }
+
+  Future<bool> updateTag(int idGroupTag, List<TagModel> tags)  async {
+    return await FireStoreDb.instance.updateTag("group_tag_$idGroupTag", tags);
+  }
+
+  Future<bool> addGroupTag(GroupTagModel groupTag)  async{
+    return await FireStoreDb.instance.addGroupTag(groupTag);
+  }
+
+  Future<bool> deleteGroupTag(int id) async {
+    return await FireStoreDb.instance.deleteGroupTag("group_tag_$id");
+  }
+
 }

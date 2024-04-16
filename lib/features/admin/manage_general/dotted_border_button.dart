@@ -1,5 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class DottedBorderButton extends StatelessWidget {
@@ -30,6 +31,44 @@ class DottedBorderButton extends StatelessWidget {
                   fontSize: Resizable.font(context, isManageGeneral ? 15 : 20), fontWeight: FontWeight.w700, color: const Color(0xff757575)
               ))],
           )),
+    );
+  }
+}
+class DottedBorderRadiusButton extends StatelessWidget {
+  final String title;
+  final Function() onPressed;
+  const DottedBorderRadiusButton(this.title, {required this.onPressed, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(Resizable.size(context, 1000)),
+        child: SizedBox(
+          height: Resizable.size(context, 17),
+          child: DottedBorder(
+              dashPattern: [Resizable.size(context, 2), Resizable.size(context, 1)],
+              borderType: BorderType.RRect,
+              radius:
+              Radius.circular(Resizable.size(context, 1000)),
+              padding: EdgeInsets.symmetric(
+                  horizontal: Resizable.padding(context, 10)),
+              color: darkPrimaryColor,
+              strokeWidth: Resizable.size(context, 0.75),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Text(title, style: TextStyle(
+                        fontSize: Resizable.font(context, 14), fontWeight: FontWeight.w700, color: darkPrimaryColor
+                    )),
+                  )],
+              )),
+        ),
+      ),
     );
   }
 }
