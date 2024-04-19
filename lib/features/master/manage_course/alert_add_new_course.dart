@@ -1,6 +1,8 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/create.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_field.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
@@ -59,7 +61,10 @@ void alertAddNewCourse(BuildContext context, CourseModel? courseModel,
                     children: [
                       Expanded(
                           flex: 1,
-                          child: HeaderAlertCourse(isEdit: isEdit, courseModel: courseModel, cubit: cubit)),
+                          child: HeaderAlertCourse(
+                              isEdit: isEdit,
+                              courseModel: courseModel,
+                              cubit: cubit)),
                       Expanded(
                           flex: 10,
                           child: SingleChildScrollView(
@@ -134,63 +139,39 @@ void alertAddNewCourse(BuildContext context, CourseModel? courseModel,
                                         minWidth: Resizable.size(context, 100)),
                                     child: SubmitButton(
                                         onPressed: () async {
+                                          CourseModel course = CourseModel(
+                                              courseId: int.parse(
+                                                  idCon.text),
+                                              description:
+                                              desCon.text,
+                                              lessonCount: int.parse(
+                                                  countCon.text),
+                                              level: levelCon.text,
+                                              termId: int.parse(
+                                                  termIdCon.text),
+                                              termName:
+                                              termNameCon.text,
+                                              title: titleCon.text,
+                                              type: typeCon.text,
+                                              token: tokenCon.text,
+                                              code: codeCon.text,
+                                              enable: true,
+                                              version: int.parse(
+                                                  verCon.text),
+                                              prefix:
+                                              prefixCon.text,
+                                              suffix:
+                                              suffixCon.text);
                                           if (formKey.currentState!
                                               .validate()) {
                                             if (!isEdit) {
                                               final bool check =
-                                                  await FireBaseProvider
-                                                      .instance
-                                                      .addNewCourse(CourseModel(
-                                                          courseId: int.parse(
-                                                              idCon.text),
-                                                          description:
-                                                              desCon.text,
-                                                          lessonCount: int.parse(
-                                                              countCon.text),
-                                                          level: levelCon.text,
-                                                          termId: int.parse(
-                                                              termIdCon.text),
-                                                          termName:
-                                                              termNameCon.text,
-                                                          title: titleCon.text,
-                                                          type: typeCon.text,
-                                                          token: tokenCon.text,
-                                                          code: codeCon.text,
-                                                          enable: true,
-                                                          version: int.parse(
-                                                              verCon.text),
-                                                          prefix:
-                                                              prefixCon.text,
-                                                          suffix:
-                                                              suffixCon.text));
+                                                  await Create
+                                                      .createNewCourse(course);
                                               if (context.mounted) {
                                                 Navigator.pop(context);
                                                 if (check == true) {
-                                                  cubit.loadAfterAdd(
-                                                      CourseModel(
-                                                          courseId: int.parse(
-                                                              idCon.text),
-                                                          description:
-                                                              desCon.text,
-                                                          lessonCount:
-                                                              int.parse(countCon
-                                                                  .text),
-                                                          level: levelCon.text,
-                                                          termId: int.parse(
-                                                              termIdCon.text),
-                                                          termName:
-                                                              termNameCon.text,
-                                                          title: titleCon.text,
-                                                          type: typeCon.text,
-                                                          token: tokenCon.text,
-                                                          code: codeCon.text,
-                                                          enable: true,
-                                                          version: int.parse(
-                                                              verCon.text),
-                                                          prefix:
-                                                              prefixCon.text,
-                                                          suffix:
-                                                              suffixCon.text));
+                                                  cubit.loadAfterAdd(course);
                                                 } else {
                                                   notificationDialog(
                                                       context,
@@ -200,58 +181,17 @@ void alertAddNewCourse(BuildContext context, CourseModel? courseModel,
                                                 }
                                               }
                                             } else {
-                                              await FireBaseProvider.instance
-                                                  .updateCourseInfo(CourseModel(
-                                                      courseId:
-                                                          int.parse(idCon.text),
-                                                      description: desCon.text,
-                                                      lessonCount: int.parse(
-                                                          countCon.text),
-                                                      level: levelCon.text,
-                                                      termId: int.parse(
-                                                          termIdCon.text),
-                                                      termName:
-                                                          termNameCon.text,
-                                                      title: titleCon.text,
-                                                      type: typeCon.text,
-                                                      token: tokenCon.text,
-                                                      code: codeCon.text,
-                                                      enable: true,
-                                                      version: int.parse(
-                                                          verCon.text),
-                                                      prefix: prefixCon.text,
-                                                      suffix: suffixCon.text));
+                                              Update.updateCourseInfo(course);
 
                                               if (context.mounted) {
                                                 Navigator.pop(context);
                                                 cubit.loadAfterEdit(
-                                                    CourseModel(
-                                                        courseId: int.parse(
-                                                            idCon.text),
-                                                        description:
-                                                            desCon.text,
-                                                        lessonCount: int.parse(
-                                                            countCon.text),
-                                                        level: levelCon.text,
-                                                        termId: int.parse(
-                                                            termIdCon.text),
-                                                        termName:
-                                                            termNameCon.text,
-                                                        title: titleCon.text,
-                                                        type: typeCon.text,
-                                                        token: tokenCon.text,
-                                                        code: codeCon.text,
-                                                        enable:
-                                                            courseModel!.enable,
-                                                        version: int.parse(
-                                                            verCon.text),
-                                                        prefix: prefixCon.text,
-                                                        suffix: suffixCon.text),
-                                                    courseModel.courseId);
+                                                    course,
+                                                    courseModel!.courseId);
                                               }
                                             }
                                           } else {
-                                            print('Form is invalid');
+                                            debugPrint('Form is invalid');
                                           }
                                         },
                                         title: isEdit

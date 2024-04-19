@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 import 'manage_course_cubit.dart';
 
@@ -50,7 +50,7 @@ class DetailLessonCubit extends Cubit<int> {
         reading = value;
     }
     emit(state + 1);
-    await FireBaseProvider.instance.updateLessonInfo(LessonModel(
+    LessonModel lesson = LessonModel(
         lessonId: lessonModel!.lessonId,
         courseId: lessonModel!.courseId,
         description: lessonModel!.description,
@@ -67,24 +67,8 @@ class DetailLessonCubit extends Cubit<int> {
         reading: reading!,
         enable: lessonModel!.enable,
         customLessonInfo: [],
-        isCustom: false));
-    await cubit.updateLesson(LessonModel(
-        lessonId: lessonModel!.lessonId,
-        courseId: lessonModel!.courseId,
-        description: lessonModel!.description,
-        content: lessonModel!.content,
-        title: lessonModel!.title,
-        btvn: btvn!,
-        vocabulary: vocabulary!,
-        listening: listening!,
-        kanji: kanji!,
-        grammar: grammar!,
-        flashcard: flashcard!,
-        alphabet: alphabet!,
-        order: lessonModel!.order,
-        reading: reading!,
-        enable: lessonModel!.enable,
-        customLessonInfo: [],
-        isCustom: false));
+        isCustom: false);
+    Update.updateLessonInfo(lesson);
+    cubit.updateLesson(lesson);
   }
 }

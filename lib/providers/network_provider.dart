@@ -125,7 +125,7 @@ abstract class NetworkProvider {
 
   Future<bool> addLessonResult(LessonResultModel model);
 
-  Future<void> updateProfileTeacher(String id, TeacherModel model);
+  Future<void> updateProfileTeacher(TeacherModel model);
 
   Future<List<TestModel>> getListTestByCourseId(int courseId);
 
@@ -201,8 +201,7 @@ abstract class NetworkProvider {
 
   Future<bool> addTeacherToClass(TeacherClassModel model);
 
-  Future<void> changeClassStatus(ClassModel classModel, String newStatus,
-      ManageGeneralCubit cubit, BuildContext context);
+  Future<void> changeClassStatus(ClassModel classModel, String newStatus);
 
   Future<void> updateClassInfo(ClassModel classModel);
 
@@ -222,7 +221,7 @@ abstract class NetworkProvider {
 
   Future<StudentModel> getStudentById(int studentId);
 
-  Future<void> updateProfileStudent(String id, StudentModel model);
+  Future<void> updateProfileStudent(StudentModel model);
 
   Future<List<StudentClassModel>> getStudentClassByStdId(int studentId);
 
@@ -264,7 +263,7 @@ abstract class NetworkProvider {
 
   Future<void> activeSurvey(int id);
 
-  Future<void> saveSurvey(int id, SurveyModel survey);
+  Future<void> saveSurvey(SurveyModel survey);
 
   Future<List<SurveyResultModel>> getSurveyResultByClassId(int classId);
 

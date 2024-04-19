@@ -1,5 +1,7 @@
 import 'package:flutter/Material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/create.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/note_pending_view_card.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -44,7 +46,7 @@ class LessonPendingViewV2 extends StatelessWidget {
                   TZDateTime nowVN =
                       TZDateTime.now(getLocation('Asia/Ho_Chi_Minh'));
                   waitingDialog(context);
-                  await cubit.addLessonResult(LessonResultModel(
+                  LessonResultModel newValue = LessonResultModel(
                       id: 1000,
                       classId: cubit.classId,
                       lessonId: cubit.lessonId,
@@ -56,8 +58,9 @@ class LessonPendingViewV2 extends StatelessWidget {
                       noteForTeacher: '',
                       supportNoteForTeacher: "",
                       dateTime:
-                          DateFormat('dd/MM/yyyy HH:mm:ss').format(nowVN)));
-
+                      DateFormat('dd/MM/yyyy HH:mm:ss').format(nowVN));
+                  Create.addLessonResult(newValue);
+                  await cubit.addLessonResult(newValue);
                   if (context.mounted) {
                     Navigator.pop(context);
                   }

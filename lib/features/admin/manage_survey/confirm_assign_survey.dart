@@ -1,6 +1,8 @@
 import 'package:flutter/Material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/model/survey_result_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -41,49 +43,35 @@ class ConfirmAssignSurvey extends StatelessWidget {
               DateTime dateTime = DateTime.now();
               int epochSeconds = dateTime.millisecondsSinceEpoch;
               Navigator.pop(context);
-              for(var i in cubit.surveyResults!.where((e) => e.status == "assign").toList()){
-                await FireBaseProvider.instance
-                    .assignSurveyResult(SurveyResultModel(
+              for (var i in cubit.surveyResults!
+                  .where((e) => e.status == "assign")
+                  .toList()) {
+                SurveyResultModel surveyResultModel = SurveyResultModel(
                     status: "done",
                     classId: i.classId,
                     surveyId: i.surveyId,
                     id: i.id,
                     title: i.title,
                     surveyCode: i.surveyCode,
-                    dateAssign: i.dateAssign))
+                    dateAssign: i.dateAssign);
+                Update
+                    .updateSurveyResult(surveyResultModel)
                     .whenComplete(() {
-                  cubit.updateSurvey(
-                    SurveyResultModel(
-                        status: "done",
-                        classId: i.classId,
-                        surveyId: i.surveyId,
-                        id: i.id,
-                        title: i.title,
-                        surveyCode: i.surveyCode,
-                        dateAssign: i.dateAssign),
-                  );
+                  cubit.updateSurvey(surveyResultModel);
                 });
               }
-              await FireBaseProvider.instance
-                  .assignSurveyResult(SurveyResultModel(
+
+              SurveyResultModel newValue = SurveyResultModel(
                   status: "assign",
                   classId: result.classId,
                   surveyId: result.surveyId,
                   id: result.id,
                   title: result.title,
                   surveyCode: result.surveyCode,
-                  dateAssign: epochSeconds))
-                  .whenComplete(() {
-                cubit.updateSurvey(
-                    SurveyResultModel(
-                        status: "assign",
-                        classId: result.classId,
-                        surveyId: result.surveyId,
-                        id: result.id,
-                        title: result.title,
-                        surveyCode: result.surveyCode,
-                        dateAssign: epochSeconds),
-                    );
+                  dateAssign: epochSeconds);
+
+              Update.updateSurveyResult(newValue).whenComplete(() {
+                cubit.updateSurvey(newValue);
               });
             },
             bgColor: primaryColor.shade500,

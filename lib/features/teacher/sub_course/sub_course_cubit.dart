@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/features/CRUD/create.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
@@ -72,9 +74,9 @@ class SubCourseCubit extends Cubit<int> {
         subClassId: subClassId);
 
 
-    await FireStoreDb.instance.createNewClass(subClass);
+    Create.createSubClass(subClass);
 
-    await FireBaseProvider.instance.updateClassInfo(classModel);
+    Update.updateClassInfo(classModel);
 
 
     this.subClassId = subClassId;

@@ -40,8 +40,8 @@ class EditStudentProfileCubit extends Cubit<int>{
 
 }
 
-class UpdateCubit extends Cubit<bool>{
-  UpdateCubit():super(false);
+class UpdateStateCubit extends Cubit<bool>{
+  UpdateStateCubit():super(false);
   bool changed = false;
   update(EditStudentProfileCubit cubit, StudentModel student){
     emit(cubit.checkChange(student));

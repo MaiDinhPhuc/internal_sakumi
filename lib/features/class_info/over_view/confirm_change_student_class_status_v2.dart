@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/Material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/create.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/model/student_class_log.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
@@ -72,7 +74,7 @@ class ConfirmChangeStudentClassStatusV2 extends StatelessWidget {
                   waitingDialog(context);
                 } else {
                   var classModel = await FireBaseProvider.instance.getClassById(studentClassModel.classId);
-                  FireBaseProvider.instance.addNewLog(StudentClassLogModel(
+                  Create.addNewLog(StudentClassLogModel(
                       id: DateTime.now().millisecondsSinceEpoch,
                       classId: studentClassModel.classId,
                       courseId: classModel.courseId,

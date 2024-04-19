@@ -137,7 +137,6 @@ class DetailLessonCubitV2 extends Cubit<int> {
     DataProvider.updateLessonResult(classId, listLessonResult!);
     loadWhenTeaching();
     emit(state + 1);
-    FireBaseProvider.instance.addLessonResult(newLessonResult);
   }
 
   StudentLessonModel? getStdLesson(int stdId) {
@@ -262,8 +261,6 @@ class DetailLessonCubitV2 extends Cubit<int> {
   }
 
   updateStatus(String status) async {
-    await FireBaseProvider.instance
-        .changeStatusLesson(lessonId, classId, status);
 
     var index = listLessonResult!.indexOf(lessonResult!);
 
@@ -351,10 +348,10 @@ class DetailLessonCubitV2 extends Cubit<int> {
   }
 
   noteForStudents(String note) async {
-    await FireBaseProvider.instance
-        .noteForAllStudentInClass(lessonId, classId, note);
-    await FireBaseProvider.instance
-        .updateTeacherInLessonResult(lessonId, classId, teacherId!);
+    // await FireBaseProvider.instance
+    //     .noteForAllStudentInClass(lessonId, classId, note);
+    // await FireBaseProvider.instance
+    //     .updateTeacherInLessonResult(lessonId, classId, teacherId!);
     var index = listLessonResult!.indexOf(lessonResult!);
     lessonResult = LessonResultModel(
         id: lessonResult!.id,
@@ -380,8 +377,8 @@ class DetailLessonCubitV2 extends Cubit<int> {
     listNoteForEachStudent[index] = text;
   }
 
-  noteForSupport(String note) async {
-    await FireBaseProvider.instance.noteForSupport(lessonId, classId, note);
+  noteForSupport() async {
+    //await FireBaseProvider.instance.noteForSupport(lessonId, classId, note);
     var index = listLessonResult!.indexOf(lessonResult!);
     lessonResult = LessonResultModel(
         id: lessonResult!.id,
@@ -391,7 +388,7 @@ class DetailLessonCubitV2 extends Cubit<int> {
         status: lessonResult!.status,
         date: lessonResult!.date,
         noteForStudent: lessonResult!.noteForStudent,
-        noteForSupport: note,
+        noteForSupport: noteSupport,
         noteForTeacher: lessonResult!.noteForTeacher,
         supportNoteForTeacher: lessonResult!.supportNoteForTeacher,dateTime: lessonResult!.dateTime);
 
@@ -400,9 +397,9 @@ class DetailLessonCubitV2 extends Cubit<int> {
     DataProvider.updateLessonResult(classId, listLessonResult!);
   }
 
-  noteForAnotherSensei(String note) async {
-    await FireBaseProvider.instance
-        .noteForAnotherSensei(lessonId, classId, note);
+  noteForAnotherSensei() async {
+    // await FireBaseProvider.instance
+    //     .noteForAnotherSensei(lessonId, classId, note);
     var index = listLessonResult!.indexOf(lessonResult!);
     lessonResult = LessonResultModel(
         id: lessonResult!.id,
@@ -413,7 +410,7 @@ class DetailLessonCubitV2 extends Cubit<int> {
         date: lessonResult!.date,
         noteForStudent: lessonResult!.noteForStudent,
         noteForSupport: lessonResult!.noteForSupport,
-        noteForTeacher: note,
+        noteForTeacher: noteSensei,
         supportNoteForTeacher: lessonResult!.supportNoteForTeacher,dateTime: lessonResult!.dateTime);
 
     listLessonResult![index] = lessonResult!;

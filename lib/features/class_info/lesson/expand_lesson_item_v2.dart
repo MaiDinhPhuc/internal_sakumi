@@ -1,12 +1,12 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/features/teacher/lecture_v2/session_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/input_sp_note_for_ss.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/note_widget.dart';
@@ -27,6 +27,7 @@ class ExpandLessonItemV2 extends StatelessWidget {
   final ListLessonCubitV2 cubit;
   final String role;
   final SessionCubit sessionCubit;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,7 +43,7 @@ class ExpandLessonItemV2 extends StatelessWidget {
                     style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: Resizable.font(context, 19))),
-                NoteWidget(detailCubit.lessonResult!.noteForSupport!)
+                NoteWidget(detailCubit.lessonResult!.noteForSupport)
               ],
             ),
           if (detailCubit.lessonResult!.noteForTeacher != "")
@@ -53,7 +54,7 @@ class ExpandLessonItemV2 extends StatelessWidget {
                     style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: Resizable.font(context, 19))),
-                NoteWidget(detailCubit.lessonResult!.noteForTeacher!),
+                NoteWidget(detailCubit.lessonResult!.noteForTeacher),
               ],
             ),
           if (role == "teacher" &&
@@ -65,7 +66,7 @@ class ExpandLessonItemV2 extends StatelessWidget {
                     style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: Resizable.font(context, 19))),
-                NoteWidget(detailCubit.lessonResult!.supportNoteForTeacher!),
+                NoteWidget(detailCubit.lessonResult!.supportNoteForTeacher),
               ],
             ),
           if (role == "admin")
@@ -90,15 +91,16 @@ class ExpandLessonItemV2 extends StatelessWidget {
                         }
                       }
                       DataProvider.updateLessonResult(cubit.classId, list);
-                      await FireBaseProvider.instance.updateLessonResult(
+
+                      Update.updateLessonResult(
                           detailCubit.lesson.lessonId,
                           cubit.classId,
-                          detailCubit.lessonResult!.supportNoteForTeacher!);
+                          detailCubit.lessonResult!.supportNoteForTeacher);
                       await Future.delayed(const Duration(seconds: 1), () {
                         Navigator.pop(context);
                       });
                     },
-                    value: detailCubit.lessonResult!.supportNoteForTeacher!,
+                    value: detailCubit.lessonResult!.supportNoteForTeacher,
                     onChange: (value) {
                       detailCubit.updateNote(value!);
                     })

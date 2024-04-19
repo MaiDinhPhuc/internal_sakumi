@@ -1034,8 +1034,8 @@ class FireStoreDb {
     debugPrint("==========>get and add db from \"lesson_result\"");
   }
 
-  Future<void> updateProfileTeacher(String id, TeacherModel model) async {
-    await db.collection('teacher').doc("teacher_user_$id").update({
+  Future<void> updateProfileTeacher( TeacherModel model) async {
+    await db.collection('teacher').doc("teacher_user_${model.userId}").update({
       'name': model.name,
       'note': model.note,
       'url': model.url,
@@ -1049,8 +1049,8 @@ class FireStoreDb {
     debugPrint("==========>update db for \"teacher\"");
   }
 
-  Future<void> updateProfileStudent(String id, StudentModel model) async {
-    await db.collection('students').doc("student_user_$id").update({
+  Future<void> updateProfileStudent(StudentModel model) async {
+    await db.collection('students').doc("student_user_${model.userId}").update({
       'name': model.name,
       'note': model.note,
       'url': model.url,
@@ -1970,15 +1970,13 @@ class FireStoreDb {
     debugPrint("==========>update db for \"teacher_class\"");
   }
 
-  Future<void> changeClassStatus(ClassModel classModel, String newStatus,
-      ManageGeneralCubit cubit, BuildContext context) async {
+  Future<void> changeClassStatus(ClassModel classModel, String newStatus) async {
     FirebaseFirestore.instance
         .collection('class')
         .doc('class_${classModel.classId}_course_${classModel.courseId}')
         .update({'class_status': newStatus}).whenComplete(() {
       debugPrint("==========>update db for \"class\"");
-      cubit.loadAfterChangeClassStatus();
-      Navigator.pop(context);
+
     });
   }
 

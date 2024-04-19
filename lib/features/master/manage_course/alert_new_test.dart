@@ -1,5 +1,9 @@
 import 'package:flutter/Material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/create.dart';
+import 'package:internal_sakumi/features/CRUD/delete_cubit.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_field.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
@@ -101,12 +105,14 @@ void alertAddNewTest(BuildContext context, TestModel? testModel, bool isEdit,
                                   if (isEdit)
                                     DeleteButton(
                                         onPressed: () async {
-                                          await FireBaseProvider.instance
+                                          await Delete
                                               .deleteTest(
                                             int.parse(idCon.text),
                                             int.parse(courseIdCon.text),
                                           );
-                                          Navigator.pop(context);
+                                          if(context.mounted){
+                                            Navigator.pop(context);
+                                          }
                                           cubit
                                               .loadTestInCourse(cubit.selector);
                                         },
@@ -131,8 +137,8 @@ void alertAddNewTest(BuildContext context, TestModel? testModel, bool isEdit,
                                         if (formKey.currentState!.validate()) {
                                           if (!isEdit) {
                                             final bool check =
-                                                await FireBaseProvider.instance
-                                                    .addNewTest(TestModel(
+                                                await Create
+                                                    .createNewTest(TestModel(
                                                         id:
                                                             int.parse(
                                                                 idCon.text),
@@ -158,7 +164,7 @@ void alertAddNewTest(BuildContext context, TestModel? testModel, bool isEdit,
                                               }
                                             }
                                           } else {
-                                            await FireBaseProvider.instance
+                                            Update
                                                 .updateTestInfo(TestModel(
                                                     id: int.parse(idCon.text),
                                                     courseId: int.parse(

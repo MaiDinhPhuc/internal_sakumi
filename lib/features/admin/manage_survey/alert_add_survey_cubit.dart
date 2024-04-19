@@ -21,8 +21,4 @@ class AlertAddSurveyCubit extends Cubit<int> {
     emit(state+1);
   }
 
-  addSurveyResult(SurveyModel survey, int classId, int id) async{
-    await FireBaseProvider.instance.addSurveyToClass(survey, classId, id);
-  }
-
 }

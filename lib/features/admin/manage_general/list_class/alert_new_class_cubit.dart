@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/CRUD/create_cubit.dart';
-import 'package:internal_sakumi/features/CRUD/update_cubit.dart';
+import 'package:internal_sakumi/features/CRUD/create.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
@@ -100,11 +100,11 @@ class AlertNewClassCubit extends Cubit<int> {
     courseId = course.courseId;
   }
 
-  addNewClass(CreateCubit createController, ClassModel model) async {
-    check = await createController.createNewClass(model);
+  addNewClass( ClassModel model) async {
+    check = await Create.createNewClass(model);
   }
 
-  updateClass(UpdateCubit updateController, ClassModel model) {
-    updateController.updateClassInfo(model);
+  updateClass(ClassModel model) {
+    Update.updateClassInfo(model);
   }
 }

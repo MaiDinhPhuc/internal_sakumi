@@ -1,6 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/create.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_field.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_teacher/alert_add_teacher_cubit.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
@@ -19,7 +20,6 @@ void alertAddNewTeacherAccount(
   final TextEditingController emailCon = TextEditingController();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
   showDialog(
       context: context,
       builder: (_) {
@@ -95,8 +95,9 @@ void alertAddNewTeacherAccount(
                                             if (formKey.currentState!
                                                 .validate()) {
                                               int teacherId = DateTime.now().millisecondsSinceEpoch;
+                                              Navigator.pop(context);
+                                              waitingDialog(context);
                                               await cubit.createTeacher(
-                                                  context,
                                                   TeacherModel(
                                                       name: nameCon.text,
                                                       url: '',

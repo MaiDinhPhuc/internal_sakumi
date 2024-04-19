@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/Material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/create.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/model/student_class_log.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
@@ -49,7 +52,7 @@ class ConfirmChangeStudentStatus extends StatelessWidget {
         CustomButton(
             onPress: () async {
               var classModel = await FireBaseProvider.instance.getClassById(studentClassModel.classId);
-              FireBaseProvider.instance.addNewLog(StudentClassLogModel(
+              Create.addNewLog(StudentClassLogModel(
                   id: DateTime.now().millisecondsSinceEpoch,
                   classId: studentClassModel.classId,
                   courseId: classModel.courseId,
@@ -57,19 +60,16 @@ class ConfirmChangeStudentStatus extends StatelessWidget {
                   to: newStatus,
                   userId: studentClassModel.userId,
                   classType: classModel.classType));
-              FirebaseFirestore.instance
-                  .collection('student_class')
-                  .doc(
-                      'student_${student.userId}_class_${studentClassModel.classId}')
-                  .update({'class_status': newStatus, "last_time_change" : DateTime.now().millisecondsSinceEpoch}).whenComplete(() {
-                if (newStatus == "Remove") {
-                  cubit.loadAfterRemoveStudent(student);
-                } else {
-                  cubit.getStudentClass(student.userId).status = newStatus;
-                  popupCubit.update();
-                }
+              Update.updateStudentClassStatus(student.userId, studentClassModel.classId, newStatus);
+              if (newStatus == "Remove") {
+                cubit.loadAfterRemoveStudent(student);
+              } else {
+                cubit.getStudentClass(student.userId).status = newStatus;
+                popupCubit.update();
+              }
+              if(context.mounted){
                 Navigator.pop(context);
-              });
+              }
             },
             bgColor: primaryColor.shade500,
             foreColor: Colors.white,

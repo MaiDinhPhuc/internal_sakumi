@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/features/teacher/sub_course/sub_course_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
@@ -112,7 +113,8 @@ class CustomLessonCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  updateClass(BuildContext context, ListLessonCubitV2 listLessonCubit) async {
+  updateClass(
+   ListLessonCubitV2 listLessonCubit) async {
     int millisecondsSinceEpoch = DateTime.now().millisecondsSinceEpoch;
     List<dynamic> listCustomLesson = classModel.customLessons;
 
@@ -129,7 +131,7 @@ class CustomLessonCubit extends Cubit<int> {
       "lessons_info": list
     });
 
-    await FireBaseProvider.instance
+    Update
         .updateClassInfo(ClassModel(
             classId: classModel.classId,
             courseId: classModel.courseId,
@@ -164,11 +166,10 @@ class CustomLessonCubit extends Cubit<int> {
           enable: true,
           customLessonInfo: list,
           isCustom: true));
-      Navigator.of(context).pop();
     });
   }
 
-  updateSubCourseClass(BuildContext context, SubCourseCubit subCourseCubit) async {
+  updateSubCourseClass( SubCourseCubit subCourseCubit) {
     int millisecondsSinceEpoch = DateTime.now().millisecondsSinceEpoch;
     List<dynamic> listCustomLesson = classModel.customLessons;
 
@@ -185,22 +186,22 @@ class CustomLessonCubit extends Cubit<int> {
       "lessons_info": list
     });
 
-    await FireBaseProvider.instance
+    Update
         .updateClassInfo(ClassModel(
-        classId: classModel.classId,
-        courseId: classModel.courseId,
-        description: classModel.description,
-        endTime: classModel.endTime,
-        startTime: classModel.startTime,
-        note: classModel.note,
-        classCode: classModel.classCode,
-        classStatus: classModel.classStatus,
-        classType: classModel.classType,
-        link: classModel.link,
-        customLessons: listCustomLesson,
-        informal: classModel.informal,
-        isSubClass: classModel.isSubClass,
-        subClassId: classModel.subClassId))
+            classId: classModel.classId,
+            courseId: classModel.courseId,
+            description: classModel.description,
+            endTime: classModel.endTime,
+            startTime: classModel.startTime,
+            note: classModel.note,
+            classCode: classModel.classCode,
+            classStatus: classModel.classStatus,
+            classType: classModel.classType,
+            link: classModel.link,
+            customLessons: listCustomLesson,
+            informal: classModel.informal,
+            isSubClass: classModel.isSubClass,
+            subClassId: classModel.subClassId))
         .whenComplete(() {
       subCourseCubit.addNewLesson(LessonModel(
           lessonId: millisecondsSinceEpoch,
@@ -220,7 +221,6 @@ class CustomLessonCubit extends Cubit<int> {
           enable: true,
           customLessonInfo: list,
           isCustom: true));
-      Navigator.of(context).pop();
     });
   }
 }

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/CRUD/create_cubit.dart';
-import 'package:internal_sakumi/features/CRUD/update_cubit.dart';
+import 'package:internal_sakumi/features/CRUD/delete_cubit.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_class/alert_new_class_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_date.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
@@ -27,14 +26,14 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
   TextEditingController linkCon =
       TextEditingController(text: classModel == null ? "" : classModel.link);
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  var createController = BlocProvider.of<CreateCubit>(context);
-  var updateController = BlocProvider.of<UpdateCubit>(context);
   showDialog(
       context: context,
       builder: (_) {
         if (classModel != null) {
-          DateTimeCubit.startDay = DateTime.fromMillisecondsSinceEpoch(classModel.startTime);
-          DateTimeCubit.endDay =DateTime.fromMillisecondsSinceEpoch(classModel.endTime);
+          DateTimeCubit.startDay =
+              DateTime.fromMillisecondsSinceEpoch(classModel.startTime);
+          DateTimeCubit.endDay =
+              DateTime.fromMillisecondsSinceEpoch(classModel.endTime);
         } else {
           DateTimeCubit.startDay = DateTime.now();
           DateTimeCubit.endDay = DateTime.now();
@@ -114,14 +113,14 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                           builder: (_) {
                                                             return ConfirmDeleteClass(
                                                                 classModel!,
-                                                                () async {
-                                                              await FireBaseProvider
-                                                                  .instance
-                                                                  .changeClassStatus(
-                                                                      classModel,
-                                                                      "Remove",
-                                                                      manageGeneralCubit!,
-                                                                      context);
+                                                                () {
+                                                              Delete
+                                                                  .removeClass(
+                                                                      classModel);
+                                                              manageGeneralCubit!
+                                                                  .loadAfterChangeClassStatus();
+                                                              Navigator.pop(
+                                                                  context);
                                                             });
                                                           });
                                                     },
@@ -152,7 +151,8 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                           context, 100)),
                                                   child: SubmitButton(
                                                       onPressed: () async {
-                                                        DateTime now = DateTime.now();
+                                                        DateTime now =
+                                                            DateTime.now();
                                                         if (formKey
                                                             .currentState!
                                                             .validate()) {
@@ -160,9 +160,9 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                             Navigator.pop(c);
                                                             waitingDialog(c);
                                                             await cubit.addNewClass(
-                                                                createController,
                                                                 ClassModel(
-                                                                    classId: now.millisecondsSinceEpoch,
+                                                                    classId: now
+                                                                        .millisecondsSinceEpoch,
                                                                     courseId: cubit
                                                                         .courseId!,
                                                                     description:
@@ -186,7 +186,11 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                                         .text,
                                                                     customLessons: [],
                                                                     informal: cubit
-                                                                        .informal, isSubClass: false, subClassId: 0));
+                                                                        .informal,
+                                                                    isSubClass:
+                                                                        false,
+                                                                    subClassId:
+                                                                        0));
                                                             if (context
                                                                 .mounted) {
                                                               Navigator.pop(
@@ -216,14 +220,14 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                                     .classType;
                                                             Navigator.pop(c);
                                                             waitingDialog(c);
-                                                            updateController.updateClassInfo(ClassModel(
-                                                                classId: classModel!
-                                                                    .classId,
+                                                            Update.updateClassInfo(ClassModel(
+                                                                classId:
+                                                                    classModel!
+                                                                        .classId,
                                                                 courseId: classModel
                                                                     .courseId,
                                                                 description:
-                                                                desCon
-                                                                    .text,
+                                                                    desCon.text,
                                                                 endTime: DateTimeCubit
                                                                     .endDay
                                                                     .millisecondsSinceEpoch,
@@ -233,18 +237,25 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                                 note: noteCon
                                                                     .text,
                                                                 classCode:
-                                                                codeCon
-                                                                    .text,
-                                                                classStatus:
-                                                                cubit
+                                                                    codeCon
+                                                                        .text,
+                                                                classStatus: cubit
                                                                     .classStatus!,
                                                                 classType: cubit
                                                                     .classType!,
                                                                 link: linkCon
                                                                     .text,
-                                                                customLessons: classModel.customLessons,
+                                                                customLessons:
+                                                                    classModel
+                                                                        .customLessons,
                                                                 informal: cubit
-                                                                    .informal, isSubClass: classModel.isSubClass, subClassId: classModel.subClassId));
+                                                                    .informal,
+                                                                isSubClass:
+                                                                    classModel
+                                                                        .isSubClass,
+                                                                subClassId:
+                                                                    classModel
+                                                                        .subClassId));
                                                             if (context
                                                                 .mounted) {
                                                               Navigator.pop(
