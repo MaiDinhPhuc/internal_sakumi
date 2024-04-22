@@ -1,9 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/features/CRUD/create.dart';
-import 'package:internal_sakumi/features/CRUD/delete_cubit.dart';
-import 'package:internal_sakumi/features/admin/manage_general/list_student/alert_edit_student_profile_cubit.dart';
 import 'package:internal_sakumi/features/admin/search/search_cubit.dart';
 import 'package:internal_sakumi/providers/cache/filter_admin_provider.dart';
 import 'package:internal_sakumi/providers/cache/filter_manage_bill_provider.dart';
@@ -14,6 +11,7 @@ import 'package:url_strategy/url_strategy.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'configs/color_configs.dart';
+import 'features/master/manage_course/manage_course_cubit.dart';
 import 'features/master/manage_survey/manage_survey_cubit.dart';
 import 'features/teacher/profile/teacher_profile/app_bar_info_teacher_cubit.dart';
 import 'firebase_options.dart';
@@ -44,7 +42,8 @@ class MyApp extends StatelessWidget {
           BlocProvider<AdminClassFilterCubit>(create: (context)=>AdminClassFilterCubit()),
           BlocProvider<BillFilterCubit>(create: (context)=>BillFilterCubit()),
           BlocProvider<TeacherClassFilterCubit>(create: (context)=>TeacherClassFilterCubit()),
-          BlocProvider<StatisticFilterCubit>(create: (context)=>StatisticFilterCubit())
+          BlocProvider<StatisticFilterCubit>(create: (context)=>StatisticFilterCubit()),
+          BlocProvider<ManageCourseCubit>(create: (context)=>ManageCourseCubit())
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

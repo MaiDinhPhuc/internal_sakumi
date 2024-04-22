@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 import 'date_choose_cubit.dart';
 
 class ManageBillCubit extends Cubit<int> {
-  ManageBillCubit() : super(0){
+  ManageBillCubit() : super(0) {
     setUpDate();
   }
 
@@ -37,18 +37,18 @@ class ManageBillCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  checkLoad(BillFilterCubit filterController) async{
+  checkLoad(BillFilterCubit filterController) async {
     await loadData(filterController);
   }
 
-  setDate(DateTime start, DateTime end){
+  setDate(DateTime start, DateTime end) {
     isChooseDate = true;
     startDay = start;
     endDay = end;
-    emit(state+1);
+    emit(state + 1);
   }
 
-  setUpDate(){
+  setUpDate() {
     startDay = DateTime(now.year, now.month - 1, 21);
     endDay = DateTime(now.year, now.month, 20);
   }
@@ -69,13 +69,13 @@ class ManageBillCubit extends Cubit<int> {
     List? listCreator = filterController.filter[BillFilter.creator];
     List<String> listTypeQuery = listType!.map((e) => billType(e)).toList();
     List<String> listStatusQuery =
-    listStatus!.map((e) => billStatus(e)).toList();
+        listStatus!.map((e) => billStatus(e)).toList();
     List<String> listCreatorQuery =
-    listCreator!.map((e) => billCreator(e)).toList();
+        listCreator!.map((e) => billCreator(e)).toList();
 
     int typeSize = (30 /
-        (filterController.filter[BillFilter.status]!.length *
-            filterController.filter[BillFilter.creator]!.length))
+            (filterController.filter[BillFilter.status]!.length *
+                filterController.filter[BillFilter.creator]!.length))
         .floor();
 
     List<List<String>> subLists = [];
@@ -93,12 +93,16 @@ class ManageBillCubit extends Cubit<int> {
     List<int> lastBills = [];
     for (int i = 0; i < subLists.length; i++) {
       var listBillTemp = await FireBaseProvider.instance
-          .getListBillWithFilterAndDate(listStatusQuery, subLists[i],
-          listCreatorQuery, startDay!.millisecondsSinceEpoch, endDay!.millisecondsSinceEpoch);
-      if(listBillTemp.isNotEmpty){
+          .getListBillWithFilterAndDate(
+              listStatusQuery,
+              subLists[i],
+              listCreatorQuery,
+              startDay!.millisecondsSinceEpoch,
+              endDay!.millisecondsSinceEpoch);
+      if (listBillTemp.isNotEmpty) {
         listBill!.addAll(listBillTemp);
         lastBills.add(listBillTemp.last.createDate);
-      }else{
+      } else {
         lastBills.add(9999999999999);
       }
     }
@@ -123,6 +127,20 @@ class ManageBillCubit extends Cubit<int> {
 
     emit(state + 1);
     loadStudentAndClass(stdIdTemp, classIdTemp);
+  }
+
+  List<BillModel> getListBill() {
+    if (listBill == null) return [];
+
+    List<BillModel> list = listBill!
+        .where((e) =>
+            e.paymentDate >= startDay!.millisecondsSinceEpoch &&
+            e.paymentDate <= endDay!.millisecondsSinceEpoch)
+        .toList();
+
+    list.sort((a, b) => b.paymentDate.compareTo(a.paymentDate));
+
+    return list;
   }
 
   addNewBill(BillModel newBill) {
@@ -180,13 +198,13 @@ class ManageBillCubit extends Cubit<int> {
     List? listCreator = filterController.filter[BillFilter.creator];
     List<String> listTypeQuery = listType!.map((e) => billType(e)).toList();
     List<String> listStatusQuery =
-    listStatus!.map((e) => billStatus(e)).toList();
+        listStatus!.map((e) => billStatus(e)).toList();
     List<String> listCreatorQuery =
-    listCreator!.map((e) => billCreator(e)).toList();
+        listCreator!.map((e) => billCreator(e)).toList();
 
     int typeSize = (30 /
-        (filterController.filter[BillFilter.status]!.length *
-            filterController.filter[BillFilter.creator]!.length))
+            (filterController.filter[BillFilter.status]!.length *
+                filterController.filter[BillFilter.creator]!.length))
         .floor();
 
     List<List<String>> subLists = [];
@@ -204,22 +222,27 @@ class ManageBillCubit extends Cubit<int> {
     List<int> lastBillNew = [];
     for (int i = 0; i < subLists.length; i++) {
       var listBillTemp = await FireBaseProvider.instance
-          .getMoreListBillWithFilterAndDate(listStatusQuery, subLists[i],
-          listCreatorQuery, lastBills[i], startDay!.millisecondsSinceEpoch, endDay!.millisecondsSinceEpoch);
-      if(listBillTemp.isNotEmpty){
-        for(var i in listBillTemp){
-          if(listBill!.contains(i) == false){
+          .getMoreListBillWithFilterAndDate(
+              listStatusQuery,
+              subLists[i],
+              listCreatorQuery,
+              lastBills[i],
+              startDay!.millisecondsSinceEpoch,
+              endDay!.millisecondsSinceEpoch);
+      if (listBillTemp.isNotEmpty) {
+        for (var i in listBillTemp) {
+          if (listBill!.contains(i) == false) {
             listBill!.add(i);
             newListBill.add(i);
           }
         }
         lastBillNew.add(listBillTemp.last.createDate);
-      }else{
+      } else {
         lastBillNew.add(9999999999999);
       }
     }
 
-    if(lastBillNew.isNotEmpty){
+    if (lastBillNew.isNotEmpty) {
       listLastBill.add(lastBillNew);
     }
     var stdIds = newListBill.map((e) => e.userId).toList();
@@ -230,7 +253,6 @@ class ManageBillCubit extends Cubit<int> {
     }
     emit(state + 1);
   }
-
 
   static String billStatus(FilterBillStatus status) {
     switch (status) {

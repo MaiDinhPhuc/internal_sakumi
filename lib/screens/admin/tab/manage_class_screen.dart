@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/app_bar/admin_appbar.dart';
+import 'package:internal_sakumi/features/admin/manage_bills/add_bill_button.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
 import 'package:internal_sakumi/features/admin_v2/manage_class_v2/class_cubit_v2.dart';
 import 'package:internal_sakumi/features/admin_v2/manage_class_v2/class_item_v2.dart';
@@ -31,140 +32,165 @@ class ManageClassScreenV2 extends StatelessWidget {
       cubit.loadDataAdmin(filterController);
     }
     return Scaffold(
-      body: Column(
-        children: [
-          const AdminAppBar(index: 1),
-          Expanded(child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(
-                    vertical: Resizable.padding(context, 20)),
-                child: Text(AppText.titleListClass.text.toUpperCase(),
-                    style: TextStyle(
-                      fontSize: Resizable.font(context, 30),
-                      fontWeight: FontWeight.w800,
-                    )),
-              ),
-              Padding(
+        body: Column(
+      children: [
+        const AdminAppBar(index: 1),
+        Expanded(
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+                flex: 1,
+                child:Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: Resizable.padding(context, 70)),
-                  child: BlocListener<AdminClassFilterCubit, int>(
-                      listener: (context, _) {
-                        cubit.loadDataAdmin(filterController);
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          FilterStatusAdminV2(filterController,
-                              classCubit: cubit),
-                          FilterCourseTypeAdminV2(filterController,
-                              classCubit: cubit),
-                          FilterCourseLevelAdminV2(filterController,
-                              classCubit: cubit),
-                          FilterTypeAdminV2(filterController, classCubit: cubit)
-                        ],
-                      ))),
-              Container(
-                  margin: EdgeInsets.symmetric(
-                      horizontal: Resizable.padding(context, 70)),
-                  child: ClassItemRowLayout(
-                    widgetClassCode: Text(AppText.txtClassCode.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Resizable.font(context, 17),
-                            color: greyColor.shade600)),
-                    widgetCourse: Text(AppText.txtCourse.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Resizable.font(context, 17),
-                            color: greyColor.shade600)),
-                    widgetLessons: Text(AppText.txtNumberOfLessons.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Resizable.font(context, 17),
-                            color: greyColor.shade600)),
-                    widgetAttendance: Text(AppText.txtRateOfAttendance.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Resizable.font(context, 17),
-                            color: greyColor.shade600)),
-                    widgetSubmit: Text(AppText.txtRateOfSubmitHomework.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Resizable.font(context, 17),
-                            color: greyColor.shade600)),
-                    widgetEvaluate: Text(AppText.txtEvaluate.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Resizable.font(context, 17),
-                            color: greyColor.shade600)),
-                    widgetStatus: Text(AppText.titleStatus.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Resizable.font(context, 17),
-                            color: greyColor.shade600)),
-                  )),
-              Padding(
-                  padding: EdgeInsets.symmetric(
-                      vertical: Resizable.size(context, 5),
-                      horizontal: Resizable.padding(context, 70)),
-                  child: DottedBorderButton(
-                      AppText.btnManageClass.text.toUpperCase(), onPressed: () {
-                    Navigator.pushNamed(
-                        context, '${Routes.admin}/${Routes.manageGeneral}');
-                  })),
-              Expanded(
-                  child: BlocBuilder<ClassCubit, int>(
-                      bloc: cubit,
-                      builder: (context, _) => cubit.listClass == null
-                          ? Shimmer.fromColors(
-                        baseColor: Colors.grey[300]!,
-                        highlightColor: Colors.grey[100]!,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              ...shimmerList.map((e) => Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal:
-                                      Resizable.size(context, 70)),
-                                  child: const ItemShimmer()))
-                            ],
-                          ),
-                        ),
+                      horizontal: Resizable.size(context, 70)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        child: Text(AppText.titleListClass.text.toUpperCase(),
+                            style: TextStyle(
+                              fontSize: Resizable.font(context, 30),
+                              fontWeight: FontWeight.w800,
+                            )),
+                      ),
+                      AddButton(
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, '${Routes.admin}/${Routes.manageGeneral}');
+                        }, title: AppText.btnManageClass.text,
                       )
-                          : cubit.listClass!.isNotEmpty
-                          ? SingleChildScrollView(
-                          child: Column(children: [
-                            ...cubit.listClass!
-                                .map((e) => Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal:
-                                    Resizable.size(context, 70)),
-                                child: ClassItemV2(
-                                    classModel: e,
-                                    classCubit: cubit)))
-                                .toList(),
-                            SizedBox(height: Resizable.size(context, 5)),
-                            cubit.isLastPage
-                                ? Container()
-                                : SubmitButton(
-                                onPressed: () {
-                                  cubit.loadMore(filterController);
-                                },
-                                title: AppText.txtLoadMore.text),
-                            SizedBox(height: Resizable.size(context, 50))
-                          ]))
-                          : Text(AppText.txtNoClass.text,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: Resizable.font(context, 17),
-                              color: greyColor.shade600))))
-            ],
-          ))
-        ],
-      )
-    );
+                    ],
+                  ),
+                )),
+            Expanded(
+                flex: 1,
+                child: Container(
+                    margin: EdgeInsets.symmetric(
+                        horizontal: Resizable.size(context, 70)),
+                    padding: EdgeInsets.symmetric(
+                        //horizontal: Resizable.padding(context, 30),
+                        vertical: Resizable.padding(context, 15)),
+                    decoration: BoxDecoration(
+                        color: lightGreyColor,
+                        borderRadius:
+                            BorderRadius.circular(Resizable.size(context, 5))),
+                    child: BlocListener<AdminClassFilterCubit, int>(
+                        listener: (context, _) {
+                          cubit.loadDataAdmin(filterController);
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            FilterStatusAdminV2(filterController,
+                                classCubit: cubit),
+                            FilterCourseTypeAdminV2(filterController,
+                                classCubit: cubit),
+                            FilterCourseLevelAdminV2(filterController,
+                                classCubit: cubit),
+                            FilterTypeAdminV2(filterController,
+                                classCubit: cubit)
+                          ],
+                        )))),
+            Container(
+                margin: EdgeInsets.symmetric(
+                    horizontal: Resizable.padding(context, 70)),
+                child: ClassItemRowLayout(
+                  widgetClassCode: Text(AppText.txtClassCode.text,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: Resizable.font(context, 17),
+                          color: greyColor.shade600)),
+                  widgetCourse: Text(AppText.txtCourse.text,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: Resizable.font(context, 17),
+                          color: greyColor.shade600)),
+                  widgetLessons: Text(AppText.txtNumberOfLessons.text,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: Resizable.font(context, 17),
+                          color: greyColor.shade600)),
+                  widgetAttendance: Text(AppText.txtRateOfAttendance.text,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: Resizable.font(context, 17),
+                          color: greyColor.shade600)),
+                  widgetSubmit: Text(AppText.txtRateOfSubmitHomework.text,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: Resizable.font(context, 17),
+                          color: greyColor.shade600)),
+                  widgetEvaluate: Text(AppText.txtEvaluate.text,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: Resizable.font(context, 17),
+                          color: greyColor.shade600)),
+                  widgetStatus: Text(AppText.titleStatus.text,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: Resizable.font(context, 17),
+                          color: greyColor.shade600)),
+                )),
+            // Padding(
+            //     padding: EdgeInsets.symmetric(
+            //         vertical: Resizable.size(context, 5),
+            //         horizontal: Resizable.padding(context, 70)),
+            //     child: DottedBorderButton(
+            //         AppText.btnManageClass.text.toUpperCase(), onPressed: () {
+            //       Navigator.pushNamed(
+            //           context, '${Routes.admin}/${Routes.manageGeneral}');
+            //     })),
+            Expanded(
+                flex: 6,
+                child: BlocBuilder<ClassCubit, int>(
+                    bloc: cubit,
+                    builder: (context, _) => cubit.listClass == null
+                        ? Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  ...shimmerList.map((e) => Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal:
+                                              Resizable.size(context, 70)),
+                                      child: const ItemShimmer()))
+                                ],
+                              ),
+                            ),
+                          )
+                        : cubit.listClass!.isNotEmpty
+                            ? SingleChildScrollView(
+                                child: Column(children: [
+                                ...cubit.listClass!
+                                    .map((e) => Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal:
+                                                Resizable.size(context, 70)),
+                                        child: ClassItemV2(
+                                            classModel: e, classCubit: cubit)))
+                                    .toList(),
+                                SizedBox(height: Resizable.size(context, 5)),
+                                cubit.isLastPage
+                                    ? Container()
+                                    : SubmitButton(
+                                        onPressed: () {
+                                          cubit.loadMore(filterController);
+                                        },
+                                        title: AppText.txtLoadMore.text),
+                                SizedBox(height: Resizable.size(context, 50))
+                              ]))
+                            : Text(AppText.txtNoClass.text,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: Resizable.font(context, 17),
+                                    color: greyColor.shade600))))
+          ],
+        ))
+      ],
+    ));
   }
 }

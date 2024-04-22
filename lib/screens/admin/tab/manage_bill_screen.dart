@@ -144,7 +144,7 @@ class ManageBillScreen extends StatelessWidget {
                             Expanded(child: SingleChildScrollView(
                               child: Column(
                                 children: [
-                                  ...cubit.listBill!
+                                  ...cubit.getListBill()
                                       .map((e) => BillItem(billModel: e, cubit: cubit)).toList(),
                                   SizedBox(height: Resizable.size(context, 5)),
                                   cubit.isLastPage
