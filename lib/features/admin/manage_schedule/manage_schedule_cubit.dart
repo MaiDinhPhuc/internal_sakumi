@@ -17,6 +17,8 @@ class ManageScheduleCubit extends Cubit<int>{
   final DateTime now = DateTime.now();
   int currentWeekday = DateTime.now().weekday;
 
+  List<String> listMenu = ["Đổi giáo viên", "Nghỉ"];
+
   List<String> listDay = [
     "Thứ HAI",
     "Thứ BA",
@@ -29,6 +31,11 @@ class ManageScheduleCubit extends Cubit<int>{
   int? classId;
   TextEditingController classSearch = TextEditingController();
   String classSearchValue = "";
+
+
+  int? teacherId;
+  TextEditingController teacherSearch = TextEditingController();
+  String teacherSearchValue = "";
 
   List<TeacherModel> listTeacher = [];
   List<int> listTeacherId = [];
@@ -102,7 +109,7 @@ class ManageScheduleCubit extends Cubit<int>{
   chooseClass(String className, int classId) async {
     this.classId = classId;
     classSearch.text = className;
-    await getSchedule();
+    emit(state + 1);
   }
 
   bool checkExistResult(int index, int classId) {
@@ -137,10 +144,12 @@ class ManageScheduleCubit extends Cubit<int>{
     for (var i in listSingleSchedule!) {
       if (i.date == date.millisecondsSinceEpoch &&
           checkExistResult(index, i.classId) == false) {
-        var temp =
-        listCyclicSchedule!.firstWhere((e) => e.classId == i.classId);
-        list.remove(temp);
-        list.add(i);
+        List<ScheduleModel> temp = listCyclicSchedule!.where((e) => e.classId == i.classId).toList();
+        if(temp.isNotEmpty){
+          list.remove(temp.first);
+          list.add(i);
+        }
+
       }
     }
 
@@ -175,7 +184,7 @@ class ManageScheduleCubit extends Cubit<int>{
     }
 
     listDate.add(endDate!);
-   if(classId != null){
+   if((classId == null && teacherId == null) == false){
      await getSchedule();
    }else{
      isLoadingSchedule = false;
@@ -201,7 +210,7 @@ class ManageScheduleCubit extends Cubit<int>{
     }
 
     listDate.add(endDate!);
-    if(classId != null){
+    if((classId == null && teacherId == null) == false){
       await getSchedule();
     }else{
       isLoadingSchedule = false;
@@ -210,25 +219,77 @@ class ManageScheduleCubit extends Cubit<int>{
   }
 
   getSchedule() async {
-    listLessonResult = await FireBaseProvider.instance.getLessonResultWithDateAndClassId(
-        startDate!.millisecondsSinceEpoch,
-        endDate!.millisecondsSinceEpoch,
-        classId!);
 
-    listCyclicSchedule =
-    await FireBaseProvider.instance.getClassCyclicSchedule(classId!);
+    if(classId != null && teacherId == null){
 
-    var listClassIdTemp = listCyclicSchedule!.map((e) => e.classId).toList();
-
-    if (listClassIdTemp.isEmpty) {
-      listSingleSchedule = [];
-    } else {
-      listSingleSchedule = await FireBaseProvider.instance
-          .getTeacherSingleSchedule(
-          listClassIdTemp,
+      listLessonResult = await FireBaseProvider.instance.getLessonResultWithDateAndClassId(
           startDate!.millisecondsSinceEpoch,
-          endDate!.millisecondsSinceEpoch);
+          endDate!.millisecondsSinceEpoch,
+          classId!);
+
+      listCyclicSchedule =
+      await FireBaseProvider.instance.getClassCyclicSchedule(classId!);
+
+      var listClassIdTemp = listCyclicSchedule!.map((e) => e.classId).toList();
+
+      if (listClassIdTemp.isEmpty) {
+        listSingleSchedule = [];
+      } else {
+        listSingleSchedule = await FireBaseProvider.instance
+            .getTeacherSingleSchedule(
+            listClassIdTemp,
+            startDate!.millisecondsSinceEpoch,
+            endDate!.millisecondsSinceEpoch);
+      }
     }
+
+    if(classId == null && teacherId != null){
+
+      listLessonResult = await FireBaseProvider.instance.getLessonResultWithDateAndTeacherId(
+          startDate!.millisecondsSinceEpoch,
+          endDate!.millisecondsSinceEpoch,
+          teacherId!);
+
+      listCyclicSchedule =
+      await FireBaseProvider.instance.getTeacherCyclicSchedule(teacherId!);
+
+      var listClassIdTemp = listCyclicSchedule!.map((e) => e.classId).toList();
+
+      if (listClassIdTemp.isEmpty) {
+        listSingleSchedule = [];
+      } else {
+        listSingleSchedule = await FireBaseProvider.instance
+            .getTeacherSingleSchedule(
+            listClassIdTemp,
+            startDate!.millisecondsSinceEpoch,
+            endDate!.millisecondsSinceEpoch);
+      }
+    }
+
+    if(classId != null && teacherId != null){
+
+      listLessonResult = await FireBaseProvider.instance.getLessonResultWithDateAndId(
+          startDate!.millisecondsSinceEpoch,
+          endDate!.millisecondsSinceEpoch,
+          teacherId!, classId!);
+
+      listCyclicSchedule =
+      await FireBaseProvider.instance.getTeacherCyclicScheduleInClass(teacherId!, classId!);
+
+      var listClassIdTemp = listCyclicSchedule!.map((e) => e.classId).toList();
+
+      if (listClassIdTemp.isEmpty) {
+        listSingleSchedule = [];
+      } else {
+        listSingleSchedule = await FireBaseProvider.instance
+            .getTeacherSingleSchedule(
+            listClassIdTemp,
+            startDate!.millisecondsSinceEpoch,
+            endDate!.millisecondsSinceEpoch);
+      }
+    }
+
+
 
     for (var i in listLessonResult!) {
       if (listClassId.contains(i.classId) == false) {
@@ -278,6 +339,24 @@ class ManageScheduleCubit extends Cubit<int>{
 
   searchClass(String newValue) {
     classSearchValue = newValue;
+    emit(state + 1);
+  }
+
+  searchTeacher(String newValue) {
+    teacherSearchValue = newValue;
+    emit(state + 1);
+  }
+
+  deleteTeacher() {
+    teacherId = null;
+    teacherSearch.text = "";
+    teacherSearchValue = "";
+    emit(state + 1);
+  }
+
+  chooseTeacher(String teacher, int userId) {
+    teacherId = userId;
+    teacherSearch.text = teacher;
     emit(state + 1);
   }
 

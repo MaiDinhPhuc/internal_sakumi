@@ -13,7 +13,7 @@ class FilterCourseState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 10)),
+        margin: EdgeInsets.only(right: Resizable.padding(context, 10)),
         alignment: Alignment.centerRight, width: Resizable.size(context, 150),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(24),
@@ -26,15 +26,15 @@ class FilterCourseState extends StatelessWidget {
                 itemBuilder: (context) => [
                   ...cubit.listStatus.map((e) => PopupMenuItem(
                       padding: EdgeInsets.zero,
-                      child: BlocProvider(create: (c)=>CheckBoxFilterCubit(cubit.listState[cubit.listStatus.indexOf(e)]),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
+                      child: BlocProvider(create: (c)=>CheckBoxFilterCubit(cubit.listStatusState[cubit.listStatus.indexOf(e)]),child: BlocBuilder<CheckBoxFilterCubit,bool>(builder: (cc,state){
                         return CheckboxListTile(
                           controlAffinity: ListTileControlAffinity.leading,
                           title: Text(e),
                           value: state,
                           onChanged: (newValue) {
-                            cubit.listState[cubit.listStatus.indexOf(e)] = newValue!;
-                            if(cubit.listState.every((element) => element == false)){
-                              cubit.listState[cubit.listStatus.indexOf(e)] = !newValue;
+                            cubit.listStatusState[cubit.listStatus.indexOf(e)] = newValue!;
+                            if(cubit.listStatusState.every((element) => element == false)){
+                              cubit.listStatusState[cubit.listStatus.indexOf(e)] = !newValue;
                             }else{
                               BlocProvider.of<CheckBoxFilterCubit>(cc).update();
                             }

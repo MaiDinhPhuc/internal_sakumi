@@ -1,0 +1,112 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/Material.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
+import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/admin/manage_bills/search_in_bill.dart';
+import 'package:internal_sakumi/features/admin/search/item_search_list.dart';
+import 'package:internal_sakumi/utils/resizable.dart';
+
+import 'add_schedule_cubit.dart';
+import 'choose_cyclic_time.dart';
+
+class InfoCyclicScheduleView extends StatelessWidget {
+  const InfoCyclicScheduleView({super.key, required this.addCubit});
+  final AddScheduleCubit addCubit;
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(AppText.txtTeacherName.text,
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: Resizable.font(context, 18),
+                  color: greyColor.shade600)),
+          SizedBox(height: Resizable.padding(context, 5)),
+          SearchInBill(
+              hint:AppText.txtSearchTeacher.text,
+              onDelete: () {
+                addCubit.deleteTeacher();
+              },
+              onChange: (newValue) {
+                addCubit.searchTeacher(newValue);
+              },
+              controller: addCubit.teacherSearch,
+              enable: addCubit.teacherId == null),
+          Stack(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: Resizable.padding(context, 5)),
+                      child: Text(AppText.txtClass.text,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: Resizable.font(context, 18),
+                              color: greyColor.shade600))),
+                  SearchInBill(
+                      hint:AppText.txtSearchClass.text,
+                      onDelete: () {
+                        addCubit.deleteClass();
+                      },
+                      onChange: (newValue) {
+                        addCubit.searchClass(newValue);
+                      },
+                      controller: addCubit.classSearch,
+                      enable: addCubit.classId == null),
+                  Stack(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: Resizable.padding(context, 5)),
+                              child: Text(AppText.txtSchedule.text,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: Resizable.font(context, 18),
+                                      color: greyColor.shade600))),
+                          ChooseCyclicTime(addCubit: addCubit)
+                        ],
+                      ),
+                      if (addCubit.classId == null)
+                        StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection("class")
+                                .snapshots(),
+                            builder: (c, snapshots) {
+                              return (snapshots.connectionState ==
+                                  ConnectionState.waiting)
+                                  ? Container()
+                                  : ClassSearchListScheduleV2(
+                                  snapshots: snapshots, addCubit: addCubit,
+                                  );
+                            })
+                    ],
+                  ),
+                ],
+              ),
+              if (addCubit.teacherId == null)
+                StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection("teacher")
+                        .snapshots(),
+                    builder: (c, snapshots) {
+                      return (snapshots.connectionState ==
+                          ConnectionState.waiting)
+                          ? Container()
+                          : TeacherSearchListScheduleV2(
+                          snapshots: snapshots, addCubit: addCubit
+                       );
+                    })
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}

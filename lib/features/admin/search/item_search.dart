@@ -298,9 +298,6 @@ class ItemSearchV2 extends StatelessWidget {
                       )
                     ],
                   ),
-                  Icon(Icons.arrow_forward_ios_outlined,
-                      size: Resizable.size(context, 17),
-                      color: const Color(0xFF757575))
                 ],
               ),
               isLast

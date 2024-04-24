@@ -1,14 +1,17 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/create.dart';
+import 'package:internal_sakumi/features/CRUD/delete_cubit.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_field.dart';
 import 'package:internal_sakumi/model/test_model.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 import 'add_new_lesson_button.dart';
+import 'choose_test_time.dart';
 import 'input_2_filed.dart';
 import 'manage_course_cubit.dart';
 
@@ -26,6 +29,9 @@ void alertAddNewTest(BuildContext context, TestModel? testModel, bool isEdit,
       text: testModel == null ? "" : testModel.description);
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  final ChooseTestTimeCubit chooseTimeCubit = ChooseTestTimeCubit()..loadTime(testModel == null ? 0 : testModel.duration);
+
   showDialog(
       context: context,
       builder: (_) {
@@ -58,8 +64,9 @@ void alertAddNewTest(BuildContext context, TestModel? testModel, bool isEdit,
                           )),
                       Expanded(
                           flex: 10,
-                          child: SingleChildScrollView(
-                              child: Column(children: [
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
                             InputItem(
                                 onChange: (String? value) {
                                   debugPrint(value);
@@ -87,7 +94,13 @@ void alertAddNewTest(BuildContext context, TestModel? testModel, bool isEdit,
                                 controller: desCon,
                                 title: AppText.txtDescription.text,
                                 isExpand: true),
-                          ]))),
+                            Text(AppText.txtTestTime.text,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: Resizable.font(context, 18),
+                                    color: const Color(0xff757575))),
+                            ChooseTestTime(chooseTimeCubit)
+                          ])),
                       Expanded(
                           flex: 1,
                           child: Container(
@@ -101,12 +114,13 @@ void alertAddNewTest(BuildContext context, TestModel? testModel, bool isEdit,
                                   if (isEdit)
                                     DeleteButton(
                                         onPressed: () async {
-                                          await FireBaseProvider.instance
-                                              .deleteTest(
+                                          await Delete.deleteTest(
                                             int.parse(idCon.text),
                                             int.parse(courseIdCon.text),
                                           );
-                                          Navigator.pop(context);
+                                          if (context.mounted) {
+                                            Navigator.pop(context);
+                                          }
                                           cubit
                                               .loadTestInCourse(cubit.selector);
                                         },
@@ -130,20 +144,16 @@ void alertAddNewTest(BuildContext context, TestModel? testModel, bool isEdit,
                                       AddNewLessonButton(() async {
                                         if (formKey.currentState!.validate()) {
                                           if (!isEdit) {
-                                            final bool check =
-                                                await FireBaseProvider.instance
-                                                    .addNewTest(TestModel(
-                                                        id:
-                                                            int.parse(
-                                                                idCon.text),
-                                                        courseId: int.parse(
-                                                            courseIdCon.text),
-                                                        description:
-                                                            desCon.text,
-                                                        title: titleCon.text,
-                                                        difficulty: int.parse(
-                                                            difficultCon.text),
-                                                        enable: true));
+                                            final bool check = await Create
+                                                .createNewTest(TestModel(
+                                                    id: int.parse(idCon.text),
+                                                    courseId: int.parse(
+                                                        courseIdCon.text),
+                                                    description: desCon.text,
+                                                    title: titleCon.text,
+                                                    difficulty: int.parse(
+                                                        difficultCon.text),
+                                                    enable: true, duration: chooseTimeCubit.convertTime()));
                                             if (context.mounted) {
                                               Navigator.pop(context);
                                               if (check == true) {
@@ -158,16 +168,15 @@ void alertAddNewTest(BuildContext context, TestModel? testModel, bool isEdit,
                                               }
                                             }
                                           } else {
-                                            await FireBaseProvider.instance
-                                                .updateTestInfo(TestModel(
-                                                    id: int.parse(idCon.text),
-                                                    courseId: int.parse(
-                                                        courseIdCon.text),
-                                                    description: desCon.text,
-                                                    title: titleCon.text,
-                                                    difficulty: int.parse(
-                                                        difficultCon.text),
-                                                    enable: testModel!.enable));
+                                            Update.updateTestInfo(TestModel(
+                                                id: int.parse(idCon.text),
+                                                courseId:
+                                                    int.parse(courseIdCon.text),
+                                                description: desCon.text,
+                                                title: titleCon.text,
+                                                difficulty: int.parse(
+                                                    difficultCon.text),
+                                                enable: testModel!.enable, duration: chooseTimeCubit.convertTime()));
                                             if (context.mounted) {
                                               Navigator.pop(context);
                                               cubit.loadTestInCourse(
@@ -175,7 +184,7 @@ void alertAddNewTest(BuildContext context, TestModel? testModel, bool isEdit,
                                             }
                                           }
                                         } else {
-                                          print('Form is invalid');
+                                          debugPrint('Form is invalid');
                                         }
                                       }, isEdit)
                                     ],

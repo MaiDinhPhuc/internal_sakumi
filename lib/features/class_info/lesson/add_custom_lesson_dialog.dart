@@ -1,6 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
@@ -68,7 +69,8 @@ class AddCustomLessonDialog extends StatelessWidget {
                               minWidth: Resizable.size(context, 100)),
                           child: SubmitButton(
                               onPressed: () {
-                                cubit.updateClass(context,listLessonCubit);
+                                cubit.updateClass(listLessonCubit);
+                                Navigator.pop(context);
                               }, title: AppText.btnAdd.text),
                         ),
                       ],

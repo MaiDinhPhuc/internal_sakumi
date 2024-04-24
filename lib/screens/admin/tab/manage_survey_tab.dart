@@ -92,7 +92,7 @@ class ManageSurveyTab extends StatelessWidget {
                               child: DottedBorderButton(
                                   AppText.btnAddNewSurvey.text.toUpperCase(),
                                   isManageGeneral: true, onPressed: () {
-                                alertCheckBoxSurvey(c, cubit,
+                                alertCheckBoxSurvey(context, cubit,
                                     int.parse(TextUtils.getName()));
                               }))
                         ],

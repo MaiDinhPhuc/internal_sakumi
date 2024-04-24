@@ -1,12 +1,13 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
+import 'package:internal_sakumi/features/CRUD/create.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/drop_down_widget.dart';
 import 'package:internal_sakumi/features/teacher/lecture_v2/session_cubit.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'lesson_item_cubit_v2.dart';
@@ -71,7 +72,7 @@ class AttendanceItemV2 extends StatelessWidget {
                                 selectorId: s,
                                 items: items,
                                 onPressed: (v) async {
-                                  var check = await addStudentLesson(
+                                  var check = await Create.addStudentLesson(
                                       StudentLessonModel(
                                           grammar: -2,
                                           hw: -2,
@@ -89,8 +90,7 @@ class AttendanceItemV2 extends StatelessWidget {
                                           time: {}, hws: []));
                                   if (check == false) {
                                     if (c.mounted) {
-                                      BlocProvider.of<
-                                          DropdownAttendanceCubit>(c)
+                                      Update
                                           .updateAttendance(
                                           items.indexOf(v.toString()),
                                           studentModel.userId,
@@ -158,11 +158,5 @@ class AttendanceItemV2 extends StatelessWidget {
             )));
   }
 
-  Future<bool> addStudentLesson(StudentLessonModel model) async {
-    var check = await FireBaseProvider.instance.addStudentLesson(model);
 
-    debugPrint('===================> check addStudentLesson $check');
-
-    return check;
-  }
 }

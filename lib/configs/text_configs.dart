@@ -525,7 +525,7 @@ enum AppText {
   txtLoadingAdd,
   txtAddGroupTagSuccess,
   txtError,
-  txtAddTagSuccess, txtDeleteSuccess, btnChooseColor, txtNotChooseColor, txtChoose, btnEditTag, txtUpdateTagSuccess, txtDataNotChange, txtLoadingUpdate, txtConfirmDeleteTag, txtDeleteTagSuccess, txtLoadingDelete, btnUpdateGroupTag, txtUpdateGroupTagSuccess,
+  txtAddTagSuccess, txtDeleteSuccess,
 }
 
 Map<AppText, String> texts = {
@@ -1074,7 +1074,6 @@ Map<AppText, String> texts = {
   AppText.txtGroup: 'Nhóm',
   AppText.btnAddGroup: 'Thêm nhóm mới',
   AppText.btnAddTag: 'thêm tag mới',
-  AppText.btnEditTag: 'Chỉnh sửa tag',
   AppText.txtManageTag: 'QUẢN LÝ TAG',
   AppText.txtPleaseInputTagCode: 'Vui lòng nhập mã tag',
   AppText.txtPleaseInputTagName: 'Vui lòng nhập tên tag',
@@ -1089,28 +1088,17 @@ Map<AppText, String> texts = {
   AppText.btnAddNew: 'Thêm mới',
   AppText.txtColorWrong: 'Mã màu không hợp lệ',
   AppText.txtPleaseInputNameColor: 'Vui lòng nhập mã màu',
-  AppText.txtColorExist: 'Màu đã tồn tại',
+  AppText.txtColorExist: 'Mã màu đã tồn tại',
   AppText.btnAddGroupTag: 'Thêm nhóm mới',
-  AppText.btnUpdateGroupTag: 'Chỉnh sửa nhóm',
   AppText.txtPleaseInputGroupTagCode: 'Vui lòng nhập mã nhóm',
   AppText.txtPleaseInputGroupTagName: 'Vui lòng nhập tên nhóm',
   AppText.txtConfirmDeleteGroupTag: 'Bạn muốn xoá nhóm tag này ?',
-  AppText.txtConfirmDeleteTag: 'Bạn muốn xoá tag này ?',
   AppText.txtLoadingAdd: 'Đang thêm mới...',
-  AppText.txtLoadingUpdate: 'Đang cập nhật...',
-  AppText.txtLoadingDelete: 'Đang xoá...',
-  AppText.txtDataNotChange: 'Dữ liệu không thay đổi',
   AppText.txtYes: 'Xác nhận',
   AppText.txtAddGroupTagSuccess: 'Thêm nhóm tag mới thành công',
-  AppText.txtUpdateGroupTagSuccess: 'Cập nhật nhóm tag thành công',
   AppText.txtAddTagSuccess: 'Thêm tag mới thành công',
-  AppText.txtUpdateTagSuccess: 'Cập nhật tag thành công',
-  AppText.txtDeleteTagSuccess: 'Xoá tag thành công',
   AppText.txtError: 'Có lỗi xảy ra! Thử lại sau',
   AppText.txtDeleteSuccess: 'Xoá thành công',
-  AppText.btnChooseColor: 'Chọn màu',
-  AppText.txtNotChooseColor: 'Bạn chưa chọn màu',
-  AppText.txtChoose: 'Chọn',
 };
 
 extension AppTexts on AppText {

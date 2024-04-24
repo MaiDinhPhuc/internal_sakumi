@@ -1,8 +1,8 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/model/survey_result_model.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/custom_button.dart';
 
@@ -38,26 +38,22 @@ class ConfirmRecallSurvey extends StatelessWidget {
             text: AppText.txtBack.text),
         CustomButton(
             onPress: () async {
+              DateTime dateTime = DateTime.now();
+              int epochSeconds = dateTime.millisecondsSinceEpoch;
               Navigator.pop(context);
-              await FireBaseProvider.instance
-                  .assignSurveyResult(SurveyResultModel(
+              SurveyResultModel value = SurveyResultModel(
                   status: "recall",
                   classId: result.classId,
                   surveyId: result.surveyId,
                   id: result.id,
                   title: result.title,
                   surveyCode: result.surveyCode,
-                  dateAssign: 0))
+                  dateAssign: epochSeconds);
+              Update
+                  .updateSurveyResult(value)
                   .whenComplete(() {
                 cubit.updateSurvey(
-                  SurveyResultModel(
-                      status: "recall",
-                      classId: result.classId,
-                      surveyId: result.surveyId,
-                      id: result.id,
-                      title: result.title,
-                      surveyCode: result.surveyCode,
-                      dateAssign: 0),
+                  value
                 );
               });
             },

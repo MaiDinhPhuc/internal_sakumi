@@ -1,5 +1,9 @@
 import 'package:flutter/Material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/create.dart';
+import 'package:internal_sakumi/features/CRUD/delete_cubit.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_field.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
@@ -150,7 +154,7 @@ void alertAddNewLesson(BuildContext context, LessonModel? lessonModel,
                                   if (isEdit)
                                     DeleteButton(
                                         onPressed: () async {
-                                          await FireBaseProvider.instance
+                                          await Delete
                                               .deleteLesson(
                                             int.parse(idLessonCon.text),
                                             int.parse(idCourseCon.text),
@@ -178,34 +182,33 @@ void alertAddNewLesson(BuildContext context, LessonModel? lessonModel,
                                       ),
                                       AddNewLessonButton(() async {
                                         if (formKey.currentState!.validate()) {
+                                          LessonModel lesson = LessonModel(
+                                              lessonId: int.parse(
+                                                  idLessonCon.text),
+                                              courseId: int.parse(
+                                                  idCourseCon.text),
+                                              description: desCon.text,
+                                              content: contCon.text,
+                                              title: titleCon.text,
+                                              btvn:
+                                              int.parse(btvnCon.text),
+                                              vocabulary:
+                                              int.parse(vocaCon.text),
+                                              listening: int.parse(
+                                                  listenCon.text),
+                                              kanji: int.parse(
+                                                  kanjiCon.text),
+                                              grammar: int.parse(
+                                                  grammarCon.text),
+                                              flashcard: int.parse(flCardCon.text),
+                                              alphabet: int.parse(alphaCon.text),
+                                              order: int.parse(orderCon.text),
+                                              reading: int.parse(readingCon.text),
+                                              enable: true,
+                                              customLessonInfo: [],
+                                              isCustom: false);
                                           if (!isEdit) {
-                                            final bool check = await FireBaseProvider
-                                                .instance
-                                                .addNewLesson(LessonModel(
-                                                    lessonId: int.parse(
-                                                        idLessonCon.text),
-                                                    courseId: int.parse(
-                                                        idCourseCon.text),
-                                                    description: desCon.text,
-                                                    content: contCon.text,
-                                                    title: titleCon.text,
-                                                    btvn:
-                                                        int.parse(btvnCon.text),
-                                                    vocabulary:
-                                                        int.parse(vocaCon.text),
-                                                    listening: int.parse(
-                                                        listenCon.text),
-                                                    kanji: int.parse(
-                                                        kanjiCon.text),
-                                                    grammar: int.parse(
-                                                        grammarCon.text),
-                                                    flashcard: int.parse(flCardCon.text),
-                                                    alphabet: int.parse(alphaCon.text),
-                                                    order: int.parse(orderCon.text),
-                                                    reading: int.parse(readingCon.text),
-                                                    enable: true,
-                                                    customLessonInfo: [],
-                                                    isCustom: false));
+                                            final bool check = await Create.createNewLesson(lesson);
                                             if (context.mounted) {
                                               Navigator.pop(context);
                                               if (check == true) {
@@ -220,35 +223,8 @@ void alertAddNewLesson(BuildContext context, LessonModel? lessonModel,
                                               }
                                             }
                                           } else {
-                                            await FireBaseProvider.instance
-                                                .updateLessonInfo(LessonModel(
-                                                    lessonId: int.parse(
-                                                        idLessonCon.text),
-                                                    courseId: int.parse(
-                                                        idCourseCon.text),
-                                                    description: desCon.text,
-                                                    content: contCon.text,
-                                                    title: titleCon.text,
-                                                    btvn:
-                                                        int.parse(btvnCon.text),
-                                                    vocabulary:
-                                                        int.parse(vocaCon.text),
-                                                    listening: int.parse(
-                                                        listenCon.text),
-                                                    kanji: int.parse(
-                                                        kanjiCon.text),
-                                                    grammar: int.parse(
-                                                        grammarCon.text),
-                                                    flashcard: int.parse(
-                                                        flCardCon.text),
-                                                    alphabet: int.parse(
-                                                        alphaCon.text),
-                                                    order:
-                                                        int.parse(orderCon.text),
-                                                    reading: int.parse(readingCon.text),
-                                                    enable: lessonModel!.enable,
-                                                    customLessonInfo: [],
-                                                    isCustom: false));
+                                            Update
+                                                .updateLessonInfo(lesson);
                                             if (context.mounted) {
                                               Navigator.pop(context);
                                               cubit.loadLessonInCourse(
@@ -256,7 +232,7 @@ void alertAddNewLesson(BuildContext context, LessonModel? lessonModel,
                                             }
                                           }
                                         } else {
-                                          print('Form is invalid');
+                                          debugPrint('Form is invalid');
                                         }
                                       }, isEdit)
                                     ],

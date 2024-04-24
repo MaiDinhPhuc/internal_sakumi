@@ -1,11 +1,11 @@
 import 'package:flutter/Material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/features/admin/manage_teacher/teacher_info/teacher_info_cubit.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
@@ -39,7 +39,7 @@ class InfoTeacherView extends StatelessWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(1000)),
                   child: Image.network(
                     fit: BoxFit.cover,
-                    '${cubit.teacher!.url}',
+                    cubit.teacher!.url,
                     height: Resizable.size(context, 100),
                     width: Resizable.size(context, 100),
                     errorBuilder: (_, __, ___) => Container(),
@@ -63,8 +63,9 @@ class InfoTeacherView extends StatelessWidget {
                       status: cubit.teacher!.status,
                       teacherCode: cubit.teacherCode,
                       schedule: cubit.teacher!.schedule, email: cubit.teacher!.email);
-                  await FireBaseProvider.instance
-                      .updateProfileTeacher(TextUtils.getName(), teacherModel);
+                  Update.updateTeacherProfile(teacherModel);
+                  // await FireBaseProvider.instance
+                  //     .updateProfileTeacher(TextUtils.getName(), teacherModel);
                   DataProvider.updateTeacherInfo(
                       cubit.teacher!.userId, teacherModel);
                   Navigator.pop(context);

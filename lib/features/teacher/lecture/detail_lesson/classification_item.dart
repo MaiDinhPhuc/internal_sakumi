@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:internal_sakumi/utils/text_utils.dart';
 
 import 'drop_down_widget.dart';
 
@@ -64,7 +66,9 @@ class ClassificationItem extends StatelessWidget {
                                       items: firstItems,
                                       onPressed: (v) {
                                         s = firstItems.indexOf(v.toString());
-                                        BlocProvider.of<DropdownAttendanceCubit>(c).updateStudentStatus('active_status', s, studentModel.userId);
+                                        int classId = int.parse(TextUtils.getName(position: 1));
+                                        Update.updateStudentStatus('active_status', s, studentModel.userId,classId);
+                                        BlocProvider.of<DropdownAttendanceCubit>(c).updateStudentStatus(s);
                                       })))),
                       Expanded(flex: 1, child: Container()),
                     ],
@@ -86,7 +90,10 @@ class ClassificationItem extends StatelessWidget {
                                     items: secondItems,
                                     onPressed: (v) {
                                       s = secondItems.indexOf(v.toString());
-                                      BlocProvider.of<DropdownAttendanceCubit>(c).updateStudentStatus('learning_status', s, studentModel.userId);
+                                      int classId = int.parse(TextUtils.getName(position: 1));
+                                      Update.updateStudentStatus('learning_status', s, studentModel.userId,classId);
+                                      BlocProvider.of<DropdownAttendanceCubit>(c).updateStudentStatus(s);
+                                      //BlocProvider.of<DropdownAttendanceCubit>(c).updateStudentStatus('', s, studentModel.userId);
                                     })))
                       )
                     ],

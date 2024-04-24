@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/create.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_field.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_teacher/alert_add_teacher_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
@@ -23,6 +24,7 @@ void alertNewTeacher(
   final TextEditingController emailCon = TextEditingController();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
 
   showDialog(
       context: context,
@@ -109,8 +111,9 @@ void alertNewTeacher(
                                                   teacherCode:
                                                   senseiCodeCon.text,
                                                   status: 'Chính thức',schedule: {}, email: emailCon.text);
+                                              Navigator.pop(context);
+                                              waitingDialog(context);
                                               await cubit.createTeacher(
-                                                  context,
                                                   teacher,
                                                   UserModel(
                                                       email: emailCon.text,
@@ -133,9 +136,7 @@ void alertNewTeacher(
                                                           'dd/MM/yyyy')
                                                           .format(DateTime
                                                           .now()), responsibility: false);
-                                                  cubit.addTeacherToClass(
-                                                      context,teacherClass
-                                                      );
+                                                  Create.addTeacherToClass(teacherClass);
                                                   manageGeneralCubit
                                                       .addNewTeacherToClass(teacher, teacherClass);
                                                 } else {

@@ -1,9 +1,9 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/classification_item.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
@@ -82,14 +82,16 @@ class LessonWaitingViewV2 extends StatelessWidget {
               onPressed: () => alertCompleteWaitingView(context, () async {
                 Navigator.pop(context);
                 waitingDialog(context);
-                await cubit.noteForSupport(cubit.noteSupport);
-                await cubit.noteForAnotherSensei(cubit.noteSensei);
+                Update.updateNoteForSupport(cubit.lessonId, cubit.classId,cubit.noteSupport);
+                cubit.noteForSupport();
+                Update.updateNoteForSensei(cubit.lessonId, cubit.classId,cubit.noteSensei);
+                cubit.noteForAnotherSensei();
                 if (context.mounted) {
                   for (var std in cubit.students) {
                     var index = cubit.students.indexOf(std);
 
-                    updateTeacherNote(
-                        std.userId, cubit.listNoteForEachStudent[index]);
+                    Update.updateTeacherNote(
+                        std.userId, cubit.listNoteForEachStudent[index],cubit.lessonId, cubit.classId);
 
                     var stdLesson = cubit.stdLessons!.firstWhere((e) =>
                         e.studentId == std.userId &&
@@ -113,6 +115,7 @@ class LessonWaitingViewV2 extends StatelessWidget {
                             time: {},
                             hws: stdLesson.hws));
                   }
+                  Update.updateLessonStatus(cubit.lessonId, cubit.classId, 'Complete');
                   cubit.updateStatus('Complete');
                   if (context.mounted) {
                     Navigator.pushNamed(context,
@@ -129,10 +132,5 @@ class LessonWaitingViewV2 extends StatelessWidget {
         SizedBox(height: Resizable.size(context, 100)),
       ],
     );
-  }
-
-  updateTeacherNote(int userId, String note) async {
-    await FireBaseProvider.instance
-        .updateTeacherNote(userId, cubit.lessonId, cubit.classId, note);
   }
 }

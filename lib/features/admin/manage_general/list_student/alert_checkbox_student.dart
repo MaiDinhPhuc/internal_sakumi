@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/create.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_student/alert_add_student_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/features/admin/search/search_field.dart';
@@ -192,7 +193,7 @@ void alertCheckBoxStudent(
                                                           .format(DateTime
                                                           .now()), timeChange: 0);
 
-                                                  cubit.addStudentToClass(context,stdClass);
+                                                  cubit.addStudentToClass(stdClass);
                                                   listStdClass.add(stdClass);
                                                 }
                                                   Navigator.pop(context);

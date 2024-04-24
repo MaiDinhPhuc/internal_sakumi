@@ -27,7 +27,7 @@ class ManageListCourse extends StatelessWidget {
       child: Column(
         children: [
           TitleWidget(AppText.txtListCourse.text.toUpperCase()),
-          ...(cubit.listCourseNow!)
+          ...(cubit.getListCourse())
               .map(
                 (e) => Card(
                     margin: EdgeInsets.only(
@@ -90,8 +90,8 @@ class ManageListCourse extends StatelessWidget {
           )
               .toList(),
           Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: Resizable.padding(context, 10)),
+              padding: EdgeInsets.only(
+                  right: Resizable.padding(context, 10)),
               child: DottedBorderButton(
                   AppText.btnAddNewCourse.text.toUpperCase(),
                   isManageGeneral: true, onPressed: () {
@@ -109,12 +109,11 @@ class ManageListCourse extends StatelessWidget {
                     bool check = await CourseModel.check(decodedBytes);
                     if(check){
                       await FireBaseProvider.instance.addCourseFromJson(decodedBytes);
-                      Navigator.pop(context);
                       cubit.loadAfterAddCourseFromJson();
                     }else{
-                      Navigator.pop(context);
                       alertItemExist(context, AppText.txtCourseExist.text);
                     }
+                    Navigator.pop(context);
                   }
                 });
               })),

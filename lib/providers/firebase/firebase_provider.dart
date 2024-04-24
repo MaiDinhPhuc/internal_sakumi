@@ -380,21 +380,6 @@ class FireBaseProvider extends NetworkProvider {
             ]);
 
     list.sort((a, b) => a.date.compareTo(b.date));
-    //
-    // list.sort((a, b) {
-    //   DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm:ss');
-    //   var tempA = a.date;
-    //   var tempB = b.date;
-    //   if (tempA!.length == 10) {
-    //     tempA += ' 00:00:00';
-    //   }
-    //   if (tempB!.length == 10) {
-    //     tempB += ' 00:00:00';
-    //   }
-    //   final dateA = dateFormat.parse(tempA);
-    //   final dateB = dateFormat.parse(tempB);
-    //   return dateA.compareTo(dateB);
-    // });
     return list;
   }
 
@@ -425,6 +410,14 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<List<ScheduleModel>> getTeacherCyclicSchedule(int teacherId) async {
     return (await FireStoreDb.instance.getTeacherCyclicSchedule(teacherId))
+        .docs
+        .map((e) => ScheduleModel.fromSnapshot(e))
+        .toList();
+  }
+
+  @override
+  Future<List<ScheduleModel>> getTeacherCyclicScheduleInClass(int teacherId,int classId) async {
+    return (await FireStoreDb.instance.getTeacherCyclicScheduleInClass(teacherId, classId))
         .docs
         .map((e) => ScheduleModel.fromSnapshot(e))
         .toList();
@@ -475,6 +468,16 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<List<LessonResultModel>> getLessonResultWithDateAndTeacherId(int start, int end,int teacherId) async {
     var lesResults = (await FireStoreDb.instance.getLessonResultWithDateAndTeacherId(start, end, teacherId))
+        .docs
+        .map((e) => LessonResultModel.fromSnapshot(e))
+        .toList();
+    lesResults.sort((a, b) => a.date.compareTo(b.date));
+    return lesResults;
+  }
+
+  @override
+  Future<List<LessonResultModel>> getLessonResultWithDateAndId(int start, int end,int teacherId, int classId) async {
+    var lesResults = (await FireStoreDb.instance.getLessonResultWithDateAndId(start, end, teacherId, classId))
         .docs
         .map((e) => LessonResultModel.fromSnapshot(e))
         .toList();
@@ -695,13 +698,13 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<void> updateProfileTeacher(String id, TeacherModel model) async {
-    await FireStoreDb.instance.updateProfileTeacher(id, model);
+  Future<void> updateProfileTeacher( TeacherModel model) async {
+    await FireStoreDb.instance.updateProfileTeacher(model);
   }
 
   @override
-  Future<void> updateProfileStudent(String id, StudentModel model) async {
-    await FireStoreDb.instance.updateProfileStudent(id, model);
+  Future<void> updateProfileStudent( StudentModel model) async {
+    await FireStoreDb.instance.updateProfileStudent(model);
   }
 
   @override
@@ -957,10 +960,9 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<void> changeClassStatus(ClassModel classModel, String newStatus,
-      ManageGeneralCubit cubit, BuildContext context) async {
+  Future<void> changeClassStatus(ClassModel classModel, String newStatus,) async {
     await FireStoreDb.instance
-        .changeClassStatus(classModel, newStatus, cubit, context);
+        .changeClassStatus(classModel, newStatus);
   }
 
   @override
@@ -1511,6 +1513,16 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<void> addNewCyclicSchedule(ScheduleModel model) async {
+    await FireStoreDb.instance.addNewCyclicSchedule(model);
+  }
+
+  @override
+  Future<void> updateTeacherCyclicSchedule(ScheduleModel model) async {
+    await FireStoreDb.instance.updateCyclicSchedule(model);
+  }
+
+  @override
   Future<void> addNewFeedBack(FeedBackModel model) async {
     await FireStoreDb.instance.addFeedBack(model);
   }
@@ -1976,8 +1988,8 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<void> saveSurvey(int id, SurveyModel survey) async {
-    await FireStoreDb.instance.saveSurveyByDocs("survey_$id", survey);
+  Future<void> saveSurvey(SurveyModel survey) async {
+    await FireStoreDb.instance.saveSurveyByDocs("survey_${survey.id}", survey);
   }
 
   @override

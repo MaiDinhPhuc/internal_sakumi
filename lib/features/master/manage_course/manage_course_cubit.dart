@@ -7,40 +7,67 @@ import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 class ManageCourseCubit extends Cubit<int> {
   ManageCourseCubit() : super(-1);
   List<CourseModel>? listAllCourse;
-  List<CourseModel>? listCourseNow;
   List<LessonModel>? listLesson;
   List<TestModel>? listTest;
   bool canAdd = false;
   int selector = -1;
   List<String> listStatus = ["Enable", "Disable"];
-  List<bool> listState = [true, false];
+  List<bool> listStatusState = [true, false];
+
+  List<String> listLevel = ["N5", "N4", "N3", "N2", "N1"];
+  List<bool> listLevelState = [true, true, true, true, true];
+
+  List<String> listType = ["general", "kaiwa", "JLPT", "kid"];
+  List<bool> listTypeState = [true, true, true, true];
 
   loadAllCourse() async {
-    listAllCourse = await FireBaseProvider.instance.getAllCourse();
+    listAllCourse ??= await FireBaseProvider.instance.getAllCourse();
     filter();
-    //listCourseNow = listAllCourse!.where((element) => element.enable == true).toList();
-    emit(state + 1);
   }
 
   filter() {
-    listCourseNow = [];
-    if (listState.contains(false) == false) {
-      listCourseNow = listAllCourse;
-    } else {
-      if (listState[0] == true) {
-        List<CourseModel> list =
-            listAllCourse!.where((element) => element.enable == true).toList();
-        listCourseNow = listCourseNow! + list;
-      }
-      if (listState[1] == true) {
-        List<CourseModel> list =
-            listAllCourse!.where((element) => element.enable == false).toList();
-        listCourseNow = listCourseNow! + list;
-      }
-    }
     selector = -1;
     canAdd = false;
     emit(state + 1);
+  }
+
+  List<CourseModel> getListCourse(){
+
+    List<CourseModel> listCourseTemp = [];
+    if (listStatusState.contains(false) == false) {
+      listCourseTemp = listAllCourse!;
+    } else {
+      if (listStatusState[0] == true) {
+        List<CourseModel> list =
+            listAllCourse!.where((element) => element.enable == true).toList();
+        listCourseTemp = listCourseTemp + list;
+      }
+      if (listStatusState[1] == true) {
+        List<CourseModel> list =
+            listAllCourse!.where((element) => element.enable == false).toList();
+        listCourseTemp = listCourseTemp + list;
+      }
+    }
+
+    List<String> listLevel = [];
+    List<String> listType = [];
+
+    for(int i = 0; i < this.listLevel.length; i++){
+      if(listLevelState[i]){
+        listLevel.add(this.listLevel[i]);
+      }
+    }
+
+    for(int i = 0; i < this.listType.length; i++){
+      if(listTypeState[i]){
+        listType.add(this.listType[i]);
+      }
+    }
+
+
+    List<CourseModel> listCourse = listCourseTemp.where((e) => listLevel.contains(e.level) && listType.contains(e.type)).toList();
+
+    return listCourse;
   }
 
   selectedCourse(int index) {
@@ -53,7 +80,7 @@ class ManageCourseCubit extends Cubit<int> {
 
   loadAfterAdd(CourseModel model) {
     listAllCourse!.add(model);
-    filter();
+    //filter();
     //listCourseNow = listAllCourse;
     selector = model.courseId;
     canAdd = true;
@@ -65,7 +92,7 @@ class ManageCourseCubit extends Cubit<int> {
   loadAfterAddCourseFromJson() async {
     listAllCourse = await FireBaseProvider.instance.getAllCourse();
     //listCourseNow = listAllCourse!.where((element) => element.enable == true).toList();
-    filter();
+    //filter();
     selector = -1;
     canAdd = false;
     emit(state + 1);
@@ -97,7 +124,7 @@ class ManageCourseCubit extends Cubit<int> {
             listAllCourse!.firstWhere((element) => element.courseId == id))] =
         model;
     selector = model.courseId;
-    filter();
+    //filter();
     //listCourseNow = listAllCourse;
     canAdd = true;
     emit(state + 1);

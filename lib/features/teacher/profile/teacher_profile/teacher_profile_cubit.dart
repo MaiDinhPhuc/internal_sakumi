@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
@@ -155,20 +156,23 @@ class TeacherProfileCubit extends Cubit<int> {
         listInfoTextField?[1]['controller'] as TextEditingController;
     profileTeacher = profileTeacher!
         .copyWith(name: controllerName.text, phone: controllerPhone.text);
-    await FireBaseProvider.instance.updateProfileTeacher(
-        profileTeacher!.userId.toString(), profileTeacher!);
+    Update.updateTeacherProfile(profileTeacher!);
+    // await FireBaseProvider.instance.updateProfileTeacher(
+    //     profileTeacher!.userId.toString(), profileTeacher!);
     Fluttertoast.showToast(msg: 'Cập nhật thông tin thành công');
     context.read<AppBarInfoTeacherCubit>().update(profileTeacher!);
     load(context);
   }
 
   void changeAvatar(BuildContext context, Uint8List img) async {
+
     final url =
         await FireBaseProvider.instance.uploadImageAndGetUrl(img, 'teacher_avatar');
     debugPrint('==============>url: $url');
     profileTeacher = profileTeacher!.copyWith(url: url);
-    await FireBaseProvider.instance.updateProfileTeacher(
-        profileTeacher!.userId.toString(), profileTeacher!);
+    Update.updateTeacherProfile(profileTeacher!);
+    // await FireBaseProvider.instance.updateProfileTeacher(
+    //     profileTeacher!.userId.toString(), profileTeacher!);
     Fluttertoast.showToast(msg: 'Bạn đã đổi avatar');
     context.read<AppBarInfoTeacherCubit>().update(profileTeacher!);
     emit(state + 1);

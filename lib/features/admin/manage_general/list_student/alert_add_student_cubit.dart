@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/features/CRUD/create.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/student_class_log.dart';
@@ -7,8 +8,7 @@ import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
-import 'package:internal_sakumi/providers/firebase/firestore_db.dart';
-import 'package:internal_sakumi/widget/waiting_dialog.dart';
+
 
 class AlertAddStudentCubit extends Cubit<int> {
   AlertAddStudentCubit() : super(0);
@@ -81,23 +81,26 @@ class AlertAddStudentCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  addStudentToClass(BuildContext context, StudentClassModel model) async {
-    FireBaseProvider.instance.addStudentToClass(model);
+  addStudentToClass( StudentClassModel model) async {
+    //FireBaseProvider.instance.addStudentToClass(model);
+
+    Create.addStudentToClass(model);
 
     classModel ??= await FireBaseProvider.instance.getClassById(model.classId);
 
-    FireBaseProvider.instance.addNewLog(StudentClassLogModel(
+    StudentClassLogModel stdClassLog = StudentClassLogModel(
         id: DateTime.now().millisecondsSinceEpoch,
         classId: model.classId,
         courseId: classModel!.courseId,
         from: 'none',
         to: model.classStatus,
         userId: model.userId,
-        classType: classModel!.classType));
+        classType: classModel!.classType);
+
+    Create.addNewLog(stdClassLog);
   }
 
-  createStudent(StudentModel model, UserModel userModel) async {
-    checkCreate =
-        await FireBaseProvider.instance.createNewStudent(model, userModel);
+  createStudent( StudentModel model, UserModel userModel) async {
+    checkCreate = await Create.createNewStudent(model, userModel);
   }
 }

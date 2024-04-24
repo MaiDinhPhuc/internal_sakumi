@@ -141,7 +141,7 @@ class ReportInfoView extends StatelessWidget {
           InputDropdown(
               hint: cubit.findReportStatus(),
               onChanged: (v) {
-                cubit.status = cubit.chooseStatus(v!);
+                cubit.chooseStatus(v!);
               },
               items: List.generate(cubit.listStatus.length,
                   (index) => (cubit.listStatus[index])).toList())

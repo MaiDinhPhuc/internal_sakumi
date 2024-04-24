@@ -1,5 +1,7 @@
 import 'package:flutter/Material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
 import 'package:internal_sakumi/features/master/manage_survey/question_survey_view.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -77,6 +79,7 @@ class DetailSurveyView extends StatelessWidget {
                                           ConfirmActiveSurvey(
                                             onActive: (){
                                               detailSurveyCubit.changeActive();
+                                              Update.activeSurvey(detailSurveyCubit.surveyModel!.id);
                                               cubit.updateSurvey(
                                                   detailSurveyCubit.surveyModel!);
                                               Navigator.of(context).pop();
@@ -97,6 +100,7 @@ class DetailSurveyView extends StatelessWidget {
                             child: SubmitButton(
                                 onPressed: () {
                                   detailSurveyCubit.save();
+                                  Update.saveSurvey(detailSurveyCubit.surveyModel!);
                                   cubit.updateSurvey(
                                       detailSurveyCubit.surveyModel!);
                                   notificationDialog(

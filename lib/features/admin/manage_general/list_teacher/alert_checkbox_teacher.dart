@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/create.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_student/alert_checkbox_student.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_teacher/alert_add_teacher_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
@@ -179,32 +179,31 @@ void alertCheckBoxTeacher(
                                           onPressed: () async {
                                             Navigator.pop(context);
                                             waitingDialog(context);
-                                            List<TeacherClassModel> listTeacherClass = [];
+                                            List<TeacherClassModel>
+                                                listTeacherClass = [];
                                             for (var i
                                                 in cubit.listSelectedTeacher!) {
-                                              var now = DateTime.now().millisecondsSinceEpoch;
+                                              var now = DateTime.now()
+                                                  .millisecondsSinceEpoch;
                                               var teacherClass = TeacherClassModel(
                                                   id: now,
-                                                  classId:
-                                                  manageGeneralCubit
+                                                  classId: manageGeneralCubit
                                                       .selector,
                                                   userId: cubit
-                                                      .listSelectedTeacher![
-                                                  cubit
-                                                      .listSelectedTeacher!
-                                                      .indexOf(i)]
+                                                      .listSelectedTeacher![cubit
+                                                          .listSelectedTeacher!
+                                                          .indexOf(i)]
                                                       .userId,
                                                   classStatus: AppText
-                                                      .statusInProgress
-                                                      .text,
-                                                  date: DateFormat(
-                                                      'dd/MM/yyyy')
-                                                      .format(
-                                                      DateTime.now()), responsibility: false);
-                                               cubit.addTeacherToClass(
-                                                  context,teacherClass
-                                                  );
-                                              listTeacherClass.add(teacherClass);
+                                                      .statusInProgress.text,
+                                                  date: DateFormat('dd/MM/yyyy')
+                                                      .format(DateTime.now()),
+                                                  responsibility: false);
+                                              Create
+                                                  .addTeacherToClass(
+                                                      teacherClass);
+                                              listTeacherClass
+                                                  .add(teacherClass);
                                             }
                                             if (context.mounted) {
                                               Navigator.pop(context);

@@ -11,6 +11,7 @@ import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
 import 'package:internal_sakumi/model/response_model.dart';
+import 'package:internal_sakumi/model/schedule_model.dart';
 import 'package:internal_sakumi/model/student_class_log.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
@@ -141,6 +142,17 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getTeacherCyclicScheduleInClass(
+      int teacherId, int classId) async {
+    final snapshot = await db
+        .collection("schedule")
+        .where('teacher_id', isEqualTo: teacherId)
+        .where('class_id', isEqualTo: classId)
+        .get();
+
+    return snapshot;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getClassCyclicSchedule(
       int classId) async {
     final snapshot = await db
@@ -249,7 +261,21 @@ class FireStoreDb {
             Filter("teacher_id", isEqualTo: teacherId)))
         .get();
 
-    // debugPrint("==========>get db from \"lesson_result\" : ${snapshot.docs.length}");
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>>
+  getLessonResultWithDateAndId(
+      int start, int end, int teacherId, int classId) async {
+    final snapshot = await db
+        .collection('lesson_result')
+        .orderBy('date_time', descending: true)
+        .where(Filter.and(
+        Filter("date_time", isGreaterThanOrEqualTo: start),
+        Filter("date_time", isLessThanOrEqualTo: end),
+        Filter("teacher_id", isEqualTo: teacherId),
+        Filter("class_id", isEqualTo: classId)))
+        .get();
 
     return snapshot;
   }
@@ -811,6 +837,34 @@ class FireStoreDb {
     debugPrint("==========> add db for \"bill\"");
   }
 
+  Future<void> addNewCyclicSchedule(ScheduleModel model) async {
+    await db.collection("schedule").doc("schedule_${model.id}").set({
+      'class_id': model.classId,
+      'date': model.date,
+      'end_time': model.endTime,
+      'id': model.id,
+      'role': model.role,
+      'start_time': model.startTime,
+      'status': model.status,
+      'teacher_id': model.teacherId,
+      'type': model.type
+    });
+  }
+
+  Future<void> updateCyclicSchedule(ScheduleModel model) async {
+    await db.collection("schedule").doc("schedule_${model.id}").set({
+      'class_id': model.classId,
+      'date': model.date,
+      'end_time': model.endTime,
+      'id': model.id,
+      'role': model.role,
+      'start_time': model.startTime,
+      'status': model.status,
+      'teacher_id': model.teacherId,
+      'type': model.type
+    });
+  }
+
   Future<void> addFeedBack(FeedBackModel model) async {
     await db
         .collection("feedbacks")
@@ -884,7 +938,8 @@ class FireStoreDb {
       "difficulty": model.difficulty,
       "id": model.id,
       "title": model.title,
-      "enable": model.enable
+      "enable": model.enable,
+      "duration" : model.duration
     });
     debugPrint("==========> add db for \"test\"");
   }
@@ -899,7 +954,8 @@ class FireStoreDb {
       "difficulty": model.difficulty,
       "id": model.id,
       "title": model.title,
-      "enable": model.enable
+      "enable": model.enable,
+      "duration" : model.duration
     });
     debugPrint("==========> update db from \"lessons\"");
   }
@@ -980,8 +1036,8 @@ class FireStoreDb {
     debugPrint("==========>get and add db from \"lesson_result\"");
   }
 
-  Future<void> updateProfileTeacher(String id, TeacherModel model) async {
-    await db.collection('teacher').doc("teacher_user_$id").update({
+  Future<void> updateProfileTeacher( TeacherModel model) async {
+    await db.collection('teacher').doc("teacher_user_${model.userId}").update({
       'name': model.name,
       'note': model.note,
       'url': model.url,
@@ -995,8 +1051,8 @@ class FireStoreDb {
     debugPrint("==========>update db for \"teacher\"");
   }
 
-  Future<void> updateProfileStudent(String id, StudentModel model) async {
-    await db.collection('students').doc("student_user_$id").update({
+  Future<void> updateProfileStudent(StudentModel model) async {
+    await db.collection('students').doc("student_user_${model.userId}").update({
       'name': model.name,
       'note': model.note,
       'url': model.url,
@@ -1635,12 +1691,13 @@ class FireStoreDb {
   }
 
   Future<AggregateQuerySnapshot> getCountBill(
-      int startDate, int endDate) async {
+      int startDate, int endDate, List<String> listCountSale) async {
     final count = await db
         .collection('bill')
         .where(Filter.and(
-          Filter("create_date", isGreaterThanOrEqualTo: startDate),
-          Filter("create_date", isLessThanOrEqualTo: endDate),
+          Filter("payment_date", isGreaterThanOrEqualTo: startDate),
+          Filter("payment_date", isLessThanOrEqualTo: endDate),
+          Filter("type", whereIn: listCountSale),
         ))
         .count()
         .get();
@@ -1915,15 +1972,13 @@ class FireStoreDb {
     debugPrint("==========>update db for \"teacher_class\"");
   }
 
-  Future<void> changeClassStatus(ClassModel classModel, String newStatus,
-      ManageGeneralCubit cubit, BuildContext context) async {
+  Future<void> changeClassStatus(ClassModel classModel, String newStatus) async {
     FirebaseFirestore.instance
         .collection('class')
         .doc('class_${classModel.classId}_course_${classModel.courseId}')
         .update({'class_status': newStatus}).whenComplete(() {
       debugPrint("==========>update db for \"class\"");
-      cubit.loadAfterChangeClassStatus();
-      Navigator.pop(context);
+
     });
   }
 

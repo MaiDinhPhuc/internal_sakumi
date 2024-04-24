@@ -1,5 +1,7 @@
 import 'package:flutter/Material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 
@@ -71,7 +73,10 @@ void alertConfirmCompleteLessonView(BuildContext context, String note,DetailLess
                       ),
                       SubmitButton(
                           onPressed: () {
+                            Update.updateLessonStatus(cubit.lessonId, cubit.classId, 'Waiting');
                             cubit.updateStatus('Waiting');
+                            Update.updateNoteForAllStudentInClass(cubit.lessonId, cubit.classId,note);
+                            Update.updateTeacherInLessonResult(cubit.lessonId, cubit.classId,cubit.teacherId!);
                             cubit.noteForStudents(note);
                             Navigator.pop(context);
                           },

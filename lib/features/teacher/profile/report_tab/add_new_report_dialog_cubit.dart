@@ -123,8 +123,7 @@ class AddNewReportCubit extends Cubit<int> {
       }
       listUrl = list;
     }
-    int id = DateTime.now().millisecondsSinceEpoch;
-    FirebaseFirestore.instance.collection('reports').doc('report_$id').update({
+    FirebaseFirestore.instance.collection('reports').doc('report_${reportModel!.id}').update({
       'id': reportModel!.id,
       'teacher_id': userId,
       'status': status,

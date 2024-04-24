@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/schedule_model.dart';
@@ -331,8 +332,9 @@ class ScheduleTabCubit extends Cubit<int> {
         teacherCode: teacher!.teacherCode,
         status: teacher!.status,
         schedule: schedule!, email: teacher!.email);
-    await FireBaseProvider.instance
-        .updateProfileTeacher(teacher!.userId.toString(), teacherModel);
+    Update.updateTeacherProfile(teacherModel);
+    // await FireBaseProvider.instance
+    //     .updateProfileTeacher(teacher!.userId.toString(), teacherModel);
     DataProvider.updateTeacherInfo(teacher!.userId, teacherModel);
   }
 

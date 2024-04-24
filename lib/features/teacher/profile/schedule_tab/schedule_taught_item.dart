@@ -10,13 +10,13 @@ class ScheduleTaughtItem extends StatelessWidget {
   final LessonResultModel lessonResultModel;
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Container(width: Resizable.size(context, 130),
       padding: EdgeInsets.symmetric(horizontal:Resizable.padding(context, 5), vertical:Resizable.padding(context, 3) ),
       decoration: BoxDecoration(
           color: const Color(0xffEDFFE6),
           border: Border.all(
               width: Resizable.size(context, 1),
-              color: const Color(0xffEDFFE6)),
+              color: const Color(0xffADE099)),
           borderRadius:
           BorderRadius.circular(Resizable.size(context, 5))),
       child: Column(
@@ -31,13 +31,13 @@ class ScheduleTaughtItem extends StatelessWidget {
                     color: const Color(0xffADE099)),
                 borderRadius:
                 BorderRadius.circular(Resizable.size(context, 15))),
-            child: Text(
+            child: Text( textAlign: TextAlign.center,
               cubit.convertTime(lessonResultModel.date),
               style: TextStyle(color: const Color(0xff33691E),
                   fontSize: Resizable.font(context, 16), fontWeight: FontWeight.w700),
             ),
           ),
-          Expanded(child: Center(child: Text(
+          Expanded(child: Center(child: Text( textAlign: TextAlign.center,
             cubit.getClassCode(lessonResultModel.classId).toUpperCase(),
             style: TextStyle(color: Colors.black,
                 fontSize: Resizable.font(context, 20), fontWeight: FontWeight.w600),
@@ -55,12 +55,13 @@ class ScheduleTaughtItemV2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+        width: Resizable.size(context, 130),
         padding: EdgeInsets.symmetric(horizontal:Resizable.padding(context, 5), vertical:Resizable.padding(context, 3) ),
         decoration: BoxDecoration(
             color: const Color(0xffEDFFE6),
             border: Border.all(
                 width: Resizable.size(context, 1),
-                color: const Color(0xffEDFFE6)),
+                color: const Color(0xffADE099)),
             borderRadius:
             BorderRadius.circular(Resizable.size(context, 5))),
         child: Column(
@@ -75,33 +76,38 @@ class ScheduleTaughtItemV2 extends StatelessWidget {
                       color: const Color(0xffADE099)),
                   borderRadius:
                   BorderRadius.circular(Resizable.size(context, 15))),
-              child: Text(
+              child: Text( textAlign: TextAlign.center,
                 cubit.convertTime(lessonResultModel.date),
                 style: TextStyle(color: const Color(0xff33691E),
                     fontSize: Resizable.font(context, 16), fontWeight: FontWeight.w700),
               ),
             ),
-            Expanded(child: Center(child: Text(
+            Expanded(child: Center(child: Text( textAlign: TextAlign.center,
               cubit.getClassCode(lessonResultModel.classId).toUpperCase(),
               style: TextStyle(color: Colors.black,
                   fontSize: Resizable.font(context, 20), fontWeight: FontWeight.w600),
             ))),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal:Resizable.padding(context, 5),
-                  vertical:Resizable.padding(context, 2)),
-              decoration: BoxDecoration(
-                  color: const Color(0xffADE099),
-                  border: Border.all(
-                      width: Resizable.size(context, 1),
-                      color: const Color(0xffADE099)),
-                  borderRadius:
-                  BorderRadius.circular(Resizable.size(context, 15))),
-              child: Text(
-                cubit.getTeacherName(lessonResultModel.teacherId),
-                style: TextStyle(color: const Color(0xff33691E),
-                    fontSize: Resizable.font(context, 16), fontWeight: FontWeight.w700),
-              ),
-            ),
+            Row(
+              children: [
+                Expanded(child: Container(
+                  padding: EdgeInsets.symmetric(horizontal:Resizable.padding(context, 5),
+                      vertical:Resizable.padding(context, 2)),
+                  decoration: BoxDecoration(
+                      color: const Color(0xffADE099),
+                      border: Border.all(
+                          width: Resizable.size(context, 1),
+                          color: const Color(0xffADE099)),
+                      borderRadius:
+                      BorderRadius.circular(Resizable.size(context, 15))),
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    cubit.getTeacherName(lessonResultModel.teacherId),
+                    style: TextStyle(color: const Color(0xff33691E),
+                        fontSize: Resizable.font(context, 16), fontWeight: FontWeight.w700),
+                  ),
+                ))
+              ],
+            )
           ],
         )
     );

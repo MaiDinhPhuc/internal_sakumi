@@ -1,8 +1,8 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/model/survey_result_model.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/custom_button.dart';
 
@@ -39,8 +39,8 @@ class ConfirmDeleteSurvey extends StatelessWidget {
         CustomButton(
             onPress: () async {
               Navigator.pop(context);
-              await FireBaseProvider.instance
-                  .assignSurveyResult(SurveyResultModel(
+              Update
+                  .updateSurveyResult(SurveyResultModel(
                       status: "delete",
                       classId: result.classId,
                       surveyId: result.surveyId,

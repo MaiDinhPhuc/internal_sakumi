@@ -1,14 +1,12 @@
 import 'package:flutter/Material.dart';
-import 'package:image_network/image_network.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/features/admin/manage_student/student_info_cubit.dart';
-import 'package:internal_sakumi/features/admin/search/search_cubit.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
@@ -43,7 +41,7 @@ class InfoStudentView extends StatelessWidget {
               : ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(1000)),
                   child: Image.network(
-                    '${cubit.student!.url}',
+                    cubit.student!.url,
                     height: Resizable.size(context, 100),
                     width: Resizable.size(context, 100),
                     errorBuilder: (_, __, ___) => Container(),
@@ -107,8 +105,8 @@ class InfoStudentView extends StatelessWidget {
                           studentCode: cubit.stdCode,
                           status: cubit.student!.status,
                           email: cubit.student!.email);
-                      FireBaseProvider.instance.updateProfileStudent(
-                          cubit.student!.userId.toString(), student);
+                      Update.updateProfileStudent(student);
+                      //FireBaseProvider.instance.updateProfileStudent(student);
                       Navigator.pop(context);
                       DataProvider.updateStudentInfo(
                           cubit.student!.userId, student);

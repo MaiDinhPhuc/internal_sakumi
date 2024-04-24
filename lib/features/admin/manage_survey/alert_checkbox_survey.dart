@@ -1,6 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/create.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_student/alert_checkbox_student.dart';
 import 'package:internal_sakumi/features/admin/manage_survey/alert_add_survey_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -103,10 +104,8 @@ void alertCheckBoxSurvey(BuildContext context,
                                                                         BlocProvider.of<CheckBoxCubit>(cc)
                                                                             .update(v);
                                                                       },
-                                                                      title: Text(cubit
-                                                                          .listSurvey![
-                                                                              index]
-                                                                          .title)),
+                                                                      title: Text(
+                                                                          "${cubit.listSurvey![index].title} - ${cubit.listSurvey![index].surveyCode}")),
                                                             ))).toList(),
                                                     SizedBox(
                                                         height: Resizable.size(
@@ -152,7 +151,7 @@ void alertCheckBoxSurvey(BuildContext context,
                                             minWidth:
                                                 Resizable.size(context, 100)),
                                         child: SubmitButton(
-                                            onPressed: () async {
+                                            onPressed: () {
                                               Navigator.pop(context);
                                               waitingDialog(context);
                                               for (var i
@@ -161,7 +160,7 @@ void alertCheckBoxSurvey(BuildContext context,
                                                     DateTime.now();
                                                 int id = dateTime
                                                     .millisecondsSinceEpoch;
-                                                await cubit.addSurveyResult(
+                                                Create.addSurveyResult(
                                                     i, classId, id);
                                                 manageSurveyAdminCubit
                                                     .addSurveyToClass(

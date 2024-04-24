@@ -56,24 +56,22 @@ class DropDownWidget extends StatelessWidget {
 
 class DropdownAttendanceCubit extends Cubit<int> {
   final int userId;
+
   DropdownAttendanceCubit(this.userId) : super(userId);
 
-  updateAttendance(int attendId, int id,int classId, int lessonId, context) async {
-    await FireBaseProvider.instance.updateTimekeeping(
-        id,lessonId, classId,
-        // int.parse(TextUtils.getName()),
-        // int.parse(TextUtils.getName(position: 1)),
-        attendId);
-    // emit(attendId);
-  }
+  // updateAttendance(int attendId, int id,int classId, int lessonId, context) async {
+  //   await FireBaseProvider.instance.updateTimekeeping(
+  //       id,lessonId, classId,
+  //       attendId);
+  // }
 
   updateUI(int attendId){
     emit(attendId);
   }
 
-  updateStudentStatus(String type, int point, int id)async{
+  updateStudentStatus( int point)async{
 
-    await FireBaseProvider.instance.updateStudentStatus(id, int.parse(TextUtils.getName(position: 1)), point, type);
+    //await FireBaseProvider.instance.updateStudentStatus(id, int.parse(TextUtils.getName(position: 1)), point, type);
 
     emit(point);
   }

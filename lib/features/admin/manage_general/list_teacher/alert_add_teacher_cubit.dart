@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/features/CRUD/create.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
@@ -73,17 +74,12 @@ class AlertAddTeacherCubit extends Cubit<int> {
       emit(state + 1);
     }
   }
+  //
+  // addTeacherToClass( TeacherClassModel model) async {
+  //   await FireBaseProvider.instance.addTeacherToClass(model);
+  // }
 
-  addTeacherToClass(BuildContext context, TeacherClassModel model) async {
-    await FireBaseProvider.instance.addTeacherToClass(model);
-    debugPrint('==============> addStudentToClass ${model.userId}');
-  }
-
-  createTeacher(
-      BuildContext context, TeacherModel model, UserModel userModel) async {
-    Navigator.pop(context);
-    waitingDialog(context);
-    checkCreate =
-    await FireBaseProvider.instance.createNewTeacher(model, userModel);
+  createTeacher(TeacherModel model, UserModel userModel) async {
+    checkCreate = await Create.createNewTeacher(model, userModel);
   }
 }

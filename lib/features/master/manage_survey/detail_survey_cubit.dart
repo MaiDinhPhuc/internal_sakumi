@@ -40,7 +40,7 @@ class DetailSurveyCubit extends Cubit<int> {
         detail: surveyModel!.detail,
         enable: surveyModel!.enable,
         active: true);
-    await FireBaseProvider.instance.activeSurvey(surveyModel!.id);
+    //await FireBaseProvider.instance.activeSurvey(surveyModel!.id);
     emit(state + 1);
   }
 
@@ -52,7 +52,7 @@ class DetailSurveyCubit extends Cubit<int> {
         }
       }
     }
-    await FireBaseProvider.instance.saveSurvey(surveyModel!.id, surveyModel!);
+    //await FireBaseProvider.instance.saveSurvey(surveyModel!);
     emit(state + 1);
   }
 
