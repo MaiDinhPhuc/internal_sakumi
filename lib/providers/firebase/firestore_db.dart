@@ -1468,7 +1468,7 @@ class FireStoreDb {
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getListGroupTags() async {
-    final snapshot = await db.collection("tags").get();
+    final snapshot = await db.collection("group_tags").get();
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getGroupTags ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
@@ -2071,27 +2071,26 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<bool> updateTag(String id, List<TagModel> tags) async {
+  Future<bool> addTag(TagModel tag) async {
     bool value = true;
     await db
         .collection("tags")
-        .doc(id)
-        .update({"tags": tags.map((e) => e.toJson())})
+        .doc("tag_${tag.id}")
+        .set(tag.toJson(),SetOptions(merge: true))
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
-          print(error);
-          value = false;
-        });
-
+      print(error);
+      value = false;
+    });
     return value;
   }
 
   Future<bool> addGroupTag(GroupTagModel groupTag) async {
     bool value = true;
     await db
-        .collection("tags")
+        .collection("group_tags")
         .doc("group_tag_${groupTag.id}")
-        .set(groupTag.toJson())
+        .set(groupTag.toJson(), SetOptions(merge: true))
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
       print(error);
@@ -2103,8 +2102,31 @@ class FireStoreDb {
   Future<bool> deleteGroupTag(String doc)  async {
     bool value = true;
     await db
-        .collection("tags")
+        .collection("group_tags")
         .doc(doc)
+        .delete()
+        .whenComplete(() => value = true)
+        .onError((error, stackTrace) {
+      print(error);
+      value = false;
+    });
+    return value;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getListTags() async {
+    final snapshot = await db.collection("tags").get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getGroupTags ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+  Future<bool> deleteTag(int id)  async {
+    bool value = true;
+    await db
+        .collection("tags")
+        .doc("tag_$id")
         .delete()
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {

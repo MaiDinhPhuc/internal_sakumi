@@ -2,7 +2,6 @@ import 'package:flutter/Material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:internal_sakumi/features/admin/manage_tag/add_color_dialog.dart';
 import 'package:internal_sakumi/features/admin/manage_tag/add_tag_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_tag/manage_tag_cubit.dart';
 import 'package:internal_sakumi/model/tag_model.dart';
@@ -17,9 +16,11 @@ import 'add_group_tag_cubit.dart';
 import 'custom_button_v1.dart';
 
 class AddGroupTagDialog extends StatefulWidget {
-  const AddGroupTagDialog({super.key, required this.manageTagCubit});
+  const AddGroupTagDialog(
+      {super.key, required this.manageTagCubit, this.groupTagModel});
 
   final ManageTagCubit manageTagCubit;
+  final GroupTagModel? groupTagModel;
 
   @override
   State<AddGroupTagDialog> createState() => _AddGroupTagDialogState();
@@ -32,6 +33,19 @@ class _AddGroupTagDialogState extends State<AddGroupTagDialog> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   GroupTagModel? groupTag;
 
+  bool get isEdit => widget.groupTagModel != null;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (isEdit) {
+      nameCon.text = widget.groupTagModel!.name;
+      codeCon.text = widget.groupTagModel!.code;
+      desCon.text = widget.groupTagModel!.description;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -40,9 +54,8 @@ class _AddGroupTagDialogState extends State<AddGroupTagDialog> {
         listener: (context, state) {
           final addTagCubit = context.read<AddGroupTagCubit>();
           if (addTagCubit.status == SubmitStatus.success) {
-            widget.manageTagCubit
-                .updateGroupTag(groupTag!);
-            Fluttertoast.showToast(msg: AppText.txtAddGroupTagSuccess.text);
+            widget.manageTagCubit.updateGroupTag(groupTag!, isEdit);
+            Fluttertoast.showToast(msg:isEdit ?  AppText.txtUpdateGroupTagSuccess.text : AppText.txtAddGroupTagSuccess.text);
           } else if (addTagCubit.status == SubmitStatus.error) {
             Fluttertoast.showToast(msg: AppText.txtError.text);
           }
@@ -55,7 +68,7 @@ class _AddGroupTagDialogState extends State<AddGroupTagDialog> {
                   backgroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                       borderRadius:
-                      BorderRadius.circular(Resizable.size(context, 16))),
+                          BorderRadius.circular(Resizable.size(context, 16))),
                   child: Container(
                       padding: EdgeInsets.all(Resizable.padding(context, 20)),
                       width: MediaQuery.of(context).size.width * 0.7,
@@ -70,7 +83,10 @@ class _AddGroupTagDialogState extends State<AddGroupTagDialog> {
                               margin: EdgeInsets.only(
                                   bottom: Resizable.padding(context, 10)),
                               child: Text(
-                                AppText.btnAddGroupTag.text.toUpperCase(),
+                                isEdit
+                                    ? AppText.btnUpdateGroupTag.text
+                                        .toUpperCase()
+                                    : AppText.btnAddGroupTag.text.toUpperCase(),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w700,
                                     fontSize: Resizable.font(context, 20)),
@@ -82,8 +98,8 @@ class _AddGroupTagDialogState extends State<AddGroupTagDialog> {
                                   child: InputItem(
                                       title: AppText.txtNameGroup.text,
                                       controller: nameCon,
-                                      errorText:
-                                      AppText.txtPleaseInputGroupTagName.text),
+                                      errorText: AppText
+                                          .txtPleaseInputGroupTagName.text),
                                 ),
                                 SizedBox(
                                   width: Resizable.padding(context, 10),
@@ -91,8 +107,10 @@ class _AddGroupTagDialogState extends State<AddGroupTagDialog> {
                                 Flexible(
                                   child: InputItem(
                                     title: AppText.txtCode.text,
+                                    enabled: isEdit ? false : true,
                                     controller: codeCon,
                                     onValidate: (value) {
+                                      if (isEdit) return null;
                                       if (value == null || value.isEmpty) {
                                         return AppText
                                             .txtPleaseInputGroupTagCode.text;
@@ -141,30 +159,18 @@ class _AddGroupTagDialogState extends State<AddGroupTagDialog> {
                                   ),
                                   CustomButtonV1(
                                       onPressed: () async {
-                                        if (addGroupTagCubit.status !=
-                                            SubmitStatus.none) {
-                                          return;
-                                        }
-                                        if (formKey.currentState!.validate()) {
-                                          formKey.currentState!.save();
-                                          groupTag = GroupTagModel(
-                                              id: DateTime.now()
-                                                  .millisecondsSinceEpoch,
-                                              name: nameCon.text,
-                                              description: desCon.text,
-                                              code: codeCon.text, tags: []);
-
-                                          await addGroupTagCubit.addGroupTag(
-                                              groupTag!);
-
-                                          if (context.mounted) {
-                                            Navigator.pop(context);
-                                          }
+                                        if (isEdit) {
+                                          editHandler(
+                                              context, addGroupTagCubit);
+                                        } else {
+                                          addHandler(context, addGroupTagCubit);
                                         }
                                       },
                                       textColor: Colors.white,
                                       backgroundColor: primaryColor,
-                                      title: AppText.btnAddNew.text),
+                                      title: isEdit
+                                          ? AppText.btnUpdate.text
+                                          : AppText.btnAddNew.text),
                                 ],
                               ),
                             ),
@@ -174,7 +180,7 @@ class _AddGroupTagDialogState extends State<AddGroupTagDialog> {
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(AppText.txtLoadingAdd.text),
+                                    Text( isEdit ? AppText.txtLoadingUpdate.text :AppText.txtLoadingAdd.text),
                                     SizedBox(
                                       width: Resizable.padding(context, 10),
                                     ),
@@ -195,5 +201,47 @@ class _AddGroupTagDialogState extends State<AddGroupTagDialog> {
         },
       ),
     );
+  }
+
+  addHandler(BuildContext context, AddGroupTagCubit addGroupTagCubit) async {
+    if (addGroupTagCubit.status != SubmitStatus.none) {
+      return;
+    }
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+      groupTag = GroupTagModel(
+          id: DateTime.now().millisecondsSinceEpoch,
+          name: nameCon.text,
+          description: desCon.text,
+          code: codeCon.text);
+
+      await addGroupTagCubit.addGroupTag(groupTag!);
+
+      if (context.mounted) {
+        Navigator.pop(context);
+      }
+    }
+  }
+
+  editHandler(BuildContext context, AddGroupTagCubit addGroupTagCubit) async {
+    if (addGroupTagCubit.status != SubmitStatus.none) {
+      return;
+    }
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+      groupTag = widget.groupTagModel!.copyWith(
+        name: nameCon.text,
+        description: desCon.text,
+      );
+      if(groupTag!.name == widget.groupTagModel!.name &&
+          groupTag!.description == widget.groupTagModel!.description) {
+        Fluttertoast.showToast(msg: AppText.txtDataNotChange.text);
+        return;
+      }
+      await addGroupTagCubit.addGroupTag(groupTag!);
+      if (context.mounted) {
+        Navigator.pop(context);
+      }
+    }
   }
 }

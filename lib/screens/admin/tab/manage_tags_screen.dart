@@ -36,6 +36,9 @@ class ManageTagsScreen extends StatelessWidget {
               create: (context) => ManageTagCubit()..load(),
               child: BlocBuilder<ManageTagCubit, int>(
                 builder: (context, state) {
+                  if(state == 0) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
                   final manageTagCubit = context.read<ManageTagCubit>();
                   return Row(
                     children: [

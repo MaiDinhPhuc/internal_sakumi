@@ -1,3 +1,4 @@
+import 'package:flutter/Material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:internal_sakumi/features/admin/manage_tag/add_tag_dialog.dart';
@@ -39,7 +40,7 @@ class TagView extends StatelessWidget {
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: greyAccent,
+                color: manageTagCubit.listGroupTags.isEmpty ? Colors.transparent : greyAccent,
                 borderRadius: BorderRadius.circular(5),
               ),
               padding: EdgeInsets.all(Resizable.padding(context, 15)),
@@ -79,29 +80,40 @@ class TagView extends StatelessWidget {
                           SizedBox(height: Resizable.padding(context, 5),),
                           Builder(builder: (context) {
                             List<Widget> children = [];
-                            for (var item in manageTagCubit.listGroupTags[manageTagCubit.currentIndex].tags.map((e) => TagModel.fromMap(e))) {
+                            for (var item in manageTagCubit.listCurrentTags) {
                               children.add(Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Container(
-                                    height: Resizable.size(context, 17),
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: Resizable.padding(context, 10),
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Color(item.background),
-                                      borderRadius: BorderRadius.circular(1000),
-                                    ),
+                                  InkWell(
+                                    onTap: () {
+                                      showDialog(context: context, builder: (context) {
+                                        return AddTagDialog(
+                                          manageTagCubit: manageTagCubit,
+                                          tagModel: item,
+                                        );
+                                      });
+                                    },
+                                    borderRadius: BorderRadius.circular(1000),
+                                    child: Container(
+                                      height: Resizable.size(context, 17),
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: Resizable.padding(context, 10),
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Color(item.background),
+                                        borderRadius: BorderRadius.circular(1000),
+                                      ),
 
-                                    child: Center(
-                                      child: Text(
-                                        item.name,
-                                        textAlign: TextAlign.center,
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: Resizable.font(context, 14),
+                                      child: Center(
+                                        child: Text(
+                                          item.name,
+                                          textAlign: TextAlign.center,
+                                          maxLines: 1,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: Resizable.font(context, 14),
+                                          ),
                                         ),
                                       ),
                                     ),

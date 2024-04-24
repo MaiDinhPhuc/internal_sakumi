@@ -9,12 +9,13 @@ class GroupItem extends StatelessWidget {
       required this.isFocus,
       required this.title,
       required this.onDelete,
-      required this.onClick});
+      required this.onClick, required this.onEdit});
 
   final bool isFocus;
   final String title;
   final Function() onDelete;
   final Function() onClick;
+  final Function() onEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +62,11 @@ class GroupItem extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                           fontSize: Resizable.font(context, 20)),
                     )),
+                    IconButton(
+                        onPressed: onEdit,
+                        splashRadius: Resizable.size(context, 10),
+                        iconSize: Resizable.size(context, 15),
+                        icon: Icon(Icons.edit, color: primaryColor,)),
                     IconButton(
                         onPressed: onDelete,
                         splashRadius: Resizable.size(context, 10),

@@ -14,6 +14,7 @@ class AddTagCubit extends Cubit<int> {
   }
 
   int currentColor = 0;
+  bool isDelete = false;
   SubmitStatus status = SubmitStatus.none;
   List<Color> colors = [
     const Color(0xffF44336),
@@ -29,7 +30,10 @@ class AddTagCubit extends Cubit<int> {
     currentColor = value;
     emitState();
   }
-
+  setDelete(bool value) {
+    isDelete = value;
+    emitState();
+  }
   setSubmitStatus(SubmitStatus value) {
     status = value;
     emitState();
@@ -40,9 +44,42 @@ class AddTagCubit extends Cubit<int> {
     setCurrentColor(colors.length - 1);
   }
 
-  Future<void> updateTag(int idGroupTag, List<TagModel> tags) async {
+
+  load(TagModel? tag) {
+    if(tag != null) {
+      currentColor = colors.indexOf(Color(tag.background));
+      if(currentColor == -1) {
+        addNewColor(Color(tag.background));
+      }
+      else {
+        emitState();
+      }
+    }
+  }
+  Future<void> addTag(TagModel tag) async {
     setSubmitStatus(SubmitStatus.loading);
-    bool value = await FireBaseProvider.instance.updateTag(idGroupTag, tags);
+    bool value = await FireBaseProvider.instance.addTag(tag);
+    if (value) {
+      setSubmitStatus(SubmitStatus.success);
+    } else {
+      setSubmitStatus(SubmitStatus.error);
+    }
+  }
+
+  Future<void> update(TagModel tag) async {
+    setSubmitStatus(SubmitStatus.loading);
+    bool value = await FireBaseProvider.instance.addTag(tag);
+    if (value) {
+      setSubmitStatus(SubmitStatus.success);
+    } else {
+      setSubmitStatus(SubmitStatus.error);
+    }
+  }
+
+  Future<void> delete(TagModel tagModel) async {
+    setSubmitStatus(SubmitStatus.loading);
+    setDelete(true);
+    bool value = await FireBaseProvider.instance.deleteTag(tagModel.id);
     if (value) {
       setSubmitStatus(SubmitStatus.success);
     } else {

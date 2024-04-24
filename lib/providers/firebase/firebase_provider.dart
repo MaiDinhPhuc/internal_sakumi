@@ -2129,10 +2129,13 @@ class FireBaseProvider extends NetworkProvider {
     return listBill;
   }
 
-  Future<bool> updateTag(int idGroupTag, List<TagModel> tags)  async {
-    return await FireStoreDb.instance.updateTag("group_tag_$idGroupTag", tags);
+  Future<bool> addTag(TagModel tag)  async {
+    return await FireStoreDb.instance.addTag(tag);
   }
 
+  Future<bool> deleteTag(int id) async {
+    return await FireStoreDb.instance.deleteTag(id);
+  }
   Future<bool> addGroupTag(GroupTagModel groupTag)  async{
     return await FireStoreDb.instance.addGroupTag(groupTag);
   }
@@ -2140,5 +2143,15 @@ class FireBaseProvider extends NetworkProvider {
   Future<bool> deleteGroupTag(int id) async {
     return await FireStoreDb.instance.deleteGroupTag("group_tag_$id");
   }
+
+  Future<List<TagModel>> getListTags() async {
+    final list = (await FireStoreDb.instance.getListTags())
+        .docs
+        .map((e) => TagModel.fromSnapshot(e))
+        .toList();
+    return list;
+  }
+
+
 
 }
