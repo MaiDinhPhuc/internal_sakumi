@@ -535,9 +535,11 @@ enum AppText {
   txtAddGroupTagSuccess,
   txtError,
   txtAddTagSuccess, txtDeleteSuccess,
+  txtTestTime
 }
 
 Map<AppText, String> texts = {
+  AppText.txtTestTime: "Thời gian làm bài",
   AppText.txtAddScheduleDone: "Thêm lịch dạy thành công!",
   AppText.txtChooseClassWrong: "Sensei không được thêm vào lớp này!",
   AppText.txtInPutTimeWrong: "Nhập sai thời gian dạy!",

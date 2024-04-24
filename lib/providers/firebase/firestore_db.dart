@@ -938,7 +938,8 @@ class FireStoreDb {
       "difficulty": model.difficulty,
       "id": model.id,
       "title": model.title,
-      "enable": model.enable
+      "enable": model.enable,
+      "duration" : model.duration
     });
     debugPrint("==========> add db for \"test\"");
   }
@@ -953,7 +954,8 @@ class FireStoreDb {
       "difficulty": model.difficulty,
       "id": model.id,
       "title": model.title,
-      "enable": model.enable
+      "enable": model.enable,
+      "duration" : model.duration
     });
     debugPrint("==========> update db from \"lessons\"");
   }

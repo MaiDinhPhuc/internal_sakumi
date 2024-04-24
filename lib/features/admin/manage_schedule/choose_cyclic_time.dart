@@ -68,6 +68,7 @@ class ChooseCyclicTime extends StatelessWidget {
                             child: TextField(
                               textAlign: TextAlign.center,
                               decoration: InputDecoration(
+                                hintText: "00",
                                 isDense: true,
                                 fillColor: Colors.white,
                                 hoverColor: Colors.transparent,
@@ -144,6 +145,7 @@ class ChooseCyclicTime extends StatelessWidget {
                             child: TextField(
                               textAlign: TextAlign.center,
                               decoration: InputDecoration(
+                                hintText: "00",
                                 isDense: true,
                                 fillColor: Colors.white,
                                 hoverColor: Colors.transparent,

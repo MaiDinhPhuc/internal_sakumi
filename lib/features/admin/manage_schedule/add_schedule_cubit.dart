@@ -14,9 +14,9 @@ class AddScheduleCubit extends Cubit<int> {
   TextEditingController classSearch = TextEditingController();
   String classSearchValue = "";
 
-  String fromHour = "";
+  String fromHour = "00";
   String fromMinute = "00";
-  String toHour = "";
+  String toHour = "00";
   String toMinute = "00";
 
   TeacherModel? teacher;
