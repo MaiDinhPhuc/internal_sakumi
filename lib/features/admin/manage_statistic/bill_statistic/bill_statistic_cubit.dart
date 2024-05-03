@@ -57,8 +57,6 @@ class BillStatisticCubit extends Cubit<int> {
     "SALE - FULL KHOÁ",
     "SALE - CỌC 1 KÌ",
     "SALE - CỌC FULL KHOÁ",
-    "SALE - BSHP 1 KÌ",
-    "SALE - BSHP FULL KHOÁ",
     "COMBO",
     "SALE - CỌC 1:1"
   ];
@@ -129,8 +127,6 @@ class BillStatisticCubit extends Cubit<int> {
     DateTime lastDayOfMonth = DateTime(now.year, now.month , 20);
     int startDate = firstDayOfMonth.millisecondsSinceEpoch;
     int endDate = lastDayOfMonth.millisecondsSinceEpoch;
-    print(startDate);
-    print(endDate);
     totalBill = (await FireStoreDb.instance.getCount("bill")).count;
     totalBillThisMonth =
         (await FireStoreDb.instance.getCountBill(startDate, endDate, listCountSale)).count;

@@ -58,7 +58,7 @@ class AddScheduleCubit extends Cubit<int> {
       ScheduleModel newSchedule = ScheduleModel(
           id: now.millisecondsSinceEpoch,
           teacherId: teacherId!,
-          status: "Teaching",
+          status: "teaching",
           classId: classId!,
           type: "cyclic",
           startTime: "$fromHour:$fromMinute",
@@ -66,12 +66,12 @@ class AddScheduleCubit extends Cubit<int> {
           role: listDayChoose,
           date: now.millisecondsSinceEpoch);
 
-      await FireBaseProvider.instance.addNewCyclicSchedule(newSchedule);
+      await FireBaseProvider.instance.addNewSchedule(newSchedule);
     }else{
       ScheduleModel newSchedule = ScheduleModel(
           id: schedule.first.id,
           teacherId: teacherId!,
-          status: "Teaching",
+          status: "teaching",
           classId: classId!,
           type: schedule.first.type,
           startTime: "$fromHour:$fromMinute",

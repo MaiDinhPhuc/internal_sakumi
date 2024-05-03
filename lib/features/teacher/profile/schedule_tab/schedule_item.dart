@@ -1,4 +1,7 @@
 import 'package:flutter/Material.dart';
+import 'package:internal_sakumi/features/CRUD/delete_cubit.dart';
+import 'package:internal_sakumi/features/admin/manage_schedule/add_single_schedule_dialog.dart';
+import 'package:internal_sakumi/features/admin/manage_schedule/confirm_delete_schedule.dart';
 import 'package:internal_sakumi/features/admin/manage_schedule/manage_schedule_cubit.dart';
 import 'package:internal_sakumi/features/teacher/profile/schedule_tab/schedule_tab_cubit.dart';
 import 'package:internal_sakumi/model/schedule_model.dart';
@@ -71,9 +74,11 @@ class ScheduleItem extends StatelessWidget {
 
 class ScheduleItemV2 extends StatelessWidget {
   const ScheduleItemV2(
-      {super.key, required this.cubit, required this.scheduleModel});
+      {super.key, required this.cubit, required this.scheduleModel, required this.index, required this.info});
   final ManageScheduleCubit cubit;
   final ScheduleModel scheduleModel;
+  final int index;
+  final String info;
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(itemBuilder: (context) => [
@@ -81,7 +86,38 @@ class ScheduleItemV2 extends StatelessWidget {
           padding: EdgeInsets.zero,
           child: InkWell(
             onTap: (){
-              Navigator.pop(context);
+              if(e == "Huỷ lịch dạy"){
+                Navigator.of(context).pop();
+                showDialog(
+                    context: context,
+                    builder: (_) {
+                      return ConfirmDeleteSchedule(onPress: () {
+                        cubit.removeSchedule(scheduleModel);
+                        Delete.deleteSchedule(scheduleModel);
+                        Navigator.of(context).pop();
+                      });
+                    });
+              }
+              if(e == "Nghỉ"){
+                Navigator.of(context).pop();
+                showDialog(
+                    context: context,
+                    builder: (_) {
+                      return ConfirmDeleteSchedule(onPress: () {
+                        cubit.cancelSchedule(scheduleModel, index);
+                        Navigator.of(context).pop();
+                      });
+                    });
+              }
+              if(e == "Đổi giáo viên"){
+                Navigator.of(context).pop();
+                showDialog(
+                    context: context,
+                    builder: (_) {
+                      return AddSingleScheduleDialog(cubit: cubit, scheduleModel: scheduleModel, index: index, info: info);
+                    });
+              }
+
             },
             child: Container(
                 height: Resizable.size(
@@ -96,9 +132,9 @@ class ScheduleItemV2 extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(e, style: TextStyle(
-                          fontWeight: e == "Nghỉ" ? FontWeight.w700 : FontWeight.w500,
+                          fontWeight: e == "Đổi giáo viên" ? FontWeight.w500 : FontWeight.w700,
                           fontSize: Resizable.font(
-                              context, 15),color:Colors.black)),
+                              context, 15),color:e == "Huỷ lịch dạy"? Colors.red :Colors.black)),
                     ],
                   ),
                 )

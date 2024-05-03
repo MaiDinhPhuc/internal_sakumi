@@ -93,8 +93,8 @@ class ClassDetailCubit extends Cubit<int> {
   }
 
   onCourseLoaded(Object course) {
-    title =
-        "${(course as CourseModel).name} ${(course).level} ${(course).termName}";
+    title = (course as CourseModel).courseId == 999999999? course.title :
+        "${course.name} ${course.level} ${course.termName}";
     lessonCount = course.lessonCount + classModel.customLessons.length;
     emit(state + 1);
   }

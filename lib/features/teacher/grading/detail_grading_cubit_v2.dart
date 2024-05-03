@@ -141,6 +141,69 @@ class DetailGradingCubitV2 extends Cubit<int> {
     emit(questionId);
   }
 
+  doneGrading(String type){
+    for (var i in listStudent!) {
+      double temp = 0;
+      double total = 0;
+      for (var j in listAnswer!) {
+        if (i.userId == j.studentId) {
+          if (j.newScore == -1) {
+            temp = temp;
+          } else {
+            temp = temp + j.newScore;
+            total++;
+          }
+        }
+      }
+      double submitScore = (temp / (total == 0 ? 1 : total));
+      if (type == "test") {
+        FirebaseFirestore.instance
+            .collection('student_test')
+            .doc(
+            'student_${i.userId}_test_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}')
+            .update({
+          'score': temp == 0 ? -1 : submitScore,
+        });
+        var index = stdTests!.indexOf(stdTests!.firstWhere((e) =>
+        e.studentId == i.userId &&
+            e.testID == int.parse(TextUtils.getName())));
+        stdTests![index] = StudentTestModel(
+            classId: stdTests![index].classId,
+            score: temp == 0 ? -1 : submitScore,
+            studentId: stdTests![index].studentId,
+            testID: stdTests![index].testID,
+            time: stdTests![index].time);
+        DataProvider.updateStudentTest(stdTests![index].classId, stdTests!);
+      } else {
+        FirebaseFirestore.instance
+            .collection('student_lesson')
+            .doc(
+            'student_${i.userId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}')
+            .update({
+          'hw': temp == 0 ? -1 : submitScore,
+        });
+        var index = stdLessons!.indexOf(stdLessons!.firstWhere((e) =>
+        e.studentId == i.userId &&
+            e.lessonId == int.parse(TextUtils.getName())));
+        stdLessons![index] = StudentLessonModel(
+            grammar: stdLessons![index].grammar,
+            hw: temp == 0 ? -1 : submitScore,
+            id: stdLessons![index].id,
+            classId: stdLessons![index].classId,
+            kanji:stdLessons![index].kanji,
+            lessonId: stdLessons![index].lessonId,
+            listening: stdLessons![index].listening,
+            studentId: stdLessons![index].studentId,
+            timekeeping: stdLessons![index].timekeeping,
+            vocabulary: stdLessons![index].vocabulary,
+            teacherNote: stdLessons![index].teacherNote,
+            supportNote: stdLessons![index].supportNote,
+            time: stdLessons![index].time, hws: stdLessons![index].hws);
+        DataProvider.updateStdLesson(stdLessons![index].classId, stdLessons!);
+      }
+    }
+  }
+
   Future<void> submit(context, CheckActiveCubit checkCubit, String type) async {
     int lessonId = int.parse(TextUtils.getName());
     int classId = int.parse(TextUtils.getName(position: 1));
@@ -204,7 +267,7 @@ class DetailGradingCubitV2 extends Cubit<int> {
             }
           }
         }
-        dynamic submitScore = (temp / listQuestions!.length).round();
+        dynamic submitScore = (temp / listQuestions!.length);
 
         var index = stdLessons!.indexOf(stdLessons!.firstWhere((e) =>
         e.studentId == i.userId &&

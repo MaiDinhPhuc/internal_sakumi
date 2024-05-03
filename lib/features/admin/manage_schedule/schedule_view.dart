@@ -94,10 +94,10 @@ class ScheduleView extends StatelessWidget {
                                                     ...cubit
                                                         .getScheduleItem(
                                                         cubit.listDay.indexOf(e), e)
-                                                        .map((e) => Padding(padding: EdgeInsets.all(
+                                                        .map((ee) => Padding(padding: EdgeInsets.all(
                                                         Resizable.padding(
                                                             context, 3)),child: ScheduleItemV2(
-                                                        cubit: cubit, scheduleModel: e)))
+                                                        cubit: cubit, scheduleModel: ee,index: cubit.listDay.indexOf(e), info: '$e, ${cubit.getDate(cubit.listDay.indexOf(e))}, ',)))
                                                   ],
                                                 ),
                                               )

@@ -3,6 +3,7 @@ import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_bills/bill_dialog_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_schedule/add_schedule_cubit.dart';
+import 'package:internal_sakumi/features/admin/manage_schedule/add_single_schedule_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_schedule/manage_schedule_cubit.dart';
 import 'package:internal_sakumi/features/admin/search/search_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -295,7 +296,7 @@ class TeacherSearchListSchedule extends StatelessWidget {
                   email: data["email"],
                   onTap: () {
                     scheduleCubit.chooseTeacher(
-                        "${data["name"] ?? ""}",
+                        "${data["name"] ?? ""} - ${data["teacher_code"] ?? ""}",
                         data["user_id"]);
                   },
                 );
@@ -392,7 +393,57 @@ class TeacherSearchListScheduleV2 extends StatelessWidget {
                   email: data["email"],
                   onTap: () {
                     addCubit.chooseTeacher(
-                        "${data["name"] ?? ""}",
+                        "${data["name"] ?? ""} - ${data["teacher_code"] ?? ""}",
+                        data["user_id"]);
+                  },
+                );
+              }
+              return Container();
+            }));
+  }
+}
+
+class TeacherSearchSingleSchedule extends StatelessWidget {
+  const TeacherSearchSingleSchedule(
+      {super.key, required this.addCubit, required this.snapshots});
+  final AddSingleScheduleCubit addCubit;
+  final AsyncSnapshot<QuerySnapshot<Object?>> snapshots;
+  @override
+  Widget build(BuildContext context) {
+    return addCubit.teacherSearchValue == ""
+        ? Container()
+        : Container(
+        constraints: BoxConstraints(
+          maxHeight: Resizable.padding(context, 250), // max height
+        ),
+        margin: EdgeInsets.only(top: Resizable.padding(context, 5)),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: Colors.black),
+            borderRadius: BorderRadius.circular(10)),
+        child: ListView.builder(
+            itemCount: snapshots.data!.docs.length,
+            itemBuilder: (c, index) {
+              var data = snapshots.data!.docs[index].data()
+              as Map<String, dynamic>;
+              if (addCubit.teacherSearchValue.isEmpty) {
+                return Container();
+              }
+              if (data["name"].toString().toLowerCase().contains(
+                  addCubit.teacherSearchValue.toLowerCase()) || data["teacher_code"].toString().toLowerCase().contains(
+                  addCubit.teacherSearchValue.toLowerCase()) ||data["email"].toString().toLowerCase().contains(
+                  addCubit.teacherSearchValue.toLowerCase())) {
+                return ItemSearchV2(
+                  type: AppText.txtTeacher.text,
+                  isLast: index == (snapshots.data!.docs.length - 1),
+                  url: data["url"] ?? "",
+                  name: data["name"] ?? "",
+                  code: data["teacher_code"] ?? "",
+                  id: data["user_id"],
+                  email: data["email"],
+                  onTap: () {
+                    addCubit.chooseTeacher(
+                        "${data["name"] ?? ""} - ${data["teacher_code"] ?? ""}",
                         data["user_id"]);
                   },
                 );

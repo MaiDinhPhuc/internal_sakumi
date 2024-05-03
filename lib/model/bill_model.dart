@@ -49,3 +49,4 @@ class BillModel {
         courseId: data['courseId'] ?? -1, classType: data['class_type'] ?? 0);
   }
 }
+

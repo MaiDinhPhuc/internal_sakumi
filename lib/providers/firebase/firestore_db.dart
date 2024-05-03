@@ -837,7 +837,7 @@ class FireStoreDb {
     debugPrint("==========> add db for \"bill\"");
   }
 
-  Future<void> addNewCyclicSchedule(ScheduleModel model) async {
+  Future<void> addNewSchedule(ScheduleModel model) async {
     await db.collection("schedule").doc("schedule_${model.id}").set({
       'class_id': model.classId,
       'date': model.date,

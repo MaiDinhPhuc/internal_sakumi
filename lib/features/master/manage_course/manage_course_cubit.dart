@@ -17,8 +17,8 @@ class ManageCourseCubit extends Cubit<int> {
   List<String> listLevel = ["N5", "N4", "N3", "N2", "N1"];
   List<bool> listLevelState = [true, true, true, true, true];
 
-  List<String> listType = ["general", "kaiwa", "JLPT", "kid"];
-  List<bool> listTypeState = [true, true, true, true];
+  List<String> listType = ["general", "kaiwa", "JLPT", "kid", "sub"];
+  List<bool> listTypeState = [true, true, true, true, true];
 
   loadAllCourse() async {
     listAllCourse ??= await FireBaseProvider.instance.getAllCourse();
@@ -60,12 +60,12 @@ class ManageCourseCubit extends Cubit<int> {
 
     for(int i = 0; i < this.listType.length; i++){
       if(listTypeState[i]){
-        listType.add(this.listType[i]);
+        listType.add(this.listType[i].toUpperCase());
       }
     }
 
 
-    List<CourseModel> listCourse = listCourseTemp.where((e) => listLevel.contains(e.level) && listType.contains(e.type)).toList();
+    List<CourseModel> listCourse = listCourseTemp.where((e) => listLevel.contains(e.level) && listType.contains(e.type.toUpperCase())).toList();
 
     return listCourse;
   }

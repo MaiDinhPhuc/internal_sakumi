@@ -4,7 +4,6 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/app_bar/admin_appbar.dart';
 import 'package:internal_sakumi/features/admin/manage_bills/add_bill_button.dart';
-import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
 import 'package:internal_sakumi/features/admin_v2/manage_class_v2/class_cubit_v2.dart';
 import 'package:internal_sakumi/features/admin_v2/manage_class_v2/class_item_v2.dart';
 import 'package:internal_sakumi/features/admin_v2/manage_class_v2/filter_class_status_v2.dart';
@@ -133,15 +132,6 @@ class ManageClassScreenV2 extends StatelessWidget {
                           fontSize: Resizable.font(context, 17),
                           color: greyColor.shade600)),
                 )),
-            // Padding(
-            //     padding: EdgeInsets.symmetric(
-            //         vertical: Resizable.size(context, 5),
-            //         horizontal: Resizable.padding(context, 70)),
-            //     child: DottedBorderButton(
-            //         AppText.btnManageClass.text.toUpperCase(), onPressed: () {
-            //       Navigator.pushNamed(
-            //           context, '${Routes.admin}/${Routes.manageGeneral}');
-            //     })),
             Expanded(
                 flex: 6,
                 child: BlocBuilder<ClassCubit, int>(
@@ -167,6 +157,7 @@ class ManageClassScreenV2 extends StatelessWidget {
                                 child: Column(children: [
                                 ...cubit.listClass!
                                     .map((e) => Padding(
+                                        key: Key(e.classId.toString()),
                                         padding: EdgeInsets.symmetric(
                                             horizontal:
                                                 Resizable.size(context, 70)),

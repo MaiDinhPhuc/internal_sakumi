@@ -485,6 +485,8 @@ enum AppText {
   txtAddImage,
   txtAddReportImage,
   txtConfirmDeleteReport,
+  txtConfirmDeleteSchedule,
+  txtConfirmCancelSchedule,
   txtFilterDate,
   txtHintFeedBack,
   txtScheduleTeacher,
@@ -548,9 +550,17 @@ enum AppText {
   txtLoadingDelete,
   btnUpdateGroupTag,
   txtUpdateGroupTagSuccess, txtTestTime,
+  txtChangeTeacher,
+  txtChangeTeacherTo,
+  txtScheduleInfo,
+  txtPleaseCheckTeacher
 }
 
 Map<AppText, String> texts = {
+  AppText.txtPleaseCheckTeacher: 'Vui lòng kiểm tra lại giáo viên',
+  AppText.txtScheduleInfo: 'Vào ca dạy : ',
+  AppText.txtChangeTeacherTo: 'Đổi giáo viên sang : ',
+  AppText.txtChangeTeacher: 'Đổi giáo viên dạy',
   AppText.btnEditTag: 'Chỉnh sửa tag',
   AppText.btnUpdateGroupTag: 'Chỉnh sửa nhóm',
   AppText.txtConfirmDeleteTag: 'Bạn muốn xoá tag này ?',
@@ -590,6 +600,8 @@ Map<AppText, String> texts = {
   AppText.txtHintFeedBack:
       "Có gì bất cập, sai sót hoặc cần cải tiến, ss góp ý để khoá học ngày càng tốt hơn nha...",
   AppText.txtFilterDate: "Chọn ngày lọc: ",
+  AppText.txtConfirmCancelSchedule: "Xác nhận cho lớp nghỉ buổi này...",
+  AppText.txtConfirmDeleteSchedule: "Xác nhận huỷ lịch dạy...",
   AppText.txtConfirmDeleteReport: "Xác nhận xoá biên bản...",
   AppText.txtAddReportImage: "Ảnh đính kèm",
   AppText.txtAddImage: "+THÊM ẢNH",

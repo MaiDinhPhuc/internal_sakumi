@@ -5,6 +5,7 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/screens/class_info/detail_grading_screen_v2.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
+import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 import 'detail_grading_cubit.dart';
 import 'detail_grading_cubit_v2.dart';
@@ -29,13 +30,41 @@ class HeaderGrading extends StatelessWidget {
                         fontSize: Resizable.font(context, 20),
                         fontWeight: FontWeight.w700,
                         color: greyColor.shade500)))),
+        Expanded(
+            flex: 2,
+            child: Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: Resizable.padding(context, 20),
+                  horizontal: Resizable.padding(context, 5),
+                ),
+                child: ElevatedButton(
+                  onPressed: (){
+                    waitingDialog(context);
+                    cubit.doneGrading(cubit.gradingType);
+                    Future.delayed(const Duration(milliseconds: 1000));
+                    Navigator.pop(context);
+                  },
+                  style: ButtonStyle(
+                      shadowColor: MaterialStateProperty.all(
+                          primaryColor ),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.circular(Resizable.padding(context, 1000)))),
+                      backgroundColor: MaterialStateProperty.all(
+                          primaryColor )),
+                  child: Text("Hoàn thành",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: Resizable.font(context, 16),
+                          color: Colors.white)),
+                ))),
         if(type == "type=test")
           Expanded(
             flex: 2,
             child: Padding(
                 padding: EdgeInsets.symmetric(
-                  vertical: Resizable.padding(context, 10),
-                  horizontal: Resizable.padding(context, 5)
+                  vertical: Resizable.padding(context, 20),
+                  horizontal: Resizable.padding(context, 5),
                 ),
                 child: ElevatedButton(
                   onPressed: (){
@@ -49,9 +78,7 @@ class HeaderGrading extends StatelessWidget {
                           borderRadius:
                           BorderRadius.circular(Resizable.padding(context, 1000)))),
                       backgroundColor: MaterialStateProperty.all(
-                       primaryColor ),
-                      padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-                          horizontal: Resizable.padding(context, 30)))),
+                       primaryColor )),
                   child: Text("Reload",
                       style: TextStyle(
                           fontWeight: FontWeight.w700,
@@ -205,7 +232,35 @@ class HeaderGradingV2 extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                         color: greyColor.shade500)))),
         Expanded(
-            flex: 1,
+            flex: 2,
+            child: Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: Resizable.padding(context, 20),
+                  horizontal: Resizable.padding(context, 5),
+                ),
+                child: ElevatedButton(
+                  onPressed: (){
+                    waitingDialog(context);
+                    cubit.doneGrading(cubit.gradingType);
+                    Future.delayed(const Duration(milliseconds: 1000));
+                    Navigator.pop(context);
+                  },
+                  style: ButtonStyle(
+                      shadowColor: MaterialStateProperty.all(
+                          primaryColor ),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.circular(Resizable.padding(context, 1000)))),
+                      backgroundColor: MaterialStateProperty.all(
+                          primaryColor )),
+                  child: Text("Hoàn thành",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: Resizable.font(context, 16),
+                          color: Colors.white)),
+                ))),
+        Expanded(
+            flex: 2,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(24),
               child: Material(

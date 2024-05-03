@@ -411,7 +411,7 @@ class FireBaseProvider extends NetworkProvider {
   Future<List<ScheduleModel>> getTeacherCyclicSchedule(int teacherId) async {
     return (await FireStoreDb.instance.getTeacherCyclicSchedule(teacherId))
         .docs
-        .map((e) => ScheduleModel.fromSnapshot(e))
+        .map((e) => ScheduleModel.fromSnapshot(e)).where((e) => e.status != "delete")
         .toList();
   }
 
@@ -419,7 +419,7 @@ class FireBaseProvider extends NetworkProvider {
   Future<List<ScheduleModel>> getTeacherCyclicScheduleInClass(int teacherId,int classId) async {
     return (await FireStoreDb.instance.getTeacherCyclicScheduleInClass(teacherId, classId))
         .docs
-        .map((e) => ScheduleModel.fromSnapshot(e))
+        .map((e) => ScheduleModel.fromSnapshot(e)).where((e) => e.status != "delete")
         .toList();
   }
 
@@ -427,7 +427,7 @@ class FireBaseProvider extends NetworkProvider {
   Future<List<ScheduleModel>> getClassCyclicSchedule(int classId) async {
     return (await FireStoreDb.instance.getClassCyclicSchedule(classId))
         .docs
-        .map((e) => ScheduleModel.fromSnapshot(e))
+        .map((e) => ScheduleModel.fromSnapshot(e)).where((e) => e.status != "delete")
         .toList();
   }
 
@@ -435,7 +435,7 @@ class FireBaseProvider extends NetworkProvider {
   Future<List<ScheduleModel>> getTeacherSingleSchedule(List<int> listId, int startDate, int endDate) async {
     return (await FireStoreDb.instance.getTeacherSingleSchedule(listId,startDate,endDate))
         .docs
-        .map((e) => ScheduleModel.fromSnapshot(e))
+        .map((e) => ScheduleModel.fromSnapshot(e)).where((e) => e.status != "delete")
         .toList();
   }
 
@@ -1513,8 +1513,8 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<void> addNewCyclicSchedule(ScheduleModel model) async {
-    await FireStoreDb.instance.addNewCyclicSchedule(model);
+  Future<void> addNewSchedule(ScheduleModel model) async {
+    await FireStoreDb.instance.addNewSchedule(model);
   }
 
   @override

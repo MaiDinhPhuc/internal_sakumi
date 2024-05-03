@@ -2,6 +2,7 @@ import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
+import 'package:internal_sakumi/model/schedule_model.dart';
 import 'package:internal_sakumi/model/student_class_log.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
@@ -16,8 +17,8 @@ import 'package:internal_sakumi/providers/firebase/firestore_db.dart';
 
 class Create {
 
-  createSingleSchedule()async{
-
+  static createSingleSchedule(ScheduleModel schedule)async{
+    await FireBaseProvider.instance.addNewSchedule(schedule);
   }
 
   static addStudentToClass(StudentClassModel model){
