@@ -157,6 +157,7 @@ class FireStoreDb {
       int classId) async {
     final snapshot = await db
         .collection("schedule")
+        .where("type", isEqualTo: "cyclic")
         .where('class_id', isEqualTo: classId)
         .get();
 

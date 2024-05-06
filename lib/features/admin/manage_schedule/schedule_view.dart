@@ -97,10 +97,10 @@ class ScheduleView extends StatelessWidget {
                                                         cubit.listDay.indexOf(e), e)
                                                         .map((ee) => ee.type == "cyclic"? Padding(padding: EdgeInsets.all(
                                                         Resizable.padding(
-                                                            context, 3)),child: ScheduleItemV2(
+                                                            context, 3)),child: CyclicScheduleItem(
                                                         cubit: cubit, scheduleModel: ee,index: cubit.listDay.indexOf(e), info: '$e, ${cubit.getDate(cubit.listDay.indexOf(e))}, ',)): Padding(padding: EdgeInsets.all(
                                                         Resizable.padding(
-                                                            context, 3)),child: ScheduleItemV2(
+                                                            context, 3)),child: SingleScheduleItem(
                                                       cubit: cubit, scheduleModel: ee,index: cubit.listDay.indexOf(e), info: '$e, ${cubit.getDate(cubit.listDay.indexOf(e))}, ',)))
                                                   ],
                                                 ),

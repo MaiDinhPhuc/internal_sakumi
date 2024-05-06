@@ -100,6 +100,11 @@ class ManageScheduleCubit extends Cubit<int> {
   }
 
   String getTeacherName(int teacherId) {
+    if(this.teacherId != null) {
+      var teacherModel = listTeacher.where((e) => e.userId == this.teacherId).toList();
+      if (teacherModel.isEmpty) return "";
+      return teacherModel.first.name;
+    }
     var teacherModel = listTeacher.where((e) => e.userId == teacherId).toList();
     if (teacherModel.isEmpty) return "";
     return teacherModel.first.name;
@@ -202,6 +207,11 @@ class ManageScheduleCubit extends Cubit<int> {
   }
 
   bool checkSchedule(ScheduleModel schedule){
+
+    if(teacherId != null){
+      return false;
+    }
+
     List<ScheduleModel> temp =
     listCyclicSchedule!.where((e) => e.classId == schedule.classId).toList();
     if(temp.length == 1 && temp.first.teacherId == schedule.teacherId){
@@ -378,6 +388,8 @@ class ManageScheduleCubit extends Cubit<int> {
   }
 
   deleteClass() {
+    listSingleSchedule = [];
+    listCyclicSchedule = [];
     classId = null;
     classSearch.text = "";
     classSearchValue = "";
@@ -395,6 +407,8 @@ class ManageScheduleCubit extends Cubit<int> {
   }
 
   deleteTeacher() {
+    listSingleSchedule = [];
+    listCyclicSchedule = [];
     teacherId = null;
     teacherSearch.text = "";
     teacherSearchValue = "";
