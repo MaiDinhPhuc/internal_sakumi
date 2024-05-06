@@ -31,7 +31,7 @@ class ManageBillScreen extends StatelessWidget {
               child: Padding(
             padding: EdgeInsets.only(
                 top: Resizable.padding(context, 20),
-                bottom: Resizable.padding(context, 40),
+                bottom: Resizable.padding(context, 10),
                 left: Resizable.padding(context, 70),
                 right: Resizable.padding(context, 70)),
             child: BlocBuilder<ManageBillCubit, int>(
@@ -55,8 +55,10 @@ class ManageBillScreen extends StatelessWidget {
                                   onTap: () {
                                     showDialog(
                                         context: context,
-                                        builder: (context) => BillDialog(isEdit: false, cubit: cubit));
-                                  }, title: AppText.titleAddBill.text,
+                                        builder: (context) => BillDialog(
+                                            isEdit: false, cubit: cubit));
+                                  },
+                                  title: AppText.titleAddBill.text,
                                 )
                               ],
                             ))),
@@ -74,91 +76,103 @@ class ManageBillScreen extends StatelessWidget {
                               cubit: cubit, filterController: filterController),
                         )),
                     Expanded(
-                        flex: 5,
-                        child: cubit.listBill == null
-                            ? const Center(
-                                child: CircularProgressIndicator(),
-                              )
-                            : cubit.listBill!.isEmpty
-                                ? Padding(
-                                    padding: EdgeInsets.only(
-                                        top: Resizable.padding(context, 50)),
-                                    child: Text(AppText.txtNotBill.text))
-                                : Column(
-                          children: [
-                            Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: Resizable.padding(
-                                        context, 10)),
-                                child: BillLayout(
-                                  widgetStdName: Text(
-                                      AppText.txtStdName.text,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: Resizable.font(
-                                              context, 17),
-                                          color: greyColor.shade600)),
-                                  widgetClassCode: Text(
-                                      AppText.txtClassCode.text,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: Resizable.font(
-                                              context, 17),
-                                          color: greyColor.shade600)),
-                                  widgetPaymentDate: Text(
-                                      AppText.txtPaymentDate.text,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: Resizable.font(
-                                              context, 17),
-                                          color: greyColor.shade600)),
-                                  widgetPayment: Text(
-                                      AppText.txtPayment.text,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: Resizable.font(
-                                              context, 17),
-                                          color: greyColor.shade600)),
-                                  widgetRenewDate: Text(
-                                      AppText.txtRenewDate.text,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: Resizable.font(
-                                              context, 17),
-                                          color: greyColor.shade600)),
-                                  widgetType: Text(
-                                      AppText.txtBillType.text,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: Resizable.font(
-                                              context, 17),
-                                          color: greyColor.shade600)),
-                                  widgetCreator: Text(
-                                      AppText.txtCreator.text,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: Resizable.font(
-                                              context, 17),
-                                          color: greyColor.shade600)), widgetDropdown: Container(),
-                                )),
-                            Expanded(child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  ...cubit.getListBill()
-                                      .map((e) => BillItem(billModel: e, cubit: cubit)).toList(),
-                                  SizedBox(height: Resizable.size(context, 5)),
-                                  cubit.isLastPage
-                                      ? Container()
-                                      : SubmitButton(
-                                      onPressed: () {
-                                        cubit.loadMore(filterController);
-                                      },
-                                      title: AppText.txtLoadMore.text),
-                                ],
-                              ),
-                            ))
-                          ],
-                        ))
+                      flex: 5,
+                      child: BlocBuilder<ManageBillCubit, int>(
+                        bloc: cubit,
+                        builder: (c, s) {
+                          if (cubit.listBill == null) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else if (cubit.listBill!.isEmpty) {
+                            return Padding(
+                                padding: EdgeInsets.only(
+                                    top: Resizable.padding(context, 50)),
+                                child: Text(AppText.txtNotBill.text));
+                          } else {
+                            return Column(
+                              children: [
+                                Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical:
+                                            Resizable.padding(context, 10)),
+                                    child: BillLayout(
+                                      widgetStdName: Text(
+                                          AppText.txtStdName.text,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize:
+                                                  Resizable.font(context, 17),
+                                              color: greyColor.shade600)),
+                                      widgetClassCode: Text(
+                                          AppText.txtClassCode.text,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize:
+                                                  Resizable.font(context, 17),
+                                              color: greyColor.shade600)),
+                                      widgetPaymentDate: Text(
+                                          AppText.txtPaymentDate.text,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize:
+                                                  Resizable.font(context, 17),
+                                              color: greyColor.shade600)),
+                                      widgetPayment: Text(
+                                          AppText.txtPayment.text,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize:
+                                                  Resizable.font(context, 17),
+                                              color: greyColor.shade600)),
+                                      widgetRenewDate: Text(
+                                          AppText.txtRenewDate.text,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize:
+                                                  Resizable.font(context, 17),
+                                              color: greyColor.shade600)),
+                                      widgetType: Text(AppText.txtBillType.text,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize:
+                                                  Resizable.font(context, 17),
+                                              color: greyColor.shade600)),
+                                      widgetCreator: Text(
+                                          AppText.txtCreator.text,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize:
+                                                  Resizable.font(context, 17),
+                                              color: greyColor.shade600)),
+                                      widgetDropdown: Container(),
+                                    )),
+                                Expanded(
+                                  child: ListView.builder(
+                                    itemCount: cubit.listBill!.length,
+                                    itemBuilder: (context, index) {
+                                      var e = cubit.listBill![index];
+                                      return BillItem(
+                                          key: Key(e.createDate.toString()),
+                                          billModel: e,
+                                          cubit: cubit);
+                                    },
+                                  ),
+                                ),
+                                SizedBox(height: Resizable.size(context, 5)),
+                                cubit.isLastPage
+                                    ? Container()
+                                    : SubmitButton(
+                                        onPressed: () {
+                                          cubit.loadMore(filterController);
+                                        },
+                                        title: AppText.txtLoadMore.text),
+                              ],
+                            );
+                          }
+                        },
+                      ),
+                    )
                   ],
                 );
               },

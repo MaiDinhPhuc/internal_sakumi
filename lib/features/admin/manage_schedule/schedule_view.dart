@@ -5,6 +5,7 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_schedule/search_in_schedule_view.dart';
 import 'package:internal_sakumi/features/teacher/profile/schedule_tab/schedule_item.dart';
+import 'package:internal_sakumi/features/teacher/profile/schedule_tab/schedule_item_v2.dart';
 import 'package:internal_sakumi/features/teacher/profile/schedule_tab/schedule_taught_item.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
@@ -94,10 +95,13 @@ class ScheduleView extends StatelessWidget {
                                                     ...cubit
                                                         .getScheduleItem(
                                                         cubit.listDay.indexOf(e), e)
-                                                        .map((ee) => Padding(padding: EdgeInsets.all(
+                                                        .map((ee) => ee.type == "cyclic"? Padding(padding: EdgeInsets.all(
                                                         Resizable.padding(
                                                             context, 3)),child: ScheduleItemV2(
-                                                        cubit: cubit, scheduleModel: ee,index: cubit.listDay.indexOf(e), info: '$e, ${cubit.getDate(cubit.listDay.indexOf(e))}, ',)))
+                                                        cubit: cubit, scheduleModel: ee,index: cubit.listDay.indexOf(e), info: '$e, ${cubit.getDate(cubit.listDay.indexOf(e))}, ',)): Padding(padding: EdgeInsets.all(
+                                                        Resizable.padding(
+                                                            context, 3)),child: ScheduleItemV2(
+                                                      cubit: cubit, scheduleModel: ee,index: cubit.listDay.indexOf(e), info: '$e, ${cubit.getDate(cubit.listDay.indexOf(e))}, ',)))
                                                   ],
                                                 ),
                                               )

@@ -1,0 +1,182 @@
+import 'package:flutter/Material.dart';
+import 'package:internal_sakumi/features/CRUD/delete_cubit.dart';
+import 'package:internal_sakumi/features/admin/manage_schedule/add_single_schedule_dialog.dart';
+import 'package:internal_sakumi/features/admin/manage_schedule/confirm_delete_schedule.dart';
+import 'package:internal_sakumi/features/admin/manage_schedule/manage_schedule_cubit.dart';
+import 'package:internal_sakumi/model/schedule_model.dart';
+import 'package:internal_sakumi/utils/resizable.dart';
+
+class ScheduleItemV2 extends StatelessWidget {
+  const ScheduleItemV2(
+      {super.key,
+      required this.cubit,
+      required this.scheduleModel,
+      required this.index,
+      required this.info});
+  final ManageScheduleCubit cubit;
+  final ScheduleModel scheduleModel;
+  final int index;
+  final String info;
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+        itemBuilder: (context) => [
+              ...cubit.listMenu.map((e) => PopupMenuItem(
+                  padding: EdgeInsets.zero,
+                  child: InkWell(
+                    onTap: () {
+                      if (e == "Huỷ lịch dạy") {
+                        Navigator.of(context).pop();
+                        showDialog(
+                            context: context,
+                            builder: (_) {
+                              return ConfirmDeleteSchedule(onPress: () {
+                                cubit.removeSchedule(scheduleModel);
+                                Delete.deleteSchedule(scheduleModel);
+                                Navigator.of(context).pop();
+                              });
+                            });
+                      }
+                      if (e == "Nghỉ") {
+                        Navigator.of(context).pop();
+                        showDialog(
+                            context: context,
+                            builder: (_) {
+                              return ConfirmDeleteSchedule(onPress: () {
+                                cubit.cancelSchedule(scheduleModel, index);
+                                Navigator.of(context).pop();
+                              });
+                            });
+                      }
+                      if (e == "Đổi giáo viên") {
+                        Navigator.of(context).pop();
+                        showDialog(
+                            context: context,
+                            builder: (_) {
+                              return AddSingleScheduleDialog(
+                                  cubit: cubit,
+                                  scheduleModel: scheduleModel,
+                                  index: index,
+                                  info: info);
+                            });
+                      }
+                    },
+                    child: Container(
+                        height: Resizable.size(context, 33),
+                        decoration: const BoxDecoration(color: Colors.white),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: Resizable.padding(context, 10)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(e,
+                                  style: TextStyle(
+                                      fontWeight: e == "Đổi giáo viên"
+                                          ? FontWeight.w500
+                                          : FontWeight.w700,
+                                      fontSize: Resizable.font(context, 15),
+                                      color: e == "Huỷ lịch dạy"
+                                          ? Colors.red
+                                          : Colors.black)),
+                            ],
+                          ),
+                        )),
+                  )))
+            ],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(Resizable.size(context, 10)),
+          ),
+        ),
+        child: Container(
+            width: Resizable.size(context, 130),
+            padding: EdgeInsets.symmetric(
+                horizontal: Resizable.padding(context, 5),
+                vertical: Resizable.padding(context, 3)),
+            decoration: BoxDecoration(
+                color: scheduleModel.type == "single"
+                    ? const Color(0xffFDE3E3)
+                    : const Color(0xffE3F2FD),
+                border: Border.all(
+                    width: Resizable.size(context, 1),
+                    color: scheduleModel.type == "single"
+                        ? const Color(0xffFBBBBB)
+                        : const Color(0xff90CAF9)),
+                borderRadius:
+                    BorderRadius.circular(Resizable.size(context, 5))),
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: Resizable.padding(context, 5),
+                      vertical: Resizable.padding(context, 2)),
+                  decoration: BoxDecoration(
+                      color: scheduleModel.type == "single"
+                          ? const Color(0xffFBBBBB)
+                          : const Color(0xff90CAF9),
+                      border: Border.all(
+                          width: Resizable.size(context, 1),
+                          color: scheduleModel.type == "single"
+                              ? const Color(0xffFBBBBB)
+                              : const Color(0xff90CAF9)),
+                      borderRadius:
+                          BorderRadius.circular(Resizable.size(context, 15))),
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    scheduleModel.type == "single"
+                        ? "Nghỉ"
+                        : "${scheduleModel.startTime} - ${scheduleModel.endTime}",
+                    style: TextStyle(
+                        color: scheduleModel.type == "single"
+                            ? const Color(0xffA10D0D)
+                            : const Color(0xff0D47A1),
+                        fontSize: Resizable.font(context, 16),
+                        fontWeight: FontWeight.w700),
+                  ),
+                ),
+                Expanded(
+                    child: Center(
+                        child: Text(
+                  textAlign: TextAlign.center,
+                  cubit.getClassCode(scheduleModel.classId).toUpperCase(),
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: Resizable.font(context, 20),
+                      fontWeight: FontWeight.w600),
+                ))),
+                Row(
+                  children: [
+                    Expanded(
+                        child: Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: Resizable.padding(context, 5),
+                          vertical: Resizable.padding(context, 2)),
+                      decoration: BoxDecoration(
+                          color: scheduleModel.type == "single"
+                              ? const Color(0xffFBBBBB)
+                              : const Color(0xff90CAF9),
+                          border: Border.all(
+                              width: Resizable.size(context, 1),
+                              color: scheduleModel.type == "single"
+                                  ? const Color(0xffFBBBBB)
+                                  : const Color(0xff90CAF9)),
+                          borderRadius: BorderRadius.circular(
+                              Resizable.size(context, 15))),
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        cubit.getTeacherName(scheduleModel.teacherId),
+                        style: TextStyle(
+                            color: scheduleModel.type == "single"
+                                ? const Color(0xffA10D0D)
+                                : const Color(0xff0D47A1),
+                            fontSize: Resizable.font(context, 16),
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ))
+                  ],
+                )
+              ],
+            )));
+  }
+}

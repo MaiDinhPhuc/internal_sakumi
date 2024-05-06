@@ -157,8 +157,8 @@ class ManageScheduleCubit extends Cubit<int> {
         status: "cancel",
         classId: schedule.classId,
         type: "single",
-        startTime: "00:00",
-        endTime: "00:00",
+        startTime: schedule.startTime,
+        endTime: schedule.endTime,
         role: [],
         date: date);
 
@@ -199,6 +199,15 @@ class ManageScheduleCubit extends Cubit<int> {
     }
 
     return list;
+  }
+
+  bool checkSchedule(ScheduleModel schedule){
+    List<ScheduleModel> temp =
+    listCyclicSchedule!.where((e) => e.classId == schedule.classId).toList();
+    if(temp.length == 1 && temp.first.teacherId == schedule.teacherId){
+      return false;
+    }
+    return true;
   }
 
   String getRangeDate() {

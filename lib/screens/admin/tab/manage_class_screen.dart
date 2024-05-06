@@ -133,52 +133,64 @@ class ManageClassScreenV2 extends StatelessWidget {
                           color: greyColor.shade600)),
                 )),
             Expanded(
-                flex: 6,
-                child: BlocBuilder<ClassCubit, int>(
-                    bloc: cubit,
-                    builder: (context, _) => cubit.listClass == null
-                        ? Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  ...shimmerList.map((e) => Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal:
-                                              Resizable.size(context, 70)),
-                                      child: const ItemShimmer()))
-                                ],
-                              ),
-                            ),
-                          )
-                        : cubit.listClass!.isNotEmpty
-                            ? SingleChildScrollView(
-                                child: Column(children: [
-                                ...cubit.listClass!
-                                    .map((e) => Padding(
-                                        key: Key(e.classId.toString()),
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal:
-                                                Resizable.size(context, 70)),
-                                        child: ClassItemV2(
-                                            classModel: e, classCubit: cubit)))
-                                    .toList(),
-                                SizedBox(height: Resizable.size(context, 5)),
-                                cubit.isLastPage
-                                    ? Container()
-                                    : SubmitButton(
-                                        onPressed: () {
-                                          cubit.loadMore(filterController);
-                                        },
-                                        title: AppText.txtLoadMore.text),
-                                SizedBox(height: Resizable.size(context, 50))
-                              ]))
-                            : Text(AppText.txtNoClass.text,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: Resizable.font(context, 17),
-                                    color: greyColor.shade600))))
+              flex: 6,
+              child: BlocBuilder<ClassCubit, int>(
+                bloc: cubit,
+                builder: (context, _) {
+                  if (cubit.listClass == null) {
+                    return Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            ...shimmerList.map((e) => Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: Resizable.size(context, 70)),
+                                child: const ItemShimmer()))
+                          ],
+                        ),
+                      ),
+                    );
+                  } else if (cubit.listClass!.isEmpty) {
+                    return Text(AppText.txtNoClass.text,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: Resizable.font(context, 17),
+                            color: greyColor.shade600));
+                  } else {
+                    return Column(
+                      children: [
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: cubit.listClass!.length,
+                            itemBuilder: (context, index) {
+                              var e = cubit.listClass![index];
+                              return Padding(
+                                key: Key(e.classId.toString()),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: Resizable.size(context, 70)),
+                                child: ClassItemV2(
+                                    classModel: e, classCubit: cubit),
+                              );
+                            },
+                          ),
+                        ),
+                        SizedBox(height: Resizable.size(context, 5)),
+                        cubit.isLastPage
+                            ? Container()
+                            : SubmitButton(
+                            onPressed: () {
+                              cubit.loadMore(filterController);
+                            },
+                            title: AppText.txtLoadMore.text),
+                        SizedBox(height: Resizable.size(context, 5)),
+                      ],
+                    );
+                  }
+                },
+              ),
+            )
           ],
         ))
       ],
