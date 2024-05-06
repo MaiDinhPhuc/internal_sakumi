@@ -37,7 +37,7 @@ class Resizable {
         : isTablet(context) == 2
             ? 960 * 2
             : 480 * 2;
-    return 512;
+    // return 512;
   }
 
   static double fontScaleRatioForTablet(BuildContext context) {
