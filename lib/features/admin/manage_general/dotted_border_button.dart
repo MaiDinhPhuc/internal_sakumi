@@ -47,7 +47,7 @@ class DottedBorderRadiusButton extends StatelessWidget {
         onTap: onPressed,
         borderRadius: BorderRadius.circular(Resizable.size(context, 1000)),
         child: SizedBox(
-          height: Resizable.size(context, 17),
+          height: Resizable.size(context, 20),
           child: DottedBorder(
               dashPattern: [Resizable.size(context, 2), Resizable.size(context, 1)],
               borderType: BorderType.RRect,

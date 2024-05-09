@@ -10,6 +10,7 @@ import 'package:internal_sakumi/features/teacher/overview/overview_chart.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
+import 'package:internal_sakumi/widget/tag_info.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ClassOverViewScreenV2 extends StatelessWidget {
@@ -52,6 +53,7 @@ class ClassOverViewScreenV2 extends StatelessWidget {
                                         fontWeight: FontWeight.w800,
                                         fontSize: Resizable.font(context, 30))),
                               ),
+                              TagInfo(type: 3, ownId: cubit.classModel!.classId),
                               StatisticClassViewV2(cubit: cubit),
                               Container(
                                   margin: EdgeInsets.only(

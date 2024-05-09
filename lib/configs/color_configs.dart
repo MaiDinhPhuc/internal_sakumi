@@ -69,3 +69,5 @@ const MaterialColor redColor =
 const Color lightGreyColor = Color(0xfff4f4f4);
 const Color darkPrimaryColor = Color(0xff757575);
 const Color greyAccent = Color(0xfff5f5f5);
+const Color grey1 = Color(0xffFAFAFA);
+const Color grey2 = Color(0xffE0E0E0);

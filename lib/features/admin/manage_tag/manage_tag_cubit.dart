@@ -83,7 +83,12 @@ class ManageTagCubit extends Cubit<int> {
     for (var item in listTags.where((element) => element.groupId ==
         listGroupTags[index].id).toList()) {
       FireBaseProvider.instance.deleteTag(item.id);
-
+      var list = await FireBaseProvider.instance.getManageTagsContainsTagId(item.id);
+      List<Future<void>> futures = [];
+      for(var k in list) {
+        futures.add(FireBaseProvider.instance.deleteTagIdInManageTag(k, item.id));
+      }
+      await Future.wait(futures);
     }
     listTags.removeWhere((element) => element.groupId == listGroupTags[index].id);
     bool value =

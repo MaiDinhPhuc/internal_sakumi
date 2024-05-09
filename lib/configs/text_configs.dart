@@ -553,7 +553,7 @@ enum AppText {
   txtChangeTeacher,
   txtChangeTeacherTo,
   txtScheduleInfo,
-  txtPleaseCheckTeacher
+  txtPleaseCheckTeacher, txtAddTag, txtTagManager, txtTagChoosen, btnComplete, txtConfirmDeleteTagFromClass, txtAtLeast1TagChoosen, txtConfirmDeleteTagFromStudent, txtConfirmDeleteTagFromTeacher
 }
 
 Map<AppText, String> texts = {
@@ -1130,6 +1130,10 @@ Map<AppText, String> texts = {
   AppText.txtGroup: 'Nhóm',
   AppText.btnAddGroup: 'Thêm nhóm mới',
   AppText.btnAddTag: 'thêm tag mới',
+  AppText.txtAddTag: 'thêm tag',
+  AppText.txtTagChoosen: 'Tag đã chọn',
+  AppText.txtAtLeast1TagChoosen: 'Ít nhất 1 tag được chọn',
+  AppText.txtTagManager: 'Tag Quản lý',
   AppText.txtManageTag: 'QUẢN LÝ TAG',
   AppText.txtPleaseInputTagCode: 'Vui lòng nhập mã tag',
   AppText.txtPleaseInputTagName: 'Vui lòng nhập tên tag',
@@ -1142,6 +1146,7 @@ Map<AppText, String> texts = {
   AppText.txtView: 'Hiển thị',
   AppText.btnCancel: 'Huỷ',
   AppText.btnAddNew: 'Thêm mới',
+  AppText.btnComplete: 'Hoàn thành',
   AppText.txtColorWrong: 'Mã màu không hợp lệ',
   AppText.txtPleaseInputNameColor: 'Vui lòng nhập mã màu',
   AppText.txtColorExist: 'Mã màu đã tồn tại',
@@ -1149,6 +1154,9 @@ Map<AppText, String> texts = {
   AppText.txtPleaseInputGroupTagCode: 'Vui lòng nhập mã nhóm',
   AppText.txtPleaseInputGroupTagName: 'Vui lòng nhập tên nhóm',
   AppText.txtConfirmDeleteGroupTag: 'Bạn muốn xoá nhóm tag này ?',
+  AppText.txtConfirmDeleteTagFromClass: 'Bạn muốn xoá tag này khỏi lớp?',
+  AppText.txtConfirmDeleteTagFromStudent: 'Bạn muốn xoá tag này khỏi học sinh này?',
+  AppText.txtConfirmDeleteTagFromTeacher: 'Bạn muốn xoá tag này khỏi giáo viên này?',
   AppText.txtLoadingAdd: 'Đang thêm mới...',
   AppText.txtYes: 'Xác nhận',
   AppText.txtAddGroupTagSuccess: 'Thêm nhóm tag mới thành công',

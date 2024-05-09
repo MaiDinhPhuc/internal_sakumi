@@ -9,6 +9,7 @@ import 'package:internal_sakumi/model/feedback_model.dart';
 import 'package:internal_sakumi/model/group_tag_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
+import 'package:internal_sakumi/model/manage_tag_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
 import 'package:internal_sakumi/model/response_model.dart';
 import 'package:internal_sakumi/model/schedule_model.dart';
@@ -2189,5 +2190,101 @@ class FireStoreDb {
       value = false;
     });
     return value;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getManageTags() async {
+    final snapshot = await db.collection("manage_tags").get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> manage_tags ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getTagById(
+      int tagId) async {
+    final snapshot = await db
+        .collection('tags')
+        .where('id', isEqualTo: tagId)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTagById $tagId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>>  getManageTagByIdAndType(int ownId, int type) async {
+    final snapshot = await db
+        .collection('manage_tags')
+        .where('own_id', isEqualTo: ownId)
+        .where('type', isEqualTo: type)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getManageTagByIdAndType $ownId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+  Future<bool> addManageTag(ManageTagModel manageTagModel) async {
+    bool value = true;
+    await db
+        .collection("manage_tags")
+        .doc("manage_tag_${manageTagModel.date}")
+        .set(manageTagModel.toJson(), SetOptions(merge: true))
+        .whenComplete(() => value = true)
+        .onError((error, stackTrace) {
+      print(error);
+      value = false;
+    });
+    return value;
+  }
+
+  Future<bool> deleteManageTag(String doc)  async {
+    bool value = true;
+    await db
+        .collection("manage_tags")
+        .doc(doc)
+        .delete()
+        .whenComplete(() => value = true)
+        .onError((error, stackTrace) {
+      print(error);
+      value = false;
+    });
+    return value;
+  }
+
+  Future<void> deleteTagIdInManageTag(String documentId, int tagId) async {
+    DocumentReference docRef = db.collection('manage_tags').doc(documentId);
+    docRef.update({
+      'tags': FieldValue.arrayRemove([tagId])
+    }).then((_) {
+      docRef.get().then((docSnapshot) {
+        if (docSnapshot.exists) {
+          List<dynamic> tags =( docSnapshot.data() as Map)['tags'];
+          if (tags.isEmpty) {
+            docRef.delete();
+          } else {
+            print("Xoá tag thành công");
+          }
+        } else {
+          print("Tài liệu không tồn tại");
+        }
+      });
+    }).catchError((error) {
+      print("Lỗi khi xoá tag: $error");
+    });
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getManageTagsContainsTagId(int tagId) async {
+    final snapshot = await db.collection("manage_tags")
+        .where('tags', arrayContains: tagId)
+        .get();;
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> manage_tags ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
   }
 }

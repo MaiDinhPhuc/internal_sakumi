@@ -9,6 +9,7 @@ import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
+import 'package:internal_sakumi/widget/tag_info.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 import 'list_info_student.dart';
@@ -47,6 +48,13 @@ class InfoStudentView extends StatelessWidget {
                     errorBuilder: (_, __, ___) => Container(),
                   ),
                 ),
+          Padding(
+            padding:  EdgeInsets.symmetric(
+              vertical: Resizable.padding(context, 10),
+              horizontal: Resizable.padding(context, 20),
+            ),
+            child: TagInfo(type: 2, ownId: cubit.student!.userId),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

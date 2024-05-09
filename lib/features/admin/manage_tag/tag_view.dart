@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:internal_sakumi/features/admin/manage_tag/add_tag_dialog.dart';
 import 'package:internal_sakumi/model/tag_model.dart';
+import 'package:internal_sakumi/widget/chip_tag.dart';
 
 import '../../../configs/color_configs.dart';
 import '../../../configs/text_configs.dart';
@@ -81,44 +82,18 @@ class TagView extends StatelessWidget {
                           Builder(builder: (context) {
                             List<Widget> children = [];
                             for (var item in manageTagCubit.listCurrentTags) {
-                              children.add(Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      showDialog(context: context, builder: (context) {
-                                        return AddTagDialog(
-                                          manageTagCubit: manageTagCubit,
-                                          tagModel: item,
-                                        );
-                                      });
-                                    },
-                                    borderRadius: BorderRadius.circular(1000),
-                                    child: Container(
-                                      height: Resizable.size(context, 17),
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: Resizable.padding(context, 10),
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Color(item.background),
-                                        borderRadius: BorderRadius.circular(1000),
-                                      ),
-
-                                      child: Center(
-                                        child: Text(
-                                          item.name,
-                                          textAlign: TextAlign.center,
-                                          maxLines: 1,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: Resizable.font(context, 14),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                              children.add(SizedBox(
+                                height: Resizable.size(context, 20),
+                                child: FittedBox(
+                                  child: ChipTag(onTap: () {
+                                    showDialog(context: context, builder: (context) {
+                                      return AddTagDialog(
+                                        manageTagCubit: manageTagCubit,
+                                        tagModel: item,
+                                      );
+                                    });
+                                  }, color: item.background, name: item.name, description: item.description,),
+                                ),
                               ));
                             }
                             children.add(DottedBorderRadiusButton(

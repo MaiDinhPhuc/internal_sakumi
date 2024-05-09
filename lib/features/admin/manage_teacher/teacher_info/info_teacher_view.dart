@@ -9,6 +9,7 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
+import '../../../../widget/tag_info.dart';
 import '../class_tab/list_info_teacher.dart';
 
 class InfoTeacherView extends StatelessWidget {
@@ -45,6 +46,14 @@ class InfoTeacherView extends StatelessWidget {
                     errorBuilder: (_, __, ___) => Container(),
                   ),
                 ),
+
+          Padding(
+            padding:  EdgeInsets.symmetric(
+              vertical: Resizable.padding(context, 10),
+              horizontal: Resizable.padding(context, 20),
+            ),
+            child: TagInfo(type: 1, ownId: cubit.teacher!.userId),
+          ),
           Padding(
               padding: EdgeInsets.all(Resizable.padding(context, 5)),
               child: TeacherInfo(cubit: cubit)),
