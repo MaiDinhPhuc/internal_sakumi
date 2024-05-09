@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:internal_sakumi/features/admin/manage_tag/add_tag_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_tag/manage_tag_cubit.dart';
 import 'package:internal_sakumi/model/tag_model.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 import '../../../configs/color_configs.dart';
 import '../../../configs/text_configs.dart';
@@ -422,6 +423,6 @@ class _AddTagDialogState extends State<AddTagDialog> {
       if (context.mounted) {
         Navigator.pop(context);
       }
-    });
+    } , 'Tag này sẽ bị loại bỏ ở các đối tượng chứa nó');
   }
 }

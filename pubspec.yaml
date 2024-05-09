@@ -73,6 +73,7 @@ dependencies:
   timezone: ^0.9.2
   record: ^5.0.5
   flutter_colorpicker: ^1.0.3
+  drop_down_search_field: ^1.0.0
 
 
 dev_dependencies:

@@ -7,7 +7,7 @@ import '../features/admin/manage_tag/custom_button_v1.dart';
 
 class Dialogs {
   static void alertDelete(
-      BuildContext context, String title, Function() onSubmit) {
+      BuildContext context, String title, Function() onSubmit , [String description = '']) {
     showDialog(
         context: context,
         builder: (_) {
@@ -28,13 +28,25 @@ class Dialogs {
                     ),
                     Padding(
                         padding: EdgeInsets.symmetric(
-                            vertical: Resizable.padding(context, 20)),
+                            vertical: Resizable.padding(context, 10)),
                         child: Text(
                           title,
                           style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: Resizable.font(context, 20)),
                         )),
+
+                    if(description.isNotEmpty)
+                      ...[
+                        Text(
+                          description,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: darkPrimaryColor,
+                              fontSize: Resizable.font(context, 16)),
+                        ),
+                        SizedBox(height: Resizable.padding(context, 10),),
+                      ],
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.end,

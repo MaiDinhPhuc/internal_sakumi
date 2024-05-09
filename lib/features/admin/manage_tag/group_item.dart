@@ -1,3 +1,4 @@
+import 'package:flutter/Material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
@@ -13,9 +14,9 @@ class GroupItem extends StatelessWidget {
 
   final bool isFocus;
   final String title;
-  final Function() onDelete;
+  final Function()? onDelete;
   final Function() onClick;
-  final Function() onEdit;
+  final Function()? onEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -62,19 +63,25 @@ class GroupItem extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                           fontSize: Resizable.font(context, 20)),
                     )),
-                    IconButton(
-                        onPressed: onEdit,
-                        splashRadius: Resizable.size(context, 10),
-                        iconSize: Resizable.size(context, 15),
-                        icon: Icon(Icons.edit, color: primaryColor,)),
-                    IconButton(
-                        onPressed: onDelete,
-                        splashRadius: Resizable.size(context, 10),
-                        iconSize: Resizable.size(context, 15),
-                        icon: Image.asset(
-                          'assets/images/ic_trash.png',
-                          scale: 2.5,
-                        ))
+                    Opacity(
+                      opacity: onEdit == null ? 0 : 1,
+                      child: IconButton(
+                          onPressed: onEdit,
+                          splashRadius: Resizable.size(context, 10),
+                          iconSize: Resizable.size(context, 15),
+                          icon: const Icon(Icons.edit, color: primaryColor,)),
+                    ),
+                    Opacity(
+                      opacity: onDelete == null ? 0 : 1,
+                      child: IconButton(
+                          onPressed: onDelete,
+                          splashRadius: Resizable.size(context, 10),
+                          iconSize: Resizable.size(context, 15),
+                          icon: Image.asset(
+                            'assets/images/ic_trash.png',
+                            scale: 2.5,
+                          )),
+                    )
                   ],
                 ),
               ),

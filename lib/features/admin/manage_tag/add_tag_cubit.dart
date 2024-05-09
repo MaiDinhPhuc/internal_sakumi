@@ -80,6 +80,12 @@ class AddTagCubit extends Cubit<int> {
     setSubmitStatus(SubmitStatus.loading);
     setDelete(true);
     bool value = await FireBaseProvider.instance.deleteTag(tagModel.id);
+    var list = await FireBaseProvider.instance.getManageTagsContainsTagId(tagModel.id);
+    List<Future<void>> futures = [];
+    for(var item in list) {
+      futures.add(FireBaseProvider.instance.deleteTagIdInManageTag(item, tagModel.id));
+    }
+    await Future.wait(futures);
     if (value) {
       setSubmitStatus(SubmitStatus.success);
     } else {
