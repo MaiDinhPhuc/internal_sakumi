@@ -13,7 +13,7 @@ class NoteWidget extends StatelessWidget {
           color: const Color(0xffF5F5F5),
           borderRadius: BorderRadius.circular(Resizable.size(context, 10))),
       alignment: Alignment.centerLeft,
-      margin: EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
+      margin: EdgeInsets.all(Resizable.padding(context, 5)),
       padding: EdgeInsets.all(Resizable.padding(context, 10)),
       child: Text(text,
           style: TextStyle(
@@ -37,7 +37,7 @@ class TrackingItem extends StatelessWidget {
         ? Container(
             constraints: BoxConstraints(minWidth: Resizable.size(context, 50)),
             padding:
-                EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
+                EdgeInsets.all( Resizable.padding(context, 5)),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(1000),
                 color: condition! == -1
@@ -61,7 +61,7 @@ class TrackingItem extends StatelessWidget {
         : Container(
             constraints: BoxConstraints(minWidth: Resizable.size(context, 50)),
             padding:
-                EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
+                EdgeInsets.all(Resizable.padding(context, 5)),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(1000),
                 color: isSubmit
@@ -133,7 +133,7 @@ class TeacherStatusItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       constraints: BoxConstraints(minWidth: Resizable.size(context, 50)),
-      padding: EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
+      padding: EdgeInsets.all( Resizable.padding(context, 5)),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(1000), color: getColor(status)),
       child: Text(

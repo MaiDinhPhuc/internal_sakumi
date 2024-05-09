@@ -1,7 +1,6 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
-import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/features/class_info/lesson/sensei_item_v2.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
@@ -30,60 +29,56 @@ class LessonItemV2 extends StatelessWidget {
     return BlocBuilder<LessonItemCubitV2, int>(
         bloc: detailCubit,
         builder: (c, s) {
-          return Column(
-            children: [
-              SizedBox(height: Resizable.padding(context, 10)),
-              Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: Resizable.padding(context, 100),
-                    vertical: Resizable.padding(context, 5)),
-                child: BlocProvider(
-                    create: (context) => DropdownCubit(),
-                    child: BlocBuilder<DropdownCubit, int>(
-                      builder: (c, state) => Stack(
-                        children: [
-                          Container(
-                              alignment: Alignment.centerLeft,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: Resizable.padding(context, 15),
-                                  vertical: Resizable.padding(context, 8)),
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      width: Resizable.size(context, 1),
-                                      color: state % 2 == 0
-                                          ? greyColor.shade100
-                                          : Colors.black),
-                                  borderRadius: BorderRadius.circular(
-                                      Resizable.size(context, 5))),
-                              child: AnimatedCrossFade(
-                                  firstChild: CollapseLessonItemV2(
+          return Container(
+            margin: EdgeInsets.symmetric(
+                vertical: Resizable.padding(context, 5)),
+            child: BlocProvider(
+                create: (context) => DropdownCubit(),
+                child: BlocBuilder<DropdownCubit, int>(
+                  builder: (c, state) => Stack(
+                    children: [
+                      Container(
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: Resizable.padding(context, 15),
+                              vertical: Resizable.padding(context, 8)),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: Resizable.size(context, 1),
+                                  color: state % 2 == 0
+                                      ? greyColor.shade100
+                                      : Colors.black),
+                              borderRadius: BorderRadius.circular(
+                                  Resizable.size(context, 5))),
+                          child: AnimatedCrossFade(
+                              firstChild: CollapseLessonItemV2(
+                                  cubit: detailCubit,
+                                  index: cubit.lessons!.indexOf(lesson),
+                                  role: role),
+                              secondChild: Column(
+                                children: [
+                                  CollapseLessonItemV2(
                                       cubit: detailCubit,
                                       index: cubit.lessons!.indexOf(lesson),
                                       role: role),
-                                  secondChild: Column(
-                                    children: [
-                                      CollapseLessonItemV2(
-                                          cubit: detailCubit,
-                                          index: cubit.lessons!.indexOf(lesson),
-                                          role: role),
-                                      detailCubit.lessonResult == null
-                                          ? const CircularProgressIndicator()
-                                          : detailCubit.lessonResult!.status !=
-                                                  "Pending"
-                                              ? ExpandLessonItemV2(
-                                                  detailCubit: detailCubit,
-                                                  role: role,
-                                                  cubit: cubit)
-                                              : Container()
-                                    ],
-                                  ),
-                                  crossFadeState: state % 2 == 1
-                                      ? CrossFadeState.showSecond
-                                      : CrossFadeState.showFirst,
-                                  duration: const Duration(milliseconds: 100))),
-                          if (role == "teacher")
-                            Positioned.fill(
-                                child: Material(
+                                  detailCubit.lessonResult == null
+                                      ? const CircularProgressIndicator()
+                                      : detailCubit.lessonResult!.status !=
+                                      "Pending"
+                                      ? ExpandLessonItemV2(
+                                      detailCubit: detailCubit,
+                                      role: role,
+                                      cubit: cubit)
+                                      : Container()
+                                ],
+                              ),
+                              crossFadeState: state % 2 == 1
+                                  ? CrossFadeState.showSecond
+                                  : CrossFadeState.showFirst,
+                              duration: const Duration(milliseconds: 100))),
+                      if (role == "teacher")
+                        Positioned.fill(
+                            child: Material(
                               color: Colors.transparent,
                               child: InkWell(
                                   onTap: () async {
@@ -95,7 +90,7 @@ class LessonItemV2 extends StatelessWidget {
                                     } else {
                                       if (detailCubit.lesson.isCustom) {
                                         if (detailCubit.lesson.customLessonInfo
-                                                .length ==
+                                            .length ==
                                             1) {
                                           await Navigator.pushNamed(c,
                                               "/teacher/grading/class=${cubit.classId}/type=btvn/customLesson=${lesson.lessonId}/lesson=${detailCubit.lesson.customLessonInfo.first['lesson_id']}");
@@ -116,19 +111,19 @@ class LessonItemV2 extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(
                                       Resizable.size(context, 5))),
                             )),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: Resizable.padding(context, 15),
-                                vertical: Resizable.padding(context, 8)),
-                            child: LessonItemRowLayout(
-                                lesson: Container(),
-                                name: Container(),
-                                attend: Container(),
-                                submit: Container(),
-                                sensei: SizedBox(
-                                    height: Resizable.size(context, 32),
-                                    width: Resizable.size(context, 32),
-                                    child: InkWell(
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: Resizable.padding(context, 15),
+                            vertical: Resizable.padding(context, 8)),
+                        child: LessonItemRowLayout(
+                            lesson: Container(),
+                            name: Container(),
+                            attend: Container(),
+                            submit: Container(),
+                            sensei: SizedBox(
+                                height: Resizable.size(context, 32),
+                                width: Resizable.size(context, 32),
+                                child: InkWell(
                                   borderRadius: BorderRadius.circular(100),
                                   onTap: () async {
                                     if (role == "admin" && detailCubit.teacher != null) {
@@ -152,27 +147,25 @@ class LessonItemV2 extends StatelessWidget {
                                                   context, 14))))
                                       : SenseiItemV2(cubit: detailCubit),
                                 )),
-                                mark: Container(),
-                                dropdown: detailCubit.lessonResult == null
-                                    ? Container()
-                                    : IconButton(
-                                        onPressed: () {
-                                          BlocProvider.of<DropdownCubit>(c)
-                                              .update();
-                                        },
-                                        splashRadius:
-                                            Resizable.size(context, 15),
-                                        icon: Icon(
-                                          state % 2 == 0
-                                              ? Icons.keyboard_arrow_down
-                                              : Icons.keyboard_arrow_up,
-                                        ))),
-                          )
-                        ],
-                      ),
-                    )),
-              )
-            ],
+                            mark: Container(),
+                            dropdown: detailCubit.lessonResult == null
+                                ? Container()
+                                : IconButton(
+                                onPressed: () {
+                                  BlocProvider.of<DropdownCubit>(c)
+                                      .update();
+                                },
+                                splashRadius:
+                                Resizable.size(context, 15),
+                                icon: Icon(
+                                  state % 2 == 0
+                                      ? Icons.keyboard_arrow_down
+                                      : Icons.keyboard_arrow_up,
+                                ))),
+                      )
+                    ],
+                  ),
+                )),
           );
         });
   }

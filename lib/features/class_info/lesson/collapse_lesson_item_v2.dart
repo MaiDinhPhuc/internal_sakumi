@@ -32,7 +32,7 @@ class CollapseLessonItemV2 extends StatelessWidget {
               style: TextStyle(
                   color: cubit.lesson.isCustom ? primaryColor : Colors.black,
                   fontWeight: FontWeight.w700,
-                  fontSize: Resizable.font(context, 16)))),
+                  fontSize: Resizable.font(context, 20)))),
       sensei: Align(
           alignment: Alignment.center,
           child: Opacity(

@@ -1896,7 +1896,7 @@ class FireStoreDb {
       'from': model.from,
       'to': model.to
     });
-    debugPrint("==========>add db for \"student_class\"");
+    debugPrint("==========>add db for \"student_class_log\"");
   }
 
   Future<void> addSurveyToClass(SurveyModel model, int classId, int id) async {

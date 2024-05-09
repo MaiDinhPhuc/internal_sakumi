@@ -90,9 +90,8 @@ class ClassOverViewCubitV2 extends Cubit<int> {
   }
 
   loadData() async {
-    classModel = await FireBaseProvider.instance.getClassById(classId);
 
-    emit(state + 1);
+    await DataProvider.classByClassId(classId, loadClass);
 
     DataProvider.stdClassByClassId(classId, loadStudentClass);
 
@@ -153,6 +152,9 @@ class ClassOverViewCubitV2 extends Cubit<int> {
   }
 
   String getEvaluate(){
+
+    if(loaded == false) return "A";
+
     int countDrop = 0;
     for (var i in listStdClass!) {
       if (i.classStatus == "Dropped" ||
@@ -431,5 +433,11 @@ class ClassOverViewCubitV2 extends Cubit<int> {
 
   loadLessonInClass(Object lessons) {
     this.lessons = lessons as List<LessonModel>;
+  }
+
+
+  loadClass(Object classModel) {
+    this.classModel = classModel as ClassModel;
+    emit(state+1);
   }
 }

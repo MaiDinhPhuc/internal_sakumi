@@ -95,6 +95,7 @@ class TeacherDetailCubit extends Cubit<int> {
 
   String getEvaluate(){
 
+    if(isLoading) return "A";
 
     List<double> listEva = [];
 

@@ -120,7 +120,7 @@ class ScheduleTabCubit extends Cubit<int> {
     }
 
     for (var i in listClassId) {
-      DataProvider.classById(i, loadClass);
+      DataProvider.classByClassId(i, loadClass);
     }
 
     isLoadingSchedule = false;

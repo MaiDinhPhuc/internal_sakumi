@@ -68,15 +68,19 @@ class FilterStatusAdminV2 extends StatelessWidget {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(1000)),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Expanded(child: Center(
-                                child: Text(AppText.titleStatus.text,
-                                    style: TextStyle(
-                                        fontSize: Resizable.font(context, 18),
-                                        fontWeight: FontWeight.w500))
-                            )),
-                            const Icon(Icons.keyboard_arrow_down)
+                            Expanded(
+                                flex: 3,
+                                child: Padding(padding: EdgeInsets.only(left: Resizable.size(context, 15)),child: Center(
+                                    child: Text(AppText.titleStatus.text,
+                                        style: TextStyle(
+                                            fontSize: Resizable.font(context, 18),
+                                            fontWeight: FontWeight.w500))
+                                ))),
+                            const Expanded(
+                                flex: 1,
+                                child:  Center(child:Icon(Icons.keyboard_arrow_down)))
                           ],
                         ),
                       )

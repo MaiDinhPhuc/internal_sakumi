@@ -34,7 +34,7 @@ class ListTestScreenV2 extends StatelessWidget {
                                 child: const CircularProgressIndicator())))
                     : Expanded(
                         child: SingleChildScrollView(
-                        child: Column(
+                        child: Padding(padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 70)),child: Column(
                           children: [
                             Container(
                               margin: EdgeInsets.symmetric(
@@ -47,100 +47,94 @@ class ListTestScreenV2 extends StatelessWidget {
                             ),
                             cubit.listTest == null
                                 ? Shimmer.fromColors(
-                                    baseColor: Colors.grey[300]!,
-                                    highlightColor: Colors.grey[100]!,
-                                    child: Column(
-                                      children: [
-                                        ...shimmerList.map((e) => Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: Resizable.padding(
-                                                    context, 100)),
-                                            child: const ItemShimmer()))
-                                      ],
-                                    ),
-                                  )
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Column(
+                                children: [
+                                  ...shimmerList.map((e) => const ItemShimmer())
+                                ],
+                              ),
+                            )
                                 : Column(
-                                    children: [
-                                      if (cubit.listTest!.isNotEmpty)
-                                        Container(
+                              children: [
+                                if (cubit.listTest!.isNotEmpty)
+                                  Container(
+                                      padding: EdgeInsets.only(
+                                          right: Resizable.padding(
+                                              context, 20),
+                                          left: Resizable.padding(
+                                              context, 10)),
+                                      margin: EdgeInsets.only(bottom: Resizable.padding(context, 10)),
+                                      child: TestItemRowLayout(
+                                        test: Text(AppText.txtTest.text,
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.w600,
+                                                color: const Color(
+                                                    0xff757575),
+                                                fontSize: Resizable.font(
+                                                    context, 17))),
+                                        name: Padding(
                                             padding: EdgeInsets.only(
-                                                right: Resizable.padding(
-                                                    context, 20),
                                                 left: Resizable.padding(
-                                                    context, 10)),
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: Resizable.padding(
-                                                    context, 100)),
-                                            child: TestItemRowLayout(
-                                              test: Text(AppText.txtTest.text,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: const Color(
-                                                          0xff757575),
-                                                      fontSize: Resizable.font(
-                                                          context, 17))),
-                                              name: Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: Resizable.padding(
-                                                          context, 5)),
-                                                  child: Text(
-                                                      AppText.titleSubject.text,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: const Color(
-                                                              0xff757575),
-                                                          fontSize:
-                                                              Resizable.font(
-                                                                  context,
-                                                                  17)))),
-                                              submit: Text(
-                                                  AppText
-                                                      .txtRateOfSubmitTest.text,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: const Color(
-                                                          0xff757575),
-                                                      fontSize: Resizable.font(
-                                                          context, 17))),
-                                              mark: Text(
-                                                  AppText.txtAveragePoint.text,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: const Color(
-                                                          0xff757575),
-                                                      fontSize: Resizable.font(
-                                                          context, 17))),
-                                              status: Text(
-                                                  AppText.titleStatus.text,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: const Color(
-                                                          0xff757575),
-                                                      fontSize: Resizable.font(
-                                                          context, 17))),
-                                              dropdown: Container(),
-                                            )),
-                                      if (cubit.listTest!.isEmpty)
-                                        Center(
-                                          child:
-                                              Text(AppText.txtTestEmpty.text),
-                                        ),
-                                      if (cubit.listTest!.isNotEmpty)
-                                        ...cubit.listTest!
-                                            .map((e) => TestItemV2(
-                                                cubit: cubit,
-                                                role: role,
-                                                test: e))
-                                            .toList()
-                                    ],
-                                  )
+                                                    context, 5)),
+                                            child: Text(
+                                                AppText.titleSubject.text,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                    FontWeight.w600,
+                                                    color: const Color(
+                                                        0xff757575),
+                                                    fontSize:
+                                                    Resizable.font(
+                                                        context,
+                                                        17)))),
+                                        submit: Text(
+                                            AppText
+                                                .txtRateOfSubmitTest.text,
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.w600,
+                                                color: const Color(
+                                                    0xff757575),
+                                                fontSize: Resizable.font(
+                                                    context, 17))),
+                                        mark: Text(
+                                            AppText.txtAveragePoint.text,
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.w600,
+                                                color: const Color(
+                                                    0xff757575),
+                                                fontSize: Resizable.font(
+                                                    context, 17))),
+                                        status: Text(
+                                            AppText.titleStatus.text,
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.w600,
+                                                color: const Color(
+                                                    0xff757575),
+                                                fontSize: Resizable.font(
+                                                    context, 17))),
+                                        dropdown: Container(),
+                                      )),
+                                if (cubit.listTest!.isEmpty)
+                                  Center(
+                                    child:
+                                    Text(AppText.txtTestEmpty.text),
+                                  ),
+                                if (cubit.listTest!.isNotEmpty)
+                                  ...cubit.listTest!
+                                      .map((e) => TestItemV2(
+                                      cubit: cubit,
+                                      role: role,
+                                      test: e))
+                                      .toList()
+                              ],
+                            )
                           ],
-                        ),
+                        )),
                       ));
               }),
           if (role == 'teacher') FooterView()

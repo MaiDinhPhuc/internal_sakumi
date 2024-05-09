@@ -29,11 +29,12 @@ class ManageTeacherScreen extends StatelessWidget {
           Expanded(
               child: Padding(
             padding: EdgeInsets.symmetric(
-                vertical: Resizable.padding(context, 20),
-                horizontal: Resizable.padding(context, 100)),
+                horizontal: Resizable.padding(context, 70)),
             child: Column(
               children: [
-                Row(
+                Expanded(
+                    flex: 1,
+                    child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(AppText.titleManageTeacher.text.toUpperCase(),
@@ -48,7 +49,7 @@ class ManageTeacherScreen extends StatelessWidget {
                             alertAddNewTeacherAccount(context);
                           },
                           title:
-                              " + ${AppText.btnAddNewTeacher.text.replaceAll(" mới", "")}",
+                          " + ${AppText.btnAddNewTeacher.text.replaceAll(" mới", "")}",
                         ),
                         SizedBox(width: Resizable.padding(context, 10)),
                         AddButton(
@@ -61,16 +62,57 @@ class ManageTeacherScreen extends StatelessWidget {
                       ],
                     )
                   ],
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: Resizable.padding(context, 20),bottom: Resizable.padding(context, 5)),
+                )),
+                Expanded(flex: 1, child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: Resizable.padding(context,15)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [FilterTeacherStatus(cubit: cubit)],
                   ),
-                ),
-                Expanded(child: BlocBuilder<ListTeacherCubit, int>(
+                )),
+                Container(
+                    margin: EdgeInsets.symmetric(
+                        vertical:
+                        Resizable.padding(context, 10)),
+                    child: TeacherItemLayout(
+                      widgetTeacherCode: Text(
+                          AppText.txtTeacherCode.text,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize:
+                              Resizable.font(context, 17),
+                              color: greyColor.shade600)),
+                      widgetName: Text(AppText.txtName.text,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize:
+                              Resizable.font(context, 17),
+                              color: greyColor.shade600)),
+                      widgetPhone: Text(AppText.txtPhone.text,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize:
+                              Resizable.font(context, 17),
+                              color: greyColor.shade600)),
+                      widgetRating: Text(AppText.txtRating.text,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize:
+                              Resizable.font(context, 17),
+                              color: greyColor.shade600)),
+                      widgetStatus: Text(
+                          AppText.titleStatus.text,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize:
+                              Resizable.font(context, 17),
+                              color: greyColor.shade600)),
+                      widgetDropdown: Container(),
+                    )),
+                Expanded(
+                    flex: 6,
+                    child: BlocBuilder<ListTeacherCubit, int>(
                     bloc: cubit,
                     builder: (c, s) {
                       return cubit.listTeacher == null
@@ -90,45 +132,6 @@ class ManageTeacherScreen extends StatelessWidget {
                       )
                           : cubit.listTeacher!.isNotEmpty? SingleChildScrollView(child: Column(
                           children: [
-                            Container(
-                                margin: EdgeInsets.symmetric(
-                                    vertical:
-                                    Resizable.padding(context, 10)),
-                                child: TeacherItemLayout(
-                                  widgetTeacherCode: Text(
-                                      AppText.txtTeacherCode.text,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize:
-                                          Resizable.font(context, 17),
-                                          color: greyColor.shade600)),
-                                  widgetName: Text(AppText.txtName.text,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize:
-                                          Resizable.font(context, 17),
-                                          color: greyColor.shade600)),
-                                  widgetPhone: Text(AppText.txtPhone.text,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize:
-                                          Resizable.font(context, 17),
-                                          color: greyColor.shade600)),
-                                  widgetRating: Text(AppText.txtRating.text,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize:
-                                          Resizable.font(context, 17),
-                                          color: greyColor.shade600)),
-                                  widgetStatus: Text(
-                                      AppText.titleStatus.text,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize:
-                                          Resizable.font(context, 17),
-                                          color: greyColor.shade600)),
-                                  widgetDropdown: Container(),
-                                )),
                             ...cubit.listTeacher!.map((e) =>
                                 TeacherItem(teacherModel: e)),
                             SizedBox(height: Resizable.size(context, 5)),

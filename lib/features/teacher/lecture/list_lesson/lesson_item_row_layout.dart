@@ -57,7 +57,7 @@ class TrackStudentItemRowLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(flex: 2, child: Align(
+        Expanded(flex: 3, child: Align(
           alignment: Alignment.centerLeft,
           child: name,
         )),
@@ -69,7 +69,7 @@ class TrackStudentItemRowLayout extends StatelessWidget {
           alignment: Alignment.center,
           child: submit,
         )),
-        Expanded(flex: 4, child: Align(
+        Expanded(flex: 5, child: Align(
           alignment: Alignment.center,
           child: note,
         )),

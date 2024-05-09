@@ -376,7 +376,7 @@ class ManageScheduleCubit extends Cubit<int> {
     }
 
     for (var i in listClassId) {
-      DataProvider.classById(i, loadClass);
+      DataProvider.classByClassId(i, loadClass);
     }
 
     for (var i in listTeacherId) {

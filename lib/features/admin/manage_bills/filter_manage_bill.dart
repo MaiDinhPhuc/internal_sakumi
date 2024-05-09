@@ -76,7 +76,7 @@ class FilterManageBill extends StatelessWidget {
             },
             child: Padding(
               padding: EdgeInsets.symmetric(
-                  vertical: Resizable.size(context, 5)),
+                  vertical: Resizable.size(context, 0)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [

@@ -40,7 +40,7 @@ class ClassOverViewScreenV2 extends StatelessWidget {
                         child: SingleChildScrollView(
                             child: Container(
                           margin: EdgeInsets.symmetric(
-                              horizontal: Resizable.padding(context, 100)),
+                              horizontal: Resizable.padding(context, 70)),
                           child: Column(
                             children: [
                               Container(
@@ -54,8 +54,8 @@ class ClassOverViewScreenV2 extends StatelessWidget {
                               ),
                               StatisticClassViewV2(cubit: cubit),
                               Container(
-                                  margin: EdgeInsets.only(
-                                      top: Resizable.padding(context, 30)),
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: Resizable.padding(context, 10)),
                                   padding: EdgeInsets.only(
                                       right: Resizable.padding(context, 15)),
                                   child: OverviewItemRowLayout(

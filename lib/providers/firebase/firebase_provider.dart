@@ -793,7 +793,7 @@ class FireBaseProvider extends NetworkProvider {
   Future<bool> createNewStudent(StudentModel model, UserModel user) async {
     var temp = await FireStoreDb.instance.getUserByEmail(user.email);
     if (temp.docs.isEmpty) {
-      FireStoreDb.instance.createNewStudent(model, user);
+      await FireStoreDb.instance.createNewStudent(model, user);
       FireBaseProvider.instance
           .saveUser(user.email, user.role, model.userId);
       return true;

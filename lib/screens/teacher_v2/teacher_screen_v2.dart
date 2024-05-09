@@ -30,7 +30,7 @@ class TeacherScreenV2 extends StatelessWidget {
             Container(),
             Expanded(
                 child: SingleChildScrollView(
-                  child: Column(
+                  child: Padding(padding:EdgeInsets.symmetric(horizontal: Resizable.padding(context, 70)) ,child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const WelComeTeacherAppBar(),
@@ -46,57 +46,49 @@ class TeacherScreenV2 extends StatelessWidget {
                           listener: (context, _) {
                             cubit.loadDataTeacher(filterController);
                           },
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: Resizable.size(context, 5),
-                                horizontal: Resizable.size(context, 140)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                FilterTeacherViewV2(classCubit: cubit, cubit: filterController)
-                              ],
-                            ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              FilterTeacherViewV2(classCubit: cubit, cubit: filterController)
+                            ],
                           )),
-                      Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: Resizable.size(context, 150)),
-                          child: ClassItemRowLayout(
-                            widgetClassCode: Text(AppText.txtClassCode.text,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: Resizable.font(context, 17),
-                                    color: greyColor.shade600)),
-                            widgetCourse: Text(AppText.txtCourse.text,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: Resizable.font(context, 17),
-                                    color: greyColor.shade600)),
-                            widgetLessons: Text(AppText.txtNumberOfLessons.text,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: Resizable.font(context, 17),
-                                    color: greyColor.shade600)),
-                            widgetAttendance: Text(AppText.txtRateOfAttendance.text,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: Resizable.font(context, 17),
-                                    color: greyColor.shade600)),
-                            widgetSubmit: Text(AppText.txtRateOfSubmitHomework.text,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: Resizable.font(context, 17),
-                                    color: greyColor.shade600)),
-                            widgetEvaluate: Text(AppText.txtEvaluate.text,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: Resizable.font(context, 17),
-                                    color: greyColor.shade600)),
-                            widgetStatus: Text(AppText.titleStatus.text,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: Resizable.font(context, 17),
-                                    color: greyColor.shade600)),
-                          )),
+                      Padding(padding: EdgeInsets.only(bottom: Resizable.padding(context, 10)),child: ClassItemRowLayout(
+                        widgetClassCode: Text(AppText.txtClassCode.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetCourse: Text(AppText.txtCourse.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetLessons: Text(AppText.txtNumberOfLessons.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetAttendance: Text(AppText.txtRateOfAttendance.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetSubmit: Text(AppText.txtRateOfSubmitHomework.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetEvaluate: Text(AppText.txtEvaluate.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetStatus: Text(AppText.titleStatus.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                      )),
                       BlocBuilder<ClassCubit, int>(
                           bloc: cubit,
                           builder: (context, _) => cubit.listClass == null
@@ -106,11 +98,7 @@ class TeacherScreenV2 extends StatelessWidget {
                             child: SingleChildScrollView(
                               child: Column(
                                 children: [
-                                  ...shimmerList.map((e) => Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal:
-                                          Resizable.size(context, 150)),
-                                      child: const ItemShimmer()))
+                                  ...shimmerList.map((e) => const ItemShimmer())
                                 ],
                               ),
                             ),
@@ -118,11 +106,7 @@ class TeacherScreenV2 extends StatelessWidget {
                               : cubit.listClass!.isNotEmpty
                               ? Column(children: [
                             ...cubit.listClass!
-                                .map((e) => Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal:
-                                    Resizable.size(context, 150)),
-                                child: ClassItemV2(classModel: e, classCubit: cubit)))
+                                .map((e) => ClassItemV2(classModel: e, classCubit: cubit))
                                 .toList()
                           ])
                               : Text(AppText.txtNoClass.text,
@@ -132,7 +116,7 @@ class TeacherScreenV2 extends StatelessWidget {
                                   color: greyColor.shade600))),
                       SizedBox(height: Resizable.size(context, 50)),
                     ],
-                  ),
+                  )),
                 )),
           ],
         ));

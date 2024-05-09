@@ -32,7 +32,7 @@ class GradingScreen extends StatelessWidget {
                   child: const CircularProgressIndicator(),
                 )))
                     :  Expanded(child: SingleChildScrollView(
-                  child: Column(
+                  child: Padding(padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 70)),child: Column(
                     children: [
                       Container(
                         margin: EdgeInsets.symmetric(
@@ -53,9 +53,7 @@ class GradingScreen extends StatelessWidget {
                         child: SingleChildScrollView(
                             child: Column(
                               children: [
-                                ...shimmerList.map((e) => Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 100)),
-                                    child: const ItemShimmer()))
+                                ...shimmerList.map((e) => const ItemShimmer())
                               ],
                             )),
                       )
@@ -66,7 +64,7 @@ class GradingScreen extends StatelessWidget {
                         ],
                       )
                     ],
-                  ),
+                  )),
                 ));
               }),
           FooterView()

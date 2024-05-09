@@ -28,7 +28,7 @@ class ReportScreen extends StatelessWidget {
             builder: (c, s) {
               return Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: Resizable.padding(context, 100)),
+                    horizontal: Resizable.padding(context, 70)),
                 child: cubit.isLoading
                     ? const Center(
                         child: CircularProgressIndicator(),

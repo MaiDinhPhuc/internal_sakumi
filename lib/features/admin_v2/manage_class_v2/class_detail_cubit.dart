@@ -119,6 +119,9 @@ class ClassDetailCubit extends Cubit<int> {
   }
 
   String getEvaluate(){
+
+    if(stdTests == null) return "A";
+
     int countDrop = 0;
     for (var i in stdClasses!) {
       if (i.classStatus == "Dropped" ||

@@ -38,11 +38,12 @@ class HeaderGrading extends StatelessWidget {
                   horizontal: Resizable.padding(context, 5),
                 ),
                 child: ElevatedButton(
-                  onPressed: (){
+                  onPressed: ()async{
                     waitingDialog(context);
                     cubit.doneGrading(cubit.gradingType);
-                    Future.delayed(const Duration(milliseconds: 1000));
-                    Navigator.pop(context);
+                    await Future.delayed(const Duration(milliseconds: 2000)).whenComplete(() {
+                      Navigator.pop(context);
+                    });
                   },
                   style: ButtonStyle(
                       shadowColor: MaterialStateProperty.all(

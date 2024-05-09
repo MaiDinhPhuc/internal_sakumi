@@ -211,6 +211,12 @@ void alertAddNewStdAccount(
                                                       AppText
                                                           .txtPleaseCheckListUser
                                                           .text);
+                                                }else{
+                                                  notificationDialog(
+                                                      context,
+                                                      AppText
+                                                          .txtAddStudentSuccess
+                                                          .text);
                                                 }
                                               }
                                             } else {

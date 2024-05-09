@@ -29,11 +29,8 @@ class ManageBillScreen extends StatelessWidget {
           const AdminAppBar(index: 8),
           Expanded(
               child: Padding(
-            padding: EdgeInsets.only(
-                top: Resizable.padding(context, 20),
-                bottom: Resizable.padding(context, 10),
-                left: Resizable.padding(context, 70),
-                right: Resizable.padding(context, 70)),
+            padding: EdgeInsets.symmetric(
+                horizontal: Resizable.padding(context, 70)),
             child: BlocBuilder<ManageBillCubit, int>(
               bloc: cubit,
               builder: (c, s) {
@@ -41,27 +38,24 @@ class ManageBillScreen extends StatelessWidget {
                   children: [
                     Expanded(
                         flex: 1,
-                        child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: Resizable.padding(context, 20)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(AppText.titleManageBill.text,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w800,
-                                        fontSize: Resizable.font(context, 30))),
-                                AddButton(
-                                  onTap: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => BillDialog(
-                                            isEdit: false, cubit: cubit));
-                                  },
-                                  title: AppText.titleAddBill.text,
-                                )
-                              ],
-                            ))),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(AppText.titleManageBill.text.toUpperCase(),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: Resizable.font(context, 30))),
+                            AddButton(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => BillDialog(
+                                        isEdit: false, cubit: cubit));
+                              },
+                              title: AppText.titleAddBill.text,
+                            )
+                          ],
+                        )),
                     Expanded(
                         flex: 1,
                         child: Container(
@@ -75,8 +69,63 @@ class ManageBillScreen extends StatelessWidget {
                           child: FilterManageBill(
                               cubit: cubit, filterController: filterController),
                         )),
+                    Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical:
+                            Resizable.padding(context, 10)),
+                        child: BillLayout(
+                          widgetStdName: Text(
+                              AppText.txtStdName.text,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize:
+                                  Resizable.font(context, 17),
+                                  color: greyColor.shade600)),
+                          widgetClassCode: Text(
+                              AppText.txtClassCode.text,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize:
+                                  Resizable.font(context, 17),
+                                  color: greyColor.shade600)),
+                          widgetPaymentDate: Text(
+                              AppText.txtPaymentDate.text,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize:
+                                  Resizable.font(context, 17),
+                                  color: greyColor.shade600)),
+                          widgetPayment: Text(
+                              AppText.txtPayment.text,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize:
+                                  Resizable.font(context, 17),
+                                  color: greyColor.shade600)),
+                          widgetRenewDate: Text(
+                              AppText.txtRenewDate.text,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize:
+                                  Resizable.font(context, 17),
+                                  color: greyColor.shade600)),
+                          widgetType: Text(AppText.txtBillType.text,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize:
+                                  Resizable.font(context, 17),
+                                  color: greyColor.shade600)),
+                          widgetCreator: Text(
+                              AppText.txtCreator.text,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize:
+                                  Resizable.font(context, 17),
+                                  color: greyColor.shade600)),
+                          widgetDropdown: Container(),
+                        )),
                     Expanded(
-                      flex: 5,
+                      flex: 6,
                       child: BlocBuilder<ManageBillCubit, int>(
                         bloc: cubit,
                         builder: (c, s) {
@@ -92,61 +141,7 @@ class ManageBillScreen extends StatelessWidget {
                           } else {
                             return Column(
                               children: [
-                                Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical:
-                                            Resizable.padding(context, 10)),
-                                    child: BillLayout(
-                                      widgetStdName: Text(
-                                          AppText.txtStdName.text,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize:
-                                                  Resizable.font(context, 17),
-                                              color: greyColor.shade600)),
-                                      widgetClassCode: Text(
-                                          AppText.txtClassCode.text,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize:
-                                                  Resizable.font(context, 17),
-                                              color: greyColor.shade600)),
-                                      widgetPaymentDate: Text(
-                                          AppText.txtPaymentDate.text,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize:
-                                                  Resizable.font(context, 17),
-                                              color: greyColor.shade600)),
-                                      widgetPayment: Text(
-                                          AppText.txtPayment.text,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize:
-                                                  Resizable.font(context, 17),
-                                              color: greyColor.shade600)),
-                                      widgetRenewDate: Text(
-                                          AppText.txtRenewDate.text,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize:
-                                                  Resizable.font(context, 17),
-                                              color: greyColor.shade600)),
-                                      widgetType: Text(AppText.txtBillType.text,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize:
-                                                  Resizable.font(context, 17),
-                                              color: greyColor.shade600)),
-                                      widgetCreator: Text(
-                                          AppText.txtCreator.text,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize:
-                                                  Resizable.font(context, 17),
-                                              color: greyColor.shade600)),
-                                      widgetDropdown: Container(),
-                                    )),
+
                                 Expanded(
                                   child: ListView.builder(
                                     itemCount: cubit.listBill!.length,

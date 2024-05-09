@@ -68,7 +68,7 @@ class ReportCubit extends Cubit<int> {
 
     type = 'class';
 
-    DataProvider.classById(classId, loadClass);
+    DataProvider.classByClassId(classId, loadClass);
     listReport = await FireBaseProvider.instance.getReportByClassId(classId);
 
     isLoading = false;

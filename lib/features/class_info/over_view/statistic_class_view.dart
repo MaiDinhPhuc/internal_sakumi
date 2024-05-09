@@ -138,9 +138,9 @@ class StatisticClassViewV2 extends StatelessWidget {
                   ),
                   Expanded(
                       child: Center(
-                          child: Text(cubit.loaded ? cubit.getEvaluate() : "A",
+                          child: Text(cubit.getEvaluate(),
                               style: TextStyle(
-                                  color: primaryColor,
+                                  color: cubit.classModel!.getRankColor(cubit.getEvaluate()),
                                   fontWeight: FontWeight.w600,
                                   fontSize: Resizable.font(context, 50)))))
                 ],

@@ -24,9 +24,8 @@ class ListLessonCubitV2 extends Cubit<int>{
   List<int> listTeacherId = [];
 
   loadData()async{
-    classModel = await FireBaseProvider.instance.getClassById(classId);
 
-    emit(state+1);
+    await DataProvider.classByClassId(classId, loadClass);
 
     if(classModel!.customLessons.isEmpty){
       await DataProvider.lessonByCourseId(classModel!.courseId, loadLessonInClass);
@@ -181,6 +180,12 @@ class ListLessonCubitV2 extends Cubit<int>{
 
   loadLessonInClass(Object lessons) {
     this.lessons = lessons as List<LessonModel>;
+    emit(state+1);
+  }
+
+
+  loadClass(Object classModel) {
+    this.classModel = classModel as ClassModel;
     emit(state+1);
   }
 

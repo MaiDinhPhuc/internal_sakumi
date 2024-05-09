@@ -44,6 +44,23 @@ class StudentClassModel {
     }
   }
 
+  Color getRankColor(String rank) {
+    switch (rank) {
+      case 'A':
+        return const Color(0xff33691e);
+      case 'B':
+        return const Color(0xffFFD600);
+      case 'C':
+        return const Color(0xffF57F17);
+      case 'D':
+        return const Color(0xffE65100);
+      case 'F':
+        return const Color(0xffB71C1C);
+      default:
+        return const Color(0xff33691e);
+    }
+  }
+
   String get icon {
     switch (status) {
       case 'Completed':

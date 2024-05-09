@@ -22,8 +22,6 @@ class WelComeTeacherAppBar extends StatelessWidget {
         builder: (context, s) {
           return Padding(
             padding: EdgeInsets.only(
-                left: Resizable.padding(context, 70),
-                right: Resizable.padding(context, 70),
                 top: Resizable.padding(context, 20)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

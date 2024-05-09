@@ -85,7 +85,7 @@ class SubCourseScreen extends StatelessWidget {
                     )) : SingleChildScrollView(
                         child: Container(
                           margin: EdgeInsets.symmetric(
-                              horizontal: Resizable.padding(context, 100)),
+                              horizontal: Resizable.padding(context, 70)),
                           child: Column(
                             children: [
                               if(role == "admin")
@@ -95,8 +95,8 @@ class SubCourseScreen extends StatelessWidget {
                                     child: Row(
                                         mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
-                                          SubmitButton(
-                                              onPressed: () {
+                                          AddButton(
+                                              onTap: () {
                                                 showDialog(
                                                     context: context,
                                                     builder: (context) =>

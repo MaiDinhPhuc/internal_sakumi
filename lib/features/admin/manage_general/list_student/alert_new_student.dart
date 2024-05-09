@@ -29,8 +29,7 @@ void alertNewStudent(
       context: context,
       builder: (_) {
         return BlocProvider(
-            create: (context) => AlertAddStudentCubit()
-              ..loadAllUser(manageGeneralCubit),
+            create: (context) => AlertAddStudentCubit(),
             child: BlocBuilder<AlertAddStudentCubit, int>(
               builder: (c, _) {
                 var cubit = BlocProvider.of<AlertAddStudentCubit>(c);

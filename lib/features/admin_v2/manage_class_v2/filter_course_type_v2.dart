@@ -85,19 +85,23 @@ class FilterCourseTypeAdminV2 extends StatelessWidget {
                             border: Border.all(color: greyColor.shade100),
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(1000)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                        child:Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Expanded(
-                                child: Center(
+                                flex: 3,
+                                child: Padding(padding: EdgeInsets.only(left: Resizable.size(context, 15)),child: Center(
                                     child: Text(AppText.txtCourse.text,
                                         style: TextStyle(
                                             fontSize:
-                                                Resizable.font(context, 18),
-                                            fontWeight: FontWeight.w500)))),
-                            const Icon(Icons.keyboard_arrow_down)
+                                            Resizable.font(context, 18),
+                                            fontWeight: FontWeight.w500))
+                                ))),
+                            const Expanded(
+                                flex: 1,
+                                child:  Center(child:Icon(Icons.keyboard_arrow_down)))
                           ],
-                        ),
+                        )
                       )),
                 ),
               ));

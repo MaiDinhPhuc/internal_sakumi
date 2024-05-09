@@ -553,10 +553,12 @@ enum AppText {
   txtChangeTeacher,
   txtChangeTeacherTo,
   txtScheduleInfo,
-  txtPleaseCheckTeacher
+  txtPleaseCheckTeacher,
+  txtAddStudentSuccess
 }
 
 Map<AppText, String> texts = {
+  AppText.txtAddStudentSuccess: 'Thêm học viên thành công',
   AppText.txtPleaseCheckTeacher: 'Vui lòng kiểm tra lại giáo viên',
   AppText.txtScheduleInfo: 'Vào ca dạy : ',
   AppText.txtChangeTeacherTo: 'Đổi giáo viên sang : ',

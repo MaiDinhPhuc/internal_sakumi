@@ -35,6 +35,12 @@ class ExpandLessonItemV2 extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Container(
+            height: Resizable.size(context, 1),
+            margin:
+            EdgeInsets.symmetric(vertical: Resizable.padding(context, 15)),
+            color: const Color(0xffD9D9D9),
+          ),
           if (detailCubit.lessonResult!.noteForSupport != "")
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,7 +180,7 @@ class ExpandLessonItemV2 extends StatelessWidget {
                                   //alertEditAttendanceV2(context,detailCubit ,cubit,sessionCubit );
                                   //waitingDialog(context);
                                 },
-                                padding: EdgeInsets.zero,
+                                padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 10)),
                                 child: Center(
                                     child: Text(AppText.txtEditAttendance.text,
                                         style: TextStyle(

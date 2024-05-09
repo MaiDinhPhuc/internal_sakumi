@@ -16,9 +16,11 @@ class AdminAppBar extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(
           vertical: Resizable.padding(context, 10)),
-      decoration: const BoxDecoration(color: Colors.white, boxShadow: [
-        BoxShadow(offset: Offset(0, 1), color: Colors.grey, blurRadius: 2)
-      ]),
+      decoration: const BoxDecoration(color: Colors.white,
+          boxShadow: [
+        BoxShadow(offset: Offset(0, 1), color: Colors.grey)
+      ]
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -60,7 +62,7 @@ class DetailAppBar extends StatelessWidget {
           right: Resizable.padding(context, 100),
           top: Resizable.padding(context, 10)),
       decoration: const BoxDecoration(color: Colors.white, boxShadow: [
-        BoxShadow(offset: Offset(0, 1), color: Colors.grey, blurRadius: 2)
+        BoxShadow(offset: Offset(0, 1), color: Colors.grey)
       ]),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -43,9 +43,9 @@ class TeacherItemView extends StatelessWidget {
               height: Resizable.size(context, 30),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  color: primaryColor,
+                  color: teacherModel.getRankColor(cubit.getEvaluate()),
                   borderRadius: BorderRadius.circular(Resizable.size(context, 5))),
-              child: Text(cubit.isLoading ? "A" : cubit.getEvaluate(),
+              child: Text(cubit.getEvaluate(),
                   style: TextStyle(
                       fontWeight: FontWeight.w800,
                       color: Colors.white,

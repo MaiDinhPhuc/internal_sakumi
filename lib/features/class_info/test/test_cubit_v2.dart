@@ -22,9 +22,9 @@ class TestCubitV2 extends Cubit<int>{
   List<StudentClassModel>? listStdClass;
 
   loadData()async{
-    classModel = await FireBaseProvider.instance.getClassById(classId);
+    //classModel = await FireBaseProvider.instance.getClassById(classId);
 
-    emit(state+1);
+    await DataProvider.classByClassId(classId, loadClass);
 
     await DataProvider.stdClassByClassId(classId, loadStudentClass);
 
@@ -80,4 +80,10 @@ class TestCubitV2 extends Cubit<int>{
   loadStudentInfo(Object student) {
     students.add(student as StudentModel);
   }
+
+  loadClass(Object classModel) {
+    this.classModel = classModel as ClassModel;
+    emit(state+1);
+  }
+
 }

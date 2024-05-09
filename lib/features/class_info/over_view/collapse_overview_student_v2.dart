@@ -120,7 +120,7 @@ class CollapseOverviewStudentV2 extends StatelessWidget {
               height: Resizable.size(context, 30),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  color: primaryColor,
+                  color: stdClass.getRankColor(studentCubit.getEvaluate()),
                   borderRadius:
                       BorderRadius.circular(Resizable.size(context, 5))),
               child: Text(studentCubit.getEvaluate(),
