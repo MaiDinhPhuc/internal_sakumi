@@ -84,11 +84,11 @@ class ClassStatisticItem extends StatelessWidget {
           decoration: BoxDecoration(
               color: primaryColor,
               borderRadius: BorderRadius.circular(Resizable.size(context, 5))),
-          child: Text('A',
+          child: Center(child: Text('A',
               style: TextStyle(
                   fontWeight: FontWeight.w800,
                   color: Colors.white,
-                  fontSize: Resizable.font(context, 30))),
+                  fontSize: Resizable.font(context, 30)))),
         ),
         widgetLessons: Row(
           mainAxisSize: MainAxisSize.max,

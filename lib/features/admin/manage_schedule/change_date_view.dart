@@ -58,7 +58,6 @@ class ChangeDateView extends StatelessWidget {
           child: Container(
             width: Resizable.size(context, 120),
             height: Resizable.size(context, 30),
-
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: ShapeDecoration(
               color: Colors.white,

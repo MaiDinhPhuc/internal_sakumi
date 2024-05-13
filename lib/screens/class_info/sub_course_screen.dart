@@ -64,12 +64,12 @@ class SubCourseScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image.asset("assets/images/ic_no_sub_course.png",scale: 10),
-                              Text(
+                              Padding(padding: EdgeInsets.only(top: Resizable.padding(context, 15)),child: Text(
                                   AppText.txtNoSubCourse.text,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       color: primaryColor,
-                                      fontSize: Resizable.font(context, 36))),
+                                      fontSize: Resizable.font(context, 30)))),
                               if (role == 'teacher')
                                 Text(
                                     AppText.titleNoSubCourse.text,

@@ -59,7 +59,7 @@ class AddSingleScheduleDialog extends StatelessWidget {
                         child: InfoAddSingleScheduleView(
                             addCubit: addCubit,
                             info:
-                                "$info${scheduleModel.startTime}-${scheduleModel.endTime}")),
+                                "")),
                     Expanded(
                         flex: 1,
                         child: Container(
@@ -91,18 +91,18 @@ class AddSingleScheduleDialog extends StatelessWidget {
                                               notificationDialog(
                                                   context, AppText.txtPleaseCheckTeacher.text);
                                           }else{
-                                            var newSchedule = ScheduleModel(
-                                                id: DateTime.now().millisecondsSinceEpoch,
-                                                teacherId: addCubit.teacherId!,
-                                                status: 'teaching',
-                                                classId: scheduleModel.classId,
-                                                type: "single",
-                                                startTime: scheduleModel.startTime,
-                                                endTime: scheduleModel.endTime,
-                                                role: [],
-                                                date: cubit.listDate[index].millisecondsSinceEpoch);
-                                            Create.createSingleSchedule(newSchedule);
-                                            cubit.addSchedule(newSchedule);
+                                            // var newSchedule = ScheduleModel(
+                                            //     id: DateTime.now().millisecondsSinceEpoch,
+                                            //     teacherId: addCubit.teacherId!,
+                                            //     status: 'teaching',
+                                            //     classId: scheduleModel.classId,
+                                            //     type: "single",
+                                            //     startTime: scheduleModel.startTime,
+                                            //     endTime: scheduleModel.endTime,
+                                            //     role: [],
+                                            //     date: cubit.listDate[index].millisecondsSinceEpoch);
+                                            // Create.createSingleSchedule(newSchedule);
+                                            // cubit.addSchedule(newSchedule);
                                             Navigator.pop(context);
                                           }
                                         },

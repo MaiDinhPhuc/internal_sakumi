@@ -56,7 +56,7 @@ class CollapseOverviewStudentV2 extends StatelessWidget {
             )),
             attend: studentCubit.studentModel == null
                 ? CircleProgress(
-                    title: '0 %',
+                    title: '0%',
                     lineWidth: Resizable.size(context, 3),
                     percent: 0,
                     radius: Resizable.size(context, 16),
@@ -64,7 +64,7 @@ class CollapseOverviewStudentV2 extends StatelessWidget {
                   )
                 : CircleProgress(
                     title:
-                        '${(studentCubit.getAttendancePercent() * 100).toStringAsFixed(0)} %',
+                        '${(studentCubit.getAttendancePercent() * 100).toStringAsFixed(0)}%',
                     lineWidth: Resizable.size(context, 3),
                     percent: studentCubit.getAttendancePercent(),
                     radius: Resizable.size(context, 16),
@@ -72,7 +72,7 @@ class CollapseOverviewStudentV2 extends StatelessWidget {
                   ),
             submit: studentCubit.studentModel == null
                 ? CircleProgress(
-                    title: '0 %',
+                    title: '0%',
                     lineWidth: Resizable.size(context, 3),
                     percent: 0,
                     radius: Resizable.size(context, 16),
@@ -80,7 +80,7 @@ class CollapseOverviewStudentV2 extends StatelessWidget {
                   )
                 : CircleProgress(
                     title:
-                        '${(studentCubit.getHwPercent() * 100).toStringAsFixed(0)} %',
+                        '${(studentCubit.getHwPercent() * 100).toStringAsFixed(0)}%',
                     lineWidth: Resizable.size(context, 3),
                     percent: studentCubit.getHwPercent(),
                     radius: Resizable.size(context, 16),
@@ -115,7 +115,6 @@ class CollapseOverviewStudentV2 extends StatelessWidget {
                       : Icons.keyboard_arrow_up,
                 )),
             evaluate: Container(
-              padding: EdgeInsets.all(Resizable.padding(context, 5)),
               width: Resizable.size(context, 30),
               height: Resizable.size(context, 30),
               alignment: Alignment.center,
@@ -123,11 +122,11 @@ class CollapseOverviewStudentV2 extends StatelessWidget {
                   color: stdClass.getRankColor(studentCubit.getEvaluate()),
                   borderRadius:
                       BorderRadius.circular(Resizable.size(context, 5))),
-              child: Text(studentCubit.getEvaluate(),
+              child: Center(child: Text(studentCubit.getEvaluate(),
                   style: TextStyle(
                       fontWeight: FontWeight.w800,
                       color: Colors.white,
-                      fontSize: Resizable.font(context, 30))),
+                      fontSize: Resizable.font(context, 30)))),
             )));
   }
 }

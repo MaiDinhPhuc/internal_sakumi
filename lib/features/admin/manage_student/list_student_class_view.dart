@@ -11,6 +11,7 @@ class ListStudentClassView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ManageStdTabView( cubit: cubit),
         cubit.firstTab

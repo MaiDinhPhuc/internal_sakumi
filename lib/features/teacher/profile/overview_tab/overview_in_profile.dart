@@ -53,7 +53,7 @@ class OverViewTabInProfile extends StatelessWidget {
                                 child: CircleProgress(
                                   title: cubit.levelUpPercent == null
                                       ? '0%'
-                                      : '${cubit.levelUpPercent!.toStringAsFixed(0)} %',
+                                      : '${cubit.levelUpPercent!.toStringAsFixed(0)}%',
                                   lineWidth: Resizable.size(context, 5),
                                   percent: cubit.levelUpPercent == null
                                       ? 0
@@ -76,7 +76,7 @@ class OverViewTabInProfile extends StatelessWidget {
                                   child: CircleProgress(
                                     title: cubit.attendancePercent == null
                                         ? '0%'
-                                        : '${(cubit.attendancePercent! * 100).toStringAsFixed(0)} %',
+                                        : '${(cubit.attendancePercent! * 100).toStringAsFixed(0)}%',
                                     lineWidth: Resizable.size(context, 5),
                                     percent: cubit.attendancePercent == null
                                         ? 0
@@ -98,7 +98,7 @@ class OverViewTabInProfile extends StatelessWidget {
                                   child: CircleProgress(
                                     title: cubit.hwPercent == null
                                         ? '0%'
-                                        : '${(cubit.hwPercent! * 100).toStringAsFixed(0)} %',
+                                        : '${(cubit.hwPercent! * 100).toStringAsFixed(0)}%',
                                     lineWidth: Resizable.size(context, 5),
                                     percent: cubit.hwPercent == null
                                         ? 0

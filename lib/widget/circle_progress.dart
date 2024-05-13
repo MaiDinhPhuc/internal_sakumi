@@ -24,7 +24,7 @@ class CircleProgress extends StatelessWidget {
         animationDuration: 2500,
         percent: percent,
         center: Card(
-          margin: EdgeInsets.zero,
+          margin: EdgeInsets.all(Resizable.padding(context, 5)),
           elevation: Resizable.size(context, 10),
           shadowColor: Colors.transparent,
           color: Colors.transparent,
@@ -32,7 +32,7 @@ class CircleProgress extends StatelessWidget {
           child: Center(
               child: Text(
             title,
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: fontSize),
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: fontSize*0.95),
           )),
         ),
         circularStrokeCap: CircularStrokeCap.round,

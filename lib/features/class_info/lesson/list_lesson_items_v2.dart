@@ -137,7 +137,7 @@ class LessonItemV2 extends StatelessWidget {
                                       child: Opacity(
                                           opacity: 0,
                                           child: CircleProgress(
-                                              title: '0 %',
+                                              title: '0%',
                                               lineWidth:
                                               Resizable.size(context, 3),
                                               percent: 0,

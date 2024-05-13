@@ -35,20 +35,20 @@ class ManageStatisticsScreen extends StatelessWidget {
                           flex: 1,
                           child: Container(
                             margin: EdgeInsets.only(
-                                top: Resizable.padding(context, 30)
+                                top: Resizable.padding(context, 15)
                             ),
                             child: Text(AppText.titleStatisticsDashboard.text,
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w800,
-                                    fontSize: Resizable.font(context, 28))),
+                                    fontSize: Resizable.font(context, 30))),
                           )),
                       Expanded(
                           flex: 1,
                           child: Container(
                               padding: EdgeInsets.symmetric(
                                   horizontal: Resizable.padding(context, 30),
-                                  vertical: Resizable.padding(context, 15)),
+                                  vertical: Resizable.padding(context, 10)),
                               decoration: BoxDecoration(
                                   color: lightGreyColor,
                                   borderRadius: BorderRadius.circular(

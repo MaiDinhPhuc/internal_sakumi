@@ -78,6 +78,16 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> checkTeacherClass(
+      int userId, int classId) async {
+    final snapshot = await db
+        .collection("teacher_class")
+        .where("user_id", isEqualTo: userId)
+        .where("class_id", isEqualTo: classId)
+        .get();
+    return snapshot;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getLessonsByCourseId(
       int id) async {
     final snapshot =
@@ -843,10 +853,9 @@ class FireStoreDb {
     await db.collection("schedule").doc("schedule_${model.id}").set({
       'class_id': model.classId,
       'date': model.date,
-      'end_time': model.endTime,
+      'calendar': model.calendar,
       'id': model.id,
       'role': model.role,
-      'start_time': model.startTime,
       'status': model.status,
       'teacher_id': model.teacherId,
       'type': model.type
@@ -857,10 +866,9 @@ class FireStoreDb {
     await db.collection("schedule").doc("schedule_${model.id}").set({
       'class_id': model.classId,
       'date': model.date,
-      'end_time': model.endTime,
+      'calendar': model.calendar,
       'id': model.id,
       'role': model.role,
-      'start_time': model.startTime,
       'status': model.status,
       'teacher_id': model.teacherId,
       'type': model.type
@@ -2136,7 +2144,6 @@ class FireStoreDb {
         .set(tag.toJson(),SetOptions(merge: true))
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
-      print(error);
       value = false;
     });
     return value;
@@ -2150,7 +2157,6 @@ class FireStoreDb {
         .set(groupTag.toJson(), SetOptions(merge: true))
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
-      print(error);
       value = false;
     });
     return value;
@@ -2164,7 +2170,6 @@ class FireStoreDb {
         .delete()
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
-      print(error);
       value = false;
     });
     return value;
@@ -2187,7 +2192,6 @@ class FireStoreDb {
         .delete()
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
-      print(error);
       value = false;
     });
     return value;
@@ -2236,7 +2240,6 @@ class FireStoreDb {
         .set(manageTagModel.toJson(), SetOptions(merge: true))
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
-      print(error);
       value = false;
     });
     return value;
@@ -2250,7 +2253,6 @@ class FireStoreDb {
         .delete()
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
-      print(error);
       value = false;
     });
     return value;
@@ -2267,21 +2269,21 @@ class FireStoreDb {
           if (tags.isEmpty) {
             docRef.delete();
           } else {
-            print("Xoá tag thành công");
+            debugPrint("Xoá tag thành công");
           }
         } else {
-          print("Tài liệu không tồn tại");
+          debugPrint("Tài liệu không tồn tại");
         }
       });
     }).catchError((error) {
-      print("Lỗi khi xoá tag: $error");
+      debugPrint("Lỗi khi xoá tag: $error");
     });
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getManageTagsContainsTagId(int tagId) async {
     final snapshot = await db.collection("manage_tags")
         .where('tags', arrayContains: tagId)
-        .get();;
+        .get();
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> manage_tags ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");

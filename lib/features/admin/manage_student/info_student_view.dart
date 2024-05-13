@@ -38,18 +38,22 @@ class InfoStudentView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           cubit.student!.url == ''
-              ? Image.asset("assets/images/ic_avt.png")
+              ? Image.asset(
+                  "assets/images/ic_avt.png",
+                  height: Resizable.size(context, 80),
+                  width: Resizable.size(context, 80),
+                )
               : ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(1000)),
+                  borderRadius: const BorderRadius.all(Radius.circular(100)),
                   child: Image.network(
                     cubit.student!.url,
-                    height: Resizable.size(context, 100),
-                    width: Resizable.size(context, 100),
+                    height: Resizable.size(context, 80),
+                    width: Resizable.size(context, 80),
                     errorBuilder: (_, __, ___) => Container(),
                   ),
                 ),
           Padding(
-            padding:  EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               vertical: Resizable.padding(context, 10),
               horizontal: Resizable.padding(context, 20),
             ),
@@ -84,23 +88,23 @@ class InfoStudentView extends StatelessWidget {
           Padding(
               padding: EdgeInsets.all(Resizable.padding(context, 5)),
               child: ListInfoStudent(cubit: cubit)),
-          Row(
+          Padding(padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 5)),child:   Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
                   flex: 4,
                   child: ResetPassButton(AppText.txtReloadPass.text,
                       onPressed: () {
-                    waitingDialog(context);
-                    cubit.resetPassword();
-                    Navigator.pop(context);
-                    notificationDialog(
-                        context, AppText.txtSendReloadPassDone.text);
-                  })),
+                        waitingDialog(context);
+                        cubit.resetPassword();
+                        Navigator.pop(context);
+                        notificationDialog(
+                            context, AppText.txtSendReloadPassDone.text);
+                      })),
               Expanded(flex: 1, child: Container()),
               Expanded(
                   flex: 4,
-                  child: SubmitButton(
+                  child: UpdateProfileButton(AppText.txtUpdate.text,
                     onPressed: () async {
                       waitingDialog(context);
                       var student = StudentModel(
@@ -121,10 +125,9 @@ class InfoStudentView extends StatelessWidget {
                       notificationDialog(
                           context, AppText.txtUpdateStudentDone.text);
                     },
-                    title: AppText.txtUpdate.text,
                   ))
             ],
-          )
+          ))
         ],
       ),
     );

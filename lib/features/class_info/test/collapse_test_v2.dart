@@ -30,9 +30,9 @@ class CollapseTestV2 extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                   fontWeight: FontWeight.w700,
-                  fontSize: Resizable.font(context, 16))),
+                  fontSize: Resizable.font(context, 20))),
           submit: CircleProgress(
-            title: '${(detailCubit.getSubmitPercent() * 100).toStringAsFixed(0)} %',
+            title: '${(detailCubit.getSubmitPercent() * 100).toStringAsFixed(0)}%',
             lineWidth: Resizable.size(context, 3),
             percent: detailCubit.getSubmitPercent(),
             radius: Resizable.size(context, 16),
@@ -79,7 +79,8 @@ class CollapseTestV2 extends StatelessWidget {
               )),
           dropdown: Container(),
         ),
-        Text(detailCubit.testModel.description,
+        if(detailCubit.testModel.description.isNotEmpty)
+          Text(detailCubit.testModel.description,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
                 fontWeight: FontWeight.w700,

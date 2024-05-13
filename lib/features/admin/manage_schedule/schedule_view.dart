@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_schedule/search_in_schedule_view.dart';
-import 'package:internal_sakumi/features/teacher/profile/schedule_tab/schedule_item.dart';
 import 'package:internal_sakumi/features/teacher/profile/schedule_tab/schedule_item_v2.dart';
 import 'package:internal_sakumi/features/teacher/profile/schedule_tab/schedule_taught_item.dart';
 import 'package:internal_sakumi/utils/resizable.dart';

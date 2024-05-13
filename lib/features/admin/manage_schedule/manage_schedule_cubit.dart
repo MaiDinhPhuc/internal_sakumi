@@ -18,7 +18,12 @@ class ManageScheduleCubit extends Cubit<int> {
   final DateTime now = DateTime.now();
   int currentWeekday = DateTime.now().weekday;
 
-  List<String> listMenu = ["Đổi giáo viên", "Nghỉ", "Huỷ lịch dạy"];
+  List<String> listMenu = [
+    "Chỉnh sửa lịch dạy",
+    "Đổi giáo viên",
+    "Nghỉ",
+    "Huỷ lịch dạy"
+  ];
 
   List<String> listDay = [
     "Thứ HAI",
@@ -100,8 +105,9 @@ class ManageScheduleCubit extends Cubit<int> {
   }
 
   String getTeacherName(int teacherId) {
-    if(this.teacherId != null) {
-      var teacherModel = listTeacher.where((e) => e.userId == this.teacherId).toList();
+    if (this.teacherId != null) {
+      var teacherModel =
+          listTeacher.where((e) => e.userId == this.teacherId).toList();
       if (teacherModel.isEmpty) return "";
       return teacherModel.first.name;
     }
@@ -141,34 +147,33 @@ class ManageScheduleCubit extends Cubit<int> {
     }
   }
 
-  addSchedule(ScheduleModel schedule){
+  addSchedule(ScheduleModel schedule) {
     listSingleSchedule!.add(schedule);
-    if(listTeacherId.contains(schedule.teacherId) == false){
+    if (listTeacherId.contains(schedule.teacherId) == false) {
       listTeacherId.add(schedule.teacherId);
     }
     for (var i in listTeacherId) {
       DataProvider.teacherById(i, loadTeacher);
     }
-    emit(state+1);
+    emit(state + 1);
   }
 
   cancelSchedule(ScheduleModel schedule, int index) {
-
-    var date = listDate[index].millisecondsSinceEpoch;
-
-    var newSchedule = ScheduleModel(
-        id: DateTime.now().millisecondsSinceEpoch,
-        teacherId: schedule.teacherId,
-        status: "cancel",
-        classId: schedule.classId,
-        type: "single",
-        startTime: schedule.startTime,
-        endTime: schedule.endTime,
-        role: [],
-        date: date);
-
-    listSingleSchedule!.add(newSchedule);
-    Create.createSingleSchedule(newSchedule);
+    // var date = listDate[index].millisecondsSinceEpoch;
+    //
+    // var newSchedule = ScheduleModel(
+    //     id: DateTime.now().millisecondsSinceEpoch,
+    //     teacherId: schedule.teacherId,
+    //     status: "cancel",
+    //     classId: schedule.classId,
+    //     type: "single",
+    //     startTime: schedule.startTime,
+    //     endTime: schedule.endTime,
+    //     role: [],
+    //     date: date);
+    //
+    // listSingleSchedule!.add(newSchedule);
+    // Create.createSingleSchedule(newSchedule);
     emit(state + 1);
   }
 
@@ -206,15 +211,15 @@ class ManageScheduleCubit extends Cubit<int> {
     return list;
   }
 
-  bool checkSchedule(ScheduleModel schedule){
-
-    if(teacherId != null){
+  bool checkSchedule(ScheduleModel schedule) {
+    if (teacherId != null) {
       return false;
     }
 
-    List<ScheduleModel> temp =
-    listCyclicSchedule!.where((e) => e.classId == schedule.classId).toList();
-    if(temp.length == 1 && temp.first.teacherId == schedule.teacherId){
+    List<ScheduleModel> temp = listCyclicSchedule!
+        .where((e) => e.classId == schedule.classId)
+        .toList();
+    if (temp.length == 1 && temp.first.teacherId == schedule.teacherId) {
       return false;
     }
     return true;

@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
-import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -65,7 +64,7 @@ class StudentClassOverview extends StatelessWidget {
         ),
         widgetAttendance: CircleProgress(
           title:
-              '${((attendancePercent == null ? 0 : attendancePercent!) * 100).toStringAsFixed(0)} %',
+              '${((attendancePercent == null ? 0 : attendancePercent!) * 100).toStringAsFixed(0)}%',
           lineWidth: Resizable.size(context, 3),
           percent: attendancePercent == null ? 0 : attendancePercent!,
           radius: Resizable.size(context, 15),
@@ -73,7 +72,7 @@ class StudentClassOverview extends StatelessWidget {
         ),
         widgetSubmit: CircleProgress(
           title:
-              '${((hwPercent == null ? 0 : hwPercent!) * 100).toStringAsFixed(0)} %',
+              '${((hwPercent == null ? 0 : hwPercent!) * 100).toStringAsFixed(0)}%',
           lineWidth: Resizable.size(context, 3),
           percent: hwPercent == null ? 0 : hwPercent!,
           radius: Resizable.size(context, 15),

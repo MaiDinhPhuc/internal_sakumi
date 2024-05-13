@@ -5,6 +5,7 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'add_schedule_cubit.dart';
+import 'choose_time_dialog.dart';
 
 class ChooseCyclicTime extends StatelessWidget {
   const ChooseCyclicTime({super.key, required this.addCubit});
@@ -35,178 +36,24 @@ class ChooseCyclicTime extends StatelessWidget {
               children: [
                 ...addCubit.listDay.map((e) => CheckboxListTile(
                       controlAffinity: ListTileControlAffinity.leading,
-                      title: Text(e,
+                      title: Text("$e  ${addCubit.listCheckTime[addCubit.listDay.indexOf(e)]}",
                           style:
                               TextStyle(fontSize: Resizable.font(context, 20))),
-                      value: addCubit.listDayChoose.contains(e),
+                      value: addCubit.listCheckDay[addCubit.listDay.indexOf(e)],
                       onChanged: (newValue) {
-                        addCubit.chooseDay(e);
+                        var index = addCubit.listDay.indexOf(e);
+                        if(addCubit.listCheckDay[index] == true) {
+                          addCubit.chooseDay(index);
+                        }else{
+                          showDialog(
+                              context: context,
+                              builder: (_) => ChooseTimeDialog(addCubit: addCubit, index: index));
+                        }
                       },
                     ))
               ],
             ),
           ),
-          Padding(
-              padding: EdgeInsets.all(Resizable.size(context, 10)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Từ",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: Resizable.font(context, 20)),
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
-                    width: Resizable.size(context, 100),
-                    height: Resizable.size(context, 30),
-                    child: Row(
-                      children: [
-                        Expanded(
-                            flex: 1,
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              decoration: InputDecoration(
-                                hintText: "00",
-                                isDense: true,
-                                fillColor: Colors.white,
-                                hoverColor: Colors.transparent,
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: const Color(0xffE0E0E0),
-                                      width: Resizable.size(context, 0.5)),
-                                  borderRadius: BorderRadius.circular(
-                                      Resizable.padding(context, 5)),
-                                ),
-                                filled: true,
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        Resizable.padding(context, 5)),
-                                    borderSide: BorderSide(
-                                        color: const Color(0xffE0E0E0),
-                                        width: Resizable.size(context, 0.5))),
-                              ),
-                              onChanged: (value) {
-                                addCubit.inputFromHour(value);
-                              },
-                            )),
-                        Padding(padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 5)),child: Text(
-                          ":",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: Resizable.font(context, 20)),
-                        )),
-                        Expanded(
-                            flex: 1,
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              decoration: InputDecoration(
-                                hintText: "00",
-                                isDense: true,
-                                fillColor: Colors.white,
-                                hoverColor: Colors.transparent,
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: const Color(0xffE0E0E0),
-                                      width: Resizable.size(context, 0.5)),
-                                  borderRadius: BorderRadius.circular(
-                                      Resizable.padding(context, 5)),
-                                ),
-                                filled: true,
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        Resizable.padding(context, 5)),
-                                    borderSide: BorderSide(
-                                        color: const Color(0xffE0E0E0),
-                                        width: Resizable.size(context, 0.5))),
-                              ),
-                              onChanged: (value) {
-                                addCubit.inputFromMinute(value);
-                              },
-                            ))
-                      ],
-                    ),
-                  ),
-                  Text(
-                    "Đến",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: Resizable.font(context, 20)),
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
-                    width: Resizable.size(context, 100),
-                    height: Resizable.size(context, 30),
-                    child: Row(
-                      children: [
-                        Expanded(
-                            flex: 1,
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              decoration: InputDecoration(
-                                hintText: "00",
-                                isDense: true,
-                                fillColor: Colors.white,
-                                hoverColor: Colors.transparent,
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: const Color(0xffE0E0E0),
-                                      width: Resizable.size(context, 0.5)),
-                                  borderRadius: BorderRadius.circular(
-                                      Resizable.padding(context, 5)),
-                                ),
-                                filled: true,
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        Resizable.padding(context, 5)),
-                                    borderSide: BorderSide(
-                                        color: const Color(0xffE0E0E0),
-                                        width: Resizable.size(context, 0.5))),
-                              ),
-                              onChanged: (value) {
-                                addCubit.inputToHour(value);
-                              },
-                            )),
-                        Padding(padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 5)),child: Text(
-                          ":",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: Resizable.font(context, 20)),
-                        )),
-                        Expanded(
-                            flex: 1,
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              decoration: InputDecoration(
-                                hintText: "00",
-                                isDense: true,
-                                fillColor: Colors.white,
-                                hoverColor: Colors.transparent,
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: const Color(0xffE0E0E0),
-                                      width: Resizable.size(context, 0.5)),
-                                  borderRadius: BorderRadius.circular(
-                                      Resizable.padding(context, 5)),
-                                ),
-                                filled: true,
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        Resizable.padding(context, 5)),
-                                    borderSide: BorderSide(
-                                        color: const Color(0xffE0E0E0),
-                                        width: Resizable.size(context, 0.5))),
-                              ),
-                              onChanged: (value) {
-                                addCubit.inputToMinute(value);
-                              },
-                            ))
-                      ],
-                    ),
-                  ),
-                ],
-              )),
         ],
       ),
     );

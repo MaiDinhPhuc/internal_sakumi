@@ -19,11 +19,9 @@ class AddScheduleCubit extends Cubit<int> {
   String toHour = "00";
   String toMinute = "00";
 
-  TeacherModel? teacher;
+
 
   bool checkExistClass = true;
-
-  List<String> listDayChoose = [];
 
   List<String> listDay = [
     "Thứ HAI",
@@ -35,13 +33,26 @@ class AddScheduleCubit extends Cubit<int> {
     "CHỦ NHẬT"
   ];
 
+  List<bool> listCheckDay = [false, false, false, false, false, false, false];
+
+  List<String> listCheckTime = ["", "", "", "", "", "", ""];
+
+  Map calender = {
+    'Mon': "",
+    'Tue': "",
+    'Wed': "",
+    'Thu': "",
+    'Fri': "",
+    'Sat': "",
+    'Sun': ""
+  };
+
   int? teacherId;
   TextEditingController teacherSearch = TextEditingController();
   String teacherSearchValue = "";
 
   checkSchedule() async {
     checkExistClass = true;
-    DataProvider.teacherById(teacherId!, loadTeacher);
     List<TeacherClassModel> listTeacherClass =
         await FireBaseProvider.instance.getTeacherClassById(teacherId!);
     List<int> listClassId = listTeacherClass.map((e) => e.classId).toList();
@@ -52,45 +63,50 @@ class AddScheduleCubit extends Cubit<int> {
   }
 
   addNewCyclicSchedule(ManageScheduleCubit cubit) async {
-    List<ScheduleModel> schedule = await FireBaseProvider.instance.getClassCyclicSchedule(classId!);
+    List<ScheduleModel> schedule =
+        await FireBaseProvider.instance.getClassCyclicSchedule(classId!);
     DateTime now = DateTime.now();
-    if(schedule.isEmpty){
-      ScheduleModel newSchedule = ScheduleModel(
-          id: now.millisecondsSinceEpoch,
-          teacherId: teacherId!,
-          status: "teaching",
-          classId: classId!,
-          type: "cyclic",
-          startTime: "$fromHour:$fromMinute",
-          endTime: "$toHour:$toMinute",
-          role: listDayChoose,
-          date: now.millisecondsSinceEpoch);
+    // if(schedule.isEmpty){
+    //   ScheduleModel newSchedule = ScheduleModel(
+    //       id: now.millisecondsSinceEpoch,
+    //       teacherId: teacherId!,
+    //       status: "teaching",
+    //       classId: classId!,
+    //       type: "cyclic",
+    //       startTime: "$fromHour:$fromMinute",
+    //       endTime: "$toHour:$toMinute",
+    //       role: listDayChoose,
+    //       date: now.millisecondsSinceEpoch);
+    //
+    //   await FireBaseProvider.instance.addNewSchedule(newSchedule);
+    // }else{
+    //   ScheduleModel newSchedule = ScheduleModel(
+    //       id: schedule.first.id,
+    //       teacherId: teacherId!,
+    //       status: "teaching",
+    //       classId: classId!,
+    //       type: schedule.first.type,
+    //       calendar: "$fromHour:$fromMinute",
+    //       endTime: "$toHour:$toMinute",
+    //       role: listDayChoose,
+    //       date: schedule.first.date);
+    //   await FireBaseProvider.instance.updateTeacherCyclicSchedule(newSchedule);
+    // }
+  }
 
-      await FireBaseProvider.instance.addNewSchedule(newSchedule);
+
+
+  chooseDay(int index) {
+    if (listCheckDay[index] == true) {
+      listCheckDay[index] = false;
+      listCheckTime[index] = "";
     }else{
-      ScheduleModel newSchedule = ScheduleModel(
-          id: schedule.first.id,
-          teacherId: teacherId!,
-          status: "teaching",
-          classId: classId!,
-          type: schedule.first.type,
-          startTime: "$fromHour:$fromMinute",
-          endTime: "$toHour:$toMinute",
-          role: listDayChoose,
-          date: schedule.first.date);
-      await FireBaseProvider.instance.updateTeacherCyclicSchedule(newSchedule);
-    }
-  }
-
-  loadTeacher(Object teacherModel) {
-    teacher = teacherModel as TeacherModel;
-  }
-
-  chooseDay(String value) {
-    if (listDayChoose.contains(value)) {
-      listDayChoose.remove(value);
-    } else {
-      listDayChoose.add(value);
+      listCheckDay[index] = true;
+      listCheckTime[index] = "$fromHour:$fromMinute - $toHour:$toMinute";
+      fromHour = "00";
+      fromMinute = "00";
+      toHour = "00";
+      toMinute = "00";
     }
     emit(state + 1);
   }

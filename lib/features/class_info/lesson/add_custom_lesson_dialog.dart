@@ -31,7 +31,6 @@ class AddCustomLessonDialog extends StatelessWidget {
           backgroundColor: Colors.white,
           insetPadding: EdgeInsets.all(Resizable.padding(context, 10)),
           child: Container(
-            //height: 500,
             width: MediaQuery.of(context).size.width / 2,
             padding: EdgeInsets.all(Resizable.padding(context, 20)),
             child: SingleChildScrollView(child: Column(

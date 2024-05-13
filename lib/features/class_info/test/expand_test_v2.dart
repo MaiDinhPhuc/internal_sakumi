@@ -12,6 +12,12 @@ class ExpandTestV2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        Container(
+          height: Resizable.size(context, 1),
+          margin:
+          EdgeInsets.symmetric(vertical: Resizable.padding(context, 15)),
+          color: const Color(0xffD9D9D9),
+        ),
         ...detailCubit.getStudent().map((e) => Padding(
             padding: EdgeInsets.symmetric(vertical: Resizable.size(context, 5)),
             child: TestItemRowLayout(

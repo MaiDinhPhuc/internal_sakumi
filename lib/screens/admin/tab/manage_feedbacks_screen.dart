@@ -25,12 +25,12 @@ class ManageFeedBacksScreen extends StatelessWidget {
               child: Center(
             child: Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: Resizable.padding(context, 50)),
+                    horizontal: Resizable.padding(context, 70)),
                 child: Column(
                   children: [
                     Container(
                       margin: EdgeInsets.symmetric(
-                          vertical: Resizable.padding(context, 20)),
+                          vertical: Resizable.padding(context, 15)),
                       child: Text(
                           AppText.titleFeedBackFromStd.text.toUpperCase(),
                           style: TextStyle(

@@ -14,29 +14,28 @@ class ManageScheduleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: Resizable.padding(context, 80)),
-        child: SingleChildScrollView(child: Column(
-          children: [
-            SizedBox(height: Resizable.size(context, 20)),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                CustomBackTeacherScreenButton(),
-              ],
-            ),
-            SizedBox(height: Resizable.size(context, 10)),
-            Text(AppText.txtScheduleTeacher.text,
-                style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: Resizable.font(context, 30),
-                    color: Colors.black)),
-            SizedBox(height: Resizable.size(context, 10)),
-            ScheduleView(cubit: cubit)
-          ],
-        )),
-      ),
-    );
+        body: SingleChildScrollView(
+            child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: Resizable.padding(context, 70)),
+                child: Column(
+                  children: [
+                    SizedBox(height: Resizable.size(context, 20)),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        CustomBackTeacherScreenButton(),
+                      ],
+                    ),
+                    SizedBox(height: Resizable.size(context, 10)),
+                    Text(AppText.txtScheduleTeacher.text,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w800,
+                            fontSize: Resizable.font(context, 30),
+                            color: Colors.black)),
+                    SizedBox(height: Resizable.size(context, 10)),
+                    ScheduleView(cubit: cubit)
+                  ],
+                ))));
   }
 }

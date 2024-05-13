@@ -31,33 +31,33 @@ class ScheduleItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(Resizable.size(context, 5))),
         child: Column(
           children: [
-            Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: Resizable.padding(context, 5),
-                  vertical: Resizable.padding(context, 2)),
-              decoration: BoxDecoration(
-                  color: scheduleModel.type == "single"
-                      ? const Color(0xffFBBBBB)
-                      : const Color(0xff90CAF9),
-                  border: Border.all(
-                      width: Resizable.size(context, 1),
-                      color: scheduleModel.type == "single"
-                          ? const Color(0xffFBBBBB)
-                          : const Color(0xff90CAF9)),
-                  borderRadius:
-                      BorderRadius.circular(Resizable.size(context, 15))),
-              child: Text( textAlign: TextAlign.center,
-                scheduleModel.type == "single"
-                    ? "Nghỉ"
-                    : "${scheduleModel.startTime} - ${scheduleModel.endTime}",
-                style: TextStyle(
-                    color: scheduleModel.type == "single"
-                        ? const Color(0xffA10D0D)
-                        : const Color(0xff0D47A1),
-                    fontSize: Resizable.font(context, 16),
-                    fontWeight: FontWeight.w700),
-              ),
-            ),
+            // Container(
+            //   padding: EdgeInsets.symmetric(
+            //       horizontal: Resizable.padding(context, 5),
+            //       vertical: Resizable.padding(context, 2)),
+            //   decoration: BoxDecoration(
+            //       color: scheduleModel.type == "single"
+            //           ? const Color(0xffFBBBBB)
+            //           : const Color(0xff90CAF9),
+            //       border: Border.all(
+            //           width: Resizable.size(context, 1),
+            //           color: scheduleModel.type == "single"
+            //               ? const Color(0xffFBBBBB)
+            //               : const Color(0xff90CAF9)),
+            //       borderRadius:
+            //           BorderRadius.circular(Resizable.size(context, 15))),
+            //   child: Text( textAlign: TextAlign.center,
+            //     scheduleModel.type == "single"
+            //         ? "Nghỉ"
+            //         : "${scheduleModel.startTime} - ${scheduleModel.endTime}",
+            //     style: TextStyle(
+            //         color: scheduleModel.type == "single"
+            //             ? const Color(0xffA10D0D)
+            //             : const Color(0xff0D47A1),
+            //         fontSize: Resizable.font(context, 16),
+            //         fontWeight: FontWeight.w700),
+            //   ),
+            // ),
             Expanded(
                 child: Center(
                     child: Text( textAlign: TextAlign.center,

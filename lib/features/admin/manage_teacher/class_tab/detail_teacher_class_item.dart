@@ -42,14 +42,14 @@ class DetailTeacherClassItem extends StatelessWidget {
           widgetAttendance: Padding(
               padding: EdgeInsets.only(left: Resizable.padding(context, 10)),
               child: CircleProgress(
-                title: '${(attendance * 100).toStringAsFixed(0)} %',
+                title: '${(attendance * 100).toStringAsFixed(0)}%',
                 lineWidth: Resizable.size(context, 3),
                 percent: attendance,
                 radius: Resizable.size(context, 15),
                 fontSize: Resizable.font(context, 14),
               )),
           widgetSubmit: CircleProgress(
-            title: '${(hw * 100).toStringAsFixed(0)} %',
+            title: '${(hw * 100).toStringAsFixed(0)}%',
             lineWidth: Resizable.size(context, 3),
             percent: hw,
             radius: Resizable.size(context, 15),

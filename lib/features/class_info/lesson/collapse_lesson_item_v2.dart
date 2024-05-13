@@ -38,7 +38,7 @@ class CollapseLessonItemV2 extends StatelessWidget {
           child: Opacity(
               opacity: 0,
               child: CircleProgress(
-                  title: '0 %',
+                  title: '0%',
                   lineWidth:
                   Resizable.size(context, 3),
                   percent: 0,
@@ -50,7 +50,7 @@ class CollapseLessonItemV2 extends StatelessWidget {
           ? Container()
           : CircleProgress(
               title:
-                  '${(cubit.getAttendancePercent() * 100).toStringAsFixed(0)} %',
+                  '${(cubit.getAttendancePercent() * 100).toStringAsFixed(0)}%',
               lineWidth: Resizable.size(context, 3),
               percent: cubit.getAttendancePercent(),
               radius: Resizable.size(context, 16),
@@ -61,14 +61,14 @@ class CollapseLessonItemV2 extends StatelessWidget {
           : cubit.lesson.isCustom
               ? CircleProgress(
                   title:
-                      '${(cubit.getHwPercentCustom() * 100).toStringAsFixed(0)} %',
+                      '${(cubit.getHwPercentCustom() * 100).toStringAsFixed(0)}%',
                   lineWidth: Resizable.size(context, 3),
                   percent: cubit.getHwPercentCustom(),
                   radius: Resizable.size(context, 16),
                   fontSize: Resizable.font(context, 14),
                 )
               : CircleProgress(
-                  title: '${(cubit.getHwPercent() * 100).toStringAsFixed(0)} %',
+                  title: '${(cubit.getHwPercent() * 100).toStringAsFixed(0)}%',
                   lineWidth: Resizable.size(context, 3),
                   percent: cubit.getHwPercent(),
                   radius: Resizable.size(context, 16),

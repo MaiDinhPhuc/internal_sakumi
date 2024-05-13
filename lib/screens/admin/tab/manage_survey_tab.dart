@@ -22,84 +22,102 @@ class ManageSurveyTab extends StatelessWidget {
         children: [
           HeaderTeacher(index: 3, classId: TextUtils.getName(), role: "admin"),
           Expanded(
-              child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.symmetric(
-                      vertical: Resizable.padding(context, 20)),
-                  child: Text(AppText.titleSurveyList.text,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: Resizable.font(context, 30))),
-                ),
-                BlocBuilder<ManageSurveyAdminCubit, int>(
-                    bloc: cubit..loadSurvey(),
-                    builder: (c, s) {
-                      return cubit.surveyResults == null
-                          ? Transform.scale(
-                              scale: 0.75,
-                              child: const CircularProgressIndicator(),
-                            )
-                          : cubit.surveyResults!.isEmpty
-                              ? Column(children: [
-                                  Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical:
-                                              Resizable.padding(context, 30)),
-                                      child: Text(
-                                          AppText.txtSurveyResultEmpty.text,
+              child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(
+                    vertical: Resizable.padding(context, 20)),
+                child: Text(AppText.titleSurveyList.text.toUpperCase(),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: Resizable.font(context, 30))),
+              ),
+              BlocBuilder<ManageSurveyAdminCubit, int>(
+                  bloc: cubit..loadSurvey(),
+                  builder: (c, s) {
+                    return cubit.surveyResults == null
+                        ? Transform.scale(
+                            scale: 0.75,
+                            child: const CircularProgressIndicator(),
+                          )
+                        : cubit.surveyResults!.isEmpty
+                            ? Expanded(
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                    Padding(
+                                        padding: EdgeInsets.only(
+                                            bottom:
+                                                Resizable.padding(context, 20)),
+                                        child: Text(
+                                            AppText.txtSurveyResultEmpty.text,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: Resizable.font(
+                                                    context, 25)))),
+                                    SubmitButton(
+                                        onPressed: () {
+                                          alertCheckBoxSurvey(c, cubit,
+                                              int.parse(TextUtils.getName()));
+                                        },
+                                        title: AppText.btnAddNewSurvey.text)
+                                  ]))
+                            : Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: Resizable.padding(context, 70)),
+                                child: SingleChildScrollView(
+                                    child: Column(
+                                  children: [
+                                    SurveyLayout(
+                                      surveyCode: Text(
+                                          AppText.txtSurveyCode.text,
                                           style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: Resizable.font(
-                                                  context, 25)))),
-                                  SubmitButton(
-                                      onPressed: () {
-                                        alertCheckBoxSurvey(c, cubit,
-                                            int.parse(TextUtils.getName()));
-                                      },
-                                      title: AppText.btnAddNewSurvey.text)
-                                ])
-                              : Padding(padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 50)),child: Column(
-                        children: [
-                          SurveyLayout(
-                            surveyCode: Text(AppText.txtSurveyCode.text,
-                                style: TextStyle(
-                                    color: greyColor.shade600,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: Resizable.font(context, 17))),
-                            title: Text(AppText.txtTitle.text,
-                                style: TextStyle(
-                                    color: greyColor.shade600,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: Resizable.font(context, 17))),
-                            number: Text(AppText.textNumberResultReceive.text,
-                                style: TextStyle(
-                                    color: greyColor.shade600,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: Resizable.font(context, 17))),
-                            date: Text(AppText.txtDateAssignSurvey.text,
-                                style: TextStyle(
-                                    color: greyColor.shade600,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: Resizable.font(context, 17))),
-                            moreButton: Container(),
-                          ),
-                          ...cubit.surveyResults!.map((e) => SurveyItemAdmin(result: e, cubit: cubit)).toList(),
-                          Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: Resizable.padding(context, 20)),
-                              child: DottedBorderButton(
-                                  AppText.btnAddNewSurvey.text.toUpperCase(),
-                                  isManageGeneral: true, onPressed: () {
-                                alertCheckBoxSurvey(context, cubit,
-                                    int.parse(TextUtils.getName()));
-                              }))
-                        ],
-                      ));
-                    })
-              ],
-            ),
+                                              color: greyColor.shade600,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize:
+                                                  Resizable.font(context, 17))),
+                                      title: Text(AppText.txtTitle.text,
+                                          style: TextStyle(
+                                              color: greyColor.shade600,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize:
+                                                  Resizable.font(context, 17))),
+                                      number: Text(
+                                          AppText.textNumberResultReceive.text,
+                                          style: TextStyle(
+                                              color: greyColor.shade600,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize:
+                                                  Resizable.font(context, 17))),
+                                      date: Text(
+                                          AppText.txtDateAssignSurvey.text,
+                                          style: TextStyle(
+                                              color: greyColor.shade600,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize:
+                                                  Resizable.font(context, 17))),
+                                      moreButton: Container(),
+                                    ),
+                                    ...cubit.surveyResults!
+                                        .map((e) => SurveyItemAdmin(
+                                            result: e, cubit: cubit))
+                                        .toList(),
+                                    Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical:
+                                                Resizable.padding(context, 20)),
+                                        child: DottedBorderButton(
+                                            AppText.btnAddNewSurvey.text
+                                                .toUpperCase(),
+                                            isManageGeneral: true,
+                                            onPressed: () {
+                                          alertCheckBoxSurvey(context, cubit,
+                                              int.parse(TextUtils.getName()));
+                                        }))
+                                  ],
+                                )));
+                  })
+            ],
           ))
         ],
       ),

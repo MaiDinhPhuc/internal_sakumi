@@ -42,7 +42,7 @@ class TestNotAlreadyV2 extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      fontSize: Resizable.font(context, 16))),
+                      fontSize: Resizable.font(context, 20))),
               submit: Container(),
               status: Container(),
               mark: Container(),
@@ -88,7 +88,8 @@ class TestNotAlreadyV2 extends StatelessWidget {
                 ],
                 icon: const Icon(Icons.more_vert),
               )),
-          Text(detailCubit.testModel.description,
+          if(detailCubit.testModel.description.isNotEmpty)
+            Text(detailCubit.testModel.description,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                   fontWeight: FontWeight.w700,

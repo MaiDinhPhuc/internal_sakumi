@@ -63,7 +63,7 @@ class ClassItemRowLayout extends StatelessWidget {
                     child: Opacity(
                       opacity: 0,
                       child: CircleProgress(
-                        title: '%',
+                        title: '0%',
                         lineWidth: Resizable.size(context, 3),
                         percent: 0,
                         radius: Resizable.size(context, 15),

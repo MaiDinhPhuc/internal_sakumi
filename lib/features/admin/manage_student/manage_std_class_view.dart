@@ -39,14 +39,12 @@ class ManageStdClassView extends StatelessWidget {
                     color: greyColor.shade600))
             : Column(
                 children: [
-                  Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: Resizable.padding(context, 10)),
-                      child: Text(AppText.txtListStudentClass.text,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: Resizable.font(context, 24),
-                              color: greyColor.shade600))),
+                  Container(
+                    height: Resizable.size(context, 1),
+                    margin:
+                    EdgeInsets.symmetric(vertical: Resizable.padding(context, 15)),
+                    color: const Color(0xffD9D9D9),
+                  ),
                   ClassItemRowLayout(
                     widgetClassCode: Text(AppText.txtClassCode.text,
                         style: TextStyle(

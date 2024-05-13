@@ -146,27 +146,25 @@ class CustomLessonCubit extends Cubit<int> {
             customLessons: listCustomLesson,
             informal: classModel.informal,
             isSubClass: classModel.isSubClass,
-            subClassId: classModel.subClassId))
-        .whenComplete(() {
-      listLessonCubit.addNewLesson(LessonModel(
-          lessonId: millisecondsSinceEpoch,
-          courseId: -1,
-          description: desCon.text,
-          content: "",
-          title: titleCon.text,
-          btvn: -1,
-          vocabulary: 0,
-          listening: 0,
-          kanji: 0,
-          grammar: 0,
-          flashcard: 0,
-          alphabet: 0,
-          order: 0,
-          reading: 0,
-          enable: true,
-          customLessonInfo: list,
-          isCustom: true));
-    });
+            subClassId: classModel.subClassId));
+    listLessonCubit.addNewLesson(LessonModel(
+        lessonId: millisecondsSinceEpoch,
+        courseId: -1,
+        description: desCon.text,
+        content: "",
+        title: titleCon.text,
+        btvn: -1,
+        vocabulary: 0,
+        listening: 0,
+        kanji: 0,
+        grammar: 0,
+        flashcard: 0,
+        alphabet: 0,
+        order: 0,
+        reading: 0,
+        enable: true,
+        customLessonInfo: list,
+        isCustom: true));
   }
 
   updateSubCourseClass( SubCourseCubit subCourseCubit) {

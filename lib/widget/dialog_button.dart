@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class DialogButton extends StatelessWidget {
@@ -49,7 +50,7 @@ class ResetPassButton extends StatelessWidget {
               RoundedRectangleBorder(
                   side: const BorderSide(color: Colors.black),
                   borderRadius: BorderRadius.circular(
-                      Resizable.padding(context, 1000)))),
+                      Resizable.padding(context, 3)))),
           backgroundColor:
           MaterialStateProperty.all(Colors.white),
           padding: MaterialStateProperty.all(
@@ -61,6 +62,37 @@ class ResetPassButton extends StatelessWidget {
               fontWeight: FontWeight.w700,
               fontSize: Resizable.font(context, 16),
               color: Colors.black)),
+    );
+  }
+}
+
+class UpdateProfileButton extends StatelessWidget {
+  final String title;
+  final Function() onPressed;
+  const UpdateProfileButton(this.title, {required this.onPressed, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ButtonStyle(
+          shadowColor:
+          MaterialStateProperty.all(Colors.black),
+          shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                      Resizable.padding(context, 3)))),
+          backgroundColor:
+          MaterialStateProperty.all(primaryColor),
+          padding: MaterialStateProperty.all(
+              EdgeInsets.symmetric(
+                  horizontal:
+                  Resizable.padding(context, 10)))),
+      child: Text(title,
+          style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: Resizable.font(context, 16),
+              color: Colors.white)),
     );
   }
 }
