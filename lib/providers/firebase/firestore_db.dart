@@ -29,11 +29,13 @@ import 'package:internal_sakumi/providers/api/api_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/browser.dart';
 
+import '../../services/custom_firebase_firestore.dart';
+
 class FireStoreDb {
   FireStoreDb._privateConstructor();
 
   static final FireStoreDb instance = FireStoreDb._privateConstructor();
-  final db = FirebaseFirestore.instance;
+  final db = CustomFirebaseFireStore.database;
 
   Future<List<QuestionModel>> getQuestionByUrl(String url) async {
     APIResponseModel response = await APIProvider.instance.get(url);
@@ -1203,7 +1205,7 @@ class FireStoreDb {
   }
 
   Future<void> saveUser(String email, String role, int uid) async {
-    await FirebaseFirestore.instance
+    await CustomFirebaseFireStore.database
         .collection('users')
         .doc("user_${uid}_$role")
         .set({'email': email.toLowerCase(), 'roles': role, 'user_id': uid});
@@ -1974,7 +1976,7 @@ class FireStoreDb {
   }
 
   Future<void> changeClassStatus(ClassModel classModel, String newStatus) async {
-    FirebaseFirestore.instance
+    CustomFirebaseFireStore.database
         .collection('class')
         .doc('class_${classModel.classId}_course_${classModel.courseId}')
         .update({'class_status': newStatus}).whenComplete(() {
@@ -1984,7 +1986,7 @@ class FireStoreDb {
   }
 
   Future<void> updateClassInfo(ClassModel model) async {
-    FirebaseFirestore.instance
+    CustomFirebaseFireStore.database
         .collection('class')
         .doc('class_${model.classId}_course_${model.courseId}')
         .update({

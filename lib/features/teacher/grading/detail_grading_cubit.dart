@@ -13,6 +13,7 @@ import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
+import '../../../services/custom_firebase_firestore.dart';
 import 'detail_grading_view.dart';
 
 class DetailGradingCubit extends Cubit<int> {
@@ -165,7 +166,7 @@ class DetailGradingCubit extends Cubit<int> {
       }
       double submitScore = (temp / (total == 0 ? 1 : total));
       if (type == "test") {
-        FirebaseFirestore.instance
+        CustomFirebaseFireStore.database
             .collection('student_test')
             .doc(
             'student_${i.userId}_test_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}')
@@ -183,7 +184,7 @@ class DetailGradingCubit extends Cubit<int> {
             time: stdTests![index].time);
         DataProvider.updateStudentTest(stdTests![index].classId, stdTests!);
       } else {
-        FirebaseFirestore.instance
+        CustomFirebaseFireStore.database
             .collection('student_lesson')
             .doc(
             'student_${i.userId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}')
@@ -233,7 +234,7 @@ class DetailGradingCubit extends Cubit<int> {
     for (var i in answers) {
       debugPrint(
           "student_${i.studentId}_homework_question_${i.questionId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}");
-      FirebaseFirestore.instance
+      CustomFirebaseFireStore.database
           .collection('answer')
           .doc(type == "test"
               ? 'student_${i.studentId}_test_question_${i.questionId}_class_${TextUtils.getName(position: 1)}'
@@ -276,7 +277,7 @@ class DetailGradingCubit extends Cubit<int> {
         }
         double submitScore = (temp.toDouble() / listQuestions!.length.toDouble());
         if (type == "test") {
-          FirebaseFirestore.instance
+          CustomFirebaseFireStore.database
               .collection('student_test')
               .doc(
                   'student_${i.userId}_test_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}')
@@ -294,7 +295,7 @@ class DetailGradingCubit extends Cubit<int> {
               time: stdTests![index].time);
           DataProvider.updateStudentTest(stdTests![index].classId, stdTests!);
         } else {
-          FirebaseFirestore.instance
+          CustomFirebaseFireStore.database
               .collection('student_lesson')
               .doc(
                   'student_${i.userId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}')

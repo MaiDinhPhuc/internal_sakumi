@@ -14,6 +14,7 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/custom_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
+import '../../../services/custom_firebase_firestore.dart';
 import 'class_overview_cubit_v2.dart';
 
 class ConfirmChangeStudentClassStatusV2 extends StatelessWidget {
@@ -54,7 +55,7 @@ class ConfirmChangeStudentClassStatusV2 extends StatelessWidget {
             text: AppText.txtBack.text),
         CustomButton(
             onPress: () async {
-              FirebaseFirestore.instance
+              CustomFirebaseFireStore.database
                   .collection('student_class')
                   .doc(
                       'student_${student.userId}_class_${studentClassModel.classId}')

@@ -7,6 +7,7 @@ import 'package:internal_sakumi/features/admin/search/item_search_list.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:intl/intl.dart';
 
+import '../../../services/custom_firebase_firestore.dart';
 import 'bill_dialog_cubit.dart';
 import 'input_date_bill.dart';
 import 'input_in_bill.dart';
@@ -206,7 +207,7 @@ class InfoBillView extends StatelessWidget {
                       ),
                       if (billDialogCubit.classId == null)
                         StreamBuilder<QuerySnapshot>(
-                            stream: FirebaseFirestore.instance
+                            stream: CustomFirebaseFireStore.database
                                 .collection("class")
                                 .snapshots(),
                             builder: (c, snapshots) {
@@ -223,7 +224,7 @@ class InfoBillView extends StatelessWidget {
               ),
               if (billDialogCubit.userId == null)
                 StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
+                    stream: CustomFirebaseFireStore.database
                         .collection("students")
                         .snapshots(),
                     builder: (c, snapshots) {
@@ -430,7 +431,7 @@ class InfoBillViewV2 extends StatelessWidget {
                       ),
                       if (billDialogCubit.classId == null)
                         StreamBuilder<QuerySnapshot>(
-                            stream: FirebaseFirestore.instance
+                            stream: CustomFirebaseFireStore.database
                                 .collection("class")
                                 .snapshots(),
                             builder: (c, snapshots) {
@@ -447,7 +448,7 @@ class InfoBillViewV2 extends StatelessWidget {
               ),
               if (billDialogCubit.userId == null)
                 StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
+                    stream: CustomFirebaseFireStore.database
                         .collection("students")
                         .snapshots(),
                     builder: (c, snapshots) {

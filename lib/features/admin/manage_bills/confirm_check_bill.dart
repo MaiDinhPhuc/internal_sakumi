@@ -7,6 +7,7 @@ import 'package:internal_sakumi/model/bill_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/custom_button.dart';
 
+import '../../../services/custom_firebase_firestore.dart';
 import 'manage_bill_cubit.dart';
 
 class ConfirmCheckBill extends StatelessWidget {
@@ -39,7 +40,7 @@ class ConfirmCheckBill extends StatelessWidget {
             text: AppText.txtBack.text),
         CustomButton(
             onPress: () async {
-              FirebaseFirestore.instance
+              CustomFirebaseFireStore.database
                   .collection('bill')
                   .doc('bill_${billModel.createDate}')
                   .update({'check': "check"}).whenComplete(() {
@@ -101,7 +102,7 @@ class ConfirmCheckBillV2 extends StatelessWidget {
             text: AppText.txtBack.text),
         CustomButton(
             onPress: () async {
-              FirebaseFirestore.instance
+              CustomFirebaseFireStore.database
                   .collection('bill')
                   .doc('bill_${billModel.createDate}')
                   .update({'check': "check"}).whenComplete(() {

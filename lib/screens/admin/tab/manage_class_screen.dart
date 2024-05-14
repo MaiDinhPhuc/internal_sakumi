@@ -14,6 +14,7 @@ import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layou
 import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
 import 'package:internal_sakumi/providers/cache/filter_admin_provider.dart';
 import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/services/custom_firebase_firestore.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:shimmer/shimmer.dart';
@@ -55,9 +56,11 @@ class ManageClassScreenV2 extends StatelessWidget {
                             )),
                       ),
                       AddButton(
-                        onTap: () {
+                        onTap: ()async {
                           Navigator.pushNamed(
                               context, '${Routes.admin}/${Routes.manageGeneral}');
+
+
                         }, title: AppText.btnManageClass.text,
                       )
                     ],

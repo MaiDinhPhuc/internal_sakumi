@@ -17,6 +17,7 @@ import 'package:internal_sakumi/utils/resizable.dart';
 
 import '../../../configs/color_configs.dart';
 import '../../../features/admin/search/item_search.dart';
+import '../../../services/custom_firebase_firestore.dart';
 
 class SearchGeneralScreen extends StatelessWidget {
   SearchGeneralScreen({Key? key})
@@ -136,7 +137,7 @@ class SearchGeneralScreen extends StatelessWidget {
                                                 )),
                                           )),
                                       suggestionsCallback: (pattern) async {
-                                        return (await FirebaseFirestore.instance
+                                        return (await CustomFirebaseFireStore.database
                                                 .collection(searchCubit.typeQuery)
                                                 .get())
                                             .docs;

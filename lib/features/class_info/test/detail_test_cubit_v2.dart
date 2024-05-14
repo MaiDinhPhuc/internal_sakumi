@@ -12,6 +12,8 @@ import 'package:internal_sakumi/model/test_result_model.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../services/custom_firebase_firestore.dart';
+
 class DetailTestV2 extends Cubit<int> {
   DetailTestV2(this.cubit, this.testModel) : super(0) {
     loadData();
@@ -66,7 +68,7 @@ class DetailTestV2 extends Cubit<int> {
         date: formattedDate));
     Navigator.of(context).pop();
     CollectionReference create =
-        FirebaseFirestore.instance.collection('test_result');
+        CustomFirebaseFireStore.database.collection('test_result');
     create
         .doc('test_${testModel.id}_class_${cubit.classId}')
         .set({

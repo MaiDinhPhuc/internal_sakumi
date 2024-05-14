@@ -8,6 +8,8 @@ import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/custom_button.dart';
 
+import '../../../../services/custom_firebase_firestore.dart';
+
 class ConfirmChangeTeacherStatus extends StatelessWidget {
   const ConfirmChangeTeacherStatus(this.newStatus, this.teacherClassModel,
       this.teacher, this.cubit, this.popupCubit,
@@ -46,7 +48,7 @@ class ConfirmChangeTeacherStatus extends StatelessWidget {
             text: AppText.txtBack.text),
         CustomButton(
             onPress: () async {
-              FirebaseFirestore.instance
+              CustomFirebaseFireStore.database
                   .collection('teacher_class')
                   .doc(
                   'teacher_${teacher.userId}_class_${teacherClassModel.classId}')

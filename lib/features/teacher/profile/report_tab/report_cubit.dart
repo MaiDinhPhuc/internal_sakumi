@@ -12,6 +12,8 @@ import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../services/custom_firebase_firestore.dart';
+
 class ReportCubit extends Cubit<int> {
   ReportCubit() : super(0);
 
@@ -145,7 +147,7 @@ class ReportCubit extends Cubit<int> {
     var index = listReport!.indexOf(listReport!.firstWhere((e) => e.id == id));
     listReport!.remove(listReport![index]);
     emit(state+1);
-    await  FirebaseFirestore.instance.collection('reports').doc('report_$id').update({
+    await  CustomFirebaseFireStore.database.collection('reports').doc('report_$id').update({
       'delete': true
     });
   }

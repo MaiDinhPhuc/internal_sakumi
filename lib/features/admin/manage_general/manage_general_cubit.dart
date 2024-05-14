@@ -296,7 +296,7 @@ class ManageGeneralCubit extends Cubit<int> {
     var index = listTeacherClass!.indexOf(getTeacherClass(newValue.userId));
     listTeacherClass![index] = newValue;
     emit(state+1);
-    // FirebaseFirestore.instance
+    // CustomFirebaseFireStore.database
     //     .collection('teacher_class')
     //     .doc('teacher_${newValue.userId}_class_${newValue.classId}')
     //     .update({

@@ -6,6 +6,8 @@ class AppConfigs{
 
   static const bool isRunningDebug = false;
 
+  static bool demoDatabase = true;
+
 
   static String getDataUrl(String file, String token){
     return "https://noibo.sakumi.edu.vn/files/$token/$file";
