@@ -112,7 +112,15 @@ class FeedBackCubit extends Cubit<int> {
     if (courses == null || classes.isEmpty) {
       return "";
     }
-    var courseId = classes.firstWhere((e) => e.classId == classId).courseId;
+    var course = classes.where((e) => e.classId == classId).toList();
+
+    if(course.isEmpty){
+      print(classId);
+      return "";
+    }
+
+    var courseId = course.first.courseId;
+
     String name = courses!.where((e) => e.courseId == courseId).isEmpty
         ? ""
         : "${courses!.where((e) => e.courseId == courseId).first.title} - ${courses!.where((e) => e.courseId == courseId).first.level}";
@@ -171,7 +179,7 @@ class FeedBackCubit extends Cubit<int> {
       }
     }
     var classTemp =
-        await FireBaseProvider.instance.getListClassForTeacher(listClassId);
+        await FireBaseProvider.instance.getListClassByListIdV2(listClassId);
     for(var i in classTemp){
       if(!classes.contains(i)){
         classes.add(i);

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 
@@ -9,6 +11,8 @@ class SearchCubit extends Cubit<int>{
   String typeQuery = "class";
 
   String searchValue = "";
+
+  Timer? _debounce;
 
   changeType(String? value)async{
     type = value!;
@@ -25,7 +29,10 @@ class SearchCubit extends Cubit<int>{
   }
 
   updateSearchValue(String newValue){
-    searchValue = newValue;
-    emit(state+1);
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 300), () {
+      searchValue = newValue;
+      emit(state+1);
+    });
   }
 }

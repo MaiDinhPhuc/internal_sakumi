@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/Material.dart';
-import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/model/bill_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
@@ -378,13 +377,11 @@ class FireStoreDb {
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonResultByLessonId $id $classId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
-    // debugPrint("==========>get db from \"lesson_result\" : ${snapshot.docs.length}");
-    return snapshot;
+     return snapshot;
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getAllCourse() async {
     final snapshot = await db.collection("courses").get();
-    // debugPrint("==========>get db from \"courses\" : ${snapshot.docs.length}");
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllCourse ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");

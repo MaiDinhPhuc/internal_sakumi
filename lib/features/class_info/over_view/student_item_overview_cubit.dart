@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/features/calculator/calculator.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
@@ -41,6 +42,11 @@ class StudentItemOverViewCubit extends Cubit<int> {
   loadData() {
     var std =
         cubit.students.where((e) => e.userId == stdClassModel.userId).toList();
+
+    if(std.isEmpty){
+      debugPrint("Student Id: ${stdClassModel.userId}");
+    }
+
     if (std.isNotEmpty) {
       studentModel = std.first;
     }

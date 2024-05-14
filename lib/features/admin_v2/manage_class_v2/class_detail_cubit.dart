@@ -199,9 +199,17 @@ class ClassDetailCubit extends Cubit<int> {
     hwPercent =
         Calculator.classHwPercent(stdClasses!, stdLessons!, lessons!);
 
-    var lastLesson =
-        lessons!.firstWhere((e) => e.lessonId == lessonResults!.last.lessonId);
-    this.lastLesson = lastLesson.title;
+    if(lessonResults == null || lessonResults!.isEmpty){
+      lastLesson = "";
+    }else{
+      var lastLesson =
+      lessons!.where((e) => e.lessonId == lessonResults!.last.lessonId).toList();
+      if (lastLesson.isEmpty) {
+        this.lastLesson = "";
+      } else {
+        this.lastLesson = lastLesson.first.title;
+      }
+    }
 
     emit(state + 1);
   }

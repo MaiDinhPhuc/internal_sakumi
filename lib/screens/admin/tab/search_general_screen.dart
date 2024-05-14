@@ -1,21 +1,16 @@
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:flutter/Material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/app_bar/admin_appbar.dart';
 import 'package:internal_sakumi/features/admin/search/drop_down_search.dart';
 import 'package:internal_sakumi/features/admin/search/general_tags/tag_filter_view.dart';
-import 'package:internal_sakumi/features/admin/search/item_search_list.dart';
 import 'package:internal_sakumi/features/admin/search/search_cubit.dart';
-import 'package:internal_sakumi/features/admin/search/search_field.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
-import '../../../configs/color_configs.dart';
 import '../../../features/admin/search/item_search.dart';
 
 class SearchGeneralScreen extends StatelessWidget {
@@ -59,7 +54,7 @@ class SearchGeneralScreen extends StatelessWidget {
                                 children: [
                                   DropDownSearchField(
                                       textFieldConfiguration: TextFieldConfiguration(
-                                          autofocus: true,
+                                          autofocus: false,
                                           cursorColor: Colors.black,
                                           style: TextStyle(
                                               fontSize: Resizable.font(context, 25),
@@ -75,8 +70,7 @@ class SearchGeneralScreen extends StatelessWidget {
                                             hintStyle: TextStyle(
                                                 fontWeight: FontWeight.w500,
                                                 fontSize: Resizable.font(context, 20),
-                                                color: const Color(0xFF461220)
-                                                    .withOpacity(0.5)),
+                                                color: darkPrimaryColor),
                                             contentPadding: EdgeInsets.symmetric(
                                               horizontal:
                                                   Resizable.padding(context, 20),
@@ -86,7 +80,7 @@ class SearchGeneralScreen extends StatelessWidget {
                                                     Resizable.size(context, 40)),
                                             border: OutlineInputBorder(
                                                 borderSide: const BorderSide(
-                                                    color: Colors.black),
+                                                    color: grey2),
                                                 borderRadius:
                                                     BorderRadius.circular(10)),
                                             prefixIcon: IntrinsicHeight(
