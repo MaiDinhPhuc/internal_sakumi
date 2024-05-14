@@ -1,4 +1,4 @@
-import 'package:d_chart/d_chart.dart';
+
 import 'package:flutter/material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/features/teacher/list_class/chart_view_admin.dart';

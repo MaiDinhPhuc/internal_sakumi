@@ -44,6 +44,7 @@ import 'package:internal_sakumi/widget/waiting_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../model/tag_model.dart';
+import '../../services/custom_firebase_firestore.dart';
 import 'firebase_authentication.dart';
 import 'firestore_db.dart';
 
@@ -1613,7 +1614,7 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<void> addCourseFromJson(String jsonData) async {
     final data = json.decode(jsonData);
-    final FirebaseFirestore db = FirebaseFirestore.instance;
+    final FirebaseFirestore db = CustomFirebaseFireStore.database;
     for (final temp in data) {
       try {
         await db
@@ -1629,7 +1630,7 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<void> addLessonFromJson(String jsonData) async {
     final data = json.decode(jsonData);
-    final FirebaseFirestore db = FirebaseFirestore.instance;
+    final FirebaseFirestore db = CustomFirebaseFireStore.database;
     for (final temp in data) {
       try {
         await db
@@ -1645,7 +1646,7 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<void> addTestFromJson(String jsonData) async {
     final data = json.decode(jsonData);
-    final FirebaseFirestore db = FirebaseFirestore.instance;
+    final FirebaseFirestore db = CustomFirebaseFireStore.database;
     for (final temp in data) {
       try {
         await db

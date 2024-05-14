@@ -13,6 +13,7 @@ import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
+import '../../../services/custom_firebase_firestore.dart';
 import 'detail_grading_view.dart';
 
 class DetailGradingCubitV2 extends Cubit<int> {
@@ -157,7 +158,7 @@ class DetailGradingCubitV2 extends Cubit<int> {
       }
       double submitScore = (temp / (total == 0 ? 1 : total));
       if (type == "test") {
-        FirebaseFirestore.instance
+        CustomFirebaseFireStore.database
             .collection('student_test')
             .doc(
             'student_${i.userId}_test_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}')
@@ -175,7 +176,7 @@ class DetailGradingCubitV2 extends Cubit<int> {
             time: stdTests![index].time);
         DataProvider.updateStudentTest(stdTests![index].classId, stdTests!);
       } else {
-        FirebaseFirestore.instance
+        CustomFirebaseFireStore.database
             .collection('student_lesson')
             .doc(
             'student_${i.userId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}')
@@ -227,7 +228,7 @@ class DetailGradingCubitV2 extends Cubit<int> {
     }
 
     for (var i in answers) {
-      FirebaseFirestore.instance
+      CustomFirebaseFireStore.database
           .collection('answer_v2')
           .doc(
               'student_${i.studentId}_homework_question_${i.questionId}_custom_lesson_${customLessonId}_lesson_${lessonId}_class_$classId')
@@ -284,7 +285,7 @@ class DetailGradingCubitV2 extends Cubit<int> {
           }
         }
 
-        FirebaseFirestore.instance
+        CustomFirebaseFireStore.database
             .collection('student_lesson')
             .doc(
                 'student_${i.userId}_lesson_${customLessonId}_class_$classId')

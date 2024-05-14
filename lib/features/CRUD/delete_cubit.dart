@@ -3,6 +3,8 @@ import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/schedule_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
+import '../../services/custom_firebase_firestore.dart';
+
 class Delete{
 
   static removeClass(ClassModel classModel) async {
@@ -22,7 +24,7 @@ class Delete{
   }
 
   static deleteSchedule(ScheduleModel schedule){
-    FirebaseFirestore.instance
+    CustomFirebaseFireStore.database
         .collection('schedule')
         .doc('schedule_${schedule.id}')
         .update({'status': "delete"});

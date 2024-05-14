@@ -7,6 +7,7 @@ import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/custom_button.dart';
 
+import '../../../services/custom_firebase_firestore.dart';
 import 'class_cubit_v2.dart';
 
 class ConfirmChangeClassStatusV2 extends StatelessWidget {
@@ -50,7 +51,7 @@ class ConfirmChangeClassStatusV2 extends StatelessWidget {
               int now = DateTime.now().millisecondsSinceEpoch;
 
               if(newStatus == 'Preparing' || newStatus == 'InProgress'){
-                FirebaseFirestore.instance
+                CustomFirebaseFireStore.database
                     .collection('class')
                     .doc(
                     'class_${classModel.classId}_course_${classModel.courseId}')
@@ -72,7 +73,7 @@ class ConfirmChangeClassStatusV2 extends StatelessWidget {
                   Navigator.pop(context);
                 });
               }else{
-                FirebaseFirestore.instance
+                CustomFirebaseFireStore.database
                     .collection('class')
                     .doc(
                     'class_${classModel.classId}_course_${classModel.courseId}')

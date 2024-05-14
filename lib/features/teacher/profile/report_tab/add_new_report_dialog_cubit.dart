@@ -8,6 +8,8 @@ import 'package:internal_sakumi/features/teacher/profile/report_tab/report_cubit
 import 'package:internal_sakumi/model/report_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
+import '../../../../services/custom_firebase_firestore.dart';
+
 class AddNewReportCubit extends Cubit<int> {
   AddNewReportCubit(this.reportModel, this.userId,this.classId) : super(0) {
     load();
@@ -86,7 +88,7 @@ class AddNewReportCubit extends Cubit<int> {
       listUrl = list;
     }
     int id = DateTime.now().millisecondsSinceEpoch;
-    FirebaseFirestore.instance.collection('reports').doc('report_$id').set({
+    CustomFirebaseFireStore.database.collection('reports').doc('report_$id').set({
       'id': id,
       'teacher_id': userId,
       'status': status,
@@ -123,7 +125,7 @@ class AddNewReportCubit extends Cubit<int> {
       }
       listUrl = list;
     }
-    FirebaseFirestore.instance.collection('reports').doc('report_${reportModel!.id}').update({
+    CustomFirebaseFireStore.database.collection('reports').doc('report_${reportModel!.id}').update({
       'id': reportModel!.id,
       'teacher_id': userId,
       'status': status,

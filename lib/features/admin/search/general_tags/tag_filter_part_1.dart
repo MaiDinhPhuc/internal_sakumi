@@ -7,6 +7,7 @@ import 'package:internal_sakumi/features/admin/search/general_tags/add_tag_filte
 import 'package:internal_sakumi/features/admin/search/general_tags/tag_filter_cubit.dart';
 
 import '../../../../configs/text_configs.dart';
+import '../../../../services/custom_firebase_firestore.dart';
 import '../../../../utils/resizable.dart';
 import '../../../../widget/chip_tag.dart';
 
@@ -34,7 +35,7 @@ class TagFilterPart1 extends StatelessWidget {
                     color: Colors.black),
               ),
               CustomButtonV1(
-                onPressed: () {
+                onPressed: () async {
                   showDialog(context: context, builder: (context) {
                     return AddTagFilterDialog(
                       listOldTags: tagFilterCubit.listFilterTags,

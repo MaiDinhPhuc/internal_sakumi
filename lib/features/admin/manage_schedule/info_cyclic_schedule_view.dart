@@ -6,6 +6,7 @@ import 'package:internal_sakumi/features/admin/manage_bills/search_in_bill.dart'
 import 'package:internal_sakumi/features/admin/search/item_search_list.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
+import '../../../services/custom_firebase_firestore.dart';
 import 'add_schedule_cubit.dart';
 import 'choose_cyclic_time.dart';
 import 'manage_schedule_cubit.dart';
@@ -76,7 +77,7 @@ class InfoCyclicScheduleView extends StatelessWidget {
                       ),
                       if (addCubit.classId == null)
                         StreamBuilder<QuerySnapshot>(
-                            stream: FirebaseFirestore.instance
+                            stream: CustomFirebaseFireStore.database
                                 .collection("class")
                                 .snapshots(),
                             builder: (c, snapshots) {
@@ -93,7 +94,7 @@ class InfoCyclicScheduleView extends StatelessWidget {
               ),
               if (addCubit.teacherId == null)
                 StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
+                    stream: CustomFirebaseFireStore.database
                         .collection("teacher")
                         .snapshots(),
                     builder: (c, snapshots) {

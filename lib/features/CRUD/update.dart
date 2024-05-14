@@ -11,17 +11,19 @@ import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
+import '../../services/custom_firebase_firestore.dart';
+
 class Update  {
 
   static updateResponsibility(TeacherClassModel newValue) {
-    FirebaseFirestore.instance
+    CustomFirebaseFireStore.database
         .collection('teacher_class')
         .doc('teacher_${newValue.userId}_class_${newValue.classId}')
         .update({'responsibility': newValue.responsibility});
   }
 
   static updateStudentClassStatus(int userId, int classId, String newStatus) {
-    FirebaseFirestore.instance
+    CustomFirebaseFireStore.database
         .collection('student_class')
         .doc('student_${userId}_class_$classId')
         .update({

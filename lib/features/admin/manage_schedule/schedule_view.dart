@@ -8,6 +8,7 @@ import 'package:internal_sakumi/features/teacher/profile/schedule_tab/schedule_i
 import 'package:internal_sakumi/features/teacher/profile/schedule_tab/schedule_taught_item.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
+import '../../../services/custom_firebase_firestore.dart';
 import '../search/item_search_list.dart';
 import 'change_date_view.dart';
 import 'manage_schedule_cubit.dart';
@@ -119,7 +120,7 @@ class ScheduleView extends StatelessWidget {
                         Expanded(
                             flex: 3,
                             child: StreamBuilder<QuerySnapshot>(
-                                stream: FirebaseFirestore.instance
+                                stream: CustomFirebaseFireStore.database
                                     .collection("class")
                                     .snapshots(),
                                 builder: (c, snapshots) {
@@ -136,7 +137,7 @@ class ScheduleView extends StatelessWidget {
                         Expanded(
                             flex: 5,
                             child: StreamBuilder<QuerySnapshot>(
-                                stream: FirebaseFirestore.instance
+                                stream: CustomFirebaseFireStore.database
                                     .collection("teacher")
                                     .snapshots(),
                                 builder: (c, snapshots) {
