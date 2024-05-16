@@ -23,6 +23,7 @@ class ManageTeacherScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final shimmerList = List.generate(5, (index) => index);
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           const AdminAppBar(index: 7),
@@ -121,7 +122,7 @@ class ManageTeacherScreen extends StatelessWidget {
                         highlightColor: Colors.grey[100]!,
                         child: SingleChildScrollView(
                           child: Padding(
-                            padding: EdgeInsets.only(top: Resizable.padding(context, 20)),
+                            padding: EdgeInsets.only(top: Resizable.padding(context, 5)),
                             child: Column(
                               children: [
                                 ...shimmerList.map((e) => const ItemShimmer())

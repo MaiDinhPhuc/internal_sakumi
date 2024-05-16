@@ -22,6 +22,7 @@ class ListLessonScreenV2 extends StatelessWidget {
   Widget build(BuildContext context) {
     final shimmerList = List.generate(18, (index) => index);
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           HeaderTeacher(
@@ -41,34 +42,31 @@ class ListLessonScreenV2 extends StatelessWidget {
                         child: Padding(padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 70)),child: Column(
                           children: [
                             role == "admin"?
-                            Padding(
-                                padding: EdgeInsets.only(
-                                    bottom: Resizable.padding(context, 10)),
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.symmetric(
-                                            vertical: Resizable.padding(context, 20)),
-                                        child: Text(
-                                            '${AppText.txtClassCode.text} ${cubit.classModel!.classCode}',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w800,
-                                                fontSize: Resizable.font(context, 30))),
-                                      ),
-                                      AddButton(
-                                        onTap: () {
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) =>
-                                                  AddCustomLessonDialog(
-                                                      cubit,
-                                                      classModel: cubit
-                                                          .classModel!));
-                                        },
-                                        title: AppText.btnAddNewLesson.text,
-                                      )
-                                    ])) : Container(
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: Resizable.padding(context, 20)),
+                                    child: Text(
+                                        '${AppText.txtClassCode.text} ${cubit.classModel!.classCode}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: Resizable.font(context, 30))),
+                                  ),
+                                  AddButton(
+                                    onTap: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) =>
+                                              AddCustomLessonDialog(
+                                                  cubit,
+                                                  classModel: cubit
+                                                      .classModel!));
+                                    },
+                                    title: AppText.btnAddNewLesson.text,
+                                  )
+                                ]) : Container(
                               margin: EdgeInsets.symmetric(
                                   vertical: Resizable.padding(context, 20)),
                               child: Text(

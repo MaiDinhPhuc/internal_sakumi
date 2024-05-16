@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:flutter/Material.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +30,7 @@ class SearchGeneralScreen extends StatelessWidget {
           Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: Resizable.padding(context, 150)
+                  horizontal: Resizable.padding(context, 70)
                 ),
                 child: LayoutBuilder(
                   builder: (context, constraints) {

@@ -24,6 +24,7 @@ class ManageBillScreen extends StatelessWidget {
       cubit.loadData(filterController);
     }
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           const AdminAppBar(index: 8),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_dropdown.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_field.dart';
@@ -61,10 +62,10 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                               child: cubit.isFullCourse
                                   ? const Icon(
                                       Icons.check_box,
-                                      color: Color(0xffE0E0E0),
+                                      color: grey2,
                                     )
                                   : const Icon(Icons.check_box_outline_blank,
-                                      color: Color(0xffE0E0E0))),
+                                      color: grey2)),
                           Padding(
                             padding: EdgeInsets.only(
                                 left: Resizable.padding(context, 2)),

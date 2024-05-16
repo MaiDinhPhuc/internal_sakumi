@@ -5,7 +5,8 @@ class EmptyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: Text('Empty'),
       ),

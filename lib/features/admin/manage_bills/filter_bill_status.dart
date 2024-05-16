@@ -20,6 +20,8 @@ class FilterBillStatusView extends StatelessWidget {
         bloc: selectCubit..loadBillStatus(filterController.filter[BillFilter.status] == null ? [FilterBillStatus.check, FilterBillStatus.notCheck] :filterController.filter[BillFilter.status]!),
         builder: (c,s){
           return  Container(
+              constraints: BoxConstraints(
+                  maxHeight: Resizable.size(context, 25)),
               margin: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 10)),
               alignment: Alignment.centerRight, width: Resizable.size(context, 120),
               child: ClipRRect(

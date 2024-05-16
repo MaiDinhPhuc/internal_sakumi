@@ -11,7 +11,8 @@ class DetailStudentLessonItem extends StatelessWidget {
       required this.title,
       required this.index,
       required this.attendance,
-      required this.hw, required this.isCustom});
+      required this.hw,
+      required this.isCustom});
   final String title;
   final int index;
   final dynamic attendance, hw;
@@ -39,10 +40,13 @@ class DetailStudentLessonItem extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                     color: Colors.black),
               ),
-              Text(title)
+              Text(title,
+                  style: TextStyle(
+                      fontSize: Resizable.font(context, 17),
+                      color: Colors.black))
             ],
           ),
-          widgetAttendance: Padding(padding: EdgeInsets.only(left: Resizable.padding(context, 10)),child: TrackingItem(attendance)),
+          widgetAttendance: TrackingItem(attendance),
           widgetSubmit: TrackingItem(hw, isSubmit: true, isCustom: isCustom),
         ));
   }

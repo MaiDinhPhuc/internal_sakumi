@@ -20,6 +20,7 @@ class ListTestScreenV2 extends StatelessWidget {
   Widget build(BuildContext context) {
     final shimmerList = List.generate(10, (index) => index);
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           HeaderTeacher(index: 2, classId: TextUtils.getName(), role: role),

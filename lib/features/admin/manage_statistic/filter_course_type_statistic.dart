@@ -27,6 +27,8 @@ class FilterCourseTypeStatistic extends StatelessWidget {
               : cubit.filter[StatisticFilter.course]!),
         builder: (c, s) {
           return Container(
+              constraints: BoxConstraints(
+                  maxHeight: Resizable.size(context, 25)),
               margin: EdgeInsets.symmetric(
                   horizontal: Resizable.padding(context, 10)),
               alignment: Alignment.centerRight,

@@ -34,7 +34,7 @@ class HeaderBillStatistic extends StatelessWidget {
                           width: 1,
                           strokeAlign:
                           BorderSide.strokeAlignOutside,
-                          color: Color(0xFFE0E0E0),
+                          color: grey2,
                         ),
                         borderRadius:
                         BorderRadius.circular(50),
@@ -49,10 +49,10 @@ class HeaderBillStatistic extends StatelessWidget {
                   margin: EdgeInsets.symmetric(
                       horizontal:
                       Resizable.padding(context, 5)),
-                  width: 15,
-                  height: 3,
+                  width: Resizable.size(context, 5),
+               height: Resizable.size(context, 3),
                   decoration: ShapeDecoration(
-                    color: const Color(0xFFD9D9D9),
+                    color: greyColor.shade300,
                     shape: RoundedRectangleBorder(
                       borderRadius:
                       BorderRadius.circular(10),
@@ -73,7 +73,7 @@ class HeaderBillStatistic extends StatelessWidget {
                           width: 1,
                           strokeAlign:
                           BorderSide.strokeAlignOutside,
-                          color: Color(0xFFE0E0E0),
+                          color: grey2,
                         ),
                         borderRadius:
                         BorderRadius.circular(50),
@@ -99,7 +99,7 @@ class HeaderBillStatistic extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Padding(padding: EdgeInsets.only(right: Resizable.padding(context, 10), top: Resizable.padding(context, 5)),child: Column(
+                Padding(padding: EdgeInsets.only(right: Resizable.padding(context, 10), top: Resizable.padding(context, 2)),child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [

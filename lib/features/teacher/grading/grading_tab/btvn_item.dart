@@ -80,7 +80,7 @@ class BTVNItem extends StatelessWidget {
                               height: Resizable.size(context, 1),
                               margin: EdgeInsets.symmetric(
                                   vertical: Resizable.padding(context, 15)),
-                              color: const Color(0xffD9D9D9),
+                              color: greyColor.shade300,
                             ),
                             ExpandBTVNItem(cubit: cubit, lesson: e)
                           ],

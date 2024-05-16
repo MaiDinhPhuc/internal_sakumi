@@ -6,7 +6,7 @@ class AppConfigs{
 
   static const bool isRunningDebug = false;
 
-  static bool demoDatabase = true;
+  static bool demoDatabase = false;
 
 
   static String getDataUrl(String file, String token){

@@ -96,8 +96,8 @@ class BillView extends StatelessWidget {
                           children: [
                             Text(AppText.txtNote.text,
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: Resizable.font(context, 19))),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: Resizable.font(context, 18))),
                             NoteWidget(billModel.note),
                             Row(
                               children: [
@@ -105,29 +105,29 @@ class BillView extends StatelessWidget {
                                     text: TextSpan(
                                         text: AppText.txtRefund.text,
                                         style: TextStyle(
-                                            fontWeight: FontWeight.w700,
+                                            fontWeight: FontWeight.w600,
                                             fontSize:
-                                            Resizable.font(context, 19)), children: [
+                                            Resizable.font(context, 18)), children: [
                                       TextSpan(
                                           text: "  ${NumberFormat('#,##0').format(billModel.refund)}${billModel.currency == "Tiền Việt(vnđ)" ? "đ" : "¥"}",
                                           style: TextStyle(
                                               color: primaryColor,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: Resizable.font(context, 19)))])
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: Resizable.font(context, 18)))])
                                     ),
                                 Padding(padding: EdgeInsets.only(left: Resizable.size(context, 10)),child: RichText(
                                     text: TextSpan(
                                         text: AppText.txtRevenue.text,
                                         style: TextStyle(
-                                            fontWeight: FontWeight.w700,
+                                            fontWeight: FontWeight.w600,
                                             fontSize:
-                                            Resizable.font(context, 19)), children: [
+                                            Resizable.font(context, 18)), children: [
                                       TextSpan(
                                           text: "  ${NumberFormat('#,##0').format(billModel.payment - billModel.refund)}${billModel.currency == "Tiền Việt(vnđ)" ? "đ" : "¥"}",
                                           style: TextStyle(
                                               color: primaryColor,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: Resizable.font(context, 19)))])
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: Resizable.font(context, 18)))])
                                 ))
                               ],
                             ),
@@ -137,8 +137,8 @@ class BillView extends StatelessWidget {
                                 billModel.delete ? Text(AppText.stsRemove.text,
                                     style: TextStyle(
                                         color: redColor,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: Resizable.font(context, 19))) :
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: Resizable.font(context, 18))) :
                                 SubmitButton(
                                     onPressed: onTap, title: AppText.txtEdit.text),
                                 SubmitButton(
@@ -253,8 +253,8 @@ class BillViewV2 extends StatelessWidget {
                           children: [
                             Text(AppText.txtNote.text,
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: Resizable.font(context, 19))),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: Resizable.font(context, 18))),
                             NoteWidget(billModel.note),
                             Row(
                               children: [
@@ -262,29 +262,29 @@ class BillViewV2 extends StatelessWidget {
                                     text: TextSpan(
                                         text: AppText.txtRefund.text,
                                         style: TextStyle(
-                                            fontWeight: FontWeight.w700,
+                                            fontWeight: FontWeight.w600,
                                             fontSize:
-                                            Resizable.font(context, 19)), children: [
+                                            Resizable.font(context, 18)), children: [
                                       TextSpan(
                                           text: "  ${NumberFormat('#,##0').format(billModel.refund)}${billModel.currency == "Tiền Việt(vnđ)" ? "đ" : "¥"}",
                                           style: TextStyle(
                                               color: primaryColor,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: Resizable.font(context, 19)))])
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: Resizable.font(context, 18)))])
                                 ),
                                 Padding(padding: EdgeInsets.only(left: Resizable.size(context, 10)),child: RichText(
                                     text: TextSpan(
                                         text: AppText.txtRevenue.text,
                                         style: TextStyle(
-                                            fontWeight: FontWeight.w700,
+                                            fontWeight: FontWeight.w600,
                                             fontSize:
-                                            Resizable.font(context, 19)), children: [
+                                            Resizable.font(context, 18)), children: [
                                       TextSpan(
                                           text: "  ${NumberFormat('#,##0').format(billModel.payment - billModel.refund)}${billModel.currency == "Tiền Việt(vnđ)" ? "đ" : "¥"}",
                                           style: TextStyle(
                                               color: primaryColor,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: Resizable.font(context, 19)))])
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: Resizable.font(context, 18)))])
                                 ))
                               ],
                             ),
@@ -294,8 +294,8 @@ class BillViewV2 extends StatelessWidget {
                                 billModel.delete ? Text(AppText.stsRemove.text,
                                     style: TextStyle(
                                         color: redColor,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: Resizable.font(context, 19))) :
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: Resizable.font(context, 18))) :
                                 SubmitButton(
                                     onPressed: onTap, title: AppText.txtEdit.text),
                                 SubmitButton(

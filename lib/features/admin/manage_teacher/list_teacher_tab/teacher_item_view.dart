@@ -38,7 +38,6 @@ class TeacherItemView extends StatelessWidget {
                     Resizable.font(context, 20),
                     color: Colors.black)),
             widgetRating: Container(
-              //padding: EdgeInsets.all(Resizable.padding(context, 5)),
               width: Resizable.size(context, 30),
               height: Resizable.size(context, 30),
               alignment: Alignment.center,

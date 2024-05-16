@@ -24,7 +24,7 @@ class DetailStudentStatisticDialog extends StatelessWidget {
               insetPadding: EdgeInsets.all(Resizable.padding(context, 10)),
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.8,
-                padding: EdgeInsets.all(Resizable.padding(context, 20)),
+                padding: EdgeInsets.all(Resizable.padding(context, 10)),
                 child: Column(
                   children: [
                     Row(
@@ -47,14 +47,14 @@ class DetailStudentStatisticDialog extends StatelessWidget {
                         )
                       ],
                     ),
-                    Padding(padding: EdgeInsets.symmetric(vertical: Resizable.padding(context, 15)),child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        // FilterCourseLevelDetail(detailCubit),
-                        // FilterCourseTypeDetail(detailCubit),
-                        // FilterClassTypeDetail(detailCubit),
-                      ],
-                    )),
+                    // Padding(padding: EdgeInsets.symmetric(vertical: Resizable.padding(context, 15)),child: Row(
+                    //   mainAxisAlignment: MainAxisAlignment.end,
+                    //   children: [
+                    //     // FilterCourseLevelDetail(detailCubit),
+                    //     // FilterCourseTypeDetail(detailCubit),
+                    //     // FilterClassTypeDetail(detailCubit),
+                    //   ],
+                    // )),
                     Expanded(
                         child:detailCubit.getListLog(filterController).isNotEmpty? Column(
                           children: [

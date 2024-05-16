@@ -1,5 +1,6 @@
 
 import 'package:flutter/Material.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/providers/cache/filter_statistic_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -34,7 +35,7 @@ class HeaderClassStatistic extends StatelessWidget {
                           width: 1,
                           strokeAlign:
                           BorderSide.strokeAlignOutside,
-                          color: Color(0xFFE0E0E0),
+                          color: grey2,
                         ),
                         borderRadius:
                         BorderRadius.circular(50),
@@ -49,10 +50,10 @@ class HeaderClassStatistic extends StatelessWidget {
                   margin: EdgeInsets.symmetric(
                       horizontal:
                       Resizable.padding(context, 5)),
-                  width: 15,
-                  height: 3,
+                  width: Resizable.size(context, 5),
+               height: Resizable.size(context, 3),
                   decoration: ShapeDecoration(
-                    color: const Color(0xFFD9D9D9),
+                    color: greyColor.shade300,
                     shape: RoundedRectangleBorder(
                       borderRadius:
                       BorderRadius.circular(10),
@@ -73,7 +74,7 @@ class HeaderClassStatistic extends StatelessWidget {
                           width: 1,
                           strokeAlign:
                           BorderSide.strokeAlignOutside,
-                          color: Color(0xFFE0E0E0),
+                          color: grey2,
                         ),
                         borderRadius:
                         BorderRadius.circular(50),

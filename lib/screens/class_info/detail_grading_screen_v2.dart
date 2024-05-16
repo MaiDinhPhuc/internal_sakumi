@@ -23,6 +23,7 @@ class DetailGradingScreen extends StatelessWidget {
     return BlocProvider(
         create: (context) => DetailGradingCubit()..init(type),
         child: Scaffold(
+          backgroundColor: Colors.white,
           body: Column(
             children: [
               HeaderTeacher(

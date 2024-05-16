@@ -20,6 +20,8 @@ class FilterCourseLevelAdminV2 extends StatelessWidget {
         bloc: selectCubit..loadLevel(cubit.filter[AdminFilter.level] == null ? [FilterClassLevel.n5] :cubit.filter[AdminFilter.level]!),
         builder: (c,s){
           return  Container(
+              constraints: BoxConstraints(
+                  maxHeight: Resizable.size(context, 25)),
               margin: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 10)),
               alignment: Alignment.centerRight, width: Resizable.size(context, 120),
               child: ClipRRect(

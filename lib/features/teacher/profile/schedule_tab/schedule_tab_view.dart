@@ -29,7 +29,7 @@ class ScheduleTabView extends StatelessWidget {
                 Container(
                   height: Resizable.size(context, 1),
                   margin: EdgeInsets.symmetric(
-                      vertical: Resizable.padding(context, 5)),
+                      vertical: Resizable.padding(context, 10)),
                   color: greyColor.shade300,
                 ),
                 BlocBuilder<DropdownCubit, int>(

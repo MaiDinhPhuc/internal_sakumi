@@ -1,5 +1,6 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_teacher/list_teacher_tab/teacher_detail_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_teacher/list_teacher_tab/teacher_item_view.dart';
@@ -56,7 +57,7 @@ class TeacherItem extends StatelessWidget {
                               height: Resizable.size(context, 1),
                               margin: EdgeInsets.symmetric(
                                   vertical: Resizable.padding(context, 15)),
-                              color: const Color(0xffD9D9D9),
+                              color: greyColor.shade300,
                             ),
                             Text(AppText.titleNoteFromSupport.text,
                                 style: TextStyle(
@@ -67,7 +68,7 @@ class TeacherItem extends StatelessWidget {
                               height: Resizable.size(context, 1),
                               margin: EdgeInsets.symmetric(
                                   vertical: Resizable.padding(context, 15)),
-                              color: const Color(0xffD9D9D9),
+                              color: greyColor.shade300,
                             )
                           ],
                         ),
@@ -81,7 +82,7 @@ class TeacherItem extends StatelessWidget {
                                 Column(
                                   children: [
                                     SizedBox(
-                                      height: Resizable.size(context, 80),
+                                      height: Resizable.size(context, 60),
                                       child: CircleProgress(
                                         title: cubit.levelUpPercent == null
                                             ? '0%'
@@ -90,7 +91,7 @@ class TeacherItem extends StatelessWidget {
                                         percent: cubit.levelUpPercent == null
                                             ? 0
                                             : cubit.levelUpPercent! / 100,
-                                        radius: Resizable.size(context, 30),
+                                        radius: Resizable.size(context, 22),
                                         fontSize: Resizable.font(context, 20),
                                       ),
                                     ),
@@ -98,13 +99,13 @@ class TeacherItem extends StatelessWidget {
                                         style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             color: Colors.black,
-                                            fontSize: Resizable.font(context, 24)))
+                                            fontSize: Resizable.font(context, 22)))
                                   ],
                                 ),
                                 Column(
                                   children: [
                                     SizedBox(
-                                        height: Resizable.size(context, 80),
+                                        height: Resizable.size(context, 60),
                                         child: CircleProgress(
                                           title: cubit.attendancePercent == null
                                               ? '0%'
@@ -113,20 +114,20 @@ class TeacherItem extends StatelessWidget {
                                           percent: cubit.attendancePercent == null
                                               ? 0
                                               : cubit.attendancePercent!,
-                                          radius: Resizable.size(context, 30),
+                                          radius: Resizable.size(context, 22),
                                           fontSize: Resizable.font(context, 20),
                                         )),
                                     Text(AppText.txtRateOfAttendance.text,
                                         style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             color: Colors.black,
-                                            fontSize: Resizable.font(context, 24)))
+                                            fontSize: Resizable.font(context, 22)))
                                   ],
                                 ),
                                 Column(
                                   children: [
                                     SizedBox(
-                                        height: Resizable.size(context, 80),
+                                        height: Resizable.size(context, 60),
                                         child: CircleProgress(
                                           title: cubit.hwPercent == null
                                               ? '0%'
@@ -135,14 +136,14 @@ class TeacherItem extends StatelessWidget {
                                           percent: cubit.hwPercent == null
                                               ? 0
                                               : cubit.hwPercent!,
-                                          radius: Resizable.size(context, 30),
+                                          radius: Resizable.size(context, 22),
                                           fontSize: Resizable.font(context, 20),
                                         )),
                                     Text(AppText.txtRateOfSubmitHomework.text,
                                         style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             color: Colors.black,
-                                            fontSize: Resizable.font(context, 24)))
+                                            fontSize: Resizable.font(context, 22)))
                                   ],
                                 )
                               ],

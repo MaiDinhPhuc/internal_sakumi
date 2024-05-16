@@ -20,6 +20,7 @@ class SurveyTab extends StatelessWidget {
       ..loadSurvey();
     final shimmerList = List.generate(5, (index) => index);
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           CustomAppbar(buttonList: [

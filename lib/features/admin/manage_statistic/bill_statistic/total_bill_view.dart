@@ -36,7 +36,7 @@ class TotalBillView extends StatelessWidget {
                     height: Resizable.size(context, 1),
                     margin:
                     EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
-                    color: const Color(0xffD9D9D9),
+                    color: greyColor.shade300,
                   ),
                   Expanded(child: Center(child: Text(filterController.billStatisticCubit.totalBill == null ? "0" :filterController.billStatisticCubit.totalBill!.toString(),
                       style: TextStyle(
@@ -70,7 +70,7 @@ class TotalBillView extends StatelessWidget {
                     height: Resizable.size(context, 1),
                     margin:
                     EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
-                    color: const Color(0xffD9D9D9),
+                    color: greyColor.shade300,
                   ),
                   Expanded(child: Center(child: Text(filterController.billStatisticCubit.totalBillThisMonth == null ? "0" :filterController.billStatisticCubit.totalBillThisMonth!.toString(),
                       style: TextStyle(

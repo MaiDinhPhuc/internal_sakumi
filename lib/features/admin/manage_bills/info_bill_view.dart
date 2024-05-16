@@ -13,7 +13,8 @@ import 'input_date_bill.dart';
 import 'input_in_bill.dart';
 
 class InfoBillView extends StatelessWidget {
-  const InfoBillView({Key? key, required this.billDialogCubit, required this.isEdit})
+  const InfoBillView(
+      {Key? key, required this.billDialogCubit, required this.isEdit})
       : super(key: key);
   final BillDialogCubit billDialogCubit;
   final bool isEdit;
@@ -30,7 +31,7 @@ class InfoBillView extends StatelessWidget {
                   color: const Color(0xff757575))),
           SizedBox(height: Resizable.padding(context, 5)),
           SearchInBill(
-              hint:AppText.txtSearchStudent.text,
+              hint: AppText.txtSearchStudent.text,
               onDelete: () {
                 billDialogCubit.deleteStd();
               },
@@ -53,7 +54,7 @@ class InfoBillView extends StatelessWidget {
                               fontSize: Resizable.font(context, 18),
                               color: const Color(0xff757575)))),
                   SearchInBill(
-                      hint:AppText.txtSearchClass.text,
+                      hint: AppText.txtSearchClass.text,
                       onDelete: () {
                         billDialogCubit.deleteClass();
                       },
@@ -68,49 +69,58 @@ class InfoBillView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: Resizable.padding(context, 5)),
+                              padding: EdgeInsets.only(
+                                  top: Resizable.padding(context, 5)),
                               child: Text(AppText.txtCurrency.text,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: Resizable.font(context, 18),
                                       color: const Color(0xff757575)))),
                           InputDropdown(
-                              hint:  billDialogCubit.billModel == null ? "Tiền Việt(vnđ)": billDialogCubit.billModel!.currency,
+                              hint: billDialogCubit.billModel == null
+                                  ? "Tiền Việt(vnđ)"
+                                  : billDialogCubit.billModel!.currency,
                               onChanged: (v) {
                                 billDialogCubit.inputCurrency(v!);
                               },
-                              items: List.generate(billDialogCubit.listCurrency.length,
-                                      (index) => (billDialogCubit.listCurrency[index])).toList()),
+                              items: List.generate(
+                                      billDialogCubit.listCurrency.length,
+                                      (index) =>
+                                          (billDialogCubit.listCurrency[index]))
+                                  .toList()),
                           Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: Resizable.padding(context, 5)),
+                              padding: EdgeInsets.only(
+                                  bottom: Resizable.padding(context, 5)),
                               child: Text(AppText.txtMoney.text,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: Resizable.font(context, 18),
                                       color: const Color(0xff757575)))),
                           InputPaymentInBill(
-                              initialValue: billDialogCubit.billModel == null ? "": NumberFormat('#,##0').format(billDialogCubit.billModel!.payment).toString(),
+                              initialValue: billDialogCubit.billModel == null
+                                  ? ""
+                                  : NumberFormat('#,##0')
+                                      .format(
+                                          billDialogCubit.billModel!.payment)
+                                      .toString(),
                               onChange: (value) {
                                 billDialogCubit.inputPayment(value);
-                              }
-                          ),
+                              }),
                           Row(
                             children: [
                               Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical:
-                                          Resizable.padding(context, 5)),
+                                      padding: EdgeInsets.only(
+                                          bottom:
+                                              Resizable.padding(context, 5)),
                                       child: Text(AppText.txtPaymentDate.text,
                                           style: TextStyle(
                                               fontWeight: FontWeight.w600,
                                               fontSize:
-                                              Resizable.font(context, 18),
+                                                  Resizable.font(context, 18),
                                               color: const Color(0xff757575)))),
                                   InputDateBill(
                                     billDialogCubit: billDialogCubit,
@@ -118,14 +128,14 @@ class InfoBillView extends StatelessWidget {
                                   )
                                 ],
                               )),
-                              SizedBox(width: Resizable.size(context, 20)),
+                              SizedBox(width: Resizable.size(context, 10)),
                               Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical:
+                                      padding: EdgeInsets.only(
+                                          bottom:
                                               Resizable.padding(context, 5)),
                                       child: Text(AppText.txtRenewDate.text,
                                           style: TextStyle(
@@ -150,59 +160,71 @@ class InfoBillView extends StatelessWidget {
                                       fontSize: Resizable.font(context, 18),
                                       color: const Color(0xff757575)))),
                           InputDropdown(
-                              hint:  billDialogCubit.billModel == null ? AppText.txtBillType.text: billDialogCubit.billModel!.type,
+                              hint: billDialogCubit.billModel == null
+                                  ? AppText.txtBillType.text
+                                  : billDialogCubit.billModel!.type,
                               onChanged: (v) {
                                 billDialogCubit.chooseBillType(v!);
                               },
-                              items: List.generate(billDialogCubit.listType.length,
-                                      (index) => (billDialogCubit.listType[index])).toList()),
-                          if(isEdit)
+                              items: List.generate(
+                                      billDialogCubit.listType.length,
+                                      (index) =>
+                                          (billDialogCubit.listType[index]))
+                                  .toList()),
+                          if (isEdit)
                             Padding(
                                 padding: EdgeInsets.only(
-                                    top: Resizable.padding(context, 5)),
+                                    bottom: Resizable.padding(context, 5)),
                                 child: Text(AppText.txtRefund.text,
                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: Resizable.font(context, 18),
                                         color: const Color(0xff757575)))),
-                          if(isEdit)
+                          if (isEdit)
                             InputPaymentInBill(
-                                initialValue: billDialogCubit.billModel == null ? "": NumberFormat('#,##0').format(billDialogCubit.billModel!.refund).toString(),
+                                initialValue: billDialogCubit.billModel == null
+                                    ? ""
+                                    : NumberFormat('#,##0')
+                                        .format(
+                                            billDialogCubit.billModel!.refund)
+                                        .toString(),
                                 onChange: (value) {
                                   billDialogCubit.inputRefund(value);
-                                }
-                            ),
-                          Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: Resizable.padding(context, 5)),
-                              child: Text(AppText.txtCreator.text,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: Resizable.font(context, 18),
-                                      color: const Color(0xff757575)))),
+                                }),
+                          Text(AppText.txtCreator.text,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: Resizable.font(context, 18),
+                                  color: const Color(0xff757575))),
                           InputDropdown(
-                              hint:  billDialogCubit.billModel == null ? AppText.txtCreator.text: billDialogCubit.billModel!.creator,
+                              hint: billDialogCubit.billModel == null
+                                  ? AppText.txtCreator.text
+                                  : billDialogCubit.billModel!.creator,
                               onChanged: (v) {
                                 billDialogCubit.inputCreator(v!);
                               },
-                              items: List.generate(billDialogCubit.listCreator.length,
-                                      (index) => (billDialogCubit.listCreator[index])).toList()),
+                              items: List.generate(
+                                      billDialogCubit.listCreator.length,
+                                      (index) =>
+                                          (billDialogCubit.listCreator[index]))
+                                  .toList()),
                           Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: Resizable.padding(context, 5)),
+                              padding: EdgeInsets.only(
+                                  bottom: Resizable.padding(context, 5)),
                               child: Text(AppText.txtNote.text,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: Resizable.font(context, 18),
                                       color: const Color(0xff757575)))),
                           InputInBill(
-                              initialValue: billDialogCubit.billModel == null ? "": billDialogCubit.billModel!.note,
+                              initialValue: billDialogCubit.billModel == null
+                                  ? ""
+                                  : billDialogCubit.billModel!.note,
                               enable: true,
                               onChange: (value) {
                                 billDialogCubit.inputNote(value);
                               },
-                              isNote:true
-                          ),
+                              isNote: true),
                         ],
                       ),
                       if (billDialogCubit.classId == null)
@@ -244,7 +266,8 @@ class InfoBillView extends StatelessWidget {
 }
 
 class InfoBillViewV2 extends StatelessWidget {
-  const InfoBillViewV2({Key? key, required this.billDialogCubit, required this.isEdit})
+  const InfoBillViewV2(
+      {Key? key, required this.billDialogCubit, required this.isEdit})
       : super(key: key);
   final BillDialogCubit billDialogCubit;
   final bool isEdit;
@@ -261,8 +284,8 @@ class InfoBillViewV2 extends StatelessWidget {
                   color: const Color(0xff757575))),
           SizedBox(height: Resizable.padding(context, 5)),
           SearchInBillV2(
-              controller: billDialogCubit.stdCtrl,
-             ),
+            controller: billDialogCubit.stdCtrl,
+          ),
           Stack(
             children: [
               Column(
@@ -277,7 +300,7 @@ class InfoBillViewV2 extends StatelessWidget {
                               fontSize: Resizable.font(context, 18),
                               color: const Color(0xff757575)))),
                   SearchInBill(
-                      hint:AppText.txtSearchClass.text,
+                      hint: AppText.txtSearchClass.text,
                       onDelete: () {
                         billDialogCubit.deleteClass();
                       },
@@ -292,77 +315,86 @@ class InfoBillViewV2 extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: Resizable.padding(context, 5)),
+                              padding: EdgeInsets.only(
+                                  top: Resizable.padding(context, 5)),
                               child: Text(AppText.txtCurrency.text,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: Resizable.font(context, 18),
                                       color: const Color(0xff757575)))),
                           InputDropdown(
-                              hint:  billDialogCubit.billModel == null ? "Tiền Việt(vnđ)": billDialogCubit.billModel!.currency,
+                              hint: billDialogCubit.billModel == null
+                                  ? "Tiền Việt(vnđ)"
+                                  : billDialogCubit.billModel!.currency,
                               onChanged: (v) {
                                 billDialogCubit.inputCurrency(v!);
                               },
-                              items: List.generate(billDialogCubit.listCurrency.length,
-                                      (index) => (billDialogCubit.listCurrency[index])).toList()),
+                              items: List.generate(
+                                      billDialogCubit.listCurrency.length,
+                                      (index) =>
+                                          (billDialogCubit.listCurrency[index]))
+                                  .toList()),
                           Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: Resizable.padding(context, 5)),
+                              padding: EdgeInsets.only(
+                                  bottom: Resizable.padding(context, 5)),
                               child: Text(AppText.txtMoney.text,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: Resizable.font(context, 18),
                                       color: const Color(0xff757575)))),
                           InputPaymentInBill(
-                              initialValue: billDialogCubit.billModel == null ? "": NumberFormat('#,##0').format(billDialogCubit.billModel!.payment).toString(),
+                              initialValue: billDialogCubit.billModel == null
+                                  ? ""
+                                  : NumberFormat('#,##0')
+                                      .format(
+                                          billDialogCubit.billModel!.payment)
+                                      .toString(),
                               onChange: (value) {
                                 billDialogCubit.inputPayment(value);
-                              }
-                          ),
+                              }),
                           Row(
                             children: [
                               Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical:
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                      padding: EdgeInsets.only(
+                                          bottom:
                                               Resizable.padding(context, 5)),
-                                          child: Text(AppText.txtPaymentDate.text,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize:
+                                      child: Text(AppText.txtPaymentDate.text,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize:
                                                   Resizable.font(context, 18),
-                                                  color: const Color(0xff757575)))),
-                                      InputDateBill(
-                                        billDialogCubit: billDialogCubit,
-                                        isPayment: true,
-                                      )
-                                    ],
-                                  )),
-                              SizedBox(width: Resizable.size(context, 20)),
+                                              color: const Color(0xff757575)))),
+                                  InputDateBill(
+                                    billDialogCubit: billDialogCubit,
+                                    isPayment: true,
+                                  )
+                                ],
+                              )),
+                              SizedBox(width: Resizable.size(context, 10)),
                               Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical:
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                      padding: EdgeInsets.only(
+                                          bottom:
                                               Resizable.padding(context, 5)),
-                                          child: Text(AppText.txtRenewDate.text,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize:
+                                      child: Text(AppText.txtRenewDate.text,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize:
                                                   Resizable.font(context, 18),
-                                                  color: const Color(0xff757575)))),
-                                      InputDateBill(
-                                        billDialogCubit: billDialogCubit,
-                                        isPayment: false,
-                                      )
-                                    ],
-                                  ))
+                                              color: const Color(0xff757575)))),
+                                  InputDateBill(
+                                    billDialogCubit: billDialogCubit,
+                                    isPayment: false,
+                                  )
+                                ],
+                              ))
                             ],
                           ),
                           Padding(
@@ -374,59 +406,74 @@ class InfoBillViewV2 extends StatelessWidget {
                                       fontSize: Resizable.font(context, 18),
                                       color: const Color(0xff757575)))),
                           InputDropdown(
-                              hint:  billDialogCubit.billModel == null ? AppText.txtBillType.text: billDialogCubit.billModel!.type,
+                              hint: billDialogCubit.billModel == null
+                                  ? AppText.txtBillType.text
+                                  : billDialogCubit.billModel!.type,
                               onChanged: (v) {
                                 billDialogCubit.chooseBillType(v!);
                               },
-                              items: List.generate(billDialogCubit.listType.length,
-                                      (index) => (billDialogCubit.listType[index])).toList()),
-                          if(isEdit)
+                              items: List.generate(
+                                      billDialogCubit.listType.length,
+                                      (index) =>
+                                          (billDialogCubit.listType[index]))
+                                  .toList()),
+                          if (isEdit)
                             Padding(
                                 padding: EdgeInsets.only(
-                                    top: Resizable.padding(context, 5)),
+                                    bottom: Resizable.padding(context, 5)),
                                 child: Text(AppText.txtRefund.text,
                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: Resizable.font(context, 18),
                                         color: const Color(0xff757575)))),
-                          if(isEdit)
+                          if (isEdit)
                             InputPaymentInBill(
-                                initialValue: billDialogCubit.billModel == null ? "": NumberFormat('#,##0').format(billDialogCubit.billModel!.refund).toString(),
+                                initialValue: billDialogCubit.billModel == null
+                                    ? ""
+                                    : NumberFormat('#,##0')
+                                        .format(
+                                            billDialogCubit.billModel!.refund)
+                                        .toString(),
                                 onChange: (value) {
                                   billDialogCubit.inputRefund(value);
-                                }
-                            ),
+                                }),
                           Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: Resizable.padding(context, 5)),
+                              padding: EdgeInsets.only(
+                                  bottom: Resizable.padding(context, 0)),
                               child: Text(AppText.txtCreator.text,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: Resizable.font(context, 18),
                                       color: const Color(0xff757575)))),
                           InputDropdown(
-                              hint:  billDialogCubit.billModel == null ? AppText.txtCreator.text: billDialogCubit.billModel!.creator,
+                              hint: billDialogCubit.billModel == null
+                                  ? AppText.txtCreator.text
+                                  : billDialogCubit.billModel!.creator,
                               onChanged: (v) {
                                 billDialogCubit.inputCreator(v!);
                               },
-                              items: List.generate(billDialogCubit.listCreator.length,
-                                      (index) => (billDialogCubit.listCreator[index])).toList()),
+                              items: List.generate(
+                                      billDialogCubit.listCreator.length,
+                                      (index) =>
+                                          (billDialogCubit.listCreator[index]))
+                                  .toList()),
                           Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: Resizable.padding(context, 5)),
+                              padding: EdgeInsets.only(
+                                  bottom: Resizable.padding(context, 5)),
                               child: Text(AppText.txtNote.text,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: Resizable.font(context, 18),
                                       color: const Color(0xff757575)))),
                           InputInBill(
-                              initialValue: billDialogCubit.billModel == null ? "": billDialogCubit.billModel!.note,
+                              initialValue: billDialogCubit.billModel == null
+                                  ? ""
+                                  : billDialogCubit.billModel!.note,
                               enable: true,
                               onChange: (value) {
                                 billDialogCubit.inputNote(value);
                               },
-                              isNote:true
-                          ),
+                              isNote: true),
                         ],
                       ),
                       if (billDialogCubit.classId == null)
@@ -436,11 +483,11 @@ class InfoBillViewV2 extends StatelessWidget {
                                 .snapshots(),
                             builder: (c, snapshots) {
                               return (snapshots.connectionState ==
-                                  ConnectionState.waiting)
+                                      ConnectionState.waiting)
                                   ? Container()
                                   : ClassSearchListV2(
-                                  snapshots: snapshots,
-                                  billDialogCubit: billDialogCubit);
+                                      snapshots: snapshots,
+                                      billDialogCubit: billDialogCubit);
                             })
                     ],
                   ),
@@ -453,11 +500,11 @@ class InfoBillViewV2 extends StatelessWidget {
                         .snapshots(),
                     builder: (c, snapshots) {
                       return (snapshots.connectionState ==
-                          ConnectionState.waiting)
+                              ConnectionState.waiting)
                           ? Container()
                           : StdSearchListV2(
-                          snapshots: snapshots,
-                          billDialogCubit: billDialogCubit);
+                              snapshots: snapshots,
+                              billDialogCubit: billDialogCubit);
                     })
             ],
           )

@@ -49,7 +49,7 @@ class ListFeedBackView extends StatelessWidget {
                 child: Container(
                   margin:
                       EdgeInsets.only(bottom: Resizable.padding(context, 5)),
-                  padding: EdgeInsets.all(Resizable.padding(context, 5)),
+                  padding: EdgeInsets.all(Resizable.padding(context, 10)),
                   decoration: BoxDecoration(
                       color: cubit.getFeedBack().isEmpty
                           ? Colors.transparent
@@ -105,7 +105,7 @@ class ListFeedBackViewV2 extends StatelessWidget {
               child: Container(
                 margin:
                 EdgeInsets.only(bottom: Resizable.padding(context, 5)),
-                padding: EdgeInsets.all(Resizable.padding(context, 5)),
+                padding: EdgeInsets.all(Resizable.padding(context, 10)),
                 decoration: BoxDecoration(
                     color: cubit.getFeedBack().isEmpty
                         ? Colors.transparent

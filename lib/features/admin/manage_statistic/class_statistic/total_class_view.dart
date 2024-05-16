@@ -36,7 +36,7 @@ class TotalClassView extends StatelessWidget {
                     height: Resizable.size(context, 1),
                     margin:
                     EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
-                    color: const Color(0xffD9D9D9),
+                    color: greyColor.shade300,
                   ),
                   Expanded(child: Center(child: Text(filterController.classStatisticCubit.totalClass == null ? "0" :filterController.classStatisticCubit.totalClass!.toString(),
                       style: TextStyle(
@@ -70,7 +70,7 @@ class TotalClassView extends StatelessWidget {
                     height: Resizable.size(context, 1),
                     margin:
                     EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
-                    color: const Color(0xffD9D9D9),
+                    color: greyColor.shade300,
                   ),
                   Expanded(child: Center(child: Text(filterController.classStatisticCubit.totalClassThisMonth == null ? "0" :filterController.classStatisticCubit.totalClassThisMonth!.toString(),
                       style: TextStyle(

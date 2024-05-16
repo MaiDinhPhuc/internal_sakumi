@@ -21,6 +21,8 @@ class FilterBillTypeView extends StatelessWidget {
         bloc: selectCubit..loadBillType(filterController.filter[BillFilter.type] == null ? [FilterBillType.sale1Term, FilterBillType.saleFull, FilterBillType.saleDeposit1, FilterBillType.saleDepositFull] :filterController.filter[BillFilter.type]!),
         builder: (c,s){
           return  Container(
+              constraints: BoxConstraints(
+                  maxHeight: Resizable.size(context, 25)),
               margin: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 10)),
               alignment: Alignment.centerRight, width: Resizable.size(context, 120),
               child: ClipRRect(

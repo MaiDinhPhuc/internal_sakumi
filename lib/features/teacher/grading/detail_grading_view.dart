@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/grading/question_view.dart';
 import 'package:internal_sakumi/features/teacher/grading/sound/sound_cubit.dart';
@@ -82,7 +83,7 @@ class DetailGradingView extends StatelessWidget {
                                               margin: EdgeInsets.symmetric(
                                                   vertical: Resizable.padding(
                                                       context, 5)),
-                                              color: const Color(0xffD9D9D9),
+                                              color: greyColor.shade300,
                                             ),
                                             SizedBox(
                                                 height: Resizable.padding(
@@ -254,7 +255,7 @@ class DetailGradingViewV2 extends StatelessWidget {
                                         margin: EdgeInsets.symmetric(
                                             vertical: Resizable.padding(
                                                 context, 5)),
-                                        color: const Color(0xffD9D9D9),
+                                        color: greyColor.shade300,
                                       ),
                                       SizedBox(
                                           height: Resizable.padding(

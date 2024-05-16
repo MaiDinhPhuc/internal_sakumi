@@ -25,7 +25,7 @@ class StudentClassOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClassItemRowLayout(
+    return ClassItemRowLayoutV2(
         widgetClassCode: AutoSizeText(model.classCode.toUpperCase(),
             style: TextStyle(
                 fontWeight: FontWeight.w600,
@@ -36,7 +36,6 @@ class StudentClassOverview extends StatelessWidget {
                 fontSize: Resizable.font(context, 18))),
         widgetLessons: Row(
           mainAxisSize: MainAxisSize.max,
-          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
                 child: LinearPercentIndicator(

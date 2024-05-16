@@ -19,6 +19,7 @@ class DetailSurveyScreen extends StatelessWidget {
     var surveyController = BlocProvider.of<ManageSurveyCubit>(context);
     return BlocBuilder<ManageSurveyCubit, int>(builder: (cc, ss) {
       return Scaffold(
+        backgroundColor: Colors.white,
         body: Column(
           children: [
             CustomAppbar(buttonList: [

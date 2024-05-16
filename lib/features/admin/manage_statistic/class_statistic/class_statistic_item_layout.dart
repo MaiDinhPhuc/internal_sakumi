@@ -34,16 +34,15 @@ class ClassStatisticItemRowLayout extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                    flex: 3,
+                    flex: 2,
                     child: Container(
                       alignment: Alignment.center,
                       child: widgetClassCode,
                     )),
                 Expanded(
-                    flex: 6,
+                    flex: 4,
                     child: Container(
                         alignment: Alignment.center,
-                        margin: EdgeInsets.only(left: Resizable.padding(context, 10)),
                         child: widgetCourse)),
                 Expanded(
                     flex: 6,
@@ -56,10 +55,10 @@ class ClassStatisticItemRowLayout extends StatelessWidget {
                 Expanded(
                     flex: 3,
                     child: Container(alignment: Alignment.center, child: widgetEndDay)),
-                Expanded(
-                    flex: 2,
-                    child:
-                    Container(alignment: Alignment.center, child: widgetEvaluate)),
+                // Expanded(
+                //     flex: 2,
+                //     child:
+                //     Container(alignment: Alignment.center, child: widgetEvaluate)),
               ],
             ))
       ],

@@ -21,6 +21,8 @@ class FilterBillCreatorView extends StatelessWidget {
         bloc: selectCubit..loadBillCreator(filterController.filter[BillFilter.creator] == null ? [FilterBillCreator.Vu, FilterBillCreator.Yen, FilterBillCreator.Phuong, FilterBillCreator.Thuy, FilterBillCreator.Tho] :filterController.filter[BillFilter.creator]!),
         builder: (c,s){
           return  Container(
+              constraints: BoxConstraints(
+                  maxHeight: Resizable.size(context, 25)),
               margin: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 10)),
               alignment: Alignment.centerRight, width: Resizable.size(context, 120),
               child: ClipRRect(

@@ -1,4 +1,5 @@
 import 'package:flutter/Material.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -23,7 +24,7 @@ class InputDateBill extends StatelessWidget {
             side: const BorderSide(
               width: 1,
               strokeAlign: BorderSide.strokeAlignOutside,
-              color: Color(0xFFE0E0E0),
+              color: grey2,
             ),
             borderRadius: BorderRadius.circular(5),
           ),

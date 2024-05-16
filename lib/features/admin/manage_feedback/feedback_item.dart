@@ -48,7 +48,7 @@ class FeedBackItem extends StatelessWidget {
                     width: Resizable.size(context, 1),
                     margin: EdgeInsets.symmetric(
                         horizontal: Resizable.padding(context, 10)),
-                    color: const Color(0xffD9D9D9),
+                    color: greyColor.shade300,
                   ),
                   Text(cubit.getClassCode(feedback.classId),
                       style: TextStyle(
@@ -60,7 +60,7 @@ class FeedBackItem extends StatelessWidget {
                     width: Resizable.size(context, 1),
                     margin: EdgeInsets.symmetric(
                         horizontal: Resizable.padding(context, 10)),
-                    color: const Color(0xffD9D9D9),
+                    color: greyColor.shade300,
                   ),
                   Text(cubit.getCourse(feedback.classId),
                       style: TextStyle(
@@ -72,7 +72,7 @@ class FeedBackItem extends StatelessWidget {
                     width: Resizable.size(context, 1),
                     margin: EdgeInsets.symmetric(
                         horizontal: Resizable.padding(context, 10)),
-                    color: const Color(0xffD9D9D9),
+                    color: greyColor.shade300,
                   ),
                   Text(cubit.getDate(feedback.date),
                       style: TextStyle(
@@ -89,7 +89,7 @@ class FeedBackItem extends StatelessWidget {
             margin: EdgeInsets.only(
                 top: Resizable.padding(context, 5),
                 bottom: Resizable.padding(context, 10)),
-            color: const Color(0xffD9D9D9),
+            color: greyColor.shade300,
           ),
           Row(
             children: [
@@ -112,7 +112,7 @@ class FeedBackItem extends StatelessWidget {
                       }
                     }, controller: noteCubit.listController[noteCubit.listNote.indexOf(e)],)),
                     if (noteCubit.canAdd)
-                      Padding(padding: EdgeInsets.only(top: Resizable.padding(context, 5)),child: Material(
+                      Padding(padding: EdgeInsets.only(top: Resizable.padding(context, 10)),child: Material(
                           color: Colors.transparent,
                           child: DottedBorderButton(
                               AppText.txtAddNote.text.toUpperCase(),
@@ -162,7 +162,7 @@ class FeedBackItemV2 extends StatelessWidget {
                     width: Resizable.size(context, 1),
                     margin: EdgeInsets.symmetric(
                         horizontal: Resizable.padding(context, 10)),
-                    color: const Color(0xffD9D9D9),
+                    color: greyColor.shade300,
                   ),
                   Text(cubit.getDate(feedback.date),
                       style: TextStyle(
@@ -179,7 +179,7 @@ class FeedBackItemV2 extends StatelessWidget {
             margin: EdgeInsets.only(
                 top: Resizable.padding(context, 5),
                 bottom: Resizable.padding(context, 10)),
-            color: const Color(0xffD9D9D9),
+            color: greyColor.shade300,
           ),
           Row(
             children: [
@@ -202,7 +202,7 @@ class FeedBackItemV2 extends StatelessWidget {
                       }
                     }, controller: noteCubit.listController[noteCubit.listNote.indexOf(e)],)),
                     if (noteCubit.canAdd)
-                      Padding(padding: EdgeInsets.only(top: Resizable.padding(context, 5)),child: Material(
+                      Padding(padding: EdgeInsets.only(top: Resizable.padding(context, 10)),child: Material(
                           color: Colors.transparent,
                           child: DottedBorderButton(
                               AppText.txtAddNote.text.toUpperCase(),

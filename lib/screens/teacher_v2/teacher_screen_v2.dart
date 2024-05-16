@@ -25,6 +25,7 @@ class TeacherScreenV2 extends StatelessWidget {
       cubit.loadDataTeacher(filterController);
     }
     return Scaffold(
+        backgroundColor: Colors.white,
         body: Column(
           children: [
             Container(),

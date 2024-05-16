@@ -17,88 +17,93 @@ class ManageGeneralListClass extends StatelessWidget {
       children: [
         TitleWidget(AppText.titleListClass.text.toUpperCase()),
         Padding(
-            padding: EdgeInsets.all(Resizable.padding(context, 10)),
-            child: DottedBorderButton(
-                AppText.btnAddNewClass.text.toUpperCase(),
+            padding: EdgeInsets.only(
+                bottom: Resizable.padding(context, 10),
+                left: Resizable.padding(context, 10),
+                right: Resizable.padding(context, 10)),
+            child: DottedBorderButton(AppText.btnAddNewClass.text.toUpperCase(),
                 isManageGeneral: true, onPressed: () {
               alertNewClass(context, false, null, null);
             })),
-        Expanded(child: SingleChildScrollView(
+        Expanded(
+            child: SingleChildScrollView(
           child: Column(
             children: [
               ...(cubit.listClassNow!)
                   .map(
                     (e) => Row(
-                  children: [
-                    Container(
-                      color: e.classId == cubit.selector
-                          ? primaryColor
-                          : Colors.transparent,
-                      width: Resizable.size(context, 4),
-                      margin: EdgeInsets.only(
-                          right: Resizable.padding(context, 5),
-                          bottom: Resizable.padding(context, 10)),
+                      children: [
+                        Container(
+                          color: e.classId == cubit.selector
+                              ? primaryColor
+                              : Colors.transparent,
+                          width: Resizable.size(context, 4),
+                          margin: EdgeInsets.only(
+                              right: Resizable.padding(context, 5),
+                              bottom: Resizable.padding(context, 10)),
+                        ),
+                        Expanded(
+                            child: Card(
+                                margin: EdgeInsets.only(
+                                    right: Resizable.padding(context, 10),
+                                    bottom: Resizable.padding(context, 10)),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        Resizable.size(context, 5)),
+                                    side: BorderSide(
+                                        color: cubit.selector != e.classId
+                                            ? const Color(0xffE0E0E0)
+                                            : Colors.black,
+                                        width: Resizable.size(context, 1))),
+                                elevation: cubit.selector == e.classId
+                                    ? Resizable.size(context, 2)
+                                    : 0,
+                                child: InkWell(
+                                    borderRadius: BorderRadius.circular(
+                                        Resizable.size(context, 5)),
+                                    onTap: (cubit.listTeacher == null ||
+                                            cubit.listStudent == null)
+                                        ? () {}
+                                        : () {
+                                            cubit.selectedClass(e.classId);
+                                          },
+                                    child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical:
+                                                Resizable.padding(context, 10),
+                                            horizontal:
+                                                Resizable.padding(context, 15)),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              e.classCode.toUpperCase(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: Resizable.font(
+                                                      context, 17)),
+                                            ),
+                                            InkWell(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        Resizable.size(
+                                                            context, 100)),
+                                                onTap: () {
+                                                  alertNewClass(
+                                                      context, true, e, cubit);
+                                                },
+                                                child: Image.asset(
+                                                    'assets/images/ic_edit.png',
+                                                    height: Resizable.size(
+                                                        context, 20),
+                                                    width: Resizable.size(
+                                                        context, 20)))
+                                          ],
+                                        )))))
+                      ],
                     ),
-                    Expanded(
-                        child: Card(
-                            margin: EdgeInsets.only(
-                                right: Resizable.padding(context, 10),
-                                bottom: Resizable.padding(context, 10)),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    Resizable.size(context, 5)),
-                                side: BorderSide(
-                                    color: cubit.selector != e.classId
-                                        ? const Color(0xffE0E0E0)
-                                        : Colors.black,
-                                    width: Resizable.size(context, 1))),
-                            elevation: cubit.selector == e.classId
-                                ? Resizable.size(context, 2)
-                                : 0,
-                            child: InkWell(
-                                borderRadius: BorderRadius.circular(
-                                    Resizable.size(context, 5)),
-                                onTap: (cubit.listTeacher == null ||
-                                    cubit.listStudent == null)
-                                    ? () {}
-                                    : () {
-                                  cubit.selectedClass(e.classId);
-                                },
-                                child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical:
-                                        Resizable.padding(context, 10),
-                                        horizontal:
-                                        Resizable.padding(context, 15)),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          e.classCode.toUpperCase(),
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize:
-                                              Resizable.font(context, 17)),
-                                        ),
-                                        InkWell(
-                                            borderRadius: BorderRadius.circular(
-                                                Resizable.size(context, 100)),
-                                            onTap: () {
-                                              alertNewClass(
-                                                  context, true, e, cubit);
-                                            },
-                                            child: Image.asset(
-                                                'assets/images/ic_edit.png',
-                                                height:
-                                                Resizable.size(context, 20),
-                                                width: Resizable.size(
-                                                    context, 20)))
-                                      ],
-                                    )))))
-                  ],
-                ),
-              )
+                  )
                   .toList(),
               SizedBox(height: Resizable.size(context, 50))
             ],

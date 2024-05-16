@@ -7,6 +7,7 @@ import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
+import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class StudentClasItemCubit extends Cubit<int> {
@@ -27,9 +28,10 @@ class StudentClasItemCubit extends Cubit<int> {
     lessonResults =
         cubit.lessonResults!.where((e) => e.classId == classModel.classId).toList();
     countTitle =
-    "${lessonResults!.length}/${courseModel!.lessonCount + classModel.customLessons.length}";
+    "  ${lessonResults!.length}/${courseModel!.lessonCount + classModel.customLessons.length} Buổi";
     stdLessons = cubit.stdLessons!.where((e) => e.classId == classModel.classId).toList();
-    lessons = await FireBaseProvider.instance.getLessonsByCourseId(courseModel!.courseId);
+    await DataProvider.lessonByCourseAndClassId(classModel.courseId,classModel.classId, loadLessonInClass);
+    //lessons = await FireBaseProvider.instance.getLessonsByCourseId(courseModel!.courseId);
     var lessonId = lessons!.map((e) => e.lessonId).toList();
 
     if (classModel.customLessons.isNotEmpty) {
@@ -104,6 +106,10 @@ class StudentClasItemCubit extends Cubit<int> {
       default:
         return const Color(0xff33691e);
     }
+  }
+
+  loadLessonInClass(Object lessons) {
+    this.lessons = lessons as List<LessonModel>;
   }
 
   String getTitle(int lessonId){

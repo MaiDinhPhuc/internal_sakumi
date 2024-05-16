@@ -35,7 +35,8 @@ class TrackingItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return isCustom
         ? Container(
-            constraints: BoxConstraints(minWidth: Resizable.size(context, 50)),
+            width: Resizable.size(context, 70),
+            //constraints: BoxConstraints(minWidth: Resizable.size(context, 50)),
             padding:
                 EdgeInsets.all( Resizable.padding(context, 5)),
             decoration: BoxDecoration(
@@ -47,10 +48,10 @@ class TrackingItem extends StatelessWidget {
                         : const Color(0xffB71C1C)),
             child: Text(
               condition! == -1
-                  ? AppText.txtDoing.text
+                  ? AppText.txtDoing.text.toUpperCase()
                   : condition! > -1
                       ? condition.toStringAsFixed(1)
-                      : AppText.txtNotSubmit.text,
+                      : AppText.txtNotSubmit.text.toUpperCase(),
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: Resizable.font(context, 12),
@@ -59,7 +60,8 @@ class TrackingItem extends StatelessWidget {
             ),
           )
         : Container(
-            constraints: BoxConstraints(minWidth: Resizable.size(context, 50)),
+            width: Resizable.size(context, 70),
+            //constraints: BoxConstraints(minWidth: Resizable.size(context, 50)),
             padding:
                 EdgeInsets.all(Resizable.padding(context, 5)),
             decoration: BoxDecoration(
@@ -80,21 +82,17 @@ class TrackingItem extends StatelessWidget {
             child: Text(
               (isSubmit
                       ? condition == null
-                          ? AppText.txtNull.text
+                          ? AppText.txtNull.text.toUpperCase()
                           : condition! == -1
-                              ? AppText.textNotMarked.text
+                              ? AppText.textNotMarked.text.toUpperCase()
                               : condition! > -1
                                   ? condition.toStringAsFixed(1)
-                                  : AppText.txtNotSubmit.text
-                      : getAttendance(condition))
+                                  : AppText.txtNotSubmit.text.toUpperCase()
+                      : getAttendance(condition).toUpperCase())
                   .toUpperCase(),
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: (getAttendance(condition) ==
-                              AppText.txtNotAttendance.text &&
-                          isSubmit == false)
-                      ? Resizable.font(context, 10)
-                      : Resizable.font(context, 12),
+                  fontSize:  Resizable.font(context, 12),
                   fontWeight: FontWeight.w800,
                   color: Colors.white),
             ),
@@ -132,18 +130,20 @@ class TeacherStatusItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(minWidth: Resizable.size(context, 50)),
-      padding: EdgeInsets.all( Resizable.padding(context, 5)),
+      height: Resizable.size(context, 20),
+      width: Resizable.size(context, 100),
+      constraints: BoxConstraints(minWidth: Resizable.size(context, 100), maxHeight: Resizable.size(context, 25)),
+      padding: EdgeInsets.symmetric(horizontal:  Resizable.padding(context, 10)),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(1000), color: getColor(status)),
-      child: Text(
+      child: Center(child: Text(
         status,
         textAlign: TextAlign.center,
         style: TextStyle(
-            fontSize: Resizable.font(context, 12),
+            fontSize: Resizable.font(context, 14),
             fontWeight: FontWeight.w800,
             color: Colors.white),
-      ),
+      )),
     );
   }
 

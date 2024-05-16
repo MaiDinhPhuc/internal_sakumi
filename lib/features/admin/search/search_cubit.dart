@@ -30,7 +30,7 @@ class SearchCubit extends Cubit<int>{
 
   updateSearchValue(String newValue){
     if (_debounce?.isActive ?? false) _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 300), () {
+    _debounce = Timer(const Duration(milliseconds: 50), () {
       searchValue = newValue;
       emit(state+1);
     });

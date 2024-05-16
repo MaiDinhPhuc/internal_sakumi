@@ -13,7 +13,6 @@ import 'package:internal_sakumi/features/teacher/sub_course/sub_course_item_view
 import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
-import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:shimmer/shimmer.dart';
 
 class SubCourseScreen extends StatelessWidget {
@@ -25,6 +24,7 @@ class SubCourseScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final shimmerList = List.generate(5, (index) => index);
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           HeaderTeacher(index: 4, classId: TextUtils.getName(), role: role),

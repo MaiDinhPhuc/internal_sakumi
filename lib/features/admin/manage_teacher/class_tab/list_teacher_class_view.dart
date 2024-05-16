@@ -33,11 +33,11 @@ class ListTeacherClassView extends StatelessWidget {
             ),
           )
         : cubit.teacherClasses!.isEmpty
-            ? Text(AppText.txtNotTeacherClass.text,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: Resizable.font(context, 17),
-                    color: greyColor.shade600))
+            ? Padding(padding: EdgeInsets.only(top: Resizable.size(context, 120)),child: Text(AppText.txtNotTeacherClass.text,
+        style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: Resizable.font(context, 17),
+            color: greyColor.shade600)))
             : Column(
                 children: [
                   Padding(
@@ -49,7 +49,7 @@ class ListTeacherClassView extends StatelessWidget {
                           FilterClassStatusManageTeacher(cubit: cubit)
                         ],
                       )),
-                  ClassItemRowLayout(
+                  Padding(padding: EdgeInsets.only(bottom: Resizable.padding(context, 10)),child: ClassItemRowLayoutV2(
                     widgetClassCode: Text(AppText.txtClassCode.text,
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
@@ -81,7 +81,7 @@ class ListTeacherClassView extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                             fontSize: Resizable.font(context, 17),
                             color: greyColor.shade600)),
-                  ),
+                  )),
                   Expanded(
                       child: SingleChildScrollView(
                           child: Column(children: [

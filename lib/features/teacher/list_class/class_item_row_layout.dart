@@ -80,3 +80,67 @@ class ClassItemRowLayout extends StatelessWidget {
     );
   }
 }
+
+class ClassItemRowLayoutV2 extends StatelessWidget {
+  final Widget widgetClassCode,
+      widgetCourse,
+      widgetLessons,
+      widgetAttendance,
+      widgetSubmit,
+      widgetEvaluate,
+      widgetStatus;
+  const ClassItemRowLayoutV2(
+      {required this.widgetClassCode,
+        required this.widgetCourse,
+        required this.widgetLessons,
+        required this.widgetAttendance,
+        required this.widgetSubmit,
+        required this.widgetEvaluate,
+        required this.widgetStatus,
+        Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+            flex: 2,
+            child: Container(
+                alignment: Alignment.center, child: widgetStatus)),
+        Expanded(
+            flex: 21,
+            child: Row(
+              children: [
+                Expanded(
+                    flex: 4,
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: widgetClassCode,
+                    )),
+                Expanded(
+                    flex: 6,
+                    child: Container(
+                        alignment: Alignment.center,
+                        child: widgetCourse)),
+                Expanded(
+                    flex: 5,
+                    child:
+                    Container(alignment: Alignment.center, child: widgetLessons)),
+                Expanded(
+                    flex: 2,
+                    child: Container(
+                        alignment: Alignment.center, child: widgetAttendance)),
+                Expanded(
+                    flex: 2,
+                    child: Container(alignment: Alignment.center, child: widgetSubmit)),
+                Expanded(
+                    flex: 1,
+                    child:
+                    Container(alignment: Alignment.centerRight, child: widgetEvaluate)),
+              ],
+            ))
+      ],
+    );
+  }
+}

@@ -19,6 +19,7 @@ class ManageCourseTab extends StatelessWidget {
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<ManageCourseCubit>(context);
     return Scaffold(
+        backgroundColor: Colors.white,
         body: Column(
           children: [
             CustomAppbar(buttonList: [

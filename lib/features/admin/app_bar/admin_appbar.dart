@@ -14,6 +14,8 @@ class AdminAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(
+          bottom: Resizable.padding(context, 5)),
       padding: EdgeInsets.symmetric(
           vertical: Resizable.padding(context, 10)),
       decoration: const BoxDecoration(color: Colors.white,

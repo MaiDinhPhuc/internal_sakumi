@@ -18,6 +18,7 @@ class ManageSurveyTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           HeaderTeacher(index: 3, classId: TextUtils.getName(), role: "admin"),

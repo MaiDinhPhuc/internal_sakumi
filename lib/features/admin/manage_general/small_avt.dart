@@ -1,5 +1,5 @@
 import 'package:flutter/Material.dart';
-import 'package:image_network/image_network.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class SmallAvatar extends StatelessWidget {
@@ -10,10 +10,10 @@ class SmallAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return CircleAvatar(
       radius: Resizable.size(context, 16),
-      backgroundColor: const Color(0xffD9D9D9),
+      backgroundColor: greyColor.shade300,
       child: ClipRRect(
           borderRadius: BorderRadius.circular(1000),
-          child: //Image.asset("assets/images/ic_avt.png")
+          child:
               url == ''
                   ? Image.asset("assets/images/ic_avt.png")
                   : Image.network(
@@ -23,16 +23,6 @@ class SmallAvatar extends StatelessWidget {
                       width: Resizable.size(context, 32),
                       errorBuilder: (_, __, ___) => Container(),
                     )
-          // ImageNetwork(
-          //     duration: 100,
-          //     image: url,
-          //     height: Resizable.size(context, 32),
-          //     width: Resizable.size(context, 32),
-          //     onError: Container(),
-          //     onLoading: Transform.scale(
-          //       scale: 0.5,
-          //       child: const CircularProgressIndicator(),
-          //     )),
           ),
     );
   }

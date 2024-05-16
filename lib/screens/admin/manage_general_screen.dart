@@ -23,6 +23,7 @@ class ManageGeneralScreen extends StatelessWidget {
     return BlocProvider(
         create: (context) => ManageGeneralCubit()..loadAllClass(),
         child: Scaffold(
+            backgroundColor: Colors.white,
             body: Padding(
           padding:
               EdgeInsets.symmetric(horizontal: Resizable.padding(context, 50)),
@@ -118,6 +119,8 @@ class ManageGeneralScreen extends StatelessWidget {
                                   ],
                                 ),
                                 Container(
+                                  margin: EdgeInsets.only(
+                                      bottom: Resizable.padding(context, 10)),
                                   padding: EdgeInsets.all(
                                       Resizable.padding(context, 10)),
                                   decoration: BoxDecoration(

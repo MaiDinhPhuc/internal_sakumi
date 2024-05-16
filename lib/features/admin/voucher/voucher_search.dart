@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/search/drop_down_search.dart';
 import 'package:internal_sakumi/features/admin/voucher/alert_info_voucher.dart';
@@ -138,7 +139,7 @@ class VoucherSearchList extends StatelessWidget {
                                           margin: EdgeInsets.symmetric(
                                               horizontal: Resizable.padding(
                                                   context, 10)),
-                                          color: const Color(0xffD9D9D9),
+                                          color: greyColor.shade300,
                                           width: Resizable.size(context, 1),
                                           height: Resizable.size(context, 10),
                                         ),
@@ -198,7 +199,7 @@ class VoucherSearchList extends StatelessWidget {
                               cubit.listSearch.length - 1)
                             Container(
                               height: Resizable.size(context, 1),
-                              color: const Color(0xffD9D9D9),
+                              color: greyColor.shade300,
                             )
                         ],
                       ),

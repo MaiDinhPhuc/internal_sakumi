@@ -13,6 +13,8 @@ class FilterClassTypeMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+        constraints: BoxConstraints(
+            maxHeight: Resizable.size(context, 25)),
         margin: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 10)),
         alignment: Alignment.centerRight, width: Resizable.size(context, 120),
         child: ClipRRect(

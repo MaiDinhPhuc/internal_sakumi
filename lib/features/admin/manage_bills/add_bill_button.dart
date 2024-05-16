@@ -1,4 +1,6 @@
 import 'package:flutter/Material.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
+import 'package:internal_sakumi/utils/resizable.dart';
 
 class AddButton extends StatelessWidget {
   const AddButton({super.key, required this.onTap, required this.title});
@@ -10,9 +12,9 @@ class AddButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: 230,
-        height: 52,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        width: Resizable.size(context, 130),
+        height: Resizable.size(context, 30),
+        padding:  EdgeInsets.all(Resizable.size(context, 5)),
         decoration: ShapeDecoration(
           color: Colors.white,
           shape: RoundedRectangleBorder(
@@ -35,9 +37,9 @@ class AddButton extends StatelessWidget {
         child: Center(
             child: Text(
           title,
-          style: const TextStyle(
-            color: Color(0xFF757575),
-            fontSize: 18,
+          style:  TextStyle(
+            color:darkPrimaryColor,
+            fontSize: Resizable.font(context, 18),
             fontFamily: 'Montserrat',
             fontWeight: FontWeight.w700,
             height: 0,

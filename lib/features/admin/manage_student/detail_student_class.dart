@@ -21,7 +21,7 @@ class DetailStudentClassInfo extends StatelessWidget {
                 ...itemCubit.lessonResults!.map((e) => DetailStudentLessonItem(
                       title: itemCubit.getTitle(e.lessonId),
                       index: itemCubit.lessonResults!.indexOf(e) + 1,
-                      attendance:itemCubit.getStudentLesson(e.lessonId) == null ? null : itemCubit.getStudentLesson(e.lessonId)!.timekeeping,
+                      attendance:itemCubit.getStudentLesson(e.lessonId)?.timekeeping,
                       hw: itemCubit.getLesson(e.lessonId) == null? null :itemCubit.getPoint(e.lessonId),
                       isCustom: itemCubit.getLesson(e.lessonId) == null ? false : itemCubit.getLesson(e.lessonId)!.isCustom,
                     ))

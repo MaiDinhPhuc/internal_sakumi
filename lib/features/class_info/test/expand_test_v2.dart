@@ -1,4 +1,5 @@
 import 'package:flutter/Material.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/note_widget.dart';
@@ -16,7 +17,7 @@ class ExpandTestV2 extends StatelessWidget {
           height: Resizable.size(context, 1),
           margin:
           EdgeInsets.symmetric(vertical: Resizable.padding(context, 15)),
-          color: const Color(0xffD9D9D9),
+          color: greyColor.shade300,
         ),
         ...detailCubit.getStudent().map((e) => Padding(
             padding: EdgeInsets.symmetric(vertical: Resizable.size(context, 5)),

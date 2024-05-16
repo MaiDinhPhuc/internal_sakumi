@@ -37,7 +37,7 @@ class CardStudentClassItem extends StatelessWidget {
           )),
         Container(
             margin: EdgeInsets.only(
-                right: Resizable.padding(context, 30),
+                right: Resizable.padding(context, 10),
                 top: Resizable.padding(context, 10)),
             alignment: Alignment.centerRight,
             child: IconButton(

@@ -17,6 +17,7 @@ class ManageStatisticsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var filterController = BlocProvider.of<StatisticFilterCubit>(context);
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

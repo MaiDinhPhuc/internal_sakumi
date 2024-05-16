@@ -17,35 +17,31 @@ class StudentStatisticItemRowLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.centerLeft,
+    return Row(
       children: [
-        Row(
-          children: [
-            Expanded(
-                flex: 3,
-                child: Container(
-                  alignment: Alignment.centerRight,
-                  child: widgetStudentName,
-                )),
-            Expanded(
-                flex: 3,
-                child: Container(
-                  alignment: Alignment.center,
-                  child: widgetStudentPhone,
-                )),
-            Expanded(
-                flex: 3,
-                child: Container(
-                    alignment: Alignment.center, child: widgetClassCode)),
-            Expanded(
-                flex: 7,
-                child: Container(alignment: Alignment.center, child: widgetContent)),
-          ],
-        ),
-        Container(
-            alignment: Alignment.centerLeft, child: widgetStatus),
-
+        Expanded(
+            flex: 2,
+            child: Container(
+                alignment: Alignment.centerLeft, child: widgetStatus)),
+        Expanded(
+            flex: 5,
+            child: Container(
+              alignment: Alignment.center,
+              child: widgetStudentName,
+            )),
+        Expanded(
+            flex: 3,
+            child: Container(
+              alignment: Alignment.center,
+              child: widgetStudentPhone,
+            )),
+        Expanded(
+            flex: 3,
+            child: Container(
+                alignment: Alignment.center, child: widgetClassCode)),
+        Expanded(
+            flex: 8,
+            child: Container(alignment: Alignment.center, child: widgetContent)),
       ],
     );
   }

@@ -22,6 +22,7 @@ class ClassOverViewScreenV2 extends StatelessWidget {
   Widget build(BuildContext context) {
     final shimmerList = List.generate(5, (index) => index);
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           HeaderTeacher(index: 0, classId: TextUtils.getName(), role: role),
@@ -53,7 +54,8 @@ class ClassOverViewScreenV2 extends StatelessWidget {
                                         fontWeight: FontWeight.w800,
                                         fontSize: Resizable.font(context, 30))),
                               ),
-                              TagInfo(type: 3, ownId: cubit.classModel!.classId),
+                              if(role == "admin")
+                                TagInfo(type: 3, ownId: cubit.classModel!.classId),
                               StatisticClassViewV2(cubit: cubit),
                               Container(
                                   margin: EdgeInsets.symmetric(

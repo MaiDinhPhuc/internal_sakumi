@@ -32,20 +32,22 @@ class ManageStdClassView extends StatelessWidget {
             ),
           )
         : cubit.stdClasses!.isEmpty
-            ? Text(AppText.txtNotStudentClass.text,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: Resizable.font(context, 17),
-                    color: greyColor.shade600))
+            ? Padding(
+                padding: EdgeInsets.only(top: Resizable.padding(context, 120)),
+                child: Text(AppText.txtNotStudentClass.text,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: Resizable.font(context, 17),
+                        color: greyColor.shade600)))
             : Column(
                 children: [
                   Container(
                     height: Resizable.size(context, 1),
-                    margin:
-                    EdgeInsets.symmetric(vertical: Resizable.padding(context, 15)),
-                    color: const Color(0xffD9D9D9),
+                    margin: EdgeInsets.only(
+                        top: Resizable.padding(context, 10)),
+                    color: greyColor.shade300,
                   ),
-                  ClassItemRowLayout(
+                  Padding(padding: EdgeInsets.symmetric(vertical: Resizable.padding(context, 10)),child: ClassItemRowLayoutV2(
                     widgetClassCode: Text(AppText.txtClassCode.text,
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
@@ -77,9 +79,12 @@ class ManageStdClassView extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                             fontSize: Resizable.font(context, 17),
                             color: greyColor.shade600)),
-                  ),
-                  ...cubit.classes!
-                      .map((e) => ItemStudentClass(cubit: cubit, classModel: e, stdClass: cubit.stdClasses!.firstWhere((element) => e.classId == element.classId)))
+                  )),
+                  ...cubit.classes!.map((e) => ItemStudentClass(
+                      cubit: cubit,
+                      classModel: e,
+                      stdClass: cubit.stdClasses!.firstWhere(
+                          (element) => e.classId == element.classId)))
                 ],
               );
   }

@@ -37,11 +37,11 @@ class ManageStdBillView extends StatelessWidget {
             ),
           ),
         ) : cubit.billCubit.listBill!.isEmpty
-            ? Text(AppText.txtBillEmpty.text,
+            ? Padding(padding: EdgeInsets.only(top: Resizable.size(context, 120)),child: Text(AppText.txtBillEmpty.text,
             style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: Resizable.font(context, 17),
-                color: greyColor.shade600))
+                color: greyColor.shade600)))
             : Column(
           children: [
             Padding(

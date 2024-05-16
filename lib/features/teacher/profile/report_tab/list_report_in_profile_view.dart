@@ -19,40 +19,53 @@ class ListReportInProfileView extends StatelessWidget {
     return BlocBuilder<ReportCubit, int>(
       bloc: cubit..loadTeacherReport(role),
       builder: (c, s) {
-        return Padding(
-          padding: EdgeInsets.only(top: Resizable.padding(context, 20)),
-          child: cubit.isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : SingleChildScrollView(
+        return cubit.isLoading
+            ? const Center(
+          child: CircularProgressIndicator(),
+        )
+            : SingleChildScrollView(
             child: Column(
               children: [
-                Padding(
+                Container(
+                  height: Resizable.size(context, 1),
+                  margin: EdgeInsets.symmetric(
+                      vertical: Resizable.padding(context, 15)),
+                  color: greyColor.shade300,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: Resizable.padding(context, 10),
+                      vertical: Resizable.padding(context, 15)),
+                  decoration: BoxDecoration(
+                      color: lightGreyColor,
+                      borderRadius: BorderRadius.circular(
+                          Resizable.size(context, 5))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      DateFilterReport(cubit: cubit),
+                      FilterReportStatus(cubit: cubit)
+                    ],
+                  ),
+                ),
+                cubit.getListReport().isEmpty
+                    ? Padding(
                     padding: EdgeInsets.only(
-                        bottom: Resizable.padding(context, 10)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        DateFilterReport(cubit: cubit),
-                        FilterReportStatus(cubit: cubit)],
-                    )),
-                cubit.getListReport().isEmpty?
-                Center(
-                    child: Text(AppText.txtNoTeacherReport.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Resizable.font(context, 17),
-                            color: greyColor.shade600))):Column(
+                        top: Resizable.padding(context, 120)),
+                    child: Center(
+                        child: Text(AppText.txtNoTeacherReport.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600))))
+                    : Column(
                   children: [
-                    ...cubit.getListReport().map((e) => ReportItem(reportModel: e, cubit: cubit, role: role))
+                    ...cubit.getListReport().map((e) => ReportItem(
+                        reportModel: e, cubit: cubit, role: role))
                   ],
                 )
-
               ],
-            )
-          ),
-        );
+            ));
       },
     );
   }

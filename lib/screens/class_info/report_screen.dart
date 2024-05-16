@@ -19,6 +19,7 @@ class ReportScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           HeaderTeacher(index: 5, classId: TextUtils.getName(), role: role),
@@ -104,24 +105,32 @@ class ReportScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Padding(
-                              padding: EdgeInsets.only(
-                                  bottom: Resizable.padding(context, 10)),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  DateFilterReport(cubit: cubit),
-                                  FilterReportStatus(cubit: cubit)
-                                ],
-                              )),
+                          Container(
+                            margin: EdgeInsets.only(
+                                bottom: Resizable.padding(context, 10)),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: Resizable.padding(context, 30),
+                                vertical: Resizable.padding(context, 15)),
+                            decoration: BoxDecoration(
+                                color: lightGreyColor,
+                                borderRadius: BorderRadius.circular(
+                                    Resizable.size(context, 5))),
+                            child: Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                              children: [
+                                DateFilterReport(cubit: cubit),
+                                FilterReportStatus(cubit: cubit)
+                              ],
+                            ),
+                          ),
                           cubit.getListReport().isEmpty
-                              ? Center(
-                                  child: Text(AppText.txtNoClassReport.text,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: Resizable.font(context, 17),
-                                          color: greyColor.shade600)))
+                              ? Padding(padding: EdgeInsets.only(top: Resizable.padding(context, 120)),child: Center(
+                              child: Text(AppText.txtNoClassReport.text,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: Resizable.font(context, 17),
+                                      color: greyColor.shade600))))
                               : Column(
                                   children: [
                                     ...cubit.getListReport().map((e) =>
