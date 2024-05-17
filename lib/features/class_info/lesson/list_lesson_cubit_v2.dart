@@ -90,6 +90,8 @@ class ListLessonCubitV2 extends Cubit<int>{
 
   sortLessons(){
 
+    print(lessons!.map((e) => e.title).toList());
+
     var listId = lessonResults!.map((e) => e.lessonId).toList();
 
     List<LessonModel> listTemp1 = [];
@@ -108,6 +110,8 @@ class ListLessonCubitV2 extends Cubit<int>{
     lessons = listTemp1;
 
     lessons!.addAll(listTemp2);
+
+    print(lessons!.map((e) => e.title).toList());
 
 
     emit(state+1);

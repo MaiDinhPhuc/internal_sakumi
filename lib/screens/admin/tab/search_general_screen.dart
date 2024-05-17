@@ -221,11 +221,8 @@ class SearchGeneralScreen extends StatelessWidget {
                                       },
                                       onSuggestionSelected: (suggestion) {},
                                       displayAllSuggestionWhenTap: true,
-
                                       suggestionsBoxDecoration:
                                           SuggestionsBoxDecoration(
-
-
                                             offsetX: Resizable.font(context, 200),
                                             constraints: BoxConstraints(
                                               maxWidth: constraints.maxWidth - Resizable.font(context, 200),

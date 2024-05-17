@@ -422,6 +422,15 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<List<ScheduleModel>> getScheduleByClassId(int classId) async {
+    return (await FireStoreDb.instance.getScheduleByClassId(classId))
+        .docs
+        .map((e) => ScheduleModel.fromSnapshot(e)).where((e) =>
+    e.status != "delete")
+        .toList();
+  }
+
+  @override
   Future<List<ScheduleModel>> getTeacherCyclicScheduleInClass(int teacherId,
       int classId) async {
     return (await FireStoreDb.instance.getTeacherCyclicScheduleInClass(

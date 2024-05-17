@@ -1,9 +1,11 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
+import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'cyclic_schedule_dialog.dart';
 import 'manage_schedule_cubit.dart';
+import 'manage_schedule_dialog.dart';
 
 class ChangeDateView extends StatelessWidget {
   const ChangeDateView({super.key, required this.cubit});
@@ -53,7 +55,7 @@ class ChangeDateView extends StatelessWidget {
           onTap: (){
             showDialog(
                 context: context,
-                builder: (context) => CyclicScheduleDialog(cubit: cubit));
+                builder: (context) => ManageScheduleDialog(cubit: cubit));
           },
           child: Container(
             width: Resizable.size(context, 120),
@@ -80,7 +82,7 @@ class ChangeDateView extends StatelessWidget {
             ),
             child: Center(
                 child: Text(
-                  "+THÊM CA DẠY",
+                  AppText.txtManageSchedule.text,
                   style: TextStyle(
                     color: greyColor.shade600,
                     fontSize: Resizable.font(context, 16),

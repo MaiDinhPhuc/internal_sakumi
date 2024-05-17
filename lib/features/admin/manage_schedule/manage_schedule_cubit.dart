@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/features/CRUD/create.dart';
@@ -17,6 +19,11 @@ class ManageScheduleCubit extends Cubit<int> {
   DateTime? startDate, endDate;
   final DateTime now = DateTime.now();
   int currentWeekday = DateTime.now().weekday;
+
+  TextEditingController classController = TextEditingController();
+  TextEditingController teacherController = TextEditingController();
+
+  Timer? _debounce;
 
   List<String> listMenu = [
     "Chỉnh sửa lịch dạy",
@@ -119,7 +126,6 @@ class ManageScheduleCubit extends Cubit<int> {
   chooseClass(String className, int classId) async {
     this.classId = classId;
     classSearch.text = className;
-    emit(state + 1);
   }
 
   bool checkExistResult(int index, int classId) {
@@ -392,38 +398,26 @@ class ManageScheduleCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  deleteClass() {
-    listSingleSchedule = [];
-    listCyclicSchedule = [];
-    classId = null;
-    classSearch.text = "";
-    classSearchValue = "";
-    emit(state + 1);
-  }
-
   searchClass(String newValue) {
-    classSearchValue = newValue;
-    emit(state + 1);
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 50), () {
+      classSearchValue = newValue;
+      emit(state + 1);
+    });
+
   }
 
   searchTeacher(String newValue) {
-    teacherSearchValue = newValue;
-    emit(state + 1);
-  }
-
-  deleteTeacher() {
-    listSingleSchedule = [];
-    listCyclicSchedule = [];
-    teacherId = null;
-    teacherSearch.text = "";
-    teacherSearchValue = "";
-    emit(state + 1);
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 50), () {
+      teacherSearchValue = newValue;
+      emit(state + 1);
+    });
   }
 
   chooseTeacher(String teacher, int userId) {
     teacherId = userId;
     teacherSearch.text = teacher;
-    emit(state + 1);
   }
 
   loadClass(Object classModel) {

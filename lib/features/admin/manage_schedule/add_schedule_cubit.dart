@@ -19,8 +19,6 @@ class AddScheduleCubit extends Cubit<int> {
   String toHour = "00";
   String toMinute = "00";
 
-
-
   bool checkExistClass = true;
 
   List<String> listDay = [

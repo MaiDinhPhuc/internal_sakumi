@@ -154,6 +154,16 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getScheduleByClassId(
+      int classId) async {
+    final snapshot = await db
+        .collection("schedule")
+        .where('class_id', isEqualTo: classId)
+        .get();
+
+    return snapshot;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getTeacherCyclicScheduleInClass(
       int teacherId, int classId) async {
     final snapshot = await db

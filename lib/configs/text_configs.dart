@@ -549,17 +549,30 @@ enum AppText {
   txtDeleteTagSuccess,
   txtLoadingDelete,
   btnUpdateGroupTag,
-  txtUpdateGroupTagSuccess, txtTestTime,
+  txtUpdateGroupTagSuccess,
+  txtTestTime,
   txtChangeTeacher,
   txtChangeTeacherTo,
   txtScheduleInfo,
   txtPleaseCheckTeacher,
   txtAddStudentSuccess,
-   txtAddTag, txtTagManager, txtTagChoosen, btnComplete, txtConfirmDeleteTagFromClass, txtAtLeast1TagChoosen, txtConfirmDeleteTagFromStudent, txtConfirmDeleteTagFromTeacher
-
+  txtAddTag,
+  txtTagManager,
+  txtTagChoosen,
+  btnComplete,
+  txtConfirmDeleteTagFromClass,
+  txtAtLeast1TagChoosen,
+  txtConfirmDeleteTagFromStudent,
+  txtConfirmDeleteTagFromTeacher,
+  txtManageSchedule,
+  txtAddCyclicSchedule,
+  txtAddSingleSchedule,
 }
 
 Map<AppText, String> texts = {
+  AppText.txtAddCyclicSchedule: 'Thêm ca cố định',
+  AppText.txtAddSingleSchedule: 'Thêm ca tự chọn',
+  AppText.txtManageSchedule: 'Quản lý lịch dạy',
   AppText.txtAddStudentSuccess: 'Thêm học viên thành công',
   AppText.txtPleaseCheckTeacher: 'Vui lòng kiểm tra lại giáo viên',
   AppText.txtScheduleInfo: 'Vào ca dạy : ',
@@ -1159,8 +1172,10 @@ Map<AppText, String> texts = {
   AppText.txtPleaseInputGroupTagName: 'Vui lòng nhập tên nhóm',
   AppText.txtConfirmDeleteGroupTag: 'Bạn muốn xoá nhóm tag này ?',
   AppText.txtConfirmDeleteTagFromClass: 'Bạn muốn xoá tag này khỏi lớp?',
-  AppText.txtConfirmDeleteTagFromStudent: 'Bạn muốn xoá tag này khỏi học sinh này?',
-  AppText.txtConfirmDeleteTagFromTeacher: 'Bạn muốn xoá tag này khỏi giáo viên này?',
+  AppText.txtConfirmDeleteTagFromStudent:
+      'Bạn muốn xoá tag này khỏi học sinh này?',
+  AppText.txtConfirmDeleteTagFromTeacher:
+      'Bạn muốn xoá tag này khỏi giáo viên này?',
   AppText.txtLoadingAdd: 'Đang thêm mới...',
   AppText.txtYes: 'Xác nhận',
   AppText.txtAddGroupTagSuccess: 'Thêm nhóm tag mới thành công',
