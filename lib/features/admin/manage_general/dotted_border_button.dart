@@ -28,7 +28,7 @@ class DottedBorderButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(title, style: TextStyle(
-                  fontSize: Resizable.font(context, isManageGeneral ? 15 : 20), fontWeight: FontWeight.w700, color: const Color(0xff757575)
+                  fontSize: Resizable.font(context, isManageGeneral ? 18 : 20), fontWeight: FontWeight.w700, color: const Color(0xff757575)
               ))],
           )),
     );
@@ -63,7 +63,7 @@ class DottedBorderRadiusButton extends StatelessWidget {
                 children: [
                   Center(
                     child: Text(title, style: TextStyle(
-                        fontSize: Resizable.font(context, 14), fontWeight: FontWeight.w700, color: darkPrimaryColor
+                        fontSize: Resizable.font(context, 16), fontWeight: FontWeight.w700, color: darkPrimaryColor
                     )),
                   )],
               )),

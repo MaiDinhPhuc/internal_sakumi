@@ -71,7 +71,7 @@ class TagView extends StatelessWidget {
                               ),
                               Expanded(
                                 child: Divider(
-                                  color: greyAccent,
+                                  color: grey2,
                                   indent: Resizable.padding(context, 5),
                                   endIndent: Resizable.padding(context, 5),
                                 ),
