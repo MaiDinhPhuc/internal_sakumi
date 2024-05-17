@@ -20,47 +20,50 @@ class ChipTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Tooltip(
-      padding: EdgeInsets.all(Resizable.padding(context, 10)),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-              color: grey2,
-              width: Resizable.size(context, 1)),
-          borderRadius: BorderRadius.circular(
-              Resizable.padding(context, 5))),
-      richMessage: WidgetSpan(
-          alignment: PlaceholderAlignment.baseline,
-          baseline: TextBaseline.alphabetic,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              RichText(
-                text: TextSpan(
-                  text:description,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: Resizable.font(context, 18),
-                      color: Colors.black),
-                ),
-              ),
-            ],
-          )),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: const BorderRadius.all(Radius.circular(1000)),
-        child: Chip(
-          labelStyle: TextStyle(
+    return TooltipVisibility(
+      visible: description.isNotEmpty,
+      child: Tooltip(
+        padding: EdgeInsets.all(Resizable.padding(context, 10)),
+        decoration: BoxDecoration(
             color: Colors.white,
-            fontWeight: FontWeight.w700,
-            fontSize: Resizable.font(context, 14),
+            border: Border.all(
+                color: grey2,
+                width: Resizable.size(context, 1)),
+            borderRadius: BorderRadius.circular(
+                Resizable.padding(context, 5))),
+        richMessage: WidgetSpan(
+            alignment: PlaceholderAlignment.baseline,
+            baseline: TextBaseline.alphabetic,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    text:description,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: Resizable.font(context, 18),
+                        color: Colors.black),
+                  ),
+                ),
+              ],
+            )),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: const BorderRadius.all(Radius.circular(1000)),
+          child: Chip(
+            labelStyle: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              fontSize: Resizable.font(context, 14),
+            ),
+            deleteIcon: onDelete != null ? null :const Icon( Icons.close),
+            deleteIconColor: Colors.white,
+            onDeleted: onDelete,
+            label: Text(name),
+            deleteButtonTooltipMessage: AppText.btnRemove.text,
+            backgroundColor: Color(color),
           ),
-          deleteIcon: onDelete != null ? null :const Icon( Icons.close),
-          deleteIconColor: Colors.white,
-          onDeleted: onDelete,
-          label: Text(name),
-          deleteButtonTooltipMessage: AppText.btnRemove.text,
-          backgroundColor: Color(color),
         ),
       ),
     );
