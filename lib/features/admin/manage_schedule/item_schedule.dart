@@ -37,6 +37,8 @@ class ItemSchedule extends StatelessWidget {
                   width: Resizable.size(context, 25),
                 )),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   sensei,

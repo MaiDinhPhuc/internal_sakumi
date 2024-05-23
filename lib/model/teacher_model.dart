@@ -51,6 +51,7 @@ class TeacherModel {
       case 'D':
         return const Color(0xffE65100);
       case 'F':
+      case 'E':
         return const Color(0xffB71C1C);
       default:
         return const Color(0xff33691e);

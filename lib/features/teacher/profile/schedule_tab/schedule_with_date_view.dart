@@ -62,74 +62,152 @@ class ScheduleWithDateView extends StatelessWidget {
         ),
         cubit.isLoadingSchedule
             ? const Center(child: CircularProgressIndicator())
-            : Row(
-                children: [
-                  Expanded(
-                      child: Container(
-                    padding: EdgeInsets.all(Resizable.padding(context, 10)),
-                    height: Resizable.size(context, 500),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            width: Resizable.size(context, 1),
-                            color: greyColor.shade300),
-                        borderRadius:
-                            BorderRadius.circular(Resizable.size(context, 5))),
-                    child: Column(
-                      children: [
-                        ...cubit.listDay.map((e) => Expanded(
-                            flex: 1,
-                            child: Row(
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      e,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: Resizable.font(context, 15),
-                                          color: greyColor.shade600),
-                                    ),
-                                    Text(
-                                      cubit.getDate(cubit.listDay.indexOf(e)),
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: Resizable.font(context, 15),
-                                          color: greyColor.shade600),
-                                    )
-                                  ],
-                                ),
-                                SizedBox(width: Resizable.padding(context, 10)),
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: [
-                                      ...cubit
-                                          .getResult(cubit.listDay.indexOf(e))
-                                          .map((ee) => Padding(
-                                              padding: EdgeInsets.all(
-                                                  Resizable.padding(
-                                                      context, 3)),
-                                              child: ScheduleTaughtItem(
-                                                  cubit: cubit,
-                                                  lessonResultModel: ee))),
-                                      ...cubit
-                                          .getScheduleItem(
-                                              cubit.listDay.indexOf(e), e)
-                                          .map((e) => Padding( padding: EdgeInsets.all(
-                                          Resizable.padding(
-                                              context, 3)),child: ScheduleItem(
-                                          cubit: cubit, scheduleModel: e)))
-                                    ],
-                                  ),
-                                )
-                              ],
-                            )))
-                      ],
-                    ),
-                  ))
-                ],
-              )
+            : Container(
+          padding: EdgeInsets.all(Resizable.padding(context, 10)),
+          decoration: BoxDecoration(
+              border: Border.all(
+                  width: Resizable.size(context, 1),
+                  color: greyColor.shade300),
+              borderRadius: BorderRadius.circular(
+                  Resizable.size(context, 5))),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: List.generate(cubit.listDay.length, (index) {
+                return Container(
+                  width: Resizable.size(context, 160),
+                  child: Column(
+                    children: [
+                      Text(
+                        cubit.listDay[index],
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize:
+                            Resizable.font(context, 15),
+                            color: greyColor.shade600),
+                      ),
+                      Text(
+                        cubit.getDate(cubit.listDay.indexOf( cubit.listDay[index])),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize:
+                            Resizable.font(context, 15),
+                            color: greyColor.shade600),
+                      ),
+                      ...cubit
+                          .getResult(cubit.listDay.indexOf(cubit.listDay[index]))
+                          .map((ee) => Padding(
+                          padding: EdgeInsets.all(
+                              Resizable.padding(
+                                  context, 3)),
+                          child: ScheduleTaughtItem(
+                              cubit: cubit,
+                              lessonResultModel: ee))),
+                      ...cubit
+                          .getScheduleItem(
+                          cubit.listDay.indexOf(cubit.listDay[index]))
+                          .map((ee) => Padding(
+                          padding: EdgeInsets.all(
+                              Resizable.padding(
+                                  context, 3)),
+                          child: ee.type == "cyclic"
+                              ? CyclicScheduleItem(
+                              cubit: cubit,
+                              scheduleModel: ee,
+                              index: cubit.listDay
+                                  .indexOf(cubit.listDay[index]))
+                              : SingleScheduleItem(
+                              cubit: cubit,
+                              scheduleModel: ee,
+                              index: cubit.listDay
+                                  .indexOf(cubit.listDay[index]))))
+                    ],
+                  )
+                );
+              }),
+            ),
+          ),
+        )
+        // SingleChildScrollView(
+        //         scrollDirection: Axis.horizontal,
+        //         child: Row(
+        //           children: [
+        //             Container(
+        //               padding: EdgeInsets.all(Resizable.padding(context, 10)),
+        //               height: Resizable.size(context, 500),
+        //               decoration: BoxDecoration(
+        //                   border: Border.all(
+        //                       width: Resizable.size(context, 1),
+        //                       color: greyColor.shade300),
+        //                   borderRadius: BorderRadius.circular(
+        //                       Resizable.size(context, 5))),
+        //               child: Column(
+        //                 children: [
+        //                   ...cubit.listDay.map((e) => Row(
+        //                     children: [
+        //                       Column(
+        //                         mainAxisAlignment: MainAxisAlignment.center,
+        //                         children: [
+        //                           Text(
+        //                             e,
+        //                             style: TextStyle(
+        //                                 fontWeight: FontWeight.w600,
+        //                                 fontSize:
+        //                                 Resizable.font(context, 15),
+        //                                 color: greyColor.shade600),
+        //                           ),
+        //                           Text(
+        //                             cubit.getDate(cubit.listDay.indexOf(e)),
+        //                             style: TextStyle(
+        //                                 fontWeight: FontWeight.w600,
+        //                                 fontSize:
+        //                                 Resizable.font(context, 15),
+        //                                 color: greyColor.shade600),
+        //                           )
+        //                         ],
+        //                       ),
+        //                       SizedBox(
+        //                           width: Resizable.padding(context, 10)),
+        //                       Row(
+        //                         children: [
+        //                           ...cubit
+        //                               .getResult(cubit.listDay.indexOf(e))
+        //                               .map((ee) => Padding(
+        //                               padding: EdgeInsets.all(
+        //                                   Resizable.padding(
+        //                                       context, 3)),
+        //                               child: ScheduleTaughtItem(
+        //                                   cubit: cubit,
+        //                                   lessonResultModel: ee))),
+        //                           ...cubit
+        //                               .getScheduleItem(
+        //                               cubit.listDay.indexOf(e))
+        //                               .map((ee) => Padding(
+        //                               padding: EdgeInsets.all(
+        //                                   Resizable.padding(
+        //                                       context, 3)),
+        //                               child: ee.type == "cyclic"
+        //                                   ? CyclicScheduleItem(
+        //                                   cubit: cubit,
+        //                                   scheduleModel: ee,
+        //                                   index: cubit.listDay
+        //                                       .indexOf(e))
+        //                                   : SingleScheduleItem(
+        //                                   cubit: cubit,
+        //                                   scheduleModel: ee,
+        //                                   index: cubit.listDay
+        //                                       .indexOf(e))))
+        //                         ],
+        //                       )
+        //                     ],
+        //                   ))
+        //                 ],
+        //               ),
+        //             )
+        //           ],
+        //         ),
+        //       )
       ],
     );
   }

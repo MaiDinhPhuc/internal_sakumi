@@ -110,7 +110,15 @@ void alertNewTeacher(
                                                   phone: phoneCon.text,
                                                   teacherCode:
                                                   senseiCodeCon.text,
-                                                  status: 'Chính thức',schedule: {}, email: emailCon.text);
+                                                  status: 'Chính thức',schedule:  {
+                                                'Mon': [],
+                                                'Tue': [],
+                                                'Wed': [],
+                                                'Thu': [],
+                                                'Fri': [],
+                                                'Sat': [],
+                                                'Sun': []
+                                              }, email: emailCon.text);
                                               Navigator.pop(context);
                                               waitingDialog(context);
                                               await cubit.createTeacher(

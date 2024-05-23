@@ -216,7 +216,7 @@ class DetailLessonCubitV2 extends Cubit<int> {
           i.classStatus != "Deposit" &&
           i.classStatus != "Retained" &&
           i.classStatus != "Moved" &&
-          i.classStatus != "Viewer") {
+          i.classStatus != "Viewer" && i.classStatus != "Complete") {
         listStdId.add(i.userId);
       }
     }

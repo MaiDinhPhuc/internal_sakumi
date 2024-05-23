@@ -567,9 +567,20 @@ enum AppText {
   txtManageSchedule,
   txtAddCyclicSchedule,
   txtAddSingleSchedule,
+  txtClose,
+  txtCancelChoose,
+  txtUpdateScheduleDone,
+  txtNoChooseStartAndEnd,
+  txtNoChooseDate,
+  txtScheduleExist
 }
 
 Map<AppText, String> texts = {
+  AppText.txtScheduleExist: 'Lịch đã tồn tại, vui lòng kiểm tra lại!',
+  AppText.txtNoChooseDate: 'Chưa chọn ngày',
+  AppText.txtUpdateScheduleDone: 'Cập nhật lịch dạy thành công',
+  AppText.txtCancelChoose: 'Huỷ chọn',
+  AppText.txtClose: 'Đóng',
   AppText.txtAddCyclicSchedule: 'Thêm ca cố định',
   AppText.txtAddSingleSchedule: 'Thêm ca tự chọn',
   AppText.txtManageSchedule: 'Quản lý lịch dạy',
@@ -595,6 +606,7 @@ Map<AppText, String> texts = {
   AppText.txtChooseClassWrong: "Sensei không được thêm vào lớp này!",
   AppText.txtInPutTimeWrong: "Nhập sai thời gian dạy!",
   AppText.txtNoChooseClass: "Chưa chọn lớp!",
+  AppText.txtNoChooseStartAndEnd: "Chưa chọn ngày bắt đầu/kết thúc",
   AppText.txtNoChooseTeacher: "Chưa chọn sensei!",
   AppText.txtNoEmptyChooseDay: "Chưa chọn ngày dạy cho sensei!",
   AppText.txtTeacherName: "Họ và tên giáo viên",

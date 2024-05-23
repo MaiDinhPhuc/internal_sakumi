@@ -1,25 +1,27 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/model/schedule_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 import '../../../widget/submit_button.dart';
-import 'add_schedule_cubit.dart';
+import 'add_cyclic_schedule_cubit.dart';
 import 'info_cyclic_schedule_view.dart';
 import 'manage_schedule_cubit.dart';
 
 class CyclicScheduleDialog extends StatelessWidget {
-  CyclicScheduleDialog({super.key, required this.cubit})
-      : addCubit = AddScheduleCubit();
+  CyclicScheduleDialog({super.key, required this.cubit, this.schedule})
+      : addCubit = AddCyclicScheduleCubit(schedule);
 
-  final AddScheduleCubit addCubit;
+  final AddCyclicScheduleCubit addCubit;
   final ManageScheduleCubit cubit;
+  final ScheduleModel? schedule;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddScheduleCubit, int>(
+    return BlocBuilder<AddCyclicScheduleCubit, int>(
         bloc: addCubit,
         builder: (c, s) {
           return Dialog(
@@ -39,7 +41,7 @@ class CyclicScheduleDialog extends StatelessWidget {
                           margin: EdgeInsets.only(
                               bottom: Resizable.padding(context, 20)),
                           child: Text(
-                            AppText.txtAddNewSchedule.text,
+                            AppText.txtManageSchedule.text.toUpperCase(),
                             style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: Resizable.font(context, 20)),
@@ -74,12 +76,19 @@ class CyclicScheduleDialog extends StatelessWidget {
                                         minWidth: Resizable.size(context, 100)),
                                     child: SubmitButton(
                                         onPressed: () async {
-                                          if (addCubit.listCheckDay.every((e) => e == false)) {
+                                          if (addCubit.listCheckDay
+                                              .every((e) => e == false)) {
                                             notificationDialog(
                                                 context,
                                                 AppText
                                                     .txtNoEmptyChooseDay.text);
-                                          } else if (addCubit.teacherId ==
+                                          }else if(addCubit.startDate == null || addCubit.startDate == null){
+                                            notificationDialog(
+                                                context,
+                                                AppText
+                                                    .txtNoChooseStartAndEnd.text);
+                                          }
+                                          else if (addCubit.teacherId ==
                                               null) {
                                             notificationDialog(
                                                 context,
@@ -91,7 +100,7 @@ class CyclicScheduleDialog extends StatelessWidget {
                                           } else {
                                             waitingDialog(context);
                                             await addCubit.checkSchedule();
-                                            if (addCubit.checkExistClass) {
+                                            if (addCubit.checkExistSchedule) {
                                               if (context.mounted) {
                                                 Navigator.pop(context);
                                                 await addCubit
@@ -99,10 +108,19 @@ class CyclicScheduleDialog extends StatelessWidget {
                                                         cubit);
                                                 if (context.mounted) {
                                                   Navigator.pop(context);
-                                                  notificationDialog(
-                                                      context,
-                                                      AppText.txtAddScheduleDone
-                                                          .text);
+                                                  if (schedule != null) {
+                                                    notificationDialog(
+                                                        context,
+                                                        AppText
+                                                            .txtUpdateScheduleDone
+                                                            .text);
+                                                  } else {
+                                                    notificationDialog(
+                                                        context,
+                                                        AppText.txtAddScheduleDone
+                                                            .text);
+                                                  }
+
                                                 }
                                               }
                                             } else {
@@ -110,13 +128,14 @@ class CyclicScheduleDialog extends StatelessWidget {
                                                 Navigator.pop(context);
                                                 notificationDialog(
                                                     context,
-                                                    AppText.txtChooseClassWrong
+                                                    AppText
+                                                        .txtScheduleExist
                                                         .text);
                                               }
                                             }
                                           }
                                         },
-                                        title: AppText.btnAdd.text),
+                                        title: schedule == null ?AppText.btnAdd.text : AppText.txtUpdate.text),
                                   ),
                                 ],
                               )
@@ -129,3 +148,4 @@ class CyclicScheduleDialog extends StatelessWidget {
         });
   }
 }
+

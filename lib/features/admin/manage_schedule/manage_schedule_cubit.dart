@@ -25,10 +25,13 @@ class ManageScheduleCubit extends Cubit<int> {
 
   Timer? _debounce;
 
-  List<String> listMenu = [
-    "Chỉnh sửa lịch dạy",
+  List<String> listSingleMenu = ["Chỉnh sửa", "Huỷ lịch dạy"];
+
+  List<String> listCyclicMenu = [
     "Đổi giáo viên",
-    "Nghỉ",
+    "Học viên nghỉ",
+    "Lớp học nghỉ",
+    "Chỉnh sửa",
     "Huỷ lịch dạy"
   ];
 
@@ -153,37 +156,71 @@ class ManageScheduleCubit extends Cubit<int> {
     }
   }
 
-  addSchedule(ScheduleModel schedule) {
-    listSingleSchedule!.add(schedule);
-    if (listTeacherId.contains(schedule.teacherId) == false) {
-      listTeacherId.add(schedule.teacherId);
+  addSchedule(ScheduleModel schedule)async {
+    if (schedule.classId == classId || schedule.teacherId == teacherId) {
+      listSingleSchedule!.add(schedule);
+      if (listTeacherId.contains(schedule.teacherId) == false) {
+        listTeacherId.add(schedule.teacherId);
+      }
+
+      for (var i in listTeacherId) {
+        DataProvider.teacherById(i, loadTeacher);
+      }
+      await DataProvider.classByClassId(schedule.classId, loadClass);
+      emit(state + 1);
     }
-    for (var i in listTeacherId) {
-      DataProvider.teacherById(i, loadTeacher);
-    }
-    emit(state + 1);
   }
 
-  cancelSchedule(ScheduleModel schedule, int index) {
-    // var date = listDate[index].millisecondsSinceEpoch;
-    //
-    // var newSchedule = ScheduleModel(
-    //     id: DateTime.now().millisecondsSinceEpoch,
-    //     teacherId: schedule.teacherId,
-    //     status: "cancel",
-    //     classId: schedule.classId,
-    //     type: "single",
-    //     startTime: schedule.startTime,
-    //     endTime: schedule.endTime,
-    //     role: [],
-    //     date: date);
-    //
-    // listSingleSchedule!.add(newSchedule);
-    // Create.createSingleSchedule(newSchedule);
-    emit(state + 1);
+  updateSchedule(ScheduleModel schedule) async {
+    if (schedule.classId == classId || schedule.teacherId == teacherId) {
+      var index = listSingleSchedule!.indexWhere((e) => e.id == schedule.id);
+
+      if (index != -1) {
+        listSingleSchedule![index] = schedule;
+        if (listTeacherId.contains(schedule.teacherId) == false) {
+          listTeacherId.add(schedule.teacherId);
+        }
+        for (var i in listTeacherId) {
+          DataProvider.teacherById(i, loadTeacher);
+        }
+        await DataProvider.classByClassId(schedule.classId, loadClass);
+        emit(state + 1);
+      }
+    }
   }
 
-  List<ScheduleModel> getScheduleItem(int index, String day) {
+  String getCyclicTime(int index, ScheduleModel schedule) {
+    if (schedule.status == "cancel") {
+      return "Huỷ";
+    }
+
+    var dayIndex = "";
+
+    if (index == 0) {
+      dayIndex = "Mon";
+    }
+    if (index == 1) {
+      dayIndex = "Tue";
+    }
+    if (index == 2) {
+      dayIndex = "Wed";
+    }
+    if (index == 3) {
+      dayIndex = "Thu";
+    }
+    if (index == 4) {
+      dayIndex = "Fri";
+    }
+    if (index == 5) {
+      dayIndex = "Sat";
+    }
+    if (index == 6) {
+      dayIndex = "Sun";
+    }
+    return schedule.calendar[dayIndex];
+  }
+
+  List<ScheduleModel> getScheduleItem(int index) {
     var date = listDate[index];
     DateTime dateTime = DateTime(now.year, now.month, now.day, 0, 0, 0);
 
@@ -196,8 +233,43 @@ class ManageScheduleCubit extends Cubit<int> {
 
     List<ScheduleModel> list = [];
 
+    var dayIndex = "";
+
+    if (index == 0) {
+      dayIndex = "Mon";
+    }
+    if (index == 1) {
+      dayIndex = "Tue";
+    }
+    if (index == 2) {
+      dayIndex = "Wed";
+    }
+    if (index == 3) {
+      dayIndex = "Thu";
+    }
+    if (index == 4) {
+      dayIndex = "Fri";
+    }
+    if (index == 5) {
+      dayIndex = "Sat";
+    }
+    if (index == 6) {
+      dayIndex = "Sun";
+    }
+
     for (var i in listCyclicSchedule!) {
-      if (i.role.contains(day) && checkExistResult(index, i.classId) == false) {
+      if (i.calendar[dayIndex] != "" &&
+          checkExistResult(index, i.classId) == false &&
+          listSingleSchedule!
+              .where((e) =>
+                  e.date == date.millisecondsSinceEpoch &&
+                  e.classId == i.classId)
+              .toList()
+              .isEmpty) {
+        list.add(i);
+      }
+      if(i.calendar[dayIndex] != "" &&
+          checkExistResult(index, i.classId) == false && i.status == "cancel" && list.contains(i) == false){
         list.add(i);
       }
     }
@@ -205,12 +277,7 @@ class ManageScheduleCubit extends Cubit<int> {
     for (var i in listSingleSchedule!) {
       if (i.date == date.millisecondsSinceEpoch &&
           checkExistResult(index, i.classId) == false) {
-        List<ScheduleModel> temp =
-            listCyclicSchedule!.where((e) => e.classId == i.classId).toList();
-        if (temp.isNotEmpty) {
-          list.remove(temp.first);
-          list.add(i);
-        }
+        list.add(i);
       }
     }
 
@@ -229,6 +296,83 @@ class ManageScheduleCubit extends Cubit<int> {
       return false;
     }
     return true;
+  }
+
+  String getSingleTime(ScheduleModel schedule) {
+    if (schedule.status == "teacher_off") {
+      return "GV Nghỉ";
+    }
+
+    if (schedule.status == "cancel") {
+      return "Huỷ";
+    }
+
+    if (schedule.status == "change_teacher") {
+      return schedule.time;
+    }
+
+    if (schedule.status == "student_drop") {
+      return "HV Nghỉ";
+    }
+
+    if (schedule.status == "class_drop") {
+      return "Lớp học nghỉ";
+    }
+    return "";
+  }
+
+  Color getSingleLightColor(ScheduleModel schedule) {
+    if (schedule.status == "change_teacher") {
+      return const Color(0xffE3F2FD);
+    }
+
+    if (schedule.status == "student_drop") {
+      return const Color(0xffFAFAFA);
+    }
+
+    if (schedule.status == "class_drop" ||
+        schedule.status == "cancel" ||
+        schedule.status == "teacher_off") {
+      return const Color(0xffFDE3E3);
+    }
+
+    return const Color(0xffE3F2FD);
+  }
+
+  Color getSingleMediumColor(ScheduleModel schedule) {
+    if (schedule.status == "change_teacher") {
+      return const Color(0xffBBDEFB);
+    }
+
+    if (schedule.status == "student_drop") {
+      return const Color(0xffCCCCCC);
+    }
+
+    if (schedule.status == "class_drop" ||
+        schedule.status == "cancel" ||
+        schedule.status == "teacher_off") {
+      return const Color(0xffFBBBBB);
+    }
+
+    return const Color(0xffBBDEFB);
+  }
+
+  Color getSingleDarkColor(ScheduleModel schedule) {
+    if (schedule.status == "change_teacher") {
+      return const Color(0xff0D47A1);
+    }
+
+    if (schedule.status == "student_drop") {
+      return const Color(0xff535353);
+    }
+
+    if (schedule.status == "class_drop" ||
+        schedule.status == "cancel" ||
+        schedule.status == "teacher_off") {
+      return const Color(0xffA10D0D);
+    }
+
+    return const Color(0xff0D47A1);
   }
 
   String getRangeDate() {
@@ -302,17 +446,9 @@ class ManageScheduleCubit extends Cubit<int> {
       listCyclicSchedule =
           await FireBaseProvider.instance.getClassCyclicSchedule(classId!);
 
-      var listClassIdTemp = listCyclicSchedule!.map((e) => e.classId).toList();
-
-      if (listClassIdTemp.isEmpty) {
-        listSingleSchedule = [];
-      } else {
-        listSingleSchedule = await FireBaseProvider.instance
-            .getTeacherSingleSchedule(
-                listClassIdTemp,
-                startDate!.millisecondsSinceEpoch,
-                endDate!.millisecondsSinceEpoch);
-      }
+      listSingleSchedule = await FireBaseProvider.instance
+          .getClassSingleSchedule(classId!, startDate!.millisecondsSinceEpoch,
+              endDate!.millisecondsSinceEpoch);
     }
 
     if (classId == null && teacherId != null) {
@@ -325,17 +461,11 @@ class ManageScheduleCubit extends Cubit<int> {
       listCyclicSchedule =
           await FireBaseProvider.instance.getTeacherCyclicSchedule(teacherId!);
 
-      var listClassIdTemp = listCyclicSchedule!.map((e) => e.classId).toList();
-
-      if (listClassIdTemp.isEmpty) {
-        listSingleSchedule = [];
-      } else {
-        listSingleSchedule = await FireBaseProvider.instance
-            .getTeacherSingleSchedule(
-                listClassIdTemp,
-                startDate!.millisecondsSinceEpoch,
-                endDate!.millisecondsSinceEpoch);
-      }
+      listSingleSchedule = await FireBaseProvider.instance
+          .getTeacherSingleSchedule(
+              teacherId!,
+              startDate!.millisecondsSinceEpoch,
+              endDate!.millisecondsSinceEpoch);
     }
 
     if (classId != null && teacherId != null) {
@@ -346,17 +476,12 @@ class ManageScheduleCubit extends Cubit<int> {
       listCyclicSchedule = await FireBaseProvider.instance
           .getTeacherCyclicScheduleInClass(teacherId!, classId!);
 
-      var listClassIdTemp = listCyclicSchedule!.map((e) => e.classId).toList();
-
-      if (listClassIdTemp.isEmpty) {
-        listSingleSchedule = [];
-      } else {
-        listSingleSchedule = await FireBaseProvider.instance
-            .getTeacherSingleSchedule(
-                listClassIdTemp,
-                startDate!.millisecondsSinceEpoch,
-                endDate!.millisecondsSinceEpoch);
-      }
+      listSingleSchedule = await FireBaseProvider.instance
+          .getTeacherSingleScheduleInClass(
+              teacherId!,
+              classId!,
+              startDate!.millisecondsSinceEpoch,
+              endDate!.millisecondsSinceEpoch);
     }
 
     for (var i in listLessonResult!) {
@@ -404,7 +529,6 @@ class ManageScheduleCubit extends Cubit<int> {
       classSearchValue = newValue;
       emit(state + 1);
     });
-
   }
 
   searchTeacher(String newValue) {

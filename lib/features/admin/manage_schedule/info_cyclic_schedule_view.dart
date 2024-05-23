@@ -7,13 +7,13 @@ import 'package:internal_sakumi/features/admin/search/item_search_list.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import '../../../services/custom_firebase_firestore.dart';
-import 'add_schedule_cubit.dart';
+import 'add_cyclic_schedule_cubit.dart';
 import 'choose_cyclic_time.dart';
 import 'manage_schedule_cubit.dart';
 
 class InfoCyclicScheduleView extends StatelessWidget {
   const InfoCyclicScheduleView({super.key, required this.addCubit});
-  final AddScheduleCubit addCubit;
+  final AddCyclicScheduleCubit addCubit;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -29,13 +29,15 @@ class InfoCyclicScheduleView extends StatelessWidget {
           SearchInBill(
               hint:AppText.txtSearchTeacher.text,
               onDelete: () {
-                addCubit.deleteTeacher();
+                if(addCubit.schedule == null){
+                  addCubit.deleteTeacher();
+                }
               },
               onChange: (newValue) {
                 addCubit.searchTeacher(newValue);
               },
               controller: addCubit.teacherSearch,
-              enable: addCubit.teacherId == null),
+              enable:addCubit.schedule == null ? addCubit.teacherId == null : false),
           Stack(
             children: [
               Column(
@@ -52,13 +54,16 @@ class InfoCyclicScheduleView extends StatelessWidget {
                   SearchInBill(
                       hint:AppText.txtSearchClass.text,
                       onDelete: () {
-                        addCubit.deleteClass();
+                        if(addCubit.schedule == null){
+                          addCubit.deleteClass();
+                        }
+
                       },
                       onChange: (newValue) {
                         addCubit.searchClass(newValue);
                       },
                       controller: addCubit.classSearch,
-                      enable: addCubit.classId == null),
+                      enable:addCubit.schedule == null ? addCubit.classId == null : false ),
                   Stack(
                     children: [
                       Column(
@@ -84,7 +89,7 @@ class InfoCyclicScheduleView extends StatelessWidget {
                               return (snapshots.connectionState ==
                                   ConnectionState.waiting)
                                   ? Container()
-                                  : ClassSearchListScheduleV2(
+                                  : ClassSearchCyclicSchedule(
                                   snapshots: snapshots, addCubit: addCubit,
                                   );
                             })
@@ -101,7 +106,7 @@ class InfoCyclicScheduleView extends StatelessWidget {
                       return (snapshots.connectionState ==
                           ConnectionState.waiting)
                           ? Container()
-                          : TeacherSearchListScheduleV2(
+                          : TeacherSearchCyclicSchedule(
                           snapshots: snapshots, addCubit: addCubit
                        );
                     })

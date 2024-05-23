@@ -2,8 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ScheduleModel {
   final int id, teacherId, classId, date, startDate, endDate;
-  final String status, type;
-  final List role;
+  final String status, type, time;
   final Map calendar;
 
   ScheduleModel(
@@ -13,8 +12,8 @@ class ScheduleModel {
       required this.classId,
       required this.type,
       required this.calendar,
-      required this.role,
       required this.date,
+      required this.time,
       required this.startDate,
       required this.endDate});
   factory ScheduleModel.fromSnapshot(
@@ -29,7 +28,7 @@ class ScheduleModel {
         type: data['type'] ?? 'cyclic',
         startDate: data['start_date'] ?? 0,
         endDate: data['end_date'] ?? 0,
-        role: data['role'] ?? [],
+        time: data['time']??'',
         date: data['date'] ?? 0);
   }
 }

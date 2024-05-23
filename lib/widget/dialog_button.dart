@@ -24,7 +24,7 @@ class DialogButton extends StatelessWidget {
           padding: MaterialStateProperty.all(
               EdgeInsets.symmetric(
                   horizontal:
-                  Resizable.padding(context, 30)))),
+                  Resizable.padding(context, 40)))),
       child: Text(title,
           style: TextStyle(
               fontWeight: FontWeight.w700,

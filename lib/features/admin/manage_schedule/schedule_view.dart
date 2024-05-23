@@ -28,7 +28,6 @@ class ScheduleView extends StatelessWidget {
             child: LayoutBuilder(builder: (context, constraints) => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // SearchInScheduleView(cubit: cubit),
                 Row(
                   children: [
                     Expanded(
@@ -72,6 +71,10 @@ class ScheduleView extends StatelessWidget {
                                   fontSize: Resizable.font(context, 25),
                                   color: Colors.black),
                               onChanged: (String value) {
+                                if(value == ""){
+                                  cubit.teacherController.text = "";
+                                  cubit.teacherId = null;
+                                }
                                 cubit.searchTeacher(value);
                               },
                               controller: cubit.teacherController,
@@ -166,6 +169,10 @@ class ScheduleView extends StatelessWidget {
                                 fontSize: Resizable.font(context, 25),
                                 color: Colors.black),
                             onChanged: (String value) {
+                              if(value == ""){
+                                cubit.classController.text = "";
+                                cubit.classId = null;
+                              }
                               cubit.searchClass(value);
                             },
                             controller: cubit.classController,
@@ -324,14 +331,14 @@ class ScheduleView extends StatelessWidget {
                                                         lessonResultModel: ee))),
                                                 ...cubit
                                                     .getScheduleItem(
-                                                    cubit.listDay.indexOf(e), e)
+                                                    cubit.listDay.indexOf(e))
                                                     .map((ee) => ee.type == "cyclic"? Padding(padding: EdgeInsets.all(
                                                     Resizable.padding(
                                                         context, 3)),child: CyclicScheduleItem(
-                                                  cubit: cubit, scheduleModel: ee,index: cubit.listDay.indexOf(e), info: '$e, ${cubit.getDate(cubit.listDay.indexOf(e))}, ',)): Padding(padding: EdgeInsets.all(
+                                                  cubit: cubit, scheduleModel: ee,index: cubit.listDay.indexOf(e))): Padding(padding: EdgeInsets.all(
                                                     Resizable.padding(
                                                         context, 3)),child: SingleScheduleItem(
-                                                  cubit: cubit, scheduleModel: ee,index: cubit.listDay.indexOf(e), info: '$e, ${cubit.getDate(cubit.listDay.indexOf(e))}, ',)))
+                                                  cubit: cubit, scheduleModel: ee,index: cubit.listDay.indexOf(e))))
                                               ],
                                             ),
                                           )

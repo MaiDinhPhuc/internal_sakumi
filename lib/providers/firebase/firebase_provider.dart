@@ -416,8 +416,7 @@ class FireBaseProvider extends NetworkProvider {
   Future<List<ScheduleModel>> getTeacherCyclicSchedule(int teacherId) async {
     return (await FireStoreDb.instance.getTeacherCyclicSchedule(teacherId))
         .docs
-        .map((e) => ScheduleModel.fromSnapshot(e)).where((e) =>
-    e.status != "delete")
+        .map((e) => ScheduleModel.fromSnapshot(e))
         .toList();
   }
 
@@ -425,8 +424,7 @@ class FireBaseProvider extends NetworkProvider {
   Future<List<ScheduleModel>> getScheduleByClassId(int classId) async {
     return (await FireStoreDb.instance.getScheduleByClassId(classId))
         .docs
-        .map((e) => ScheduleModel.fromSnapshot(e)).where((e) =>
-    e.status != "delete")
+        .map((e) => ScheduleModel.fromSnapshot(e))
         .toList();
   }
 
@@ -436,8 +434,17 @@ class FireBaseProvider extends NetworkProvider {
     return (await FireStoreDb.instance.getTeacherCyclicScheduleInClass(
         teacherId, classId))
         .docs
-        .map((e) => ScheduleModel.fromSnapshot(e)).where((e) =>
-    e.status != "delete")
+        .map((e) => ScheduleModel.fromSnapshot(e))
+        .toList();
+  }
+
+  @override
+  Future<List<ScheduleModel>> getTeacherSingleScheduleInClass(int teacherId,
+      int classId,int startDate, int endDate) async {
+    return (await FireStoreDb.instance.getTeacherSingleScheduleInClass(
+      classId, teacherId, startDate, endDate))
+        .docs
+        .map((e) => ScheduleModel.fromSnapshot(e))
         .toList();
   }
 
@@ -445,19 +452,27 @@ class FireBaseProvider extends NetworkProvider {
   Future<List<ScheduleModel>> getClassCyclicSchedule(int classId) async {
     return (await FireStoreDb.instance.getClassCyclicSchedule(classId))
         .docs
-        .map((e) => ScheduleModel.fromSnapshot(e)).where((e) =>
-    e.status != "delete")
+        .map((e) => ScheduleModel.fromSnapshot(e))
         .toList();
   }
 
   @override
-  Future<List<ScheduleModel>> getTeacherSingleSchedule(List<int> listId,
+  Future<List<ScheduleModel>> getClassSingleSchedule(int classId,
+      int startDate, int endDate) async {
+    return (await FireStoreDb.instance.getClassSingleSchedule(
+        classId, startDate, endDate))
+        .docs
+        .map((e) => ScheduleModel.fromSnapshot(e))
+        .toList();
+  }
+
+  @override
+  Future<List<ScheduleModel>> getTeacherSingleSchedule(int teacherId,
       int startDate, int endDate) async {
     return (await FireStoreDb.instance.getTeacherSingleSchedule(
-        listId, startDate, endDate))
+        teacherId, startDate, endDate))
         .docs
-        .map((e) => ScheduleModel.fromSnapshot(e)).where((e) =>
-    e.status != "delete")
+        .map((e) => ScheduleModel.fromSnapshot(e))
         .toList();
   }
 
@@ -823,7 +838,7 @@ class FireBaseProvider extends NetworkProvider {
     var temp = await FireStoreDb.instance.getUserByEmail(user.email);
     if (temp.docs.isEmpty) {
       await FireStoreDb.instance.createNewStudent(model, user);
-      FireBaseProvider.instance
+      await FireBaseProvider.instance
           .saveUser(user.email, user.role, model.userId);
       return true;
     } else {
@@ -836,8 +851,8 @@ class FireBaseProvider extends NetworkProvider {
     var temp = await FireStoreDb.instance.getUserByEmail(user.email);
 
     if (temp.docs.isEmpty) {
-      FireStoreDb.instance.createNewTeacher(model, user);
-      FireBaseProvider.instance
+      await FireStoreDb.instance.createNewTeacher(model, user);
+      await FireBaseProvider.instance
           .saveUser(user.email, user.role, model.userId);
       return true;
     }
@@ -1562,8 +1577,8 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<void> updateTeacherCyclicSchedule(ScheduleModel model) async {
-    await FireStoreDb.instance.updateCyclicSchedule(model);
+  Future<void> updateSchedule(ScheduleModel model) async {
+    await FireStoreDb.instance.updateSchedule(model);
   }
 
   @override

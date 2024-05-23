@@ -351,7 +351,7 @@ abstract class NetworkProvider {
 
   Future<List<ScheduleModel>> getTeacherCyclicSchedule(int teacherId);
 
-  Future<List<ScheduleModel>> getTeacherSingleSchedule(List<int> listId, int startDate, int endDate);
+  Future<List<ScheduleModel>> getClassSingleSchedule(int classId, int startDate, int endDate);
 
   Future<List<LessonResultModel>> getLessonResultWithDateAndClassId(int start, int end,int classId);
 

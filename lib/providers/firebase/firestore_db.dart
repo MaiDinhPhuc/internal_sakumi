@@ -148,6 +148,7 @@ class FireStoreDb {
       int teacherId) async {
     final snapshot = await db
         .collection("schedule")
+        .where("type", isEqualTo: "cyclic")
         .where('teacher_id', isEqualTo: teacherId)
         .get();
 
@@ -168,6 +169,7 @@ class FireStoreDb {
       int teacherId, int classId) async {
     final snapshot = await db
         .collection("schedule")
+        .where("type", isEqualTo: "cyclic")
         .where('teacher_id', isEqualTo: teacherId)
         .where('class_id', isEqualTo: classId)
         .get();
@@ -186,12 +188,39 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getTeacherSingleSchedule(
-      List<int> listId, int startDate, int endDate) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getTeacherSingleScheduleInClass(
+      int classId,int teacherId, int startDate, int endDate) async {
     final snapshot = await db
         .collection("schedule")
         .where("type", isEqualTo: "single")
-        .where('class_id', whereIn: listId)
+        .where('class_id', isEqualTo: classId)
+        .where('teacher_id', isEqualTo: teacherId)
+        .where("date", isGreaterThanOrEqualTo: startDate)
+        .where("date", isLessThanOrEqualTo: endDate)
+        .get();
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getClassSingleSchedule(
+       int classId, int startDate, int endDate) async {
+    final snapshot = await db
+        .collection("schedule")
+        .where("type", isEqualTo: "single")
+        .where('class_id', isEqualTo: classId)
+        .where("date", isGreaterThanOrEqualTo: startDate)
+        .where("date", isLessThanOrEqualTo: endDate)
+        .get();
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getTeacherSingleSchedule(
+      int teacherId, int startDate, int endDate) async {
+    final snapshot = await db
+        .collection("schedule")
+        .where("type", isEqualTo: "single")
+        .where('teacher_id', isEqualTo: teacherId)
         .where("date", isGreaterThanOrEqualTo: startDate)
         .where("date", isLessThanOrEqualTo: endDate)
         .get();
@@ -864,22 +893,26 @@ class FireStoreDb {
       'date': model.date,
       'calendar': model.calendar,
       'id': model.id,
-      'role': model.role,
+      'time': model.time,
       'status': model.status,
       'teacher_id': model.teacherId,
+      'start_date': model.startDate,
+      'end_date': model.endDate,
       'type': model.type
     });
   }
 
-  Future<void> updateCyclicSchedule(ScheduleModel model) async {
+  Future<void> updateSchedule(ScheduleModel model) async {
     await db.collection("schedule").doc("schedule_${model.id}").set({
       'class_id': model.classId,
       'date': model.date,
       'calendar': model.calendar,
       'id': model.id,
-      'role': model.role,
+      'time': model.time,
       'status': model.status,
       'teacher_id': model.teacherId,
+      'start_date': model.startDate,
+      'end_date': model.endDate,
       'type': model.type
     });
   }

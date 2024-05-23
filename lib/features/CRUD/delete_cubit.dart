@@ -23,10 +23,10 @@ class Delete{
     await FireBaseProvider.instance.deleteSurvey(id);
   }
 
-  static deleteSchedule(ScheduleModel schedule){
+  static cancelSchedule(ScheduleModel schedule){
     CustomFirebaseFireStore.database
         .collection('schedule')
         .doc('schedule_${schedule.id}')
-        .update({'status': "delete"});
+        .update({'status': "cancel"});
   }
 }

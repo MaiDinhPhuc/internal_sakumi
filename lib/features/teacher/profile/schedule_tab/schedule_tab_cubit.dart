@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/features/CRUD/update.dart';
@@ -56,6 +58,7 @@ class ScheduleTabCubit extends Cubit<int> {
       teacherId = userId;
     }
     await DataProvider.teacherById(teacherId!, loadTeacherInfo);
+
     schedule = teacher!.schedule;
 
     DateTime dateTime = DateTime(now.year, now.month, now.day, 0, 0, 0);
@@ -89,17 +92,10 @@ class ScheduleTabCubit extends Cubit<int> {
     listCyclicSchedule =
         await FireBaseProvider.instance.getTeacherCyclicSchedule(teacherId!);
 
-    var listClassIdTemp = listCyclicSchedule!.map((e) => e.classId).toList();
+    listSingleSchedule = await FireBaseProvider.instance.getTeacherSingleSchedule(teacherId!,
+        startDate!.millisecondsSinceEpoch,
+        endDate!.millisecondsSinceEpoch);
 
-    if (listClassIdTemp.isEmpty) {
-      listSingleSchedule = [];
-    } else {
-      listSingleSchedule = await FireBaseProvider.instance
-          .getTeacherSingleSchedule(
-              listClassIdTemp,
-              startDate!.millisecondsSinceEpoch,
-              endDate!.millisecondsSinceEpoch);
-    }
 
     for (var i in listLessonResult!) {
       if (listClassId.contains(i.classId) == false) {
@@ -175,6 +171,115 @@ class ScheduleTabCubit extends Cubit<int> {
     emit(state + 1);
   }
 
+
+  String getSingleTime(ScheduleModel schedule) {
+    if (schedule.status == "teacher_off") {
+      return "GV Nghỉ";
+    }
+
+    if (schedule.status == "cancel") {
+      return "Huỷ";
+    }
+
+    if (schedule.status == "change_teacher") {
+      return schedule.time;
+    }
+
+    if (schedule.status == "student_drop") {
+      return "HV Nghỉ";
+    }
+
+    if (schedule.status == "class_drop") {
+      return "Lớp học nghỉ";
+    }
+    return "";
+  }
+
+  Color getSingleLightColor(ScheduleModel schedule) {
+    if (schedule.status == "change_teacher") {
+      return const Color(0xffE3F2FD);
+    }
+
+    if (schedule.status == "student_drop") {
+      return const Color(0xffFAFAFA);
+    }
+
+    if (schedule.status == "class_drop" ||
+        schedule.status == "cancel" ||
+        schedule.status == "teacher_off") {
+      return const Color(0xffFDE3E3);
+    }
+
+    return const Color(0xffE3F2FD);
+  }
+
+  Color getSingleMediumColor(ScheduleModel schedule) {
+    if (schedule.status == "change_teacher") {
+      return const Color(0xffBBDEFB);
+    }
+
+    if (schedule.status == "student_drop") {
+      return const Color(0xffCCCCCC);
+    }
+
+    if (schedule.status == "class_drop" ||
+        schedule.status == "cancel" ||
+        schedule.status == "teacher_off") {
+      return const Color(0xffFBBBBB);
+    }
+
+    return const Color(0xffBBDEFB);
+  }
+
+  Color getSingleDarkColor(ScheduleModel schedule) {
+    if (schedule.status == "change_teacher") {
+      return const Color(0xff0D47A1);
+    }
+
+    if (schedule.status == "student_drop") {
+      return const Color(0xff535353);
+    }
+
+    if (schedule.status == "class_drop" ||
+        schedule.status == "cancel" ||
+        schedule.status == "teacher_off") {
+      return const Color(0xffA10D0D);
+    }
+
+    return const Color(0xff0D47A1);
+  }
+
+  String getCyclicTime(int index, ScheduleModel schedule) {
+    if (schedule.status == "cancel") {
+      return "Huỷ";
+    }
+
+    var dayIndex = "";
+
+    if (index == 0) {
+      dayIndex = "Mon";
+    }
+    if (index == 1) {
+      dayIndex = "Tue";
+    }
+    if (index == 2) {
+      dayIndex = "Wed";
+    }
+    if (index == 3) {
+      dayIndex = "Thu";
+    }
+    if (index == 4) {
+      dayIndex = "Fri";
+    }
+    if (index == 5) {
+      dayIndex = "Sat";
+    }
+    if (index == 6) {
+      dayIndex = "Sun";
+    }
+    return schedule.calendar[dayIndex];
+  }
+
   bool getValue(String day, int time) {
     if (schedule == null || schedule == {}) return false;
 
@@ -238,7 +343,7 @@ class ScheduleTabCubit extends Cubit<int> {
     return false;
   }
 
-  List<ScheduleModel> getScheduleItem(int index, String day) {
+  List<ScheduleModel> getScheduleItem(int index) {
     var date = listDate[index];
     DateTime dateTime = DateTime(now.year, now.month, now.day, 0, 0, 0);
 
@@ -251,8 +356,39 @@ class ScheduleTabCubit extends Cubit<int> {
 
     List<ScheduleModel> list = [];
 
+    var dayIndex = "";
+
+    if (index == 0) {
+      dayIndex = "Mon";
+    }
+    if (index == 1) {
+      dayIndex = "Tue";
+    }
+    if (index == 2) {
+      dayIndex = "Wed";
+    }
+    if (index == 3) {
+      dayIndex = "Thu";
+    }
+    if (index == 4) {
+      dayIndex = "Fri";
+    }
+    if (index == 5) {
+      dayIndex = "Sat";
+    }
+    if (index == 6) {
+      dayIndex = "Sun";
+    }
+
     for (var i in listCyclicSchedule!) {
-      if (i.role.contains(day) && checkExistResult(index, i.classId) == false) {
+      if (i.calendar[dayIndex] != "" &&
+          checkExistResult(index, i.classId) == false &&
+          listSingleSchedule!
+              .where((e) =>
+          e.date == date.millisecondsSinceEpoch &&
+              e.classId == i.classId)
+              .toList()
+              .isEmpty) {
         list.add(i);
       }
     }
@@ -260,9 +396,6 @@ class ScheduleTabCubit extends Cubit<int> {
     for (var i in listSingleSchedule!) {
       if (i.date == date.millisecondsSinceEpoch &&
           checkExistResult(index, i.classId) == false) {
-        var temp =
-            listCyclicSchedule!.firstWhere((e) => e.classId == i.classId);
-        list.remove(temp);
         list.add(i);
       }
     }

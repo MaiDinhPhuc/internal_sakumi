@@ -30,7 +30,7 @@ class FooterView extends StatelessWidget {
           children: [
             SizedBox(
               height: Resizable.size(context, 40),
-              width: Resizable.size(context, 785),
+              width: MediaQuery.of(context).size.width * 0.75,
               child: TextFormField(
                 controller: textEditingController,
                 onChanged: (String value) {
