@@ -16,7 +16,9 @@ class ObjectTagItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Resizable.size(context, 50),
+      constraints: BoxConstraints(
+        minHeight: Resizable.size(context, 50),
+      ),
       margin: EdgeInsets.only(
         bottom: Resizable.padding(context, 5)
       ),
@@ -30,6 +32,7 @@ class ObjectTagItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(5),
           onTap: onTap,
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 width: Resizable.size(context, 40),
@@ -45,7 +48,7 @@ class ObjectTagItem extends StatelessWidget {
                 child: prefixIcon,
               ),
               Expanded(
-                flex: 3,
+                flex: 2,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,9 +88,12 @@ class ObjectTagItem extends StatelessWidget {
                     description: item.description,
                   ));
                 }
-                return SingleChildScrollView(
-                  padding: EdgeInsets.all(Resizable.padding(context, 10)),
+                return Padding(
+                  padding: EdgeInsets.all(
+                     Resizable.padding(context, 10),
+                  ),
                   child: Wrap(
+                    alignment: WrapAlignment.end,
                     runSpacing: Resizable.padding(context, 5),
                     spacing: Resizable.padding(context, 5),
                     children: [...children],

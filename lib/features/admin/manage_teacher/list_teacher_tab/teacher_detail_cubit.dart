@@ -12,6 +12,9 @@ import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
+import '../../../../model/manage_tag_model.dart';
+import '../../../../model/tag_model.dart';
+
 class TeacherDetailCubit extends Cubit<int> {
   TeacherDetailCubit(this.teacherModel) : super(0) {
     loadData();
@@ -30,7 +33,17 @@ class TeacherDetailCubit extends Cubit<int> {
   double? hwPercent, attendancePercent, levelUpPercent;
 
   final TeacherModel teacherModel;
+  ManageTagModel? manageTags;
+  List<TagModel> listTags = [];
 
+  Future<List<TagModel>> getTags(List<int> list) async {
+    List<Future<TagModel>> futures = [];
+    for (var item in list) {
+      futures.add(FireBaseProvider.instance.getTagById(item));
+    }
+    List<TagModel> tags = await Future.wait(futures);
+    return tags;
+  }
   loadData() async {
     teacherClasses =
         (await FireBaseProvider.instance.getTeacherClassById(teacherModel.userId))
@@ -89,6 +102,15 @@ class TeacherDetailCubit extends Cubit<int> {
     levelUpPercent = Calculator.getPercentUpSale(stdClasses!);
 
     isLoading = false;
+
+    emit(state + 1);
+    await loadTag();
+  }
+  loadTag() async {
+    manageTags = await FireBaseProvider.instance.getManageTagByIdAndType(teacherModel.userId, 1);
+    if (manageTags != null) {
+      listTags = await getTags(manageTags!.tags.map((e) => e as int).toList());
+    }
 
     emit(state + 1);
   }

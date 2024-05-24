@@ -6,10 +6,13 @@ import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
+import 'package:internal_sakumi/model/manage_tag_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
+import 'package:internal_sakumi/model/tag_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 import 'class_cubit_v2.dart';
 
@@ -25,7 +28,6 @@ class ClassDetailCubit extends Cubit<int> {
   List<StudentClassModel>? stdClasses;
   List<LessonModel>? lessons;
   List<StudentTestModel>? stdTests;
-
   String? title;
   int? lessonCount;
   String? lessonCountTitle;
@@ -33,7 +35,17 @@ class ClassDetailCubit extends Cubit<int> {
   String? lastLesson;
   List<int>? attChart, hwChart;
   List<double>? stds;
+  ManageTagModel? manageTags;
+  List<TagModel> listTags = [];
 
+  Future<List<TagModel>> getTags(List<int> list) async {
+    List<Future<TagModel>> futures = [];
+    for (var item in list) {
+      futures.add(FireBaseProvider.instance.getTagById(item));
+    }
+    List<TagModel> tags = await Future.wait(futures);
+    return tags;
+  }
   loadData() async {
     DataProvider.courseById(classModel.courseId, onCourseLoaded);
 
@@ -86,8 +98,17 @@ class ClassDetailCubit extends Cubit<int> {
     await loadPercent();
 
     await loadStatistic();
+    
+    await loadTag();
   }
+  loadTag() async {
+    manageTags = await FireBaseProvider.instance.getManageTagByIdAndType(classModel.classId, 3);
+    if (manageTags != null) {
+      listTags = await getTags(manageTags!.tags.map((e) => e as int).toList());
+    }
 
+    emit(state + 1);
+  }
   loadStdTest(Object stdTests) {
     this.stdTests = stdTests as List<StudentTestModel>;
   }

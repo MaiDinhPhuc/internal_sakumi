@@ -10,13 +10,15 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/card_item.dart';
 import 'package:internal_sakumi/widget/note_widget.dart';
 
+import '../../../widget/chip_tag.dart';
+import '../../../widget/tag_for_list.dart';
 import 'class_cubit_v2.dart';
 import 'class_detail_cubit.dart';
 import 'class_overview_v2.dart';
 
 class ClassItemV2 extends StatelessWidget {
   ClassItemV2({super.key, required this.classModel, required this.classCubit})
-      : cubit = ClassDetailCubit(classModel,classCubit);
+      : cubit = ClassDetailCubit(classModel, classCubit);
   final ClassModel classModel;
   final ClassDetailCubit cubit;
   final ClassCubit classCubit;
@@ -45,7 +47,8 @@ class ClassItemV2 extends StatelessWidget {
                   widgetStatus: StatusClassItemV2(
                       classModel: classModel,
                       color: classModel.getColor(),
-                      icon: classModel.getIcon(), classCubit: classCubit)),
+                      icon: classModel.getIcon(),
+                      classCubit: classCubit)),
               secondChild: CardItem(
                   isExpand: true,
                   widget: Column(
@@ -56,11 +59,9 @@ class ClassItemV2 extends StatelessWidget {
                       ),
                       ChartView(
                         attendances: cubit.attChart ?? [],
-                        hws:  cubit.hwChart ?? [],
-                        stds:  cubit.stds ==
-                            null
-                            ? [1,0,0,0,0]
-                            :  cubit.stds!,
+                        hws: cubit.hwChart ?? [],
+                        stds:
+                            cubit.stds == null ? [1, 0, 0, 0, 0] : cubit.stds!,
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
@@ -76,16 +77,32 @@ class ClassItemV2 extends StatelessWidget {
                             ),
                             Row(
                               children: [
-                                Text(AppText.txtLastLesson.text,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: Resizable.font(context, 19))),
-                                SizedBox(width: Resizable.padding(context, 10)),
-                                Text(cubit.lastLesson == null ? "" : cubit.lastLesson!,
-                                    style: TextStyle(
-                                        color: primaryColor,
-                                        fontWeight: FontWeight.w800,
-                                        fontSize: Resizable.font(context, 19))),
+                                Expanded(
+                                    child: Row(
+                                  children: [
+                                    Text(AppText.txtLastLesson.text,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize:
+                                                Resizable.font(context, 19))),
+                                    SizedBox(
+                                        width: Resizable.padding(context, 10)),
+                                    Text(
+                                        cubit.lastLesson == null
+                                            ? ""
+                                            : cubit.lastLesson!,
+                                        style: TextStyle(
+                                            color: primaryColor,
+                                            fontWeight: FontWeight.w800,
+                                            fontSize:
+                                                Resizable.font(context, 19))),
+                                  ],
+                                )),
+                                SizedBox(
+                                  width: Resizable.padding(context, 10),
+                                ),
+                                Expanded(
+                                    child: TagForList(listTags: cubit.listTags,)),
                               ],
                             ),
                             Container(

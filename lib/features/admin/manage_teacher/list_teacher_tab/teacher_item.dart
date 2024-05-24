@@ -12,8 +12,12 @@ import 'package:internal_sakumi/widget/card_item.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
 import 'package:internal_sakumi/widget/note_widget.dart';
 
+import '../../../../widget/chip_tag.dart';
+import '../../../../widget/tag_for_list.dart';
+
 class TeacherItem extends StatelessWidget {
-  TeacherItem({super.key, required this.teacherModel}) : cubit = TeacherDetailCubit(teacherModel);
+  TeacherItem({super.key, required this.teacherModel})
+      : cubit = TeacherDetailCubit(teacherModel);
   final TeacherModel teacherModel;
   final TeacherDetailCubit cubit;
 
@@ -46,6 +50,27 @@ class TeacherItem extends StatelessWidget {
                       TeacherItemView(
                         teacherModel: teacherModel,
                         cubit: cubit,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: Resizable.padding(context, 15)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: Resizable.size(context, 1),
+                              margin: EdgeInsets.symmetric(
+                                  vertical: Resizable.padding(context, 15)),
+                              color: greyColor.shade300,
+                            ),
+                            BlocBuilder<TeacherDetailCubit, int>(
+                              bloc: cubit,
+                              builder: (context, state) {
+                                return TagForList(listTags: cubit.listTags,);
+                              },
+                            )
+                          ],
+                        ),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
@@ -99,7 +124,8 @@ class TeacherItem extends StatelessWidget {
                                         style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             color: Colors.black,
-                                            fontSize: Resizable.font(context, 22)))
+                                            fontSize:
+                                                Resizable.font(context, 22)))
                                   ],
                                 ),
                                 Column(
@@ -111,9 +137,10 @@ class TeacherItem extends StatelessWidget {
                                               ? '0%'
                                               : '${(cubit.attendancePercent! * 100).toStringAsFixed(0)}%',
                                           lineWidth: Resizable.size(context, 5),
-                                          percent: cubit.attendancePercent == null
-                                              ? 0
-                                              : cubit.attendancePercent!,
+                                          percent:
+                                              cubit.attendancePercent == null
+                                                  ? 0
+                                                  : cubit.attendancePercent!,
                                           radius: Resizable.size(context, 22),
                                           fontSize: Resizable.font(context, 20),
                                         )),
@@ -121,7 +148,8 @@ class TeacherItem extends StatelessWidget {
                                         style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             color: Colors.black,
-                                            fontSize: Resizable.font(context, 22)))
+                                            fontSize:
+                                                Resizable.font(context, 22)))
                                   ],
                                 ),
                                 Column(
@@ -143,7 +171,8 @@ class TeacherItem extends StatelessWidget {
                                         style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             color: Colors.black,
-                                            fontSize: Resizable.font(context, 22)))
+                                            fontSize:
+                                                Resizable.font(context, 22)))
                                   ],
                                 )
                               ],

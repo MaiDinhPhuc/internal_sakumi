@@ -17,6 +17,7 @@ class ManageTagsScreen extends StatelessWidget {
       body: Column(
         children: [
           const AdminAppBar(index: 2),
+          SizedBox(height: Resizable.padding(context, 10),),
           Expanded(
               child: Padding(
             padding: EdgeInsets.symmetric(
