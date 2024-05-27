@@ -33,8 +33,10 @@ void alertAddNewCourse(BuildContext context, CourseModel? courseModel,
       text: courseModel == null ? "" : courseModel.termId.toString());
   TextEditingController termNameCon = TextEditingController(
       text: courseModel == null ? "" : courseModel.termName);
-  TextEditingController tokenCon =
-      TextEditingController(text: courseModel == null ? "" : courseModel.token);
+  TextEditingController btvnTokenCon = TextEditingController(
+      text: courseModel == null ? "" : courseModel.btvnToken);
+  TextEditingController dataTokenCon = TextEditingController(
+      text: courseModel == null ? "" : courseModel.dataToken);
   TextEditingController typeCon =
       TextEditingController(text: courseModel == null ? "" : courseModel.type);
   TextEditingController verCon = TextEditingController(
@@ -98,23 +100,15 @@ void alertAddNewCourse(BuildContext context, CourseModel? courseModel,
                                 title: AppText.txtDescription.text,
                                 isExpand: true),
                             Input2Field(
-                                title1: AppText.txtToken.text,
-                                title2: AppText.txtCourseType.text,
-                                con1: tokenCon,
-                                con2: typeCon),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(AppText.txtDataVersion.text,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: Resizable.font(context, 18),
-                                        color: const Color(0xff757575))),
-                                InputField(
-                                    controller: verCon,
-                                    errorText: AppText.txtPleaseInput.text)
-                              ],
-                            )
+                                title1: AppText.txtBTVNToken.text,
+                                title2: AppText.txtDataVersion.text,
+                                con1: btvnTokenCon,
+                                con2: dataTokenCon),
+                            Input2Field(
+                                title1: AppText.txtCourseType.text,
+                                title2: AppText.txtDataVersion.text,
+                                con1: typeCon,
+                                con2: verCon),
                           ]))),
                       Expanded(
                           flex: 1,
@@ -140,34 +134,28 @@ void alertAddNewCourse(BuildContext context, CourseModel? courseModel,
                                     child: SubmitButton(
                                         onPressed: () async {
                                           CourseModel course = CourseModel(
-                                              courseId: int.parse(
-                                                  idCon.text),
-                                              description:
-                                              desCon.text,
-                                              lessonCount: int.parse(
-                                                  countCon.text),
+                                              courseId: int.parse(idCon.text),
+                                              description: desCon.text,
+                                              lessonCount:
+                                                  int.parse(countCon.text),
                                               level: levelCon.text,
-                                              termId: int.parse(
-                                                  termIdCon.text),
-                                              termName:
-                                              termNameCon.text,
+                                              termId: int.parse(termIdCon.text),
+                                              termName: termNameCon.text,
                                               title: titleCon.text,
                                               type: typeCon.text,
-                                              token: tokenCon.text,
+                                              btvnToken: btvnTokenCon.text,
                                               code: codeCon.text,
                                               enable: true,
-                                              version: int.parse(
-                                                  verCon.text),
-                                              prefix:
-                                              prefixCon.text,
-                                              suffix:
-                                              suffixCon.text);
+                                              version: int.parse(verCon.text),
+                                              prefix: prefixCon.text,
+                                              suffix: suffixCon.text,
+                                              dataToken: dataTokenCon.text);
                                           if (formKey.currentState!
                                               .validate()) {
                                             if (!isEdit) {
                                               final bool check =
-                                                  await Create
-                                                      .createNewCourse(course);
+                                                  await Create.createNewCourse(
+                                                      course);
                                               if (context.mounted) {
                                                 Navigator.pop(context);
                                                 if (check == true) {
@@ -185,8 +173,7 @@ void alertAddNewCourse(BuildContext context, CourseModel? courseModel,
 
                                               if (context.mounted) {
                                                 Navigator.pop(context);
-                                                cubit.loadAfterEdit(
-                                                    course,
+                                                cubit.loadAfterEdit(course,
                                                     courseModel!.courseId);
                                               }
                                             }

@@ -110,12 +110,12 @@ class ManageCourseCubit extends Cubit<int> {
         termName: model.termName,
         title: model.title,
         type: model.type,
-        token: model.token,
+        btvnToken: model.btvnToken,
         code: model.code,
         enable: value,
         version: model.version,
         prefix: model.prefix,
-        suffix: model.suffix);
+        suffix: model.suffix, dataToken: model.dataToken);
     filter();
   }
 

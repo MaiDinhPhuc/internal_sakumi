@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/model/bill_model.dart';
+import 'package:internal_sakumi/model/browse_download_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/feedback_model.dart';
@@ -189,7 +190,7 @@ class FireStoreDb {
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getTeacherSingleScheduleInClass(
-      int classId,int teacherId, int startDate, int endDate) async {
+      int classId, int teacherId, int startDate, int endDate) async {
     final snapshot = await db
         .collection("schedule")
         .where("type", isEqualTo: "single")
@@ -203,7 +204,7 @@ class FireStoreDb {
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getClassSingleSchedule(
-       int classId, int startDate, int endDate) async {
+      int classId, int startDate, int endDate) async {
     final snapshot = await db
         .collection("schedule")
         .where("type", isEqualTo: "single")
@@ -316,17 +317,16 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>>
-  getLessonResultWithDateAndId(
+  Future<QuerySnapshot<Map<String, dynamic>>> getLessonResultWithDateAndId(
       int start, int end, int teacherId, int classId) async {
     final snapshot = await db
         .collection('lesson_result')
         .orderBy('date_time', descending: true)
         .where(Filter.and(
-        Filter("date_time", isGreaterThanOrEqualTo: start),
-        Filter("date_time", isLessThanOrEqualTo: end),
-        Filter("teacher_id", isEqualTo: teacherId),
-        Filter("class_id", isEqualTo: classId)))
+            Filter("date_time", isGreaterThanOrEqualTo: start),
+            Filter("date_time", isLessThanOrEqualTo: end),
+            Filter("teacher_id", isEqualTo: teacherId),
+            Filter("class_id", isEqualTo: classId)))
         .get();
 
     return snapshot;
@@ -418,7 +418,7 @@ class FireStoreDb {
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonResultByLessonId $id $classId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
-     return snapshot;
+    return snapshot;
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getAllCourse() async {
@@ -856,11 +856,12 @@ class FireStoreDb {
       'term_id': model.termId,
       'term_name': model.termName,
       'title': model.title,
-      'token': model.token,
+      'token': model.btvnToken,
       'type': model.type,
       'dataversion': model.version,
       'prefix': model.prefix,
-      "suffix": model.suffix
+      "suffix": model.suffix,
+      'data_token': model.dataToken,
     });
     debugPrint("==========> add db for \"courses\"");
   }
@@ -991,7 +992,7 @@ class FireStoreDb {
       "id": model.id,
       "title": model.title,
       "enable": model.enable,
-      "duration" : model.duration
+      "duration": model.duration
     });
     debugPrint("==========> add db for \"test\"");
   }
@@ -1007,7 +1008,7 @@ class FireStoreDb {
       "id": model.id,
       "title": model.title,
       "enable": model.enable,
-      "duration" : model.duration
+      "duration": model.duration
     });
     debugPrint("==========> update db from \"lessons\"");
   }
@@ -1022,11 +1023,12 @@ class FireStoreDb {
       'term_id': model.termId,
       'term_name': model.termName,
       'title': model.title,
-      'token': model.token,
+      'token': model.btvnToken,
       'type': model.type,
       'dataversion': model.version,
       'prefix': model.prefix,
-      "suffix": model.suffix
+      "suffix": model.suffix,
+      'data_token': model.dataToken,
     });
     debugPrint("==========> update db from \"courses\"");
   }
@@ -1088,7 +1090,7 @@ class FireStoreDb {
     debugPrint("==========>get and add db from \"lesson_result\"");
   }
 
-  Future<void> updateProfileTeacher( TeacherModel model) async {
+  Future<void> updateProfileTeacher(TeacherModel model) async {
     await db.collection('teacher').doc("teacher_user_${model.userId}").update({
       'name': model.name,
       'note': model.note,
@@ -1300,6 +1302,38 @@ class FireStoreDb {
       'active': model.active
     });
     debugPrint("==========>add db for \"survey\"");
+  }
+
+  Future<void> createNewBrowseDownload(BrowseDownloadModel model) async {
+    await db.collection('browse_download').doc("browse_download${model.id}").set({
+      'id': model.id,
+      'class_id': model.classId,
+      'lesson_id': model.lessonId,
+      'teacher_id': model.teacherId,
+      'submit_time': model.submitTime,
+      'download_time': model.downloadTime,
+      'accept_time': model.acceptTime,
+      'support_id' : model.supportId,
+      'status': model.status,
+      'parent_id' : model.parentId
+    });
+    debugPrint("==========>add db for \"browse_download\"");
+  }
+
+  Future<void> updateBrowseDownload(BrowseDownloadModel model) async {
+    await db.collection('browse_download').doc("browse_download${model.id}").update({
+      'id': model.id,
+      'class_id': model.classId,
+      'lesson_id': model.lessonId,
+      'teacher_id': model.teacherId,
+      'submit_time': model.submitTime,
+      'download_time': model.downloadTime,
+      'accept_time': model.acceptTime,
+      'support_id' : model.supportId,
+      'status': model.status,
+      'parent_id' : model.parentId
+    });
+    debugPrint("==========>add db for \"browse_download\"");
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getUserByEmail(
@@ -2024,13 +2058,33 @@ class FireStoreDb {
     debugPrint("==========>update db for \"teacher_class\"");
   }
 
-  Future<void> changeClassStatus(ClassModel classModel, String newStatus) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getBrowseDownloadWaiting() async {
+    final snapshot = await db
+        .collection("browse_download")
+        .where("status", isEqualTo: 'waiting')
+        .get();
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getBrowseDownloadWaitingByClassId(
+      int classId) async {
+    final snapshot = await db
+        .collection("browse_download")
+        .where("status", isEqualTo: 'waiting')
+        .where("class_id", isEqualTo: classId)
+        .get();
+
+    return snapshot;
+  }
+
+  Future<void> changeClassStatus(
+      ClassModel classModel, String newStatus) async {
     CustomFirebaseFireStore.database
         .collection('class')
         .doc('class_${classModel.classId}_course_${classModel.courseId}')
         .update({'class_status': newStatus}).whenComplete(() {
       debugPrint("==========>update db for \"class\"");
-
     });
   }
 
@@ -2076,7 +2130,7 @@ class FireStoreDb {
     // debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsByLessonId $ids ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsByListLessonId $ids ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -2183,7 +2237,7 @@ class FireStoreDb {
     await db
         .collection("tags")
         .doc("tag_${tag.id}")
-        .set(tag.toJson(),SetOptions(merge: true))
+        .set(tag.toJson(), SetOptions(merge: true))
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
       value = false;
@@ -2204,7 +2258,7 @@ class FireStoreDb {
     return value;
   }
 
-  Future<bool> deleteGroupTag(String doc)  async {
+  Future<bool> deleteGroupTag(String doc) async {
     bool value = true;
     await db
         .collection("group_tags")
@@ -2226,7 +2280,7 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<bool> deleteTag(int id)  async {
+  Future<bool> deleteTag(int id) async {
     bool value = true;
     await db
         .collection("tags")
@@ -2248,12 +2302,9 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getTagById(
-      int tagId) async {
-    final snapshot = await db
-        .collection('tags')
-        .where('id', isEqualTo: tagId)
-        .get();
+  Future<QuerySnapshot<Map<String, dynamic>>> getTagById(int tagId) async {
+    final snapshot =
+        await db.collection('tags').where('id', isEqualTo: tagId).get();
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTagById $tagId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
@@ -2261,7 +2312,8 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>>  getManageTagByIdAndType(int ownId, int type) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getManageTagByIdAndType(
+      int ownId, int type) async {
     final snapshot = await db
         .collection('manage_tags')
         .where('own_id', isEqualTo: ownId)
@@ -2287,7 +2339,7 @@ class FireStoreDb {
     return value;
   }
 
-  Future<bool> deleteManageTag(String doc)  async {
+  Future<bool> deleteManageTag(String doc) async {
     bool value = true;
     await db
         .collection("manage_tags")
@@ -2307,7 +2359,7 @@ class FireStoreDb {
     }).then((_) {
       docRef.get().then((docSnapshot) {
         if (docSnapshot.exists) {
-          List<dynamic> tags =( docSnapshot.data() as Map)['tags'];
+          List<dynamic> tags = (docSnapshot.data() as Map)['tags'];
           if (tags.isEmpty) {
             docRef.delete();
           } else {
@@ -2322,8 +2374,10 @@ class FireStoreDb {
     });
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getManageTagsContainsTagId(int tagId) async {
-    final snapshot = await db.collection("manage_tags")
+  Future<QuerySnapshot<Map<String, dynamic>>> getManageTagsContainsTagId(
+      int tagId) async {
+    final snapshot = await db
+        .collection("manage_tags")
         .where('tags', arrayContains: tagId)
         .get();
 

@@ -263,7 +263,7 @@ enum AppText {
   txtLessonCount,
   txtLevel,
   txtTitle,
-  txtToken,
+  txtBTVNToken,
   txtCourseType,
   txtPleaseInput,
   txtPleaseCheckListCourse,
@@ -572,10 +572,16 @@ enum AppText {
   txtUpdateScheduleDone,
   txtNoChooseStartAndEnd,
   txtNoChooseDate,
-  txtScheduleExist
+  txtScheduleExist,
+  txtBrowseDownload,
+  txtDataToken,
+  txtData
 }
 
 Map<AppText, String> texts = {
+  AppText.txtData: 'Tài liệu',
+  AppText.txtDataToken: 'Data Token',
+  AppText.txtBrowseDownload: 'Duyệt tải xuống',
   AppText.txtScheduleExist: 'Lịch đã tồn tại, vui lòng kiểm tra lại!',
   AppText.txtNoChooseDate: 'Chưa chọn ngày',
   AppText.txtUpdateScheduleDone: 'Cập nhật lịch dạy thành công',
@@ -894,7 +900,7 @@ Map<AppText, String> texts = {
   AppText.txtCode: 'Code',
   AppText.txtLessonCount: 'Số bài học',
   AppText.txtLevel: 'Trình độ',
-  AppText.txtToken: 'Token',
+  AppText.txtBTVNToken: 'Token',
   AppText.txtTitle: 'Tiêu đề',
   AppText.txtCourseType: 'Type',
   AppText.txtAddManual: 'Thêm thủ công',

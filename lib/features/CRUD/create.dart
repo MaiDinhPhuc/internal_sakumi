@@ -1,3 +1,4 @@
+import 'package:internal_sakumi/model/browse_download_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
@@ -78,6 +79,10 @@ class Create {
   static Future<bool> createNewTest(TestModel model)async{
     var result = await FireBaseProvider.instance.addNewTest(model);
     return result;
+  }
+
+  static createNewBrowseDownload(BrowseDownloadModel model)async{
+    await FireBaseProvider.instance.createNewBrowseDownload(model);
   }
 
 }

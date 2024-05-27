@@ -102,7 +102,7 @@ class TestSeeSoonCubit extends Cubit<List<QuestionModel>?> {
   loadTestQuestion(TestModel testModel) async {
     var courseModel =
         await FireBaseProvider.instance.getCourseById(testModel.courseId);
-    token = courseModel.token;
+    token = courseModel.btvnToken;
     var listQuestions = await FireBaseProvider.instance.getQuestionByUrl(
         AppConfigs.getDataUrl("test_${testModel.id}.json", token!));
     emit(listQuestions);

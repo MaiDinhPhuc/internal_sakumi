@@ -46,7 +46,7 @@ class DetailGradingCubitV2 extends Cubit<int> {
     listQuestions = data!.listQuestions;
     classModel = data!.classModel;
     courseModel = data!.courseModel;
-    token = courseModel!.token;
+    token = courseModel!.btvnToken;
     listAnswer = data!.listAnswer;
 
     if (listAnswer!.isEmpty) {

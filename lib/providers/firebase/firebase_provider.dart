@@ -12,6 +12,7 @@ import 'package:internal_sakumi/features/teacher/profile/teacher_profile/app_bar
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/bill_model.dart';
+import 'package:internal_sakumi/model/browse_download_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/detail_grading_data_model.dart';
@@ -861,6 +862,11 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<void> createNewBrowseDownload(BrowseDownloadModel model) async {
+      await FireStoreDb.instance.createNewBrowseDownload(model);
+  }
+
+  @override
   Future<List<ClassModel>> getListClassNotRemove() async {
     final listClass = (await FireStoreDb.instance.getListClassNotRemove())
         .docs
@@ -1041,6 +1047,11 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<void> updateBrowseDownload(BrowseDownloadModel model) async {
+    await FireStoreDb.instance.updateBrowseDownload(model);
+  }
+
+  @override
   Future<void> updateTestInfo(TestModel testModel) async {
     await FireStoreDb.instance.updateTestInfo(testModel);
   }
@@ -1089,13 +1100,44 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<List<TeacherModel>> getListTeacherByListId(
       List<int> teacherIds) async {
+
     if (teacherIds.isEmpty) {
       return [];
     }
-    return (await FireStoreDb.instance.getListTeacherByListId(teacherIds))
-        .docs
-        .map((e) => TeacherModel.fromSnapshot(e))
-        .toList();
+    if (teacherIds.length <= 10) {
+      return (await FireStoreDb.instance.getListTeacherByListId(teacherIds))
+          .docs
+          .map((e) => TeacherModel.fromSnapshot(e))
+          .toList();
+    }
+
+    List<List<int>> subLists = [];
+    for (int i = 0; i < teacherIds.length; i += 10) {
+      List<int> subList =
+      teacherIds.sublist(i, i + 10 > teacherIds.length ? teacherIds.length : i + 10);
+      subLists.add(subList);
+    }
+
+    List<TeacherModel> list = [];
+
+    List<Future<QuerySnapshot<Map<String, dynamic>>>> tempX = [];
+
+    for (int i = 0; i < subLists.length; i++) {
+      tempX.add(FireStoreDb.instance.getListTeacherByListId(subLists[i]));
+    }
+    List<QuerySnapshot<Map<String, dynamic>>> responses =
+    await Future.wait(tempX);
+
+    list = responses.fold(
+        [],
+            (pre, res) =>
+        [
+          ...pre,
+          ...res.docs
+              .map((e) => TeacherModel.fromSnapshot(e))
+              .toList()
+        ]);
+    return list;
   }
 
   @override
@@ -1315,7 +1357,7 @@ class FireBaseProvider extends NetworkProvider {
     await FireBaseProvider.instance.getClassById(classId);
     CourseModel courseModel =
     await FireBaseProvider.instance.getCourseById(classModel.courseId);
-    String token = courseModel.token;
+    String token = courseModel.btvnToken;
     List<QuestionModel> listQuestions = [];
     if (type == "type=test") {
       listQuestions = await FireBaseProvider.instance.getQuestionByUrl(
@@ -1411,7 +1453,7 @@ class FireBaseProvider extends NetworkProvider {
     await FireBaseProvider.instance.getLessonById(lessonId);
     CourseModel courseModel =
     await FireBaseProvider.instance.getCourseById(lessonModel.courseId);
-    String token = courseModel.token;
+    String token = courseModel.btvnToken;
     List<QuestionModel> listQuestions = [];
     listQuestions = await FireBaseProvider.instance
         .getQuestionByUrl(AppConfigs.getDataUrl("btvn_$lessonId.json", token));
@@ -1980,6 +2022,26 @@ class FireBaseProvider extends NetworkProvider {
         .toList();
 
     debugPrint('==========> search voucher ${list.length}');
+
+    return list;
+  }
+
+  @override
+  Future<List<BrowseDownloadModel>> getBrowseDownloadWaiting() async {
+    final list = (await FireStoreDb.instance.getBrowseDownloadWaiting())
+        .docs
+        .map((e) => BrowseDownloadModel.fromSnapshot(e))
+        .toList();
+
+    return list;
+  }
+
+  @override
+  Future<List<BrowseDownloadModel>> getBrowseDownloadWaitingByClassId(int classId) async {
+    final list = (await FireStoreDb.instance.getBrowseDownloadWaitingByClassId(classId))
+        .docs
+        .map((e) => BrowseDownloadModel.fromSnapshot(e))
+        .toList();
 
     return list;
   }

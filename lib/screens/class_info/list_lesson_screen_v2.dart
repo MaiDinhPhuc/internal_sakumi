@@ -13,6 +13,8 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../features/admin/manage_browse_download/request_browse_download_dialog.dart';
+
 class ListLessonScreenV2 extends StatelessWidget {
   ListLessonScreenV2({super.key, required this.role})
       : cubit = ListLessonCubitV2(int.parse(TextUtils.getName()));
@@ -66,15 +68,29 @@ class ListLessonScreenV2 extends StatelessWidget {
                                     },
                                     title: AppText.btnAddNewLesson.text,
                                   )
-                                ]) : Container(
-                              margin: EdgeInsets.symmetric(
-                                  vertical: Resizable.padding(context, 20)),
-                              child: Text(
-                                  '${AppText.txtClassCode.text} ${cubit.classModel!.classCode}',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: Resizable.font(context, 30))),
-                            ),
+                                ]) : Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: Resizable.padding(context, 20)),
+                                    child: Text(
+                                        '${AppText.txtClassCode.text} ${cubit.classModel!.classCode}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: Resizable.font(context, 30))),
+                                  ),
+                                  AddButton(
+                                    onTap: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) =>
+                                              RequestBrowseDownloadDialog(
+                                                  listLessons: cubit.lessons!, classModel: cubit.classModel!));
+                                    },
+                                    title: AppText.txtData.text,
+                                  )
+                                ]),
                             Container(
                                 padding: EdgeInsets.only(
                                     bottom: Resizable.padding(context, 10),

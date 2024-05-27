@@ -52,8 +52,12 @@ class LessonItemCubitV2 extends Cubit<int> {
     }
 
     if (cubit.teachers.isNotEmpty && lessonResult != null) {
-      teacher =
-          cubit.teachers.firstWhere((e) => e.userId == lessonResult!.teacherId);
+      var teacherTempt = cubit.teachers
+          .where((e) => e.userId == lessonResult!.teacherId)
+          .toList();
+      if(teacherTempt.isNotEmpty){
+        teacher = teacherTempt.first;
+      }
     }
     emit(state + 1);
   }

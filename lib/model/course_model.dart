@@ -11,7 +11,8 @@ class CourseModel {
       termName,
       title,
       type,
-      token,
+      btvnToken,
+      dataToken,
       code,
       suffix,
       prefix;
@@ -26,7 +27,8 @@ class CourseModel {
       required this.termName,
       required this.title,
       required this.type,
-      required this.token,
+      required this.btvnToken,
+        required this.dataToken,
       required this.code,
       required this.enable,
       required this.version,
@@ -64,6 +66,7 @@ class CourseModel {
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
     return CourseModel(
+        dataToken: data['data_token'] ?? "",
         courseId: data['course_id'],
         description: data['description'] ?? "",
         lessonCount: data['lesson_count'],
@@ -71,7 +74,7 @@ class CourseModel {
         termId: data['term_id'],
         termName: data['term_name'] ?? "",
         title: data['title'] ?? "",
-        token: data['token'] ?? "",
+        btvnToken: data['token'] ?? "",
         type: data['type'] ?? "general",
         code: data['code'] ?? "",
         enable: data['enable'] ?? true,
