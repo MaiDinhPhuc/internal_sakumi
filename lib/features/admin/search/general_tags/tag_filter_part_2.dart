@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,16 +25,25 @@ class TagFilterPart2 extends StatelessWidget {
       AppText.txtClass.text
     ];
     return BlocProvider(
-      create: (context) => ListManageTagsCubit()..load(),
+      create: (context) => ListManageTagsCubit()..load(tagFilterCubit.listFilterTags),
       child: BlocBuilder<ListManageTagsCubit, int>(
         builder: (context, state) {
-          if (state == 0) {
+          if (state == 0 && tagFilterCubit.listFilterTags.isNotEmpty) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
 
           final cubit = context.read<ListManageTagsCubit>();
+          var a = tagFilterCubit.listFilterTags.map((e) => e.id).toList();
+          var b = cubit.listFilterTags.map((e) => e.id).toList();
+          var condition1 = a.toSet().difference(b.toSet()).isEmpty;
+          var condition2 = a.length == b.length;
+          var isEqual = condition1 && condition2;
+          if(!isEqual) {
+            cubit.setListFilter(tagFilterCubit.listFilterTags);
+            cubit.update();
+          }
           return DefaultTabController(
             length: 3,
             child: Column(
@@ -112,18 +122,10 @@ class TagFilterPart2 extends StatelessWidget {
                     child: TabBarView(
                   children: [
                     Builder(builder: (context) {
-                      var list = cubit.listManageTags
+
+                      var list = tagFilterCubit.listFilterTags.isEmpty ? <ManageTagModel>[] : cubit.listManageTags
                           .where((element) => element.type == 1)
                           .toList();
-                      if (tagFilterCubit.listFilterTags.isNotEmpty) {
-                        list.removeWhere(
-                          (element) => !containsAny(
-                              element.tags.map((e) => e as int).toList(),
-                              tagFilterCubit.listFilterTags
-                                  .map((e) => e.id)
-                                  .toList()),
-                        );
-                      }
 
                       if (list.isEmpty) {
                         return emptyText(context);
@@ -131,36 +133,18 @@ class TagFilterPart2 extends StatelessWidget {
                       return TeacherTagListView(list: list, listTags: cubit.listTags,);
                     }),
                     Builder(builder: (context) {
-                      var list = cubit.listManageTags
+                      var list = tagFilterCubit.listFilterTags.isEmpty ? <ManageTagModel>[] : cubit.listManageTags
                           .where((element) => element.type == 2)
                           .toList();
-                      if (tagFilterCubit.listFilterTags.isNotEmpty) {
-                        list.removeWhere(
-                          (element) => !containsAny(
-                              element.tags.map((e) => e as int).toList(),
-                              tagFilterCubit.listFilterTags
-                                  .map((e) => e.id)
-                                  .toList()),
-                        );
-                      }
                       if (list.isEmpty) {
                         return emptyText(context);
                       }
                       return StudentTagListView(list: list , listTags: cubit.listTags,);
                     }),
                     Builder(builder: (context) {
-                      var list = cubit.listManageTags
+                      var list = tagFilterCubit.listFilterTags.isEmpty ? <ManageTagModel>[] : cubit.listManageTags
                           .where((element) => element.type == 3)
                           .toList();
-                      if (tagFilterCubit.listFilterTags.isNotEmpty) {
-                        list.removeWhere(
-                          (element) => !containsAny(
-                              element.tags.map((e) => e as int).toList(),
-                              tagFilterCubit.listFilterTags
-                                  .map((e) => e.id)
-                                  .toList()),
-                        );
-                      }
                       if (list.isEmpty) {
                         return emptyText(context);
                       }

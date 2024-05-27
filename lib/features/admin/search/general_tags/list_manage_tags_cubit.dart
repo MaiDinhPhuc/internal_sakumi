@@ -9,9 +9,28 @@ class ListManageTagsCubit extends Cubit<int> {
 
   List<ManageTagModel> listManageTags = [];
   List<TagModel> listTags = [];
-  load()  async {
-    listManageTags= await FireBaseProvider.instance.getManageTags();
+
+  List<TagModel> listFilterTags = [];
+
+  load(List<TagModel> list)  async {
+    print('lllll');
+    listFilterTags = List.of(list);
+    if(listFilterTags.isNotEmpty) {
+      listManageTags= await FireBaseProvider.instance.getManageTagsWithSpecificTags(listFilterTags.map((e) => e.id).toList());
+    }
     listTags= await FireBaseProvider.instance.getListTags();
     emit(state+1);
+  }
+
+  update() async {
+    if(listFilterTags.isNotEmpty) {
+      listManageTags= await FireBaseProvider.instance.getManageTagsWithSpecificTags(listFilterTags.map((e) => e.id).toList());
+      print('listManageTags load');
+    }
+    emit(state+1);
+  }
+
+  setListFilter(List<TagModel> list) {
+    listFilterTags = List.of(list);
   }
 }

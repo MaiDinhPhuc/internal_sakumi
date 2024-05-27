@@ -79,6 +79,9 @@ class ManageTagCubit extends Cubit<int> {
     return false;
   }
 
+
+  int get lengthGroupTags => listGroupTags.length;
+  int get lengthTags => listTags.length;
   Future<bool> deleteGroupTag(int index) async {
     for (var item in listTags.where((element) => element.groupId ==
         listGroupTags[index].id).toList()) {

@@ -10,6 +10,7 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import '../../../../model/manage_tag_model.dart';
 import '../../../../model/tag_model.dart';
 import '../../../../routes.dart';
+import 'list_manage_tags_cubit.dart';
 
 class StudentTagListView extends StatefulWidget {
   StudentTagListView({super.key, required this.list, required this.listTags})
@@ -31,6 +32,7 @@ class _StudentTagListViewState extends State<StudentTagListView>
   Widget build(BuildContext context) {
     super.build(context);
     print('build again');
+    final manageCubit = context.read<ListManageTagsCubit>();
     return BlocProvider.value(
       value: widget.studentTagCubit..load(),
       child: BlocBuilder<StudentTagCubit, int>(
@@ -52,6 +54,7 @@ class _StudentTagListViewState extends State<StudentTagListView>
                     onTap: () async {
                       await Navigator.pushNamed(context,
                           "${Routes.admin}/studentInfo/student=${e.studentModel.userId}");
+                      manageCubit.update();
                     },
                     title: e.studentModel.name,
                     description: '${AppText.txtStudentCode.text}: ${e.studentModel.studentCode}',

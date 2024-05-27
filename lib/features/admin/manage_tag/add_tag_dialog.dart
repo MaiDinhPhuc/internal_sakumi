@@ -47,6 +47,9 @@ class _AddTagDialogState extends State<AddTagDialog> {
       codeCon.text = widget.tagModel!.code;
       desCon.text = widget.tagModel!.description;
     }
+    else {
+      codeCon.text = 'TAG_${widget.manageTagCubit.lengthTags + 1}';
+    }
   }
 
   void changeColor(Color value) {
@@ -168,7 +171,7 @@ class _AddTagDialogState extends State<AddTagDialog> {
                                   child: InputItem(
                                     title: AppText.txtCode.text,
                                     controller: codeCon,
-                                    enabled: isEdit ? false : true,
+                                    enabled: false,
                                     onValidate: (value) {
                                       if (isEdit) return null;
                                       if (value == null || value.isEmpty) {

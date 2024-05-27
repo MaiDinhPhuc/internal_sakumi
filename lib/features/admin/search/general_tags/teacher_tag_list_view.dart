@@ -12,6 +12,7 @@ import '../../../../configs/text_configs.dart';
 import '../../../../model/manage_tag_model.dart';
 import '../../../../model/tag_model.dart';
 import '../../../../routes.dart';
+import 'list_manage_tags_cubit.dart';
 
 class TeacherTagListView extends StatefulWidget {
   TeacherTagListView({super.key, required this.list, required this.listTags})
@@ -33,6 +34,7 @@ class _TeacherTagListViewState extends State<TeacherTagListView>
   Widget build(BuildContext context) {
     super.build(context);
     print('build again');
+    final manageCubit = context.read<ListManageTagsCubit>();
     return BlocProvider.value(
       value: widget.teacherTagCubit..load(),
       child: BlocBuilder<TeacherTagCubit, int>(
@@ -54,6 +56,7 @@ class _TeacherTagListViewState extends State<TeacherTagListView>
                     onTap: () async {
                       await Navigator.pushNamed(context,
                           "${Routes.admin}/teacherInfo/teacher=${e.teacherModel.userId}");
+                      manageCubit.update();
                     },
                     title: e.teacherModel.name,
                     description: "${AppText.txtTeacherCode.text}: ${e.teacherModel.teacherCode}",
