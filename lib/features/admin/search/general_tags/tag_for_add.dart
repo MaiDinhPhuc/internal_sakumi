@@ -7,6 +7,7 @@ import 'package:googleapis/cloudsearch/v1.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/model/manage_tag_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
+import 'package:internal_sakumi/utils/functions.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/chip_tag.dart';
 
@@ -55,7 +56,7 @@ class TagForAdd extends StatelessWidget {
                         onTap: () {},
                         color: e.background,
                         name: e.name,
-                        description: e.description,
+                        description: Functions.getValue(cubit.notes, e.id),
                         onDelete: () {
                           cubit.deleteTag(e);
                         },
@@ -68,8 +69,10 @@ class TagForAdd extends StatelessWidget {
                             builder: (context) {
                               return AddTagFilterDialog(
                                 listOldTags: cubit.listTags,
-                                onFinish: (tags) async  {
-                                  final value = await cubit.changeListTag(tags);
+                                notes: cubit.notes,
+                                isFilter: false,
+                                onFinish: (tags, notes) async  {
+                                  final value = await cubit.changeListTag(tags, notes);
                                   if (context.mounted) {
                                     Navigator.pop(context);
                                   }
@@ -108,6 +111,7 @@ class TagForAddCubit extends Cubit<int> {
   TagForAddCubit(this.type) : super(0);
   final int type;
   List<TagModel> listTags = [];
+  Map<int, String> notes = {};
 
   Future<List<TagModel>> getTags(List<int> list) async {
     List<Future<TagModel>> futures = [];
@@ -118,14 +122,16 @@ class TagForAddCubit extends Cubit<int> {
     return tags;
   }
 
-  Future<bool> changeListTag(List<TagModel> value) async {
+  Future<bool> changeListTag(List<TagModel> value, Map<int, String> note) async {
     listTags = [...value];
+    notes = note;
     emit(state + 1);
     return true;
   }
 
   Future<bool> deleteTag(TagModel tag) async {
     listTags.remove(tag);
+    notes.remove(tag.id);
     emit(state +1);
     return true;
   }
@@ -135,6 +141,7 @@ class TagForAddCubit extends Cubit<int> {
       date: DateTime.now().millisecondsSinceEpoch,
       type: type,
       ownId: ownId,
+      notes: notes,
       tags: listTags.map((e) => e.id).toList(),
     );
     result = await FireBaseProvider.instance.addManageTag(manageTags);

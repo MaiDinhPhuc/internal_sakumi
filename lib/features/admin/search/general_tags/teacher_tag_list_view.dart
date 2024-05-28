@@ -12,6 +12,7 @@ import '../../../../configs/text_configs.dart';
 import '../../../../model/manage_tag_model.dart';
 import '../../../../model/tag_model.dart';
 import '../../../../routes.dart';
+import '../../../../widget/circle_item_1.dart';
 import 'list_manage_tags_cubit.dart';
 
 class TeacherTagListView extends StatefulWidget {
@@ -37,14 +38,14 @@ class _TeacherTagListViewState extends State<TeacherTagListView>
     final manageCubit = context.read<ListManageTagsCubit>();
     return BlocProvider.value(
       value: widget.teacherTagCubit..load(),
-      child: BlocBuilder<TeacherTagCubit, int>(
+      child: BlocBuilder(
+        bloc: widget.teacherTagCubit,
         builder: (context, state) {
           if (state == 0) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-          final cubit = context.read<TeacherTagCubit>();
           return SingleChildScrollView(
             padding: EdgeInsets.symmetric(
               horizontal: Resizable.padding(context, 15),
@@ -52,19 +53,26 @@ class _TeacherTagListViewState extends State<TeacherTagListView>
             ),
             child: Column(
               children: [
-                ...cubit.listTeacherTags.map((e) => ObjectTagItem(
+                ...widget.teacherTagCubit.listTeacherTags.map((e) => ObjectTagItem(
                     onTap: () async {
                       await Navigator.pushNamed(context,
                           "${Routes.admin}/teacherInfo/teacher=${e.teacherModel.userId}");
                       manageCubit.update();
                     },
+                    notes: e.notes,
                     title: e.teacherModel.name,
                     description: "${AppText.txtTeacherCode.text}: ${e.teacherModel.teacherCode}",
-                    prefixIcon: Image.network(
-                      e.teacherModel.url,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) =>
-                          Image.asset("assets/images/ic_avt.png"),
+                    prefixIcon: CircleItem1(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(1000),
+                        child: Image.network(
+                          e.teacherModel.url,
+                          fit: BoxFit.fitWidth,
+
+                          errorBuilder: (_, __, ___) =>
+                              Image.asset("assets/images/ic_avt.png"),
+                        ),
+                      ),
                     ),
                     tags: e.listTags))
               ],
@@ -103,6 +111,7 @@ class TeacherTagCubit extends Cubit<int> {
       listTeacherTags.add(TeacherTag(
         teacherModel: tc,
         listTags: [...tags],
+        notes: item.notes
       ));
     }
 
@@ -113,10 +122,11 @@ class TeacherTagCubit extends Cubit<int> {
 class TeacherTag {
   final TeacherModel teacherModel;
   final List<TagModel> listTags;
-
+  final Map<int, String> notes;
   const TeacherTag({
     required this.teacherModel,
     required this.listTags,
+    required this.notes,
   });
 }
 

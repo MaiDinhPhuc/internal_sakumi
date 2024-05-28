@@ -2343,6 +2343,7 @@ class FireStoreDb {
         .set(manageTagModel.toJson(), SetOptions(merge: true))
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
+          print(error);
       value = false;
     });
     return value;

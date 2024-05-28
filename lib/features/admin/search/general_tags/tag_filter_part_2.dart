@@ -37,11 +37,13 @@ class TagFilterPart2 extends StatelessWidget {
           final cubit = context.read<ListManageTagsCubit>();
           var a = tagFilterCubit.listFilterTags.map((e) => e.id).toList();
           var b = cubit.listFilterTags.map((e) => e.id).toList();
+          print(a);
+          print(b);
           var condition1 = a.toSet().difference(b.toSet()).isEmpty;
           var condition2 = a.length == b.length;
           var isEqual = condition1 && condition2;
           if(!isEqual) {
-            cubit.setListFilter(tagFilterCubit.listFilterTags);
+            cubit.setListFilter([...tagFilterCubit.listFilterTags]);
             cubit.update();
           }
           return DefaultTabController(
@@ -148,6 +150,8 @@ class TagFilterPart2 extends StatelessWidget {
                       if (list.isEmpty) {
                         return emptyText(context);
                       }
+
+                      print(list.length);
                       return ClassTagListView(list: list, listTags: cubit.listTags,);
                     }),
                   ],

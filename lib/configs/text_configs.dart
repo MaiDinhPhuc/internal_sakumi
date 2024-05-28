@@ -575,7 +575,7 @@ enum AppText {
   txtScheduleExist,
   txtBrowseDownload,
   txtDataToken,
-  txtData
+  txtData, textAddNote, btnPass, txtNoteEmpty, textAdd
 }
 
 Map<AppText, String> texts = {
@@ -1018,6 +1018,7 @@ Map<AppText, String> texts = {
   AppText.txtName: 'Họ tên',
   AppText.txtPhone: 'Số điện thoại',
   AppText.txtNote: 'Ghi chú',
+  AppText.textAddNote: 'Thêm Ghi Chú',
   AppText.txtTeacherCode: 'Mã giáo viên',
   AppText.txtStudentCode: 'Mã học viên',
   AppText.txtClassId: 'Mã định danh lớp',
@@ -1117,6 +1118,8 @@ Map<AppText, String> texts = {
   AppText.txtHintPassword: 'abc123',
   AppText.txtForgetPassword: 'Quên mật khẩu',
   AppText.btnAdd: 'Thêm mới',
+  AppText.btnPass: 'Bỏ qua',
+  AppText.txtNoteEmpty: 'Vui lòng thêm ghi chú',
   AppText.txtErrorEndDate: 'Vui lòng chọn ngày kết thúc sau ngày bắt đầu',
   AppText.txtErrorStartDate: 'Vui lòng chọn ngày bắt đầu trước ngày kết thúc',
   AppText.txtPleaseChooseCourse: 'Vui lòng chọn khoá học',
@@ -1181,6 +1184,7 @@ Map<AppText, String> texts = {
   AppText.txtView: 'Hiển thị',
   AppText.btnCancel: 'Huỷ',
   AppText.btnAddNew: 'Thêm mới',
+  AppText.textAdd: 'Thêm',
   AppText.btnComplete: 'Hoàn thành',
   AppText.txtColorWrong: 'Mã màu không hợp lệ',
   AppText.txtPleaseInputNameColor: 'Vui lòng nhập mã màu',

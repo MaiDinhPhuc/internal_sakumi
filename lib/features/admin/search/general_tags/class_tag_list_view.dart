@@ -6,7 +6,9 @@ import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:internal_sakumi/widget/circle_item_1.dart';
 
+import '../../../../configs/color_configs.dart';
 import '../../../../configs/text_configs.dart';
 import '../../../../model/manage_tag_model.dart';
 import '../../../../model/tag_model.dart';
@@ -37,14 +39,15 @@ class _ClassTagListViewState extends State<ClassTagListView>
     final manageCubit = context.read<ListManageTagsCubit>();
     return BlocProvider.value(
       value: widget.classTagCubit..load(),
-      child: BlocBuilder<ClassTagCubit, int>(
-        builder: (context, state) {
+      child: BlocBuilder(
+        bloc: widget.classTagCubit,
+        builder: (c, state) {
           if (state == 0) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-          final cubit = context.read<ClassTagCubit>();
+
           return SingleChildScrollView(
             padding: EdgeInsets.symmetric(
               horizontal: Resizable.padding(context, 15),
@@ -52,48 +55,52 @@ class _ClassTagListViewState extends State<ClassTagListView>
             ),
             child: Column(
               children: [
-                ...cubit.listClassTags.map((e) => ObjectTagItem(
+                ...widget.classTagCubit.listClassTags.map((e) => ObjectTagItem(
                     onTap: () async {
                       await Navigator.pushNamed(context,
                           "${Routes.admin}/overview/class=${e.classModel.classId}");
                       manageCubit.update();
                     },
+                    notes: e.notes,
                     title: "${AppText.txtClassCode.text}: ${e.classModel.classCode}",
                     description: "${AppText.txtClassType.text}: ${e.classModel.classType == 0 ? "Lớp Chung" : "Lớp 1-1"}",
-                    prefixIcon: Tooltip(
-                        padding: EdgeInsets.all(Resizable.padding(context, 10)),
-                        decoration: BoxDecoration(
-                            color: Colors.black,
-                            border: Border.all(
-                                color: Colors.black,
-                                width: Resizable.size(context, 1)),
-                            borderRadius: BorderRadius.circular(
-                                Resizable.padding(context, 5))),
-                        richMessage: WidgetSpan(
-                            alignment: PlaceholderAlignment.baseline,
-                            baseline: TextBaseline.alphabetic,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                RichText(
-                                  text: TextSpan(
-                                    text: vietnameseSubText(
-                                        e.classModel.classStatus),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: Resizable.font(context, 18),
-                                        color: Colors.white),
+                    prefixIcon:  CircleItem1(
+                      color:  getColor(e.classModel.classStatus),
+                      child: Tooltip(
+                          padding: EdgeInsets.all(Resizable.padding(context, 10)),
+                          decoration: BoxDecoration(
+                              color: Colors.black,
+                              border: Border.all(
+                                  color: Colors.black,
+                                  width: Resizable.size(context, 1)),
+                              borderRadius: BorderRadius.circular(
+                                  Resizable.padding(context, 5))),
+                          richMessage: WidgetSpan(
+
+                              alignment: PlaceholderAlignment.baseline,
+                              baseline: TextBaseline.alphabetic,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      text: vietnameseSubText(
+                                          e.classModel.classStatus),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: Resizable.font(context, 18),
+                                          color: Colors.white),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            )),
-                        child: Center(
-                          child: Image.asset(
-                            'assets/images/ic_${getIcon(e.classModel.classStatus)}.png',
-                            scale: 50,
-                          ),
-                        )),
-                    color: getColor(e.classModel.classStatus),
+                                ],
+                              )),
+                          child: Center(
+                            child: Image.asset(
+                              'assets/images/ic_${getIcon(e.classModel.classStatus)}.png',
+                              scale: 50,
+                            ),
+                          )),
+                    ),
                     tags: e.listTags))
               ],
             ),
@@ -130,6 +137,7 @@ class ClassTagCubit extends Cubit<int> {
       listClassTags.add(ClassTag(
         classModel: cl,
         listTags: [...tags],
+        notes: item.notes
       ));
     }
     emit(state + 1);
@@ -139,10 +147,11 @@ class ClassTagCubit extends Cubit<int> {
 class ClassTag {
   final ClassModel classModel;
   final List<TagModel> listTags;
-
+  final Map<int, String> notes;
   const ClassTag({
     required this.classModel,
     required this.listTags,
+    required this.notes,
   });
 }
 

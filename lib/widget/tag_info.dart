@@ -15,6 +15,7 @@ import '../features/admin/manage_tag/custom_button_v1.dart';
 import '../features/admin/search/general_tags/add_tag_filter_dialog.dart';
 import '../model/tag_model.dart';
 import '../utils/dialogs.dart';
+import '../utils/functions.dart';
 
 
 class MyCustomScrollBehavior extends MaterialScrollBehavior {
@@ -75,7 +76,7 @@ class TagInfo extends StatelessWidget {
                               onTap: () {},
                               color: e.background,
                               name: e.name,
-                              description: e.description,
+                              description: Functions.getValue(cubit.notes, e.id),
                               onDelete: () {
                                 Dialogs.alertDelete(context,
                                    type == 3 ?  AppText.txtConfirmDeleteTagFromClass.text : type == 2 ? AppText.txtConfirmDeleteTagFromStudent.text : AppText.txtConfirmDeleteTagFromTeacher.text ,
@@ -102,8 +103,10 @@ class TagInfo extends StatelessWidget {
                               builder: (context) {
                                 return AddTagFilterDialog(
                                   listOldTags: cubit.listTags,
-                                  onFinish: (tags) async  {
-                                    final value = await cubit.changeListTag(tags);
+                                  notes: cubit.notes,
+                                  isFilter: false,
+                                  onFinish: (tags, notes) async  {
+                                    final value = await cubit.changeListTag(tags, notes);
                                     if (context.mounted) {
                                       if (value) {
                                         Fluttertoast.showToast(
@@ -152,7 +155,7 @@ class TagInfoCubit extends Cubit<int> {
   final int ownId;
   List<TagModel> listTags = [];
   ManageTagModel? manageTags;
-
+  Map<int, String> notes = {};
   Future<List<TagModel>> getTags(List<int> list) async {
     List<Future<TagModel>> futures = [];
     for (var item in list) {
@@ -162,18 +165,21 @@ class TagInfoCubit extends Cubit<int> {
     return tags;
   }
 
-  Future<bool> changeListTag(List<TagModel> value) async {
+  Future<bool> changeListTag(List<TagModel> value , Map<int, String> note) async {
     var result = false;
+    notes = note;
     if (manageTags != null) {
       result =
           await FireBaseProvider.instance.addManageTag(manageTags!.copyWith(
         tags: value.map((e) => e.id).toList(),
+            notes: notes
       ));
     } else {
       manageTags = ManageTagModel(
         date: DateTime.now().millisecondsSinceEpoch,
         type: type,
         ownId: ownId,
+        notes: notes,
         tags: value.map((e) => e.id).toList(),
       );
       result = await FireBaseProvider.instance.addManageTag(manageTags!);
@@ -190,6 +196,7 @@ class TagInfoCubit extends Cubit<int> {
     if (manageTags != null) {
       var tags = [...listTags];
       tags.remove(tag);
+      notes.remove(tag.id);
       if (tags.isEmpty) {
         result =
             await FireBaseProvider.instance.deleteManageTag(manageTags!.date);
@@ -197,7 +204,7 @@ class TagInfoCubit extends Cubit<int> {
       } else {
         result =
             await FireBaseProvider.instance.addManageTag(manageTags!.copyWith(
-          tags: tags.map((e) => e.id).toList(),
+          tags: tags.map((e) => e.id).toList(), notes: notes,
         ));
       }
 
@@ -211,11 +218,11 @@ class TagInfoCubit extends Cubit<int> {
 
   load() async {
     manageTags =
-        await FireBaseProvider.instance.getManageTagByIdAndType(ownId, type);
+    await FireBaseProvider.instance.getManageTagByIdAndType(ownId, type);
     if (manageTags != null) {
       listTags = await getTags(manageTags!.tags.map((e) => e as int).toList());
+      notes = manageTags!.notes;
     }
-
     emit(state + 1);
   }
 }
