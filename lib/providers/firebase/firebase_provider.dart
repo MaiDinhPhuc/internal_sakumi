@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/features/teacher/profile/teacher_profile/app_bar_info_teacher_cubit.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
@@ -105,7 +104,11 @@ class FireBaseProvider extends NetworkProvider {
             await context.read<AppBarInfoTeacherCubit>().load();
           }
 
-          Navigator.pushReplacementNamed(context, Routes.teacher);
+          if(context.mounted){
+            Navigator.pushReplacementNamed(context, Routes.teacher);
+          }
+
+
         }
         if (user.role == "master") {
           sharedPreferences.setInt(PrefKeyConfigs.userId, user.id);
@@ -171,7 +174,9 @@ class FireBaseProvider extends NetworkProvider {
     sharedPreferences.setString(PrefKeyConfigs.email, '');
     sharedPreferences.setString(PrefKeyConfigs.role, '');
     sharedPreferences.setString(PrefKeyConfigs.logoutYet, 'true');
-    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+    if(context.mounted){
+      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+    }
   }
 
   @override
@@ -184,20 +189,31 @@ class FireBaseProvider extends NetworkProvider {
           user.role == "teacher") {
         debugPrint("======== ${user.role} ==========");
         if (user.role == "admin") {
-          Navigator.pushReplacementNamed(
-              context, '${Routes.admin}/searchGeneral');
+
+          if(context.mounted){
+            Navigator.pushReplacementNamed(
+                context, '${Routes.admin}/searchGeneral');
+          }
+
         }
         if (user.role == "teacher") {
-          Navigator.pushReplacementNamed(context, Routes.teacher);
+
+          if(context.mounted){
+            Navigator.pushReplacementNamed(context, Routes.teacher);
+          }
+
         }
         if (user.role == "master") {
-          Navigator.pushReplacementNamed(
-              context, '${Routes.master}/manageCourse');
+          if(context.mounted){
+            Navigator.pushReplacementNamed(
+                context, '${Routes.master}/manageCourse');
+          }
+
         }
       }
       return true;
     } on FirebaseAuthException catch (e) {
-      debugPrint("==========>login Error");
+      debugPrint("==========>login Error $e");
       return false;
     }
   }
@@ -2037,8 +2053,8 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<BrowseDownloadModel>> getBrowseDownloadWaitingByClassId(int classId) async {
-    final list = (await FireStoreDb.instance.getBrowseDownloadWaitingByClassId(classId))
+  Future<List<BrowseDownloadModel>> getBrowseDownloadWaitingByClassAndTeacherId(int classId, int teacherId) async {
+    final list = (await FireStoreDb.instance.getBrowseDownloadWaitingByClassAndTeacherId(classId, teacherId))
         .docs
         .map((e) => BrowseDownloadModel.fromSnapshot(e))
         .toList();

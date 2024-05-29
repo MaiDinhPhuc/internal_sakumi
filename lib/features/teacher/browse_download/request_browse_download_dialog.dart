@@ -1,7 +1,8 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/admin/manage_browse_download/request_browse_download_cubit.dart';
+import 'package:internal_sakumi/features/teacher/browse_download/request_browse_download_cubit.dart';
+import 'package:internal_sakumi/features/teacher/browse_download/request_browse_download_view.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -49,7 +50,7 @@ class RequestBrowseDownloadDialog extends StatelessWidget {
                         //InfoAddCustomLesson(cubit:cubit),
                         Expanded(
                             flex: 7,
-                            child: Container()),
+                            child: RequestBrowseDownloadView(cubit: cubit)),
                         Expanded(
                             flex: 1,
                             child: Container(

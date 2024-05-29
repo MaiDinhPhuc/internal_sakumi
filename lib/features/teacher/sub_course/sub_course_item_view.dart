@@ -15,8 +15,10 @@ class SubCourseItemView extends StatelessWidget {
       {super.key,
       required this.lesson,
       required this.cubit,
-      required this.index, required this.role})
-      : detailCubit = DetailSubCourseItemCubit(lesson, cubit), dropDownCubit = DropdownCubit();
+      required this.index,
+      required this.role})
+      : detailCubit = DetailSubCourseItemCubit(lesson, cubit),
+        dropDownCubit = DropdownCubit();
 
   final int index;
   final LessonModel lesson;
@@ -38,7 +40,7 @@ class SubCourseItemView extends StatelessWidget {
                 builder: (c, state) => Container(
                     alignment: Alignment.centerLeft,
                     padding: EdgeInsets.symmetric(
-                      //horizontal: Resizable.padding(context, 15),
+                        //horizontal: Resizable.padding(context, 15),
                         vertical: Resizable.padding(context, 5)),
                     decoration: BoxDecoration(
                         border: Border.all(
@@ -46,40 +48,43 @@ class SubCourseItemView extends StatelessWidget {
                             color: state % 2 == 0
                                 ? greyColor.shade100
                                 : Colors.black),
-                        borderRadius: BorderRadius.circular(
-                            Resizable.size(context, 5))),
+                        borderRadius:
+                            BorderRadius.circular(Resizable.size(context, 5))),
                     child: AnimatedCrossFade(
                         firstChild: CollapseSubCourseItem(
                           lesson: lesson,
-                          index: index, dropDown: IconButton(
-                            onPressed: () {
-                              dropDownCubit.update();
-                            },
-                            splashRadius: Resizable.size(context, 15),
-                            icon: Icon(
-                              state % 2 == 0
-                                  ? Icons.keyboard_arrow_down
-                                  : Icons.keyboard_arrow_up,
-                            )),
+                          index: index,
+                          dropDown: IconButton(
+                              onPressed: () {
+                                dropDownCubit.update();
+                              },
+                              splashRadius: Resizable.size(context, 15),
+                              icon: Icon(
+                                state % 2 == 0
+                                    ? Icons.keyboard_arrow_down
+                                    : Icons.keyboard_arrow_up,
+                              )),
                         ),
                         secondChild: Column(
                           children: [
                             CollapseSubCourseItem(
                               lesson: lesson,
-                              index: index, dropDown: IconButton(
-                                onPressed: () {
-                                  dropDownCubit.update();
-                                },
-                                splashRadius: Resizable.size(context, 15),
-                                icon: Icon(
-                                  state % 2 == 0
-                                      ? Icons.keyboard_arrow_down
-                                      : Icons.keyboard_arrow_up,
-                                )),
+                              index: index,
+                              dropDown: IconButton(
+                                  onPressed: () {
+                                    dropDownCubit.update();
+                                  },
+                                  splashRadius: Resizable.size(context, 15),
+                                  icon: Icon(
+                                    state % 2 == 0
+                                        ? Icons.keyboard_arrow_down
+                                        : Icons.keyboard_arrow_up,
+                                  )),
                             ),
                             ExpandSubCourseItem(
                                 detailCubit: detailCubit,
-                                lesson: lesson, role: role)
+                                lesson: lesson,
+                                role: role)
                           ],
                         ),
                         crossFadeState: state % 2 == 1

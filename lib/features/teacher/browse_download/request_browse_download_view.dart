@@ -1,5 +1,5 @@
 import 'package:flutter/Material.dart';
-import 'package:internal_sakumi/features/admin/manage_browse_download/request_browse_download_cubit.dart';
+import 'package:internal_sakumi/features/teacher/browse_download/request_browse_download_cubit.dart';
 
 import 'custom_lesson_browse_download_item.dart';
 import 'lesson_browse_download_item.dart';

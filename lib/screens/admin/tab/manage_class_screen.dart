@@ -61,18 +61,18 @@ class ManageClassScreenV2 extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              BlocProvider(
-                                  create: (context) =>
-                                      ManageBrowseDownloadCubit(),
-                                  child: BlocBuilder<ManageBrowseDownloadCubit, int>(builder: (c, state) {
-                                    var cubit = BlocProvider.of<ManageBrowseDownloadCubit>(c);
-                                    return ManageBrowseDownloadButton(
-                                      onTap: () async {
-
-                                      },
-                                      title: AppText.txtBrowseDownload.text, count: cubit.count,
-                                    );
-                                  })),
+                              // BlocProvider(
+                              //     create: (context) =>
+                              //         ManageBrowseDownloadCubit(),
+                              //     child: BlocBuilder<ManageBrowseDownloadCubit, int>(builder: (c, state) {
+                              //       var cubit = BlocProvider.of<ManageBrowseDownloadCubit>(c);
+                              //       return ManageBrowseDownloadButton(
+                              //         onTap: () async {
+                              //
+                              //         },
+                              //         title: AppText.txtBrowseDownload.text, count: cubit.count,
+                              //       );
+                              //     })),
                               SizedBox(width: Resizable.padding(context, 10)),
                               AddButton(
                                 onTap: () async {

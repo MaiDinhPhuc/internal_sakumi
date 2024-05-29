@@ -1277,7 +1277,7 @@ class FireStoreDb {
     await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: user.email, password: "abc12345");
     await FirebaseAuth.instance.currentUser!.updatePassword("abc12345");
-    await FirebaseAuth.instance.currentUser!.updateEmail(user.email);
+    // await FirebaseAuth.instance.currentUser!.updateEmail(user.email);
     await db.collection('students').doc("student_user_${user.id}").set({
       'in_jp': model.inJapan,
       'name': model.name,
@@ -1362,7 +1362,7 @@ class FireStoreDb {
     await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: user.email, password: "abc12345");
     await FirebaseAuth.instance.currentUser!.updatePassword("abc12345");
-    await FirebaseAuth.instance.currentUser!.updateEmail(user.email);
+    // await FirebaseAuth.instance.currentUser!.updateEmail(user.email);
 
     await db.collection('teacher').doc("teacher_user_${user.id}").set({
       'name': model.name,
@@ -2067,12 +2067,13 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getBrowseDownloadWaitingByClassId(
-      int classId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getBrowseDownloadWaitingByClassAndTeacherId(
+      int classId, int teacherId) async {
     final snapshot = await db
         .collection("browse_download")
         .where("status", isEqualTo: 'waiting')
         .where("class_id", isEqualTo: classId)
+        .where('teacher_id', isEqualTo: teacherId)
         .get();
 
     return snapshot;

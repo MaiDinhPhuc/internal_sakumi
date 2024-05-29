@@ -1,10 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/model/browse_download_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
+
+import 'dart:html' as html;
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RequestBrowseDownloadCubit extends Cubit<int> {
   RequestBrowseDownloadCubit(this.listLessons, this.classModel) : super(0) {
@@ -15,7 +20,9 @@ class RequestBrowseDownloadCubit extends Cubit<int> {
   final ClassModel classModel;
   List<BrowseDownloadModel>? listBrowseDownload;
   List<LessonModel> listCustomLesson = [];
-  CourseModel? course;
+  List<CourseModel> listCourse = [];
+
+  int? teacherId;
 
   bool loading = true;
 
@@ -24,14 +31,23 @@ class RequestBrowseDownloadCubit extends Cubit<int> {
 
     DataProvider.courseById(classModel.courseId, onCourseLoaded);
 
+    SharedPreferences localData = await SharedPreferences.getInstance();
+    teacherId = localData.getInt(PrefKeyConfigs.userId)!;
+
     listBrowseDownload = await FireBaseProvider.instance
-        .getBrowseDownloadWaitingByClassId(classModel.classId);
+        .getBrowseDownloadWaitingByClassAndTeacherId(
+            classModel.classId, teacherId!);
+
+    var listCourseId = [classModel.courseId];
 
     for (var i in listLessons) {
       if (i.isCustom) {
         List<int> listCustomLessonId = [];
         for (var j in i.customLessonInfo) {
           listCustomLessonId.add(j['lesson_id']);
+          if(listCourseId.contains(j['course_id']) == false){
+            listCourseId.add(j['course_id']);
+          }
         }
         var listTemp = await FireBaseProvider.instance
             .getLessonsByLessonId(listCustomLessonId);
@@ -41,6 +57,10 @@ class RequestBrowseDownloadCubit extends Cubit<int> {
           }
         }
       }
+    }
+
+    for(var i in listCourseId){
+      await DataProvider.courseById(i, onCourseLoaded);
     }
 
     emit(1);
@@ -60,17 +80,21 @@ class RequestBrowseDownloadCubit extends Cubit<int> {
 
   getListCustom(List<int> listCustomLessonId) {
     var list = [];
-    for(var i in listCustomLesson) {
-      if(listCustomLessonId.contains(i.lessonId)) {
+    for (var i in listCustomLesson) {
+      if (listCustomLessonId.contains(i.lessonId)) {
         list.add(i);
       }
     }
     return list;
   }
 
-
   onCourseLoaded(Object course) {
-    course = (course as CourseModel);
-    emit(state + 1);
+    listCourse.add(course as CourseModel);
+  }
+
+  void downloadFile(String url) {
+    html.AnchorElement anchorElement = html.AnchorElement(href: url);
+    anchorElement.download = url;
+    anchorElement.click();
   }
 }

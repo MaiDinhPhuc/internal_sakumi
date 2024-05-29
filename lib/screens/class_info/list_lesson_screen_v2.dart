@@ -13,7 +13,7 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../features/admin/manage_browse_download/request_browse_download_dialog.dart';
+import '../../features/teacher/browse_download/request_browse_download_dialog.dart';
 
 class ListLessonScreenV2 extends StatelessWidget {
   ListLessonScreenV2({super.key, required this.role})
@@ -80,16 +80,16 @@ class ListLessonScreenV2 extends StatelessWidget {
                                             fontWeight: FontWeight.w800,
                                             fontSize: Resizable.font(context, 30))),
                                   ),
-                                  AddButton(
-                                    onTap: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) =>
-                                              RequestBrowseDownloadDialog(
-                                                  listLessons: cubit.lessons!, classModel: cubit.classModel!));
-                                    },
-                                    title: AppText.txtData.text,
-                                  )
+                                  // AddButton(
+                                  //   onTap: () {
+                                  //     showDialog(
+                                  //         context: context,
+                                  //         builder: (context) =>
+                                  //             RequestBrowseDownloadDialog(
+                                  //                 listLessons: cubit.lessons!, classModel: cubit.classModel!));
+                                  //   },
+                                  //   title: AppText.txtData.text,
+                                  // )
                                 ]),
                             Container(
                                 padding: EdgeInsets.only(

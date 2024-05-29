@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
-import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/bill_model.dart';
@@ -113,7 +112,7 @@ abstract class NetworkProvider {
   Future<void> noteForAllStudentInClass(int lessonId, int classId, String note);
 
   Future<void> updateTeacherInLessonResult(
-      int lessonId, int classId, int studentId);
+      int lessonId, int classId, int teacherId);
 
   Future<void> noteForSupport(int lessonId, int classId, String note);
 
@@ -243,11 +242,11 @@ abstract class NetworkProvider {
 
   Future<void> updateTestInfo(TestModel testModel);
 
-  Future<void> addCourseFromJson(String json);
+  Future<void> addCourseFromJson(String jsonData);
 
-  Future<void> addLessonFromJson(String json);
+  Future<void> addLessonFromJson(String jsonData);
 
-  Future<void> addTestFromJson(String json);
+  Future<void> addTestFromJson(String jsonData);
 
   Future<void> deleteLesson(int lessonId, int courseId);
 
