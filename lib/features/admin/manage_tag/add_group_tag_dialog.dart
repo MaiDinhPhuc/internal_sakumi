@@ -44,6 +44,9 @@ class _AddGroupTagDialogState extends State<AddGroupTagDialog> {
       codeCon.text = widget.groupTagModel!.code;
       desCon.text = widget.groupTagModel!.description;
     }
+    else {
+      codeCon.text = "GROUP_${widget.manageTagCubit.lengthGroupTags + 1}";
+    }
   }
 
   @override
@@ -64,6 +67,7 @@ class _AddGroupTagDialogState extends State<AddGroupTagDialog> {
           return BlocBuilder<AddGroupTagCubit, int>(
             builder: (context, state) {
               final addGroupTagCubit = context.read<AddGroupTagCubit>();
+
               return Dialog(
                   backgroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
@@ -107,7 +111,8 @@ class _AddGroupTagDialogState extends State<AddGroupTagDialog> {
                                 Flexible(
                                   child: InputItem(
                                     title: AppText.txtCode.text,
-                                    enabled: isEdit ? false : true,
+                                    enabled: false,
+
                                     controller: codeCon,
                                     onValidate: (value) {
                                       if (isEdit) return null;

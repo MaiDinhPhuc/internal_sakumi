@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/features/teacher/profile/teacher_profile/app_bar_info_teacher_cubit.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
@@ -52,10 +53,11 @@ class FireBaseProvider extends NetworkProvider {
   FireBaseProvider._privateConstructor();
 
   static final FireBaseProvider instance =
-  FireBaseProvider._privateConstructor();
+      FireBaseProvider._privateConstructor();
 
   @override
-  Future<void> logInUser(TextEditingController email,
+  Future<void> logInUser(
+      TextEditingController email,
       TextEditingController password,
       BuildContext context,
       ErrorCubit cubit) async {
@@ -71,11 +73,11 @@ class FireBaseProvider extends NetworkProvider {
           user.role == "teacher") {
         debugPrint("======== ${user.role} ==========");
         SharedPreferences sharedPreferences =
-        await SharedPreferences.getInstance();
+            await SharedPreferences.getInstance();
 
         if (user.role == "admin") {
           AdminModel adminModel =
-          await FireBaseProvider.instance.getAdminById(user.id);
+              await FireBaseProvider.instance.getAdminById(user.id);
 
           sharedPreferences.setString(
               PrefKeyConfigs.code, adminModel.adminCode);
@@ -92,7 +94,7 @@ class FireBaseProvider extends NetworkProvider {
         if (user.role == "teacher") {
           debugPrint("============> getTeacherById 1");
           TeacherModel teacherModel =
-          await FireBaseProvider.instance.getTeacherById(user.id);
+              await FireBaseProvider.instance.getTeacherById(user.id);
           sharedPreferences.setString(
               PrefKeyConfigs.code, teacherModel.teacherCode);
           sharedPreferences.setInt(PrefKeyConfigs.userId, teacherModel.userId);
@@ -104,11 +106,7 @@ class FireBaseProvider extends NetworkProvider {
             await context.read<AppBarInfoTeacherCubit>().load();
           }
 
-          if(context.mounted){
-            Navigator.pushReplacementNamed(context, Routes.teacher);
-          }
-
-
+          Navigator.pushReplacementNamed(context, Routes.teacher);
         }
         if (user.role == "master") {
           sharedPreferences.setInt(PrefKeyConfigs.userId, user.id);
@@ -174,9 +172,7 @@ class FireBaseProvider extends NetworkProvider {
     sharedPreferences.setString(PrefKeyConfigs.email, '');
     sharedPreferences.setString(PrefKeyConfigs.role, '');
     sharedPreferences.setString(PrefKeyConfigs.logoutYet, 'true');
-    if(context.mounted){
-      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
-    }
+    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
   }
 
   @override
@@ -189,38 +185,27 @@ class FireBaseProvider extends NetworkProvider {
           user.role == "teacher") {
         debugPrint("======== ${user.role} ==========");
         if (user.role == "admin") {
-
-          if(context.mounted){
-            Navigator.pushReplacementNamed(
-                context, '${Routes.admin}/searchGeneral');
-          }
-
+          Navigator.pushReplacementNamed(
+              context, '${Routes.admin}/searchGeneral');
         }
         if (user.role == "teacher") {
-
-          if(context.mounted){
-            Navigator.pushReplacementNamed(context, Routes.teacher);
-          }
-
+          Navigator.pushReplacementNamed(context, Routes.teacher);
         }
         if (user.role == "master") {
-          if(context.mounted){
-            Navigator.pushReplacementNamed(
-                context, '${Routes.master}/manageCourse');
-          }
-
+          Navigator.pushReplacementNamed(
+              context, '${Routes.master}/manageCourse');
         }
       }
       return true;
     } on FirebaseAuthException catch (e) {
-      debugPrint("==========>login Error $e");
+      debugPrint("==========>login Error");
       return false;
     }
   }
 
   @override
-  Future<bool> changePassword(String email, String oldPass,
-      String newPass) async {
+  Future<bool> changePassword(
+      String email, String oldPass, String newPass) async {
     return await FirebaseAuthentication.instance
         .changePassword(email, oldPass, newPass);
   }
@@ -244,8 +229,8 @@ class FireBaseProvider extends NetworkProvider {
   Future<List<TeacherClassModel>> getTeacherClassById(int id) async {
     return (await FireStoreDb.instance.getTeacherClassById(id))
         .docs
-        .map((e) => TeacherClassModel.fromSnapshot(e)).where((e) =>
-    e.classStatus != 'Remove')
+        .map((e) => TeacherClassModel.fromSnapshot(e))
+        .where((e) => e.classStatus != 'Remove')
         .toList();
   }
 
@@ -283,7 +268,7 @@ class FireBaseProvider extends NetworkProvider {
     List<List<int>> subLists = [];
     for (int i = 0; i < ids.length; i += 10) {
       List<int> subList =
-      ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
+          ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
       subLists.add(subList);
     }
 
@@ -295,19 +280,18 @@ class FireBaseProvider extends NetworkProvider {
       tempX.add(FireStoreDb.instance.getLessonsByLessonId(subLists[i]));
     }
     List<QuerySnapshot<Map<String, dynamic>>> responses =
-    await Future.wait(tempX);
+        await Future.wait(tempX);
 
     list = responses.fold(
         [],
-            (pre, res) =>
-        [
-          ...pre,
-          ...res.docs
-              .map((e) => LessonModel.fromSnapshot(e))
-              .toList()
-              .where((e) => e.enable == true)
-              .toList()
-        ]);
+        (pre, res) => [
+              ...pre,
+              ...res.docs
+                  .map((e) => LessonModel.fromSnapshot(e))
+                  .toList()
+                  .where((e) => e.enable == true)
+                  .toList()
+            ]);
     if (list.every((e) => e.order == 0) == false) {
       list.sort((a, b) => a.order.compareTo(b.order));
     }
@@ -331,7 +315,7 @@ class FireBaseProvider extends NetworkProvider {
     List<List<int>> subLists = [];
     for (int i = 0; i < ids.length; i += 10) {
       List<int> subList =
-      ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
+          ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
       subLists.add(subList);
     }
 
@@ -343,19 +327,18 @@ class FireBaseProvider extends NetworkProvider {
       tempX.add(FireStoreDb.instance.getLessonsByListCourseId(subLists[i]));
     }
     List<QuerySnapshot<Map<String, dynamic>>> responses =
-    await Future.wait(tempX);
+        await Future.wait(tempX);
 
     list = responses.fold(
         [],
-            (pre, res) =>
-        [
-          ...pre,
-          ...res.docs
-              .map((e) => LessonModel.fromSnapshot(e))
-              .toList()
-              .where((e) => e.enable == true)
-              .toList()
-        ]);
+        (pre, res) => [
+              ...pre,
+              ...res.docs
+                  .map((e) => LessonModel.fromSnapshot(e))
+                  .toList()
+                  .where((e) => e.enable == true)
+                  .toList()
+            ]);
     if (list.every((e) => e.order == 0) == false) {
       list.sort((a, b) => a.order.compareTo(b.order));
     }
@@ -378,7 +361,7 @@ class FireBaseProvider extends NetworkProvider {
     List<List<int>> subLists = [];
     for (int i = 0; i < ids.length; i += 10) {
       List<int> subList =
-      ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
+          ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
       subLists.add(subList);
     }
 
@@ -391,15 +374,14 @@ class FireBaseProvider extends NetworkProvider {
           FireStoreDb.instance.getLessonsResultsByListClassIds(subLists[i]));
     }
     List<QuerySnapshot<Map<String, dynamic>>> responses =
-    await Future.wait(tempX);
+        await Future.wait(tempX);
 
     list = responses.fold(
         [],
-            (pre, res) =>
-        [
-          ...pre,
-          ...res.docs.map((e) => LessonResultModel.fromSnapshot(e)).toList()
-        ]);
+        (pre, res) => [
+              ...pre,
+              ...res.docs.map((e) => LessonResultModel.fromSnapshot(e)).toList()
+            ]);
 
     list.sort((a, b) => a.date.compareTo(b.date));
     return list;
@@ -446,20 +428,20 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<ScheduleModel>> getTeacherCyclicScheduleInClass(int teacherId,
-      int classId) async {
-    return (await FireStoreDb.instance.getTeacherCyclicScheduleInClass(
-        teacherId, classId))
+  Future<List<ScheduleModel>> getTeacherCyclicScheduleInClass(
+      int teacherId, int classId) async {
+    return (await FireStoreDb.instance
+            .getTeacherCyclicScheduleInClass(teacherId, classId))
         .docs
         .map((e) => ScheduleModel.fromSnapshot(e))
         .toList();
   }
 
   @override
-  Future<List<ScheduleModel>> getTeacherSingleScheduleInClass(int teacherId,
-      int classId,int startDate, int endDate) async {
+  Future<List<ScheduleModel>> getTeacherSingleScheduleInClass(
+      int teacherId, int classId, int startDate, int endDate) async {
     return (await FireStoreDb.instance.getTeacherSingleScheduleInClass(
-      classId, teacherId, startDate, endDate))
+            classId, teacherId, startDate, endDate))
         .docs
         .map((e) => ScheduleModel.fromSnapshot(e))
         .toList();
@@ -474,20 +456,20 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<ScheduleModel>> getClassSingleSchedule(int classId,
-      int startDate, int endDate) async {
-    return (await FireStoreDb.instance.getClassSingleSchedule(
-        classId, startDate, endDate))
+  Future<List<ScheduleModel>> getClassSingleSchedule(
+      int classId, int startDate, int endDate) async {
+    return (await FireStoreDb.instance
+            .getClassSingleSchedule(classId, startDate, endDate))
         .docs
         .map((e) => ScheduleModel.fromSnapshot(e))
         .toList();
   }
 
   @override
-  Future<List<ScheduleModel>> getTeacherSingleSchedule(int teacherId,
-      int startDate, int endDate) async {
-    return (await FireStoreDb.instance.getTeacherSingleSchedule(
-        teacherId, startDate, endDate))
+  Future<List<ScheduleModel>> getTeacherSingleSchedule(
+      int teacherId, int startDate, int endDate) async {
+    return (await FireStoreDb.instance
+            .getTeacherSingleSchedule(teacherId, startDate, endDate))
         .docs
         .map((e) => ScheduleModel.fromSnapshot(e))
         .toList();
@@ -520,10 +502,10 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<LessonResultModel>> getLessonResultWithDateAndTeacherId(int start,
-      int end, int teacherId) async {
+  Future<List<LessonResultModel>> getLessonResultWithDateAndTeacherId(
+      int start, int end, int teacherId) async {
     var lesResults = (await FireStoreDb.instance
-        .getLessonResultWithDateAndTeacherId(start, end, teacherId))
+            .getLessonResultWithDateAndTeacherId(start, end, teacherId))
         .docs
         .map((e) => LessonResultModel.fromSnapshot(e))
         .toList();
@@ -532,22 +514,10 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<LessonResultModel>> getLessonResultWithDateAndId(int start,
-      int end, int teacherId, int classId) async {
-    var lesResults = (await FireStoreDb.instance.getLessonResultWithDateAndId(
-        start, end, teacherId, classId))
-        .docs
-        .map((e) => LessonResultModel.fromSnapshot(e))
-        .toList();
-    lesResults.sort((a, b) => a.date.compareTo(b.date));
-    return lesResults;
-  }
-
-  @override
-  Future<List<LessonResultModel>> getLessonResultWithDateAndClassId(int start,
-      int end, int classId) async {
+  Future<List<LessonResultModel>> getLessonResultWithDateAndId(
+      int start, int end, int teacherId, int classId) async {
     var lesResults = (await FireStoreDb.instance
-        .getLessonResultWithDateAndClassId(start, end, classId))
+            .getLessonResultWithDateAndId(start, end, teacherId, classId))
         .docs
         .map((e) => LessonResultModel.fromSnapshot(e))
         .toList();
@@ -556,10 +526,22 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<StudentLessonModel>> getAllStudentLessonInLesson(int classId,
-      int lessonId) async {
+  Future<List<LessonResultModel>> getLessonResultWithDateAndClassId(
+      int start, int end, int classId) async {
+    var lesResults = (await FireStoreDb.instance
+            .getLessonResultWithDateAndClassId(start, end, classId))
+        .docs
+        .map((e) => LessonResultModel.fromSnapshot(e))
+        .toList();
+    lesResults.sort((a, b) => a.date.compareTo(b.date));
+    return lesResults;
+  }
+
+  @override
+  Future<List<StudentLessonModel>> getAllStudentLessonInLesson(
+      int classId, int lessonId) async {
     return (await FireStoreDb.instance
-        .getAllStudentLessonInLesson(classId, lessonId))
+            .getAllStudentLessonInLesson(classId, lessonId))
         .docs
         .map((e) => StudentLessonModel.fromSnapshot(e))
         .toList();
@@ -583,18 +565,18 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<StudentTestModel>> getAllStudentTestInLesson(int classId,
-      int testId) async {
+  Future<List<StudentTestModel>> getAllStudentTestInLesson(
+      int classId, int testId) async {
     return (await FireStoreDb.instance
-        .getAllStudentTestInLesson(classId, testId))
+            .getAllStudentTestInLesson(classId, testId))
         .docs
         .map((e) => StudentTestModel.fromSnapshot(e))
         .toList();
   }
 
   @override
-  Future<LessonResultModel> getLessonResultByLessonId(int id,
-      int classId) async {
+  Future<LessonResultModel> getLessonResultByLessonId(
+      int id, int classId) async {
     final result =
         (await FireStoreDb.instance.getLessonResultByLessonId(id, classId))
             .docs
@@ -610,7 +592,7 @@ class FireBaseProvider extends NetworkProvider {
       return [];
     }
     final courses =
-    snapshot.docs.map((e) => CourseModel.fromSnapshot(e)).toList();
+        snapshot.docs.map((e) => CourseModel.fromSnapshot(e)).toList();
     return courses;
   }
 
@@ -661,52 +643,52 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<AnswerModel>> getListCustomAnswer(int lessonId, int classId,
-      int customLessonId) async {
+  Future<List<AnswerModel>> getListCustomAnswer(
+      int lessonId, int classId, int customLessonId) async {
     return (await FireStoreDb.instance
-        .getListAnswerCustom(lessonId, classId, customLessonId))
+            .getListAnswerCustom(lessonId, classId, customLessonId))
         .docs
         .map((e) => AnswerModel.fromSnapshot(e))
         .toList();
   }
 
   @override
-  Future<void> updateTimekeeping(int userId, int lessonId, int classId,
-      int attendId) async {
+  Future<void> updateTimekeeping(
+      int userId, int lessonId, int classId, int attendId) async {
     await FireStoreDb.instance
         .updateTimekeeping(userId, lessonId, classId, attendId);
   }
 
   @override
-  Future<void> updateTeacherNote(int userId, int lessonId, int classId,
-      String note) async {
+  Future<void> updateTeacherNote(
+      int userId, int lessonId, int classId, String note) async {
     await FireStoreDb.instance
         .updateTeacherNote(userId, lessonId, classId, note);
   }
 
   @override
-  Future<void> updateStudentStatus(int userId, int classId, int point,
-      String type) async {
+  Future<void> updateStudentStatus(
+      int userId, int classId, int point, String type) async {
     await FireStoreDb.instance
         .updateStudentStatus(userId, classId, point, type);
   }
 
   @override
-  Future<void> changeStatusLesson(int lessonId, int classId,
-      String status) async {
+  Future<void> changeStatusLesson(
+      int lessonId, int classId, String status) async {
     await FireStoreDb.instance.changeStatusLesson(lessonId, classId, status);
   }
 
   @override
-  Future<void> noteForAllStudentInClass(int lessonId, int classId,
-      String note) async {
+  Future<void> noteForAllStudentInClass(
+      int lessonId, int classId, String note) async {
     await FireStoreDb.instance
         .noteForAllStudentInClass(lessonId, classId, note);
   }
 
   @override
-  Future<void> updateTeacherInLessonResult(int lessonId, int classId,
-      int teacherId) async {
+  Future<void> updateTeacherInLessonResult(
+      int lessonId, int classId, int teacherId) async {
     await FireStoreDb.instance
         .updateTeacherInLessonResult(lessonId, classId, teacherId);
   }
@@ -717,16 +699,15 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<void> noteForAnotherSensei(int lessonId, int classId,
-      String note) async {
+  Future<void> noteForAnotherSensei(
+      int lessonId, int classId, String note) async {
     await FireStoreDb.instance.noteForAnotherSensei(lessonId, classId, note);
   }
 
   @override
   Future<bool> addStudentLesson(StudentLessonModel model) async {
     final temp = await FireStoreDb.instance.getStudentLessonByDocs(
-        "student_${model.studentId}_lesson_${model.lessonId}_class_${model
-            .classId}");
+        "student_${model.studentId}_lesson_${model.lessonId}_class_${model.classId}");
     if (!temp.exists) {
       await FireStoreDb.instance.addStudentLesson(model);
       return true;
@@ -738,7 +719,7 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<bool> checkLessonResult(int lessonId, int classId) async {
     DocumentSnapshot<Map<String, dynamic>> temp =
-    await FireStoreDb.instance.checkLessonResult(lessonId, classId);
+        await FireStoreDb.instance.checkLessonResult(lessonId, classId);
 
     if (temp.exists == false) {
       return false;
@@ -800,10 +781,10 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<List<TestResultModel>> getListTestResult(int classId) async {
     List<TestResultModel> list =
-    (await FireStoreDb.instance.getListTestResult(classId))
-        .docs
-        .map((e) => TestResultModel.fromSnapshot(e))
-        .toList();
+        (await FireStoreDb.instance.getListTestResult(classId))
+            .docs
+            .map((e) => TestResultModel.fromSnapshot(e))
+            .toList();
     // list.sort((a, b) => a.testId.compareTo(b.testId));
     list.sort((a, b) {
       DateTime dateA = DateFormat("dd/MM/yyyy").parse(a.date);
@@ -879,15 +860,15 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<void> createNewBrowseDownload(BrowseDownloadModel model) async {
-      await FireStoreDb.instance.createNewBrowseDownload(model);
+    await FireStoreDb.instance.createNewBrowseDownload(model);
   }
 
   @override
   Future<List<ClassModel>> getListClassNotRemove() async {
     final listClass = (await FireStoreDb.instance.getListClassNotRemove())
         .docs
-        .map((e) => ClassModel.fromSnapshot(e)).where((element) =>
-    element.isSubClass == false)
+        .map((e) => ClassModel.fromSnapshot(e))
+        .where((element) => element.isSubClass == false)
         .toList();
     listClass.sort((a, b) => a.classId.compareTo(b.classId));
     return listClass;
@@ -897,8 +878,8 @@ class FireBaseProvider extends NetworkProvider {
   Future<List<ClassModel>> getListClassForAdmin() async {
     final listClass = (await FireStoreDb.instance.getListClassForAdmin())
         .docs
-        .map((e) => ClassModel.fromSnapshot(e)).where((element) =>
-    element.isSubClass == false)
+        .map((e) => ClassModel.fromSnapshot(e))
+        .where((element) => element.isSubClass == false)
         .toList();
     listClass.sort((a, b) => a.classId.compareTo(b.classId));
     return listClass;
@@ -908,8 +889,8 @@ class FireBaseProvider extends NetworkProvider {
   Future<List<TeacherClassModel>> getAllTeacherInClass() async {
     final listSensei = (await FireStoreDb.instance.getAllTeacherInClass())
         .docs
-        .map((e) => TeacherClassModel.fromSnapshot(e)).where((e) =>
-    e.classStatus != 'Remove')
+        .map((e) => TeacherClassModel.fromSnapshot(e))
+        .where((e) => e.classStatus != 'Remove')
         .toList();
     return listSensei;
   }
@@ -918,11 +899,11 @@ class FireBaseProvider extends NetworkProvider {
   Future<List<TeacherClassModel>> getAllTeacherInClassByClassId(
       int classId) async {
     final listTeacher =
-    (await FireStoreDb.instance.getAllTeacherInClassByClassId(classId))
-        .docs
-        .map((e) => TeacherClassModel.fromSnapshot(e)).where((e) =>
-    e.classStatus != 'Remove')
-        .toList();
+        (await FireStoreDb.instance.getAllTeacherInClassByClassId(classId))
+            .docs
+            .map((e) => TeacherClassModel.fromSnapshot(e))
+            .where((e) => e.classStatus != 'Remove')
+            .toList();
     return listTeacher;
   }
 
@@ -946,19 +927,19 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<List<TeacherModel>> getTeacherWithStatusFilter(
       List<String> status) async {
-    final lists = (await FireStoreDb.instance.getTeacherWithStatusFilter(
-        status))
-        .docs
-        .map((e) => TeacherModel.fromSnapshot(e))
-        .toList();
+    final lists =
+        (await FireStoreDb.instance.getTeacherWithStatusFilter(status))
+            .docs
+            .map((e) => TeacherModel.fromSnapshot(e))
+            .toList();
     return lists;
   }
 
   @override
-  Future<List<TeacherModel>> getMoreTeacherWithStatusFilter(List<String> status,
-      int lastId) async {
-    final lists = (await FireStoreDb.instance.getMoreTeacherWithStatusFilter(
-        status, lastId))
+  Future<List<TeacherModel>> getMoreTeacherWithStatusFilter(
+      List<String> status, int lastId) async {
+    final lists = (await FireStoreDb.instance
+            .getMoreTeacherWithStatusFilter(status, lastId))
         .docs
         .map((e) => TeacherModel.fromSnapshot(e))
         .toList();
@@ -1034,10 +1015,11 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<void> changeClassStatus(ClassModel classModel,
-      String newStatus,) async {
-    await FireStoreDb.instance
-        .changeClassStatus(classModel, newStatus);
+  Future<void> changeClassStatus(
+    ClassModel classModel,
+    String newStatus,
+  ) async {
+    await FireStoreDb.instance.changeClassStatus(classModel, newStatus);
   }
 
   @override
@@ -1046,8 +1028,8 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<void> updateLessonResult(int lessonId, int classId,
-      String note) async {
+  Future<void> updateLessonResult(
+      int lessonId, int classId, String note) async {
     await FireStoreDb.instance
         .updateNoteInLessonResult(lessonId, classId, note);
   }
@@ -1100,15 +1082,14 @@ class FireBaseProvider extends NetworkProvider {
       tempX.add(FireStoreDb.instance.getAllStudentInFoInClass(subLists[i]));
     }
     List<QuerySnapshot<Map<String, dynamic>>> responses =
-    await Future.wait(tempX);
+        await Future.wait(tempX);
 
     list = responses.fold(
         [],
-            (pre, res) =>
-        [
-          ...pre,
-          ...res.docs.map((e) => StudentModel.fromSnapshot(e)).toList()
-        ]);
+        (pre, res) => [
+              ...pre,
+              ...res.docs.map((e) => StudentModel.fromSnapshot(e)).toList()
+            ]);
 
     return list;
   }
@@ -1116,7 +1097,6 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<List<TeacherModel>> getListTeacherByListId(
       List<int> teacherIds) async {
-
     if (teacherIds.isEmpty) {
       return [];
     }
@@ -1129,8 +1109,8 @@ class FireBaseProvider extends NetworkProvider {
 
     List<List<int>> subLists = [];
     for (int i = 0; i < teacherIds.length; i += 10) {
-      List<int> subList =
-      teacherIds.sublist(i, i + 10 > teacherIds.length ? teacherIds.length : i + 10);
+      List<int> subList = teacherIds.sublist(
+          i, i + 10 > teacherIds.length ? teacherIds.length : i + 10);
       subLists.add(subList);
     }
 
@@ -1142,23 +1122,20 @@ class FireBaseProvider extends NetworkProvider {
       tempX.add(FireStoreDb.instance.getListTeacherByListId(subLists[i]));
     }
     List<QuerySnapshot<Map<String, dynamic>>> responses =
-    await Future.wait(tempX);
+        await Future.wait(tempX);
 
     list = responses.fold(
         [],
-            (pre, res) =>
-        [
-          ...pre,
-          ...res.docs
-              .map((e) => TeacherModel.fromSnapshot(e))
-              .toList()
-        ]);
+        (pre, res) => [
+              ...pre,
+              ...res.docs.map((e) => TeacherModel.fromSnapshot(e)).toList()
+            ]);
     return list;
   }
 
   @override
-  Future<List<StudentLessonModel>> getStudentLessons(int classId,
-      List<int> studentIds) async {
+  Future<List<StudentLessonModel>> getStudentLessons(
+      int classId, List<int> studentIds) async {
     if (studentIds.isEmpty) {
       return [];
     }
@@ -1183,17 +1160,16 @@ class FireBaseProvider extends NetworkProvider {
       tempX.add(FireStoreDb.instance.getStudentLesson(classId, subLists[i]));
     }
     List<QuerySnapshot<Map<String, dynamic>>> responses =
-    await Future.wait(tempX);
+        await Future.wait(tempX);
 
     list = responses.fold(
         [],
-            (pre, res) =>
-        [
-          ...pre,
-          ...res.docs
-              .map((e) => StudentLessonModel.fromSnapshot(e))
-              .toList()
-        ]);
+        (pre, res) => [
+              ...pre,
+              ...res.docs
+                  .map((e) => StudentLessonModel.fromSnapshot(e))
+                  .toList()
+            ]);
 
     return list;
   }
@@ -1226,15 +1202,14 @@ class FireBaseProvider extends NetworkProvider {
       tempX.add(FireStoreDb.instance.getStudentTestByIds(subLists[i]));
     }
     List<QuerySnapshot<Map<String, dynamic>>> responses =
-    await Future.wait(tempX);
+        await Future.wait(tempX);
 
     list = responses.fold(
         [],
-            (pre, res) =>
-        [
-          ...pre,
-          ...res.docs.map((e) => StudentTestModel.fromSnapshot(e)).toList()
-        ]);
+        (pre, res) => [
+              ...pre,
+              ...res.docs.map((e) => StudentTestModel.fromSnapshot(e)).toList()
+            ]);
 
     return list;
   }
@@ -1265,15 +1240,14 @@ class FireBaseProvider extends NetworkProvider {
       tempX.add(FireStoreDb.instance.getCourseByListId(subLists[i]));
     }
     List<QuerySnapshot<Map<String, dynamic>>> responses =
-    await Future.wait(tempX);
+        await Future.wait(tempX);
 
     list = responses.fold(
         [],
-            (pre, res) =>
-        [
-          ...pre,
-          ...res.docs.map((e) => CourseModel.fromSnapshot(e)).toList()
-        ]);
+        (pre, res) => [
+              ...pre,
+              ...res.docs.map((e) => CourseModel.fromSnapshot(e)).toList()
+            ]);
 
     return list;
   }
@@ -1286,7 +1260,7 @@ class FireBaseProvider extends NetworkProvider {
     }
     if (listClassId.length <= 10) {
       return (await FireStoreDb.instance
-          .getAllStudentLessonsInListClassId(listClassId))
+              .getAllStudentLessonsInListClassId(listClassId))
           .docs
           .map((e) => StudentLessonModel.fromSnapshot(e))
           .toList();
@@ -1307,17 +1281,16 @@ class FireBaseProvider extends NetworkProvider {
           FireStoreDb.instance.getAllStudentLessonsInListClassId(subLists[i]));
     }
     List<QuerySnapshot<Map<String, dynamic>>> responses =
-    await Future.wait(tempX);
+        await Future.wait(tempX);
 
     list = responses.fold(
         [],
-            (pre, res) =>
-        [
-          ...pre,
-          ...res.docs
-              .map((e) => StudentLessonModel.fromSnapshot(e))
-              .toList()
-        ]);
+        (pre, res) => [
+              ...pre,
+              ...res.docs
+                  .map((e) => StudentLessonModel.fromSnapshot(e))
+                  .toList()
+            ]);
 
     return list;
   }
@@ -1330,7 +1303,7 @@ class FireBaseProvider extends NetworkProvider {
     }
     if (listClassId.length <= 10) {
       return (await FireStoreDb.instance
-          .getAllStudentTestsInListClassId(listClassId))
+              .getAllStudentTestsInListClassId(listClassId))
           .docs
           .map((e) => StudentTestModel.fromSnapshot(e))
           .toList();
@@ -1351,28 +1324,25 @@ class FireBaseProvider extends NetworkProvider {
           FireStoreDb.instance.getAllStudentTestsInListClassId(subLists[i]));
     }
     List<QuerySnapshot<Map<String, dynamic>>> responses =
-    await Future.wait(tempX);
+        await Future.wait(tempX);
 
     list = responses.fold(
         [],
-            (pre, res) =>
-        [
-          ...pre,
-          ...res.docs
-              .map((e) => StudentTestModel.fromSnapshot(e))
-              .toList()
-        ]);
+        (pre, res) => [
+              ...pre,
+              ...res.docs.map((e) => StudentTestModel.fromSnapshot(e)).toList()
+            ]);
 
     return list;
   }
 
   @override
-  Future<DetailGradingDataModel> getDataForDetailGrading(int classId,
-      int parentId, String type) async {
+  Future<DetailGradingDataModel> getDataForDetailGrading(
+      int classId, int parentId, String type) async {
     ClassModel classModel =
-    await FireBaseProvider.instance.getClassById(classId);
+        await FireBaseProvider.instance.getClassById(classId);
     CourseModel courseModel =
-    await FireBaseProvider.instance.getCourseById(classModel.courseId);
+        await FireBaseProvider.instance.getCourseById(classModel.courseId);
     String token = courseModel.btvnToken;
     List<QuestionModel> listQuestions = [];
     if (type == "type=test") {
@@ -1390,13 +1360,13 @@ class FireBaseProvider extends NetworkProvider {
       "Moved"
     ];
     var listStdClass =
-    (await FireBaseProvider.instance.getStudentClassInClass(classId))
-        .where((e) => !listStatus.contains(e.classStatus))
-        .toList();
+        (await FireBaseProvider.instance.getStudentClassInClass(classId))
+            .where((e) => !listStatus.contains(e.classStatus))
+            .toList();
     List<int> listStdId = [];
     if (type != "type=test") {
       var listStdLesson = (await FireBaseProvider.instance
-          .getAllStudentLessonInLesson(classId, parentId))
+              .getAllStudentLessonInLesson(classId, parentId))
           .where((e) => e.hw != -2)
           .toList();
       var listTemp1 = listStdClass.map((e) => e.userId).toList();
@@ -1408,7 +1378,7 @@ class FireBaseProvider extends NetworkProvider {
       }
     } else {
       var listStdTest = (await FireBaseProvider.instance
-          .getAllStudentTestInLesson(classId, parentId))
+              .getAllStudentTestInLesson(classId, parentId))
           .where((e) => e.score != -2)
           .toList();
       var listTemp1 = listStdClass.map((e) => e.userId).toList();
@@ -1421,9 +1391,9 @@ class FireBaseProvider extends NetworkProvider {
     }
 
     List<AnswerModel> listAnswer =
-    (await FireBaseProvider.instance.getListAnswer(parentId, classId))
-        .where((e) => listStdId.contains(e.studentId))
-        .toList();
+        (await FireBaseProvider.instance.getListAnswer(parentId, classId))
+            .where((e) => listStdId.contains(e.studentId))
+            .toList();
 
     if (listAnswer.isEmpty) {
       return DetailGradingDataModel(
@@ -1448,7 +1418,7 @@ class FireBaseProvider extends NetworkProvider {
     }
 
     List<StudentModel> listStudent =
-    await FireBaseProvider.instance.getAllStudentInFoInClass(listStudentId);
+        await FireBaseProvider.instance.getAllStudentInFoInClass(listStudentId);
 
     return DetailGradingDataModel(
         classModel: classModel,
@@ -1461,14 +1431,14 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<DetailGradingDataModel> getDataForDetailGradingCustom(int classId,
-      int lessonId, int customLessonId, String type) async {
+  Future<DetailGradingDataModel> getDataForDetailGradingCustom(
+      int classId, int lessonId, int customLessonId, String type) async {
     ClassModel classModel =
-    await FireBaseProvider.instance.getClassById(classId);
+        await FireBaseProvider.instance.getClassById(classId);
     LessonModel lessonModel =
-    await FireBaseProvider.instance.getLessonById(lessonId);
+        await FireBaseProvider.instance.getLessonById(lessonId);
     CourseModel courseModel =
-    await FireBaseProvider.instance.getCourseById(lessonModel.courseId);
+        await FireBaseProvider.instance.getCourseById(lessonModel.courseId);
     String token = courseModel.btvnToken;
     List<QuestionModel> listQuestions = [];
     listQuestions = await FireBaseProvider.instance
@@ -1481,12 +1451,12 @@ class FireBaseProvider extends NetworkProvider {
       "Moved"
     ];
     var listStdClass =
-    (await FireBaseProvider.instance.getStudentClassInClass(classId))
-        .where((e) => !listStatus.contains(e.classStatus))
-        .toList();
+        (await FireBaseProvider.instance.getStudentClassInClass(classId))
+            .where((e) => !listStatus.contains(e.classStatus))
+            .toList();
     List<int> listStdId = [];
     var listStdLesson = (await FireBaseProvider.instance
-        .getAllStudentLessonInLesson(classId, customLessonId))
+            .getAllStudentLessonInLesson(classId, customLessonId))
         .where((e) => e.hws.isNotEmpty)
         .toList();
 
@@ -1510,7 +1480,7 @@ class FireBaseProvider extends NetworkProvider {
     }
 
     List<AnswerModel> listAnswer = (await FireBaseProvider.instance
-        .getListCustomAnswer(lessonId, classId, customLessonId))
+            .getListCustomAnswer(lessonId, classId, customLessonId))
         .where((e) => listStdId.contains(e.studentId))
         .toList();
 
@@ -1537,7 +1507,7 @@ class FireBaseProvider extends NetworkProvider {
     }
 
     List<StudentModel> listStudent =
-    await FireBaseProvider.instance.getAllStudentInFoInClass(listStudentId);
+        await FireBaseProvider.instance.getAllStudentInFoInClass(listStudentId);
 
     return DetailGradingDataModel(
         classModel: classModel,
@@ -1577,7 +1547,6 @@ class FireBaseProvider extends NetworkProvider {
   Future<int> getTotalPage(String tableName) async {
     int count = (await FireStoreDb.instance.getCount(tableName)).count ?? 0;
 
-
     if (count <= 10) {
       return 1;
     }
@@ -1594,10 +1563,12 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<int> getCountWithCondition(String tableName, String field,
-      dynamic condition) async {
+  Future<int> getCountWithCondition(
+      String tableName, String field, dynamic condition) async {
     int count = (await FireStoreDb.instance
-        .getCountWithCondition(tableName, field, condition)).count ?? 0;
+                .getCountWithCondition(tableName, field, condition))
+            .count ??
+        0;
 
     return count;
   }
@@ -1609,14 +1580,14 @@ class FireBaseProvider extends NetworkProvider {
       return [];
     }
     final courses =
-    snapshot.docs.map((e) => CourseModel.fromSnapshot(e)).toList();
+        snapshot.docs.map((e) => CourseModel.fromSnapshot(e)).toList();
     return courses;
   }
 
   @override
   Future<bool> addNewCourse(CourseModel model) async {
     final temp =
-    await FireStoreDb.instance.getCourseByDocs("course_${model.courseId}");
+        await FireStoreDb.instance.getCourseByDocs("course_${model.courseId}");
     if (!temp.exists) {
       await FireStoreDb.instance.addCourse(model);
       return true;
@@ -1755,7 +1726,7 @@ class FireBaseProvider extends NetworkProvider {
     List<List<int>> subLists = [];
     for (int i = 0; i < ids.length; i += 10) {
       List<int> subList =
-      ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
+          ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
       subLists.add(subList);
     }
 
@@ -1767,15 +1738,14 @@ class FireBaseProvider extends NetworkProvider {
       tempX.add(FireStoreDb.instance.getAllStudentClassByListIds(subLists[i]));
     }
     List<QuerySnapshot<Map<String, dynamic>>> responses =
-    await Future.wait(tempX);
+        await Future.wait(tempX);
 
     list = responses.fold(
         [],
-            (pre, res) =>
-        [
-          ...pre,
-          ...res.docs.map((e) => StudentClassModel.fromSnapshot(e)).toList()
-        ]);
+        (pre, res) => [
+              ...pre,
+              ...res.docs.map((e) => StudentClassModel.fromSnapshot(e)).toList()
+            ]);
 
     return list;
   }
@@ -1788,14 +1758,14 @@ class FireBaseProvider extends NetworkProvider {
     if (ids.length <= 10) {
       return (await FireStoreDb.instance.getListClassForTeacher(ids))
           .docs
-          .map((e) => ClassModel.fromSnapshot(e)).where((element) =>
-      element.isSubClass == false)
+          .map((e) => ClassModel.fromSnapshot(e))
+          .where((element) => element.isSubClass == false)
           .toList();
     }
     List<List<int>> subLists = [];
     for (int i = 0; i < ids.length; i += 10) {
       List<int> subList =
-      ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
+          ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
       subLists.add(subList);
     }
 
@@ -1807,16 +1777,17 @@ class FireBaseProvider extends NetworkProvider {
       tempX.add(FireStoreDb.instance.getListClassForTeacher(subLists[i]));
     }
     List<QuerySnapshot<Map<String, dynamic>>> responses =
-    await Future.wait(tempX);
+        await Future.wait(tempX);
 
     temp = responses.fold(
         [],
-            (pre, res) =>
-        [
-          ...pre,
-          ...res.docs.map((e) => ClassModel.fromSnapshot(e)).where((
-              element) => element.isSubClass == false).toList()
-        ]);
+        (pre, res) => [
+              ...pre,
+              ...res.docs
+                  .map((e) => ClassModel.fromSnapshot(e))
+                  .where((element) => element.isSubClass == false)
+                  .toList()
+            ]);
 
     List<ClassModel> list = [];
     for (var i in temp) {
@@ -1838,14 +1809,14 @@ class FireBaseProvider extends NetworkProvider {
     if (ids.length <= 10) {
       return (await FireStoreDb.instance.getListClassListIds(ids))
           .docs
-          .map((e) => ClassModel.fromSnapshot(e)).where((element) =>
-      element.isSubClass == false)
+          .map((e) => ClassModel.fromSnapshot(e))
+          .where((element) => element.isSubClass == false)
           .toList();
     }
     List<List<int>> subLists = [];
     for (int i = 0; i < ids.length; i += 10) {
       List<int> subList =
-      ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
+          ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
       subLists.add(subList);
     }
 
@@ -1857,16 +1828,17 @@ class FireBaseProvider extends NetworkProvider {
       tempX.add(FireStoreDb.instance.getListClassListIds(subLists[i]));
     }
     List<QuerySnapshot<Map<String, dynamic>>> responses =
-    await Future.wait(tempX);
+        await Future.wait(tempX);
 
     temp = responses.fold(
         [],
-            (pre, res) =>
-        [
-          ...pre,
-          ...res.docs.map((e) => ClassModel.fromSnapshot(e)).where((
-              element) => element.isSubClass == false).toList()
-        ]);
+        (pre, res) => [
+              ...pre,
+              ...res.docs
+                  .map((e) => ClassModel.fromSnapshot(e))
+                  .where((element) => element.isSubClass == false)
+                  .toList()
+            ]);
 
     List<ClassModel> list = [];
     for (var i in temp) {
@@ -1888,14 +1860,14 @@ class FireBaseProvider extends NetworkProvider {
     if (ids.length <= 10) {
       return (await FireStoreDb.instance.getListClassListIds(ids))
           .docs
-          .map((e) => ClassModel.fromSnapshot(e)).where((element) =>
-      element.isSubClass == false)
+          .map((e) => ClassModel.fromSnapshot(e))
+          .where((element) => element.isSubClass == false)
           .toList();
     }
     List<List<int>> subLists = [];
     for (int i = 0; i < ids.length; i += 10) {
       List<int> subList =
-      ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
+          ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
       subLists.add(subList);
     }
 
@@ -1907,38 +1879,39 @@ class FireBaseProvider extends NetworkProvider {
       tempX.add(FireStoreDb.instance.getListClassListIds(subLists[i]));
     }
     List<QuerySnapshot<Map<String, dynamic>>> responses =
-    await Future.wait(tempX);
+        await Future.wait(tempX);
 
     temp = responses.fold(
         [],
-            (pre, res) =>
-        [
-          ...pre,
-          ...res.docs.map((e) => ClassModel.fromSnapshot(e)).where((
-              element) => element.isSubClass == false).toList()
-        ]);
+        (pre, res) => [
+              ...pre,
+              ...res.docs
+                  .map((e) => ClassModel.fromSnapshot(e))
+                  .where((element) => element.isSubClass == false)
+                  .toList()
+            ]);
 
     return temp;
   }
 
   @override
-  Future<List<ClassModel>> getListClassForTeacherV2(List<int> ids,
-      List<String> listStatus) async {
+  Future<List<ClassModel>> getListClassForTeacherV2(
+      List<int> ids, List<String> listStatus) async {
     if (ids.isEmpty) {
       return [];
     }
     if (ids.length <= 10) {
       return (await FireStoreDb.instance
-          .getListClassForTeacherV2(ids, listStatus))
+              .getListClassForTeacherV2(ids, listStatus))
           .docs
-          .map((e) => ClassModel.fromSnapshot(e)).where((element) =>
-      element.isSubClass == false)
+          .map((e) => ClassModel.fromSnapshot(e))
+          .where((element) => element.isSubClass == false)
           .toList();
     }
     List<List<int>> subLists = [];
     for (int i = 0; i < ids.length; i += 10) {
       List<int> subList =
-      ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
+          ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
       subLists.add(subList);
     }
 
@@ -1951,16 +1924,17 @@ class FireBaseProvider extends NetworkProvider {
           .getListClassForTeacherV2(subLists[i], listStatus));
     }
     List<QuerySnapshot<Map<String, dynamic>>> responses =
-    await Future.wait(tempX);
+        await Future.wait(tempX);
 
     temp = responses.fold(
         [],
-            (pre, res) =>
-        [
-          ...pre,
-          ...res.docs.map((e) => ClassModel.fromSnapshot(e)).where((
-              element) => element.isSubClass == false).toList()
-        ]);
+        (pre, res) => [
+              ...pre,
+              ...res.docs
+                  .map((e) => ClassModel.fromSnapshot(e))
+                  .where((element) => element.isSubClass == false)
+                  .toList()
+            ]);
 
     List<ClassModel> list = [];
     for (var i in temp) {
@@ -1989,13 +1963,13 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<FeedBackModel>> getListFeedBack(String status,
-      String role) async {
+  Future<List<FeedBackModel>> getListFeedBack(
+      String status, String role) async {
     final listFeedBack =
-    (await FireStoreDb.instance.getListFeedBack(status, role))
-        .docs
-        .map((e) => FeedBackModel.fromSnapshot(e))
-        .toList();
+        (await FireStoreDb.instance.getListFeedBack(status, role))
+            .docs
+            .map((e) => FeedBackModel.fromSnapshot(e))
+            .toList();
     return listFeedBack;
   }
 
@@ -2012,7 +1986,7 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<bool> checkExistVoucher(String voucherCode) async {
     final temp =
-    await FireStoreDb.instance.getVoucher("sakumi_voucher_$voucherCode");
+        await FireStoreDb.instance.getVoucher("sakumi_voucher_$voucherCode");
 
     if (temp.exists) {
       return true;
@@ -2053,11 +2027,13 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<BrowseDownloadModel>> getBrowseDownloadWaitingByClassAndTeacherId(int classId, int teacherId) async {
-    final list = (await FireStoreDb.instance.getBrowseDownloadWaitingByClassAndTeacherId(classId, teacherId))
-        .docs
-        .map((e) => BrowseDownloadModel.fromSnapshot(e))
-        .toList();
+  Future<List<BrowseDownloadModel>> getBrowseDownloadWaitingByClassId(
+      int classId) async {
+    final list =
+        (await FireStoreDb.instance.getBrowseDownloadWaitingByClassId(classId))
+            .docs
+            .map((e) => BrowseDownloadModel.fromSnapshot(e))
+            .toList();
 
     return list;
   }
@@ -2073,8 +2049,8 @@ class FireBaseProvider extends NetworkProvider {
   Future<List<ClassModel>> getAllClassInProgress() async {
     final result = (await FireStoreDb.instance.getAllClassInProgress())
         .docs
-        .map((e) => ClassModel.fromSnapshot(e)).where((element) =>
-    element.isSubClass == false)
+        .map((e) => ClassModel.fromSnapshot(e))
+        .where((element) => element.isSubClass == false)
         .toList();
     debugPrint('========> list class ${result.length}');
     return result;
@@ -2105,22 +2081,22 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<List<SurveyResultModel>> getSurveyResultByClassId(int classId) async {
     var listResult =
-    (await FireStoreDb.instance.getSurveyResultByClassId(classId))
-        .docs
-        .map((e) => SurveyResultModel.fromSnapshot(e))
-        .toList();
+        (await FireStoreDb.instance.getSurveyResultByClassId(classId))
+            .docs
+            .map((e) => SurveyResultModel.fromSnapshot(e))
+            .toList();
     listResult.sort((a, b) => a.dateAssign.compareTo(b.dateAssign));
     return listResult;
   }
 
   @override
-  Future<List<SurveyAnswerModel>> getSurveyAnswerByClassId(int classId,
-      int surveyId) async {
+  Future<List<SurveyAnswerModel>> getSurveyAnswerByClassId(
+      int classId, int surveyId) async {
     var listAnswer =
-    (await FireStoreDb.instance.getSurveyAnswerByClassId(classId, surveyId))
-        .docs
-        .map((e) => SurveyAnswerModel.fromSnapshot(e))
-        .toList();
+        (await FireStoreDb.instance.getSurveyAnswerByClassId(classId, surveyId))
+            .docs
+            .map((e) => SurveyAnswerModel.fromSnapshot(e))
+            .toList();
     return listAnswer;
   }
 
@@ -2147,10 +2123,10 @@ class FireBaseProvider extends NetworkProvider {
   Future<List<ClassModel>> getMoreClassWithFilter(List<String> listStatusFilter,
       List<int> listTypeFilter, int lastId, List<int> listCourseId) async {
     final listClass = (await FireStoreDb.instance.getMoreClassWithFilter(
-        listStatusFilter, listTypeFilter, lastId, listCourseId))
+            listStatusFilter, listTypeFilter, lastId, listCourseId))
         .docs
-        .map((e) => ClassModel.fromSnapshot(e)).where((element) =>
-    element.isSubClass == false)
+        .map((e) => ClassModel.fromSnapshot(e))
+        .where((element) => element.isSubClass == false)
         .toList();
     return listClass;
   }
@@ -2159,10 +2135,10 @@ class FireBaseProvider extends NetworkProvider {
   Future<List<ClassModel>> getListClassWithFilter(List<String> listStatusFilter,
       List<int> listTypeFilter, List<int> listCourseId) async {
     final listClass = (await FireStoreDb.instance.getListClassWithFilter(
-        listStatusFilter, listTypeFilter, listCourseId))
+            listStatusFilter, listTypeFilter, listCourseId))
         .docs
-        .map((e) => ClassModel.fromSnapshot(e)).where((element) =>
-    element.isSubClass == false)
+        .map((e) => ClassModel.fromSnapshot(e))
+        .where((element) => element.isSubClass == false)
         .toList();
     return listClass;
   }
@@ -2171,7 +2147,7 @@ class FireBaseProvider extends NetworkProvider {
   Future<List<BillModel>> getListBillWithFilter(List<String> listStatusFilter,
       List<String> listTypeFilter, List<String> listCreatorFilter) async {
     final listBill = (await FireStoreDb.instance.getListBillWithFilter(
-        listStatusFilter, listTypeFilter, listCreatorFilter))
+            listStatusFilter, listTypeFilter, listCreatorFilter))
         .docs
         .map((e) => BillModel.fromSnapshot(e))
         .toList();
@@ -2185,7 +2161,7 @@ class FireBaseProvider extends NetworkProvider {
       List<String> listCreatorFilter,
       int lastItem) async {
     final listBill = (await FireStoreDb.instance.getMoreListBillWithFilter(
-        listStatusFilter, listTypeFilter, listCreatorFilter, lastItem))
+            listStatusFilter, listTypeFilter, listCreatorFilter, lastItem))
         .docs
         .map((e) => BillModel.fromSnapshot(e))
         .toList();
@@ -2203,8 +2179,8 @@ class FireBaseProvider extends NetworkProvider {
     if (lastItem == 9999999999999) return [];
 
     final listBill = (await FireStoreDb.instance
-        .getMoreListBillWithFilterAndDate(listStatusFilter, listTypeFilter,
-        listCreatorFilter, lastItem, startDate, endDate))
+            .getMoreListBillWithFilterAndDate(listStatusFilter, listTypeFilter,
+                listCreatorFilter, lastItem, startDate, endDate))
         .docs
         .map((e) => BillModel.fromSnapshot(e))
         .toList();
@@ -2219,11 +2195,11 @@ class FireBaseProvider extends NetworkProvider {
       int startDate,
       int endDate) async {
     final listBill = (await FireStoreDb.instance.getListBillWithFilterAndDate(
-        listStatusFilter,
-        listTypeFilter,
-        listCreatorFilter,
-        startDate,
-        endDate))
+            listStatusFilter,
+            listTypeFilter,
+            listCreatorFilter,
+            startDate,
+            endDate))
         .docs
         .map((e) => BillModel.fromSnapshot(e))
         .toList();
@@ -2234,7 +2210,7 @@ class FireBaseProvider extends NetworkProvider {
   Future<List<BillModel>> getListBillInStatistic(List<int> listTypeFilter,
       List<int> listCourseId, int startDate, int endDate) async {
     final listBill = (await FireStoreDb.instance.getListBillStatistic(
-        listTypeFilter, listCourseId, startDate, endDate))
+            listTypeFilter, listCourseId, startDate, endDate))
         .docs
         .map((e) => BillModel.fromSnapshot(e))
         .toList();
@@ -2248,8 +2224,8 @@ class FireBaseProvider extends NetworkProvider {
       int startDate,
       int endDate) async {
     final listBill = (await FireStoreDb.instance
-        .getListStudentClassLogStatistic(
-        listTypeFilter, listCourseId, startDate, endDate))
+            .getListStudentClassLogStatistic(
+                listTypeFilter, listCourseId, startDate, endDate))
         .docs
         .map((e) => StudentClassLogModel.fromSnapshot(e))
         .toList();
@@ -2261,14 +2237,14 @@ class FireBaseProvider extends NetworkProvider {
       List<int> listCourseId, int startDate, int endDate, int type) async {
     if (type == 0) {
       final listClass = (await FireStoreDb.instance.getListClassStatistic0(
-          listTypeFilter, listCourseId, startDate, endDate))
+              listTypeFilter, listCourseId, startDate, endDate))
           .docs
           .map((e) => ClassModel.fromSnapshot(e))
           .toList();
       return listClass;
     }
     final listClass = (await FireStoreDb.instance.getListClassStatistic1(
-        listTypeFilter, listCourseId, startDate, endDate))
+            listTypeFilter, listCourseId, startDate, endDate))
         .docs
         .map((e) => ClassModel.fromSnapshot(e))
         .toList();
@@ -2325,6 +2301,21 @@ class FireBaseProvider extends NetworkProvider {
     return list;
   }
 
+  Future<List<ManageTagModel>> getManageTagsWithSpecificTags(
+      List<int> listId) async {
+
+    try {
+      final list =
+      (await FireStoreDb.instance.getManageTagsWithSpecificTags(listId))
+          .docs
+          .map((e) => ManageTagModel.fromSnapshot(e))
+          .toList();
+      return list;
+    } catch (e) {
+      return [];
+    }
+  }
+
   Future<TagModel> getTagById(int tagId) async {
     return (await FireStoreDb.instance.getTagById(tagId))
         .docs
@@ -2338,8 +2329,7 @@ class FireBaseProvider extends NetworkProvider {
           .docs
           .map((e) => ManageTagModel.fromSnapshot(e))
           .single;
-    }
-    catch (e) {
+    } catch (e) {
       return null;
     }
   }
@@ -2352,10 +2342,10 @@ class FireBaseProvider extends NetworkProvider {
     return await FireStoreDb.instance.deleteManageTag("manage_tag_$id");
   }
 
-  Future<void> deleteTagIdInManageTag(ManageTagModel manageTagModel,
-      int tagId) async {
-    return await FireStoreDb.instance.deleteTagIdInManageTag(
-        "manage_tag_${manageTagModel.date}", tagId);
+  Future<void> deleteTagIdInManageTag(
+      ManageTagModel manageTagModel, int tagId) async {
+    return await FireStoreDb.instance
+        .deleteTagIdInManageTag("manage_tag_${manageTagModel.date}", tagId);
   }
 
   Future<List<ManageTagModel>> getManageTagsContainsTagId(int tagId) async {

@@ -41,7 +41,7 @@ class AdminAppBar extends StatelessWidget {
   }
 }
 List<NavigationModel> buttonAdminList = [
-  NavigationModel(0, AppText.titleSearch.text),
+  NavigationModel(0, AppText.titleHome.text),
   NavigationModel(1, AppText.txtClass.text),
   NavigationModel(8, AppText.txtBill.text),
   NavigationModel(2, AppText.txtTag.text),
@@ -50,7 +50,7 @@ List<NavigationModel> buttonAdminList = [
   NavigationModel(5, AppText.txtTool.text),
   NavigationModel(6, AppText.txtVoucher.text),
   NavigationModel(7, AppText.txtTeacher.text),
-  NavigationModel(9, AppText.txtStudent.text),
+  // NavigationModel(9, AppText.txtStudent.text),
 ];
 
 class DetailAppBar extends StatelessWidget {

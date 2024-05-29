@@ -17,6 +17,15 @@ class AddTagFilterCubit extends Cubit<int> {
       listTags.where((element) => element.groupId ==
           listGroupTags[currentIndex].id).toList();
 
+  Map<int, String> notes = {};
+
+  updateNotes(int id, String note) {
+    notes[id] = note;
+
+    print('------\n$notes');
+    emitState();
+  }
+
   addTag(TagModel value) {
     listChooseTags.add(value);
     emit(state + 1);
@@ -37,7 +46,10 @@ class AddTagFilterCubit extends Cubit<int> {
 
 
 
-  load() async {
+  load( Map<int, String> note) async {
+    notes = note;
+
+    print('adddialog: $notes');
     listGroupTags = await FireBaseProvider.instance.getListGroupTags();
     currentIndex = 0;
     listTags = await FireBaseProvider.instance.getListTags();

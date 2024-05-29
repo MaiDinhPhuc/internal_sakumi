@@ -2303,6 +2303,15 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getManageTagsWithSpecificTags(List<int> listId) async {
+    final snapshot = await db.collection("manage_tags").where('tags', arrayContainsAny: listId)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getManageTagsWithSpecificTags ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
   Future<QuerySnapshot<Map<String, dynamic>>> getTagById(int tagId) async {
     final snapshot =
         await db.collection('tags').where('id', isEqualTo: tagId).get();
@@ -2335,6 +2344,7 @@ class FireStoreDb {
         .set(manageTagModel.toJson(), SetOptions(merge: true))
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
+          print(error);
       value = false;
     });
     return value;

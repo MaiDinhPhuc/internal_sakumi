@@ -10,6 +10,8 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import '../../../../model/manage_tag_model.dart';
 import '../../../../model/tag_model.dart';
 import '../../../../routes.dart';
+import '../../../../widget/circle_item_1.dart';
+import 'list_manage_tags_cubit.dart';
 
 class StudentTagListView extends StatefulWidget {
   StudentTagListView({super.key, required this.list, required this.listTags})
@@ -31,16 +33,17 @@ class _StudentTagListViewState extends State<StudentTagListView>
   Widget build(BuildContext context) {
     super.build(context);
     print('build again');
+    final manageCubit = context.read<ListManageTagsCubit>();
     return BlocProvider.value(
       value: widget.studentTagCubit..load(),
-      child: BlocBuilder<StudentTagCubit, int>(
+      child: BlocBuilder(
+        bloc: widget.studentTagCubit,
         builder: (context, state) {
           if (state == 0) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-          final cubit = context.read<StudentTagCubit>();
           return SingleChildScrollView(
             padding: EdgeInsets.symmetric(
               horizontal: Resizable.padding(context, 15),
@@ -48,18 +51,26 @@ class _StudentTagListViewState extends State<StudentTagListView>
             ),
             child: Column(
               children: [
-                ...cubit.listStudentTags.map((e) => ObjectTagItem(
+                ...widget.studentTagCubit.listStudentTags.map((e) => ObjectTagItem(
                     onTap: () async {
                       await Navigator.pushNamed(context,
                           "${Routes.admin}/studentInfo/student=${e.studentModel.userId}");
+                      manageCubit.update();
                     },
+                    notes: e.notes,
                     title: e.studentModel.name,
                     description: '${AppText.txtStudentCode.text}: ${e.studentModel.studentCode}',
-                    prefixIcon: Image.network(
-                      e.studentModel.url,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) =>
-                          Image.asset("assets/images/ic_avt.png"),
+                    prefixIcon: CircleItem1(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(1000),
+                        child: Image.network(
+                          e.studentModel.url,
+                          fit: BoxFit.fitWidth,
+
+                          errorBuilder: (_, __, ___) =>
+                              Image.asset("assets/images/ic_avt.png"),
+                        ),
+                      ),
                     ),
                     tags: e.listTags))
               ],
@@ -97,6 +108,7 @@ class StudentTagCubit extends Cubit<int> {
       listStudentTags.add(StudentTag(
         studentModel: student,
         listTags: [...tags],
+        notes: item.notes
       ));
     }
     emit(state + 1);
@@ -106,9 +118,10 @@ class StudentTagCubit extends Cubit<int> {
 class StudentTag {
   final StudentModel studentModel;
   final List<TagModel> listTags;
-
+  final Map<int, String> notes;
   const StudentTag({
     required this.studentModel,
     required this.listTags,
+    required this.notes,
   });
 }

@@ -3,6 +3,8 @@ import 'package:internal_sakumi/model/group_tag_model.dart';
 import 'package:internal_sakumi/model/tag_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
+import '../search/general_tags/tag_history_provider.dart';
+
 class ManageTagCubit extends Cubit<int> {
   ManageTagCubit() : super(0);
 
@@ -79,9 +81,14 @@ class ManageTagCubit extends Cubit<int> {
     return false;
   }
 
+
+  int get lengthGroupTags => listGroupTags.length;
+  int get lengthTags => listTags.length;
   Future<bool> deleteGroupTag(int index) async {
-    for (var item in listTags.where((element) => element.groupId ==
-        listGroupTags[index].id).toList()) {
+
+    var list = listTags.where((element) => element.groupId ==
+        listGroupTags[index].id).toList();
+    for (var item in list) {
       FireBaseProvider.instance.deleteTag(item.id);
       var list = await FireBaseProvider.instance.getManageTagsContainsTagId(item.id);
       List<Future<void>> futures = [];
@@ -96,6 +103,7 @@ class ManageTagCubit extends Cubit<int> {
 
     if (value) {
       listGroupTags.removeAt(index);
+      await TagHistoryProvider.deleteTags(list.map((e) => e.id).toList());
       if (index == currentIndex) {
         currentIndex = 0;
       }

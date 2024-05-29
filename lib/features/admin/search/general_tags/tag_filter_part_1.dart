@@ -39,7 +39,9 @@ class TagFilterPart1 extends StatelessWidget {
                   showDialog(context: context, builder: (context) {
                     return AddTagFilterDialog(
                       listOldTags: tagFilterCubit.listFilterTags,
-                      onFinish: (tags) {
+                      notes: const {},
+                      isFilter: true,
+                      onFinish: (tags, notes) {
                         tagFilterCubit.changeListTag(tags);
                         Navigator.pop(context);
                       },

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:internal_sakumi/features/admin/search/general_tags/add_tag_filter_cubit.dart';
+import 'package:internal_sakumi/features/admin/search/general_tags/note_tag_dialog.dart';
 import 'package:internal_sakumi/features/admin/search/general_tags/tag_filter_cubit.dart';
+import 'package:internal_sakumi/utils/dialogs.dart';
 
 import '../../../../configs/color_configs.dart';
 import '../../../../model/tag_model.dart';
@@ -11,10 +13,10 @@ import '../../manage_tag/group_item.dart';
 class AddTagFilterContent extends StatelessWidget {
   const AddTagFilterContent(
       {super.key,
-      required this.addTagFilterCubit,});
+      required this.addTagFilterCubit, required this.isFilter,});
 
   final AddTagFilterCubit addTagFilterCubit;
-
+  final bool isFilter;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -61,11 +63,24 @@ class AddTagFilterContent extends StatelessWidget {
                 for (var item in list) {
                   children.add(ChipTag(
                     onTap: () {
-                      addTagFilterCubit.addTag(item);
+                      if(isFilter) {
+                        addTagFilterCubit.addTag(item);
+                      }
+                      else {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return NoteTagDialog(
+                                addTagFilterCubit: addTagFilterCubit,
+                                tag: item,
+                              );
+                            });
+                      }
+
                     },
                     name: item.name,
                     color: item.background,
-                    description: item.description,
+                    description: '',
                   ));
                 }
                 return SingleChildScrollView(

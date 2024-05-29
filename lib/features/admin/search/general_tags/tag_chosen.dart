@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/features/admin/search/general_tags/tag_filter_cubit.dart';
 
 import '../../../../configs/color_configs.dart';
+import '../../../../utils/functions.dart';
 import '../../../../utils/resizable.dart';
 import '../../../../widget/chip_tag.dart';
 import 'add_tag_filter_cubit.dart';
@@ -37,7 +38,7 @@ class TagChosen extends StatelessWidget {
             },
             name: item.name,
             color: item.background,
-            description: item.description,
+            description: Functions.getValue(addTagFilterCubit.notes, item.id)
           ));
         }
         return SingleChildScrollView(

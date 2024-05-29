@@ -16,11 +16,12 @@ import '../../manage_tag/group_item.dart';
 
 class AddTagFilterDialog extends StatelessWidget {
   const AddTagFilterDialog(
-      {super.key, required this.onFinish, required this.listOldTags});
+      {super.key, required this.onFinish, required this.listOldTags, required this.isFilter, required this.notes});
 
-  final Function(List<TagModel>) onFinish;
+  final Function(List<TagModel>, Map<int, String>) onFinish;
   final List<TagModel> listOldTags;
-
+  final Map<int, String> notes;
+  final bool isFilter;
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -33,7 +34,7 @@ class AddTagFilterDialog extends StatelessWidget {
             padding: EdgeInsets.all(Resizable.padding(context, 20)),
             width: MediaQuery.of(context).size.width * 0.5,
             child: BlocProvider(
-              create: (context) => AddTagFilterCubit(listOldTags)..load(),
+              create: (context) => AddTagFilterCubit(listOldTags)..load(notes),
               child: BlocBuilder<AddTagFilterCubit, int>(
                 builder: (context, state) {
                   if (state == 0) {
@@ -66,6 +67,7 @@ class AddTagFilterDialog extends StatelessWidget {
                         height: Resizable.size(context, 160),
                         child: AddTagFilterContent(
                           addTagFilterCubit: addTagFilterCubit,
+                          isFilter: isFilter,
                         ),
                       ),
                       SizedBox(
@@ -111,6 +113,7 @@ class AddTagFilterDialog extends StatelessWidget {
                                 textColor: Colors.black,
                                 backgroundColor: Colors.white,
                                 title: AppText.btnCancel.text),
+
                             SizedBox(
                               width: Resizable.padding(context, 5),
                             ),
@@ -130,7 +133,7 @@ class AddTagFilterDialog extends StatelessWidget {
                                     return;
                                   }
                                   await onFinish(
-                                      addTagFilterCubit.listChooseTags);
+                                      addTagFilterCubit.listChooseTags, addTagFilterCubit.notes);
                                 },
                                 textColor: Colors.white,
                                 backgroundColor: primaryColor,

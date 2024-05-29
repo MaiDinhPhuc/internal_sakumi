@@ -74,4 +74,36 @@ class Dialogs {
               ));
         });
   }
+
+  static void showDialogCustom(context , bool barrierDismissible , Widget child) {
+    showDialog(
+      context: context,
+      barrierDismissible: barrierDismissible,
+      builder: (BuildContext context) {
+        return   Dialog(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(Resizable.size(context, 10)),
+            ),
+            insetPadding: EdgeInsets.symmetric(
+                horizontal: Resizable.padding(context, 100), vertical: Resizable.padding(context, 20)),
+            child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.rectangle,
+                  borderRadius:
+                  BorderRadius.circular(Resizable.size(context, 20)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.25),
+                      blurRadius: 10,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
+                ),child: child));
+      },
+    );
+  }
 }

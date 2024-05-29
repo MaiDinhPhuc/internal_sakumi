@@ -1,5 +1,6 @@
 import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:flutter/Material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
@@ -10,6 +11,8 @@ import 'package:internal_sakumi/features/admin/search/general_tags/tag_filter_vi
 import 'package:internal_sakumi/features/admin/search/search_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
+import '../../../features/admin/manage_bills/add_bill_button.dart';
+import '../../../features/admin/manage_student/alert_add_new_std_account.dart';
 import '../../../features/admin/search/item_search.dart';
 import '../../../services/custom_firebase_firestore.dart';
 
@@ -37,16 +40,16 @@ class SearchGeneralScreen extends StatelessWidget {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.symmetric(
-                              vertical: Resizable.padding(context, 20)),
-                          child: Text(AppText.titleSearchGeneral.text.toUpperCase(),
-                              style: TextStyle(
-                                fontSize: Resizable.font(context, 30),
-                                fontWeight: FontWeight.w800,
-                              )),
+                        SizedBox(height: Resizable.padding(context, 20),),
+                        Align(
+                          alignment:  Alignment.centerRight,
+                          child: AddButton(
+                            onTap: () {
+                              alertAddNewStdAccount(context);
+                            }, title: " + ${AppText.btnAddNewStudent.text}",
+                          ),
                         ),
+                        SizedBox(height: Resizable.padding(context, 30),),
                         BlocBuilder<SearchCubit, int>(
                             bloc: searchCubit,
                             builder: (c, s) {

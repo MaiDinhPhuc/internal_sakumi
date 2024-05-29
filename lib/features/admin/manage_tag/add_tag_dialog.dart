@@ -16,6 +16,7 @@ import '../../../utils/dialogs.dart';
 import '../../../utils/enum.dart';
 import '../../../utils/resizable.dart';
 import '../manage_general/input_form/input_field.dart';
+import '../search/general_tags/tag_history_provider.dart';
 import 'custom_button_v1.dart';
 
 class AddTagDialog extends StatefulWidget {
@@ -46,6 +47,9 @@ class _AddTagDialogState extends State<AddTagDialog> {
       nameCon.text = widget.tagModel!.name;
       codeCon.text = widget.tagModel!.code;
       desCon.text = widget.tagModel!.description;
+    }
+    else {
+      codeCon.text = 'TAG_${widget.manageTagCubit.lengthTags + 1}';
     }
   }
 
@@ -168,7 +172,7 @@ class _AddTagDialogState extends State<AddTagDialog> {
                                   child: InputItem(
                                     title: AppText.txtCode.text,
                                     controller: codeCon,
-                                    enabled: isEdit ? false : true,
+                                    enabled: false,
                                     onValidate: (value) {
                                       if (isEdit) return null;
                                       if (value == null || value.isEmpty) {
@@ -407,6 +411,7 @@ class _AddTagDialogState extends State<AddTagDialog> {
         return;
       }
       await addTagCubit.update(tag!);
+      await TagHistoryProvider.updateTag(tag!);
       if (context.mounted) {
         Navigator.pop(context);
       }
@@ -420,6 +425,7 @@ class _AddTagDialogState extends State<AddTagDialog> {
     Dialogs.alertDelete(context, AppText.txtConfirmDeleteTag.text, () async {
       Navigator.pop(context);
       await addTagCubit.delete(widget.tagModel!);
+      await TagHistoryProvider.deleteTag(widget.tagModel!.id);
       if (context.mounted) {
         Navigator.pop(context);
       }

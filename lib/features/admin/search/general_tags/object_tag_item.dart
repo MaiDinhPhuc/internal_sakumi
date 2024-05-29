@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
+import 'package:internal_sakumi/utils/functions.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import '../../../../model/tag_model.dart';
 import '../../../../widget/chip_tag.dart';
 
 class ObjectTagItem extends StatelessWidget {
-  const ObjectTagItem({super.key, required this.onTap, required this.title, required this.description, required this.prefixIcon, required this.tags, this.color});
+  const ObjectTagItem({super.key, required this.onTap, required this.title, required this.description, required this.prefixIcon, required this.tags,  required this.notes});
   final Function() onTap;
   final String title;
   final String description;
   final Widget prefixIcon;
-  final Color? color;
   final List<TagModel> tags;
+  final Map<int, String> notes;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,19 +35,7 @@ class ObjectTagItem extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                width: Resizable.size(context, 40),
-                height: Resizable.size(context, 50),
-                margin: EdgeInsets.symmetric(
-                  horizontal: Resizable.padding(context, 20),
-                  vertical: Resizable.padding(context, 8),
-                ),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: color ?? grey2
-                ),
-                child: prefixIcon,
-              ),
+              prefixIcon,
               Expanded(
                 flex: 2,
                   child: Column(
@@ -85,7 +74,7 @@ class ObjectTagItem extends StatelessWidget {
                     },
                     name: item.name,
                     color: item.background,
-                    description: item.description,
+                    description: Functions.getValue(notes, item.id),
                   ));
                 }
                 return Padding(
