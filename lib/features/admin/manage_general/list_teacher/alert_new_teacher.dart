@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/CRUD/create.dart';
+import 'package:internal_sakumi/features/admin/manage_general/input_form/input_dropdown.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_field.dart';
 import 'package:internal_sakumi/features/admin/manage_general/list_teacher/alert_add_teacher_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
@@ -71,6 +73,22 @@ void alertNewTeacher(
                                   title: AppText.textEmail.text,
                                   controller: emailCon,
                                   errorText: AppText.txtPleaseInputEmail.text),
+                              Text(AppText.titleStatus.text,
+                                  style:  TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: Resizable.font(context, 18),
+                                      color: darkPrimaryColor)),
+                              InputDropdown(
+                                  hint: cubit.selectedStatus,
+                                  errorText: AppText.txtPleaseChooseCourse.text,
+                                  onChanged: (v) {
+                                    cubit.chooseTeacherStatus(v!);
+                                  },
+                                  items: List.generate(
+                                      cubit.listTeacherStatus.length,
+                                          (index) =>
+                                      (cubit.listTeacherStatus[index]))
+                                      .toList()),
                               InputItem(
                                   title: AppText.txtNote.text,
                                   controller: noteCon,
@@ -110,7 +128,7 @@ void alertNewTeacher(
                                                   phone: phoneCon.text,
                                                   teacherCode:
                                                   senseiCodeCon.text,
-                                                  status: 'Chính thức',schedule:  {
+                                                  status: cubit.selectedStatus,schedule:  {
                                                 'Mon': [],
                                                 'Tue': [],
                                                 'Wed': [],

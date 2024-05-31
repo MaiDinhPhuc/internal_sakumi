@@ -2027,10 +2027,10 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<BrowseDownloadModel>> getBrowseDownloadWaitingByClassId(
-      int classId) async {
+  Future<List<BrowseDownloadModel>> getBrowseDownloadWaitingAndAcceptByClassAndTeacherId(
+      int classId, int teacherId) async {
     final list =
-        (await FireStoreDb.instance.getBrowseDownloadWaitingByClassId(classId))
+        (await FireStoreDb.instance.getBrowseDownloadWaitingAndAcceptByClassAndTeacherId(classId, teacherId))
             .docs
             .map((e) => BrowseDownloadModel.fromSnapshot(e))
             .toList();

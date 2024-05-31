@@ -222,6 +222,8 @@ class StudentItemOverViewCubit extends Cubit<int> {
 
   double? getHw(int lessonId){
     var lesson = cubit.lessons!.firstWhere((e) => e.lessonId == lessonId);
+
+
     if(lesson.btvn == 0){
       return null;
     }

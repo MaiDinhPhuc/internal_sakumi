@@ -35,7 +35,7 @@ class RequestBrowseDownloadCubit extends Cubit<int> {
     teacherId = localData.getInt(PrefKeyConfigs.userId)!;
 
     listBrowseDownload = await FireBaseProvider.instance
-        .getBrowseDownloadWaitingByClassAndTeacherId(
+        .getBrowseDownloadWaitingAndAcceptByClassAndTeacherId(
             classModel.classId, teacherId!);
 
     var listCourseId = [classModel.courseId];
@@ -71,15 +71,13 @@ class RequestBrowseDownloadCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  updateRequest(BrowseDownloadModel newRequest) {
-    var index = listBrowseDownload!
-        .indexWhere((element) => element.id == newRequest.id);
-    listBrowseDownload![index] = newRequest;
+  updateRequest(BrowseDownloadModel request) {
+    listBrowseDownload!.remove(request);
     emit(state + 1);
   }
 
-  getListCustom(List<int> listCustomLessonId) {
-    var list = [];
+  List<LessonModel> getListCustom(List<int> listCustomLessonId) {
+    List<LessonModel> list = [];
     for (var i in listCustomLesson) {
       if (listCustomLessonId.contains(i.lessonId)) {
         list.add(i);
@@ -96,5 +94,46 @@ class RequestBrowseDownloadCubit extends Cubit<int> {
     html.AnchorElement anchorElement = html.AnchorElement(href: url);
     anchorElement.download = url;
     anchorElement.click();
+  }
+
+  bool checkRequest(int lessonId){
+
+    if(listBrowseDownload == null) return false;
+
+    var list = listBrowseDownload!.where((element) => element.lessonId == lessonId).toList();
+    if(list.isEmpty) return false;
+    return true;
+  }
+
+  bool checkCustomRequest(int lessonId, int parentId){
+
+    if(listBrowseDownload == null) return false;
+
+    var list = listBrowseDownload!.where((element) => element.lessonId == lessonId && element.parentId == parentId).toList();
+    if(list.isEmpty) return false;
+    return true;
+  }
+
+  checkEnableDownload(int lessonId){
+    if(listBrowseDownload == null) return false;
+    var list = listBrowseDownload!.where((e) => e.status == 'accept' && e.lessonId == lessonId ).toList();
+    if(list.isEmpty) return false;
+    return true;
+  }
+
+  checkCustomEnableDownload(int lessonId, int parentId){
+    if(listBrowseDownload == null) return false;
+    var list = listBrowseDownload!.where((e) => e.status == 'accept' && e.lessonId == lessonId && e.parentId == parentId).toList();
+    if(list.isEmpty) return false;
+    return true;
+  }
+
+  String getLinkDownload(int courseId){
+    if(listBrowseDownload == null) return '';
+    var list = listCourse.where((element) => element.courseId == courseId).toList();
+    if(list.isEmpty) return '';
+    if(list.first.dataToken.isEmpty) return '';
+    return "https://file-examples.com/storage/fe15076da466528199d9c5a/2017/10/file-sample_150kB.pdf";
+    //return AppConfigs.getDataUrl("", list.first.dataToken) ;
   }
 }

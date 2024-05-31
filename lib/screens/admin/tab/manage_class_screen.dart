@@ -20,6 +20,7 @@ import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../features/admin/manage_browse_download/manage_browse_download_button.dart';
+import '../../../features/admin/manage_browse_download/manage_browse_download_dialog.dart';
 
 class ManageClassScreenV2 extends StatelessWidget {
   ManageClassScreenV2({super.key}) : cubit = ClassCubit();
@@ -61,18 +62,25 @@ class ManageClassScreenV2 extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              // BlocProvider(
-                              //     create: (context) =>
-                              //         ManageBrowseDownloadCubit(),
-                              //     child: BlocBuilder<ManageBrowseDownloadCubit, int>(builder: (c, state) {
-                              //       var cubit = BlocProvider.of<ManageBrowseDownloadCubit>(c);
-                              //       return ManageBrowseDownloadButton(
-                              //         onTap: () async {
-                              //
-                              //         },
-                              //         title: AppText.txtBrowseDownload.text, count: cubit.count,
-                              //       );
-                              //     })),
+                              BlocProvider(
+                                  create: (context) =>
+                                      ManageBrowseDownloadCubit(),
+                                  child: BlocBuilder<ManageBrowseDownloadCubit,
+                                      int>(builder: (c, state) {
+                                    var cubit = BlocProvider.of<
+                                        ManageBrowseDownloadCubit>(c);
+                                    return ManageBrowseDownloadButton(
+                                      onTap: () async {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) =>
+                                                ManageBrowseDownloadDialog(
+                                                    cubit: cubit));
+                                      },
+                                      title: AppText.txtBrowseDownload.text,
+                                      count: cubit.count,
+                                    );
+                                  })),
                               SizedBox(width: Resizable.padding(context, 10)),
                               AddButton(
                                 onTap: () async {
@@ -81,7 +89,6 @@ class ManageClassScreenV2 extends StatelessWidget {
                                 },
                                 title: AppText.btnManageClass.text,
                               ),
-
                             ],
                           )
                         ],

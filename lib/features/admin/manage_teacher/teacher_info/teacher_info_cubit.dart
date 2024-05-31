@@ -28,18 +28,40 @@ class TeacherInfoCubit extends Cubit<int> {
   String teacherCode = "";
   String phone = "";
   String note = "";
+  String teacherStatus = "";
 
-  List<String> listStatus = ['Preparing', 'InProgress', 'Completed', 'Cancel', 'Remove'];
+  List<String> listStatus = [
+    'Preparing',
+    'InProgress',
+    'Completed',
+    'Cancel',
+    'Remove'
+  ];
 
   List<bool> status = [true, true, false, false, false];
 
-  List<String> listStatusSub = ['Mới tạo', 'Đang học', 'Hoàn thành', 'Huỷ', 'Xoá'];
+  List<String> listStatusSub = [
+    'Mới tạo',
+    'Đang học',
+    'Hoàn thành',
+    'Huỷ',
+    'Xoá'
+  ];
 
   List<String> listStatusV2 = ['Preparing', 'InProgress', 'Completed'];
 
   List<bool> statusV2 = [true, true, false];
 
   List<String> listStatusSubV2 = ['Mới tạo', 'Đang học', 'Hoàn thành'];
+
+  List<String> listTeacherStatus = [
+    'Training',
+    'Thực chiến',
+    'Thử việc',
+    'Chính thức',
+    'Tạm nghỉ',
+    'Nghỉ'
+  ];
 
   update() {
     emit(state + 1);
@@ -54,6 +76,7 @@ class TeacherInfoCubit extends Cubit<int> {
     teacherCode = teacher!.teacherCode;
     phone = teacher!.phone;
     note = teacher!.note;
+    teacherStatus = teacher!.status;
     emit(state + 1);
     loadInFoTeacherInSystem(teacherId);
   }
@@ -81,51 +104,56 @@ class TeacherInfoCubit extends Cubit<int> {
     var teacherId = localData.getInt(PrefKeyConfigs.userId);
     role = 'teacher';
     teacherClasses =
-    await FireBaseProvider.instance.getTeacherClassById(teacherId!);
+        await FireBaseProvider.instance.getTeacherClassById(teacherId!);
     var listClassId = teacherClasses!.map((e) => e.classId).toList();
     classes =
-    await FireBaseProvider.instance.getListClassByListIdV2(listClassId);
+        await FireBaseProvider.instance.getListClassByListIdV2(listClassId);
     isLoading = false;
     emit(state + 1);
   }
-  
-  List<ClassModel> getClasses(){
+
+  List<ClassModel> getClasses() {
     List<String> listStatusChoose = [];
-    for(int i = 0; i < status.length; i++){
-      if(status[i]){
+    for (int i = 0; i < status.length; i++) {
+      if (status[i]) {
         listStatusChoose.add(listStatus[i]);
       }
     }
-    return classes!.where((e) => listStatusChoose.contains(e.classStatus)).toList();
+    return classes!
+        .where((e) => listStatusChoose.contains(e.classStatus))
+        .toList();
   }
 
-  List<ClassModel> getClassesV2(){
+  List<ClassModel> getClassesV2() {
     List<String> listStatusChoose = [];
-    for(int i = 0; i < statusV2.length; i++){
-      if(statusV2[i]){
+    for (int i = 0; i < statusV2.length; i++) {
+      if (statusV2[i]) {
         listStatusChoose.add(listStatusV2[i]);
       }
     }
-    return classes!.where((e) => listStatusChoose.contains(e.classStatus)).toList();
+    return classes!
+        .where((e) => listStatusChoose.contains(e.classStatus))
+        .toList();
   }
 
   changeNote(String newValue) {
     note = newValue;
-    emit(state + 1);
   }
 
   changePhone(String newValue) {
     phone = newValue;
-    emit(state + 1);
+  }
+
+  chooseTeacherStatus(String newValue) {
+    teacherStatus = newValue;
+    //emit(state + 1);
   }
 
   changeTeacherCode(String newValue) {
     teacherCode = newValue;
-    emit(state + 1);
   }
 
   changeName(String newValue) {
     name = newValue;
-    emit(state + 1);
   }
 }

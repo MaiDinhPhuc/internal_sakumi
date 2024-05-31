@@ -575,10 +575,28 @@ enum AppText {
   txtScheduleExist,
   txtBrowseDownload,
   txtDataToken,
-  txtData, textAddNote, btnPass, txtNoteEmpty, textAdd
+  txtData, textAddNote, btnPass, txtNoteEmpty, textAdd,
+  txtRequestDownload,
+  txtRequestNotAccept,
+  txtDataDownloadEmpty,
+  txtRequestRequired,
+  txtAccept,
+  txtNotAccept,
+  txtRequestDate,
+  txtAcceptDate,
+  txtDownloadDate
 }
 
 Map<AppText, String> texts = {
+  AppText.txtRequestDate: 'Ngày yêu cầu',
+  AppText.txtAcceptDate: 'Ngày duyệt',
+  AppText.txtDownloadDate: 'Ngày tải xuống',
+  AppText.txtAccept: 'Đã duyệt',
+  AppText.txtNotAccept: 'Chưa duyệt',
+  AppText.txtRequestRequired: 'Vui lòng yêu cầu tải và chờ xác nhận từ support!',
+  AppText.txtDataDownloadEmpty: 'Dữ liệu bị lỗi, vui lòng liên hệ support để cập nhật và quay lại tải sau!',
+  AppText.txtRequestNotAccept: 'Yêu cầu tải chưa được chấp nhận, vui lòng liên hệ support!',
+  AppText.txtRequestDownload: 'Yêu cầu tải',
   AppText.txtData: 'Tài liệu',
   AppText.txtDataToken: 'Data Token',
   AppText.txtBrowseDownload: 'Duyệt tải xuống',

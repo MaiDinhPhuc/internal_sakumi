@@ -1,6 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/admin/manage_general/input_form/input_dropdown.dart';
 import 'package:internal_sakumi/features/admin/manage_student/info_field.dart';
 import 'package:internal_sakumi/features/admin/manage_teacher/teacher_info/teacher_info_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -57,6 +58,23 @@ class TeacherInfo extends StatelessWidget {
             value: cubit.user!.email,
             onChange: (value) {},
             enable: false),
+        Text(AppText.titleStatus.text,
+            style: TextStyle(
+                color: greyColor.shade500,
+                fontWeight: FontWeight.w600,
+                fontSize:
+                Resizable.font(context, 16))),
+        InputDropdown(
+            hint: cubit.teacherStatus,
+            errorText: AppText.txtPleaseChooseCourse.text,
+            onChanged: (v) {
+              cubit.chooseTeacherStatus(v!);
+            },
+            items: List.generate(
+                cubit.listTeacherStatus.length,
+                    (index) =>
+                (cubit.listTeacherStatus[index]))
+                .toList()),
         Text(AppText.txtNote.text,
             style: TextStyle(
                 color: greyColor.shade500,

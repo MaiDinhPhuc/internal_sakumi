@@ -1,5 +1,4 @@
 import 'package:flutter/Material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/features/admin/manage_teacher/teacher_info/teacher_info_cubit.dart';
@@ -69,7 +68,7 @@ class InfoTeacherView extends StatelessWidget {
                       note: cubit.note,
                       userId: cubit.teacher!.userId,
                       phone: cubit.phone,
-                      status: cubit.teacher!.status,
+                      status: cubit.teacherStatus,
                       teacherCode: cubit.teacherCode,
                       schedule: cubit.teacher!.schedule, email: cubit.teacher!.email);
                   Update.updateTeacherProfile(teacherModel);

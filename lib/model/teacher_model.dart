@@ -68,7 +68,7 @@ class TeacherModel {
         phone: data["phone"],
         teacherCode: data["teacher_code"],
         url: data['url'],
-        status: data['status'],
+        status: data['status'] ?? 'Chính thức',
         schedule: data['schedule'] ??
             {
               'Mon': [],

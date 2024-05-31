@@ -17,7 +17,6 @@ import 'package:internal_sakumi/widget/title_widget.dart';
 class ManageGeneralScreen extends StatelessWidget {
   const ManageGeneralScreen({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

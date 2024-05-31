@@ -4,6 +4,7 @@ import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
+import 'package:intl/intl.dart';
 
 class ManageBrowseDownloadCubit extends Cubit<int>{
   ManageBrowseDownloadCubit() : super(0){
@@ -39,6 +40,37 @@ class ManageBrowseDownloadCubit extends Cubit<int>{
 
   update(int count){
     this.count = count;
+    emit(state+1);
+  }
+
+  String getClassCode(int classId){
+    var classModel = listClass!.where((element) => element.classId == classId).toList();
+    if(classModel.isEmpty) return "";
+    return classModel.first.classCode;
+  }
+
+  TeacherModel? getTeacher(int teacherId){
+    var teacher = listTeacher!.where((element) => element.userId == teacherId).toList();
+    if(teacher.isEmpty) return null;
+    return teacher.first;
+  }
+
+  String getTitle(int lessonId){
+    var lesson = listLesson!.where((element) => element.lessonId == lessonId).toList();
+    if(lesson.isEmpty) return "";
+    return lesson.first.title;
+  }
+
+  String convertDate(int time){
+    if(time == 0) return "";
+    var date = DateTime.fromMillisecondsSinceEpoch(time);
+    var formatter = DateFormat('dd/MM/yyyy');
+    return formatter.format(date);
+  }
+
+  updateRequest(BrowseDownloadModel model){
+    var index = listBrowseDownload!.indexWhere((element) => element.id == model.id);
+    listBrowseDownload![index] = model;
     emit(state+1);
   }
 

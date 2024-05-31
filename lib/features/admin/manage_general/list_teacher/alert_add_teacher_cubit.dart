@@ -18,6 +18,22 @@ class AlertAddTeacherCubit extends Cubit<int> {
   bool? checkCreate, checkAdd;
   final TextEditingController searchTextController = TextEditingController();
 
+  String selectedStatus = 'Training';
+
+  List<String> listTeacherStatus = [
+    'Training',
+    'Thực chiến',
+    'Thử việc',
+    'Chính thức',
+    'Tạm nghỉ',
+    'Nghỉ'
+  ];
+
+  chooseTeacherStatus(String status){
+    selectedStatus = status;
+    emit(state + 1);
+  }
+
   loadAllUser(BuildContext context, ManageGeneralCubit cubit) async {
     listAllTeacher = await FireBaseProvider.instance.getAllTeacher();
     listSensei = [];

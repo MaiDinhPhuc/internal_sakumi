@@ -2067,11 +2067,11 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getBrowseDownloadWaitingByClassAndTeacherId(
+  Future<QuerySnapshot<Map<String, dynamic>>> getBrowseDownloadWaitingAndAcceptByClassAndTeacherId(
       int classId, int teacherId) async {
     final snapshot = await db
         .collection("browse_download")
-        .where("status", isEqualTo: 'waiting')
+        .where("status", whereIn: ['waiting','accept'])
         .where("class_id", isEqualTo: classId)
         .where('teacher_id', isEqualTo: teacherId)
         .get();
