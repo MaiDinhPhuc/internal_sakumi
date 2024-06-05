@@ -584,10 +584,20 @@ enum AppText {
   txtNotAccept,
   txtRequestDate,
   txtAcceptDate,
-  txtDownloadDate
+  txtDownloadDate,
+  txtStudentSurvey,
+  txtTeacherSurvey,
+  txtAssignSurvey,
+  txtTeacherSurveyEmpty,
+  txtAssign
 }
 
 Map<AppText, String> texts = {
+  AppText.txtAssign: 'Đã giao',
+  AppText.txtTeacherSurveyEmpty: 'Danh sách khảo sát đang trống',
+  AppText.txtAssignSurvey: 'Giao bài khảo sát',
+  AppText.txtTeacherSurvey: 'Khảo sát giáo viên',
+  AppText.txtStudentSurvey: 'Khảo sát học viên',
   AppText.txtRequestDate: 'Ngày yêu cầu',
   AppText.txtAcceptDate: 'Ngày duyệt',
   AppText.txtDownloadDate: 'Ngày tải xuống',

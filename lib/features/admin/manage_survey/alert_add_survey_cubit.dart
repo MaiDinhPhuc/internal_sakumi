@@ -12,10 +12,10 @@ class AlertAddSurveyCubit extends Cubit<int> {
 
   loadSurvey(List<SurveyResultModel> listSurveyResult)async{
     if(listSurveyResult.isEmpty){
-      listSurvey = await FireBaseProvider.instance.getSurveyEnable();
+      listSurvey = await FireBaseProvider.instance.getStudentSurveyEnable();
     }else{
       var listId = listSurveyResult.map((e) => e.surveyId).toList();
-      listSurvey = (await FireBaseProvider.instance.getSurveyEnable()).where((e) => !listId.contains(e.id)).toList();
+      listSurvey = (await FireBaseProvider.instance.getStudentSurveyEnable()).where((e) => !listId.contains(e.id)).toList();
     }
 
     emit(state+1);

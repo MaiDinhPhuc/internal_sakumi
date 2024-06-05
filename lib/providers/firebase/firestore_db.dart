@@ -364,12 +364,44 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getAllSurvey() async {
-    final snapshot =
-        await db.collection('survey').where('enable', isEqualTo: true).get();
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentSurvey() async {
+    final snapshot = await db
+        .collection('survey')
+        .where('enable', isEqualTo: true)
+        .where('type', isEqualTo: 'student')
+        .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllSurvey ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentSurvey ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getTeacherSurvey() async {
+    final snapshot = await db
+        .collection('teacher_survey')
+        .where('status', isNotEqualTo: 'delete')
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTeacherSurvey ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllTeacherSurvey() async {
+    final snapshot = await db
+        .collection('survey')
+        .where('enable', isEqualTo: true)
+        .where('type', isEqualTo: 'teacher')
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllTeacherSurvey ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
 
@@ -1224,11 +1256,12 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getSurveyEnable() async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getStudentSurveyEnable() async {
     final snapshot = await db
         .collection("survey")
         .where("enable", isEqualTo: true)
         .where("active", isEqualTo: true)
+        .where('type', isEqualTo: 'student')
         .get();
 
     debugPrint(
@@ -1299,13 +1332,18 @@ class FireStoreDb {
       'description': model.description,
       'survey_code': model.surveyCode,
       'enable': model.enable,
-      'active': model.active
+      'active': model.active,
+      'detail' : model.detail,
+      'type' : model.type
     });
     debugPrint("==========>add db for \"survey\"");
   }
 
   Future<void> createNewBrowseDownload(BrowseDownloadModel model) async {
-    await db.collection('browse_download').doc("browse_download${model.id}").set({
+    await db
+        .collection('browse_download')
+        .doc("browse_download${model.id}")
+        .set({
       'id': model.id,
       'class_id': model.classId,
       'lesson_id': model.lessonId,
@@ -1313,15 +1351,18 @@ class FireStoreDb {
       'submit_time': model.submitTime,
       'download_time': model.downloadTime,
       'accept_time': model.acceptTime,
-      'support_id' : model.supportId,
+      'support_id': model.supportId,
       'status': model.status,
-      'parent_id' : model.parentId
+      'parent_id': model.parentId
     });
     debugPrint("==========>add db for \"browse_download\"");
   }
 
   Future<void> updateBrowseDownload(BrowseDownloadModel model) async {
-    await db.collection('browse_download').doc("browse_download${model.id}").update({
+    await db
+        .collection('browse_download')
+        .doc("browse_download${model.id}")
+        .update({
       'id': model.id,
       'class_id': model.classId,
       'lesson_id': model.lessonId,
@@ -1329,9 +1370,9 @@ class FireStoreDb {
       'submit_time': model.submitTime,
       'download_time': model.downloadTime,
       'accept_time': model.acceptTime,
-      'support_id' : model.supportId,
+      'support_id': model.supportId,
       'status': model.status,
-      'parent_id' : model.parentId
+      'parent_id': model.parentId
     });
     debugPrint("==========>add db for \"browse_download\"");
   }
@@ -2067,13 +2108,24 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getBrowseDownloadWaitingAndAcceptByClassAndTeacherId(
-      int classId, int teacherId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>>
+      getBrowseDownloadWaitingAndAcceptByClassAndTeacherId(
+          int classId, int teacherId) async {
     final snapshot = await db
         .collection("browse_download")
-        .where("status", whereIn: ['waiting','accept'])
+        .where("status", whereIn: ['waiting', 'accept'])
         .where("class_id", isEqualTo: classId)
         .where('teacher_id', isEqualTo: teacherId)
+        .get();
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllBrowseDownloadByClassId(
+      int classId) async {
+    final snapshot = await db
+        .collection("browse_download")
+        .where("class_id", isEqualTo: classId)
         .get();
 
     return snapshot;
@@ -2303,8 +2355,11 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getManageTagsWithSpecificTags(List<int> listId) async {
-    final snapshot = await db.collection("manage_tags").where('tags', arrayContainsAny: listId)
+  Future<QuerySnapshot<Map<String, dynamic>>> getManageTagsWithSpecificTags(
+      List<int> listId) async {
+    final snapshot = await db
+        .collection("manage_tags")
+        .where('tags', arrayContainsAny: listId)
         .get();
 
     debugPrint(
@@ -2312,6 +2367,7 @@ class FireStoreDb {
 
     return snapshot;
   }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getTagById(int tagId) async {
     final snapshot =
         await db.collection('tags').where('id', isEqualTo: tagId).get();
@@ -2344,7 +2400,7 @@ class FireStoreDb {
         .set(manageTagModel.toJson(), SetOptions(merge: true))
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
-          print(error);
+      print(error);
       value = false;
     });
     return value;

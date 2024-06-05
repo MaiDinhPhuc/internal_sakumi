@@ -2,32 +2,34 @@ import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/master/manage_survey/detail_survey_cubit.dart';
-import 'package:internal_sakumi/features/master/manage_survey/detail_survey_view.dart';
-import 'package:internal_sakumi/features/master/manage_survey/manage_survey_cubit.dart';
+import 'package:internal_sakumi/features/master/manage_student_survey/detail_student_survey_cubit.dart';
+import 'package:internal_sakumi/features/master/manage_student_survey/detail_student_survey_view.dart';
+import 'package:internal_sakumi/features/master/manage_student_survey/manage_student_survey_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:internal_sakumi/widget/custom_appbar.dart';
 
-class DetailSurveyScreen extends StatelessWidget {
-  DetailSurveyScreen({super.key}) : cubit = DetailSurveyCubit();
+class DetailStudentSurveyScreen extends StatelessWidget {
+  DetailStudentSurveyScreen({super.key}) : cubit = DetailStudentSurveyCubit();
 
-  final DetailSurveyCubit cubit;
+  final DetailStudentSurveyCubit cubit;
 
   @override
   Widget build(BuildContext context) {
-    var surveyController = BlocProvider.of<ManageSurveyCubit>(context);
-    return BlocBuilder<ManageSurveyCubit, int>(builder: (cc, ss) {
+    var surveyController = BlocProvider.of<ManageStudentSurveyCubit>(context);
+    return BlocBuilder<ManageStudentSurveyCubit, int>(builder: (cc, ss) {
       return Scaffold(
         backgroundColor: Colors.white,
         body: Column(
           children: [
             CustomAppbar(buttonList: [
               AppText.txtManageCourse.text,
-              AppText.txtSurvey.text,
+              AppText.txtStudentSurvey.text,
+              AppText.txtTeacherSurvey.text,
+              AppText.titleManageFeedBack.text
             ], s: 1),
             Expanded(
-                child: BlocBuilder<DetailSurveyCubit, int>(
+                child: BlocBuilder<DetailStudentSurveyCubit, int>(
                     bloc: cubit
                       ..loadSurvey(
                           int.parse(TextUtils.getName()), surveyController),
@@ -80,7 +82,7 @@ class DetailSurveyScreen extends StatelessWidget {
                                             color: lightGreyColor,
                                             borderRadius: BorderRadius.circular(
                                                 Resizable.size(context, 5))),
-                                        child: DetailSurveyView(
+                                        child: DetailStudentSurveyView(
                                             cubit: surveyController,
                                             detailSurveyCubit: cubit)))
                               ],

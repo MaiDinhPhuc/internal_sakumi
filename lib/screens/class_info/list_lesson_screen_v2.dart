@@ -2,11 +2,13 @@ import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_bills/add_bill_button.dart';
+import 'package:internal_sakumi/features/admin/manage_browse_download/manage_browse_download_dialog.dart';
 import 'package:internal_sakumi/features/class_info/lesson/add_custom_lesson_dialog.dart';
 import 'package:internal_sakumi/features/class_info/lesson/list_lesson_cubit_v2.dart';
 import 'package:internal_sakumi/features/class_info/lesson/list_lesson_items_v2.dart';
 import 'package:internal_sakumi/features/footer/footer_view.dart';
 import 'package:internal_sakumi/features/teacher/app_bar/class_appbar.dart';
+import 'package:internal_sakumi/features/teacher/browse_download/manage_browse_download_in_class_cubit.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -56,17 +58,40 @@ class ListLessonScreenV2 extends StatelessWidget {
                                             fontWeight: FontWeight.w800,
                                             fontSize: Resizable.font(context, 30))),
                                   ),
-                                  AddButton(
-                                    onTap: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) =>
-                                              AddCustomLessonDialog(
-                                                  cubit,
-                                                  classModel: cubit
-                                                      .classModel!));
-                                    },
-                                    title: AppText.btnAddNewLesson.text,
+                                  Row(
+                                    children: [
+                                      BlocProvider(
+                                          create: (context) =>
+                                              ManageBrowseDownloadInClassCubit(),
+                                          child: BlocBuilder<ManageBrowseDownloadInClassCubit,
+                                              int>(builder: (c, state) {
+                                            var manageCubit = BlocProvider.of<
+                                                ManageBrowseDownloadInClassCubit>(c);
+                                            return AddButton(
+                                              onTap: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        ManageBrowseDownloadInClassDialog(
+                                                            cubit: manageCubit));
+                                              },
+                                              title: AppText.txtData.text,
+                                            );
+                                          })),
+                                      SizedBox(width: Resizable.padding(context, 5)),
+                                      AddButton(
+                                        onTap: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) =>
+                                                  AddCustomLessonDialog(
+                                                      cubit,
+                                                      classModel: cubit
+                                                          .classModel!));
+                                        },
+                                        title: AppText.btnAddNewLesson.text,
+                                      )
+                                    ],
                                   )
                                 ]) : Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -80,16 +105,16 @@ class ListLessonScreenV2 extends StatelessWidget {
                                             fontWeight: FontWeight.w800,
                                             fontSize: Resizable.font(context, 30))),
                                   ),
-                                  // AddButton(
-                                  //   onTap: () {
-                                  //     showDialog(
-                                  //         context: context,
-                                  //         builder: (context) =>
-                                  //             RequestBrowseDownloadDialog(
-                                  //                 listLessons: cubit.lessons!, classModel: cubit.classModel!));
-                                  //   },
-                                  //   title: AppText.txtData.text,
-                                  // )
+                                  AddButton(
+                                    onTap: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) =>
+                                              RequestBrowseDownloadDialog(
+                                                  listLessons: cubit.lessons!, classModel: cubit.classModel!));
+                                    },
+                                    title: AppText.txtData.text,
+                                  )
                                 ]),
                             Container(
                                 padding: EdgeInsets.only(

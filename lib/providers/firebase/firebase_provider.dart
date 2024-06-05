@@ -34,6 +34,7 @@ import 'package:internal_sakumi/model/survey_model.dart';
 import 'package:internal_sakumi/model/survey_result_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
+import 'package:internal_sakumi/model/teacher_survey_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
@@ -548,11 +549,31 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<SurveyModel>> getAllSurvey() async {
-    return (await FireStoreDb.instance.getAllSurvey())
+  Future<List<SurveyModel>> getAllStudentSurvey() async {
+    return (await FireStoreDb.instance.getAllStudentSurvey())
         .docs
         .map((e) => SurveyModel.fromSnapshot(e))
         .toList();
+  }
+
+  @override
+  Future<List<SurveyModel>> getAllTeacherSurvey() async {
+    return (await FireStoreDb.instance.getAllTeacherSurvey())
+        .docs
+        .map((e) => SurveyModel.fromSnapshot(e))
+        .toList();
+  }
+
+  @override
+  Future<List<TeacherSurveyModel>> getTeacherSurvey() async {
+    var list = (await FireStoreDb.instance.getTeacherSurvey())
+        .docs
+        .map((e) => TeacherSurveyModel.fromSnapshot(e))
+        .toList();
+    
+    list = (list..sort((a,b)=>a.dateAssign.compareTo(b.dateAssign))).reversed.toList();
+    
+    return list;
   }
 
   @override
@@ -2023,6 +2044,22 @@ class FireBaseProvider extends NetworkProvider {
         .map((e) => BrowseDownloadModel.fromSnapshot(e))
         .toList();
 
+    list.sort((a, b) => a.submitTime.compareTo(b.submitTime));
+
+    return list;
+  }
+
+  @override
+  Future<List<BrowseDownloadModel>> getAllBrowseDownloadByClassId(
+      int classId) async {
+    final list =
+    (await FireStoreDb.instance.getAllBrowseDownloadByClassId(classId))
+        .docs
+        .map((e) => BrowseDownloadModel.fromSnapshot(e))
+        .toList();
+
+    list.sort((a, b) => a.submitTime.compareTo(b.submitTime));
+
     return list;
   }
 
@@ -2034,6 +2071,7 @@ class FireBaseProvider extends NetworkProvider {
             .docs
             .map((e) => BrowseDownloadModel.fromSnapshot(e))
             .toList();
+    list.sort((a, b) => a.submitTime.compareTo(b.submitTime));
 
     return list;
   }
@@ -2071,8 +2109,8 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<SurveyModel>> getSurveyEnable() async {
-    return (await FireStoreDb.instance.getSurveyEnable())
+  Future<List<SurveyModel>> getStudentSurveyEnable() async {
+    return (await FireStoreDb.instance.getStudentSurveyEnable())
         .docs
         .map((e) => SurveyModel.fromSnapshot(e))
         .toList();

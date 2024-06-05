@@ -26,10 +26,12 @@ import 'package:internal_sakumi/screens/class_info/report_screen.dart';
 import 'package:internal_sakumi/screens/class_info/sub_course_screen.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
-import 'package:internal_sakumi/screens/master/detail_survey_screen.dart';
+import 'package:internal_sakumi/screens/master/detail_student_survey_screen.dart';
+import 'package:internal_sakumi/screens/master/detail_teacher_survey_screen.dart';
 import 'package:internal_sakumi/screens/master/manage_teacher_feed_back_tab.dart';
-import 'package:internal_sakumi/screens/master/survey_tab.dart';
+import 'package:internal_sakumi/screens/master/student_survey_tab.dart';
 import 'package:internal_sakumi/screens/master/manage_course_tab.dart';
+import 'package:internal_sakumi/screens/master/teacher_survey_tab.dart';
 import 'package:internal_sakumi/screens/splash_screen.dart';
 import 'package:internal_sakumi/screens/class_info/detail_grading_screen_v2.dart';
 import 'package:internal_sakumi/screens/teacher_v2/teacher_screen_v2.dart';
@@ -62,7 +64,6 @@ class Routes {
   static const manageGeneral = "manageGeneral";
   static const manageSchedule = "manageSchedule";
 
-
   static const empty = '/empty';
 
   static void configureRoutes(FluroRouter router) {
@@ -78,10 +79,15 @@ class Routes {
         handler: teacherHandler, transitionType: TransitionType.fadeIn);
     router.define('$master/manageCourse',
         handler: manageCourseHandler, transitionType: TransitionType.fadeIn);
-    router.define('$master/manageSurvey',
-        handler: manageSurveyHandler, transitionType: TransitionType.fadeIn);
+    router.define('$master/manageStudentSurvey',
+        handler: manageStudentSurveyHandler,
+        transitionType: TransitionType.fadeIn);
+    router.define('$master/manageTeacherSurvey',
+        handler: manageTeacherSurveyHandler,
+        transitionType: TransitionType.fadeIn);
     router.define('$master/manageTeacherFeedBack',
-        handler: manageTeacherFeedBackHandler, transitionType: TransitionType.fadeIn);
+        handler: manageTeacherFeedBackHandler,
+        transitionType: TransitionType.fadeIn);
     router.define('$admin/manageGeneral',
         handler: manageGeneralHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/manageSchedule',
@@ -113,8 +119,11 @@ class Routes {
         handler: teacherInfoHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/studentInfo/:studentId',
         handler: studentInfoHandler, transitionType: TransitionType.fadeIn);
-    router.define('$master/manageSurvey/:id',
-        handler: manageSurveyDetailHandler,
+    router.define('$master/manageStudentSurvey/:id',
+        handler: manageStudentSurveyDetailHandler,
+        transitionType: TransitionType.fadeIn);
+    router.define('$master/manageTeacherSurvey/:id',
+        handler: manageTeacherSurveyDetailHandler,
         transitionType: TransitionType.fadeIn);
     router.define('/:role/overview/:classId',
         handler: overViewHandler, transitionType: TransitionType.fadeIn);
@@ -133,7 +142,8 @@ class Routes {
     router.define('/:role/grading/:classId/:type/:parentId',
         handler: detailGradingHandler, transitionType: TransitionType.fadeIn);
     router.define('/:role/grading/:classId/:type/:customId/:parentId',
-        handler: detailCustomGradingHandler, transitionType: TransitionType.fadeIn);
+        handler: detailCustomGradingHandler,
+        transitionType: TransitionType.fadeIn);
     router.define('/:role/lesson/:classId/:lessonId',
         handler: detailLessonHandler, transitionType: TransitionType.fadeIn);
     router.define('/:role/survey/:classId/:surveyId',
@@ -165,19 +175,29 @@ var manageCourseHandler =
   return const ManageCourseTab();
 });
 
-var manageSurveyHandler =
+var manageStudentSurveyHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return const SurveyTab();
+  return const ManageStudentSurveyTab();
+});
+
+var manageTeacherSurveyHandler =
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return ManageTeacherSurveyTab();
 });
 
 var manageTeacherFeedBackHandler =
-Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return ManageTeacherFeedBackTab();
 });
 
-var manageSurveyDetailHandler =
+var manageStudentSurveyDetailHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return DetailSurveyScreen();
+  return DetailStudentSurveyScreen();
+});
+
+var manageTeacherSurveyDetailHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return DetailTeacherSurveyScreen();
 });
 
 var manageGeneralHandler =
@@ -186,7 +206,7 @@ var manageGeneralHandler =
 });
 
 var manageScheduleHandler =
-Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return ManageScheduleScreen();
 });
 
@@ -197,22 +217,22 @@ var searchScreenHandler =
 var manageClassesHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   //return const ManageClassesScreen();
-  return ManageClassScreenV2();
+  return const ManageClassScreenV2();
 });
 var manageTagsHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return ManageTagsScreen();
+  return const ManageTagsScreen();
 });
 var manageBillsHandler =
-Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return ManageBillScreen();
 });
 var manageTeacherHandler =
-Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return ManageTeacherScreen();
 });
 var manageStudentHandler =
-Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return const ManageStudentScreen();
 });
 var manageStatisticsHandler =
@@ -241,18 +261,20 @@ var teacherInfoHandler =
 });
 var lessonsHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return ListLessonScreenV2(role: params['role'][0]); //ListLessonTab(params['role'][0]);
+  return ListLessonScreenV2(
+      role: params['role'][0]); //ListLessonTab(params['role'][0]);
 });
 var overViewHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return ClassOverViewScreenV2(role: params['role']?.first); //ClassOverViewTab(params['role']?.first);
+  return ClassOverViewScreenV2(
+      role: params['role']?.first); //ClassOverViewTab(params['role']?.first);
 });
 var gradingHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return GradingScreen();
 });
 var subCourseHandler =
-Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return SubCourseScreen(role: params['role']?.first);
 });
 
@@ -262,7 +284,7 @@ var testHandler =
 });
 
 var reportHandler =
-Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return ReportScreen(role: params['role'][0]);
 });
 var surveyHandler =
@@ -274,7 +296,7 @@ var detailGradingHandler =
   return DetailGradingScreen(params['type'][0]);
 });
 var detailCustomGradingHandler =
-Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return DetailGradingCustomScreen(params['type'][0]);
 });
 var detailLessonHandler =

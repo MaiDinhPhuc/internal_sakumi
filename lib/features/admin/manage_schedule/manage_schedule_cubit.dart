@@ -156,7 +156,7 @@ class ManageScheduleCubit extends Cubit<int> {
     }
   }
 
-  addSchedule(ScheduleModel schedule)async {
+  addSchedule(ScheduleModel schedule) async {
     if (schedule.classId == classId || schedule.teacherId == teacherId) {
       listSingleSchedule!.add(schedule);
       if (listTeacherId.contains(schedule.teacherId) == false) {
@@ -258,7 +258,7 @@ class ManageScheduleCubit extends Cubit<int> {
     }
 
     for (var i in listCyclicSchedule!) {
-      if (i.calendar[dayIndex] != "" &&
+      if (i.calendar[dayIndex] != "" && i.startDate <= date.millisecondsSinceEpoch && i.endDate >= date.millisecondsSinceEpoch  &&
           checkExistResult(index, i.classId) == false &&
           listSingleSchedule!
               .where((e) =>
@@ -268,8 +268,10 @@ class ManageScheduleCubit extends Cubit<int> {
               .isEmpty) {
         list.add(i);
       }
-      if(i.calendar[dayIndex] != "" &&
-          checkExistResult(index, i.classId) == false && i.status == "cancel" && list.contains(i) == false){
+      if (i.calendar[dayIndex] != "" &&
+          checkExistResult(index, i.classId) == false &&
+          i.status == "cancel" &&
+          list.contains(i) == false) {
         list.add(i);
       }
     }

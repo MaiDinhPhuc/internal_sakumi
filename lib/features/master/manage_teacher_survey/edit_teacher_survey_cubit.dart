@@ -1,18 +1,18 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 
-import 'detail_survey_cubit.dart';
+import 'detail_teacher_survey_cubit.dart';
 
-class EditSurveyCubit extends Cubit<int> {
-  EditSurveyCubit(this.detailSurveyCubit) : super(0) {
+class EditTeacherSurveyCubit extends Cubit<int> {
+  EditTeacherSurveyCubit(this.detailSurveyCubit) : super(0) {
     loadData();
   }
   TextEditingController? quesCon;
 
   List<TextEditingController> answerCon = [];
 
-  final DetailSurveyCubit detailSurveyCubit;
+  final DetailTeacherSurveyCubit detailSurveyCubit;
 
   List<String> listQuestion = [];
   List<int> listQuestionId = [];
@@ -29,16 +29,16 @@ class EditSurveyCubit extends Cubit<int> {
     if (detailSurveyCubit.surveyModel!.detail.isNotEmpty) {
       quesCon = TextEditingController(
           text: detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-              ["question"]);
+          ["question"]);
       for (var j in detailSurveyCubit
           .surveyModel!.detail[detailSurveyCubit.index]["answer"]) {
         var newAnsCon = TextEditingController(text: j);
         answerCon.add(newAnsCon);
       }
       force = detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["force"];
+      ["force"];
       another = detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["another"];
+      ["another"];
       List listOption = detailSurveyCubit
           .surveyModel!.detail[detailSurveyCubit.index]["option"];
       option = listOption.isNotEmpty;
@@ -76,15 +76,15 @@ class EditSurveyCubit extends Cubit<int> {
     Map question = {
       "id": detailSurveyCubit.selector,
       "type": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["type"],
+      ["type"],
       "question": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["question"],
+      ["question"],
       "answer": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["answer"],
+      ["answer"],
       "force": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["force"],
+      ["force"],
       "another": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["another"],
+      ["another"],
       "option": [
         {
           "id": listQuestionId[index],
@@ -113,19 +113,19 @@ class EditSurveyCubit extends Cubit<int> {
     Map question = {
       "id": detailSurveyCubit.selector,
       "type": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["type"],
+      ["type"],
       "question": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["question"],
+      ["question"],
       "answer": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["answer"],
+      ["answer"],
       "force": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["force"],
+      ["force"],
       "another": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["another"],
+      ["another"],
       "option": [
         {
           "id": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-              ["option"][0]["id"],
+          ["option"][0]["id"],
           "answer": listAnswer[index],
           "question": detailSurveyCubit.surveyModel!
               .detail[detailSurveyCubit.index]["option"][0]["question"]
@@ -153,16 +153,16 @@ class EditSurveyCubit extends Cubit<int> {
     Map question = {
       "id": detailSurveyCubit.selector,
       "type": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["type"],
+      ["type"],
       "question": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["question"],
+      ["question"],
       "answer": answerList,
       "force": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["force"],
+      ["force"],
       "another": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["another"],
+      ["another"],
       "option": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["option"]
+      ["option"]
     };
     detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index] = question;
     emit(state + 1);
@@ -172,16 +172,16 @@ class EditSurveyCubit extends Cubit<int> {
     Map question = {
       "id": detailSurveyCubit.selector,
       "type": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["type"],
+      ["type"],
       "question": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["question"],
+      ["question"],
       "answer": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["answer"],
+      ["answer"],
       "force": value,
       "another": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["another"],
+      ["another"],
       "option": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["option"]
+      ["option"]
     };
     detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index] = question;
     emit(state + 1);
@@ -191,16 +191,16 @@ class EditSurveyCubit extends Cubit<int> {
     Map question = {
       "id": detailSurveyCubit.selector,
       "type": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["type"],
+      ["type"],
       "question": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["question"],
+      ["question"],
       "answer": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["answer"],
+      ["answer"],
       "force": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["force"],
+      ["force"],
       "another": value,
       "option": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["option"]
+      ["option"]
     };
     detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index] = question;
     emit(state + 1);
@@ -212,15 +212,15 @@ class EditSurveyCubit extends Cubit<int> {
     Map question = {
       "id": detailSurveyCubit.selector,
       "type": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["type"],
+      ["type"],
       "question": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["question"],
+      ["question"],
       "answer": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["answer"],
+      ["answer"],
       "force": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["force"],
+      ["force"],
       "another": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["another"],
+      ["another"],
       "option": []
     };
     detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index] = question;
@@ -233,13 +233,13 @@ class EditSurveyCubit extends Cubit<int> {
       Map question = {
         "id": detailSurveyCubit.selector,
         "type": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-            ["type"],
+        ["type"],
         "question": detailSurveyCubit
             .surveyModel!.detail[detailSurveyCubit.index]["question"],
         "answer": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-            ["answer"],
+        ["answer"],
         "force": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-            ["force"],
+        ["force"],
         "another": detailSurveyCubit
             .surveyModel!.detail[detailSurveyCubit.index]["another"],
         "option": [
@@ -251,13 +251,13 @@ class EditSurveyCubit extends Cubit<int> {
       Map question = {
         "id": detailSurveyCubit.selector,
         "type": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-            ["type"],
+        ["type"],
         "question": detailSurveyCubit
             .surveyModel!.detail[detailSurveyCubit.index]["question"],
         "answer": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-            ["answer"],
+        ["answer"],
         "force": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-            ["force"],
+        ["force"],
         "another": detailSurveyCubit
             .surveyModel!.detail[detailSurveyCubit.index]["another"],
         "option": []
@@ -272,7 +272,7 @@ class EditSurveyCubit extends Cubit<int> {
     for (int i = 1; i < detailSurveyCubit.surveyModel!.detail.length; i++) {
       if (detailSurveyCubit.surveyModel!.detail[i]["option"].length != 0) {
         if (detailSurveyCubit.surveyModel!.detail[i]["option"][0]["id"] ==
-                detailSurveyCubit.selector &&
+            detailSurveyCubit.selector &&
             detailSurveyCubit.surveyModel!.detail[i]["option"][0]["answer"] ==
                 answerCon[index].text) {
           detailSurveyCubit.surveyModel!.detail[i]["option"] = [];
@@ -299,16 +299,16 @@ class EditSurveyCubit extends Cubit<int> {
     Map question = {
       "id": detailSurveyCubit.selector,
       "type": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["type"],
+      ["type"],
       "question": quesCon!.text,
       "answer": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["answer"],
+      ["answer"],
       "force": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["force"],
+      ["force"],
       "another": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["another"],
+      ["another"],
       "option": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["option"]
+      ["option"]
     };
     detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index] = question;
     emit(state + 1);
@@ -318,12 +318,12 @@ class EditSurveyCubit extends Cubit<int> {
     var temp = (value == AppText.txtSurveyType1.text
         ? 1
         : value == AppText.txtSurveyType2.text
-            ? 2
-            : value == AppText.txtSurveyType3.text
-                ? 3
-                : 4);
+        ? 2
+        : value == AppText.txtSurveyType3.text
+        ? 3
+        : 4);
     int oldType =
-        detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]["type"];
+    detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]["type"];
     if (oldType != temp) {
       for (int i = 1; i < detailSurveyCubit.surveyModel!.detail.length; i++) {
         if (detailSurveyCubit.surveyModel!.detail[i]["option"].length != 0) {
@@ -338,19 +338,19 @@ class EditSurveyCubit extends Cubit<int> {
       "id": detailSurveyCubit.selector,
       "type": temp,
       "question": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["question"],
+      ["question"],
       "answer": temp > 2
           ? []
           : detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-              ["answer"],
+      ["answer"],
       "force": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["force"],
+      ["force"],
       "another": temp > 2
           ? false
           : detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-              ["another"],
+      ["another"],
       "option": detailSurveyCubit.surveyModel!.detail[detailSurveyCubit.index]
-          ["option"]
+      ["option"]
     };
     if (temp > 2) {
       answerCon = [];

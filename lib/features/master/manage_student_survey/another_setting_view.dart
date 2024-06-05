@@ -4,16 +4,16 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_dropdown.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
-import 'detail_survey_cubit.dart';
-import 'edit_survey_cubit.dart';
+import 'detail_student_survey_cubit.dart';
+import 'edit_student_survey_cubit.dart';
 
 class AnotherSettingView extends StatelessWidget {
   const AnotherSettingView(
       {super.key,
       required this.detailSurveyCubit,
       required this.editSurveyCubit});
-  final DetailSurveyCubit detailSurveyCubit;
-  final EditSurveyCubit editSurveyCubit;
+  final DetailStudentSurveyCubit detailSurveyCubit;
+  final EditStudentSurveyCubit editSurveyCubit;
   @override
   Widget build(BuildContext context) {
     return Column(

@@ -256,7 +256,7 @@ abstract class NetworkProvider {
 
   Future<bool> checkNewSurvey(SurveyModel survey);
 
-  Future<List<SurveyModel>> getAllSurvey();
+  Future<List<SurveyModel>> getAllStudentSurvey();
 
   Future<SurveyModel> getSurveyById(int id);
 
@@ -266,7 +266,7 @@ abstract class NetworkProvider {
 
   Future<List<SurveyResultModel>> getSurveyResultByClassId(int classId);
 
-  Future<List<SurveyModel>> getSurveyEnable();
+  Future<List<SurveyModel>> getStudentSurveyEnable();
 
   Future<bool> addSurveyToClass(SurveyModel model, int classId, int id);
 

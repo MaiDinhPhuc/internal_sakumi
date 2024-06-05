@@ -3,11 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/model/survey_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
-import 'package:internal_sakumi/utils/text_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ManageSurveyCubit extends Cubit<int>{
-  ManageSurveyCubit():super(0);
+class ManageStudentSurveyCubit extends Cubit<int>{
+  ManageStudentSurveyCubit():super(0);
 
   int? userID;
 
@@ -37,7 +36,7 @@ class ManageSurveyCubit extends Cubit<int>{
   }
 
   getDataFromFirebase()async{
-    listSurvey = await FireBaseProvider.instance.getAllSurvey();
+    listSurvey = await FireBaseProvider.instance.getAllStudentSurvey();
     emit(state+1);
   }
 

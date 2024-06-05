@@ -11,8 +11,11 @@ import 'package:url_strategy/url_strategy.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'configs/color_configs.dart';
+import 'features/admin_v2/manage_class_v2/class_cubit_v2.dart';
 import 'features/master/manage_course/manage_course_cubit.dart';
-import 'features/master/manage_survey/manage_survey_cubit.dart';
+import 'features/master/manage_student_survey/manage_student_survey_cubit.dart';
+import 'features/master/manage_teacher_survey/manage_assign_teacher_survey_cubit.dart';
+import 'features/master/manage_teacher_survey/manage_teacher_survey_cubit.dart';
 import 'features/teacher/profile/teacher_profile/app_bar_info_teacher_cubit.dart';
 import 'firebase_options.dart';
 
@@ -38,7 +41,10 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (context) => AppBarInfoTeacherCubit()),
           BlocProvider<SearchCubit>(create: (context) => SearchCubit()),
-          BlocProvider<ManageSurveyCubit>(create: (context) => ManageSurveyCubit()),
+          BlocProvider<ClassCubit>(create: (context) => ClassCubit()),
+          BlocProvider<ManageTeacherSurveyCubit>(create: (context) => ManageTeacherSurveyCubit()),
+          BlocProvider<ManageAssignTeacherSurveyCubit>(create: (context) => ManageAssignTeacherSurveyCubit()),
+          BlocProvider<ManageStudentSurveyCubit>(create: (context) => ManageStudentSurveyCubit()),
           BlocProvider<AdminClassFilterCubit>(create: (context)=>AdminClassFilterCubit()),
           BlocProvider<BillFilterCubit>(create: (context)=>BillFilterCubit()),
           BlocProvider<TeacherClassFilterCubit>(create: (context)=>TeacherClassFilterCubit()),

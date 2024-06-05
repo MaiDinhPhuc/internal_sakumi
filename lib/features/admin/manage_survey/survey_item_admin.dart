@@ -2,12 +2,11 @@ import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_survey/confirm_delete_survey.dart';
-import 'package:internal_sakumi/features/master/manage_survey/survey_layout.dart';
+import 'package:internal_sakumi/features/master/manage_student_survey/survey_layout.dart';
 import 'package:internal_sakumi/model/survey_result_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-import '../../../widget/waiting_dialog.dart';
 import 'confirm_assign_survey.dart';
 import 'confirm_recall_survey.dart';
 import 'manage_survey_admin_cubit.dart';

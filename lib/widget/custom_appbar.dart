@@ -86,9 +86,13 @@ class CustomAppbar extends StatelessWidget {
                                           break;
                                         case 1:
                                           Navigator.pushNamed(context,
-                                              '${Routes.master}/manageSurvey');
+                                              '${Routes.master}/manageStudentSurvey');
                                           break;
                                         case 2:
+                                          Navigator.pushNamed(context,
+                                              '${Routes.master}/manageTeacherSurvey');
+                                          break;
+                                        case 3:
                                           Navigator.pushNamed(context,
                                               '${Routes.master}/manageTeacherFeedBack');
                                           break;

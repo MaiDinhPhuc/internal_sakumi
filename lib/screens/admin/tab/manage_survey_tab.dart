@@ -6,7 +6,7 @@ import 'package:internal_sakumi/features/admin/manage_general/dotted_border_butt
 import 'package:internal_sakumi/features/admin/manage_survey/alert_checkbox_survey.dart';
 import 'package:internal_sakumi/features/admin/manage_survey/manage_survey_admin_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_survey/survey_item_admin.dart';
-import 'package:internal_sakumi/features/master/manage_survey/survey_layout.dart';
+import 'package:internal_sakumi/features/master/manage_student_survey/survey_layout.dart';
 import 'package:internal_sakumi/features/teacher/app_bar/class_appbar.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';

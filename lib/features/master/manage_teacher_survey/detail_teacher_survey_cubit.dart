@@ -1,25 +1,24 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/survey_model.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
-import 'manage_survey_cubit.dart';
+import 'manage_teacher_survey_cubit.dart';
 
-class DetailSurveyCubit extends Cubit<int> {
-  DetailSurveyCubit() : super(0);
+class DetailTeacherSurveyCubit extends Cubit<int> {
+  DetailTeacherSurveyCubit() : super(0);
 
   SurveyModel? surveyModel;
 
   int selector = -1;
   int index = 0;
 
-  loadSurvey(int id, ManageSurveyCubit surveyCubit) {
+  loadSurvey(int id, ManageTeacherSurveyCubit surveyCubit) {
     if (surveyCubit.listSurvey == null) {
       surveyCubit.loadSurvey();
     } else {
       var temp = surveyCubit.listSurvey!.where((e) => e.id == id).toList();
       surveyModel = temp.first;
       selector =
-          surveyModel!.detail.isEmpty ? -1 : surveyModel!.detail.first["id"];
+      surveyModel!.detail.isEmpty ? -1 : surveyModel!.detail.first["id"];
       emit(state + 1);
     }
   }
@@ -39,7 +38,7 @@ class DetailSurveyCubit extends Cubit<int> {
         id: surveyModel!.id,
         detail: surveyModel!.detail,
         enable: surveyModel!.enable,
-        active: true);
+        active: true, type: 'teacher');
     //await FireBaseProvider.instance.activeSurvey(surveyModel!.id);
     emit(state + 1);
   }

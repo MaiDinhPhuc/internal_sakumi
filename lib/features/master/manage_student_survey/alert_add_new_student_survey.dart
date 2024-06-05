@@ -9,9 +9,9 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
-import 'manage_survey_cubit.dart';
+import 'manage_student_survey_cubit.dart';
 
-void alertAddNewSurvey(BuildContext context, ManageSurveyCubit cubit) {
+void alertAddNewStudentSurvey(BuildContext context, ManageStudentSurveyCubit cubit) {
   TextEditingController titleCon = TextEditingController();
   TextEditingController codeCon = TextEditingController();
   TextEditingController desCon = TextEditingController();
@@ -27,7 +27,7 @@ void alertAddNewSurvey(BuildContext context, ManageSurveyCubit cubit) {
                 key: formKey,
                 child: Container(
                   width: MediaQuery.of(context).size.width / 2,
-                  height: MediaQuery.of(context).size.height * 0.65,
+                  height: MediaQuery.of(context).size.height * 0.7,
                   padding: EdgeInsets.all(Resizable.padding(context, 20)),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -102,28 +102,22 @@ void alertAddNewSurvey(BuildContext context, ManageSurveyCubit cubit) {
                                           DateTime.now()
                                               .millisecondsSinceEpoch;
                                       waitingDialog(context);
-                                      await FireBaseProvider.instance
-                                          .checkNewSurvey(SurveyModel(
+                                      var survey = SurveyModel(
                                           surveyCode: codeCon.text,
                                           title: titleCon.text,
                                           description: desCon.text,
                                           id: millisecondsSinceEpoch,
                                           detail: [],
                                           enable: true,
-                                          active: false));
+                                          active: false, type: 'student');
+                                      await FireBaseProvider.instance
+                                          .checkNewSurvey(survey);
                                       if (context.mounted) {
                                         Navigator.pop(context);
                                         Navigator.pop(context);
-                                        cubit.addNewSurvey(SurveyModel(
-                                            surveyCode: codeCon.text,
-                                            title: titleCon.text,
-                                            description: desCon.text,
-                                            id: millisecondsSinceEpoch,
-                                            detail: [],
-                                            enable: true,
-                                            active: false));
+                                        cubit.addNewSurvey(survey);
                                         Navigator.pushNamed(context,
-                                            '${Routes.master}/manageSurvey/id=$millisecondsSinceEpoch');
+                                            '${Routes.master}/manageStudentSurvey/id=$millisecondsSinceEpoch');
                                       }
                                     } else {
                                       print('Form is invalid');

@@ -1,24 +1,23 @@
 import 'package:flutter/Material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
-import 'package:internal_sakumi/features/master/manage_survey/question_survey_view.dart';
+import 'package:internal_sakumi/features/master/manage_student_survey/question_survey_view.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/title_widget.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 import 'confirm_active_survey.dart';
-import 'detail_survey_cubit.dart';
-import 'edit_survey_question_view.dart';
-import 'manage_survey_cubit.dart';
+import 'detail_student_survey_cubit.dart';
+import 'edit_student_survey_question_view.dart';
+import 'manage_student_survey_cubit.dart';
 
-class DetailSurveyView extends StatelessWidget {
-  const DetailSurveyView(
+class DetailStudentSurveyView extends StatelessWidget {
+  const DetailStudentSurveyView(
       {super.key, required this.cubit, required this.detailSurveyCubit});
-  final ManageSurveyCubit cubit;
-  final DetailSurveyCubit detailSurveyCubit;
+  final ManageStudentSurveyCubit cubit;
+  final DetailStudentSurveyCubit detailSurveyCubit;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -36,7 +35,7 @@ class DetailSurveyView extends StatelessWidget {
                         SizedBox(height: Resizable.padding(context, 10)),
                       ...detailSurveyCubit.surveyModel!.detail
                           .map((e) => IntrinsicHeight(
-                                child: QuestionSurveyView(
+                                child: QuestionStudentSurveyView(
                                   number: e["id"],
                                   index: detailSurveyCubit.surveyModel!.detail
                                       .indexOf(e),
@@ -131,7 +130,7 @@ class DetailSurveyView extends StatelessWidget {
                       borderRadius: BorderRadius.all(
                           Radius.circular(Resizable.size(context, 5))),
                       color: Colors.white),
-                  child: EditSurveyQuestionView(
+                  child: EditStudentSurveyQuestionView(
                       detailSurveyCubit: detailSurveyCubit),
                 ))
               ],

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SurveyModel {
-  final String surveyCode, title, description;
+  final String surveyCode, title, description, type;
   final int id;
   final List<dynamic> detail;
   final bool enable, active;
@@ -12,11 +12,12 @@ class SurveyModel {
       required this.id,
       required this.detail,
       required this.enable,
-      required this.active});
+      required this.active,required this.type});
 
   SurveyModel copyWith(
       {String? surveyCode,
       String? title,
+        String? type,
       int? id,
       String? description,
       List<dynamic>? detail,
@@ -29,13 +30,14 @@ class SurveyModel {
         description: description ?? this.description,
         detail: detail ?? this.detail,
         enable: enable ?? this.enable,
-        active: active ?? this.active);
+        active: active ?? this.active, type: type ?? this.type);
   }
 
   factory SurveyModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
     return SurveyModel(
+        type: data['type'] ?? 'student',
         surveyCode: data["survey_code"] ?? "",
         title: data["title"] ?? "",
         description: data['description'] ?? "",

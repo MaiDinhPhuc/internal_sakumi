@@ -24,7 +24,8 @@ class ManageCourseTab extends StatelessWidget {
           children: [
             CustomAppbar(buttonList: [
               AppText.txtManageCourse.text,
-              AppText.txtSurvey.text,
+              AppText.txtStudentSurvey.text,
+              AppText.txtTeacherSurvey.text,
               AppText.titleManageFeedBack.text
             ], s: 0),
             Expanded(

@@ -1,27 +1,25 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_field.dart';
+import 'package:internal_sakumi/features/master/manage_student_survey/dropdown_type_survey.dart';
+import 'package:internal_sakumi/features/master/manage_student_survey/input_answer_view.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
-import 'another_setting_view.dart';
-import 'detail_survey_cubit.dart';
-import 'dropdown_type_survey.dart';
-import 'edit_survey_cubit.dart';
-import 'input_answer_view.dart';
+import 'detail_teacher_survey_cubit.dart';
+import 'edit_teacher_survey_cubit.dart';
 
-class EditSurveyQuestionView extends StatelessWidget {
-  EditSurveyQuestionView({super.key, required this.detailSurveyCubit})
-      : editSurveyCubit = EditSurveyCubit(detailSurveyCubit);
-  final DetailSurveyCubit detailSurveyCubit;
-  final EditSurveyCubit editSurveyCubit;
+class EditTeacherSurveyQuestionView extends StatelessWidget {
+  EditTeacherSurveyQuestionView({super.key, required this.detailSurveyCubit})
+      : editSurveyCubit = EditTeacherSurveyCubit(detailSurveyCubit);
+  final DetailTeacherSurveyCubit detailSurveyCubit;
+  final EditTeacherSurveyCubit editSurveyCubit;
   @override
   Widget build(BuildContext context) {
     return detailSurveyCubit.selector == -1
         ? Container()
-        : BlocBuilder<EditSurveyCubit, int>(
+        : BlocBuilder<EditTeacherSurveyCubit, int>(
         bloc: editSurveyCubit,
         builder: (c,s){
           return SingleChildScrollView(
@@ -62,7 +60,7 @@ class EditSurveyQuestionView extends StatelessWidget {
                   title: '',
                 ),
                 ...editSurveyCubit.answerCon
-                    .map((e) => InputAnswerView(
+                    .map((e) => InputTeacherAnswerView(
                   editSurveyCubit: editSurveyCubit,
                   type: detailSurveyCubit.surveyModel!
                       .detail[detailSurveyCubit.index]["type"] ??
@@ -90,12 +88,12 @@ class EditSurveyQuestionView extends StatelessWidget {
                           isManageGeneral: true, onPressed: () {
                         editSurveyCubit.addNewAnswer();
                       })),
-                AnotherSettingView(
-                    detailSurveyCubit: detailSurveyCubit,
-                    editSurveyCubit: editSurveyCubit)
+                // AnotherSettingView(
+                //     detailSurveyCubit: detailSurveyCubit,
+                //     editSurveyCubit: editSurveyCubit)
               ],
             ),
           );
-    });
+        });
   }
 }
