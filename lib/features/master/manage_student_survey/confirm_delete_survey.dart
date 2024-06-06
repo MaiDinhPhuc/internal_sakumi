@@ -3,8 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/CRUD/delete_cubit.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
+import 'package:internal_sakumi/features/master/manage_teacher_survey/manage_assign_teacher_survey_cubit.dart';
 import 'package:internal_sakumi/features/master/manage_teacher_survey/manage_teacher_survey_cubit.dart';
 import 'package:internal_sakumi/model/survey_model.dart';
+import 'package:internal_sakumi/model/teacher_survey_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -58,8 +61,8 @@ class ConfirmDeleteStudentSurvey extends StatelessWidget {
   }
 }
 
-class ConfirmDeleteTeacherSurvey extends StatelessWidget {
-  const ConfirmDeleteTeacherSurvey(
+class ConfirmDeleteSurvey extends StatelessWidget {
+  const ConfirmDeleteSurvey(
       {Key? key, required this.surveyModel, required this.cubit})
       : super(key: key);
   final SurveyModel surveyModel;
@@ -94,6 +97,51 @@ class ConfirmDeleteTeacherSurvey extends StatelessWidget {
                 cubit.deleteSurvey(surveyModel.id);
                 Navigator.pushNamed(context,
                     '${Routes.master}/manageTeacherSurvey');
+              });
+            },
+            bgColor: primaryColor.shade500,
+            foreColor: Colors.white,
+            text: AppText.txtAgree.text),
+      ],
+    );
+  }
+}
+
+class ConfirmDeleteTeacherSurvey extends StatelessWidget {
+  const ConfirmDeleteTeacherSurvey(
+      {Key? key, required this.teacherSurveyModel, required this.cubit})
+      : super(key: key);
+  final TeacherSurveyModel teacherSurveyModel;
+  final ManageAssignTeacherSurveyCubit cubit;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(
+        AppText.txtConfirmRecallSurvey.text,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+      titlePadding:
+      EdgeInsets.symmetric(horizontal: Resizable.padding(context, 50)),
+      icon: Image.asset(
+        'assets/images/ic_delete.png',
+        height: Resizable.size(context, 120),
+      ),
+      actionsAlignment: MainAxisAlignment.spaceEvenly,
+      actions: [
+        CustomButton(
+            onPress: () {
+              Navigator.pop(context);
+            },
+            bgColor: Colors.white,
+            foreColor: Colors.black,
+            text: AppText.txtBack.text),
+        CustomButton(
+            onPress: () async {
+              Navigator.pop(context);
+              Update.updateTeacherSurvey(teacherSurveyModel.copyWith(status: 'delete')).whenComplete(() {
+                cubit.deleteSurvey(teacherSurveyModel);
+                Navigator.pop(context);
               });
             },
             bgColor: primaryColor.shade500,

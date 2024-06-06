@@ -22,6 +22,7 @@ import 'package:internal_sakumi/model/survey_result_model.dart';
 import 'package:internal_sakumi/model/tag_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
+import 'package:internal_sakumi/model/teacher_survey_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/model/voucher_model.dart';
@@ -1333,8 +1334,8 @@ class FireStoreDb {
       'survey_code': model.surveyCode,
       'enable': model.enable,
       'active': model.active,
-      'detail' : model.detail,
-      'type' : model.type
+      'detail': model.detail,
+      'type': model.type
     });
     debugPrint("==========>add db for \"survey\"");
   }
@@ -2062,6 +2063,15 @@ class FireStoreDb {
         .collection("survey_result")
         .doc("class_${model.classId}_survey_${model.surveyId}")
         .update({'status': model.status, 'date_assign': model.dateAssign});
+    debugPrint("==========>update db for \"survey_result\"");
+  }
+
+  Future<void> updateTeacherSurvey(TeacherSurveyModel model) async {
+    await db
+        .collection("teacher_survey")
+        .doc(
+            "teacher_${model.teacherId}_survey_${model.surveyId}_time_${model.id}")
+        .update({'status': model.status});
     debugPrint("==========>update db for \"survey_result\"");
   }
 

@@ -5,12 +5,12 @@ import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/teacher_survey_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ManageAssignTeacherSurveyCubit extends Cubit<int>{
   ManageAssignTeacherSurveyCubit():super(0);
 
-  TextEditingController teacherCon = TextEditingController();
 
   List<TeacherSurveyModel>? listTeacherSurvey;
   List<TeacherModel> listTeacher = [];
@@ -44,8 +44,9 @@ class ManageAssignTeacherSurveyCubit extends Cubit<int>{
     listTeacherSurvey = await FireBaseProvider.instance.getTeacherSurvey();
     listTeacherId = (listTeacherSurvey!.map((e) => e.teacherId)).toSet().toList();
     for(var i in listTeacherId){
-      DataProvider.teacherById(i, loadTeacherInfo);
+      await DataProvider.teacherById(i, loadTeacherInfo);
     }
+    emit(state+1);
   }
 
   update(){
@@ -64,9 +65,22 @@ class ManageAssignTeacherSurveyCubit extends Cubit<int>{
 
   loadTeacherInfo(Object student) {
     listTeacher.add(student as TeacherModel);
-    if(listTeacherId.length == listTeacher.length){
-      emit(state+1);
-    }
   }
 
+
+  String convertDate(int date) {
+    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(date);
+    return DateFormat('dd/MM/yyyy').format(dateTime);
+  }
+
+  TeacherModel? getTeacher(int teacherId){
+    var teacher = listTeacher.where((element) => element.userId == teacherId).toList();
+    if(teacher.isEmpty) return null;
+    return teacher.first;
+  }
+
+  deleteSurvey(TeacherSurveyModel model){
+    listTeacherSurvey!.remove(model);
+    emit(state+1);
+  }
 }

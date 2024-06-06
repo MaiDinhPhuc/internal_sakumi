@@ -9,6 +9,7 @@ import 'package:internal_sakumi/model/survey_model.dart';
 import 'package:internal_sakumi/model/survey_result_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
+import 'package:internal_sakumi/model/teacher_survey_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
@@ -87,6 +88,10 @@ class Update  {
 
   static updateSurveyResult(SurveyResultModel result) async {
     await FireBaseProvider.instance.assignSurveyResult(result);
+  }
+
+  static updateTeacherSurvey(TeacherSurveyModel teacherSurvey) async {
+    await FireBaseProvider.instance.updateTeacherSurvey(teacherSurvey);
   }
 
   static updateLessonResult(int lessonId, int classId, String note) async {

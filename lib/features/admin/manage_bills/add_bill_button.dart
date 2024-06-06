@@ -39,7 +39,7 @@ class AddButton extends StatelessWidget {
           title,
           style:  TextStyle(
             color:darkPrimaryColor,
-            fontSize: Resizable.font(context, 18),
+            fontSize: Resizable.font(context, 16),
             fontFamily: 'Montserrat',
             fontWeight: FontWeight.w700,
             height: 0,

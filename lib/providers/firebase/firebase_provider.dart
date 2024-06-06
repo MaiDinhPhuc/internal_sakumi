@@ -1022,6 +1022,12 @@ class FireBaseProvider extends NetworkProvider {
     await FireStoreDb.instance.assignSurveyResult(result);
   }
 
+
+  @override
+  Future<void> updateTeacherSurvey(TeacherSurveyModel teacherSurvey) async {
+    await FireStoreDb.instance.updateTeacherSurvey(teacherSurvey);
+  }
+
   @override
   Future<bool> addTeacherToClass(TeacherClassModel model) async {
     final temp = await FireStoreDb.instance.getTeacherClassByDocs(

@@ -3,6 +3,8 @@ import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/master/manage_student_survey/survey_item.dart';
+import 'package:internal_sakumi/features/master/manage_student_survey/survey_layout.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:shimmer/shimmer.dart';
@@ -40,7 +42,7 @@ class TeacherSurveyTabView extends StatelessWidget {
                     : surveyController.listTeacherSurvey!.isNotEmpty
                     ? Column(
                   children: [
-                    SurveyLayout(
+                    TeacherSurveyLayout(
                       surveyCode: Text(AppText.txtSurveyCode.text,
                           style: TextStyle(
                               color: greyColor.shade600,
@@ -51,15 +53,28 @@ class TeacherSurveyTabView extends StatelessWidget {
                               color: greyColor.shade600,
                               fontWeight: FontWeight.w600,
                               fontSize: Resizable.font(context, 17))),
-                      number: Container(),
-                      date: Container(),
+                      assignDate: Text(AppText.txtDateAssignSurvey.text,
+                          style: TextStyle(
+                              color: greyColor.shade600,
+                              fontWeight: FontWeight.w600,
+                              fontSize: Resizable.font(context, 17))),
+                      status: Text(AppText.titleStatus.text,
+                          style: TextStyle(
+                              color: greyColor.shade600,
+                              fontWeight: FontWeight.w600,
+                              fontSize: Resizable.font(context, 17))),
                       moreButton: Container(),
+                      sensei: Text(AppText.txtSensei.text,
+                          style: TextStyle(
+                              color: greyColor.shade600,
+                              fontWeight: FontWeight.w600,
+                              fontSize: Resizable.font(context, 17))),
                     ),
                     SingleChildScrollView(
                         child: Column(children: [
                           ...surveyController.listTeacherSurvey!
                               .map((e) => TeacherSurveyItem(
-                              surveyModel: e,
+                              teacherSurveyModel: e,
                               cubit: surveyController))
                               .toList(),
                         ]))

@@ -13,6 +13,24 @@ class TeacherSurveyModel {
         required this.surveyCode,
         required this.dateAssign});
 
+  TeacherSurveyModel copyWith(
+      {String? status,
+        String? surveyCode,
+        String? title,
+        int? id,
+        int? teacherId,
+        int? surveyId,
+        int? dateAssign}) {
+    return TeacherSurveyModel(
+        surveyCode: surveyCode ?? this.surveyCode,
+        title: title ?? this.title,
+        id: id ?? this.id,
+        status: status ?? this.status,
+        teacherId: teacherId ?? this.teacherId,
+        surveyId: surveyId ?? this.surveyId,
+        dateAssign: dateAssign ?? this.dateAssign);
+  }
+
   factory TeacherSurveyModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;

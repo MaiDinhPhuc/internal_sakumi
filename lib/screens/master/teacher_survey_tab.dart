@@ -9,6 +9,7 @@ import 'package:internal_sakumi/features/master/manage_teacher_survey/change_tab
 import 'package:internal_sakumi/features/master/manage_teacher_survey/manage_assign_teacher_survey_cubit.dart';
 import 'package:internal_sakumi/features/master/manage_teacher_survey/manage_teacher_survey_cubit.dart';
 import 'package:internal_sakumi/features/master/manage_teacher_survey/teacher_survey_edit_tab_view.dart';
+import 'package:internal_sakumi/features/master/manage_teacher_survey/teacher_survey_tab_view.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/custom_appbar.dart';
 
@@ -21,7 +22,8 @@ class ManageTeacherSurveyTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var surveyController = BlocProvider.of<ManageTeacherSurveyCubit>(context);
-    var teacherSurveyController = BlocProvider.of<ManageAssignTeacherSurveyCubit>(context);
+    var teacherSurveyController =
+        BlocProvider.of<ManageAssignTeacherSurveyCubit>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -51,7 +53,8 @@ class ManageTeacherSurveyTab extends StatelessWidget {
                     children: [
                       AddButton(
                         onTap: () {
-                          alertAssignTeacherSurvey(context, teacherSurveyController);
+                          alertAssignTeacherSurvey(
+                              context, teacherSurveyController);
                         },
                         title: AppText.txtAssignSurvey.text.toUpperCase(),
                       ),
@@ -191,7 +194,8 @@ class ManageTeacherSurveyTab extends StatelessWidget {
                     return s
                         ? TeacherSurveyEditTabView(
                             surveyController: surveyController)
-                        : Text("edit");
+                        : TeacherSurveyTabView(
+                            surveyController: teacherSurveyController);
                   }))
         ],
       ),

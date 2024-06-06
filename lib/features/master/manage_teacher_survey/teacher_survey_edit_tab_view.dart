@@ -58,7 +58,7 @@ class TeacherSurveyEditTabView extends StatelessWidget {
                               SingleChildScrollView(
                                   child: Column(children: [
                                 ...surveyController.listSurvey!
-                                    .map((e) => TeacherSurveyItem(
+                                    .map((e) => TeacherSurveyEditItem(
                                         surveyModel: e,
                                         cubit: surveyController))
                                     .toList(),
