@@ -188,11 +188,15 @@ class FooterView extends StatelessWidget {
             ),
             SizedBox(width: Resizable.padding(context, 10)),
             SubmitButton(onPressed: () async {
-              waitingDialog(context);
-              await feedbackDialogCubit.sendFeedBack();
-              feedbackDialogCubit.clearContent();
-              textEditingController.text = '';
-              Navigator.pop(context);
+              if(feedbackDialogCubit.content.isEmpty){
+                notificationDialog(context, 'Nội dung góp ý không được để trống');
+              }else{
+                waitingDialog(context);
+                await feedbackDialogCubit.sendFeedBack();
+                feedbackDialogCubit.clearContent();
+                textEditingController.text = '';
+                Navigator.pop(context);
+              }
             }, title: AppText.txtSendFeedback.text)
           ],
         ),

@@ -111,47 +111,52 @@ void alertAddNewTeacherAccount(
                                           Resizable.size(context, 100)),
                                       child: SubmitButton(
                                           onPressed: () async {
-                                            if (formKey.currentState!
-                                                .validate()) {
-                                              int teacherId = DateTime.now().millisecondsSinceEpoch;
-                                              Navigator.pop(context);
-                                              waitingDialog(context);
-                                              await cubit.createTeacher(
-                                                  TeacherModel(
-                                                      name: nameCon.text,
-                                                      url: '',
-                                                      note: noteCon.text,
-                                                      userId: teacherId,
-                                                      phone: phoneCon.text,
-                                                      teacherCode:
-                                                      senseiCodeCon.text,
-                                                      status: cubit.selectedStatus,schedule:  {
-                                                    'Mon': [],
-                                                    'Tue': [],
-                                                    'Wed': [],
-                                                    'Thu': [],
-                                                    'Fri': [],
-                                                    'Sat': [],
-                                                    'Sun': []
-                                                  }, email: emailCon.text),
-                                                  UserModel(
-                                                      email: emailCon.text,
-                                                      role: AppText
-                                                          .selectorTeacher.text,
-                                                      id:teacherId));
-                                              if (context.mounted) {
+                                            if(emailCon.text.contains("@gmail.com") == false){
+                                              notificationDialog(context, "Email không hợp lệ!");
+                                            }else{
+                                              if (formKey.currentState!
+                                                  .validate()) {
+                                                int teacherId = DateTime.now().millisecondsSinceEpoch;
                                                 Navigator.pop(context);
-                                                if (cubit.checkCreate == false){
-                                                  notificationDialog(
-                                                      context,
-                                                      AppText
-                                                          .txtPleaseCheckListUser
-                                                          .text);
+                                                waitingDialog(context);
+                                                await cubit.createTeacher(
+                                                    TeacherModel(
+                                                        name: nameCon.text,
+                                                        url: '',
+                                                        note: noteCon.text,
+                                                        userId: teacherId,
+                                                        phone: phoneCon.text,
+                                                        teacherCode:
+                                                        senseiCodeCon.text,
+                                                        status: cubit.selectedStatus,schedule:  {
+                                                      'Mon': [],
+                                                      'Tue': [],
+                                                      'Wed': [],
+                                                      'Thu': [],
+                                                      'Fri': [],
+                                                      'Sat': [],
+                                                      'Sun': []
+                                                    }, email: emailCon.text),
+                                                    UserModel(
+                                                        email: emailCon.text,
+                                                        role: AppText
+                                                            .selectorTeacher.text,
+                                                        id:teacherId));
+                                                if (context.mounted) {
+                                                  Navigator.pop(context);
+                                                  if (cubit.checkCreate == false){
+                                                    notificationDialog(
+                                                        context,
+                                                        AppText
+                                                            .txtPleaseCheckListUser
+                                                            .text);
+                                                  }
                                                 }
+                                              } else {
+                                                debugPrint('Form is invalid');
                                               }
-                                            } else {
-                                              debugPrint('Form is invalid');
                                             }
+
                                           },
                                           title: AppText.btnAdd.text),
                                     ),

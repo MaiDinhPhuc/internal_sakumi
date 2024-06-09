@@ -159,38 +159,39 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                           if (!isEdit) {
                                                             Navigator.pop(c);
                                                             waitingDialog(c);
+                                                            ClassModel classModel = ClassModel(
+                                                                classId: now
+                                                                    .millisecondsSinceEpoch,
+                                                                courseId: cubit
+                                                                    .courseId!,
+                                                                description:
+                                                                desCon
+                                                                    .text,
+                                                                endTime: DateTimeCubit
+                                                                    .endDay
+                                                                    .millisecondsSinceEpoch,
+                                                                startTime: DateTimeCubit
+                                                                    .startDay
+                                                                    .millisecondsSinceEpoch,
+                                                                note: noteCon
+                                                                    .text,
+                                                                classCode: codeCon
+                                                                    .text,
+                                                                classStatus:
+                                                                'Preparing',
+                                                                classType: cubit
+                                                                    .classType!,
+                                                                link: linkCon
+                                                                    .text,
+                                                                customLessons: [],
+                                                                informal: cubit
+                                                                    .informal,
+                                                                isSubClass:
+                                                                false,
+                                                                subClassId:
+                                                                0);
                                                             await cubit.addNewClass(
-                                                                ClassModel(
-                                                                    classId: now
-                                                                        .millisecondsSinceEpoch,
-                                                                    courseId: cubit
-                                                                        .courseId!,
-                                                                    description:
-                                                                        desCon
-                                                                            .text,
-                                                                    endTime: DateTimeCubit
-                                                                        .endDay
-                                                                        .millisecondsSinceEpoch,
-                                                                    startTime: DateTimeCubit
-                                                                        .startDay
-                                                                        .millisecondsSinceEpoch,
-                                                                    note: noteCon
-                                                                        .text,
-                                                                    classCode: codeCon
-                                                                        .text,
-                                                                    classStatus:
-                                                                        'Preparing',
-                                                                    classType: cubit
-                                                                        .classType!,
-                                                                    link: linkCon
-                                                                        .text,
-                                                                    customLessons: [],
-                                                                    informal: cubit
-                                                                        .informal,
-                                                                    isSubClass:
-                                                                        false,
-                                                                    subClassId:
-                                                                        0));
+                                                                classModel);
                                                             if (context
                                                                 .mounted) {
                                                               Navigator.pop(
@@ -201,8 +202,7 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                                             ManageGeneralCubit>(
                                                                         context)
                                                                     .loadAfterAddClass(
-                                                                        cubit
-                                                                            .classCount!);
+                                                                    classModel);
                                                               } else {
                                                                 notificationDialog(
                                                                     context,

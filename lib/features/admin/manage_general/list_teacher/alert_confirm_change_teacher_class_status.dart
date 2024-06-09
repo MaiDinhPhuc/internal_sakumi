@@ -12,14 +12,13 @@ import '../../../../services/custom_firebase_firestore.dart';
 
 class ConfirmChangeTeacherStatus extends StatelessWidget {
   const ConfirmChangeTeacherStatus(this.newStatus, this.teacherClassModel,
-      this.teacher, this.cubit, this.popupCubit,
+      this.teacher, this.cubit,
       {Key? key})
       : super(key: key);
   final String newStatus;
   final TeacherClassModel teacherClassModel;
   final TeacherModel teacher;
   final ManageGeneralCubit cubit;
-  final MenuPopupCubit popupCubit;
 
   @override
   Widget build(BuildContext context) {

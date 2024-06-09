@@ -13,7 +13,6 @@ class AlertNewClassCubit extends Cubit<int> {
   AlertNewClassCubit() : super(0);
 
   List<CourseModel>? listCourse;
-  int? classCount;
   int? courseId;
   String? selector;
   bool? check;
@@ -27,7 +26,6 @@ class AlertNewClassCubit extends Cubit<int> {
     if(isEdit){
       listCourse = await FireBaseProvider.instance.getAllCourse();
     }else{
-      classCount = (await FireStoreDb.instance.getCount("class")).count;
       listCourse = await FireBaseProvider.instance.getAllCourseEnable();
     }
     if(classModel != null){

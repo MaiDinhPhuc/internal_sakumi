@@ -5,6 +5,7 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
+import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 import 'feedback_dialog_cubit.dart';
 import 'info_feedback_view.dart';
@@ -98,8 +99,12 @@ class FeedBackDialog extends StatelessWidget {
                                             minWidth: Resizable.size(context, 100)),
                                         child: SubmitButton(
                                             onPressed: ()async{
-                                              await feedbackDialogCubit.sendFeedBack();
-                                              Navigator.pop(context);
+                                              if(feedbackDialogCubit.content.isEmpty){
+                                                notificationDialog(context, "Nội dung không được trống!");
+                                              }else{
+                                                await feedbackDialogCubit.sendFeedBack();
+                                                Navigator.pop(context);
+                                              }
                                             },
                                             title: AppText.txtSendFeedback.text),
                                       ),

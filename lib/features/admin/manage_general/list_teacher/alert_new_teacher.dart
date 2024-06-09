@@ -47,6 +47,7 @@ void alertNewTeacher(
                           EdgeInsets.all(Resizable.padding(context, 20)),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
                                 alignment: Alignment.topLeft,
@@ -117,65 +118,70 @@ void alertNewTeacher(
                                           Resizable.size(context, 100)),
                                       child: SubmitButton(
                                           onPressed: () async {
-                                            var id = DateTime.now().millisecondsSinceEpoch;
-                                            if (formKey.currentState!
-                                                .validate()) {
-                                              var teacher = TeacherModel(
-                                                  name: nameCon.text,
-                                                  url: '',
-                                                  note: noteCon.text,
-                                                  userId: id,
-                                                  phone: phoneCon.text,
-                                                  teacherCode:
-                                                  senseiCodeCon.text,
-                                                  status: cubit.selectedStatus,schedule:  {
-                                                'Mon': [],
-                                                'Tue': [],
-                                                'Wed': [],
-                                                'Thu': [],
-                                                'Fri': [],
-                                                'Sat': [],
-                                                'Sun': []
-                                              }, email: emailCon.text);
-                                              Navigator.pop(context);
-                                              waitingDialog(context);
-                                              await cubit.createTeacher(
-                                                  teacher,
-                                                  UserModel(
-                                                      email: emailCon.text,
-                                                      role: AppText
-                                                          .selectorTeacher.text,
-                                                      id: id));
-                                              if (context.mounted) {
+                                            if(emailCon.text.contains("@gmail.com") == false){
+                                              notificationDialog(context, "Email không hợp lệ!");
+                                            }else{
+                                              var id = DateTime.now().millisecondsSinceEpoch;
+                                              if (formKey.currentState!
+                                                  .validate()) {
+                                                var teacher = TeacherModel(
+                                                    name: nameCon.text,
+                                                    url: '',
+                                                    note: noteCon.text,
+                                                    userId: id,
+                                                    phone: phoneCon.text,
+                                                    teacherCode:
+                                                    senseiCodeCon.text,
+                                                    status: cubit.selectedStatus,schedule:  {
+                                                  'Mon': [],
+                                                  'Tue': [],
+                                                  'Wed': [],
+                                                  'Thu': [],
+                                                  'Fri': [],
+                                                  'Sat': [],
+                                                  'Sun': []
+                                                }, email: emailCon.text);
                                                 Navigator.pop(context);
-                                                if (cubit.checkCreate == true) {
-                                                  var now = DateTime.now().millisecondsSinceEpoch;
-                                                  var teacherClass = TeacherClassModel(
-                                                      id: now,
-                                                      classId:
-                                                      manageGeneralCubit
-                                                          .selector,
-                                                      userId: id,
-                                                      classStatus:
-                                                      AppText.statusInProgress.text,
-                                                      date: DateFormat(
-                                                          'dd/MM/yyyy')
-                                                          .format(DateTime
-                                                          .now()), responsibility: false);
-                                                  Create.addTeacherToClass(teacherClass);
-                                                  manageGeneralCubit
-                                                      .addNewTeacherToClass(teacher, teacherClass);
-                                                } else {
-                                                  notificationDialog(
-                                                      context,
-                                                      AppText
-                                                          .txtPleaseCheckListUser
-                                                          .text);
+                                                waitingDialog(context);
+                                                await cubit.createTeacher(
+                                                    teacher,
+                                                    UserModel(
+                                                        email: emailCon.text,
+                                                        role: AppText
+                                                            .selectorTeacher.text,
+                                                        id: id));
+                                                if (context.mounted) {
+                                                  Navigator.pop(context);
+                                                  if (cubit.checkCreate == true) {
+                                                    var now = DateTime.now().millisecondsSinceEpoch;
+                                                    var teacherClass = TeacherClassModel(
+                                                        id: now,
+                                                        classId:
+                                                        manageGeneralCubit
+                                                            .selector,
+                                                        userId: id,
+                                                        classStatus:
+                                                        AppText.statusInProgress.text,
+                                                        date: DateFormat(
+                                                            'dd/MM/yyyy')
+                                                            .format(DateTime
+                                                            .now()), responsibility: false);
+                                                    Create.addTeacherToClass(teacherClass);
+                                                    manageGeneralCubit
+                                                        .addNewTeacherToClass(teacher, teacherClass);
+                                                  } else {
+                                                    notificationDialog(
+                                                        context,
+                                                        AppText
+                                                            .txtPleaseCheckListUser
+                                                            .text);
+                                                  }
                                                 }
+                                              } else {
+                                                debugPrint('Form is invalid');
                                               }
-                                            } else {
-                                              debugPrint('Form is invalid');
                                             }
+
                                           },
                                           title: AppText.btnAdd.text),
                                     ),

@@ -9,6 +9,8 @@ import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
+import 'image_dialog.dart';
+
 class ImageView extends StatelessWidget {
   const ImageView(
       {super.key,
@@ -41,32 +43,51 @@ class ImageView extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     padding: EdgeInsets.symmetric(
                         vertical: Resizable.padding(context, 5)),
-                    itemBuilder: (_, i) => Container(
-                          margin: EdgeInsets.all(Resizable.padding(context, 2)),
-                          height: Resizable.size(context, 200),
-                          width: Resizable.size(context, 200),
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 0, color: secondaryColor),
+                    itemBuilder: (_, i) => GestureDetector(
+                      onTap: (){
+                        showDialog(
+                            context: context,
+                            builder: (context) =>
+                                ImageDialog(
+                                    url:  answer.convertAnswer.first));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.all(Resizable.padding(context, 2)),
+                        height: Resizable.size(context, 200),
+                        width: Resizable.size(context, 200),
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 0, color: secondaryColor),
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(Resizable.size(context, 5))),
+                        ),
+                        child: ClipRRect(
                             borderRadius: BorderRadius.all(
-                                Radius.circular(Resizable.size(context, 5))),
-                          ),
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(Resizable.size(context, 10))),
-                              child: Image.network(
-                                '${answer.convertAnswer.first}',
-                                fit: answer.questionType == 4
-                                    ? BoxFit.contain
-                                    : BoxFit.fill,
-                                height: Resizable.size(context, 200),
-                                width: Resizable.size(context, 200),
-                                errorBuilder: (_, __, ___) => Container(),
-                              )),
-                        )),
+                                Radius.circular(Resizable.size(context, 10))),
+                            child: Image.network(
+                              answer.convertAnswer.first,
+                              fit: answer.questionType == 4
+                                  ? BoxFit.contain
+                                  : BoxFit.fill,
+                              height: Resizable.size(context, 200),
+                              width: Resizable.size(context, 200),
+                              errorBuilder: (_, __, ___) => Container(),
+                            )),
+                      ),
+                    )),
               )
             : Row(
                 children: [
-                  Padding(
+                  GestureDetector(
+                      onTap: (){
+                        showDialog(
+                            context: context,
+                            builder: (context) =>
+                                ImageDialog(
+                                    url: AppConfigs.getDataUrl(
+                                        "${type}_${TextUtils.getName()}_${answer.convertAnswer.first}",
+                                        token)));
+                      },
+                      child: Padding(
                       key: Key(answer.convertAnswer.first),
                       padding: EdgeInsets.only(
                           right: Resizable.padding(context, 10)),
@@ -83,9 +104,17 @@ class ImageView extends StatelessWidget {
                             height: Resizable.size(context, 200),
                             width: Resizable.size(context, 200),
                             errorBuilder: (_, __, ___) => Container(),
-                          ))),
+                          )))),
                   if (answer.answer.length == 2)
-                    Padding(
+                    GestureDetector(
+                        onTap: (){
+                          showDialog(
+                              context: context,
+                              builder: (context) =>
+                                  ImageDialog(
+                                      url: answer.convertAnswer[1]));
+                        },
+                        child: Padding(
                         key: Key(answer.convertAnswer[1]),
                         padding: EdgeInsets.only(
                             right: Resizable.padding(context, 10)),
@@ -93,52 +122,14 @@ class ImageView extends StatelessWidget {
                             borderRadius: BorderRadius.all(
                                 Radius.circular(Resizable.size(context, 10))),
                             child: Image.network(
-                              '${answer.convertAnswer[1]}',
+                              answer.convertAnswer[1],
                               fit: answer.questionType == 4
                                   ? BoxFit.contain
                                   : BoxFit.fill,
                               height: Resizable.size(context, 200),
                               width: Resizable.size(context, 200),
                               errorBuilder: (_, __, ___) => Container(),
-                            ))),
-                  if (answer.answer.length > 2)
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        ClipRRect(
-                            key: Key(answer.convertAnswer[1]),
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(Resizable.size(context, 10))),
-                            child: Image.network(
-                              '${answer.convertAnswer[1]}',
-                              fit: answer.questionType == 4
-                                  ? BoxFit.contain
-                                  : BoxFit.fill,
-                              height: Resizable.size(context, 200),
-                              width: Resizable.size(context, 200),
-                              errorBuilder: (_, __, ___) => Container(),
-                            )),
-                        BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(Resizable.size(context, 10))),
-                              color: Colors.grey.withOpacity(0.4),
-                            ),
-                            height: Resizable.size(context, 200),
-                            width: Resizable.size(context, 200),
-                          ),
-                        ),
-                        Text(
-                          "+${answer.answer.length - 2}",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: Resizable.font(context, 30),
-                              fontWeight: FontWeight.w600),
-                        )
-                      ],
-                    )
+                            )))),
                 ],
               )
       ],

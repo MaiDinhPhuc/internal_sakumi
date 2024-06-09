@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/class_model.dart';
@@ -19,7 +18,7 @@ class ManageGeneralCubit extends Cubit<int> {
   List<StudentClassModel>? listStudentClass;
   List<CourseModel>? listAllCourse;
   int selector = -1;
-  //List<bool> listStateCourse = [];
+
   final TextEditingController searchTextController = TextEditingController();
   List<bool> listStateClassStatus = [true, true, false, false];
   List<bool> listClassType = [true, true];
@@ -74,11 +73,10 @@ class ManageGeneralCubit extends Cubit<int> {
     emit(listAllClass!.first.classId);
   }
 
-  loadAfterAddClass(int index) async {
-    final List<ClassModel> list = await FireBaseProvider.instance.getListClassNotRemove();
-    listAllClass = list;
+  loadAfterAddClass(ClassModel classModel) async {
+    listAllClass!.insert(0, classModel);
     filterClass();
-    selector = index;
+    selector = classModel.classId;
     canAdd = true;
     emit(selector);
     loadTeacherInClass(selector);
@@ -296,12 +294,6 @@ class ManageGeneralCubit extends Cubit<int> {
     var index = listTeacherClass!.indexOf(getTeacherClass(newValue.userId));
     listTeacherClass![index] = newValue;
     emit(state+1);
-    // CustomFirebaseFireStore.database
-    //     .collection('teacher_class')
-    //     .doc('teacher_${newValue.userId}_class_${newValue.classId}')
-    //     .update({
-    //   'responsibility': newValue.responsibility
-    // });
   }
 }
 

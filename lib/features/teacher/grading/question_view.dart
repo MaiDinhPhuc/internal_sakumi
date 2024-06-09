@@ -7,6 +7,7 @@ import 'package:internal_sakumi/model/question_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
+import 'answer_view/image_dialog.dart';
 import 'detail_grading_cubit.dart';
 import 'detail_grading_cubit_v2.dart';
 
@@ -76,21 +77,32 @@ class QuestionView extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   padding: EdgeInsets.symmetric(
                       vertical: Resizable.padding(context, 5)),
-                  itemBuilder: (_, i) => Container(
-                        margin: EdgeInsets.all(Resizable.padding(context, 2)),
-                        height: MediaQuery.of(context).size.width * 0.1,
-                        width: MediaQuery.of(context).size.width * 0.1,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(AppConfigs.getDataUrl(
-                                  "${cubit.gradingType}_${TextUtils.getName()}_${questionModel.listImage[i]}",
-                                  cubit.token)),
-                              fit: BoxFit.fill),
-                          border: Border.all(width: 0, color: secondaryColor),
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(Resizable.size(context, 5))),
-                        ),
-                      )),
+                  itemBuilder: (_, i) => GestureDetector(
+                    onTap: (){
+                      showDialog(
+                          context: context,
+                          builder: (context) =>
+                              ImageDialog(
+                                  url: AppConfigs.getDataUrl(
+                                      "${cubit.gradingType}_${TextUtils.getName()}_${questionModel.listImage[i]}",
+                                      cubit.token)));
+                    },
+                    child: Container(
+                      margin: EdgeInsets.all(Resizable.padding(context, 2)),
+                      height: MediaQuery.of(context).size.width * 0.1,
+                      width: MediaQuery.of(context).size.width * 0.1,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: NetworkImage(AppConfigs.getDataUrl(
+                                "${cubit.gradingType}_${TextUtils.getName()}_${questionModel.listImage[i]}",
+                                cubit.token)),
+                            fit: BoxFit.fill),
+                        border: Border.all(width: 0, color: secondaryColor),
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(Resizable.size(context, 5))),
+                      ),
+                    ),
+                  )),
             ),
           if (questionModel.questionType == 1 ||
               questionModel.questionType == 5)

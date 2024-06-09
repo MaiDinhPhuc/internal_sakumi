@@ -1,10 +1,11 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/model/survey_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
-class AlertAssignTeacherSurveyCubit extends Cubit<int>{
-  AlertAssignTeacherSurveyCubit():super(0){
+class AlertAssignTeacherSurveyCubit extends Cubit<int> {
+  AlertAssignTeacherSurveyCubit() : super(0) {
     loadSurvey();
   }
 
@@ -16,29 +17,25 @@ class AlertAssignTeacherSurveyCubit extends Cubit<int>{
   List<int> listSurveyId = [];
   List<int> listTeacherId = [];
 
-  addTeacher(int teacherId){
+  addTeacher(int teacherId) {
     listTeacherId.add(teacherId);
-
   }
 
-  removeTeacher(int teacherId){
+  removeTeacher(int teacherId) {
     listTeacherId.remove(teacherId);
-
   }
 
-  addSurvey(int surveyId){
+  addSurvey(int surveyId) {
     listSurveyId.add(surveyId);
-
   }
 
-  removeSurvey(int surveyId){
+  removeSurvey(int surveyId) {
     listSurveyId.remove(surveyId);
-
   }
 
-  loadSurvey()async{
+  loadSurvey() async {
     listSurvey = await FireBaseProvider.instance.getAllTeacherSurvey();
-    emit(state+1);
+    emit(state + 1);
   }
 
   searchClass(String newValue) {
@@ -46,22 +43,30 @@ class AlertAssignTeacherSurveyCubit extends Cubit<int>{
     emit(state + 1);
   }
 
-  bool checkTeacher(int teacherId){
-    if(listTeacherId.contains(teacherId)) return true;
+  bool checkTeacher(int teacherId) {
+    if (listTeacherId.contains(teacherId)) return true;
     return false;
   }
 
-  bool checkSurvey(int surveyId){
-    if(listSurveyId.contains(surveyId)) return true;
+  bool checkSurvey(int surveyId) {
+    if (listSurveyId.contains(surveyId)) return true;
     return false;
   }
+
+
+
+  SurveyModel getSurvey(int id){
+    var survey = listSurvey!.firstWhere((e) => e.id == id);
+    return survey;
+  }
+
 
 }
 
-class CheckStateCubit extends Cubit<bool>{
-  CheckStateCubit(state):super(state);
+class CheckStateCubit extends Cubit<bool> {
+  CheckStateCubit(state) : super(state);
 
-  change(){
+  change() {
     emit(!state);
   }
 }

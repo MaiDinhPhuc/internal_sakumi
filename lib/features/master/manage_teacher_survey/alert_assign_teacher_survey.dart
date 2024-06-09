@@ -3,8 +3,10 @@ import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/CRUD/create.dart';
 import 'package:internal_sakumi/features/admin/manage_bills/search_in_bill.dart';
-import 'package:internal_sakumi/features/master/manage_student_survey/alert_assign_teacher_survey_cubit.dart';
+import 'package:internal_sakumi/features/master/manage_teacher_survey/alert_assign_teacher_survey_cubit.dart';
+import 'package:internal_sakumi/model/teacher_survey_model.dart';
 import 'package:internal_sakumi/services/custom_firebase_firestore.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
@@ -12,9 +14,10 @@ import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 import 'manage_assign_teacher_survey_cubit.dart';
+import 'manage_teacher_survey_cubit.dart';
 
 void alertAssignTeacherSurvey(
-    BuildContext context, ManageAssignTeacherSurveyCubit cubit) {
+    BuildContext context, ManageAssignTeacherSurveyCubit cubit, ManageTeacherSurveyCubit manageSurveyCubit) {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   showDialog(
       context: context,
@@ -92,15 +95,22 @@ void alertAssignTeacherSurvey(
                                                                         bottom: Resizable.padding(
                                                                             context,
                                                                             5)),
-                                                                    child: BlocProvider(
-                                                                      create: (context) => CheckStateCubit( assignCubit.checkSurvey(e.id)),
-                                                                      child: BlocBuilder<CheckStateCubit, bool>(
-                                                                        builder: (cc, ss) {
-                                                                          var checkCubit = BlocProvider.of<CheckStateCubit>(cc);
+                                                                    child:
+                                                                        BlocProvider(
+                                                                      create: (context) =>
+                                                                          CheckStateCubit(
+                                                                              assignCubit.checkSurvey(e.id)),
+                                                                      child: BlocBuilder<
+                                                                          CheckStateCubit,
+                                                                          bool>(
+                                                                        builder:
+                                                                            (cc,
+                                                                                ss) {
+                                                                          var checkCubit =
+                                                                              BlocProvider.of<CheckStateCubit>(cc);
                                                                           return InkWell(
                                                                               onTap: () {
-                                                                                if (assignCubit
-                                                                                    .checkSurvey(e.id)) {
+                                                                                if (assignCubit.checkSurvey(e.id)) {
                                                                                   assignCubit.removeSurvey(e.id);
                                                                                 } else {
                                                                                   assignCubit.addSurvey(e.id);
@@ -108,18 +118,12 @@ void alertAssignTeacherSurvey(
                                                                                 checkCubit.change();
                                                                               },
                                                                               child: Container(
-                                                                                padding: EdgeInsets.all(Resizable.padding(
-                                                                                    context,
-                                                                                    5)),
-                                                                                decoration:
-                                                                                BoxDecoration(
-                                                                                  border:
-                                                                                  Border.all(width: 1, color: ss ? primaryColor : grey2),
-                                                                                  borderRadius:
-                                                                                  BorderRadius.circular(5),
+                                                                                padding: EdgeInsets.all(Resizable.padding(context, 5)),
+                                                                                decoration: BoxDecoration(
+                                                                                  border: Border.all(width: 1, color: ss ? primaryColor : grey2),
+                                                                                  borderRadius: BorderRadius.circular(5),
                                                                                 ),
-                                                                                child:
-                                                                                Row(
+                                                                                child: Row(
                                                                                   children: [
                                                                                     Icon(ss ? Icons.check_box : Icons.check_box_outline_blank, color: ss ? primaryColor : Colors.black),
                                                                                     Padding(padding: EdgeInsets.only(left: Resizable.padding(context, 5)), child: Text(e.title, style: TextStyle(fontWeight: FontWeight.w700, fontSize: Resizable.font(context, 18))))
@@ -128,7 +132,7 @@ void alertAssignTeacherSurvey(
                                                                               ));
                                                                         },
                                                                       ),
-                                                                    ) ))
+                                                                    )))
                                                           ],
                                                         ),
                                                       ))
@@ -262,12 +266,75 @@ void alertAssignTeacherSurvey(
                                                     minHeight: Resizable.size(
                                                         context, 20)),
                                                 child: SubmitButton(
-                                                    onPressed: () {
+                                                    onPressed: () async {
                                                       if (formKey.currentState!
                                                           .validate()) {
-                                                        int millisecondsSinceEpoch =
-                                                            DateTime.now()
-                                                                .millisecondsSinceEpoch;
+                                                        if (assignCubit
+                                                                .listSurveyId
+                                                                .isNotEmpty &&
+                                                            assignCubit
+                                                                .listTeacherId
+                                                                .isNotEmpty) {
+                                                          waitingDialog(
+                                                              context);
+                                                          int dateAssign = DateTime
+                                                                  .now()
+                                                              .millisecondsSinceEpoch;
+                                                          for (var i in assignCubit
+                                                              .listTeacherId) {
+                                                            for (var j
+                                                                in assignCubit
+                                                                    .listSurveyId) {
+                                                              if (cubit
+                                                                      .checkTeacherSurvey(
+                                                                          i,
+                                                                          j) ==
+                                                                  false) {
+                                                                TeacherSurveyModel teacherSurvey = TeacherSurveyModel(
+                                                                    status:
+                                                                        'waiting',
+                                                                    teacherId:
+                                                                        i,
+                                                                    surveyId: j,
+                                                                    id:
+                                                                        dateAssign,
+                                                                    title: assignCubit
+                                                                        .getSurvey(
+                                                                            j)
+                                                                        .title,
+                                                                    surveyCode: assignCubit
+                                                                        .getSurvey(
+                                                                            j)
+                                                                        .surveyCode,
+                                                                    dateAssign:
+                                                                        dateAssign);
+                                                                await Create
+                                                                    .addTeacherSurvey(
+                                                                        teacherSurvey);
+                                                                await cubit
+                                                                    .addTeacherSurvey(
+                                                                        teacherSurvey);
+                                                              }
+                                                            }
+                                                            cubit.update();
+                                                            manageSurveyCubit.updateActive(assignCubit
+                                                                .listSurveyId);
+                                                            if (context
+                                                                .mounted) {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            }
+                                                          }
+
+                                                        } else {
+                                                          notificationDialog(
+                                                              context,
+                                                              "Vui lòng chọn bài khảo sát và sensei muốn giao!");
+                                                        }
                                                       } else {
                                                         debugPrint(
                                                             'Form is invalid');

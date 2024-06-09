@@ -11,6 +11,7 @@ import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/survey_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
+import 'package:internal_sakumi/model/teacher_survey_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
@@ -64,6 +65,10 @@ class Create {
 
   static addSurveyResult(SurveyModel survey, int classId, int id) async{
     await FireBaseProvider.instance.addSurveyToClass(survey, classId, id);
+  }
+
+  static addTeacherSurvey(TeacherSurveyModel model) async{
+    await FireBaseProvider.instance.addTeacherSurvey(model);
   }
 
   static Future<bool> createNewCourse(CourseModel model)async{

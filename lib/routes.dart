@@ -35,6 +35,7 @@ import 'package:internal_sakumi/screens/master/teacher_survey_tab.dart';
 import 'package:internal_sakumi/screens/splash_screen.dart';
 import 'package:internal_sakumi/screens/class_info/detail_grading_screen_v2.dart';
 import 'package:internal_sakumi/screens/teacher_v2/teacher_screen_v2.dart';
+import 'package:internal_sakumi/screens/teacher_v2/teacher_survey_screen.dart';
 
 import 'screens/teacher_v2/teacher_profile.dart';
 
@@ -94,6 +95,8 @@ class Routes {
         handler: manageScheduleHandler, transitionType: TransitionType.fadeIn);
     router.define('$teacher/profile',
         handler: profileTeacherHandler, transitionType: TransitionType.fadeIn);
+    router.define('$teacher/:surveyId',
+        handler: teacherSurveyHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/searchGeneral',
         handler: searchScreenHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/manageClasses',
@@ -310,4 +313,8 @@ var detailSurveyHandler =
 var profileTeacherHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return TeacherProfile();
+});
+var teacherSurveyHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return const TeacherSurveyScreen();
 });

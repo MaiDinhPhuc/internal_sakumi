@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/features/teacher/profile/teacher_profile/app_bar_info_teacher_cubit.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
@@ -577,6 +576,18 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
+  Future<List<TeacherSurveyModel>> getTeacherSurveyByTeacherId(int teacherId) async {
+    var list = (await FireStoreDb.instance.getTeacherSurveyByTeacherId(teacherId))
+        .docs
+        .map((e) => TeacherSurveyModel.fromSnapshot(e))
+        .toList();
+
+    list = (list..sort((a,b)=>a.dateAssign.compareTo(b.dateAssign))).reversed.toList();
+
+    return list;
+  }
+
+  @override
   Future<List<StudentLessonModel>> getStudentLessonByStdId(
       int studentId) async {
     return (await FireStoreDb.instance.getStudentLessonByStdId(studentId))
@@ -1026,6 +1037,11 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<void> updateTeacherSurvey(TeacherSurveyModel teacherSurvey) async {
     await FireStoreDb.instance.updateTeacherSurvey(teacherSurvey);
+  }
+
+  @override
+  Future<void> addTeacherSurvey(TeacherSurveyModel teacherSurvey) async {
+    await FireStoreDb.instance.addTeacherSurvey(teacherSurvey);
   }
 
   @override

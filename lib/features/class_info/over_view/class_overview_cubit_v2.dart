@@ -10,7 +10,6 @@ import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class ClassOverViewCubitV2 extends Cubit<int> {
   ClassOverViewCubitV2(this.classId) : super(0) {
@@ -290,7 +289,7 @@ class ClassOverViewCubitV2 extends Cubit<int> {
     }
 
     for(var i in lessonTemp2){
-      if(lessonExceptionIds.contains(i) == false){
+      if(lessonExceptionIds.contains(i.lessonId) == false){
         lessonExceptionIds.add(i.lessonId);
       }
     }

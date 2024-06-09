@@ -264,36 +264,37 @@ class TeacherSurveyItem extends StatelessWidget {
                     ),
                   ),
                   itemBuilder: (context) => [
-                    PopupMenuItem(
-                      onTap: () {
-                        //Navigator.pop(context);
-                        // Navigator.pushNamed(context,
-                        //     '${Routes.master}/manageTeacherSurvey/id=${surveyModel.id}');
-                        // Navigator.pushNamed(context,
-                        //     '${Routes.master}/manageSurvey/id=${surveyModel.id}');
-                      },
-                      padding: EdgeInsets.zero,
-                      child: Center(
-                          child: Text(AppText.textDetail.text,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: Resizable.font(context, 20),
-                                  color: Colors.black))),
-                    ),
+                    if (teacherSurveyModel.status == 'done')
+                      PopupMenuItem(
+                        onTap: () {
+                          //Navigator.pop(context);
+                          // Navigator.pushNamed(context,
+                          //     '${Routes.master}/manageTeacherSurvey/id=${surveyModel.id}');
+                          // Navigator.pushNamed(context,
+                          //     '${Routes.master}/manageSurvey/id=${surveyModel.id}');
+                        },
+                        padding: EdgeInsets.zero,
+                        child: Center(
+                            child: Text(AppText.textDetail.text,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: Resizable.font(context, 20),
+                                    color: Colors.black))),
+                      ),
                     PopupMenuItem(
                       onTap: () {
                         //Navigator.pop(context);
                         showDialog(
                             context: context,
                             builder: (context) => ConfirmDeleteTeacherSurvey(
-                              teacherSurveyModel: teacherSurveyModel,
-                              cubit: cubit,
-                            ));
+                                  teacherSurveyModel: teacherSurveyModel,
+                                  cubit: cubit,
+                                ));
                         //waitingDialog(context);
                       },
                       padding: EdgeInsets.zero,
                       child: Center(
-                          child: Text(AppText.txtDeleteSurvey.text,
+                          child: Text(AppText.txtRecall.text,
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: Resizable.font(context, 20),
@@ -305,7 +306,8 @@ class TeacherSurveyItem extends StatelessWidget {
               ],
             ),
           ),
-          sensei: SenseiItemBrowseDownload(teacher: cubit.getTeacher(teacherSurveyModel.teacherId)),
+          sensei: SenseiItemBrowseDownload(
+              teacher: cubit.getTeacher(teacherSurveyModel.teacherId)),
         ));
   }
 }

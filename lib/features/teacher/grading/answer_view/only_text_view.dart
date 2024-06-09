@@ -16,7 +16,7 @@ class OnlyTextView extends StatelessWidget {
         Text(
           AppText.textStudentAnswer.text,
           style: TextStyle(
-            fontSize: Resizable.font(context, 18),
+            fontSize: Resizable.font(context, 22),
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -24,7 +24,7 @@ class OnlyTextView extends StatelessWidget {
             child: Text(
               answer.convertAnswer.first,
               style: TextStyle(
-                  fontSize: Resizable.font(context, 18),
+                  fontSize: Resizable.font(context, 22),
                   fontWeight: FontWeight.w700,
                   color: primaryColor),
             ))

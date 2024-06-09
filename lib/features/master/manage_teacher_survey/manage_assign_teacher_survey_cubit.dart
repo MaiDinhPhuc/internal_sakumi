@@ -58,13 +58,21 @@ class ManageAssignTeacherSurveyCubit extends Cubit<int>{
     emit(state+1);
   }
 
-  addTeacherSurvey(TeacherSurveyModel model){
+  addTeacherSurvey(TeacherSurveyModel model)async{
     listTeacherSurvey!.add(model);
+    listTeacherId = (listTeacherSurvey!.map((e) => e.teacherId)).toSet().toList();
+    DataProvider.teacherById(model.teacherId, loadTeacherInfo);
   }
 
 
   loadTeacherInfo(Object student) {
     listTeacher.add(student as TeacherModel);
+  }
+
+  bool checkTeacherSurvey(int teacherId, int surveyId) {
+    var list = listTeacherSurvey!.where((e) => e.teacherId == teacherId && e.surveyId == surveyId && e.status == 'waiting').toList();
+    if(list.isEmpty) return false;
+    return true;
   }
 
 

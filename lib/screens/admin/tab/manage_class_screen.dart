@@ -23,18 +23,15 @@ import '../../../features/admin/manage_browse_download/manage_browse_download_bu
 import '../../../features/admin/manage_browse_download/manage_browse_download_dialog.dart';
 
 class ManageClassScreenV2 extends StatelessWidget {
-  const ManageClassScreenV2({super.key});// : cubit = ClassCubit();
+  const ManageClassScreenV2({super.key});
 
-  // final ClassCubit cubit;
+
 
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<ClassCubit>(context);
     var filterController = BlocProvider.of<AdminClassFilterCubit>(context);
     final shimmerList = List.generate(5, (index) => index);
-    // if (filterController.filter.keys.isNotEmpty) {
-    //   cubit.loadDataAdmin(filterController);
-    // }
     return Scaffold(
         backgroundColor: Colors.white,
         body: Column(

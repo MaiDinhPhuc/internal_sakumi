@@ -1,6 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/model/survey_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,5 +54,17 @@ class ManageTeacherSurveyCubit extends Cubit<int>{
   updateSurvey(SurveyModel newSurvey){
     var index = listSurvey!.indexOf(listSurvey!.firstWhere((e) => e.id == newSurvey.id));
     listSurvey![index] = newSurvey;
+  }
+
+  updateActive(List<int> listId){
+    for(var i in listId){
+      var survey = listSurvey!.firstWhere((e) => e.id == i);
+      if(survey.active == false){
+        Update.activeSurvey(i);
+        var index = listSurvey!.indexOf(survey);
+        listSurvey![index] = survey.copyWith(active: true);
+      }
+    }
+    emit(state+1);
   }
 }

@@ -23,7 +23,7 @@ class ManageTeacherSurveyTab extends StatelessWidget {
   Widget build(BuildContext context) {
     var surveyController = BlocProvider.of<ManageTeacherSurveyCubit>(context);
     var teacherSurveyController =
-        BlocProvider.of<ManageAssignTeacherSurveyCubit>(context);
+        BlocProvider.of<ManageAssignTeacherSurveyCubit>(context)..loadSurvey();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -54,7 +54,7 @@ class ManageTeacherSurveyTab extends StatelessWidget {
                       AddButton(
                         onTap: () {
                           alertAssignTeacherSurvey(
-                              context, teacherSurveyController);
+                              context, teacherSurveyController,surveyController);
                         },
                         title: AppText.txtAssignSurvey.text.toUpperCase(),
                       ),
