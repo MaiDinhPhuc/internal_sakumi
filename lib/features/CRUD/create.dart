@@ -11,6 +11,7 @@ import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/survey_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
+import 'package:internal_sakumi/model/teacher_survey_answer_model.dart';
 import 'package:internal_sakumi/model/teacher_survey_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
@@ -43,6 +44,10 @@ class Create {
 
   static createSubClass(ClassModel subClass)async{
     await FireStoreDb.instance.createNewClass(subClass);
+  }
+
+  static submitTeacherSurvey(TeacherSurveyAnswerModel model)async{
+    await FireStoreDb.instance.submitTeacherSurvey(model);
   }
 
   static Future<bool> addStudentLesson(StudentLessonModel model) async {

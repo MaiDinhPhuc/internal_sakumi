@@ -1,7 +1,9 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/admin/manage_general/list_teacher/alert_confirm_change_teacher_class_status.dart';
 import 'package:internal_sakumi/features/class_info/lesson/sensei_item_v2.dart';
+import 'package:internal_sakumi/features/teacher/lecture/list_lesson/alert_confirm_delete_custom_lesson.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
@@ -39,13 +41,10 @@ class CollapseLessonItemV2 extends StatelessWidget {
               opacity: 0,
               child: CircleProgress(
                   title: '0%',
-                  lineWidth:
-                  Resizable.size(context, 3),
+                  lineWidth: Resizable.size(context, 3),
                   percent: 0,
-                  radius:
-                  Resizable.size(context, 16),
-                  fontSize: Resizable.font(
-                      context, 14)))),
+                  radius: Resizable.size(context, 16),
+                  fontSize: Resizable.font(context, 14)))),
       attend: cubit.stdLessons == null || cubit.lessonResult == null
           ? Container()
           : CircleProgress(
@@ -119,7 +118,33 @@ class CollapseLessonItemV2 extends StatelessWidget {
                             fontSize: Resizable.font(context, 14),
                             fontWeight: FontWeight.w800),
                       )),
-      dropdown: Container(),
+      dropdown: cubit.lessonResult == null && role == 'admin'
+          ? ElevatedButton(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => ConfirmDeleteCustomLesson( cubit, lessonModel: cubit.lesson));
+              },
+              style: ButtonStyle(
+                animationDuration: const Duration(milliseconds: 500),
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                padding: MaterialStateProperty.all(EdgeInsets.symmetric(
+                    horizontal: Resizable.padding(context, 5),
+                    vertical: Resizable.padding(context, 5))),
+                //elevation: MaterialStateProperty.all(10),
+                foregroundColor: MaterialStateProperty.all(Colors.white),
+                backgroundColor:
+                    MaterialStateProperty.all(primaryColor.shade500),
+                overlayColor:
+                    MaterialStateProperty.all(Colors.black.withOpacity(0.3)),
+              ),
+              child: Text(AppText.btnRemove.text),
+            )
+          : Container(),
     );
   }
 }

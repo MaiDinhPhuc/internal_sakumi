@@ -35,17 +35,17 @@ class CardStudentClassItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(Resizable.size(context, 5)),
             ),
           )),
-        Container(
-            margin: EdgeInsets.only(
-                right: Resizable.padding(context, 10),
-                top: Resizable.padding(context, 10)),
-            alignment: Alignment.centerRight,
-            child: IconButton(
-                onPressed: onPressed,
-                splashRadius: Resizable.size(context, 15),
-                icon: const Icon(
-                  Icons.keyboard_arrow_down,
-                ))),
+        // Container(
+        //     margin: EdgeInsets.only(
+        //         right: Resizable.padding(context, 10),
+        //         top: Resizable.padding(context, 10)),
+        //     alignment: Alignment.centerRight,
+        //     child: IconButton(
+        //         onPressed: onPressed,
+        //         splashRadius: Resizable.size(context, 15),
+        //         icon: const Icon(
+        //           Icons.keyboard_arrow_down,
+        //         ))),
         Container(
             width: Resizable.size(context, 50),
             height: Resizable.size(context, 50),

@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
+import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
@@ -20,6 +22,36 @@ class LessonItemCubitV2 extends Cubit<int> {
   List<StudentLessonModel>? stdLessons;
   TeacherModel? teacher;
   List<StudentClassModel>? stdClasses;
+  List<Map> listLessonInfo = [];
+
+  updateClass(
+      ListLessonCubitV2 listLessonCubit, LessonModel lessonModel) async {
+    List<dynamic> listCustomLesson = [];
+
+    for (var i in cubit.classModel!.customLessons) {
+      if(i['custom_lesson_id'] != lessonModel.lessonId){
+        listCustomLesson.add(i);
+      }
+    }
+
+    Update
+        .updateClassInfo(ClassModel(
+        classId: cubit.classModel!.classId,
+        courseId: cubit.classModel!.courseId,
+        description: cubit.classModel!.description,
+        endTime: cubit.classModel!.endTime,
+        startTime: cubit.classModel!.startTime,
+        note: cubit.classModel!.note,
+        classCode: cubit.classModel!.classCode,
+        classStatus: cubit.classModel!.classStatus,
+        classType: cubit.classModel!.classType,
+        link: cubit.classModel!.link,
+        customLessons: listCustomLesson,
+        informal: cubit.classModel!.informal,
+        isSubClass: cubit.classModel!.isSubClass,
+        subClassId: cubit.classModel!.subClassId));
+    listLessonCubit.removeLesson(lessonModel);
+  }
 
   loadData() async {
     if (cubit.lessonResults != null) {

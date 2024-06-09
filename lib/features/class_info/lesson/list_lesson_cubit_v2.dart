@@ -90,8 +90,6 @@ class ListLessonCubitV2 extends Cubit<int>{
 
   sortLessons(){
 
-    print(lessonResults);
-
     var listId = lessonResults!.map((e) => e.lessonId).toList();
 
     List<LessonModel> listTemp1 = [];
@@ -116,6 +114,11 @@ class ListLessonCubitV2 extends Cubit<int>{
 
   addNewLesson(LessonModel lesson){
     lessons!.add(lesson);
+    emit(state+1);
+  }
+
+  removeLesson(LessonModel lesson){
+    lessons!.remove(lesson);
     emit(state+1);
   }
 

@@ -589,10 +589,16 @@ enum AppText {
   txtTeacherSurvey,
   txtAssignSurvey,
   txtTeacherSurveyEmpty,
-  txtAssign
+  txtAssign,
+  txtSubmitSuccess,
+  txtConfirmSubmitTeacherSurvey,
+  txtConfirmDeleteCustomLesson
 }
 
 Map<AppText, String> texts = {
+  AppText.txtConfirmDeleteCustomLesson: 'Xác nhận xóa bài học custom??',
+  AppText.txtConfirmSubmitTeacherSurvey: 'SS xác nhận nộp bài khảo sát?? Lưu ý bài khảo sát đã nộp sẽ không được làm lại!',
+  AppText.txtSubmitSuccess: 'Nộp khảo sát thành công!',
   AppText.txtAssign: 'Đã giao',
   AppText.txtTeacherSurveyEmpty: 'Danh sách khảo sát đang trống',
   AppText.txtAssignSurvey: 'Giao bài khảo sát',

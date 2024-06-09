@@ -72,7 +72,7 @@ class TeacherSurveyItem extends StatelessWidget {
           widgetButton: ElevatedButton(
             onPressed: () {
               Navigator.pushNamed(
-                  context, '${Routes.teacher}/survey=${model.id}');
+                  context, '${Routes.teacher}/survey=${model.surveyId}');
             },
             style: ButtonStyle(
                 shadowColor: MaterialStateProperty.all(Colors.black),

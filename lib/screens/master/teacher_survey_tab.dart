@@ -14,16 +14,15 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/custom_appbar.dart';
 
 class ManageTeacherSurveyTab extends StatelessWidget {
-  ManageTeacherSurveyTab({super.key})
-      : changeTabCubit = ChangeTabManageTeacherSurveyCubit();
-
-  final ChangeTabManageTeacherSurveyCubit changeTabCubit;
+  const ManageTeacherSurveyTab({super.key});
 
   @override
   Widget build(BuildContext context) {
     var surveyController = BlocProvider.of<ManageTeacherSurveyCubit>(context);
     var teacherSurveyController =
         BlocProvider.of<ManageAssignTeacherSurveyCubit>(context)..loadSurvey();
+    var changeTabCubit = BlocProvider.of<ChangeTabManageTeacherSurveyCubit>(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(

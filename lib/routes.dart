@@ -26,6 +26,7 @@ import 'package:internal_sakumi/screens/class_info/report_screen.dart';
 import 'package:internal_sakumi/screens/class_info/sub_course_screen.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
+import 'package:internal_sakumi/screens/master/detail_answer_teacher_survey_screen.dart';
 import 'package:internal_sakumi/screens/master/detail_student_survey_screen.dart';
 import 'package:internal_sakumi/screens/master/detail_teacher_survey_screen.dart';
 import 'package:internal_sakumi/screens/master/manage_teacher_feed_back_tab.dart';
@@ -151,6 +152,8 @@ class Routes {
         handler: detailLessonHandler, transitionType: TransitionType.fadeIn);
     router.define('/:role/survey/:classId/:surveyId',
         handler: detailSurveyHandler, transitionType: TransitionType.fadeIn);
+    router.define('$master/:surveyId/:teacherId/:date',
+        handler: detailTeacherSurveyHandler, transitionType: TransitionType.fadeIn);
   }
 }
 
@@ -185,7 +188,7 @@ var manageStudentSurveyHandler =
 
 var manageTeacherSurveyHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return ManageTeacherSurveyTab();
+  return const ManageTeacherSurveyTab();
 });
 
 var manageTeacherFeedBackHandler =
@@ -317,4 +320,8 @@ var profileTeacherHandler =
 var teacherSurveyHandler =
 Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return const TeacherSurveyScreen();
+});
+var detailTeacherSurveyHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return const DetailAnswerTeacherSurveyScreen();
 });

@@ -14,6 +14,7 @@ import 'configs/color_configs.dart';
 import 'features/admin_v2/manage_class_v2/class_cubit_v2.dart';
 import 'features/master/manage_course/manage_course_cubit.dart';
 import 'features/master/manage_student_survey/manage_student_survey_cubit.dart';
+import 'features/master/manage_teacher_survey/change_tab_cubit.dart';
 import 'features/master/manage_teacher_survey/manage_assign_teacher_survey_cubit.dart';
 import 'features/master/manage_teacher_survey/manage_teacher_survey_cubit.dart';
 import 'features/teacher/profile/teacher_profile/app_bar_info_teacher_cubit.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => AppBarInfoTeacherCubit()),
+          BlocProvider<ChangeTabManageTeacherSurveyCubit>(create: (context) => ChangeTabManageTeacherSurveyCubit()),
           BlocProvider<SearchCubit>(create: (context) => SearchCubit()),
           BlocProvider<ClassCubit>(create: (context) => ClassCubit()),
           BlocProvider<ManageTeacherSurveyCubit>(create: (context) => ManageTeacherSurveyCubit()),

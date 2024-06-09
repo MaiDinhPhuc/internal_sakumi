@@ -22,6 +22,7 @@ import 'package:internal_sakumi/model/survey_result_model.dart';
 import 'package:internal_sakumi/model/tag_model.dart';
 import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
+import 'package:internal_sakumi/model/teacher_survey_answer_model.dart';
 import 'package:internal_sakumi/model/teacher_survey_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
@@ -397,12 +398,44 @@ class FireStoreDb {
   Future<QuerySnapshot<Map<String, dynamic>>> getTeacherSurveyByTeacherId(int teacherId) async {
     final snapshot = await db
         .collection('teacher_survey')
-        .where('status', isNotEqualTo: 'delete')
+        .where('status', isEqualTo: 'waiting')
         .where('teacher_id', isEqualTo: teacherId)
         .get();
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTeacherSurvey ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getTeacherSurveyByTeacherAndSurveyId(int teacherId, int surveyId) async {
+    final snapshot = await db
+        .collection('teacher_survey')
+        .where('status', isEqualTo: 'waiting')
+        .where('teacher_id', isEqualTo: teacherId)
+        .where('survey_id', isEqualTo: surveyId)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTeacherSurvey ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getTeacherSurveyAnswerByTeacherAndSurveyId(int teacherId, int surveyId, int date) async {
+    final snapshot = await db
+        .collection('teacher_survey_answer')
+        .where('date_assign', isEqualTo: date)
+        .where('teacher_id', isEqualTo: teacherId)
+        .where('survey_id', isEqualTo: surveyId)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTeacherSurveyAnswer ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
 
@@ -1987,6 +2020,20 @@ class FireStoreDb {
     debugPrint("==========>add db for \"class\"");
   }
 
+  Future<void> submitTeacherSurvey(TeacherSurveyAnswerModel model) async {
+    await db
+        .collection("teacher_survey_answer")
+        .doc("teacher_${model.teacherId}_survey_${model.surveyId}_dateAssign_${model.dateAssign}")
+        .set({
+      'date_assign': model.dateAssign,
+      'id': model.id,
+      'detail': model.detail,
+      'teacher_id': model.teacherId,
+      'survey_id': model.surveyId,
+    });
+    debugPrint("==========>add db for \"teacher_survey_answer\"");
+  }
+
   Future<DocumentSnapshot<Map<String, dynamic>>> getStudentClassByDoc(
       String doc) async {
     final temp = await db.collection("student_class").doc(doc).get();
@@ -2201,7 +2248,7 @@ class FireStoreDb {
       'is_sub_class': model.isSubClass,
       'sub_class_id': model.subClassId
     });
-    debugPrint("==========>update db for \"class\"");
+    debugPrint("==========>update db for \"class_${model.classId}_course_${model.courseId}\"");
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentInFoInClass(

@@ -52,7 +52,7 @@ class ListClassInProfileView extends StatelessWidget {
                   FilterClassStatusManageTeacherV2(cubit: cubit)
                 ],
               )),
-              ClassItemRowLayout(
+              ClassItemRowLayoutV2(
                 widgetClassCode: Text(AppText.txtClassCode.text,
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
@@ -78,7 +78,11 @@ class ListClassInProfileView extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                         fontSize: Resizable.font(context, 17),
                         color: greyColor.shade600)),
-                widgetEvaluate: Container(),
+                widgetEvaluate: Text(AppText.txtEvaluate.text,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: Resizable.font(context, 17),
+                        color: greyColor.shade600)),
                 widgetStatus: Text(AppText.titleStatus.text,
                     style: TextStyle(
                         fontWeight: FontWeight.w600,

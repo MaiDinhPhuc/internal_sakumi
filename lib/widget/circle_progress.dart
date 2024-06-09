@@ -32,7 +32,7 @@ class CircleProgress extends StatelessWidget {
           child: Center(
               child: Text(
             title,
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: fontSize*0.95),
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: title =="100%"? fontSize*0.8 : fontSize*0.95),
           )),
         ),
         circularStrokeCap: CircularStrokeCap.round,

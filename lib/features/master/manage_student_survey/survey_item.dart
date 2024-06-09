@@ -267,9 +267,9 @@ class TeacherSurveyItem extends StatelessWidget {
                     if (teacherSurveyModel.status == 'done')
                       PopupMenuItem(
                         onTap: () {
-                          //Navigator.pop(context);
-                          // Navigator.pushNamed(context,
-                          //     '${Routes.master}/manageTeacherSurvey/id=${surveyModel.id}');
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context,
+                              '${Routes.master}/survey=${teacherSurveyModel.surveyId}/teacher=${teacherSurveyModel.teacherId}/date=${teacherSurveyModel.dateAssign}');
                           // Navigator.pushNamed(context,
                           //     '${Routes.master}/manageSurvey/id=${surveyModel.id}');
                         },
@@ -281,6 +281,7 @@ class TeacherSurveyItem extends StatelessWidget {
                                     fontSize: Resizable.font(context, 20),
                                     color: Colors.black))),
                       ),
+                    if (teacherSurveyModel.status != 'done')
                     PopupMenuItem(
                       onTap: () {
                         //Navigator.pop(context);
