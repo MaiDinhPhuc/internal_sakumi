@@ -23,7 +23,7 @@ class CardStudentClassItem extends StatelessWidget {
       children: [
         Container(
             padding:
-                EdgeInsets.symmetric(vertical: Resizable.padding(context, 9)),
+                EdgeInsets.only(top: Resizable.padding(context, 9), bottom: Resizable.padding(context, 9), right: Resizable.padding(context, 5)),
             alignment: Alignment.centerLeft,
             child: widget),
         if (canTap)

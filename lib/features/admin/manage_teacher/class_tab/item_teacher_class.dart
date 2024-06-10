@@ -7,6 +7,7 @@ import 'package:internal_sakumi/features/admin/manage_student/student_class_over
 import 'package:internal_sakumi/features/admin/manage_teacher/class_tab/status_class_item.dart';
 import 'package:internal_sakumi/features/admin/manage_teacher/class_tab/teacher_class_item_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_teacher/teacher_info/teacher_info_cubit.dart';
+import 'package:internal_sakumi/features/calculator/calculator.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/routes.dart';
@@ -58,6 +59,31 @@ class ItemTeacherClass extends StatelessWidget {
                           hwPercent: itemCubit.hwPercent == null
                               ? 0
                               : itemCubit.hwPercent!,
+                          attendance: itemCubit.classModel.classStatus ==
+                                  'Completed'
+                              ? Text(
+                                  '${Calculator.getPercentUpSale(itemCubit.stdClasses)}%',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      color: primaryColor,
+                                      fontSize: Resizable.font(context, 30)))
+                              : Container(
+                                  width: Resizable.size(context, 30),
+                                  height: Resizable.size(context, 30),
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      color: itemCubit.classModel.getRankColor(
+                                          itemCubit.getEvaluate()),
+                                      borderRadius: BorderRadius.circular(
+                                          Resizable.size(context, 5))),
+                                  child: Center(
+                                      child: Text(itemCubit.getEvaluate(),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w800,
+                                              color: Colors.white,
+                                              fontSize: Resizable.font(
+                                                  context, 30)))),
+                                ),
                         ),
                         onPressed: () {
                           BlocProvider.of<DropdownCubit>(c).update();
@@ -65,14 +91,13 @@ class ItemTeacherClass extends StatelessWidget {
                         widgetStatus: StatusTeacherClass(
                             status: itemCubit.classModel.classStatus),
                         onTap: () async {
-                          if(cubit.role == 'admin'){
+                          if (cubit.role == 'admin') {
                             await Navigator.pushNamed(context,
                                 "${Routes.admin}/overview/class=${classModel.classId}");
-                          }else{
+                          } else {
                             await Navigator.pushNamed(context,
                                 "${Routes.teacher}/overview/class=${classModel.classId}");
                           }
-
                         }),
                     secondChild: CardStudentClassItem(
                         canTap: true,
@@ -95,6 +120,33 @@ class ItemTeacherClass extends StatelessWidget {
                               hwPercent: itemCubit.hwPercent == null
                                   ? 0
                                   : itemCubit.hwPercent!,
+                              attendance: itemCubit.classModel.classStatus ==
+                                      'Completed'
+                                  ? Text(
+                                      '${Calculator.getPercentUpSale(itemCubit.stdClasses)}%',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w800,
+                                          color: primaryColor,
+                                          fontSize:
+                                              Resizable.font(context, 30)))
+                                  : Container(
+                                      width: Resizable.size(context, 30),
+                                      height: Resizable.size(context, 30),
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: itemCubit.classModel
+                                              .getRankColor(
+                                                  itemCubit.getEvaluate()),
+                                          borderRadius: BorderRadius.circular(
+                                              Resizable.size(context, 5))),
+                                      child: Center(
+                                          child: Text(itemCubit.getEvaluate(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w800,
+                                                  color: Colors.white,
+                                                  fontSize: Resizable.font(
+                                                      context, 30)))),
+                                    ),
                             ),
                             DetailTeacherClass(itemCubit: itemCubit)
                           ],
@@ -105,10 +157,10 @@ class ItemTeacherClass extends StatelessWidget {
                         widgetStatus: StatusTeacherClass(
                             status: itemCubit.classModel.classStatus),
                         onTap: () async {
-                          if(cubit.role == 'admin'){
+                          if (cubit.role == 'admin') {
                             await Navigator.pushNamed(context,
                                 "${Routes.admin}/overview/class=${classModel.classId}");
-                          }else{
+                          } else {
                             await Navigator.pushNamed(context,
                                 "${Routes.teacher}/overview/class=${classModel.classId}");
                           }
