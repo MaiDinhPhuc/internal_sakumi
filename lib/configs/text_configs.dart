@@ -592,7 +592,7 @@ enum AppText {
   txtAssign,
   txtSubmitSuccess,
   txtConfirmSubmitTeacherSurvey,
-  txtConfirmDeleteCustomLesson
+  txtConfirmDeleteCustomLesson, txtManageBanner
 }
 
 Map<AppText, String> texts = {
@@ -947,6 +947,7 @@ Map<AppText, String> texts = {
   AppText.txtListCourse: 'Danh sách khoá học',
   AppText.txtAnother: 'Ý kiến khác',
   AppText.txtManageCourse: 'Quản lý khoá học',
+  AppText.txtManageBanner: 'Quản lý Banner',
   AppText.txtSearch: 'Tìm kiếm...',
   AppText.txtLoadMore: 'Xem thêm',
   AppText.txtConfirmChangeStatus:

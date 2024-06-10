@@ -26,7 +26,8 @@ class ManageCourseTab extends StatelessWidget {
               AppText.txtManageCourse.text,
               AppText.txtStudentSurvey.text,
               AppText.txtTeacherSurvey.text,
-              AppText.titleManageFeedBack.text
+              AppText.titleManageFeedBack.text,
+              AppText.txtManageBanner.text,
             ], s: 0),
             Expanded(
                 child: Padding(
