@@ -55,7 +55,7 @@ class ItemStudentClass extends StatelessWidget {
                             attendancePercent: itemCubit.getAttendancePercent(),
                             hwPercent: itemCubit.lessons == null
                                 ? 0
-                                : itemCubit.getHwPercent(),
+                                : itemCubit.getHwPercent(), attendance: Container(),
                           ),
                           onPressed: () {
                             BlocProvider.of<DropdownCubit>(c).update();
@@ -80,7 +80,7 @@ class ItemStudentClass extends StatelessWidget {
                                     itemCubit.getAttendancePercent(),
                                 hwPercent: itemCubit.lessons == null
                                     ? 0
-                                    : itemCubit.getHwPercent(),
+                                    : itemCubit.getHwPercent(), attendance: Container(),
                               ),
                               onPressed: () {
                                 BlocProvider.of<DropdownCubit>(c).update();

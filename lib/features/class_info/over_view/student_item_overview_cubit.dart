@@ -99,7 +99,7 @@ class StudentItemOverViewCubit extends Cubit<int> {
     }
 
     for(var i in lessonTemp2){
-      if(lessonExceptionIds.contains(i) == false){
+      if(lessonExceptionIds.contains(i.lessonId) == false){
         lessonExceptionIds.add(i.lessonId);
       }
     }

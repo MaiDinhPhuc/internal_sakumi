@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
+import 'package:internal_sakumi/features/admin/manage_teacher/class_tab/teacher_class_item_cubit.dart';
+import 'package:internal_sakumi/features/calculator/calculator.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -13,6 +15,7 @@ class StudentClassOverview extends StatelessWidget {
   final double lessonPercent;
   final String lessonCountTitle;
   final double? attendancePercent, hwPercent;
+  final Widget attendance;
 
   const StudentClassOverview(
       {super.key,
@@ -21,7 +24,7 @@ class StudentClassOverview extends StatelessWidget {
       required this.lessonPercent,
       required this.lessonCountTitle,
       required this.attendancePercent,
-      required this.hwPercent});
+      required this.hwPercent,required this.attendance});
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +80,7 @@ class StudentClassOverview extends StatelessWidget {
           radius: Resizable.size(context, 15),
           fontSize: Resizable.font(context, 14),
         ),
-        widgetEvaluate: Container(),
+        widgetEvaluate:attendance,
         widgetStatus: Container());
   }
 }
