@@ -1,10 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/Material.dart';
+import 'package:internal_sakumi/model/banner_model.dart';
+import 'package:internal_sakumi/model/banner_option.dart';
 import 'package:internal_sakumi/model/bill_model.dart';
 import 'package:internal_sakumi/model/browse_download_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
+import 'package:internal_sakumi/model/course_suggest_model.dart';
+import 'package:internal_sakumi/model/cs_option.dart';
 import 'package:internal_sakumi/model/feedback_model.dart';
 import 'package:internal_sakumi/model/group_tag_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
@@ -2541,5 +2545,165 @@ class FireStoreDb {
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> manage_tags ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
+  }
+
+  Future<bool> addBanner(BannerModel banner) async {
+    bool value = true;
+    await db
+        .collection("manage_banners")
+        .doc("banner_${banner.id}")
+        .set(banner.toJson(), SetOptions(merge: true))
+        .whenComplete(() => value = true)
+        .onError((error, stackTrace) {
+      print(error);
+      value = false;
+    });
+    return value;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getBanners() async {
+    final snapshot = await db.collection("manage_banners").get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getGroupTags ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+  Future<QuerySnapshot<Map<String, dynamic>>> getBannerOptionsById(int id) async {
+    final snapshot =
+    await db.collection('banner_options').where('banner_id', isEqualTo: id).get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTagById $id ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+  Future<QuerySnapshot<Map<String, dynamic>>> getBannerOptionByIdAndType(
+      int ownId, int type) async {
+    final snapshot = await db
+        .collection('banner_options')
+        .where('banner_id', isEqualTo: ownId)
+        .where('type', isEqualTo: type)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getBannerOptionById $ownId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+  Future<bool> addBannerOption(BannerOption bannerOption)  async {
+    bool value = true;
+    await db
+        .collection("banner_options")
+        .doc("banner_option_${bannerOption.id}")
+        .set(bannerOption.toJson(), SetOptions(merge: true))
+        .whenComplete(() => value = true)
+        .onError((error, stackTrace) {
+      print(error);
+      value = false;
+    });
+    return value;
+  }
+
+  Future<bool> deleteBannerOption(String doc) async {
+    bool value = true;
+    await db
+        .collection("banner_options")
+        .doc(doc)
+        .delete()
+        .whenComplete(() => value = true)
+        .onError((error, stackTrace) {
+      value = false;
+    });
+    return value;
+  }
+  Future<bool> deleteBanner(String doc)  async {
+    bool value = true;
+    await db
+        .collection("manage_banners")
+        .doc(doc)
+        .delete()
+        .whenComplete(() => value = true)
+        .onError((error, stackTrace) {
+      value = false;
+    });
+    return value;
+  }
+  Future<QuerySnapshot<Map<String, dynamic>>> getCourseSuggests() async {
+    final snapshot = await db.collection("manage_course_suggests").get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCourseSuggests ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+  Future<bool> addCourseSuggest(CourseSuggestModel cs)  async {
+    bool value = true;
+    await db
+        .collection("manage_course_suggests")
+        .doc("course_suggests_${cs.id}")
+        .set(cs.toJson(), SetOptions(merge: true))
+        .whenComplete(() => value = true)
+        .onError((error, stackTrace) {
+      print(error);
+      value = false;
+    });
+    return value;
+  }
+  Future<bool>  deleteCourseSuggest(CourseSuggestModel cs)  async {
+    bool value = true;
+    await db
+        .collection("manage_course_suggests")
+        .doc('course_suggests_${cs.id}')
+        .delete()
+        .whenComplete(() => value = true)
+        .onError((error, stackTrace) {
+      value = false;
+    });
+    return value;
+  }
+
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getCSOptionByIdAndType(
+      int ownId, int type) async {
+    final snapshot = await db
+        .collection('course_suggest_options')
+        .where('cs_id', isEqualTo: ownId)
+        .where('type', isEqualTo: type)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getCSOptionByIdAndType $ownId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+  Future<bool> addCSOption(CSOption csOption)  async {
+    bool value = true;
+    await db
+        .collection("course_suggest_options")
+        .doc("cs_option_${csOption.id}")
+        .set(csOption.toJson(), SetOptions(merge: true))
+        .whenComplete(() => value = true)
+        .onError((error, stackTrace) {
+      print(error);
+      value = false;
+    });
+    return value;
+  }
+
+
+  Future<bool> deleteCSOption(String s)  async {
+    bool value = true;
+    await db
+        .collection("course_suggest_options")
+        .doc(s)
+        .delete()
+        .whenComplete(() => value = true)
+        .onError((error, stackTrace) {
+      value = false;
+    });
+    return value;
   }
 }

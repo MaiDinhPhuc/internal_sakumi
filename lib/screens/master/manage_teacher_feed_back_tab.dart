@@ -20,12 +20,7 @@ class ManageTeacherFeedBackTab extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          CustomAppbar(buttonList: [
-            AppText.txtManageCourse.text,
-            AppText.txtStudentSurvey.text,
-            AppText.txtTeacherSurvey.text,
-            AppText.titleManageFeedBack.text
-          ], s: 3),
+          const CustomAppbar( s: 3),
           Container(
             margin:
             EdgeInsets.symmetric(vertical: Resizable.padding(context, 20)),

@@ -22,13 +22,7 @@ class ManageCourseTab extends StatelessWidget {
         backgroundColor: Colors.white,
         body: Column(
           children: [
-            CustomAppbar(buttonList: [
-              AppText.txtManageCourse.text,
-              AppText.txtStudentSurvey.text,
-              AppText.txtTeacherSurvey.text,
-              AppText.titleManageFeedBack.text,
-              AppText.txtManageBanner.text,
-            ], s: 0),
+            const CustomAppbar( s: 0),
             Expanded(
                 child: Padding(
                   padding: EdgeInsets.symmetric(

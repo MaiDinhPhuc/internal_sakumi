@@ -575,7 +575,11 @@ enum AppText {
   txtScheduleExist,
   txtBrowseDownload,
   txtDataToken,
-  txtData, textAddNote, btnPass, txtNoteEmpty, textAdd,
+  txtData,
+  textAddNote,
+  btnPass,
+  txtNoteEmpty,
+  textAdd,
   txtRequestDownload,
   txtRequestNotAccept,
   txtDataDownloadEmpty,
@@ -592,12 +596,19 @@ enum AppText {
   txtAssign,
   txtSubmitSuccess,
   txtConfirmSubmitTeacherSurvey,
-  txtConfirmDeleteCustomLesson, txtManageBanner
+  txtConfirmDeleteCustomLesson,
+  txtManageBanner,
+  txtListBanner,
+  btnAddBanner,
+  txtAddBanner,
+  txtUpdateSuccess,
+  txtAddSuccess, txtShortDescription, txtHtml, btnUpdateBanner, txtImageBanner, txtUploadImage, txtPleaseInputImage, txtBannerOption, txtAtLeast1CourseChoosen, txtConfirmDeleteBanner, txtManageCourseSuggest, txtListCS, txtAddCourseSuggest, txtCSOption, txtConfirmDeleteCS
 }
 
 Map<AppText, String> texts = {
   AppText.txtConfirmDeleteCustomLesson: 'Xác nhận xóa bài học custom??',
-  AppText.txtConfirmSubmitTeacherSurvey: 'SS xác nhận nộp bài khảo sát?? Lưu ý bài khảo sát đã nộp sẽ không được làm lại!',
+  AppText.txtConfirmSubmitTeacherSurvey:
+      'SS xác nhận nộp bài khảo sát?? Lưu ý bài khảo sát đã nộp sẽ không được làm lại!',
   AppText.txtSubmitSuccess: 'Nộp khảo sát thành công!',
   AppText.txtAssign: 'Đã giao',
   AppText.txtTeacherSurveyEmpty: 'Danh sách khảo sát đang trống',
@@ -609,9 +620,12 @@ Map<AppText, String> texts = {
   AppText.txtDownloadDate: 'Ngày tải xuống',
   AppText.txtAccept: 'Đã duyệt',
   AppText.txtNotAccept: 'Chưa duyệt',
-  AppText.txtRequestRequired: 'Vui lòng yêu cầu tải và chờ xác nhận từ support!',
-  AppText.txtDataDownloadEmpty: 'Dữ liệu bị lỗi, vui lòng liên hệ support để cập nhật và quay lại tải sau!',
-  AppText.txtRequestNotAccept: 'Yêu cầu tải chưa được chấp nhận, vui lòng liên hệ support!',
+  AppText.txtRequestRequired:
+      'Vui lòng yêu cầu tải và chờ xác nhận từ support!',
+  AppText.txtDataDownloadEmpty:
+      'Dữ liệu bị lỗi, vui lòng liên hệ support để cập nhật và quay lại tải sau!',
+  AppText.txtRequestNotAccept:
+      'Yêu cầu tải chưa được chấp nhận, vui lòng liên hệ support!',
   AppText.txtRequestDownload: 'Yêu cầu tải',
   AppText.txtData: 'Tài liệu',
   AppText.txtDataToken: 'Data Token',
@@ -1066,6 +1080,7 @@ Map<AppText, String> texts = {
   AppText.txtRateOfSubmitHomework: 'Tỉ lệ làm bài tập',
   AppText.txtEvaluate: 'Đánh giá',
   AppText.txtDescription: 'Mô tả',
+  AppText.txtShortDescription: 'Mô tả ngắn',
   AppText.txtStartDate: 'Ngày bắt đầu',
   AppText.txtEndDate: 'Ngày kết thúc',
   AppText.btnCreateClass: 'Tạo lớp mới',
@@ -1201,6 +1216,7 @@ Map<AppText, String> texts = {
   AppText.txtWrongPassword: 'Vui lòng kiểm tra lại mật khẩu',
   AppText.txtWrongAccount: 'Vui lòng kiểm tra lại tài khoản',
   AppText.txtGroup: 'Nhóm',
+  AppText.txtListBanner: 'Danh sách Banner',
   AppText.btnAddGroup: 'Thêm nhóm mới',
   AppText.btnAddTag: 'thêm tag mới',
   AppText.txtAddTag: 'thêm tag',
@@ -1239,6 +1255,23 @@ Map<AppText, String> texts = {
   AppText.txtAddTagSuccess: 'Thêm tag mới thành công',
   AppText.txtError: 'Có lỗi xảy ra! Thử lại sau',
   AppText.txtDeleteSuccess: 'Xoá thành công',
+  AppText.txtAddBanner: 'Thêm Banner mới',
+  AppText.btnAddBanner: 'Thêm Banner',
+  AppText.btnUpdateBanner: 'Cập nhật Banner',
+  AppText.txtUpdateSuccess: 'Cập nhật thành công',
+  AppText.txtAddSuccess: 'Thêm mới thành công',
+  AppText.txtHtml: 'Thẻ HTML',
+  AppText.txtImageBanner: 'Ảnh Banner',
+  AppText.txtUploadImage: 'Tải ảnh lên tại đây',
+  AppText.txtPleaseInputImage: 'Vui lòng thêm ảnh',
+  AppText.txtBannerOption: 'Tuỳ chỉnh Banner',
+  AppText.txtAtLeast1CourseChoosen: 'Ít nhất 1 khoá học được chọn',
+  AppText.txtConfirmDeleteBanner: 'Bạn muốn xoá Banner này?',
+  AppText.txtManageCourseSuggest: 'Quản lý khoá học đề xuất',
+  AppText.txtListCS: 'Khoá học đề xuất',
+  AppText.txtAddCourseSuggest: 'Thêm khoá học đề xuất',
+  AppText.txtCSOption: 'Tuỳ chỉnh khoá học đề xuất',
+  AppText.txtConfirmDeleteCS: 'Bạn muốn xoá khoá học đề xuất này?',
 };
 
 extension AppTexts on AppText {
