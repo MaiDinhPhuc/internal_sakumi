@@ -88,17 +88,19 @@ class LessonBrowseDownloadItem extends StatelessWidget {
                           notificationDialog(
                               context, AppText.txtRequestRequired.text);
                         } else if (cubit.checkEnableDownload(lesson.lessonId)) {
-                          if (cubit.getLinkDownload(lesson.courseId).isEmpty) {
+                          if (cubit.getLinkDownload(lesson).isEmpty) {
                             notificationDialog(
                                 context, AppText.txtDataDownloadEmpty.text);
                           } else {
-                            cubit.downloadFile(
-                                cubit.getLinkDownload(lesson.courseId));
-                            BrowseDownloadModel model = cubit
-                                .listBrowseDownload!
-                                .firstWhere((e) =>
-                                    e.lessonId == lesson.lessonId && e.parentId == 0);
-                            Update.updateBrowseDownload(model.copyWith(status: 'download', downloadTime: DateTime.now().millisecondsSinceEpoch));
+                            cubit.downloadFile(cubit.getLinkDownload(lesson));
+                            BrowseDownloadModel model =
+                                cubit.listBrowseDownload!.firstWhere((e) =>
+                                    e.lessonId == lesson.lessonId &&
+                                    e.parentId == 0);
+                            Update.updateBrowseDownload(model.copyWith(
+                                status: 'download',
+                                downloadTime:
+                                    DateTime.now().millisecondsSinceEpoch));
                             cubit.updateRequest(model);
                           }
                         } else {
