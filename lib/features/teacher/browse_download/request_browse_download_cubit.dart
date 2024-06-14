@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/model/browse_download_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
@@ -6,8 +7,9 @@ import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
-
+import 'package:crypto/crypto.dart';
 import 'dart:html' as html;
+import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -128,12 +130,17 @@ class RequestBrowseDownloadCubit extends Cubit<int> {
     return true;
   }
 
-  String getLinkDownload(int courseId){
+  String getLinkDownload(LessonModel lessonModel){
     if(listBrowseDownload == null) return '';
-    var list = listCourse.where((element) => element.courseId == courseId).toList();
+    var list = listCourse.where((element) => element.courseId == lessonModel.courseId).toList();
     if(list.isEmpty) return '';
     if(list.first.dataToken.isEmpty) return '';
-    return "https://file-examples.com/storage/fe15076da466528199d9c5a/2017/10/file-sample_150kB.pdf";
+
+    String hash = md5.convert(utf8.encode('${lessonModel.courseId} ${lessonModel.lessonId} sakumi2024')).toString();
+
+    String fileToken = '${lessonModel.courseId}_${lessonModel.lessonId}_${hash.substring(10)}';
+
+    return AppConfigs.getDownloadUrl(fileToken, list.first.dataToken);
     //return AppConfigs.getDataUrl("", list.first.dataToken) ;
   }
 }

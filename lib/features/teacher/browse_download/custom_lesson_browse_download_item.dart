@@ -180,10 +180,10 @@ class CustomLessonBrowseDownloadItem extends StatelessWidget {
                                           if(cubit.checkCustomRequest(e.lessonId, lesson.lessonId) == false){
                                             notificationDialog(context,  AppText.txtRequestRequired.text);
                                           }else if(cubit.checkCustomEnableDownload(e.lessonId, lesson.lessonId)){
-                                            if(cubit.getLinkDownload(e.courseId).isEmpty){
+                                            if(cubit.getLinkDownload(e).isEmpty){
                                               notificationDialog(context,  AppText.txtDataDownloadEmpty.text);
                                             }else{
-                                              cubit.downloadFile(cubit.getLinkDownload(e.courseId));
+                                              cubit.downloadFile(cubit.getLinkDownload(e));
                                               BrowseDownloadModel model = cubit
                                                   .listBrowseDownload!
                                                   .firstWhere((e) =>

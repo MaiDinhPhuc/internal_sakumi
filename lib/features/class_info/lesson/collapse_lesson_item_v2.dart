@@ -118,7 +118,7 @@ class CollapseLessonItemV2 extends StatelessWidget {
                             fontSize: Resizable.font(context, 14),
                             fontWeight: FontWeight.w800),
                       )),
-      dropdown: cubit.lessonResult == null && role == 'admin'
+      dropdown: cubit.lessonResult == null && role == 'admin' && cubit.lesson.isCustom
           ? ElevatedButton(
               onPressed: () {
                 showDialog(
