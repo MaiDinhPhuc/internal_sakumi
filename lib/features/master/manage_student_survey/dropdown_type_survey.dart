@@ -21,17 +21,25 @@ class DropDownSurveyType extends StatelessWidget {
           border: Border.all(color: greyColor.shade100)),
       child: DropdownButtonHideUnderline(
         child: DropdownButton2(
-          icon: const Icon(Icons.keyboard_arrow_down),
-          buttonPadding: EdgeInsets.symmetric(
-              vertical: Resizable.size(context, 5),
-              horizontal: Resizable.padding(context, 15)),
-          dropdownElevation: 0,
-          buttonDecoration:
-              BoxDecoration(borderRadius: BorderRadius.circular(10)),
-          dropdownDecoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-              borderRadius: BorderRadius.circular(10)),
-          itemHeight: Resizable.size(context, 25),
+          iconStyleData: const IconStyleData(
+            icon: Icon(Icons.keyboard_arrow_down),
+          ),
+          buttonStyleData: ButtonStyleData(
+            height: Resizable.size(context, 20),
+            width: double.maxFinite,
+            padding: EdgeInsets.symmetric(
+                vertical: Resizable.size(context, 5),
+                horizontal: Resizable.padding(context, 15)),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+          ),
+          dropdownStyleData: DropdownStyleData(
+              elevation: 0,
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  borderRadius: BorderRadius.circular(10))),
+          menuItemStyleData: MenuItemStyleData(
+            height:  Resizable.size(context, 25),
+          ),
           items: items
               .map((item) => DropdownMenuItem<String>(
                   value: item,
@@ -63,8 +71,6 @@ class DropDownSurveyType extends StatelessWidget {
               .toList(),
           value: value,
           onChanged: onChanged,
-          //buttonHeight: Resizable.size(context, 20),
-          buttonWidth: double.maxFinite,
         ),
       ),
     );

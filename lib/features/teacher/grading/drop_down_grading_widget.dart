@@ -4,7 +4,11 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class DropDownGrading extends StatelessWidget {
-  const DropDownGrading({super.key, required this.items, required this.onChanged, required this.value});
+  const DropDownGrading(
+      {super.key,
+      required this.items,
+      required this.onChanged,
+      required this.value});
   final List<String> items;
   final String value;
   final Function(String?) onChanged;
@@ -13,39 +17,48 @@ class DropDownGrading extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: DropdownButton2(
-        icon: const Icon(Icons.keyboard_arrow_down),
-        buttonPadding: EdgeInsets.symmetric(
-            vertical: Resizable.size(context, 0),
-            horizontal: Resizable.padding(context, 10)),
-        buttonDecoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                  blurRadius: Resizable.size(context, 2),
-                  color: greyColor.shade100)
-            ],
-            border: Border.all(
-                color: greyColor.shade100),
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(1000)),
-        dropdownElevation: 0,
-        dropdownDecoration: BoxDecoration(
-            border: Border.all(color: Colors.black),
-            borderRadius: BorderRadius.circular(10)),
-        itemHeight: Resizable.size(context, 25),
+        iconStyleData: const IconStyleData(
+          icon: Icon(Icons.keyboard_arrow_down),
+        ),
+        buttonStyleData: ButtonStyleData(
+          height: Resizable.size(context, 20),
+          width: double.maxFinite,
+          padding:
+              EdgeInsets.symmetric(horizontal: Resizable.padding(context, 10)),
+          decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                      blurRadius: Resizable.size(context, 2),
+                      color: greyColor.shade100)
+                ],
+                border: Border.all(
+                    color: greyColor.shade100),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(1000)
+          )
+        ),
+        menuItemStyleData: MenuItemStyleData(
+          height: Resizable.size(context, 25)
+        ),
+        dropdownStyleData: DropdownStyleData(
+          elevation: 0,
+          decoration: BoxDecoration(
+        border: Border.all(color: Colors.black),
+        borderRadius: BorderRadius.circular(10)),
+
+        ),
         items: items
             .map((item) => DropdownMenuItem<String>(
-            value: item,
-            child: Center(
-              child: Text(item,
-                  style: TextStyle(
-                      fontSize: Resizable.font(context, 18),
-                      fontWeight: FontWeight.w500)),
-            )))
+                value: item,
+                child: Center(
+                  child: Text(item,
+                      style: TextStyle(
+                          fontSize: Resizable.font(context, 18),
+                          fontWeight: FontWeight.w500)),
+                )))
             .toList(),
         value: value,
         onChanged: onChanged,
-        buttonHeight: Resizable.size(context, 20),
-        buttonWidth: double.maxFinite,
       ),
     );
   }

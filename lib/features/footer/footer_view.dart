@@ -82,26 +82,32 @@ class FooterView extends StatelessWidget {
                                   color: const Color(0xffE0E0E0),
                                   width: Resizable.size(context, 0.5))),
                         ),
-                        buttonOverlayColor:
-                        MaterialStateProperty.all(Colors.transparent),
-                        dropdownElevation: Resizable.size(context, 5).toInt(),
-                        dropdownDecoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black.withOpacity(0.25),
-                                  blurRadius: Resizable.size(context, 4),
-                                  offset: Offset(0, Resizable.size(context, 4)))
-                            ],
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(5)),
-                        icon: Padding(
-                          padding: EdgeInsets.only(
-                              right: Resizable.padding(context, 10)),
-                          child: const Icon(Icons.keyboard_arrow_down),
+                        buttonStyleData: ButtonStyleData(
+                          padding: EdgeInsets.symmetric(
+                                vertical: Resizable.size(context, 5)),
+                          overlayColor: MaterialStateProperty.all(Colors.transparent),
+                          height: Resizable.size(context, 40.toDouble())
                         ),
-                        buttonPadding: EdgeInsets.symmetric(
-                            vertical: Resizable.size(context, 5),
-                            horizontal: Resizable.padding(context, 0)),
+                        dropdownStyleData: DropdownStyleData(
+                          elevation: Resizable.size(context, 5).toInt(),
+                          decoration: BoxDecoration(
+                              boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.black.withOpacity(0.25),
+                                      blurRadius: Resizable.size(context, 4),
+                                      offset: Offset(0, Resizable.size(context, 4)))
+                                ],
+                                border: Border.all(color: Colors.black),
+                                borderRadius: BorderRadius.circular(5)
+                          )
+                        ),
+                        iconStyleData: IconStyleData(
+                          icon: Padding(
+                              padding: EdgeInsets.only(
+                                  right: Resizable.padding(context, 10)),
+                              child: const Icon(Icons.keyboard_arrow_down),
+                            )
+                        ),
                         hint: Container(
                             alignment: Alignment.centerLeft,
                             height: Resizable.size(context, 40),
@@ -114,7 +120,7 @@ class FooterView extends StatelessWidget {
                                   fontSize: Resizable.font(context, 14),
                                   color: const Color(0xff757575)),
                             )),
-                        buttonHeight: Resizable.size(context, 40.toDouble()),
+                        //buttonHeight: Resizable.size(context, 40.toDouble()),
                         items: List.generate(feedbackDialogCubit.listType.length,
                                 (index) => (feedbackDialogCubit.listType[index]))
                             .toList()

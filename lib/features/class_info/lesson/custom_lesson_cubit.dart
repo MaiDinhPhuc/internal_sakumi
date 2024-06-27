@@ -24,7 +24,7 @@ class CustomLessonCubit extends Cubit<int> {
 
   List<CourseModel>? courses;
   List<LessonModel> lessons = [];
-  int count = 1;
+
 
   loadData() async {
     courses = (await FireBaseProvider.instance.getAllCourseEnable())
@@ -101,14 +101,24 @@ class CustomLessonCubit extends Cubit<int> {
     emit(state + 1);
   }
 
+  check(int index){
+
+    if(listLessonInfo[index]['courseId'] == -1 && listLessonInfo[index]['lessonId'] == null) return true;
+
+    if(listLessonInfo[index]['courseId'] == -1 || listLessonInfo[index]['lessonId'] == null) return false;
+
+    return true;
+  }
+
   delete(int index) {
-    listLessonInfo.remove(listLessonInfo[index]);
-    count--;
+
+    if(listLessonInfo.isNotEmpty && check(index)){
+      listLessonInfo.remove(listLessonInfo[index]);
+    }
     emit(state + 1);
   }
 
   addNewCourse() {
-    count++;
     listLessonInfo.add({"courseId": -1});
     emit(state + 1);
   }

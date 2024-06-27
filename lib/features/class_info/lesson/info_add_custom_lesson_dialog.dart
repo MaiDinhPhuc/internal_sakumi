@@ -70,7 +70,7 @@ class InfoAddCustomLesson extends StatelessWidget {
                           Expanded(flex: 1, child: Container())
                         ],
                       ),
-                      for (int i = 0; i < cubit.count; i++)
+                      for (int i = 0; i < cubit.listLessonInfo.length; i++)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -125,8 +125,10 @@ class InfoAddCustomLesson extends StatelessWidget {
                             Expanded(
                                 flex: 1,
                                 child: Container(
-                                  margin: EdgeInsets.all(
-                                      Resizable.padding(context, 5)),
+                                  margin: EdgeInsets.only(
+                                      left: Resizable.padding(context, 5),
+                                      bottom: Resizable.padding(context, 5),
+                                      top: Resizable.padding(context, 5)),
                                   height: Resizable.size(context, 30),
                                   width: Resizable.size(context, 30),
                                   decoration: BoxDecoration(
@@ -148,9 +150,7 @@ class InfoAddCustomLesson extends StatelessWidget {
                       // if (cubit.count < 3)
                       DottedBorderButton(AppText.btnAddNewLesson.text,
                           onPressed: () {
-                        if (cubit.listLessonInfo.isNotEmpty) {
-                          cubit.addNewCourse();
-                        }
+                            cubit.addNewCourse();
                       })
                     ],
                   ))
