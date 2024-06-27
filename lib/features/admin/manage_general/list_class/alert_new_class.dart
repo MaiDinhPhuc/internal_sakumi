@@ -189,7 +189,7 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                                 isSubClass:
                                                                 false,
                                                                 subClassId:
-                                                                0);
+                                                                0, customTests: []);
                                                             await cubit.addNewClass(
                                                                 classModel);
                                                             if (context
@@ -255,7 +255,7 @@ void alertNewClass(BuildContext context, bool isEdit, ClassModel? classModel,
                                                                         .isSubClass,
                                                                 subClassId:
                                                                     classModel
-                                                                        .subClassId));
+                                                                        .subClassId, customTests: classModel.customTests));
                                                             if (context
                                                                 .mounted) {
                                                               Navigator.pop(

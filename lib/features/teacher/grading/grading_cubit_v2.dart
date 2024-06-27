@@ -79,7 +79,32 @@ class GradingCubitV2 extends Cubit<int>{
       }
     }
 
-    await DataProvider.testByCourseId(classModel!.courseId, loadTestInClass);
+
+
+    if(classModel!.customTests.isEmpty){
+      await DataProvider.testByCourseId(classModel!.courseId, loadTestInClass);
+
+    }else{
+      await DataProvider.testByCourseAndClassId(classModel!.courseId,classId, loadTestInClass);
+
+      var testId = tests!.map((e) => e.id).toList();
+
+      if(classModel!.customTests.isNotEmpty){
+        for(var i in classModel!.customTests){
+          if(!testId.contains(i['custom_test_id'])){
+
+            var test = await FireBaseProvider.instance.getTestByTestId(i['test_id']);
+
+            tests!.add(TestModel(
+                courseId: i['course_id'],
+                description: test.description,
+                title: test.title,
+                isCustom: true, id: i['custom_test_id'], difficulty: 0, enable: true, duration: 0, childTestId: i['test_id']));
+          }
+        }
+      }
+    }
+
 
     await DataProvider.testResultByClassId(classId, loadTestResultInClass);
 

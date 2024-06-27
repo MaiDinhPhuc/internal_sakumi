@@ -49,7 +49,7 @@ class LessonItemCubitV2 extends Cubit<int> {
         customLessons: listCustomLesson,
         informal: cubit.classModel!.informal,
         isSubClass: cubit.classModel!.isSubClass,
-        subClassId: cubit.classModel!.subClassId));
+        subClassId: cubit.classModel!.subClassId, customTests: cubit.classModel!.customTests));
     listLessonCubit.removeLesson(lessonModel);
   }
 

@@ -164,7 +164,7 @@ abstract class NetworkProvider {
       List<int> ids, List<String> listStatus);
 
   Future<DetailGradingDataModel> getDataForDetailGradingCustom(
-      int classId, int lessonId, int customLessonId, String type);
+      int classId, int childId, int parentId, String type);
 
   Future<List<AnswerModel>> getListCustomAnswer(
       int lessonId, int classId, int customLessonId);

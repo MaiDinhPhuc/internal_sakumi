@@ -100,9 +100,23 @@ class TestGradingItem extends StatelessWidget {
                       gradingNumber: Container(),
                       button: ElevatedButton(
                         onPressed: () async {
-                          await Navigator.pushNamed(context,
-                              "${Routes.teacher}/grading/class=${TextUtils.getName()}/type=test/parent=${e.testId}");
-                        },
+
+                          if(cubit
+                              .tests![cubit.tests!.indexWhere(
+                                  (element) =>
+                              e.testId == element.id)].isCustom){
+                            await Navigator.pushNamed(c,
+                                "${Routes.teacher}/grading/class=${TextUtils.getName()}/type=test/customTest=${e.testId}/test=${cubit
+                                    .tests![cubit.tests!.indexWhere(
+                                        (element) =>
+                                    e.testId == element.id)].childTestId}");
+                          }else{
+                            await Navigator.pushNamed(context,
+                                "${Routes.teacher}/grading/class=${TextUtils.getName()}/type=test/parent=${e.testId}");
+
+                          }
+
+                          },
                         style: ButtonStyle(
                             shadowColor: MaterialStateProperty.all(
                                 cubit.getTestResultCount(e.testId, 1) ==

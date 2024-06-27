@@ -1,6 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/teacher/lecture/list_lesson/alert_confirm_delete_custom.dart';
 import 'package:internal_sakumi/features/teacher/lecture/list_lesson/lesson_item_row_layout.dart';
 import 'package:internal_sakumi/features/teacher/tests/alert_test_see_soon.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -74,12 +75,27 @@ class TestNotAlreadyV2 extends StatelessWidget {
                     PopupMenuItem(
                       onTap: () {
                         alertAssignTestView(context, ()async{
-                          await detailCubit.assignTest(index, context);
+                          await detailCubit.assignTest(context);
                         });
                       },
                       padding: EdgeInsets.zero,
                       child: Center(
                           child: Text(AppText.txtAssignTest.text,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: Resizable.font(context, 20),
+                                  color: const Color(0xffB71C1C)))),
+                    ),
+                  if (role != "teacher" && detailCubit.testModel.isCustom)
+                    PopupMenuItem(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) => ConfirmDeleteCustomTest( detailCubit, testModel: detailCubit.testModel));
+                      },
+                      padding: EdgeInsets.zero,
+                      child: Center(
+                          child: Text(AppText.btnRemove.text,
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: Resizable.font(context, 20),

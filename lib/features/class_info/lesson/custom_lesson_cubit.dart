@@ -146,7 +146,7 @@ class CustomLessonCubit extends Cubit<int> {
             customLessons: listCustomLesson,
             informal: classModel.informal,
             isSubClass: classModel.isSubClass,
-            subClassId: classModel.subClassId));
+            subClassId: classModel.subClassId, customTests: classModel.customTests));
     listLessonCubit.addNewLesson(LessonModel(
         lessonId: millisecondsSinceEpoch,
         courseId: -1,
@@ -199,7 +199,7 @@ class CustomLessonCubit extends Cubit<int> {
             customLessons: listCustomLesson,
             informal: classModel.informal,
             isSubClass: classModel.isSubClass,
-            subClassId: classModel.subClassId))
+            subClassId: classModel.subClassId, customTests: classModel.customTests))
         .whenComplete(() {
       subCourseCubit.addNewLesson(LessonModel(
           lessonId: millisecondsSinceEpoch,

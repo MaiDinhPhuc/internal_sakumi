@@ -22,7 +22,6 @@ class TestCubitV2 extends Cubit<int>{
   List<StudentClassModel>? listStdClass;
 
   loadData()async{
-    //classModel = await FireBaseProvider.instance.getClassById(classId);
 
     await DataProvider.classByClassId(classId, loadClass);
 
@@ -37,7 +36,36 @@ class TestCubitV2 extends Cubit<int>{
 
     await DataProvider.stdTestByClassId(classId, loadStdTest);
 
-    await DataProvider.testByCourseId(classModel!.courseId, loadTest);
+
+    if(classModel!.customTests.isEmpty){
+      await DataProvider.testByCourseId(classModel!.courseId, loadTest);
+
+    }else{
+      await DataProvider.testByCourseAndClassId(classModel!.courseId,classId, loadTest);
+
+      var testId = listTest!.map((e) => e.id).toList();
+
+      if(classModel!.customTests.isNotEmpty){
+        for(var i in classModel!.customTests){
+          if(!testId.contains(i['custom_test_id'])){
+
+            var test = await FireBaseProvider.instance.getTestByTestId(i['test_id']);
+
+            listTest!.add(TestModel(
+                courseId: i['course_id'],
+                description: test.description,
+                title: test.title,
+                isCustom: true, id: i['custom_test_id'], difficulty: 0, enable: true, duration: 0, childTestId: i['test_id']));
+          }
+        }
+      }
+    }
+    emit(state+1);
+  }
+
+  removeTest(TestModel test){
+    listTest!.remove(test);
+    emit(state+1);
   }
 
   updateListTestResult(TestResultModel testResult){
@@ -51,6 +79,11 @@ class TestCubitV2 extends Cubit<int>{
     sortTest();
   }
 
+  addNewTest(TestModel test) {
+    listTest!.add(test);
+    emit(state + 1);
+  }
+
   sortTest(){
     var listId = listTestResult!.map((e) => e.testId).toList();
 
@@ -61,8 +94,6 @@ class TestCubitV2 extends Cubit<int>{
     listTest = listTemp1;
 
     listTest!.addAll(listTemp2);
-
-    emit(state+1);
   }
 
   loadStdTest(Object stdTest) {

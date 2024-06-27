@@ -7,12 +7,12 @@ import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class ListLessonCubitV2 extends Cubit<int>{
   ListLessonCubitV2(this.classId):super(0){
     loadData();
   }
+
   final int classId;
   ClassModel? classModel;
   List<TeacherModel> teachers = [];

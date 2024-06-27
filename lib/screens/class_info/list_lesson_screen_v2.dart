@@ -43,131 +43,155 @@ class ListLessonScreenV2 extends StatelessWidget {
                       )))
                     : Expanded(
                         key: const Key('aa'),
-                        child: Padding(padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 70)),child: Column(
-                          children: [
-                            role == "admin"?
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: Resizable.padding(context, 20)),
-                                    child: Text(
-                                        '${AppText.txtClassCode.text} ${cubit.classModel!.classCode}',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w800,
-                                            fontSize: Resizable.font(context, 30))),
-                                  ),
-                                  Row(
-                                    children: [
-                                      BlocProvider(
-                                          create: (context) =>
-                                              ManageBrowseDownloadInClassCubit(),
-                                          child: BlocBuilder<ManageBrowseDownloadInClassCubit,
-                                              int>(builder: (c, state) {
-                                            var manageCubit = BlocProvider.of<
-                                                ManageBrowseDownloadInClassCubit>(c);
-                                            return AddButton(
+                        child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: Resizable.padding(context, 70)),
+                            child: Column(
+                              children: [
+                                role == "admin"
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                            Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: Resizable.padding(
+                                                      context, 20)),
+                                              child: Text(
+                                                  '${AppText.txtClassCode.text} ${cubit.classModel!.classCode}',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w800,
+                                                      fontSize: Resizable.font(
+                                                          context, 30))),
+                                            ),
+                                            Row(
+                                              children: [
+                                                BlocProvider(
+                                                    create: (context) =>
+                                                        ManageBrowseDownloadInClassCubit(),
+                                                    child: BlocBuilder<
+                                                        ManageBrowseDownloadInClassCubit,
+                                                        int>(builder: (c, state) {
+                                                      var manageCubit =
+                                                          BlocProvider.of<
+                                                              ManageBrowseDownloadInClassCubit>(c);
+                                                      return AddButton(
+                                                        onTap: () {
+                                                          showDialog(
+                                                              context: context,
+                                                              builder: (context) =>
+                                                                  ManageBrowseDownloadInClassDialog(
+                                                                      cubit:
+                                                                          manageCubit));
+                                                        },
+                                                        title: AppText
+                                                            .txtData.text,
+                                                      );
+                                                    })),
+                                                SizedBox(
+                                                    width: Resizable.padding(
+                                                        context, 5)),
+                                                AddButton(
+                                                  onTap: () {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            AddCustomLessonDialog(
+                                                                cubit,
+                                                                classModel: cubit
+                                                                    .classModel!));
+                                                  },
+                                                  title: AppText
+                                                      .btnAddNewLesson.text,
+                                                )
+                                              ],
+                                            )
+                                          ])
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                            Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: Resizable.padding(
+                                                      context, 20)),
+                                              child: Text(
+                                                  '${AppText.txtClassCode.text} ${cubit.classModel!.classCode}',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w800,
+                                                      fontSize: Resizable.font(
+                                                          context, 30))),
+                                            ),
+                                            AddButton(
                                               onTap: () {
                                                 showDialog(
                                                     context: context,
                                                     builder: (context) =>
-                                                        ManageBrowseDownloadInClassDialog(
-                                                            cubit: manageCubit));
+                                                        RequestBrowseDownloadDialog(
+                                                            listLessons:
+                                                                cubit.lessons!,
+                                                            classModel: cubit
+                                                                .classModel!));
                                               },
                                               title: AppText.txtData.text,
-                                            );
-                                          })),
-                                      SizedBox(width: Resizable.padding(context, 5)),
-                                      AddButton(
-                                        onTap: () {
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) =>
-                                                  AddCustomLessonDialog(
-                                                      cubit,
-                                                      classModel: cubit
-                                                          .classModel!));
-                                        },
-                                        title: AppText.btnAddNewLesson.text,
-                                      )
-                                    ],
-                                  )
-                                ]) : Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: Resizable.padding(context, 20)),
-                                    child: Text(
-                                        '${AppText.txtClassCode.text} ${cubit.classModel!.classCode}',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w800,
-                                            fontSize: Resizable.font(context, 30))),
-                                  ),
-                                  AddButton(
-                                    onTap: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) =>
-                                              RequestBrowseDownloadDialog(
-                                                  listLessons: cubit.lessons!, classModel: cubit.classModel!));
-                                    },
-                                    title: AppText.txtData.text,
-                                  )
-                                ]),
-                            Container(
-                                padding: EdgeInsets.only(
-                                    bottom: Resizable.padding(context, 10),
-                                    right: Resizable.padding(context, 20),
-                                    left: Resizable.padding(context, 15)),
-                                child: LessonItemRowLayout(
-                                    lesson: Text(AppText.subjectLesson.text,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            color: const Color(0xff757575),
-                                            fontSize:
-                                            Resizable.font(context, 17))),
-                                    name: Padding(
-                                        padding: EdgeInsets.only(
-                                            left:
-                                            Resizable.padding(context, 20)),
-                                        child: Text(AppText.titleSubject.text,
+                                            )
+                                          ]),
+                                Container(
+                                    padding: EdgeInsets.only(
+                                        bottom: Resizable.padding(context, 10),
+                                        right: Resizable.padding(context, 20),
+                                        left: Resizable.padding(context, 15)),
+                                    child: LessonItemRowLayout(
+                                        lesson: Text(AppText.subjectLesson.text,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w600,
                                                 color: const Color(0xff757575),
                                                 fontSize: Resizable.font(
-                                                    context, 17)))),
-                                    sensei:
-                                    Text(AppText.txtSensei.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17))),
-                                    attend: Text(AppText.txtRateOfAttendance.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17))),
-                                    submit: Text(AppText.txtRateOfSubmitHomework.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17))),
-                                    mark: Text(AppText.titleStatus.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17))),
-                                    dropdown: Container())),
-                            Expanded(
-                                child: SingleChildScrollView(
-                                    child: cubit.lessons == null
-                                        ? Shimmer.fromColors(
-                                      baseColor: Colors.grey[300]!,
-                                      highlightColor: Colors.grey[100]!,
-                                      child: Column(
-                                        children: [
-                                          ...shimmerList.map((e) => const ItemShimmer())
-                                        ],
-                                      ),
-                                    )
-                                        : Column(
-                                      children: [
-                                        ...cubit.lessons!
-                                            .map((e) => LessonItemV2(
-                                            cubit: cubit,
-                                            role: role,
-                                            lesson: e))
-                                            .toList()
-                                      ],
-                                    )))
-                          ],
-                        )));
+                                                    context, 17))),
+                                        name: Padding(
+                                            padding: EdgeInsets.only(
+                                                left: Resizable.padding(
+                                                    context, 20)),
+                                            child: Text(
+                                                AppText.titleSubject.text,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    color:
+                                                        const Color(0xff757575),
+                                                    fontSize: Resizable.font(context, 17)))),
+                                        sensei: Text(AppText.txtSensei.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17))),
+                                        attend: Text(AppText.txtRateOfAttendance.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17))),
+                                        submit: Text(AppText.txtRateOfSubmitHomework.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17))),
+                                        mark: Text(AppText.titleStatus.text, style: TextStyle(fontWeight: FontWeight.w600, color: const Color(0xff757575), fontSize: Resizable.font(context, 17))),
+                                        dropdown: Container())),
+                                Expanded(
+                                    child: SingleChildScrollView(
+                                        child: cubit.lessons == null
+                                            ? Shimmer.fromColors(
+                                                baseColor: Colors.grey[300]!,
+                                                highlightColor:
+                                                    Colors.grey[100]!,
+                                                child: Column(
+                                                  children: [
+                                                    ...shimmerList.map((e) =>
+                                                        const ItemShimmer())
+                                                  ],
+                                                ),
+                                              )
+                                            : Column(
+                                                children: [
+                                                  ...cubit.lessons!
+                                                      .map((e) => LessonItemV2(
+                                                          cubit: cubit,
+                                                          role: role,
+                                                          lesson: e))
+                                                      .toList()
+                                                ],
+                                              )))
+                              ],
+                            )));
               }),
           if (role == 'teacher') FooterView()
         ],

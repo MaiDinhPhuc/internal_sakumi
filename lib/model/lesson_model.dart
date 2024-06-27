@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:internal_sakumi/model/custom_lesson_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class LessonModel {
@@ -49,27 +48,6 @@ class LessonModel {
       }
     }
     return true;
-  }
-
-  LessonModel copyWith({CustomLessonsModel? customLesson}) {
-    return LessonModel(
-        lessonId: customLesson!.customLessonId,
-        courseId: -1,
-        description: customLesson.description,
-        content: "",
-        title: customLesson.title,
-        btvn: 0,
-        vocabulary: 0,
-        listening: 0,
-        kanji: 0,
-        grammar: 0,
-        flashcard: 0,
-        alphabet: 0,
-        order: 0,
-        reading: 0,
-        enable: true,
-        customLessonInfo: customLesson.lessonInfo,
-        isCustom: true);
   }
 
   factory LessonModel.fromSnapshot(

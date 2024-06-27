@@ -153,7 +153,7 @@ void alertAddNewTest(BuildContext context, TestModel? testModel, bool isEdit,
                                                     title: titleCon.text,
                                                     difficulty: int.parse(
                                                         difficultCon.text),
-                                                    enable: true, duration: chooseTimeCubit.convertTime()));
+                                                    enable: true, duration: chooseTimeCubit.convertTime(), isCustom: false, childTestId: 0));
                                             if (context.mounted) {
                                               Navigator.pop(context);
                                               if (check == true) {
@@ -176,7 +176,7 @@ void alertAddNewTest(BuildContext context, TestModel? testModel, bool isEdit,
                                                 title: titleCon.text,
                                                 difficulty: int.parse(
                                                     difficultCon.text),
-                                                enable: testModel!.enable, duration: chooseTimeCubit.convertTime()));
+                                                enable: testModel!.enable, duration: chooseTimeCubit.convertTime(), isCustom: false, childTestId: 0));
                                             if (context.mounted) {
                                               Navigator.pop(context);
                                               cubit.loadTestInCourse(

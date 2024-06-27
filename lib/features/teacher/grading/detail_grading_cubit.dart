@@ -156,9 +156,7 @@ class DetailGradingCubit extends Cubit<int> {
       double total = 0;
       for (var j in listAnswer!) {
         if (i.userId == j.studentId) {
-          if (j.newScore == -1) {
-            temp = temp;
-          } else {
+          if (j.newScore != -1) {
             temp = temp + j.newScore;
             total++;
           }
@@ -232,9 +230,7 @@ class DetailGradingCubit extends Cubit<int> {
     }
 
     for (var i in answers) {
-      debugPrint(
-          "student_${i.studentId}_homework_question_${i.questionId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}");
-      CustomFirebaseFireStore.database
+        CustomFirebaseFireStore.database
           .collection('answer')
           .doc(type == "test"
               ? 'student_${i.studentId}_test_question_${i.questionId}_class_${TextUtils.getName(position: 1)}'
@@ -268,9 +264,7 @@ class DetailGradingCubit extends Cubit<int> {
         double temp = 0;
         for (var j in listAnswer!) {
           if (i.userId == j.studentId) {
-            if (j.newScore == -1) {
-              temp = temp;
-            } else {
+            if (j.newScore != -1) {
               temp = temp + j.newScore;
             }
           }

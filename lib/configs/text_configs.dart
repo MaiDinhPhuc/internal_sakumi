@@ -24,6 +24,7 @@ enum AppText {
   textLessonsIsEmpty,
   textChooseCourse,
   txtChooseLesson,
+  txtChooseTest,
   titleSkill,
   titleListening,
   titleKanji,
@@ -592,10 +593,14 @@ enum AppText {
   txtAssign,
   txtSubmitSuccess,
   txtConfirmSubmitTeacherSurvey,
-  txtConfirmDeleteCustomLesson
+  txtConfirmDeleteCustomLesson,
+  txtPleaseChooseTest,
+  txtConfirmDeleteCustomTest
 }
 
 Map<AppText, String> texts = {
+  AppText.txtConfirmDeleteCustomTest: 'Xác nhận xóa bài kiểm tra custom??',
+  AppText.txtPleaseChooseTest: 'Vui lòng chọn bài kiểm tra!',
   AppText.txtConfirmDeleteCustomLesson: 'Xác nhận xóa bài học custom??',
   AppText.txtConfirmSubmitTeacherSurvey: 'SS xác nhận nộp bài khảo sát?? Lưu ý bài khảo sát đã nộp sẽ không được làm lại!',
   AppText.txtSubmitSuccess: 'Nộp khảo sát thành công!',
@@ -1020,6 +1025,7 @@ Map<AppText, String> texts = {
   AppText.textLessons: 'Danh sách bài học',
   AppText.textLessonsIsEmpty: 'Đang cập nhật bài học, vui lòng thử lại sau!',
   AppText.textChooseCourse: 'Chọn khóa học',
+  AppText.txtChooseTest: 'Chọn bài kiểm tra',
   AppText.txtChooseLesson: 'Chọn bài học',
   AppText.titleSkill: 'Luyện kỹ năng',
   AppText.titleListening: 'Luyện nghe',

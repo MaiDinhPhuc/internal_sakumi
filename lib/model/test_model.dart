@@ -5,8 +5,8 @@ import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class TestModel {
   final String title, description;
-  final int id, courseId, difficulty, duration;
-  final bool enable;
+  final int id, courseId, difficulty, duration, childTestId;
+  final bool enable,isCustom;
 
   const TestModel(
       {required this.id,
@@ -14,7 +14,7 @@ class TestModel {
       required this.difficulty,
       required this.courseId,
       required this.description,
-      required this.enable, required this.duration});
+      required this.enable, required this.duration, required this.isCustom, required this.childTestId});
 
   static Future<bool> check(String jsonData) async {
     final data = json.decode(jsonData);
@@ -38,7 +38,8 @@ class TestModel {
       courseId: data["course_id"] ?? 0,
       description: data['description'] ?? "",
       enable: data['enable'] ?? true,
-      duration: data['duration'] ?? 0
+      duration: data['duration'] ?? 0,
+      isCustom: false, childTestId: 0
     );
   }
 }

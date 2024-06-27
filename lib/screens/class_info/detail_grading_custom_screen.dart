@@ -33,7 +33,7 @@ class DetailGradingCustomScreen extends StatelessWidget {
           ),
           Expanded(
               child: BlocBuilder<DetailGradingCubitV2, int>(
-                  bloc: cubit..initCustom(),
+                  bloc: cubit..initCustom(type),
                   builder: (c, s) {
                     return s == -1
                         ? Transform.scale(

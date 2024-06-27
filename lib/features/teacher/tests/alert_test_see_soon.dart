@@ -104,7 +104,7 @@ class TestSeeSoonCubit extends Cubit<List<QuestionModel>?> {
         await FireBaseProvider.instance.getCourseById(testModel.courseId);
     token = courseModel.btvnToken;
     var listQuestions = await FireBaseProvider.instance.getQuestionByUrl(
-        AppConfigs.getDataUrl("test_${testModel.id}.json", token!));
+        AppConfigs.getDataUrl("test_${testModel.isCustom? testModel.childTestId:testModel.id}.json", token!));
     emit(listQuestions);
   }
 }

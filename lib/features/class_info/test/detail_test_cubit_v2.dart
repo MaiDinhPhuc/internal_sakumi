@@ -2,8 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
+import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/features/class_info/test/test_cubit_v2.dart';
-import 'package:internal_sakumi/model/lesson_result_model.dart';
+import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
@@ -48,7 +49,7 @@ class DetailTestV2 extends Cubit<int> {
     emit(state + 1);
   }
 
-  assignTest(int index, BuildContext context) async {
+  assignTest(BuildContext context) async {
     SharedPreferences localData = await SharedPreferences.getInstance();
     int teacherId =
         int.parse(localData.getInt(PrefKeyConfigs.userId).toString());
@@ -179,6 +180,35 @@ class DetailTestV2 extends Cubit<int> {
       }
     }
     return temp / listStudents.length;
+  }
+
+  updateClass(
+      TestCubitV2 listTestCubit, TestModel testModel) async {
+    List<dynamic> listCustomTest = [];
+
+    for (var i in cubit.classModel!.customTests) {
+      if(i['custom_test_id'] != testModel.id){
+        listCustomTest.add(i);
+      }
+    }
+
+    Update
+        .updateClassInfo(ClassModel(
+        classId: cubit.classModel!.classId,
+        courseId: cubit.classModel!.courseId,
+        description: cubit.classModel!.description,
+        endTime: cubit.classModel!.endTime,
+        startTime: cubit.classModel!.startTime,
+        note: cubit.classModel!.note,
+        classCode: cubit.classModel!.classCode,
+        classStatus: cubit.classModel!.classStatus,
+        classType: cubit.classModel!.classType,
+        link: cubit.classModel!.link,
+        customLessons: cubit.classModel!.customLessons,
+        informal: cubit.classModel!.informal,
+        isSubClass: cubit.classModel!.isSubClass,
+        subClassId: cubit.classModel!.subClassId, customTests: listCustomTest));
+    listTestCubit.removeTest(testModel);
   }
 
   bool checkAlready(int testId) {

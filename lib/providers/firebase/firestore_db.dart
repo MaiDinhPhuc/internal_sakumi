@@ -1214,6 +1214,19 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getTestByTestId(
+      int testId) async {
+    final snapshot = await db
+        .collection("test")
+        .where("id", isEqualTo: testId)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTestByTestId $testId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentTest(
       int classId) async {
     final snapshot = await db
@@ -2246,7 +2259,8 @@ class FireStoreDb {
       'custom_lesson': model.customLessons,
       'informal': model.informal,
       'is_sub_class': model.isSubClass,
-      'sub_class_id': model.subClassId
+      'sub_class_id': model.subClassId,
+      'custom_test': model.customTests
     });
     debugPrint("==========>update db for \"class_${model.classId}_course_${model.courseId}\"");
   }
