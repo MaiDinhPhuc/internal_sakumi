@@ -46,6 +46,7 @@ class DetailGradingCubitV2 extends Cubit<int> {
         int.parse(TextUtils.getName(position: 1)),
         int.parse(TextUtils.getName()),
         int.parse(TextUtils.getName(position: 3)),
+        type);
     listQuestions = data!.listQuestions;
     classModel = data!.classModel;
     courseModel = data!.courseModel;
