@@ -22,12 +22,7 @@ class DetailStudentSurveyScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         body: Column(
           children: [
-            CustomAppbar(buttonList: [
-              AppText.txtManageCourse.text,
-              AppText.txtStudentSurvey.text,
-              AppText.txtTeacherSurvey.text,
-              AppText.titleManageFeedBack.text
-            ], s: 1),
+            const CustomAppbar( s: 1),
             Expanded(
                 child: BlocBuilder<DetailStudentSurveyCubit, int>(
                     bloc: cubit

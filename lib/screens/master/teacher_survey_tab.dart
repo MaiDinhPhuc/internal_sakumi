@@ -27,12 +27,7 @@ class ManageTeacherSurveyTab extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          CustomAppbar(buttonList: [
-            AppText.txtManageCourse.text,
-            AppText.txtStudentSurvey.text,
-            AppText.txtTeacherSurvey.text,
-            AppText.titleManageFeedBack.text
-          ], s: 2),
+          const CustomAppbar(s: 2),
           Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: Resizable.padding(context, 50)),

@@ -10,10 +10,14 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/profile/teacher_profile/app_bar_info_teacher_cubit.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
+import 'package:internal_sakumi/model/banner_model.dart';
+import 'package:internal_sakumi/model/banner_option.dart';
 import 'package:internal_sakumi/model/bill_model.dart';
 import 'package:internal_sakumi/model/browse_download_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
+import 'package:internal_sakumi/model/course_suggest_model.dart';
+import 'package:internal_sakumi/model/cs_option.dart';
 import 'package:internal_sakumi/model/detail_grading_data_model.dart';
 import 'package:internal_sakumi/model/feedback_model.dart';
 import 'package:internal_sakumi/model/group_tag_model.dart';
@@ -2479,4 +2483,75 @@ class FireBaseProvider extends NetworkProvider {
         .toList();
     return list;
   }
+
+
+  Future<bool> addBanner(BannerModel banner)  async {
+    return await FireStoreDb.instance.addBanner(banner);
+  }
+
+  Future<List<BannerModel>> getBanners() async {
+    final list = (await FireStoreDb.instance.getBanners())
+        .docs
+        .map((e) => BannerModel.fromSnapshot(e))
+        .toList();
+    return list;
+  }
+
+
+  Future<BannerOption?> getBannerOptionByIdAndType(int ownId, int type) async {
+    try {
+      return (await FireStoreDb.instance.getBannerOptionByIdAndType(ownId, type))
+          .docs
+          .map((e) => BannerOption.fromSnapshot(e))
+          .single;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<bool> addBannerOption(BannerOption bannerOption) async {
+    return await FireStoreDb.instance.addBannerOption(bannerOption);
+  }
+
+  Future<bool> deleteBannerOption(String doc) async {
+    return await FireStoreDb.instance.deleteBannerOption(doc);
+  }
+  Future<bool> deleteBanner(String doc) async {
+    return await FireStoreDb.instance.deleteBanner(doc);
+  }
+  Future<List<CourseSuggestModel>> getCourseSuggests() async {
+    final list = (await FireStoreDb.instance.getCourseSuggests())
+        .docs
+        .map((e) => CourseSuggestModel.fromSnapshot(e))
+        .toList();
+    return list;
+  }
+
+
+  Future<bool> addCourseSuggest(CourseSuggestModel cs) async {
+    return await FireStoreDb.instance.addCourseSuggest(cs);
+  }
+  Future<bool> deleteCourseSuggest(CourseSuggestModel cs) async {
+    return await FireStoreDb.instance.deleteCourseSuggest(cs);
+  }
+
+  Future<CSOption?> getCSOptionByIdAndType(int ownId, int type) async {
+    try {
+      return (await FireStoreDb.instance.getCSOptionByIdAndType(ownId, type))
+          .docs
+          .map((e) => CSOption.fromSnapshot(e))
+          .single;
+    } catch (e) {
+      return null;
+    }
+  }
+  Future<bool>  addCSOption(CSOption csOption) async {
+    return await FireStoreDb.instance.addCSOption(csOption);
+  }
+
+
+  Future<bool> deleteCSOption(String s) async {
+    return await FireStoreDb.instance.deleteCSOption(s);
+  }
+
 }

@@ -29,6 +29,8 @@ import 'package:internal_sakumi/screens/login_screen.dart';
 import 'package:internal_sakumi/screens/master/detail_answer_teacher_survey_screen.dart';
 import 'package:internal_sakumi/screens/master/detail_student_survey_screen.dart';
 import 'package:internal_sakumi/screens/master/detail_teacher_survey_screen.dart';
+import 'package:internal_sakumi/screens/master/manage_banner_tab.dart';
+import 'package:internal_sakumi/screens/master/manage_course_suggest_tab.dart';
 import 'package:internal_sakumi/screens/master/manage_teacher_feed_back_tab.dart';
 import 'package:internal_sakumi/screens/master/student_survey_tab.dart';
 import 'package:internal_sakumi/screens/master/manage_course_tab.dart';
@@ -89,6 +91,12 @@ class Routes {
         transitionType: TransitionType.fadeIn);
     router.define('$master/manageTeacherFeedBack',
         handler: manageTeacherFeedBackHandler,
+        transitionType: TransitionType.fadeIn);
+    router.define('$master/manageBanner',
+        handler: manageBanner,
+        transitionType: TransitionType.fadeIn);
+    router.define('$master/manageCourseSuggest',
+        handler: manageCourseSuggest,
         transitionType: TransitionType.fadeIn);
     router.define('$admin/manageGeneral',
         handler: manageGeneralHandler, transitionType: TransitionType.fadeIn);
@@ -194,6 +202,14 @@ var manageTeacherSurveyHandler =
 var manageTeacherFeedBackHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return ManageTeacherFeedBackTab();
+});
+var manageBanner =
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return ManageBannerTab();
+});
+var manageCourseSuggest =
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return ManageCourseSuggestTab();
 });
 
 var manageStudentSurveyDetailHandler =
