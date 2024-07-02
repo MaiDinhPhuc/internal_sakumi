@@ -67,7 +67,7 @@ class AddCustomTestDialog extends StatelessWidget {
                                   constraints: BoxConstraints(
                                       minWidth: Resizable.size(context, 100)),
                                   child: SubmitButton(
-                                      onPressed: () {
+                                      onPressed: () async{
                                         if (cubit.testInfo["course_id"] ==
                                             null) {
                                           notificationDialog(
@@ -79,7 +79,7 @@ class AddCustomTestDialog extends StatelessWidget {
                                           notificationDialog(context,
                                               AppText.txtPleaseChooseTest.text);
                                         } else {
-                                          cubit.updateClass(listTestCubit);
+                                          await cubit.updateClass(listTestCubit);
                                           Navigator.pop(context);
                                         }
                                       },

@@ -10,6 +10,7 @@ import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
+import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -192,7 +193,9 @@ class DetailTestV2 extends Cubit<int> {
       }
     }
 
-    Update
+    print(listCustomTest);
+
+    await Update
         .updateClassInfo(ClassModel(
         classId: cubit.classModel!.classId,
         courseId: cubit.classModel!.courseId,
@@ -208,7 +211,9 @@ class DetailTestV2 extends Cubit<int> {
         informal: cubit.classModel!.informal,
         isSubClass: cubit.classModel!.isSubClass,
         subClassId: cubit.classModel!.subClassId, customTests: listCustomTest));
-    listTestCubit.removeTest(testModel);
+    await listTestCubit.removeTest(testModel);
+    await DataProvider.updateCustomTest(listTestCubit.classModel!.courseId,listTestCubit.classModel!.classId, listTestCubit.listTest!);
+
   }
 
   bool checkAlready(int testId) {

@@ -83,8 +83,10 @@ class ConfirmDeleteCustomTest extends StatelessWidget {
             text: AppText.txtBack.text),
         CustomButton(
             onPress: () async {
-              cubit.updateClass(cubit.cubit, testModel);
-              Navigator.pop(context);
+              await cubit.updateClass(cubit.cubit, testModel);
+              if(context.mounted){
+                Navigator.pop(context);
+              }
             },
             bgColor: primaryColor.shade500,
             foreColor: Colors.white,

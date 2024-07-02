@@ -8,6 +8,7 @@ import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
+import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firestore_db.dart';
@@ -292,6 +293,11 @@ class DataProvider {
     }
   }
 
+  static Future<void> updateCustomTest( int courseId,int classId,List<TestModel> listTest) async {
+    var key = 'test_${courseId}_class_$classId';
+    cached[key]!.data = listTest;
+  }
+
   static void updateTeacherInfo(int id, TeacherModel teacher) {
     var key = 'teacher_$id';
     cached[key]!.data = teacher;
@@ -384,6 +390,13 @@ class DataProvider {
     } else {
       onLoaded.call(cached[key]!.data!);
     }
+  }
+
+  static Future<void> updateClassByClassId(
+      ClassModel classModel) async {
+    var key = 'class_${classModel.classId}';
+
+    cached[key]!.data = classModel;
   }
 
   static Future<void> classByClassId(

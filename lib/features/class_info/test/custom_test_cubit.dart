@@ -99,7 +99,9 @@ class CustomTestCubit extends Cubit<int> {
 
     list.add(testInfo);
 
-    Update.updateClassInfo(ClassModel(
+    print(list);
+
+    await Update.updateClassInfo(ClassModel(
         classId: classModel.classId,
         courseId: classModel.courseId,
         description: classModel.description,
@@ -116,7 +118,7 @@ class CustomTestCubit extends Cubit<int> {
         subClassId: classModel.subClassId,
         customTests: list));
     TestModel test = tests.singleWhere((e) => e.id == testInfo["test_id"]);
-    listTestCubit.addNewTest(TestModel(
+    await listTestCubit.addNewTest(TestModel(
         id: testInfo['custom_test_id'],
         title: test.title,
         difficulty: 0,
@@ -126,6 +128,7 @@ class CustomTestCubit extends Cubit<int> {
         duration: 0,
         isCustom: true,
         childTestId: testInfo['test_id']));
+    await DataProvider.updateCustomTest(listTestCubit.classModel!.courseId,listTestCubit.classModel!.classId, listTestCubit.listTest!);
   }
 
   loadTest(Object lessons) {
