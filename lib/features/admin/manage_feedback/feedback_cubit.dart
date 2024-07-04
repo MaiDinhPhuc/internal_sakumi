@@ -115,7 +115,6 @@ class FeedBackCubit extends Cubit<int> {
     var course = classes.where((e) => e.classId == classId).toList();
 
     if(course.isEmpty){
-      print(classId);
       return "";
     }
 

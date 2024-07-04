@@ -715,6 +715,17 @@ class FireStoreDb {
     debugPrint("==========>update db for \"feedbacks\"");
   }
 
+  Future<void> updateAdviseStatus(
+     int date, String newStatus) async {
+    await db
+        .collection('advise')
+        .doc("advise_$date")
+        .update({
+      'status': newStatus,
+    });
+    debugPrint("==========>update db for \"advise\"");
+  }
+
   Future<void> updateFeedBackNote(
       int classId, int date, List<dynamic> listNote) async {
     await db
@@ -1812,6 +1823,20 @@ class FireStoreDb {
         .collection("feedbacks")
         .where('status', isEqualTo: status)
         .where('role', isEqualTo: role)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListFeedBack ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getListAdvise(
+      String status, List<String> type) async {
+    final snapshot = await db
+        .collection("advise")
+        .where('status', isEqualTo: status)
+        .where('type', whereIn: type)
         .get();
 
     debugPrint(

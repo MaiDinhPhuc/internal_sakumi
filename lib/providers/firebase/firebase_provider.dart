@@ -9,6 +9,7 @@ import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/profile/teacher_profile/app_bar_info_teacher_cubit.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
+import 'package:internal_sakumi/model/advise_model.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/banner_model.dart';
 import 'package:internal_sakumi/model/banner_option.dart';
@@ -2081,6 +2082,17 @@ class FireBaseProvider extends NetworkProvider {
             .map((e) => FeedBackModel.fromSnapshot(e))
             .toList();
     return listFeedBack;
+  }
+
+  @override
+  Future<List<AdviseModel>> getListAdvise(
+      String status, List<String> type) async {
+    final getListAdvise =
+    (await FireStoreDb.instance.getListAdvise(status, type))
+        .docs
+        .map((e) => AdviseModel.fromSnapshot(e))
+        .toList();
+    return getListAdvise;
   }
 
   @override

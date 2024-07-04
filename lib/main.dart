@@ -11,7 +11,7 @@ import 'package:url_strategy/url_strategy.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'configs/color_configs.dart';
-import 'features/admin_v2/manage_class_v2/class_cubit_v2.dart';
+import 'features/admin/manage_class/class_cubit_v2.dart';
 import 'features/master/manage_course/manage_course_cubit.dart';
 import 'features/master/manage_student_survey/manage_student_survey_cubit.dart';
 import 'features/master/manage_teacher_survey/change_tab_cubit.dart';

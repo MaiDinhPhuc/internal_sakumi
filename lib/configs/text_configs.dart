@@ -619,10 +619,22 @@ enum AppText {
   txtListCS,
   txtAddCourseSuggest,
   txtCSOption,
-  txtConfirmDeleteCS
+  txtConfirmDeleteCS,
+  txtAdvise,
+  txtListAdvise,
+  txtAdviseCourse,
+  txtAdviseBanner,
+  txtAdviseRequest,
+  txtAdviseEmpty
 }
 
 Map<AppText, String> texts = {
+  AppText.txtAdviseEmpty: 'Chưa có yêu cầu tư vấn',
+  AppText.txtAdviseRequest: 'Yêu cầu tư vấn',
+  AppText.txtAdviseCourse: 'Yêu cầu tư vấn khoá học',
+  AppText.txtAdviseBanner: 'Yêu cầu tư vấn banner',
+  AppText.txtListAdvise: 'Danh sách yêu cầu tư vấn',
+  AppText.txtAdvise: 'Tư vấn',
   AppText.txtConfirmDeleteCustomTest: 'Xác nhận xóa bài kiểm tra custom??',
   AppText.txtPleaseChooseTest: 'Vui lòng chọn bài kiểm tra!',
   AppText.txtConfirmDeleteCustomLesson: 'Xác nhận xóa bài học custom??',

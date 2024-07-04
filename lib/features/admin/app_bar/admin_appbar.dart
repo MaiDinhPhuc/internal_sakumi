@@ -50,7 +50,7 @@ List<NavigationModel> buttonAdminList = [
   NavigationModel(5, AppText.txtTool.text),
   NavigationModel(6, AppText.txtVoucher.text),
   NavigationModel(7, AppText.txtTeacher.text),
-  // NavigationModel(9, AppText.txtStudent.text),
+  NavigationModel(9, AppText.txtAdvise.text),
 ];
 
 class DetailAppBar extends StatelessWidget {
