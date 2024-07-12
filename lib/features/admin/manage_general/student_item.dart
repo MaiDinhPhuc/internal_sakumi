@@ -31,29 +31,38 @@ class StudentItem extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
+          Expanded(
+              flex: 10,
+              child: Row(
             children: [
               SmallAvatar(student.url),
               SizedBox(width: Resizable.padding(context, 20)),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("${student.name} ${student.studentCode}",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: Resizable.font(context, 16),
-                          color: Colors.black)),
+                  SizedBox(
+              width:Resizable.size(context, 165),
+                    child: Text("${student.name}\n${student.studentCode}",
+                        overflow:TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: Resizable.font(context, 16),
+                            color: Colors.black))
+                  ),
                   SizedBox(height: Resizable.padding(context, 3)),
                   Text(student.email,
+                      overflow:TextOverflow.ellipsis,
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: Resizable.font(context, 13),
                           color: const Color(0xff757575)))
                 ],
-              ),
+              )
             ],
-          ),
-          BlocProvider(create: (context)=>MenuPopupCubit(),
+          )),
+          Expanded(
+              flex: 1,
+              child: BlocProvider(create: (context)=>MenuPopupCubit(),
             child: BlocBuilder<MenuPopupCubit, int>(
               builder: (cc, s){
                 var popupCubit = BlocProvider.of<MenuPopupCubit>(cc);
@@ -91,7 +100,9 @@ class StudentItem extends StatelessWidget {
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(vietnameseSubText(e), style: TextStyle(fontSize: Resizable.font(
+                                          Text(
+                                              overflow:TextOverflow.ellipsis,
+                                              vietnameseSubText(e), style: TextStyle(fontSize: Resizable.font(
                                               context, 15),color:state? Colors.white : Colors.black)),
                                           if(state)
                                             const Icon(Icons.check, color: Colors.white,)
@@ -150,7 +161,7 @@ class StudentItem extends StatelessWidget {
                   ),
                 );
               },
-            ),)
+            ),))
         ],
       ),
     );

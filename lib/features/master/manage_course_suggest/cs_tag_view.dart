@@ -26,6 +26,7 @@ class CSTagView extends StatelessWidget {
       padding: EdgeInsets.all(Resizable.padding(context, 15)),
       child: SingleChildScrollView(
         child:  Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             if (manageCSCubit.courseSuggests.isNotEmpty)
@@ -112,6 +113,18 @@ class CSTagView extends StatelessWidget {
                     }),
                   ],
                 ),
+              ),
+            if (manageCSCubit.currentCS != null)
+              CheckboxListTile(
+                contentPadding: EdgeInsets.zero,
+                controlAffinity: ListTileControlAffinity.leading,
+                title: Text("Khoá học yêu thích",
+                    style: TextStyle(fontSize: Resizable.font(context, 20))),
+                value: csOptionCubit.favorite,
+                onChanged: (newValue) {
+                  manageCSCubit.updateFavorite();
+                  csOptionCubit.update();
+                },
               ),
           ],
         ),

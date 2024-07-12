@@ -14,36 +14,46 @@ class CollapseTeacherItem extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
+        Expanded(
+            flex: 5,
+            child: Row(
           children: [
             SmallAvatar(teacher.url),
             SizedBox(width: Resizable.padding(context, 20)),
-            Column(
+            SizedBox(
+              width: Resizable.size(context, 120),
+                child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(teacher.name,
+                    overflow:TextOverflow.ellipsis,
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: Resizable.font(context, 16),
                         color: Colors.black)),
                 SizedBox(height: Resizable.padding(context, 3)),
                 Text(teacher.teacherCode,
+                    overflow:TextOverflow.ellipsis,
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: Resizable.font(context, 13),
                         color: const Color(0xff757575))),
                 SizedBox(height: Resizable.padding(context, 3)),
                 Text(teacher.email,
+                    overflow:TextOverflow.ellipsis,
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: Resizable.font(context, 13),
                         color: const Color(0xff757575)))
               ],
-            )
+            ))
           ],
-        ),
-        Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        )),
+        Expanded(
+            flex: 2,
+            child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
           Text(AppText.textDetail.text,
+              overflow:TextOverflow.ellipsis,
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 18))),
@@ -55,7 +65,7 @@ class CollapseTeacherItem extends StatelessWidget {
                     ? Icons.keyboard_arrow_up
                     : Icons.keyboard_arrow_down,
               ))
-        ])
+        ]))
       ],
     );
   }

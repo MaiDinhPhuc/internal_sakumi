@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internal_sakumi/features/master/manage_banner/manage_banner_cubit.dart';
-
-import '../../configs/text_configs.dart';
-import '../../features/master/manage_banner/banner_list_view.dart';
-import '../../features/master/manage_banner/banner_option_view.dart';
 import '../../features/master/manage_course_suggest/cs_list_view.dart';
 import '../../features/master/manage_course_suggest/cs_option_view.dart';
 import '../../features/master/manage_course_suggest/manage_course_suggest_cubit.dart';
