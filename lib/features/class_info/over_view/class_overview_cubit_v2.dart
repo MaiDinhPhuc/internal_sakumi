@@ -10,6 +10,7 @@ import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class ClassOverViewCubitV2 extends Cubit<int> {
   ClassOverViewCubitV2(this.classId) : super(0) {
@@ -90,7 +91,9 @@ class ClassOverViewCubitV2 extends Cubit<int> {
 
   loadData() async {
 
-    await DataProvider.classByClassId(classId, loadClass);
+    await loadClass(classId);
+
+    //await DataProvider.classByClassId(classId, loadClass);
 
     DataProvider.stdClassByClassId(classId, loadStudentClass);
 
@@ -435,8 +438,8 @@ class ClassOverViewCubitV2 extends Cubit<int> {
   }
 
 
-  loadClass(Object classModel) {
-    this.classModel = classModel as ClassModel;
+  loadClass(int classId)async {
+    classModel = await FireBaseProvider.instance.getClassById(classId);
     emit(state+1);
   }
 }

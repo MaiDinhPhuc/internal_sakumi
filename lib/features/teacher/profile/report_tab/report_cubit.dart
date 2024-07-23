@@ -70,15 +70,18 @@ class ReportCubit extends Cubit<int> {
 
     type = 'class';
 
-    DataProvider.classByClassId(classId, loadClass);
+    await loadClass(classId);
+
+    //DataProvider.classByClassId(classId, loadClass);
     listReport = await FireBaseProvider.instance.getReportByClassId(classId);
 
     isLoading = false;
     emit(state + 1);
   }
 
-  loadClass(Object classModel) {
-    this.classModel = classModel as ClassModel;
+
+  loadClass(int classId)async {
+    classModel = await FireBaseProvider.instance.getClassById(classId);
   }
 
   List<ReportModel> getListReport() {

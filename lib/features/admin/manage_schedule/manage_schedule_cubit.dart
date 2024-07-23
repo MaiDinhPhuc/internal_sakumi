@@ -166,7 +166,8 @@ class ManageScheduleCubit extends Cubit<int> {
       for (var i in listTeacherId) {
         DataProvider.teacherById(i, loadTeacher);
       }
-      await DataProvider.classByClassId(schedule.classId, loadClass);
+      await loadClass(schedule.classId);
+      //await DataProvider.classByClassId(schedule.classId, loadClass);
       emit(state + 1);
     }
   }
@@ -183,7 +184,8 @@ class ManageScheduleCubit extends Cubit<int> {
         for (var i in listTeacherId) {
           DataProvider.teacherById(i, loadTeacher);
         }
-        await DataProvider.classByClassId(schedule.classId, loadClass);
+        await loadClass(schedule.classId);
+        //await DataProvider.classByClassId(schedule.classId, loadClass);
         emit(state + 1);
       }
     }
@@ -514,7 +516,8 @@ class ManageScheduleCubit extends Cubit<int> {
     }
 
     for (var i in listClassId) {
-      DataProvider.classByClassId(i, loadClass);
+      loadClass(i);
+      //DataProvider.classByClassId(i, loadClass);
     }
 
     for (var i in listTeacherId) {
@@ -546,9 +549,10 @@ class ManageScheduleCubit extends Cubit<int> {
     teacherSearch.text = teacher;
   }
 
-  loadClass(Object classModel) {
-    var classModelTemp = classModel as ClassModel;
-    if (listClass.contains(classModelTemp) == false) {
+  loadClass(int classId) async {
+    var listClassId = listClass.map((e)=>e.classId).toList();
+    if(listClassId.contains(classId) == false){
+      var classModelTemp = await FireBaseProvider.instance.getClassById(classId);
       listClass.add(classModelTemp);
     }
     if (listClass.length == listClassId.length) {

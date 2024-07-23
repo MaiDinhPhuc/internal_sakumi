@@ -34,8 +34,7 @@ class LessonItemCubitV2 extends Cubit<int> {
       }
     }
 
-    Update
-        .updateClassInfo(ClassModel(
+    ClassModel newClass = ClassModel(
         classId: cubit.classModel!.classId,
         courseId: cubit.classModel!.courseId,
         description: cubit.classModel!.description,
@@ -49,7 +48,12 @@ class LessonItemCubitV2 extends Cubit<int> {
         customLessons: listCustomLesson,
         informal: cubit.classModel!.informal,
         isSubClass: cubit.classModel!.isSubClass,
-        subClassId: cubit.classModel!.subClassId, customTests: cubit.classModel!.customTests));
+        subClassId: cubit.classModel!.subClassId, customTests: cubit.classModel!.customTests);
+
+    cubit.updateClass(newClass);
+
+    Update
+        .updateClassInfo(newClass);
     listLessonCubit.removeLesson(lessonModel);
   }
 

@@ -37,7 +37,7 @@ class Update  {
 
   static updateClassInfo(ClassModel model) async {
     await FireBaseProvider.instance.updateClassInfo(model);
-    await DataProvider.updateClassByClassId(model);
+    //await DataProvider.updateClassByClassId(model);
   }
 
   static updateAttendance(

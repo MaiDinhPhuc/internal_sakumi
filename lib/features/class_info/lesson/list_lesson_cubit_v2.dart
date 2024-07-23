@@ -7,6 +7,7 @@ import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class ListLessonCubitV2 extends Cubit<int>{
   ListLessonCubitV2(this.classId):super(0){
@@ -25,7 +26,9 @@ class ListLessonCubitV2 extends Cubit<int>{
 
   loadData()async{
 
-    await DataProvider.classByClassId(classId, loadClass);
+    await loadClass(classId);
+
+    //await DataProvider.classByClassId(classId, loadClass);
 
     if(classModel!.customLessons.isEmpty){
       await DataProvider.lessonByCourseId(classModel!.courseId, loadLessonInClass);
@@ -114,11 +117,15 @@ class ListLessonCubitV2 extends Cubit<int>{
 
   addNewLesson(LessonModel lesson){
     lessons!.add(lesson);
+    DataProvider.updateLessonByCourseAndClassId(
+        classModel!.courseId,classId ,lessons!);
     emit(state+1);
   }
 
   removeLesson(LessonModel lesson){
     lessons!.remove(lesson);
+    DataProvider.updateLessonByCourseAndClassId(
+        classModel!.courseId,classId ,lessons!);
     emit(state+1);
   }
 
@@ -152,7 +159,10 @@ class ListLessonCubitV2 extends Cubit<int>{
 
     }
 
-
+  updateClass(ClassModel newClass){
+    classModel = newClass;
+    emit(state+1);
+  }
 
   loadTeacherInfo(Object student) {
     teachers.add(student as TeacherModel);
@@ -188,8 +198,8 @@ class ListLessonCubitV2 extends Cubit<int>{
   }
 
 
-  loadClass(Object classModel) {
-    this.classModel = classModel as ClassModel;
+  loadClass(int classId)async {
+    classModel = await FireBaseProvider.instance.getClassById(classId);
     emit(state+1);
   }
 
