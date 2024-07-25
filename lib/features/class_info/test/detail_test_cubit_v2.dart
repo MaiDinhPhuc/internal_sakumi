@@ -193,10 +193,7 @@ class DetailTestV2 extends Cubit<int> {
       }
     }
 
-    print(listCustomTest);
-
-    await Update
-        .updateClassInfo(ClassModel(
+    ClassModel newClass = ClassModel(
         classId: cubit.classModel!.classId,
         courseId: cubit.classModel!.courseId,
         description: cubit.classModel!.description,
@@ -210,7 +207,10 @@ class DetailTestV2 extends Cubit<int> {
         customLessons: cubit.classModel!.customLessons,
         informal: cubit.classModel!.informal,
         isSubClass: cubit.classModel!.isSubClass,
-        subClassId: cubit.classModel!.subClassId, customTests: listCustomTest));
+        subClassId: cubit.classModel!.subClassId, customTests: listCustomTest);
+
+    await Update.updateClassInfo(newClass);
+    cubit.updateClass(newClass);
     await listTestCubit.removeTest(testModel);
     await DataProvider.updateCustomTest(listTestCubit.classModel!.courseId,listTestCubit.classModel!.classId, listTestCubit.listTest!);
 

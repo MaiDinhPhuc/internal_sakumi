@@ -25,8 +25,6 @@ class TestCubitV2 extends Cubit<int>{
 
     await loadClass(classId);
 
-    //await DataProvider.classByClassId(classId, loadClass);
-
     await DataProvider.stdClassByClassId(classId, loadStudentClass);
 
     var listStdId = listStdClass!.map((e) => e.userId).toList();
@@ -62,6 +60,11 @@ class TestCubitV2 extends Cubit<int>{
         }
       }
     }
+    emit(state+1);
+  }
+
+  updateClass(ClassModel newClass){
+    classModel = newClass;
     emit(state+1);
   }
 

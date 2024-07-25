@@ -141,22 +141,25 @@ class CustomLessonCubit extends Cubit<int> {
       "lessons_info": list
     });
 
+    ClassModel newClass = ClassModel(
+        classId: classModel.classId,
+        courseId: classModel.courseId,
+        description: classModel.description,
+        endTime: classModel.endTime,
+        startTime: classModel.startTime,
+        note: classModel.note,
+        classCode: classModel.classCode,
+        classStatus: classModel.classStatus,
+        classType: classModel.classType,
+        link: classModel.link,
+        customLessons: listCustomLesson,
+        informal: classModel.informal,
+        isSubClass: classModel.isSubClass,
+        subClassId: classModel.subClassId, customTests: classModel.customTests);
+
     Update
-        .updateClassInfo(ClassModel(
-            classId: classModel.classId,
-            courseId: classModel.courseId,
-            description: classModel.description,
-            endTime: classModel.endTime,
-            startTime: classModel.startTime,
-            note: classModel.note,
-            classCode: classModel.classCode,
-            classStatus: classModel.classStatus,
-            classType: classModel.classType,
-            link: classModel.link,
-            customLessons: listCustomLesson,
-            informal: classModel.informal,
-            isSubClass: classModel.isSubClass,
-            subClassId: classModel.subClassId, customTests: classModel.customTests));
+        .updateClassInfo(newClass);
+    listLessonCubit.updateClass(newClass);
     listLessonCubit.addNewLesson(LessonModel(
         lessonId: millisecondsSinceEpoch,
         courseId: -1,

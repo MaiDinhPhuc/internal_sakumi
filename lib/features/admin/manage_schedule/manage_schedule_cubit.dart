@@ -260,7 +260,9 @@ class ManageScheduleCubit extends Cubit<int> {
     }
 
     for (var i in listCyclicSchedule!) {
-      if (i.calendar[dayIndex] != "" && i.startDate <= date.millisecondsSinceEpoch && i.endDate >= date.millisecondsSinceEpoch  &&
+      if (i.calendar[dayIndex] != "" &&
+          i.startDate <= date.millisecondsSinceEpoch &&
+          i.endDate >= date.millisecondsSinceEpoch &&
           checkExistResult(index, i.classId) == false &&
           listSingleSchedule!
               .where((e) =>
@@ -268,20 +270,29 @@ class ManageScheduleCubit extends Cubit<int> {
                   e.classId == i.classId)
               .toList()
               .isEmpty) {
-        list.add(i);
+        var listClassId = listClass.map((e) => e.classId).toList();
+        if(listClassId.contains(i.classId)){
+          list.add(i);
+        }
       }
       if (i.calendar[dayIndex] != "" &&
           checkExistResult(index, i.classId) == false &&
           i.status == "cancel" &&
           list.contains(i) == false) {
-        list.add(i);
+        var listClassId = listClass.map((e) => e.classId).toList();
+        if(listClassId.contains(i.classId)){
+          list.add(i);
+        }
       }
     }
 
     for (var i in listSingleSchedule!) {
       if (i.date == date.millisecondsSinceEpoch &&
           checkExistResult(index, i.classId) == false) {
-        list.add(i);
+        var listClassId = listClass.map((e) => e.classId).toList();
+        if(listClassId.contains(i.classId)){
+          list.add(i);
+        }
       }
     }
 
@@ -516,8 +527,7 @@ class ManageScheduleCubit extends Cubit<int> {
     }
 
     for (var i in listClassId) {
-      loadClass(i);
-      //DataProvider.classByClassId(i, loadClass);
+      await loadClass(i);
     }
 
     for (var i in listTeacherId) {
@@ -550,13 +560,13 @@ class ManageScheduleCubit extends Cubit<int> {
   }
 
   loadClass(int classId) async {
-    var listClassId = listClass.map((e)=>e.classId).toList();
-    if(listClassId.contains(classId) == false){
-      var classModelTemp = await FireBaseProvider.instance.getClassById(classId);
-      listClass.add(classModelTemp);
-    }
-    if (listClass.length == listClassId.length) {
-      emit(state + 1);
+    var listClassId = listClass.map((e) => e.classId).toList();
+    if (listClassId.contains(classId) == false) {
+      var classModelTemp =
+          await FireBaseProvider.instance.getClassById(classId);
+      if(classModelTemp.classStatus != "Completed"){
+        listClass.add(classModelTemp);
+      }
     }
   }
 

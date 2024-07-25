@@ -43,6 +43,7 @@ class ItemTeacherClass extends StatelessWidget {
                         BorderRadius.circular(Resizable.size(context, 5))),
                 child: AnimatedCrossFade(
                     firstChild: CardStudentClassItem(
+                        isStudent: false,
                         canTap: true,
                         widget: StudentClassOverview(
                           model: itemCubit.classModel,
