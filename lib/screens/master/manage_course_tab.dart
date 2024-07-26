@@ -22,7 +22,7 @@ class ManageCourseTab extends StatelessWidget {
         backgroundColor: Colors.white,
         body: Column(
           children: [
-            const CustomAppbar( s: 0),
+            const MasterAppbar( s: 0),
             Expanded(
                 child: Padding(
                   padding: EdgeInsets.symmetric(

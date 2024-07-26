@@ -9,7 +9,6 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import '../../../services/custom_firebase_firestore.dart';
 import 'add_cyclic_schedule_cubit.dart';
 import 'choose_cyclic_time.dart';
-import 'manage_schedule_cubit.dart';
 
 class InfoCyclicScheduleView extends StatelessWidget {
   const InfoCyclicScheduleView({super.key, required this.addCubit});

@@ -22,7 +22,7 @@ class DetailStudentSurveyScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         body: Column(
           children: [
-            const CustomAppbar( s: 1),
+            const MasterAppbar( s: 1),
             Expanded(
                 child: BlocBuilder<DetailStudentSurveyCubit, int>(
                     bloc: cubit

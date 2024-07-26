@@ -5,12 +5,12 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_schedule/schedule_dialog_button.dart';
 import 'package:internal_sakumi/features/admin/manage_schedule/single_schedule_dialog.dart';
+import 'package:internal_sakumi/features/admin/search/item_search.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 import '../../../services/custom_firebase_firestore.dart';
-import '../search/item_search.dart';
 import 'cyclic_schedule_dialog.dart';
 import 'item_schedule.dart';
 import 'manage_schedule_cubit.dart';
@@ -109,7 +109,7 @@ class ManageScheduleDialog extends StatelessWidget {
                                         .contains(manageCubit.classSearchValue
                                             .toLowerCase()) &&
                                     data["is_sub_class"] == false) {
-                                  return ItemSearchV2(
+                                  return ItemSearch(
                                     type: AppText.txtClass.text,
                                     isLast: false,
                                     classStatus: data["class_status"],

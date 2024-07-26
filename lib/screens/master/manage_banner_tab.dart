@@ -17,7 +17,7 @@ class ManageBannerTab extends StatelessWidget {
         backgroundColor: Colors.white,
         body: Column(
           children: [
-            const CustomAppbar( s: 4),
+            const MasterAppbar( s: 4),
             SizedBox(height: Resizable.padding(context, 10),),
             Expanded(
                 child: Padding(

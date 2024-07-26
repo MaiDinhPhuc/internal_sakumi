@@ -23,7 +23,7 @@ class ManageStudentSurveyTab extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          const CustomAppbar( s: 1),
+          const MasterAppbar( s: 1),
           Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: Resizable.padding(context, 50)),

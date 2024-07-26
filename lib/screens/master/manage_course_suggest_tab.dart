@@ -15,7 +15,7 @@ class ManageCourseSuggestTab  extends StatelessWidget {
         backgroundColor: Colors.white,
         body: Column(
           children: [
-            const CustomAppbar(s: 5),
+            const MasterAppbar(s: 5),
             SizedBox(height: Resizable.padding(context, 10),),
             Expanded(
                 child: Padding(

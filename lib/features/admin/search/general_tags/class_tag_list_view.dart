@@ -5,6 +5,7 @@ import 'package:internal_sakumi/features/admin/search/general_tags/tag_filter_cu
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
+import 'package:internal_sakumi/utils/functions.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_item_1.dart';
 
@@ -35,7 +36,6 @@ class _ClassTagListViewState extends State<ClassTagListView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    print('build again');
     final manageCubit = context.read<ListManageTagsCubit>();
     return BlocProvider.value(
       value: widget.classTagCubit..load(),
@@ -57,8 +57,10 @@ class _ClassTagListViewState extends State<ClassTagListView>
               children: [
                 ...widget.classTagCubit.listClassTags.map((e) => ObjectTagItem(
                     onTap: () async {
-                      await Navigator.pushNamed(context,
-                          "${Routes.admin}/overview/class=${e.classModel.classId}");
+                      await Functions.goPage(
+                          "${Routes.admin}/overview/class=${e.classModel.classId}",
+                          context);
+
                       manageCubit.update();
                     },
                     notes: e.notes,

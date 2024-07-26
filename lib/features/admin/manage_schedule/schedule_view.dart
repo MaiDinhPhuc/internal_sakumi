@@ -128,7 +128,7 @@ class ScheduleView extends StatelessWidget {
                                     .toString()
                                     .toLowerCase()
                                     .contains(cubit.teacherSearchValue.toLowerCase())) {
-                              return ItemSearchV2(
+                              return ItemSearch(
                                 type: AppText.txtTeacher.text,
                                 isLast: false,
                                 url: data["url"] ?? "",
@@ -218,7 +218,7 @@ class ScheduleView extends StatelessWidget {
                               .toLowerCase()
                               .contains(cubit.classSearchValue.toLowerCase()) &&
                               data["is_sub_class"] == false) {
-                            return ItemSearchV2(
+                            return ItemSearch(
                               type: AppText.txtClass.text,
                               isLast: false,
                               classStatus: data["class_status"],

@@ -21,23 +21,21 @@ class ListTeacherClassView extends StatelessWidget {
             baseColor: Colors.grey[300]!,
             highlightColor: Colors.grey[100]!,
             child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(height: Resizable.size(context, 10)),
-                  ...shimmerList.map((e) => Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: Resizable.size(context, 0)),
-                      child: const ItemShimmer()))
-                ],
-              ),
-            ),
-          )
+                child: Column(children: [
+              SizedBox(height: Resizable.size(context, 10)),
+              ...shimmerList.map((e) => Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: Resizable.size(context, 0)),
+                  child: const ItemShimmer()))
+            ])))
         : cubit.teacherClasses!.isEmpty
-            ? Padding(padding: EdgeInsets.only(top: Resizable.size(context, 120)),child: Text(AppText.txtNotTeacherClass.text,
-        style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: Resizable.font(context, 17),
-            color: greyColor.shade600)))
+            ? Padding(
+                padding: EdgeInsets.only(top: Resizable.size(context, 120)),
+                child: Text(AppText.txtNotTeacherClass.text,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: Resizable.font(context, 17),
+                        color: greyColor.shade600)))
             : Column(
                 children: [
                   Padding(
@@ -49,39 +47,42 @@ class ListTeacherClassView extends StatelessWidget {
                           FilterClassStatusManageTeacher(cubit: cubit)
                         ],
                       )),
-                  Padding(padding: EdgeInsets.only(bottom: Resizable.padding(context, 10)),child: ClassItemRowLayoutV2(
-                    widgetClassCode: Text(AppText.txtClassCode.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Resizable.font(context, 17),
-                            color: greyColor.shade600)),
-                    widgetCourse: Text(AppText.txtCourse.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Resizable.font(context, 17),
-                            color: greyColor.shade600)),
-                    widgetLessons: Text(AppText.txtNumberOfLessons.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Resizable.font(context, 17),
-                            color: greyColor.shade600)),
-                    widgetAttendance: Text(AppText.txtAttendance.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Resizable.font(context, 17),
-                            color: greyColor.shade600)),
-                    widgetSubmit: Text(AppText.txtDoHomeworks.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Resizable.font(context, 17),
-                            color: greyColor.shade600)),
-                    widgetEvaluate: Container(),
-                    widgetStatus: Text(AppText.titleStatus.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Resizable.font(context, 17),
-                            color: greyColor.shade600)),
-                  )),
+                  Padding(
+                      padding: EdgeInsets.only(
+                          bottom: Resizable.padding(context, 10)),
+                      child: ClassItemRowLayoutV2(
+                        widgetClassCode: Text(AppText.txtClassCode.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetCourse: Text(AppText.txtCourse.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetLessons: Text(AppText.txtNumberOfLessons.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetAttendance: Text(AppText.txtAttendance.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetSubmit: Text(AppText.txtDoHomeworks.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetEvaluate: Container(),
+                        widgetStatus: Text(AppText.titleStatus.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                      )),
                   Expanded(
                       child: SingleChildScrollView(
                           child: Column(children: [

@@ -1,6 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/utils/functions.dart';
 
 class AdminAppBarItem extends StatelessWidget {
   const AdminAppBarItem({super.key, required this.title, required this.color, required this.id});
@@ -45,44 +46,34 @@ class AdminAppBarItem extends StatelessWidget {
                 onTap: () async {
                   switch (id) {
                     case 0:
-                      await Navigator.pushNamed(context,
-                          '${Routes.admin}/searchGeneral');
+                      await Functions.goPage('${Routes.admin}/searchGeneral', context);
                       break;
                     case 1:
-                      await Navigator.pushNamed(context,
-                          '${Routes.admin}/manageClasses');
+                      await Functions.goPage('${Routes.admin}/manageClasses', context);
                       break;
                     case 2:
-                      await Navigator.pushNamed(context,
-                          '${Routes.admin}/manageTags');
+                      await Functions.goPage('${Routes.admin}/manageTags', context);
                       break;
                     case 3:
-                      await Navigator.pushNamed(
-                          context, '${Routes.admin}/manageStatistics');
+                      await Functions.goPage('${Routes.admin}/manageStatistics', context);
                       break;
                     case 4:
-                      await Navigator.pushNamed(
-                          context, '${Routes.admin}/manageFeedbacks');
+                      await Functions.goPage('${Routes.admin}/manageFeedbacks', context);
                       break;
                     case 5:
-                      await Navigator.pushNamed(
-                          context, '${Routes.admin}/tools');
+                      await Functions.goPage('${Routes.admin}/tools', context);
                       break;
                     case 6:
-                      await Navigator.pushNamed(
-                          context, '${Routes.admin}/voucher');
+                      await Functions.goPage('${Routes.admin}/voucher', context);
                       break;
                     case 7:
-                      await Navigator.pushNamed(
-                          context, '${Routes.admin}/manageTeachers');
+                      await Functions.goPage('${Routes.admin}/manageTeachers', context);
                       break;
                     case 8:
-                      await Navigator.pushNamed(
-                          context, '${Routes.admin}/manageBills');
+                      await Functions.goPage('${Routes.admin}/manageBills', context);
                       break;
                     case 9:
-                      await Navigator.pushNamed(
-                          context, '${Routes.admin}/manageAdvises');
+                      await Functions.goPage('${Routes.admin}/manageAdvises', context);
                       break;
                   }
                 },

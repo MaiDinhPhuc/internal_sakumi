@@ -6,11 +6,12 @@ import 'package:internal_sakumi/features/class_info/class_status_item_v2.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_cubit.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/chart_view.dart';
 import 'package:internal_sakumi/model/class_model.dart';
+import 'package:internal_sakumi/utils/functions.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/card_item.dart';
 import 'package:internal_sakumi/widget/note_widget.dart';
 
-import '../../../widget/chip_tag.dart';
+
 import '../../../widget/tag_for_list.dart';
 import 'class_cubit_v2.dart';
 import 'class_detail_cubit.dart';
@@ -38,8 +39,9 @@ class ClassItemV2 extends StatelessWidget {
                     cubit: cubit,
                   ),
                   onTap: () async {
-                    await Navigator.pushNamed(context,
-                        "/${classCubit.role!}/overview/class=${classModel.classId}");
+                    await Functions.goPage(
+                        "/${classCubit.role!}/overview/class=${classModel.classId}",
+                        context);
                   },
                   onPressed: () {
                     BlocProvider.of<DropdownCubit>(c).update();
@@ -127,8 +129,9 @@ class ClassItemV2 extends StatelessWidget {
                     ],
                   ),
                   onTap: () async {
-                    await Navigator.pushNamed(context,
-                        "/${classCubit.role!}/overview/class=${classModel.classId}");
+                    await Functions.goPage(
+                        "/${classCubit.role!}/overview/class=${classModel.classId}",
+                        context);
                   },
                   onPressed: () => BlocProvider.of<DropdownCubit>(c).update(),
                   widgetStatus: StatusClassItemV2(

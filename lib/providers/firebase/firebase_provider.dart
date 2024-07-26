@@ -178,6 +178,7 @@ class FireBaseProvider extends NetworkProvider {
     sharedPreferences.setString(PrefKeyConfigs.email, '');
     sharedPreferences.setString(PrefKeyConfigs.role, '');
     sharedPreferences.setString(PrefKeyConfigs.logoutYet, 'true');
+    sharedPreferences.setStringList(PrefKeyConfigs.routes,[]);
     Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
   }
 

@@ -7,10 +7,12 @@ import 'package:internal_sakumi/providers/cache/filter_manage_bill_provider.dart
 import 'package:internal_sakumi/providers/cache/filter_statistic_provider.dart';
 import 'package:internal_sakumi/providers/cache/filter_teacher_provider.dart';
 import 'package:internal_sakumi/routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'configs/color_configs.dart';
+import 'configs/prefKey_configs.dart';
 import 'features/admin/manage_class/class_cubit_v2.dart';
 import 'features/master/manage_course/manage_course_cubit.dart';
 import 'features/master/manage_student_survey/manage_student_survey_cubit.dart';
@@ -23,6 +25,8 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   tz.initializeTimeZones();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setStringList(PrefKeyConfigs.routes, []);
   Routes.configureRoutes(Routes.router);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

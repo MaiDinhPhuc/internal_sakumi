@@ -2,6 +2,7 @@ import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/utils/functions.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class CustomBackButton extends StatelessWidget {
@@ -11,26 +12,24 @@ class CustomBackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 30,
-      margin: EdgeInsets.only(
-          left: Resizable.padding(context, 20)),
+      margin: EdgeInsets.only(left: Resizable.padding(context, 20)),
       child: Stack(
         alignment: Alignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.arrow_back_ios_new_rounded , color: primaryColor.shade500,),
-                SizedBox(
-                    width: Resizable.padding(
-                        context, 5)),
+                Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: primaryColor.shade500,
+                ),
+                SizedBox(width: Resizable.padding(context, 5)),
                 Text(AppText.txtBack.text,
                     style: TextStyle(
                         color: greyColor.shade600,
-                        fontWeight:
-                        FontWeight.w700,
+                        fontWeight: FontWeight.w700,
                         fontSize: 16)),
               ],
             ),
@@ -39,19 +38,23 @@ class CustomBackButton extends StatelessWidget {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                borderRadius:
-                BorderRadius.circular(100),
+                borderRadius: BorderRadius.circular(100),
                 overlayColor:
-                MaterialStateProperty.all(
-                    primaryColor
-                        .withAlpha(30)),
-                onTap: ()  {
-                  Navigator.pushReplacementNamed(context, '${Routes.admin}/searchGeneral');
+                    WidgetStateProperty.all(primaryColor.withAlpha(30)),
+                onTap: () async {
+                  if (await Functions.checkPreviousPageEmpty()) {
+                    if (context.mounted) {
+                      Functions.goPage(
+                          '${Routes.admin}/searchGeneral', context);
+                    }
+                  } else {
+                    if (context.mounted) {
+                      Functions.goPreviousPage(context);
+                    }
+                  }
                 },
                 child: Container(
-                  margin:
-                  const EdgeInsets.symmetric(
-                      horizontal: 2),
+                  margin: const EdgeInsets.symmetric(horizontal: 2),
                 ),
               ),
             ),
@@ -69,26 +72,24 @@ class CustomBackTeacherButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 30,
-      margin: EdgeInsets.only(
-          left: Resizable.padding(context, 20)),
+      margin: EdgeInsets.only(left: Resizable.padding(context, 20)),
       child: Stack(
         alignment: Alignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.arrow_back_ios_new_rounded , color: primaryColor.shade500,),
-                SizedBox(
-                    width: Resizable.padding(
-                        context, 5)),
+                Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: primaryColor.shade500,
+                ),
+                SizedBox(width: Resizable.padding(context, 5)),
                 Text(AppText.txtBack.text,
                     style: TextStyle(
                         color: greyColor.shade600,
-                        fontWeight:
-                        FontWeight.w700,
+                        fontWeight: FontWeight.w700,
                         fontSize: 16)),
               ],
             ),
@@ -97,19 +98,14 @@ class CustomBackTeacherButton extends StatelessWidget {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                borderRadius:
-                BorderRadius.circular(100),
+                borderRadius: BorderRadius.circular(100),
                 overlayColor:
-                MaterialStateProperty.all(
-                    primaryColor
-                        .withAlpha(30)),
-                onTap: ()  {
+                    WidgetStateProperty.all(primaryColor.withAlpha(30)),
+                onTap: () {
                   Navigator.pushReplacementNamed(context, Routes.teacher);
                 },
                 child: Container(
-                  margin:
-                  const EdgeInsets.symmetric(
-                      horizontal: 2),
+                  margin: const EdgeInsets.symmetric(horizontal: 2),
                 ),
               ),
             ),
@@ -127,26 +123,24 @@ class CustomBackHomeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 30,
-      margin: EdgeInsets.only(
-          left: Resizable.padding(context, 20)),
+      margin: EdgeInsets.only(left: Resizable.padding(context, 20)),
       child: Stack(
         alignment: Alignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.arrow_back_ios_new_rounded , color: primaryColor.shade500,),
-                SizedBox(
-                    width: Resizable.padding(
-                        context, 5)),
+                Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: primaryColor.shade500,
+                ),
+                SizedBox(width: Resizable.padding(context, 5)),
                 Text(AppText.txtBack.text,
                     style: TextStyle(
                         color: greyColor.shade600,
-                        fontWeight:
-                        FontWeight.w700,
+                        fontWeight: FontWeight.w700,
                         fontSize: 16)),
               ],
             ),
@@ -155,19 +149,23 @@ class CustomBackHomeButton extends StatelessWidget {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                borderRadius:
-                BorderRadius.circular(100),
+                borderRadius: BorderRadius.circular(100),
                 overlayColor:
-                MaterialStateProperty.all(
-                    primaryColor
-                        .withAlpha(30)),
-                onTap: ()  {
-                  Navigator.pushReplacementNamed(context, '${Routes.admin}/manageClasses');
+                    WidgetStateProperty.all(primaryColor.withAlpha(30)),
+                onTap: () async {
+                  if (await Functions.checkPreviousPageEmpty()) {
+                    if (context.mounted) {
+                      Functions.goPage(
+                          '${Routes.admin}/manageClasses', context);
+                    }
+                  } else {
+                    if (context.mounted) {
+                      Functions.goPreviousPage(context);
+                    }
+                  }
                 },
                 child: Container(
-                  margin:
-                  const EdgeInsets.symmetric(
-                      horizontal: 2),
+                  margin: const EdgeInsets.symmetric(horizontal: 2),
                 ),
               ),
             ),
@@ -184,23 +182,22 @@ class CustomBackTeacherScreenButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: Resizable.size(
-          context, 30),
+      height: Resizable.size(context, 30),
       child: Stack(
         alignment: Alignment.center,
         children: [
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.arrow_back_ios_new_rounded , color: primaryColor.shade500,),
-              SizedBox(
-                  width: Resizable.padding(
-                      context, 5)),
+              Icon(
+                Icons.arrow_back_ios_new_rounded,
+                color: primaryColor.shade500,
+              ),
+              SizedBox(width: Resizable.padding(context, 5)),
               Text(AppText.txtBack.text,
                   style: TextStyle(
                       color: greyColor.shade600,
-                      fontWeight:
-                      FontWeight.w700,
+                      fontWeight: FontWeight.w700,
                       fontSize: 16)),
             ],
           ),
@@ -208,19 +205,24 @@ class CustomBackTeacherScreenButton extends StatelessWidget {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                borderRadius:
-                BorderRadius.circular(100),
+                borderRadius: BorderRadius.circular(100),
                 overlayColor:
-                MaterialStateProperty.all(
-                    primaryColor
-                        .withAlpha(30)),
-                onTap: ()  {
-                  Navigator.pushReplacementNamed(context, '${Routes.admin}/manageTeachers');
+                    WidgetStateProperty.all(primaryColor.withAlpha(30)),
+                onTap: () async {
+                  print(await Functions.checkPreviousPageEmpty());
+                  if (await Functions.checkPreviousPageEmpty()) {
+                    if (context.mounted) {
+                      Functions.goPage(
+                          '${Routes.admin}/manageTeachers', context);
+                    }
+                  } else {
+                    if (context.mounted) {
+                      Functions.goPreviousPage(context);
+                    }
+                  }
                 },
                 child: Container(
-                  margin:
-                  const EdgeInsets.symmetric(
-                      horizontal: 2),
+                  margin: const EdgeInsets.symmetric(horizontal: 2),
                 ),
               ),
             ),
