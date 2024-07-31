@@ -93,11 +93,9 @@ class ClassOverViewCubitV2 extends Cubit<int> {
 
     await loadClass(classId);
 
-    //await DataProvider.classByClassId(classId, loadClass);
+    await DataProvider.stdClassByClassId(classId, loadStudentClass);
 
-    DataProvider.stdClassByClassId(classId, loadStudentClass);
-
-    DataProvider.stdLessonByClassId(classId, loadStdLesson);
+    await DataProvider.stdLessonByClassId(classId, loadStdLesson);
 
     await DataProvider.stdTestByClassId(classId, loadStdTest);
 
@@ -134,11 +132,7 @@ class ClassOverViewCubitV2 extends Cubit<int> {
       }
     }
 
-
-
-    DataProvider.lessonResultByClassId(classId, loadLessonResult);
-
-    await Future.delayed(const Duration(milliseconds: 500));
+    await DataProvider.lessonResultByClassId(classId, loadLessonResult);
 
     var listStdId = listStdClass!.map((e) => e.userId).toList();
     students = [];

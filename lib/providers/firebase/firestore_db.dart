@@ -1709,7 +1709,7 @@ class FireStoreDb {
         .where(Filter.and(
             Filter("end_time", isGreaterThanOrEqualTo: startDate),
             Filter("end_time", isLessThanOrEqualTo: endDate),
-            Filter("class_status", whereIn: ['Completed', 'Cancel']),
+            Filter("class_status", whereIn: ['Completed', 'Cancel','Paused']),
             Filter("informal", isEqualTo: false)))
         .get();
 

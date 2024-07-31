@@ -101,7 +101,7 @@ void alertAddNewCourse(BuildContext context, CourseModel? courseModel,
                                 isExpand: true),
                             Input2Field(
                                 title1: AppText.txtBTVNToken.text,
-                                title2: AppText.txtDataVersion.text,
+                                title2: AppText.txtDataToken.text,
                                 con1: btvnTokenCon,
                                 con2: dataTokenCon),
                             Input2Field(

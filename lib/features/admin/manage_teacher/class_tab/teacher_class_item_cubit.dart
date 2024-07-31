@@ -63,7 +63,7 @@ class TeacherClassItemCubit extends Cubit<int>{
 
 
   loadData()async{
-    DataProvider.courseById(classModel.courseId, onCourseLoaded);
+    await DataProvider.courseById(classModel.courseId, onCourseLoaded);
 
     await DataProvider.stdClassByClassId(classModel.classId, loadStudentClass);
 
@@ -101,12 +101,13 @@ class TeacherClassItemCubit extends Cubit<int>{
         }
       }
     }
-    emit(state+1);
     await DataProvider.stdLessonByClassId(classModel.classId, loadStdLesson);
 
     await DataProvider.lessonResultByClassId(
         classModel.classId, loadLessonResult);
     await loadPercent();
+    emit(state+1);
+
   }
 
   loadPercent() async {
@@ -116,7 +117,6 @@ class TeacherClassItemCubit extends Cubit<int>{
 
     hwPercent = Calculator.classHwPercent(stdClasses!, stdLessons!, lessons!);
 
-    emit(state + 1);
   }
 
   String getTitle(int lessonId){

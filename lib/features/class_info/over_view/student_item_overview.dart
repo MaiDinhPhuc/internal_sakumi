@@ -44,14 +44,14 @@ class StudentItemOverView extends StatelessWidget {
                             borderRadius: BorderRadius.circular(
                                 Resizable.size(context, 5))),
                         child: AnimatedCrossFade(
-                            firstChild: CollapseOverviewStudentV2(
+                            firstChild: CollapseOverviewStudent(
                                 cubit: cubit,
                                 role: role,
                                 stdClass: stdClass,
                                 studentCubit: studentCubit),
                             secondChild: Column(
                               children: [
-                                CollapseOverviewStudentV2(
+                                CollapseOverviewStudent(
                                     cubit: cubit,
                                     role: role,
                                     stdClass: stdClass,

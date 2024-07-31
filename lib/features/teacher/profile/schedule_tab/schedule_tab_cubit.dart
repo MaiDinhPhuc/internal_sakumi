@@ -107,26 +107,21 @@ class ScheduleTabCubit extends Cubit<int> {
 
     for (var i in listLessonResult!) {
       if (listClassId.contains(i.classId) == false) {
-        print("result : ${i.classId}");
         listClassId.add(i.classId);
       }
     }
 
     for (var i in listCyclicSchedule!) {
       if (listClassId.contains(i.classId) == false) {
-        print("cyclic : ${i.classId}");
         listClassId.add(i.classId);
       }
     }
 
     for (var i in listSingleSchedule!) {
       if (listClassId.contains(i.classId) == false) {
-        print("single : ${i.classId}");
         listClassId.add(i.classId);
       }
     }
-
-    print(listClassId);
 
     for (var i in listClassId) {
       await loadClass(i);

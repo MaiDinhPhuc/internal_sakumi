@@ -14,7 +14,7 @@ class CardStudentClassItem extends StatelessWidget {
       required this.onTap,
       this.isExpand = false,
       this.canTap = false,
-        this.isStudent = true,
+      this.isStudent = true,
       Key? key})
       : super(key: key);
 
@@ -23,8 +23,10 @@ class CardStudentClassItem extends StatelessWidget {
     return Stack(
       children: [
         Container(
-            padding:
-                EdgeInsets.only(top: Resizable.padding(context, 9), bottom: Resizable.padding(context, 9), right: Resizable.padding(context, 5)),
+            padding: EdgeInsets.only(
+                top: Resizable.padding(context, 9),
+                bottom: Resizable.padding(context, 9),
+                right: Resizable.padding(context, 5)),
             alignment: Alignment.centerLeft,
             child: widget),
         if (canTap)
@@ -36,18 +38,18 @@ class CardStudentClassItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(Resizable.size(context, 5)),
             ),
           )),
-        if(isStudent)
-        Container(
-            margin: EdgeInsets.only(
-                right: Resizable.padding(context, 10),
-                top: Resizable.padding(context, 10)),
-            alignment: Alignment.centerRight,
-            child: IconButton(
-                onPressed: onPressed,
-                splashRadius: Resizable.size(context, 15),
-                icon: const Icon(
-                  Icons.keyboard_arrow_down,
-                ))),
+        if (isStudent)
+          Container(
+              margin: EdgeInsets.only(
+                  right: Resizable.padding(context, 10),
+                  top: Resizable.padding(context, 10)),
+              alignment: Alignment.centerRight,
+              child: IconButton(
+                  onPressed: onPressed,
+                  splashRadius: Resizable.size(context, 15),
+                  icon: const Icon(
+                    Icons.keyboard_arrow_down,
+                  ))),
         Container(
             width: Resizable.size(context, 50),
             height: Resizable.size(context, 50),

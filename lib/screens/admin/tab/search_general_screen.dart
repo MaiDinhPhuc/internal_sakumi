@@ -11,7 +11,6 @@ import 'package:internal_sakumi/features/admin/search/search_cubit.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/functions.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
-
 import '../../../features/admin/manage_bills/add_bill_button.dart';
 import '../../../features/admin/manage_student/alert_add_new_std_account.dart';
 import '../../../features/admin/search/item_search.dart';
@@ -269,4 +268,5 @@ class SearchGeneralScreen extends StatelessWidget {
       ),
     );
   }
+
 }

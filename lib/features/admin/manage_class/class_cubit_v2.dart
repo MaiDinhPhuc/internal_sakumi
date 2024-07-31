@@ -17,6 +17,7 @@ class ClassCubit extends Cubit<int> {
   List<String> listClassStatusMenuAdmin2 = [
     "Preparing",
     "InProgress",
+    "Paused",
     "Completed",
     "Cancel"
   ];
@@ -48,7 +49,9 @@ class ClassCubit extends Cubit<int> {
         List<ClassModel> list =
             await DataProvider.classListAdmin(filterCubit.filter, 1, subLists[i]);
         listClass!.addAll(list);
-        lastClasses.add(listClass!.last);
+        if(listClass!.isNotEmpty){
+          lastClasses.add(listClass!.last);
+        }
       }
       listLastClass.add(lastClasses);
     }

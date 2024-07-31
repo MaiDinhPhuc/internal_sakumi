@@ -625,10 +625,12 @@ enum AppText {
   txtAdviseCourse,
   txtAdviseBanner,
   txtAdviseRequest,
-  txtAdviseEmpty
+  txtAdviseEmpty,
+  txtCreatePDFFile
 }
 
 Map<AppText, String> texts = {
+  AppText.txtCreatePDFFile: 'Xuất File',
   AppText.txtAdviseEmpty: 'Chưa có yêu cầu tư vấn',
   AppText.txtAdviseRequest: 'Yêu cầu tư vấn',
   AppText.txtAdviseCourse: 'Yêu cầu tư vấn khoá học',
@@ -1353,6 +1355,10 @@ String vietnameseSubText(String text) {
       return "Bỏ cọc";
     case "Force":
       return "Bắt buộc lên kỳ";
+    case 'SuperUpSale':
+      return "Lên Khoá";
+    case 'Paused':
+      return "Tạm Dừng";
     default:
       return "error";
   }

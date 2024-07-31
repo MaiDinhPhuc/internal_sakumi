@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_bills/add_bill_button.dart';
 import 'package:internal_sakumi/features/admin/manage_browse_download/manage_browse_download_dialog.dart';
+import 'package:internal_sakumi/features/admin/manage_class/create_pdf_file_dialog.dart';
 import 'package:internal_sakumi/features/class_info/lesson/add_custom_lesson_dialog.dart';
 import 'package:internal_sakumi/features/class_info/lesson/list_lesson_cubit_v2.dart';
 import 'package:internal_sakumi/features/class_info/lesson/list_lesson_items_v2.dart';
@@ -67,6 +68,21 @@ class ListLessonScreenV2 extends StatelessWidget {
                                             ),
                                             Row(
                                               children: [
+                                                AddButton(
+                                                  onTap: () {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            CreatePdfFileDialog(
+                                                                classModel: cubit
+                                                                    .classModel!));
+                                                  },
+                                                  title: AppText
+                                                      .txtCreatePDFFile.text,
+                                                ),
+                                                SizedBox(
+                                                    width: Resizable.padding(
+                                                        context, 5)),
                                                 BlocProvider(
                                                     create: (context) =>
                                                         ManageBrowseDownloadInClassCubit(),
@@ -124,19 +140,22 @@ class ListLessonScreenV2 extends StatelessWidget {
                                                       fontSize: Resizable.font(
                                                           context, 30))),
                                             ),
-                                            AddButton(
-                                              onTap: () {
-                                                showDialog(
-                                                    context: context,
-                                                    builder: (context) =>
-                                                        RequestBrowseDownloadDialog(
-                                                            listLessons:
-                                                                cubit.lessons!,
-                                                            classModel: cubit
-                                                                .classModel!));
-                                              },
-                                              title: AppText.txtData.text,
-                                            )
+                                            if (cubit.courseModel != null &&
+                                                cubit.courseModel!.dataToken !=
+                                                    "_")
+                                              AddButton(
+                                                onTap: () {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (context) =>
+                                                          RequestBrowseDownloadDialog(
+                                                              listLessons: cubit
+                                                                  .lessons!,
+                                                              classModel: cubit
+                                                                  .classModel!));
+                                                },
+                                                title: AppText.txtData.text,
+                                              )
                                           ]),
                                 Container(
                                     padding: EdgeInsets.only(

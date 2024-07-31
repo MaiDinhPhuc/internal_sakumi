@@ -38,6 +38,7 @@ class DataProvider {
     List<int> listTypeQuery = listType!.map((e) => type(e)).toList();
     List<String> listStatusQuery =
         listStatus!.map((e) => statusAdmin(e)).toList();
+    print(listStatusQuery);
     if (lastItem != null) {
       var listClass = await FireBaseProvider.instance.getMoreClassWithFilter(
           listStatusQuery, listTypeQuery, lastItem.classId, listCourseId);
@@ -127,6 +128,8 @@ class DataProvider {
         return "InProgress";
       case FilterClassStatus.cancel:
         return "Cancel";
+      case FilterClassStatus.paused:
+        return "Paused";
     }
   }
 

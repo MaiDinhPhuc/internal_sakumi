@@ -11,6 +11,7 @@ import 'package:internal_sakumi/features/calculator/calculator.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/utils/functions.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'detail_teacher_class.dart';
@@ -159,11 +160,13 @@ class ItemTeacherClass extends StatelessWidget {
                             status: itemCubit.classModel.classStatus),
                         onTap: () async {
                           if (cubit.role == 'admin') {
-                            await Navigator.pushNamed(context,
-                                "${Routes.admin}/overview/class=${classModel.classId}");
+                            await Functions.goPage(
+                                "${Routes.admin}/overview/class=${classModel.classId}",
+                                context);
                           } else {
-                            await Navigator.pushNamed(context,
-                                "${Routes.teacher}/overview/class=${classModel.classId}");
+                            await Functions.goPage(
+                                "${Routes.teacher}/overview/class=${classModel.classId}",
+                                context);
                           }
                         }),
                     crossFadeState: state % 2 == 1

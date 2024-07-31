@@ -17,7 +17,7 @@ class AlertNewClassCubit extends Cubit<int> {
   String? selector;
   bool? check;
   List<String> listClassType = ['Lớp chung','Lớp 1-1'];
-  List<String> listClassStatusMenu = ["Preparing", "InProgress", "Completed", "Cancel"];
+  List<String> listClassStatusMenu = ["Preparing", "InProgress","Paused", "Completed", "Cancel"];
   int? classType ;
   String? classStatus;
   bool informal = false;
@@ -67,6 +67,9 @@ class AlertNewClassCubit extends Cubit<int> {
       case 'Mới Tạo':
         emit(state + 1);
         return "Preparing";
+      case 'Tạm Dừng':
+        emit(state + 1);
+        return "Paused";
       default:
         emit(state + 1);
         return "error";

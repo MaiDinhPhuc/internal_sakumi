@@ -26,9 +26,9 @@ class ClassStatisticCubit extends Cubit<int> {
 
   List<ChartStatisticData> classData = [];
 
-  List<String> listStatus = ['Preparing', 'InProgress', 'Completed', 'Cancel'];
+  List<String> listStatus = ['Preparing', 'InProgress','Paused', 'Completed', 'Cancel'];
 
-  List<String> listStatusSub = ['Mới tạo', 'Đang học', 'Hoàn thành', 'Huỷ'];
+  List<String> listStatusSub = ['Mới tạo', 'Đang học','Tạm dừng', 'Hoàn thành', 'Huỷ'];
 
   setDate(DateTime start, DateTime end) {
     isChooseDate = true;

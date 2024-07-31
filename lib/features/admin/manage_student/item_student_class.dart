@@ -1,6 +1,8 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
+import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/admin/manage_general/manage_general_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_student/student_class_item_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_student/student_class_overview.dart';
 import 'package:internal_sakumi/features/admin/manage_student/student_info_cubit.dart';
@@ -8,13 +10,21 @@ import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_
 import 'package:internal_sakumi/features/teacher/teacher_home/class_status_item.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
+import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/screens/class_info/detail_grading_screen_v2.dart';
+import 'package:internal_sakumi/utils/functions.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'card_student_class_item.dart';
 import 'detail_student_class.dart';
+import 'icon_status_in_student_profile.dart';
 
 class ItemStudentClass extends StatelessWidget {
-  ItemStudentClass({super.key, required this.cubit, required this.stdClass, required this.classModel})
+  ItemStudentClass(
+      {super.key,
+      required this.cubit,
+      required this.stdClass,
+      required this.classModel})
       : itemCubit = StudentClasItemCubit(cubit, stdClass, classModel);
   final StudentInfoCubit cubit;
   final StudentClasItemCubit itemCubit;
@@ -43,6 +53,7 @@ class ItemStudentClass extends StatelessWidget {
                           BorderRadius.circular(Resizable.size(context, 5))),
                   child: AnimatedCrossFade(
                       firstChild: CardStudentClassItem(
+                          canTap: true,
                           widget: StudentClassOverview(
                             model: itemCubit.classModel,
                             courseTitle: itemCubit.courseModel == null
@@ -55,18 +66,26 @@ class ItemStudentClass extends StatelessWidget {
                             attendancePercent: itemCubit.getAttendancePercent(),
                             hwPercent: itemCubit.lessons == null
                                 ? 0
-                                : itemCubit.getHwPercent(), attendance: Container(),
+                                : itemCubit.getHwPercent(),
+                            attendance: Container(),
                           ),
                           onPressed: () {
                             BlocProvider.of<DropdownCubit>(c).update();
                           },
-                          widgetStatus: StatusClassItem(
-                              status: itemCubit.stdClass.classStatus,
-                              color: itemCubit.getColor(),
-                              icon: itemCubit.getIcon()), onTap: () {}),
+                          widgetStatus: IconStatusInStudentProfile(
+                            stdClass: stdClass,
+                            std: cubit.student!,
+                            cubit: cubit,
+                          ),
+                          onTap: () async {
+                            await Functions.goPage(
+                                "${Routes.admin}/overview/class=${classModel.classId}",
+                                context);
+                          }),
                       secondChild: Column(
                         children: [
                           CardStudentClassItem(
+                              canTap: true,
                               widget: StudentClassOverview(
                                 model: itemCubit.classModel,
                                 courseTitle: itemCubit.courseModel == null
@@ -80,15 +99,22 @@ class ItemStudentClass extends StatelessWidget {
                                     itemCubit.getAttendancePercent(),
                                 hwPercent: itemCubit.lessons == null
                                     ? 0
-                                    : itemCubit.getHwPercent(), attendance: Container(),
+                                    : itemCubit.getHwPercent(),
+                                attendance: Container(),
                               ),
                               onPressed: () {
                                 BlocProvider.of<DropdownCubit>(c).update();
                               },
-                              widgetStatus: StatusClassItem(
-                                  status: itemCubit.stdClass.classStatus,
-                                  color: itemCubit.getColor(),
-                                  icon: itemCubit.getIcon()), onTap: () {}),
+                              widgetStatus: IconStatusInStudentProfile(
+                                stdClass: stdClass,
+                                std: cubit.student!,
+                                cubit: cubit,
+                              ),
+                              onTap: () async {
+                                await Functions.goPage(
+                                    "${Routes.admin}/overview/class=${classModel.classId}",
+                                    context);
+                              }),
                           DetailStudentClassInfo(itemCubit: itemCubit)
                         ],
                       ),

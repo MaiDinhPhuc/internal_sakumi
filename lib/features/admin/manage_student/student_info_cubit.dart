@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
@@ -10,6 +11,7 @@ import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
+import 'package:internal_sakumi/utils/text_utils.dart';
 
 import 'manage_std_bill_cubit.dart';
 
@@ -19,7 +21,7 @@ class StudentInfoCubit extends Cubit<int> {
   StudentModel? student;
   UserModel? user;
 
-  bool firstTab = true;
+  String tab = AppText.titleManageClass.text;
 
   final ManageStdBillCubit billCubit = ManageStdBillCubit();
 
@@ -37,8 +39,22 @@ class StudentInfoCubit extends Cubit<int> {
   String note = "";
   bool isLoading = true;
 
-  changeTab(){
-    firstTab = !firstTab;
+  changeTab(String title)async{
+    if(title == AppText.titleManageClass.text){
+      await loadStdClass();
+    }
+    tab = title;
+    emit(state+1);
+  }
+
+  removeStdClass(StudentClassModel std){
+    stdClasses!.remove(std);
+    emit(state+1);
+  }
+
+  updateStdClass(int classId, StudentClassModel stdClass){
+    var index = stdClasses!.indexWhere((e)=>e.classId == classId);
+    stdClasses![index] = stdClass;
     emit(state+1);
   }
 
@@ -69,9 +85,13 @@ class StudentInfoCubit extends Cubit<int> {
     }
   }
 
+  loadStdClass()async{
+    stdClasses = await FireBaseProvider.instance.getStudentClassByStdId(int.parse(TextUtils.getName()));
+  }
+
 
   loadInFoStudentInSystem(int studentId) async {
-    stdClasses = await FireBaseProvider.instance.getStudentClassByStdId(studentId);
+    await loadStdClass();
     var listClassId = stdClasses!.map((e) => e.classId).toList();
     classes =
         await FireBaseProvider.instance.getListClassByListIdV2(listClassId);

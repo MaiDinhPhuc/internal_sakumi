@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/class_model.dart';
+import 'package:internal_sakumi/model/course_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
@@ -16,6 +17,7 @@ class ListLessonCubitV2 extends Cubit<int>{
 
   final int classId;
   ClassModel? classModel;
+  CourseModel? courseModel;
   List<TeacherModel> teachers = [];
   List<StudentModel> students = [];
   List<StudentClassModel>? listStdClass;
@@ -27,8 +29,6 @@ class ListLessonCubitV2 extends Cubit<int>{
   loadData()async{
 
     await loadClass(classId);
-
-    //await DataProvider.classByClassId(classId, loadClass);
 
     if(classModel!.customLessons.isEmpty){
       await DataProvider.lessonByCourseId(classModel!.courseId, loadLessonInClass);
@@ -65,13 +65,13 @@ class ListLessonCubitV2 extends Cubit<int>{
 
     await DataProvider.stdClassByClassId(classId, loadStudentClass);
 
-    await DataProvider.stdLessonByClassId(classId, loadStdLesson);
+    // await DataProvider.stdLessonByClassId(classId, loadStdLesson);
+    stdLessons = await FireBaseProvider.instance.getAllStudentLessonsInClass(classId);
 
     await DataProvider.lessonResultByClassId(classId, loadLessonResult);
 
     await sortLessons();
 
-    await Future.delayed(const Duration(milliseconds: 500));
 
     var listStdId = listStdClass!.map((e) => e.userId).toList();
     for(var i in listStdId){
@@ -133,7 +133,9 @@ class ListLessonCubitV2 extends Cubit<int>{
 
       DataProvider.stdClassByClassId(classId, loadStudentClass);
 
-      DataProvider.stdLessonByClassId(classId, loadStdLesson);
+      //DataProvider.stdLessonByClassId(classId, loadStdLesson);
+
+      stdLessons = await FireBaseProvider.instance.getAllStudentLessonsInClass(classId);
 
       DataProvider.lessonResultByClassId(classId, loadLessonResult);
 
@@ -166,9 +168,7 @@ class ListLessonCubitV2 extends Cubit<int>{
 
   loadTeacherInfo(Object student) {
     teachers.add(student as TeacherModel);
-    if(teachers.length == listTeacherId.length){
-      emit(state+1);
-    }
+    emit(state+1);
   }
 
 
@@ -178,14 +178,11 @@ class ListLessonCubitV2 extends Cubit<int>{
 
   loadStudentInfo(Object student) {
     students.add(student as StudentModel);
-    if(students.length == listStdClass!.length){
-      emit(state+1);
-    }
   }
 
-  loadStdLesson(Object stdLessons) {
-    this.stdLessons = stdLessons as List<StudentLessonModel>;
-  }
+  // loadStdLesson(Object stdLessons) {
+  //   this.stdLessons = stdLessons as List<StudentLessonModel>;
+  // }
 
   loadLessonResult(Object lessonResults) {
     this.lessonResults = lessonResults as List<LessonResultModel>;
@@ -200,7 +197,12 @@ class ListLessonCubitV2 extends Cubit<int>{
 
   loadClass(int classId)async {
     classModel = await FireBaseProvider.instance.getClassById(classId);
+    DataProvider.courseById(classModel!.courseId, onCourseLoaded);
     emit(state+1);
+  }
+
+  onCourseLoaded(Object course) {
+    courseModel = course as CourseModel;
   }
 
 }

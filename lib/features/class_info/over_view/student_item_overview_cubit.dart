@@ -34,6 +34,7 @@ class StudentItemOverViewCubit extends Cubit<int> {
     "Viewer",
     "ReNew",
     "UpSale",
+    "SuperUpSale",
     "Moved",
     "Retained",
     "Dropped",

@@ -134,7 +134,7 @@ class RequestBrowseDownloadCubit extends Cubit<int> {
     if(listBrowseDownload == null) return '';
     var list = listCourse.where((element) => element.courseId == lessonModel.courseId).toList();
     if(list.isEmpty) return '';
-    if(list.first.dataToken.isEmpty) return '';
+    if(list.first.dataToken == "_") return '';
 
     String hash = md5.convert(utf8.encode('${lessonModel.courseId} ${lessonModel.lessonId} sakumi2024')).toString();
 
