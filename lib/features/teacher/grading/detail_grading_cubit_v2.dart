@@ -36,6 +36,8 @@ class DetailGradingCubitV2 extends Cubit<int> {
   List<StudentLessonModel>? stdLessons;
   List<StudentTestModel>? stdTests;
 
+  bool isAll = true;
+
   initCustom(String type) async {
     if (type == "type=test") {
       gradingType = "test";
@@ -90,6 +92,40 @@ class DetailGradingCubitV2 extends Cubit<int> {
     return "";
   }
 
+
+  update(){
+
+    List<int> listQuestionId = getListQuestion().map((e)=>e.id).toList();
+
+    if(!listQuestionId.contains(now) && listQuestionId.isNotEmpty){
+      now = getListQuestion().first.id;
+    }
+
+    emit(state+1);
+  }
+
+  List<QuestionModel> getListQuestion(){
+    if(isAll) return listQuestions!;
+    return listQuestions!.where((e)=>!checkGrading(e.id)).toList();
+  }
+
+  bool checkGrading(int questionId){
+
+    bool check = false;
+
+    int count = 0;
+    for (var j in getAnswerById(questionId)) {
+      if (j.newScore != -1) {
+        count++;
+      }
+    }
+    if (count == getAnswerById(questionId).length) {
+      check = true;
+    }
+
+    return check;
+  }
+
   QuestionModel getQuestion() {
     var question = listQuestions!.firstWhere((e) => e.id == now);
     return question;
@@ -110,10 +146,14 @@ class DetailGradingCubitV2 extends Cubit<int> {
     emit(questionId);
   }
 
-  List<AnswerModel> get answers => listAnswer!
+  List<AnswerModel> get answers => isAll? listAnswer!
       .where((answer) =>
-          answer.questionId == now && listStudentId!.contains(answer.studentId))
-      .toList();
+  answer.questionId == now && listStudentId!.contains(answer.studentId))
+      .toList() :listAnswer!
+      .where((answer) =>
+  answer.questionId == now && listStudentId!.contains(answer.studentId) && answer.score == -1)
+      .toList() ;
+
 
   bool checkDone(bool isFirst) {
     if (isFirst) {

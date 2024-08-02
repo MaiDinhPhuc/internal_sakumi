@@ -30,7 +30,8 @@ import 'package:internal_sakumi/model/teacher_survey_answer_model.dart';
 import 'package:internal_sakumi/model/teacher_survey_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
-import 'package:internal_sakumi/model/voucher_model.dart';
+import 'package:internal_sakumi/model/voucher_app_model.dart';
+import 'package:internal_sakumi/model/voucher_course_model.dart';
 import 'package:internal_sakumi/providers/api/api_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/browser.dart';
@@ -2346,11 +2347,20 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getVoucher(String docs) async {
+  Future<DocumentSnapshot<Map<String, dynamic>>> getVoucherCourse(String docs) async {
     final temp = await db.collection("voucher").doc(docs).get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getVoucher $docs ${temp.exists} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getVoucherCourse $docs ${temp.exists} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return temp;
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getVoucherApp(String docs) async {
+    final temp = await db.collection("voucher_app").doc(docs).get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getVoucherApp $docs ${temp.exists} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return temp;
   }
@@ -2368,7 +2378,7 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<void> addVoucher(VoucherModel model) async {
+  Future<void> addVoucherCourse(VoucherCourseModel model) async {
     await db
         .collection("voucher")
         .doc("sakumi_voucher_${model.voucherCode}")
@@ -2384,6 +2394,23 @@ class FireStoreDb {
       'price': model.price,
       'type': model.type,
       'full_course': model.isFullCourse
+    });
+  }
+
+  Future<void> addVoucherApp(VoucherAppModel model) async {
+    await db
+        .collection("voucher_app")
+        .doc("app_voucher_${model.voucherCode}")
+        .set({
+      'id': model.id,
+      'recipient_code': model.recipientCode,
+      'used_user_code': model.usedUserCode,
+      'voucher_code': model.voucherCode,
+      'create_date': model.createDate,
+      'used_date': model.usedDate,
+      'expired_date': model.expiredDate,
+      'noted': model.noted,
+      'price': model.price,
     });
   }
 

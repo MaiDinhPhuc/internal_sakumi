@@ -1,5 +1,5 @@
 import 'package:flutter/Material.dart';
-import 'package:internal_sakumi/model/voucher_model.dart';
+import 'package:internal_sakumi/model/voucher_course_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class SocialInfoView extends StatelessWidget {

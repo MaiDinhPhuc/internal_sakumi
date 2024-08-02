@@ -7,9 +7,9 @@ import 'package:internal_sakumi/features/admin/manage_general/input_form/input_f
 import 'package:internal_sakumi/features/admin/voucher/voucher_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
-class VoucherForm extends StatelessWidget {
+class VoucherCourseForm extends StatelessWidget {
   final VoucherCubit cubit;
-  const VoucherForm(this.cubit, {Key? key}) : super(key: key);
+  const VoucherCourseForm(this.cubit, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class VoucherForm extends StatelessWidget {
                     fontSize: Resizable.font(context, 18),
                     color: const Color(0xff757575))),
             InputDropdown(
-                hint: cubit.priceVoucher,
+                hint: cubit.priceVoucherCourse,
                 onChanged: (v) {
                   cubit.selectPrice(v.toString());
                 },
@@ -99,8 +99,8 @@ class VoucherForm extends StatelessWidget {
         ),
         InputDate(
             title: AppText.titleExpiredDate.text,
-            isVoucher: cubit.isVoucher,
-            onPressed: () => cubit.buildUI(),
+            isVoucherCourse: cubit.isVoucherCourse,
+            onPressed: () => cubit.buildUIVoucherCourse(),
             errorText: AppText.txtErrorStartDate.text),
         // SizedBox(width: Resizable.size(context, 10)),
         InputItem(

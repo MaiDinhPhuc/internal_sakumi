@@ -130,21 +130,47 @@ class ReportInfoView extends StatelessWidget {
               ],
             ),
           )),
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      Row(
         children: [
-          Text(AppText.txtClassType.text,
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: Resizable.font(context, 18),
-                  color: const Color(0xff757575))),
-          InputDropdown(
-              hint: cubit.findReportStatus(),
-              onChanged: (v) {
-                cubit.chooseStatus(v!);
-              },
-              items: List.generate(cubit.listStatus.length,
-                  (index) => (cubit.listStatus[index])).toList())
+          Expanded(
+              flex: 1,
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(AppText.txtClassType.text,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: Resizable.font(context, 18),
+                      color: const Color(0xff757575))),
+              InputDropdown(
+                  hint: cubit.findReportStatus(),
+                  onChanged: (v) {
+                    cubit.chooseStatus(v!);
+                  },
+                  items: List.generate(cubit.listStatus.length,
+                          (index) => (cubit.listStatus[index])).toList())
+            ],
+          )),
+          SizedBox(width: Resizable.padding(context, 10)),
+          Expanded(
+              flex: 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(AppText.txtRange.text,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: Resizable.font(context, 18),
+                          color: const Color(0xff757575))),
+                  InputDropdown(
+                      hint: cubit.findReportRange(),
+                      onChanged: (v) {
+                        cubit.chooseRange(v!);
+                      },
+                      items: List.generate(cubit.listRange.length,
+                              (index) => (cubit.listRange[index])).toList())
+                ],
+              ))
         ],
       ),
       Padding(

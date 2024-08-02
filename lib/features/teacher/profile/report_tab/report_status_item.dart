@@ -41,3 +41,42 @@ class ReportStatusItem extends StatelessWidget {
     }
   }
 }
+
+class ReportRangeItem extends StatelessWidget {
+  final String range;
+  const ReportRangeItem(this.range, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: BoxConstraints(minWidth: Resizable.size(context, 80)),
+      padding:
+      EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(1000),
+          color: getColor(range)),
+      child: Text(
+        range,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            fontSize: Resizable.font(context, 12),
+            fontWeight: FontWeight.w800,
+            color: Colors.white),
+      ),
+    )
+    ;
+  }
+
+  static Color getColor(String s) {
+    switch (s) {
+      case 'Bình thường':
+        return const Color(0xff33691E);
+      case 'Gợi ý':
+        return const Color(0xffF57F17);
+      case 'Quan trọng':
+        return const Color(0xffB71C1C);
+      default:
+        return const Color(0xff33691E);
+    }
+  }
+}

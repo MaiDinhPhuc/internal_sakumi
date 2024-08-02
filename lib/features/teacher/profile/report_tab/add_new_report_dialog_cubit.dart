@@ -24,14 +24,25 @@ class AddNewReportCubit extends Cubit<int> {
   TextEditingController contentCon = TextEditingController();
   TextEditingController creatorCon = TextEditingController();
   String status = 'Tốt';
+  String range = 'Quan trọng';
   List<dynamic> listPickerImage = [];
   List<dynamic> listUrl = [];
 
   List<String> listStatus = ['Tốt', 'Bình thường', 'Chưa tốt', 'Tệ'];
+  List<String> listRange = ['Quan trọng','Bình thường','Gợi ý'];
 
+
+  String findReportRange() {
+    if (reportModel != null) return reportModel!.range;
+    return 'Chọn mức độ biên bản';
+  }
   String findReportStatus() {
     if (reportModel != null) return reportModel!.status;
     return 'Chọn trạng thái buổi họp';
+  }
+  chooseRange(String value) {
+    range = value;
+    emit(state + 1);
   }
 
   chooseStatus(String value) {
@@ -92,6 +103,7 @@ class AddNewReportCubit extends Cubit<int> {
       'id': id,
       'teacher_id': userId,
       'status': status,
+      'range': range,
       'title': titleCon.text,
       'content': contentCon.text,
       'delete': false,
@@ -104,6 +116,7 @@ class AddNewReportCubit extends Cubit<int> {
         id: id,
         teacherId: userId,
         status: status,
+        range: range,
         createName: creatorCon.text,
         title: titleCon.text,
         content: contentCon.text,
@@ -129,6 +142,7 @@ class AddNewReportCubit extends Cubit<int> {
       'id': reportModel!.id,
       'teacher_id': userId,
       'status': status,
+      'range': range,
       'title': titleCon.text,
       'content': contentCon.text,
       'delete': reportModel!.delete,
@@ -141,6 +155,7 @@ class AddNewReportCubit extends Cubit<int> {
         id: reportModel!.id,
         teacherId: userId,
         status: status,
+        range:range,
         createName: creatorCon.text,
         title: titleCon.text,
         content: contentCon.text,

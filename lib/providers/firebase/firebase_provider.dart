@@ -43,7 +43,8 @@ import 'package:internal_sakumi/model/teacher_survey_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
-import 'package:internal_sakumi/model/voucher_model.dart';
+import 'package:internal_sakumi/model/voucher_app_model.dart';
+import 'package:internal_sakumi/model/voucher_course_model.dart';
 import 'package:internal_sakumi/providers/network_provider.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
@@ -2097,19 +2098,19 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<VoucherModel> getVoucherByVoucherCode(String code) async {
+  Future<VoucherCourseModel> getVoucherByVoucherCode(String code) async {
     final res = (await FireStoreDb.instance.getVoucherByVoucherCode(code))
         .docs
-        .map((e) => VoucherModel.fromSnapshot(e))
+        .map((e) => VoucherCourseModel.fromSnapshot(e))
         .single;
 
     return res;
   }
 
   @override
-  Future<bool> checkExistVoucher(String voucherCode) async {
+  Future<bool> checkExistVoucherApp(String voucherCode) async {
     final temp =
-        await FireStoreDb.instance.getVoucher("sakumi_voucher_$voucherCode");
+    await FireStoreDb.instance.getVoucherApp("app_voucher_$voucherCode");
 
     if (temp.exists) {
       return true;
@@ -2118,20 +2119,40 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<void> addNewVoucher(VoucherModel model) async {
-    if ((await checkExistVoucher(model.voucherCode)) == false) {
-      return await FireStoreDb.instance.addVoucher(model);
+  Future<bool> checkExistVoucherCourse(String voucherCode) async {
+    final temp =
+        await FireStoreDb.instance.getVoucherCourse("sakumi_voucher_$voucherCode");
+
+    if (temp.exists) {
+      return true;
+    }
+    return false;
+  }
+
+  @override
+  Future<void> addNewVoucherApp(VoucherAppModel model) async {
+    if ((await checkExistVoucherApp(model.voucherCode)) == false) {
+      return await FireStoreDb.instance.addVoucherApp(model);
     } else {
       debugPrint('=========> duplicate voucher');
     }
   }
 
   @override
-  Future<List<VoucherModel>> searchVoucher(String text, String type) async {
+  Future<void> addNewVoucherCourse(VoucherCourseModel model) async {
+    if ((await checkExistVoucherCourse(model.voucherCode)) == false) {
+      return await FireStoreDb.instance.addVoucherCourse(model);
+    } else {
+      debugPrint('=========> duplicate voucher');
+    }
+  }
+
+  @override
+  Future<List<VoucherCourseModel>> searchVoucher(String text, String type) async {
     debugPrint('==========> search voucher000 $text');
     final list = (await FireStoreDb.instance.getListSearchVoucher(text, type))
         .docs
-        .map((e) => VoucherModel.fromSnapshot(e))
+        .map((e) => VoucherCourseModel.fromSnapshot(e))
         .toList();
 
     debugPrint('==========> search voucher ${list.length}');

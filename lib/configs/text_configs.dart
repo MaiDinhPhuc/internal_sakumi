@@ -626,10 +626,20 @@ enum AppText {
   txtAdviseBanner,
   txtAdviseRequest,
   txtAdviseEmpty,
-  txtCreatePDFFile
+  txtCreatePDFFile,
+  txtAll,
+  txtRange,
+  txtApp,
+  txtNumMonths,
+  txtNumDevices
 }
 
 Map<AppText, String> texts = {
+  AppText.txtNumDevices: 'Số thiết bị tối đa',
+  AppText.txtNumMonths: 'Số tháng miễn phí',
+  AppText.txtApp: 'Ứng dụng',
+  AppText.txtRange: 'Mức độ',
+  AppText.txtAll: 'Tất cả',
   AppText.txtCreatePDFFile: 'Xuất File',
   AppText.txtAdviseEmpty: 'Chưa có yêu cầu tư vấn',
   AppText.txtAdviseRequest: 'Yêu cầu tư vấn',

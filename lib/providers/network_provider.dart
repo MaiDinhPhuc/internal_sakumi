@@ -26,7 +26,7 @@ import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
-import 'package:internal_sakumi/model/voucher_model.dart';
+import 'package:internal_sakumi/model/voucher_course_model.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
 
 import '../model/group_tag_model.dart';
@@ -49,7 +49,7 @@ abstract class NetworkProvider {
 
   Future<UserModel> getUser(String email);
 
-  Future<List<VoucherModel>> searchVoucher(String text, String type);
+  Future<List<VoucherCourseModel>> searchVoucher(String text, String type);
 
   Future<void> updateVoucher(
       String usedUserCode, String noted, String voucherCode, String date);
@@ -210,11 +210,11 @@ abstract class NetworkProvider {
 
   Future<void> updateCourseInfo(CourseModel courseModel);
 
-  Future<bool> checkExistVoucher(String voucherCode);
+  Future<bool> checkExistVoucherCourse(String voucherCode);
 
-  Future<VoucherModel> getVoucherByVoucherCode(String code);
+  Future<VoucherCourseModel> getVoucherByVoucherCode(String code);
 
-  Future<void> addNewVoucher(VoucherModel model);
+  Future<void> addNewVoucherCourse(VoucherCourseModel model);
 
   Future<List<FeedBackModel>> getListFeedBack(String status, String role);
 

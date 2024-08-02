@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
@@ -35,9 +33,26 @@ class DetailGradingCubit extends Cubit<int> {
   String gradingType = "";
   List<StudentLessonModel>? stdLessons;
   List<StudentTestModel>? stdTests;
+  bool isAll = true;
 
   loading(){
     emit(-1);
+  }
+
+  update(){
+
+    List<int> listQuestionId = getListQuestion().map((e)=>e.id).toList();
+
+    if(!listQuestionId.contains(now)){
+      now = getListQuestion().first.id;
+    }
+
+    emit(state+1);
+  }
+
+  List<QuestionModel> getListQuestion(){
+    if(isAll) return listQuestions!;
+    return listQuestions!.where((e)=>!checkGrading(e.id)).toList();
   }
 
   init(String type) async {
@@ -114,10 +129,30 @@ class DetailGradingCubit extends Cubit<int> {
     emit(questionId);
   }
 
-  List<AnswerModel> get answers => listAnswer!
+  List<AnswerModel> get answers => isAll? listAnswer!
       .where((answer) =>
           answer.questionId == now && listStudentId!.contains(answer.studentId))
-      .toList();
+      .toList() :listAnswer!
+      .where((answer) =>
+  answer.questionId == now && listStudentId!.contains(answer.studentId) && answer.score == -1)
+      .toList() ;
+
+  bool checkGrading(int questionId){
+
+    bool check = false;
+
+    int count = 0;
+    for (var j in getAnswerById(questionId)) {
+      if (j.newScore != -1) {
+        count++;
+      }
+    }
+    if (count == getAnswerById(questionId).length) {
+      check = true;
+    }
+
+    return check;
+  }
 
   bool checkDone(bool isFirst) {
     if (isFirst) {

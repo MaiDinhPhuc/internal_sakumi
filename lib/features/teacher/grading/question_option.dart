@@ -19,7 +19,7 @@ class QuestionOptionItem extends StatelessWidget {
     return Row(
       children: [
         Container(
-          color: id == questionModel.id || now == questionModel.id
+          color:  now == questionModel.id
               ? primaryColor
               : Colors.transparent,
           width: Resizable.size(context, 4),
@@ -36,11 +36,11 @@ class QuestionOptionItem extends StatelessWidget {
                     borderRadius:
                         BorderRadius.circular(Resizable.size(context, 5)),
                     side: BorderSide(
-                        color: id == questionModel.id || now == questionModel.id
+                        color: now == questionModel.id
                             ? Colors.black
                             : const Color(0xffE0E0E0),
                         width: Resizable.size(context, 1))),
-                elevation: id == questionModel.id || now == questionModel.id
+                elevation:  now == questionModel.id
                     ? 0
                     : Resizable.size(context, 2),
                 child: InkWell(

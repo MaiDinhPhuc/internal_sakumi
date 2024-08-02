@@ -21,15 +21,7 @@ class HeaderGrading extends StatelessWidget {
       children: [
         Expanded(
             flex: 6,
-            child: Padding(
-                padding: EdgeInsets.only(
-                  top: Resizable.padding(context, 10),
-                ),
-                child: Text(AppText.titleGrading.text.toUpperCase(),
-                    style: TextStyle(
-                        fontSize: Resizable.font(context, 20),
-                        fontWeight: FontWeight.w700,
-                        color: greyColor.shade500)))),
+            child: Container()),
         Expanded(
             flex: 2,
             child: Padding(
@@ -223,15 +215,7 @@ class HeaderGradingV2 extends StatelessWidget {
       children: [
         Expanded(
             flex: 6,
-            child: Padding(
-                padding: EdgeInsets.only(
-                  top: Resizable.padding(context, 10),
-                ),
-                child: Text(AppText.titleGrading.text.toUpperCase(),
-                    style: TextStyle(
-                        fontSize: Resizable.font(context, 20),
-                        fontWeight: FontWeight.w700,
-                        color: greyColor.shade500)))),
+            child: Container()),
         Expanded(
             flex: 2,
             child: Padding(

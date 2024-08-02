@@ -271,7 +271,7 @@ var toolsHandler =
 });
 var voucherHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return const VoucherScreen();
+  return VoucherScreen();
 });
 var studentInfoHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {

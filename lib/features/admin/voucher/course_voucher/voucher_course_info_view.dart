@@ -6,9 +6,9 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class VoucherInfoView extends StatelessWidget {
+class VoucherCourseInfoView extends StatelessWidget {
   final VoucherCubit cubit;
-  const VoucherInfoView(this.cubit, {Key? key}) : super(key: key);
+  const VoucherCourseInfoView(this.cubit, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class VoucherInfoView extends StatelessWidget {
                     RichText(
                         text: TextSpan(children: [
                       TextSpan(
-                          text: cubit.priceVoucher,
+                          text: cubit.priceVoucherCourse,
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w800,
@@ -169,10 +169,10 @@ class VoucherInfoView extends StatelessWidget {
                                 fontSize: Resizable.font(context, 14))),
                         TextSpan(
                             text: DateFormat('dd/MM/yyyy').format(DateTime(
-                              cubit.expiredDate.year,
-                              cubit.expiredDate.month +
-                                  (cubit.isVoucher ? 3 : 0),
-                              cubit.expiredDate.day,
+                              cubit.expiredVoucherCourseDate.year,
+                              cubit.expiredVoucherCourseDate.month +
+                                  (cubit.isVoucherCourse ? 3 : 0),
+                              cubit.expiredVoucherCourseDate.day,
                             )),
                             style: TextStyle(
                                 color: primaryColor,

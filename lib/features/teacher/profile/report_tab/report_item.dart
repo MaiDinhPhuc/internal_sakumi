@@ -75,6 +75,8 @@ class ReportItem extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    ReportRangeItem(reportModel.range),
+                    SizedBox(width: Resizable.padding(context, 5)),
                     ReportStatusItem(reportModel.status),
                     if (role == 'admin')
                       SizedBox(
@@ -137,7 +139,7 @@ class ReportItem extends StatelessWidget {
               ],
             ),
             const Divider(thickness: 1),
-            Text(reportModel.content,
+            SelectableText(reportModel.content,
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Colors.black,

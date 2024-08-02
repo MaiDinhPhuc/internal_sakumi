@@ -10,7 +10,7 @@ import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 import 'package:intl/intl.dart';
 
-void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
+void alertInfoVoucherCourse(BuildContext context, VoucherCubit cubit) {
   final TextEditingController conUser = TextEditingController();
 
   var items = [AppText.txtNew.text, AppText.txtUsed.text];
@@ -39,12 +39,12 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                   ),
                   InputItem(
                     title: AppText.titleVoucherCode.text,
-                    hintText: cubit.voucherModel!.voucherCode,
+                    hintText: cubit.voucherCourseModel!.voucherCode,
                     enabled: false,
                   ),
                   InputItem(
                       title: AppText.titleDiscount.text,
-                      hintText: cubit.voucherModel!.price,
+                      hintText: cubit.voucherCourseModel!.price,
                       enabled: false),
                   Row(
                     mainAxisSize: MainAxisSize.min,
@@ -53,7 +53,7 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                           child: InputItem(
                               title: AppText.titleApplyCourse.text,
                               enabled: false,
-                              hintText: cubit.voucherModel!.type)),
+                              hintText: cubit.voucherCourseModel!.type)),
                       SizedBox(width: Resizable.padding(context, 15)),
                       Expanded(
                           child: Row(
@@ -86,13 +86,13 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                           child: InputItem(
                               title: AppText.txtRecipientCode.text,
                               enabled: false,
-                              hintText: cubit.voucherModel!.recipientCode)),
+                              hintText: cubit.voucherCourseModel!.recipientCode)),
                       SizedBox(width: Resizable.padding(context, 15)),
                       Expanded(
                         child: InputItem(
                           title: AppText.titleUserId.text,
-                          hintText: cubit.voucherModel!.usedUserCode,
-                          enabled: cubit.isActive(),
+                          hintText: cubit.voucherCourseModel!.usedUserCode,
+                          enabled: cubit.isActiveVoucherCourse(),
                           controller: conUser,
                         ),
                       )
@@ -104,7 +104,7 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                       Expanded(
                           child: InputItem(
                         title: AppText.titleExpiredDate.text,
-                        hintText: cubit.voucherModel!.expiredDate,
+                        hintText: cubit.voucherCourseModel!.expiredDate,
                         enabled: false,
                       )),
                       SizedBox(width: Resizable.padding(context, 15)),
@@ -132,8 +132,8 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                   ),
                   InputItem(
                       title: AppText.txtNote.text,
-                      enabled: cubit.isActive(),
-                      initialValue: cubit.voucherModel!.noted,
+                      enabled: cubit.isActiveVoucherCourse(),
+                      initialValue: cubit.voucherCourseModel!.noted,
                       onChange: (v) {
                         cubit.updateNote(v);
                       },
@@ -157,7 +157,7 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                           constraints: BoxConstraints(
                               minWidth: Resizable.size(context, 100)),
                           child: SubmitButton(
-                              isActive: cubit.isActive(),
+                              isActive: cubit.isActiveVoucherCourse(),
                               onPressed: () async {
                                 String date =
                                     cubit.status != AppText.txtNew.text
@@ -172,10 +172,10 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                                 } else {
                                   Navigator.pop(context);
                                   waitingDialog(context);
-                                  await cubit.updateVoucher(
+                                  await cubit.updateVoucherCourse(
                                       conUser.text,
-                                      cubit.initialValue,
-                                      cubit.voucherModel!.voucherCode,
+                                      cubit.noteValue,
+                                      cubit.voucherCourseModel!.voucherCode,
                                       date);
                                   if (context.mounted) {
                                     Navigator.pop(context);

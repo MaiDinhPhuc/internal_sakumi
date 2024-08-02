@@ -6,7 +6,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_date.dart';
-import 'package:internal_sakumi/model/voucher_model.dart';
+import 'package:internal_sakumi/model/voucher_app_model.dart';
+import 'package:internal_sakumi/model/voucher_course_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 import 'package:intl/intl.dart';
@@ -15,49 +16,89 @@ import 'dart:html' as html;
 import 'dart:typed_data';
 
 class VoucherCubit extends Cubit<int> {
-  VoucherCubit() : super(0);
-
-  TextEditingController conCode = TextEditingController();
-  TextEditingController conUser = TextEditingController();
-  TextEditingController conNote = TextEditingController();
-
-  String priceVoucher = '50.000';
-
-  String courseVoucher = AppText.txtAllCourse.text;
-
-  bool isVoucher = true;
-
-  bool isDownload = false;
-
-  String qrCode = '';
-
-  DateTime get expiredDate => DateTimeCubit.startDay;
-
-  String createDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
+  VoucherCubit() : super(0) {
+    quantityVoucherCourse();
+  }
 
   String characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
+  //date expired
+  DateTime get expiredVoucherCourseDate => DateTimeCubit.startDay;
+  DateTime get expiredVoucherAppDate => DateTimeCubitV2.day;
+
+  bool isVoucherCourse = true;
+
+  String qrCode = '';
   int numVoucher = 0;
+  bool isDownload = false;
+  String createDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
 
-  List<VoucherModel> listSearch = [];
+  TextEditingController conUser = TextEditingController();
+  TextEditingController conCode = TextEditingController();
+  TextEditingController conNote = TextEditingController();
 
-  VoucherModel? voucherModel;
+  //info voucher course
+  String priceVoucherCourse = '50.000';
+
+  String courseVoucher = AppText.txtAllCourse.text;
+
+  List<VoucherCourseModel> listSearchVoucherCourse = [];
+
+  VoucherCourseModel? voucherCourseModel;
 
   String status = AppText.txtNew.text;
 
-  String initialValue = '';
-
-  String searchType = AppText.txtRecipientCode.text;
+  String noteValue = '';
 
   bool isFullCourse = false;
 
-  buildUI() {
-    isVoucher = false;
+  //info voucher app
+  String numMonths = "2";
+  String numDevices = "3";
+  String dateExpired = DateFormat('dd/MM/yyyy').format(
+      DateTime(
+          DateTime.now().year,
+          DateTime.now().month + 1,
+          DateTime.now().day));
+
+
+  //Change tab
+  String tab = AppText.txtCourse.text;
+  changeTab(String newTab)async{
+    if(newTab != tab){
+      tab = newTab;
+      if(newTab == AppText.txtCourse.text){
+        quantityVoucherCourse();
+      }
+      if(newTab == AppText.txtApp.text){
+        quantityVoucherApp();
+      }
+      emit(state+1);
+    }
+  }
+
+  //select type search
+  String searchType = AppText.txtRecipientCode.text;
+  selectSearchType(String type) {
+    searchType = type;
+    emit(state + 1);
+  }
+
+  //check expired
+  isExpired(String date) {
+    var list = date.split('/');
+    var temp = list.reversed.join('-');
+    return DateTime.parse(temp).isBefore(DateTime.now());
+  }
+
+  //manage voucher course
+  buildUIVoucherCourse() {
+    isVoucherCourse = false;
     emit(state + 1);
   }
 
   selectPrice(String price) {
-    priceVoucher = price;
+    priceVoucherCourse = price;
     emit(state + 1);
   }
 
@@ -72,12 +113,7 @@ class VoucherCubit extends Cubit<int> {
   }
 
   updateNote(String v) {
-    initialValue = v;
-    emit(state + 1);
-  }
-
-  selectSearchType(String type) {
-    searchType = type;
+    noteValue = v;
     emit(state + 1);
   }
 
@@ -86,7 +122,7 @@ class VoucherCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  randomQR() async {
+  randomQRVoucherCourse() async {
     String randomString = String.fromCharCodes(Iterable.generate(
         5, (_) => characters.codeUnitAt(Random().nextInt(characters.length))));
 
@@ -98,23 +134,23 @@ class VoucherCubit extends Cubit<int> {
     return 'VC$randomString$numVoucher';
   }
 
-  quantityVoucher() async {
-    qrCode = await randomQR();
+  quantityVoucherCourse() async {
+    qrCode = await randomQRVoucherCourse();
 
-    bool check = await FireBaseProvider.instance.checkExistVoucher(qrCode);
+    bool check = await FireBaseProvider.instance.checkExistVoucherCourse(qrCode);
 
     if (check) {
       qrCode = '';
-      quantityVoucher();
+      quantityVoucherCourse();
     } else {
       emit(state + 1);
     }
   }
 
-  createNewVoucher(BuildContext context, VoucherModel model) async {
+  createNewVoucherCourse(BuildContext context, VoucherCourseModel model) async {
     waitingDialog(context);
 
-    await FireBaseProvider.instance.addNewVoucher(model);
+    await FireBaseProvider.instance.addNewVoucherCourse(model);
 
     if (context.mounted) {
       Navigator.pop(context);
@@ -130,7 +166,7 @@ class VoucherCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  downloadVoucher(RenderRepaintBoundary boundary, BuildContext context) async {
+  downloadVoucherCourse(RenderRepaintBoundary boundary, BuildContext context) async {
     var image = await boundary.toImage(pixelRatio: 5);
     if (kIsWeb) {
       ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
@@ -148,7 +184,7 @@ class VoucherCubit extends Cubit<int> {
 
     if (context.mounted) {
       waitingDialog(context);
-      await quantityVoucher();
+      await quantityVoucherCourse();
       if (context.mounted) {
         Navigator.pop(context);
         isDownload = false;
@@ -158,12 +194,12 @@ class VoucherCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  searchVoucher(String text) async {
-    if (text == null || text.isEmpty) {
-      listSearch = [];
+  searchVoucherCourse(String text) async {
+    if (text.isEmpty) {
+      listSearchVoucherCourse = [];
     } else {
-      debugPrint('===========> searchVoucher ${text}');
-      listSearch = await FireBaseProvider.instance.searchVoucher(
+      debugPrint('===========> searchVoucher $text');
+      listSearchVoucherCourse = await FireBaseProvider.instance.searchVoucher(
           text,
           searchType == AppText.txtRecipientCode.text
               ? 'recipient_code'
@@ -173,26 +209,20 @@ class VoucherCubit extends Cubit<int> {
   }
 
   showInfoVoucher(String code) async {
-    voucherModel =
+    voucherCourseModel =
         await FireBaseProvider.instance.getVoucherByVoucherCode(code);
-    initialValue = voucherModel!.noted;
+    noteValue = voucherCourseModel!.noted;
   }
 
-  updateVoucher(String usedUserCode, String noted, String voucherCode,
+  updateVoucherCourse(String usedUserCode, String noted, String voucherCode,
       String date) async {
     await FireBaseProvider.instance
         .updateVoucher(usedUserCode, noted, voucherCode, date);
   }
 
-  isExpired(String date) {
-    var list = date.split('/');
-    var temp = list.reversed.join('-');
-    return DateTime.parse(temp).isBefore(DateTime.now());
-  }
-
-  isActive() {
-    if (voucherModel!.usedDate.isEmpty) {
-      if(isExpired(voucherModel!.expiredDate)) {
+  isActiveVoucherCourse() {
+    if (voucherCourseModel!.usedDate.isEmpty) {
+      if(isExpired(voucherCourseModel!.expiredDate)) {
         return false;
       } else {
         return true;
@@ -200,5 +230,66 @@ class VoucherCubit extends Cubit<int> {
     } else {
       return false;
     }
+  }
+
+  //manage voucher app
+  randomQRVoucherApp() async {
+
+    final random = Random();
+    final startIndexCharacter = random.nextInt(characters.length - 1);
+    String randomString = characters.substring(startIndexCharacter, startIndexCharacter + 2);
+
+    String dateTime = DateTime.now().millisecondsSinceEpoch.toString();
+    final startIndexTime = random.nextInt(dateTime.length - 1);
+    numVoucher = int.parse(dateTime.substring(startIndexTime, startIndexTime + 4));
+
+    return '$randomString$numVoucher';
+  }
+
+  quantityVoucherApp() async {
+    qrCode = await randomQRVoucherApp();
+
+    bool check = await FireBaseProvider.instance.checkExistVoucherApp(qrCode);
+
+    if (check) {
+      qrCode = '';
+      quantityVoucherApp();
+    } else {
+      emit(state + 1);
+    }
+  }
+
+  selectMonths(String month) {
+    numMonths = month;
+    emit(state + 1);
+  }
+
+  selectDevices(String device) {
+    numDevices = device;
+    emit(state + 1);
+  }
+
+  update(String newDate){
+    dateExpired = newDate;
+    emit(state+1);
+  }
+
+  createNewVoucherApp(BuildContext context, VoucherAppModel model) async {
+    waitingDialog(context);
+
+    await FireBaseProvider.instance.addNewVoucherApp(model);
+
+    if (context.mounted) {
+      Navigator.pop(context);
+
+      notificationDialog(
+          context,
+          AppText.txtCreateNewVoucherSuccessfully.text
+              .replaceAll('@', model.voucherCode));
+
+      isDownload = true;
+    }
+
+    emit(state + 1);
   }
 }
