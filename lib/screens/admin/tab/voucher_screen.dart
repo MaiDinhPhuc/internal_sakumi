@@ -92,15 +92,15 @@ class VoucherScreen extends StatelessWidget {
                               Expanded(flex: 1, child: Container()),
                             ],
                           ),
-                          // if (cubit.listSearchVoucherCourse.isNotEmpty)
-                          //   Row(
-                          //     children: [
-                          //       Expanded(flex: 1, child: Container()),
-                          //       Expanded(
-                          //           flex: 3, child: VoucherCourseSearchList(cubit)),
-                          //       Expanded(flex: 1, child: Container()),
-                          //     ],
-                          //   ),
+                          if (cubit.listSearchVoucherApp.isNotEmpty)
+                            Row(
+                              children: [
+                                Expanded(flex: 1, child: Container()),
+                                Expanded(
+                                    flex: 3, child: VoucherCourseSearchList(cubit)),
+                                Expanded(flex: 1, child: Container()),
+                              ],
+                            ),
                         ],
                       )
                     ],

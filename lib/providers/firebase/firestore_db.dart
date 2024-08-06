@@ -2365,7 +2365,7 @@ class FireStoreDb {
     return temp;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getListSearchVoucher(
+  Future<QuerySnapshot<Map<String, dynamic>>> getListSearchVoucherCourse(
       String text, String type) async {
     final snapshot = await db
         .collection("voucher")
@@ -2374,7 +2374,20 @@ class FireStoreDb {
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListSearchVoucher ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListSearchVoucherCourse ${snapshot.size}");
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getListSearchVoucherApp(
+      String text, String type) async {
+    final snapshot = await db
+        .collection("voucher_app")
+        .where(type,
+        isGreaterThanOrEqualTo: text, isLessThanOrEqualTo: "$text\uf7ff")
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListSearchVoucherApp ${snapshot.size}");
     return snapshot;
   }
 
@@ -2414,7 +2427,7 @@ class FireStoreDb {
     });
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getVoucherByVoucherCode(
+  Future<QuerySnapshot<Map<String, dynamic>>> getVoucherCourseByVoucherCode(
       String code) async {
     final snapshot = await db
         .collection("voucher")
@@ -2424,7 +2437,25 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<void> updateVoucher(String usedUserCode, String noted,
+  Future<QuerySnapshot<Map<String, dynamic>>> getVoucherAppByVoucherCode(
+      String code) async {
+    final snapshot = await db
+        .collection("voucher_app")
+        .where("voucher_code", isEqualTo: code)
+        .get();
+
+    return snapshot;
+  }
+
+  Future<void> updateVoucherApp(List<String> listUserCode, String noted,
+      String voucherCode) async {
+    await db.collection("voucher_app").doc("app_voucher_$voucherCode").update({
+      'used_user_code': listUserCode,
+      'noted': noted,
+    });
+  }
+
+  Future<void> updateVoucherCourse(String usedUserCode, String noted,
       String voucherCode, String dateTime) async {
     await db.collection("voucher").doc("sakumi_voucher_$voucherCode").update({
       'used_date': dateTime,
@@ -2559,7 +2590,6 @@ class FireStoreDb {
         .set(manageTagModel.toJson(), SetOptions(merge: true))
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
-      print(error);
       value = false;
     });
     return value;
@@ -2621,7 +2651,6 @@ class FireStoreDb {
         .set(banner.toJson(), SetOptions(merge: true))
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
-      print(error);
       value = false;
     });
     return value;
@@ -2666,7 +2695,6 @@ class FireStoreDb {
         .set(bannerOption.toJson(), SetOptions(merge: true))
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
-      print(error);
       value = false;
     });
     return value;
@@ -2713,7 +2741,6 @@ class FireStoreDb {
         .set(cs.toJson(), SetOptions(merge: true))
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
-      print(error);
       value = false;
     });
     return value;
@@ -2753,7 +2780,6 @@ class FireStoreDb {
         .set(csOption.toJson(), SetOptions(merge: true))
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
-      print(error);
       value = false;
     });
     return value;

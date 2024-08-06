@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:intl/intl.dart';
 
 class VoucherAppModel {
@@ -7,11 +6,10 @@ class VoucherAppModel {
   final String recipientCode,
       voucherCode,
       createDate,
-      usedDate,
       expiredDate,
       noted,
       price;
-  final List<dynamic> usedUserCode;
+  final List<dynamic> usedUserCode,usedDate;
 
   const VoucherAppModel(
       {required this.id,
@@ -35,7 +33,7 @@ class VoucherAppModel {
       createDate: data['create_date'] ??
           DateFormat('dd/MM/yyyy').format(DateTime.now()),
       usedDate:
-      data['used_date'] ?? DateFormat('dd/MM/yyyy').format(DateTime.now()),
+      data['used_date'] ?? [],
       expiredDate: data['expired_date'] ??
           DateFormat('dd/MM/yyyy').format(DateTime(DateTime.now().year,
               DateTime.now().month + 1, DateTime.now().day)),

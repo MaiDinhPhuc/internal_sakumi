@@ -2098,10 +2098,20 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<VoucherCourseModel> getVoucherByVoucherCode(String code) async {
-    final res = (await FireStoreDb.instance.getVoucherByVoucherCode(code))
+  Future<VoucherCourseModel> getVoucherCourseByVoucherCode(String code) async {
+    final res = (await FireStoreDb.instance.getVoucherCourseByVoucherCode(code))
         .docs
         .map((e) => VoucherCourseModel.fromSnapshot(e))
+        .single;
+
+    return res;
+  }
+
+  @override
+  Future<VoucherAppModel> getVoucherAppByVoucherCode(String code) async {
+    final res = (await FireStoreDb.instance.getVoucherAppByVoucherCode(code))
+        .docs
+        .map((e) => VoucherAppModel.fromSnapshot(e))
         .single;
 
     return res;
@@ -2148,11 +2158,24 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<VoucherCourseModel>> searchVoucher(String text, String type) async {
+  Future<List<VoucherCourseModel>> searchVoucherCourse(String text, String type) async {
     debugPrint('==========> search voucher000 $text');
-    final list = (await FireStoreDb.instance.getListSearchVoucher(text, type))
+    final list = (await FireStoreDb.instance.getListSearchVoucherCourse(text, type))
         .docs
         .map((e) => VoucherCourseModel.fromSnapshot(e))
+        .toList();
+
+    debugPrint('==========> search voucher ${list.length}');
+
+    return list;
+  }
+
+  @override
+  Future<List<VoucherAppModel>> searchVoucherApp(String text, String type) async {
+    debugPrint('==========> search voucher000 $text');
+    final list = (await FireStoreDb.instance.getListSearchVoucherApp(text, type))
+        .docs
+        .map((e) => VoucherAppModel.fromSnapshot(e))
         .toList();
 
     debugPrint('==========> search voucher ${list.length}');
@@ -2202,11 +2225,20 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<void> updateVoucher(String usedUserCode, String noted,
+  Future<void> updateVoucherCourse(String usedUserCode, String noted,
       String voucherCode, String date) async {
     await FireStoreDb.instance
-        .updateVoucher(usedUserCode, noted, voucherCode, date);
+        .updateVoucherCourse(usedUserCode, noted, voucherCode, date);
   }
+
+  @override
+  Future<void> updateVoucherApp(List<String> listUserCode, String noted,
+      String voucherCode) async {
+    await FireStoreDb.instance
+        .updateVoucherApp(listUserCode, noted, voucherCode);
+  }
+
+
 
   @override
   Future<List<ClassModel>> getAllClassInProgress() async {

@@ -3,14 +3,11 @@ import 'package:flutter/rendering.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/voucher/app_voucher/voucher_app_info_view.dart';
-import 'package:internal_sakumi/features/admin/voucher/course_voucher/social_info_view.dart';
-import 'package:internal_sakumi/features/admin/voucher/course_voucher/voucher_course_info_view.dart';
 import 'package:internal_sakumi/features/admin/voucher/voucher_cubit.dart';
 import 'package:internal_sakumi/model/voucher_app_model.dart';
-import 'package:internal_sakumi/model/voucher_course_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
-import 'package:intl/intl.dart';
+
 
 class VoucherAppImage extends StatelessWidget {
   final VoucherCubit cubit;
@@ -93,7 +90,7 @@ class VoucherAppImage extends StatelessWidget {
                             usedUserCode: [],
                             voucherCode: cubit.qrCode,
                             createDate: cubit.createDate,
-                            usedDate: '',
+                            usedDate: [],
                             expiredDate:cubit.dateExpired,
                             noted: cubit.conNote.text,
                             price: priceVND('${256000 * (int.parse(cubit.numMonths))}'),

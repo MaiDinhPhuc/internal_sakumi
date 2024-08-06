@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/search/drop_down_search.dart';
-import 'package:internal_sakumi/features/admin/voucher/course_voucher/alert_info_voucher_course.dart';
 import 'package:internal_sakumi/features/admin/voucher/voucher_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/features/admin/search/search_field.dart';
-import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 class VoucherSearch extends StatelessWidget {
   final VoucherCubit cubit;
@@ -36,7 +33,12 @@ class VoucherSearch extends StatelessWidget {
             value: cubit.searchType),
       ),
       onChanged: (value) {
-        cubit.searchVoucherCourse(value.toUpperCase());
+        if(cubit.tab == AppText.txtApp.text){
+          cubit.searchVoucherApp(value.toUpperCase());
+        }else{
+          cubit.searchVoucherCourse(value.toUpperCase());
+        }
+
       },
     );
   }

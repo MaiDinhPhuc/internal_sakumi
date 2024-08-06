@@ -61,6 +61,10 @@ class VoucherCubit extends Cubit<int> {
           DateTime.now().month + 1,
           DateTime.now().day));
 
+  List<VoucherAppModel> listSearchVoucherApp = [];
+
+  VoucherAppModel? voucherAppModel;
+
 
   //Change tab
   String tab = AppText.txtCourse.text;
@@ -68,10 +72,10 @@ class VoucherCubit extends Cubit<int> {
     if(newTab != tab){
       tab = newTab;
       if(newTab == AppText.txtCourse.text){
-        quantityVoucherCourse();
+        await quantityVoucherCourse();
       }
       if(newTab == AppText.txtApp.text){
-        quantityVoucherApp();
+        await quantityVoucherApp();
       }
       emit(state+1);
     }
@@ -199,7 +203,7 @@ class VoucherCubit extends Cubit<int> {
       listSearchVoucherCourse = [];
     } else {
       debugPrint('===========> searchVoucher $text');
-      listSearchVoucherCourse = await FireBaseProvider.instance.searchVoucher(
+      listSearchVoucherCourse = await FireBaseProvider.instance.searchVoucherCourse(
           text,
           searchType == AppText.txtRecipientCode.text
               ? 'recipient_code'
@@ -208,16 +212,22 @@ class VoucherCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  showInfoVoucher(String code) async {
+  showInfoVoucherCourse(String code) async {
     voucherCourseModel =
-        await FireBaseProvider.instance.getVoucherByVoucherCode(code);
+        await FireBaseProvider.instance.getVoucherCourseByVoucherCode(code);
     noteValue = voucherCourseModel!.noted;
+  }
+
+  showInfoVoucherApp(String code) async {
+    voucherAppModel =
+    await FireBaseProvider.instance.getVoucherAppByVoucherCode(code);
+    noteValue = voucherAppModel!.noted;
   }
 
   updateVoucherCourse(String usedUserCode, String noted, String voucherCode,
       String date) async {
     await FireBaseProvider.instance
-        .updateVoucher(usedUserCode, noted, voucherCode, date);
+        .updateVoucherCourse(usedUserCode, noted, voucherCode, date);
   }
 
   isActiveVoucherCourse() {
@@ -291,5 +301,53 @@ class VoucherCubit extends Cubit<int> {
     }
 
     emit(state + 1);
+  }
+
+  searchVoucherApp(String text) async {
+    if (text.isEmpty) {
+      listSearchVoucherApp = [];
+    } else {
+      debugPrint('===========> searchVoucher $text');
+      listSearchVoucherApp = await FireBaseProvider.instance.searchVoucherApp(
+          text,
+          searchType == AppText.txtRecipientCode.text
+              ? 'recipient_code'
+              : 'voucher_code');
+    }
+    emit(state + 1);
+  }
+
+  isActiveVoucherApp() {
+    if (voucherAppModel!.usedUserCode.isEmpty) {
+      if(isExpired(voucherAppModel!.expiredDate)) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  String convertUsedCode(){
+    if(voucherAppModel!.usedUserCode.isEmpty) return "";
+
+    String list = voucherAppModel!.usedUserCode.first;
+
+    for(var e in voucherAppModel!.usedUserCode){
+      list = "$list, $e";
+    }
+
+    return list;
+  }
+
+  updateVoucherApp(String usedUserCode, String noted, String voucherCode) async {
+    
+    List<String> listUserCode = usedUserCode.split(", ");
+    
+    
+    
+    await FireBaseProvider.instance
+        .updateVoucherApp(listUserCode, noted, voucherCode);
   }
 }

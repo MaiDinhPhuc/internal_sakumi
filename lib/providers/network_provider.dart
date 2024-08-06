@@ -49,9 +49,9 @@ abstract class NetworkProvider {
 
   Future<UserModel> getUser(String email);
 
-  Future<List<VoucherCourseModel>> searchVoucher(String text, String type);
+  Future<List<VoucherCourseModel>> searchVoucherCourse(String text, String type);
 
-  Future<void> updateVoucher(
+  Future<void> updateVoucherCourse(
       String usedUserCode, String noted, String voucherCode, String date);
 
   Future<List<LessonResultModel>> getLessonsResultsByListClassIds(
@@ -212,7 +212,7 @@ abstract class NetworkProvider {
 
   Future<bool> checkExistVoucherCourse(String voucherCode);
 
-  Future<VoucherCourseModel> getVoucherByVoucherCode(String code);
+  Future<VoucherCourseModel> getVoucherCourseByVoucherCode(String code);
 
   Future<void> addNewVoucherCourse(VoucherCourseModel model);
 
