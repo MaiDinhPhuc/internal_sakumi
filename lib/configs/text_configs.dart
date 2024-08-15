@@ -631,10 +631,14 @@ enum AppText {
   txtRange,
   txtApp,
   txtNumMonths,
-  txtNumDevices
+  txtNumDevices,
+  txtAddFiles,
+  txtFiles
 }
 
 Map<AppText, String> texts = {
+  AppText.txtFiles: 'Tệp đính kèm',
+  AppText.txtAddFiles: '+ Thêm Files',
   AppText.txtNumDevices: 'Số thiết bị tối đa',
   AppText.txtNumMonths: 'Số tháng miễn phí',
   AppText.txtApp: 'Ứng dụng',
@@ -1266,7 +1270,7 @@ Map<AppText, String> texts = {
   AppText.txtAddTag: 'thêm tag',
   AppText.txtTagChoosen: 'Tag đã chọn',
   AppText.txtAtLeast1TagChoosen: 'Ít nhất 1 tag được chọn',
-  AppText.txtTagManager: 'Tag Quản lý',
+  AppText.txtTagManager: 'Tag Quản Lý',
   AppText.txtManageTag: 'QUẢN LÝ TAG',
   AppText.txtPleaseInputTagCode: 'Vui lòng nhập mã tag',
   AppText.txtPleaseInputTagName: 'Vui lòng nhập tên tag',

@@ -8,6 +8,7 @@ import 'package:internal_sakumi/features/admin/manage_general/small_avt.dart';
 import 'package:internal_sakumi/features/master/manage_teacher_feedback/teacher_feedback_cubit.dart';
 import 'package:internal_sakumi/model/feedback_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'dart:html' as html;
 
 import 'feedback_cubit.dart';
 import 'feedback_note_cubit.dart';
@@ -191,6 +192,39 @@ class FeedBackItemV2 extends StatelessWidget {
                           fontWeight: FontWeight.w500)))
             ],
           ),
+          if (feedback.files.isNotEmpty)
+            SizedBox(
+                height: Resizable.size(context, 50),
+                child: ListView.builder(
+                  itemCount: feedback.files.length,
+                  scrollDirection: Axis.horizontal,
+                  padding: EdgeInsets.symmetric(
+                      vertical: Resizable.padding(context, 5)),
+                  itemBuilder: (_, i) => Padding(
+                      padding: EdgeInsets.only(
+                          right: Resizable.padding(context, 10)),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                              Resizable.size(context, 10)),
+                          border: Border.all(
+                            width: 1,
+                          ),
+                        ),
+                        child: TextButton(
+                          onPressed: () {
+                            html.AnchorElement anchorElement = html.AnchorElement(href: feedback.files[i]['db']);
+                            anchorElement.download = feedback.files[i]['db'];
+                            anchorElement.click();
+                          },
+                          child: Text(feedback.files[i]['file_name'],
+                              style: TextStyle(
+                                  fontSize: Resizable.padding(context, 14),
+                                  color: primaryColor,
+                                  fontWeight: FontWeight.w500)),
+                        ),
+                      )),
+                )),
           BlocBuilder<NoteFeedBackCubit, int>(
               bloc: noteCubit..loadNote(feedback),
               builder: (cc, ss) {

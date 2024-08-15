@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FeedBackModel {
   final int userId, classId, date;
-  final List note;
+  final List note, files;
   final String category, content, status, role;
 
   FeedBackModel(
@@ -13,7 +13,7 @@ class FeedBackModel {
       required this.status,
       required this.content,
       required this.category,
-      required this.role});
+      required this.role, required this.files});
   factory FeedBackModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
@@ -25,6 +25,7 @@ class FeedBackModel {
         status: data['status'],
         content: data['content'],
         date: data['date'],
-        role: data['role'] ?? 'student');
+        role: data['role'] ?? 'student',
+        files: data['files'] ?? []);
   }
 }

@@ -66,6 +66,9 @@ class ManageScheduleCubit extends Cubit<int> {
 
   bool isLoadingSchedule = false;
 
+  bool isChooseTeacher = false;
+  bool isChooseClass = false;
+
   loadDate() {
     DateTime dateTime = DateTime(now.year, now.month, now.day, 0, 0, 0);
 
@@ -129,6 +132,7 @@ class ManageScheduleCubit extends Cubit<int> {
   chooseClass(String className, int classId) async {
     this.classId = classId;
     classSearch.text = className;
+    isChooseClass = true;
   }
 
   bool checkExistResult(int index, int classId) {
@@ -539,6 +543,7 @@ class ManageScheduleCubit extends Cubit<int> {
   }
 
   searchClass(String newValue) {
+    isChooseClass = false;
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 50), () {
       classSearchValue = newValue;
@@ -547,6 +552,7 @@ class ManageScheduleCubit extends Cubit<int> {
   }
 
   searchTeacher(String newValue) {
+    isChooseTeacher = false;
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 50), () {
       teacherSearchValue = newValue;
@@ -557,6 +563,7 @@ class ManageScheduleCubit extends Cubit<int> {
   chooseTeacher(String teacher, int userId) {
     teacherId = userId;
     teacherSearch.text = teacher;
+    isChooseTeacher = true;
   }
 
   loadClass(int classId) async {

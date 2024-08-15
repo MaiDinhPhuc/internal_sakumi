@@ -112,7 +112,7 @@ class ScheduleView extends StatelessWidget {
                           itemBuilder: (context, suggestion) {
                             var data = suggestion.data();
 
-                            if (cubit.teacherController.text.isEmpty) {
+                            if (cubit.teacherController.text.isEmpty || cubit.isChooseTeacher ) {
                               return Container();
                             }
 
@@ -210,7 +210,7 @@ class ScheduleView extends StatelessWidget {
                         itemBuilder: (context, suggestion) {
                           var data = suggestion.data();
 
-                          if (cubit.classController.text.isEmpty) {
+                          if (cubit.classController.text.isEmpty || cubit.isChooseClass) {
                             return Container();
                           }
                           if (data["class_code"]

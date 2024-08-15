@@ -24,7 +24,7 @@ class FeedBackDialog extends StatelessWidget {
               child: Form(
                   child: Container(
                     width: MediaQuery.of(context).size.width / 2,
-                    height: Resizable.size(context, 300),
+                    height: Resizable.size(context, 500),
                     padding: EdgeInsets.all(Resizable.padding(context, 20)),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,

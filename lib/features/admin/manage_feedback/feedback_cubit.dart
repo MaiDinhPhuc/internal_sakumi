@@ -89,7 +89,7 @@ class FeedBackCubit extends Cubit<int> {
         note: feedBack.note,
         status: status,
         content: feedBack.content,
-        category: feedBack.category, role: feedBack.role);
+        category: feedBack.category, role: feedBack.role,files: feedBack.files);
     await FireStoreDb.instance
         .updateFeedBackStatus(feedBack.classId, feedBack.date, status);
     emit(state + 1);
@@ -105,7 +105,7 @@ class FeedBackCubit extends Cubit<int> {
         note: note,
         status: feedBack.status,
         content: feedBack.content,
-        category: feedBack.category,role: feedBack.role);
+        category: feedBack.category,role: feedBack.role,files: feedBack.files);
   }
 
   String getCourse(int classId) {

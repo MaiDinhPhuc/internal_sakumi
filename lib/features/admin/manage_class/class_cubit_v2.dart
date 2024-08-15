@@ -87,7 +87,11 @@ class ClassCubit extends Cubit<int> {
         isLastPage = true;
       }
       if(list.isNotEmpty){
-        listClass!.addAll(list);
+        for(var i in list){
+          if(!listClass!.contains(i)){
+            listClass!.add(i);
+          }
+        }
         lastClassesNew.add(list.last);
       }
     }

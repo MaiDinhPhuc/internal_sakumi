@@ -256,7 +256,7 @@ class DetailGradingCubit extends Cubit<int> {
             list.add(j);
           } else {
             final url = await FireBaseProvider.instance
-                .uploadImageAndGetUrl(j, 'teacher_note_for_student');
+                .uploadImageAndGetUrl(j, 'teacher_note_for_student','teacher_note_for_student');
             list.add(url);
           }
         }

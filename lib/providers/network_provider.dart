@@ -42,7 +42,7 @@ abstract class NetworkProvider {
 
   Future<bool> changePassword(String email, String oldPass, String newPass);
 
-  Future<String> uploadImageAndGetUrl(Uint8List data, String folder);
+  Future<String> uploadImageAndGetUrl(Uint8List data, String folder, String fileName);
 
   Future<int> getCountWithCondition(
       String tableName, String field, dynamic condition);

@@ -100,15 +100,6 @@ class ReportCubit extends Cubit<int> {
         .toList();
   }
 
-  bool checkIsUrl(value) {
-    if (value is String) {
-      return true;
-    } else if (value is Uint8List) {
-      return false;
-    }
-    return true;
-  }
-
   setDateTime(DateTime startDate, DateTime endDate){
     this.startDate = startDate;
     this.endDate = endDate;

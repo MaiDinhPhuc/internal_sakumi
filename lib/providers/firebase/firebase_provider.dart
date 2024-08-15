@@ -219,9 +219,9 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<String> uploadImageAndGetUrl(Uint8List data, String folder) async {
+  Future<String> uploadImageAndGetUrl(Uint8List data, String folder, String fileName) async {
     return await FirebaseAuthentication.instance
-        .uploadImageAndGetUrl(data, folder);
+        .uploadFileAndGetUrl(data, folder,fileName);
   }
 
   @override

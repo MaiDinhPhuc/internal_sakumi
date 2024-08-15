@@ -51,10 +51,12 @@ class FirebaseAuthentication {
     return res;
   }
 
-  Future<String> uploadImageAndGetUrl(Uint8List data, String folder) async {
+  
+
+  Future<String> uploadFileAndGetUrl(Uint8List data, String folder, String fileName) async {
     final now = DateTime.now().microsecondsSinceEpoch;
-    final ref = FirebaseStorage.instance.ref().child('$folder/$now');
-    await ref.putData(data, SettableMetadata(contentType: '.png'));
+    final ref = FirebaseStorage.instance.ref().child('$folder/${fileName.contains(".") ? fileName :"$fileName-$now"}');
+    await ref.putData(data);
     return await ref.getDownloadURL();
   }
 }

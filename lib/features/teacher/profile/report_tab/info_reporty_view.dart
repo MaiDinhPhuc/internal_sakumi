@@ -63,17 +63,17 @@ class ReportInfoView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(AppText.txtAddReportImage.text,
+                Text(AppText.txtFiles.text,
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: Resizable.font(context, 18),
                         color: const Color(0xff757575))),
                 SizedBox(height: Resizable.padding(context, 5)),
-                if (cubit.listPickerImage.isNotEmpty)
+                if (cubit.listPickerFiles.isNotEmpty)
                   SizedBox(
-                      height: Resizable.size(context, 250),
+                      height: Resizable.size(context, 50),
                       child: ListView.builder(
-                        itemCount: cubit.listPickerImage.length,
+                        itemCount: cubit.listPickerFiles.length,
                         scrollDirection: Axis.horizontal,
                         padding: EdgeInsets.symmetric(
                             vertical: Resizable.padding(context, 5)),
@@ -81,51 +81,35 @@ class ReportInfoView extends StatelessWidget {
                             padding: EdgeInsets.only(
                                 right: Resizable.padding(context, 10)),
                             child:
-                                Stack(alignment: Alignment.topRight, children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(
-                                    Resizable.size(context, 10)),
-                                child: cubit
-                                        .checkIsUrl(cubit.listPickerImage[i])
-                                    ? Image.network(
-                                        fit: BoxFit.fill,
-                                        '${cubit.listPickerImage[i]}',
-                                        height: Resizable.size(context, 250),
-                                        width: Resizable.size(context, 200),
-                                        errorBuilder: (_, __, ___) =>
-                                            Container(),
-                                      )
-                                    : Image.memory(cubit.listPickerImage[i],
-                                        height: Resizable.size(context, 250),
-                                        width: Resizable.size(context, 200),
-                                        fit: BoxFit.fill),
-                              ),
-                              Container(
-                                  height: Resizable.size(context, 20),
-                                  width: Resizable.size(context, 25),
-                                  decoration: BoxDecoration(
-                                    color: primaryColor,
-                                    borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(
-                                            Resizable.size(context, 10)),
-                                        bottomLeft: Radius.circular(
-                                            Resizable.size(context, 10))),
-                                  ),
-                                  child: GestureDetector(
-                                      onTap: () async {
-                                        cubit.removeImage(
-                                            cubit.listPickerImage[i]);
-                                      },
-                                      child: Icon(
-                                        Icons.close_rounded,
-                                        size: Resizable.size(context, 18),
-                                        color: Colors.white,
-                                      )))
-                            ])),
+                                Container(
+                                    padding: EdgeInsets.all(Resizable.size(context, 3)),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Row(
+                                    children: [
+                                      Text(cubit.listPickerFiles[i]['file_name'], style: TextStyle(fontSize: Resizable.size(context, 14), color: primaryColor)),
+                                      SizedBox(width: Resizable.size(context, 5)),
+                                      InkWell(
+                                          radius:10,
+                                          onTap: () async {
+                                            cubit.removeFile(
+                                                cubit.listPickerFiles[i]);
+                                          },
+                                          child: Icon(
+                                            Icons.close_rounded,
+                                            size: Resizable.size(context, 14),
+                                            color: primaryColor,
+                                          ))
+                                    ]
+                                ))),
                       )),
-                DottedBorderButton(AppText.txtAddImage.text,
+                DottedBorderButton(AppText.txtAddFiles.text,
                     onPressed: () async {
-                  await cubit.pickImage();
+                  await cubit.pickFiles();
                 })
               ],
             ),
@@ -137,7 +121,7 @@ class ReportInfoView extends StatelessWidget {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(AppText.txtClassType.text,
+              Text(AppText.titleStatus.text,
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: Resizable.font(context, 18),

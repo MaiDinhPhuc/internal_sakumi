@@ -1028,8 +1028,9 @@ class FireStoreDb {
       'role': model.role,
       'status': model.status,
       'user_id': model.userId,
+      'files': model.files
     });
-    debugPrint("==========> add db for \"bill\"");
+    debugPrint("==========> add db for \"feedback\"");
   }
 
   Future<void> updateBill(BillModel model) async {
