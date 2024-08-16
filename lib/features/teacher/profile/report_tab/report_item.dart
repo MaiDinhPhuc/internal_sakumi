@@ -75,9 +75,9 @@ class ReportItem extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    ReportRangeItem(reportModel.range),
+                    ReportRangeItem(reportModel.range, "Mức độ biên bản "),
                     SizedBox(width: Resizable.padding(context, 5)),
-                    ReportStatusItem(reportModel.status),
+                    ReportStatusItem(reportModel.status, "Trạng thái cuộc họp "),
                     if (role == 'admin')
                       SizedBox(
                         height: Resizable.size(context, 15),

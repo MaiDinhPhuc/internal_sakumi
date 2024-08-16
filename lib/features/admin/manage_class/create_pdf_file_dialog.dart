@@ -173,20 +173,21 @@ class CreatePdfFileCubit extends Cubit<int> {
   createPdfFile(StudentModel std) async {
     var myTheme = pw.ThemeData.withFont(
         base: pw.Font.ttf(
-            await rootBundle.load("assets/fonts/Montserrat-Regular.ttf")),
+            await rootBundle.load("assets/fonts/times.ttf")),
         bold: pw.Font.ttf(
-            await rootBundle.load("assets/fonts/Montserrat-Bold.ttf")));
+            await rootBundle.load("assets/fonts/times_new_roman_bold.ttf")),
+        );
     final pdf = pw.Document(theme: myTheme);
 
-    List<List<LessonResultModel>> subLists = [];
-    int chunkSize = 10;
+    int count = 0;
 
-    for (var i = 0; i < listLessonResult.length; i += chunkSize) {
-      subLists.add(listLessonResult.sublist(
-          i,
-          i + chunkSize > listLessonResult.length
-              ? listLessonResult.length
-              : i + chunkSize));
+    List<LessonResultModel> listLessonResultTemp = [];
+
+    for(var i in listLessonResult){
+      if(listLessonResultTemp.length < 10 && count < 650){
+        listLessonResultTemp.add(i);
+        count = count + i.noteForStudent.length;
+      }
     }
 
     pdf.addPage(pw.Page(
@@ -233,10 +234,6 @@ class CreatePdfFileCubit extends Cubit<int> {
                         pw.Text(
                             "TP.HCM, ngày ${DateTime.now().day} tháng ${DateTime.now().month} năm ${DateTime.now().year}",
                             style: const pw.TextStyle(fontSize: 12))
-                        // pw.Padding(
-                        //   padding: const pw.EdgeInsets.only(right: 15),
-                        //   child: ,
-                        // )
                       ]))
                 ]),
                 pw.Padding(
@@ -337,391 +334,404 @@ class CreatePdfFileCubit extends Cubit<int> {
                     style: pw.TextStyle(
                         fontSize: 12, fontWeight: pw.FontWeight.bold)),
                 pw.SizedBox(height: 15),
-                for (int i = 0; i < subLists[0].length; i++)
+                for (int i = 0; i < listLessonResultTemp.length; i++)
                   classModel.classType == 1
                       ? pw.Column(children: [
-                          pw.Table(
-                              columnWidths: {
-                                0: const pw.FixedColumnWidth(75),
-                                1: const pw.FixedColumnWidth(200),
-                                2: const pw.FixedColumnWidth(50),
-                                3: const pw.FixedColumnWidth(50),
-                                4: const pw.FixedColumnWidth(150),
-                              },
-                              border: pw.TableBorder.all(),
-                              children: <pw.TableRow>[
-                                if (i == 0)
-                                  pw.TableRow(children: [
-                                    pw.Padding(
-                                      padding: const pw.EdgeInsets.all(5),
-                                      child: pw.Center(
-                                          child: pw.Text("Ngày học",
-                                              style: pw.TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight:
-                                                  pw.FontWeight.bold))),
-                                    ),
-                                    pw.Padding(
-                                      padding: const pw.EdgeInsets.all(5),
-                                      child: pw.Center(
-                                          child: pw.Text("Buổi học",
-                                              style: pw.TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight:
-                                                  pw.FontWeight.bold))),
-                                    ),
-                                    pw.Padding(
-                                      padding: const pw.EdgeInsets.all(5),
-                                      child: pw.Center(
-                                          child: pw.Text("Điểm danh",
-                                              style: pw.TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight:
-                                                  pw.FontWeight.bold))),
-                                    ),
-                                    pw.Padding(
-                                      padding: const pw.EdgeInsets.all(5),
-                                      child: pw.Center(
-                                          child: pw.Text("Bài tập",
-                                              style: pw.TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight:
-                                                  pw.FontWeight.bold))),
-                                    ),
-                                    pw.Padding(
-                                      padding: const pw.EdgeInsets.all(5),
-                                      child: pw.Center(
-                                          child: pw.Text("Ghi chú",
-                                              style: pw.TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight:
-                                                  pw.FontWeight.bold))),
-                                    ),
-                                  ]),
-                                pw.TableRow(children: [
-                                  pw.Padding(
-                                    padding: const pw.EdgeInsets.all(5),
-                                    child: pw.Text(
-                                        DateFormat("dd/MM/yyyy").format(
-                                            DateTime.fromMillisecondsSinceEpoch(
-                                                subLists[0][i].date)),
-                                        style:
-                                            const pw.TextStyle(fontSize: 10)),
-                                  ),
-                                  pw.Padding(
-                                      padding: const pw.EdgeInsets.all(5),
-                                      child: pw.Text(
-                                          getLessonTitle(
-                                              subLists[0][i].lessonId),
-                                          style: const pw.TextStyle(
-                                              fontSize: 10))),
-                                  pw.Padding(
-                                      padding: const pw.EdgeInsets.all(5),
-                                      child: pw.Text(
-                                          getAttendance(subLists[0][i].lessonId,
-                                              std.userId),
-                                          style: const pw.TextStyle(
-                                              fontSize: 10))),
-                                  pw.Padding(
-                                      padding: const pw.EdgeInsets.all(5),
-                                      child: pw.Text(
-                                          getBTVN(subLists[0][i].lessonId,
-                                              std.userId),
-                                          style: const pw.TextStyle(
-                                              fontSize: 10))),
-                                  pw.Padding(
-                                      padding: const pw.EdgeInsets.all(5),
-                                      child: pw.Text(
-                                          subLists[0][i].noteForStudent,
-                                          style: const pw.TextStyle(
-                                              fontSize: 10))),
-                                ])
-                              ])
+                    pw.Table(
+                        columnWidths: {
+                          0: const pw.FixedColumnWidth(75),
+                          1: const pw.FixedColumnWidth(200),
+                          2: const pw.FixedColumnWidth(50),
+                          3: const pw.FixedColumnWidth(50),
+                          4: const pw.FixedColumnWidth(150),
+                        },
+                        border: pw.TableBorder.all(),
+                        children: <pw.TableRow>[
+                          if (i == 0)
+                            pw.TableRow(children: [
+                              pw.Padding(
+                                padding: const pw.EdgeInsets.all(5),
+                                child: pw.Center(
+                                    child: pw.Text("Ngày học",
+                                        style: pw.TextStyle(
+                                            fontSize: 10,
+                                            fontWeight:
+                                            pw.FontWeight.bold))),
+                              ),
+                              pw.Padding(
+                                padding: const pw.EdgeInsets.all(5),
+                                child: pw.Center(
+                                    child: pw.Text("Buổi học",
+                                        style: pw.TextStyle(
+                                            fontSize: 10,
+                                            fontWeight:
+                                            pw.FontWeight.bold))),
+                              ),
+                              pw.Padding(
+                                padding: const pw.EdgeInsets.all(5),
+                                child: pw.Center(
+                                    child: pw.Text("Điểm danh",
+                                        style: pw.TextStyle(
+                                            fontSize: 10,
+                                            fontWeight:
+                                            pw.FontWeight.bold))),
+                              ),
+                              pw.Padding(
+                                padding: const pw.EdgeInsets.all(5),
+                                child: pw.Center(
+                                    child: pw.Text("Bài tập",
+                                        style: pw.TextStyle(
+                                            fontSize: 10,
+                                            fontWeight:
+                                            pw.FontWeight.bold))),
+                              ),
+                              pw.Padding(
+                                padding: const pw.EdgeInsets.all(5),
+                                child: pw.Center(
+                                    child: pw.Text("Ghi chú",
+                                        style: pw.TextStyle(
+                                            fontSize: 10,
+                                            fontWeight:
+                                            pw.FontWeight.bold))),
+                              ),
+                            ]),
+                          pw.TableRow(children: [
+                            pw.Padding(
+                              padding: const pw.EdgeInsets.all(5),
+                              child: pw.Text(
+                                  DateFormat("dd/MM/yyyy").format(
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                          listLessonResultTemp[i].date)),
+                                  style:
+                                  const pw.TextStyle(fontSize: 10)),
+                            ),
+                            pw.Padding(
+                                padding: const pw.EdgeInsets.all(5),
+                                child: pw.Text(
+                                    getLessonTitle(
+                                        listLessonResultTemp[i].lessonId),
+                                    style: const pw.TextStyle(
+                                        fontSize: 10))),
+                            pw.Padding(
+                                padding: const pw.EdgeInsets.all(5),
+                                child: pw.Text(
+                                    getAttendance(listLessonResultTemp[i].lessonId,
+                                        std.userId),
+                                    style: const pw.TextStyle(
+                                        fontSize: 10))),
+                            pw.Padding(
+                                padding: const pw.EdgeInsets.all(5),
+                                child: pw.Text(
+                                    getBTVN(listLessonResultTemp[i].lessonId,
+                                        std.userId),
+                                    style: const pw.TextStyle(
+                                        fontSize: 10))),
+                            pw.Padding(
+                                padding: const pw.EdgeInsets.all(5),
+                                child: pw.Text(
+                                    listLessonResultTemp[i].noteForStudent,
+                                    style: const pw.TextStyle(
+                                        fontSize: 10))),
+                          ])
                         ])
+                  ])
                       : pw.Column(children: [
-                          pw.Table(
-                              columnWidths: {
-                                0: const pw.FixedColumnWidth(75),
-                                1: const pw.FixedColumnWidth(200),
-                                2: const pw.FixedColumnWidth(50),
-                                3: const pw.FixedColumnWidth(50),
-                              },
-                              border: pw.TableBorder.all(),
-                              children: <pw.TableRow>[
-                                if (i == 0)
-                                  pw.TableRow(children: [
-                                    pw.Padding(
-                                      padding: const pw.EdgeInsets.all(5),
-                                      child: pw.Center(
-                                          child: pw.Text("Ngày học",
-                                              style: pw.TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight:
-                                                      pw.FontWeight.bold))),
-                                    ),
-                                    pw.Padding(
-                                      padding: const pw.EdgeInsets.all(5),
-                                      child: pw.Center(
-                                          child: pw.Text("Buổi học",
-                                              style: pw.TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight:
-                                                      pw.FontWeight.bold))),
-                                    ),
-                                    pw.Padding(
-                                      padding: const pw.EdgeInsets.all(5),
-                                      child: pw.Center(
-                                          child: pw.Text("Điểm danh",
-                                              style: pw.TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight:
-                                                      pw.FontWeight.bold))),
-                                    ),
-                                    pw.Padding(
-                                      padding: const pw.EdgeInsets.all(5),
-                                      child: pw.Center(
-                                          child: pw.Text("Bài tập",
-                                              style: pw.TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight:
-                                                      pw.FontWeight.bold))),
-                                    ),
-                                  ]),
-                                pw.TableRow(children: [
-                                  pw.Padding(
-                                    padding: const pw.EdgeInsets.all(5),
-                                    child: pw.Text(
-                                        DateFormat("dd/MM/yyyy").format(
-                                            DateTime.fromMillisecondsSinceEpoch(
-                                                subLists[0][i].date)),
-                                        style:
-                                            const pw.TextStyle(fontSize: 10)),
-                                  ),
-                                  pw.Padding(
-                                      padding: const pw.EdgeInsets.all(5),
-                                      child: pw.Text(
-                                          getLessonTitle(
-                                              subLists[0][i].lessonId),
-                                          style: const pw.TextStyle(
-                                              fontSize: 10))),
-                                  pw.Padding(
-                                      padding: const pw.EdgeInsets.all(5),
-                                      child: pw.Text(
-                                          getAttendance(subLists[0][i].lessonId,
-                                              std.userId),
-                                          style: const pw.TextStyle(
-                                              fontSize: 10))),
-                                  pw.Padding(
-                                      padding: const pw.EdgeInsets.all(5),
-                                      child: pw.Text(
-                                          getBTVN(subLists[0][i].lessonId,
-                                              std.userId),
-                                          style:
-                                              const pw.TextStyle(fontSize: 10)))
-                                ])
-                              ])
+                    pw.Table(
+                        columnWidths: {
+                          0: const pw.FixedColumnWidth(75),
+                          1: const pw.FixedColumnWidth(200),
+                          2: const pw.FixedColumnWidth(50),
+                          3: const pw.FixedColumnWidth(50),
+                        },
+                        border: pw.TableBorder.all(),
+                        children: <pw.TableRow>[
+                          if (i == 0)
+                            pw.TableRow(children: [
+                              pw.Padding(
+                                padding: const pw.EdgeInsets.all(5),
+                                child: pw.Center(
+                                    child: pw.Text("Ngày học",
+                                        style: pw.TextStyle(
+                                            fontSize: 10,
+                                            fontWeight:
+                                            pw.FontWeight.bold))),
+                              ),
+                              pw.Padding(
+                                padding: const pw.EdgeInsets.all(5),
+                                child: pw.Center(
+                                    child: pw.Text("Buổi học",
+                                        style: pw.TextStyle(
+                                            fontSize: 10,
+                                            fontWeight:
+                                            pw.FontWeight.bold))),
+                              ),
+                              pw.Padding(
+                                padding: const pw.EdgeInsets.all(5),
+                                child: pw.Center(
+                                    child: pw.Text("Điểm danh",
+                                        style: pw.TextStyle(
+                                            fontSize: 10,
+                                            fontWeight:
+                                            pw.FontWeight.bold))),
+                              ),
+                              pw.Padding(
+                                padding: const pw.EdgeInsets.all(5),
+                                child: pw.Center(
+                                    child: pw.Text("Bài tập",
+                                        style: pw.TextStyle(
+                                            fontSize: 10,
+                                            fontWeight:
+                                            pw.FontWeight.bold))),
+                              ),
+                            ]),
+                          pw.TableRow(children: [
+                            pw.Padding(
+                              padding: const pw.EdgeInsets.all(5),
+                              child: pw.Text(
+                                  DateFormat("dd/MM/yyyy").format(
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                          listLessonResultTemp[i].date)),
+                                  style:
+                                  const pw.TextStyle(fontSize: 10)),
+                            ),
+                            pw.Padding(
+                                padding: const pw.EdgeInsets.all(5),
+                                child: pw.Text(
+                                    getLessonTitle(
+                                        listLessonResultTemp[i].lessonId),
+                                    style: const pw.TextStyle(
+                                        fontSize: 10))),
+                            pw.Padding(
+                                padding: const pw.EdgeInsets.all(5),
+                                child: pw.Text(
+                                    getAttendance(listLessonResultTemp[i].lessonId,
+                                        std.userId),
+                                    style: const pw.TextStyle(
+                                        fontSize: 10))),
+                            pw.Padding(
+                                padding: const pw.EdgeInsets.all(5),
+                                child: pw.Text(
+                                    getBTVN(listLessonResultTemp[i].lessonId,
+                                        std.userId),
+                                    style:
+                                    const pw.TextStyle(fontSize: 10)))
+                          ])
                         ])
+                  ])
               ]); // Center
         }));
-    for (int k = 1; k < subLists.length; k++) {
-      pdf.addPage(pw.Page(
-          pageFormat: PdfPageFormat.a4,
-          build: (pw.Context context) {
-            return pw.Column(
-                mainAxisAlignment: pw.MainAxisAlignment.start,
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                children: [
-                  for (int i = 0; i < subLists[k].length; i++)
-                    classModel.classType == 1
-                        ? pw.Column(children: [
-                            pw.Table(
-                                columnWidths: {
-                                  0: const pw.FixedColumnWidth(75),
-                                  1: const pw.FixedColumnWidth(200),
-                                  2: const pw.FixedColumnWidth(50),
-                                  3: const pw.FixedColumnWidth(50),
-                                  4: const pw.FixedColumnWidth(150),
-                                },
-                                border: pw.TableBorder.all(),
-                                children: <pw.TableRow>[
-                                  if (i == 0)
-                                    pw.TableRow(children: [
-                                      pw.Padding(
-                                        padding: const pw.EdgeInsets.all(5),
-                                        child: pw.Center(
-                                            child: pw.Text("Ngày học",
-                                                style: pw.TextStyle(
-                                                    fontSize: 10,
-                                                    fontWeight:
-                                                        pw.FontWeight.bold))),
-                                      ),
-                                      pw.Padding(
-                                        padding: const pw.EdgeInsets.all(5),
-                                        child: pw.Center(
-                                            child: pw.Text("Buổi học",
-                                                style: pw.TextStyle(
-                                                    fontSize: 10,
-                                                    fontWeight:
-                                                        pw.FontWeight.bold))),
-                                      ),
-                                      pw.Padding(
-                                        padding: const pw.EdgeInsets.all(5),
-                                        child: pw.Center(
-                                            child: pw.Text("Điểm danh",
-                                                style: pw.TextStyle(
-                                                    fontSize: 10,
-                                                    fontWeight:
-                                                        pw.FontWeight.bold))),
-                                      ),
-                                      pw.Padding(
-                                        padding: const pw.EdgeInsets.all(5),
-                                        child: pw.Center(
-                                            child: pw.Text("Bài tập",
-                                                style: pw.TextStyle(
-                                                    fontSize: 10,
-                                                    fontWeight:
-                                                        pw.FontWeight.bold))),
-                                      ),
-                                      pw.Padding(
-                                        padding: const pw.EdgeInsets.all(5),
-                                        child: pw.Center(
-                                            child: pw.Text("Ghi chú",
-                                                style: pw.TextStyle(
-                                                    fontSize: 10,
-                                                    fontWeight:
-                                                        pw.FontWeight.bold))),
-                                      ),
-                                    ]),
-                                  pw.TableRow(children: [
-                                    pw.Padding(
-                                      padding: const pw.EdgeInsets.all(5),
-                                      child: pw.Text(
-                                          DateFormat("dd/MM/yyyy").format(
-                                              DateTime
-                                                  .fromMillisecondsSinceEpoch(
-                                                      subLists[k][i].date)),
-                                          style:
-                                              const pw.TextStyle(fontSize: 10)),
-                                    ),
-                                    pw.Padding(
-                                        padding: const pw.EdgeInsets.all(5),
-                                        child: pw.Text(
-                                            getLessonTitle(
-                                                subLists[k][i].lessonId),
-                                            style: const pw.TextStyle(
-                                                fontSize: 10))),
-                                    pw.Padding(
-                                        padding: const pw.EdgeInsets.all(5),
-                                        child: pw.Text(
-                                            getAttendance(
-                                                subLists[k][i].lessonId,
-                                                std.userId),
-                                            style: const pw.TextStyle(
-                                                fontSize: 10))),
-                                    pw.Padding(
-                                        padding: const pw.EdgeInsets.all(5),
-                                        child: pw.Text(
-                                            getBTVN(subLists[k][i].lessonId,
-                                                std.userId),
-                                            style: const pw.TextStyle(
-                                                fontSize: 10))),
-                                    pw.Padding(
-                                        padding: const pw.EdgeInsets.all(5),
-                                        child: pw.Text(
-                                            subLists[k][i].noteForStudent,
-                                            style: const pw.TextStyle(
-                                                fontSize: 10))),
-                                  ])
-                                ])
-                          ])
-                        : pw.Column(children: [
-                            pw.Table(
-                                columnWidths: {
-                                  0: const pw.FixedColumnWidth(75),
-                                  1: const pw.FixedColumnWidth(200),
-                                  2: const pw.FixedColumnWidth(50),
-                                  3: const pw.FixedColumnWidth(50),
-                                },
-                                border: pw.TableBorder.all(),
-                                children: <pw.TableRow>[
-                                  if (i == 0)
-                                    pw.TableRow(children: [
-                                      pw.Padding(
-                                        padding: const pw.EdgeInsets.all(5),
-                                        child: pw.Center(
-                                            child: pw.Text("Ngày học",
-                                                style: pw.TextStyle(
-                                                    fontSize: 10,
-                                                    fontWeight:
-                                                        pw.FontWeight.bold))),
-                                      ),
-                                      pw.Padding(
-                                        padding: const pw.EdgeInsets.all(5),
-                                        child: pw.Center(
-                                            child: pw.Text("Buổi học",
-                                                style: pw.TextStyle(
-                                                    fontSize: 10,
-                                                    fontWeight:
-                                                        pw.FontWeight.bold))),
-                                      ),
-                                      pw.Padding(
-                                        padding: const pw.EdgeInsets.all(5),
-                                        child: pw.Center(
-                                            child: pw.Text("Điểm danh",
-                                                style: pw.TextStyle(
-                                                    fontSize: 10,
-                                                    fontWeight:
-                                                        pw.FontWeight.bold))),
-                                      ),
-                                      pw.Padding(
-                                        padding: const pw.EdgeInsets.all(5),
-                                        child: pw.Center(
-                                            child: pw.Text("Bài tập",
-                                                style: pw.TextStyle(
-                                                    fontSize: 10,
-                                                    fontWeight:
-                                                        pw.FontWeight.bold))),
-                                      ),
-                                    ]),
-                                  pw.TableRow(children: [
-                                    pw.Padding(
-                                      padding: const pw.EdgeInsets.all(5),
-                                      child: pw.Text(
-                                          DateFormat("dd/MM/yyyy").format(
-                                              DateTime
-                                                  .fromMillisecondsSinceEpoch(
-                                                      subLists[k][i].date)),
-                                          style:
-                                              const pw.TextStyle(fontSize: 10)),
-                                    ),
-                                    pw.Padding(
-                                        padding: const pw.EdgeInsets.all(5),
-                                        child: pw.Text(
-                                            getLessonTitle(
-                                                subLists[k][i].lessonId),
-                                            style: const pw.TextStyle(
-                                                fontSize: 10))),
-                                    pw.Padding(
-                                        padding: const pw.EdgeInsets.all(5),
-                                        child: pw.Text(
-                                            getAttendance(
-                                                subLists[k][i].lessonId,
-                                                std.userId),
-                                            style: const pw.TextStyle(
-                                                fontSize: 10))),
-                                    pw.Padding(
-                                        padding: const pw.EdgeInsets.all(5),
-                                        child: pw.Text(
-                                            getBTVN(subLists[k][i].lessonId,
-                                                std.userId),
-                                            style: const pw.TextStyle(
-                                                fontSize: 10))),
-                                  ])
-                                ])
-                          ])
-                ]); // Center
-          }));
+
+    for(int k = 0; k < 1000; k++){
+      count = 0;
+      if(listLessonResultTemp.length != listLessonResult.length){
+        List<LessonResultModel> list = [];
+        for(var i in listLessonResult){
+          if(count < 1000 && !listLessonResultTemp.contains(i) && list.length < 11){
+            listLessonResultTemp.add(i);
+            list.add(i);
+            count = count + i.noteForStudent.length;
+          }
+        }
+
+        pdf.addPage(pw.Page(
+            pageFormat: PdfPageFormat.a4,
+            build: (pw.Context context) {
+              return pw.Column(
+                  mainAxisAlignment: pw.MainAxisAlignment.start,
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    for (int i = 0; i < list.length; i++)
+                      classModel.classType == 1
+                          ? pw.Column(children: [
+                        pw.Table(
+                            columnWidths: {
+                              0: const pw.FixedColumnWidth(75),
+                              1: const pw.FixedColumnWidth(200),
+                              2: const pw.FixedColumnWidth(50),
+                              3: const pw.FixedColumnWidth(50),
+                              4: const pw.FixedColumnWidth(150),
+                            },
+                            border: pw.TableBorder.all(),
+                            children: <pw.TableRow>[
+                              if (i == 0)
+                                pw.TableRow(children: [
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.all(5),
+                                    child: pw.Center(
+                                        child: pw.Text("Ngày học",
+                                            style: pw.TextStyle(
+                                                fontSize: 10,
+                                                fontWeight:
+                                                pw.FontWeight.bold))),
+                                  ),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.all(5),
+                                    child: pw.Center(
+                                        child: pw.Text("Buổi học",
+                                            style: pw.TextStyle(
+                                                fontSize: 10,
+                                                fontWeight:
+                                                pw.FontWeight.bold))),
+                                  ),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.all(5),
+                                    child: pw.Center(
+                                        child: pw.Text("Điểm danh",
+                                            style: pw.TextStyle(
+                                                fontSize: 10,
+                                                fontWeight:
+                                                pw.FontWeight.bold))),
+                                  ),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.all(5),
+                                    child: pw.Center(
+                                        child: pw.Text("Bài tập",
+                                            style: pw.TextStyle(
+                                                fontSize: 10,
+                                                fontWeight:
+                                                pw.FontWeight.bold))),
+                                  ),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.all(5),
+                                    child: pw.Center(
+                                        child: pw.Text("Ghi chú",
+                                            style: pw.TextStyle(
+                                                fontSize: 10,
+                                                fontWeight:
+                                                pw.FontWeight.bold))),
+                                  ),
+                                ]),
+                              pw.TableRow(children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.all(5),
+                                  child: pw.Text(
+                                      DateFormat("dd/MM/yyyy").format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              list[i].date)),
+                                      style:
+                                      const pw.TextStyle(fontSize: 10)),
+                                ),
+                                pw.Padding(
+                                    padding: const pw.EdgeInsets.all(5),
+                                    child: pw.Text(
+                                        getLessonTitle(
+                                            list[i].lessonId),
+                                        style: const pw.TextStyle(
+                                            fontSize: 10))),
+                                pw.Padding(
+                                    padding: const pw.EdgeInsets.all(5),
+                                    child: pw.Text(
+                                        getAttendance(list[i].lessonId,
+                                            std.userId),
+                                        style: const pw.TextStyle(
+                                            fontSize: 10))),
+                                pw.Padding(
+                                    padding: const pw.EdgeInsets.all(5),
+                                    child: pw.Text(
+                                        getBTVN(list[i].lessonId,
+                                            std.userId),
+                                        style: const pw.TextStyle(
+                                            fontSize: 10))),
+                                pw.Padding(
+                                    padding: const pw.EdgeInsets.all(5),
+                                    child: pw.Text(
+                                        list[i].noteForStudent,
+                                        style: const pw.TextStyle(
+                                            fontSize: 10))),
+                              ])
+                            ])
+                      ])
+                          : pw.Column(children: [
+                        pw.Table(
+                            columnWidths: {
+                              0: const pw.FixedColumnWidth(75),
+                              1: const pw.FixedColumnWidth(200),
+                              2: const pw.FixedColumnWidth(50),
+                              3: const pw.FixedColumnWidth(50),
+                            },
+                            border: pw.TableBorder.all(),
+                            children: <pw.TableRow>[
+                              if (i == 0)
+                                pw.TableRow(children: [
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.all(5),
+                                    child: pw.Center(
+                                        child: pw.Text("Ngày học",
+                                            style: pw.TextStyle(
+                                                fontSize: 10,
+                                                fontWeight:
+                                                pw.FontWeight.bold))),
+                                  ),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.all(5),
+                                    child: pw.Center(
+                                        child: pw.Text("Buổi học",
+                                            style: pw.TextStyle(
+                                                fontSize: 10,
+                                                fontWeight:
+                                                pw.FontWeight.bold))),
+                                  ),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.all(5),
+                                    child: pw.Center(
+                                        child: pw.Text("Điểm danh",
+                                            style: pw.TextStyle(
+                                                fontSize: 10,
+                                                fontWeight:
+                                                pw.FontWeight.bold))),
+                                  ),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.all(5),
+                                    child: pw.Center(
+                                        child: pw.Text("Bài tập",
+                                            style: pw.TextStyle(
+                                                fontSize: 10,
+                                                fontWeight:
+                                                pw.FontWeight.bold))),
+                                  ),
+                                ]),
+                              pw.TableRow(children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.all(5),
+                                  child: pw.Text(
+                                      DateFormat("dd/MM/yyyy").format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              listLessonResultTemp[i].date)),
+                                      style:
+                                      const pw.TextStyle(fontSize: 10)),
+                                ),
+                                pw.Padding(
+                                    padding: const pw.EdgeInsets.all(5),
+                                    child: pw.Text(
+                                        getLessonTitle(
+                                            list[i].lessonId),
+                                        style: const pw.TextStyle(
+                                            fontSize: 10))),
+                                pw.Padding(
+                                    padding: const pw.EdgeInsets.all(5),
+                                    child: pw.Text(
+                                        getAttendance(list[i].lessonId,
+                                            std.userId),
+                                        style: const pw.TextStyle(
+                                            fontSize: 10))),
+                                pw.Padding(
+                                    padding: const pw.EdgeInsets.all(5),
+                                    child: pw.Text(
+                                        getBTVN(list[i].lessonId,
+                                            std.userId),
+                                        style:
+                                        const pw.TextStyle(fontSize: 10)))
+                              ])
+                            ])
+                      ])
+                  ]); // Center
+            }));
+      }
+
     }
+
+
+
 
     var savedFile = await pdf.save();
     List<int> fileInts = List.from(savedFile);
@@ -739,7 +749,7 @@ class CreatePdfFileCubit extends Cubit<int> {
 
     if (list.isEmpty) return "Lỗi load data";
 
-    return list.first.title;
+    return list.first.title.toUpperCase();
   }
 
   String getAttendance(int lessonId, int stdId) {
@@ -778,10 +788,19 @@ class CreatePdfFileCubit extends Cubit<int> {
 
     if (lesson.isEmpty) return "Không có dữ liệu";
 
-    if (lesson.first.isCustom && lesson.first.customLessonInfo.isEmpty)
+    if (lesson.first.isCustom && lesson.first.customLessonInfo.isEmpty) {
       return "Không có btvn";
+    }
 
     if (list.isEmpty) return "Không có dữ liệu";
+
+    if(lesson.first.isCustom){
+      return getHwCustomPoint(lessonId, stdId) == -1
+          ? AppText.textNotMarked.text.toUpperCase()
+          : getHwCustomPoint(lessonId, stdId) > -1
+          ? getHwCustomPoint(lessonId, stdId).toStringAsFixed(1)
+          : AppText.txtNotSubmit.text.toUpperCase();
+    }
 
     return list.first.hw! == -1
         ? AppText.textNotMarked.text.toUpperCase()
