@@ -21,7 +21,7 @@ class ChangeTabVoucherView extends StatelessWidget {
               child: InkWell(
                   borderRadius: BorderRadius.circular(10),
                   onTap: ()async{
-                    await cubit.changeTab(AppText.txtCourse.text);
+                     cubit.changeTab(AppText.txtCourse.text);
                   },
                   child: Container(
                       height: Resizable.size(context, 35),
@@ -56,7 +56,7 @@ class ChangeTabVoucherView extends StatelessWidget {
               child: InkWell(
                   borderRadius: BorderRadius.circular(10),
                   onTap: ()async{
-                   await cubit.changeTab(AppText.txtApp.text);
+                    cubit.changeTab(AppText.txtApp.text);
                   },
                   child: Container(
                       height: Resizable.size(context, 35),

@@ -69,7 +69,7 @@ void alertInfoVoucherApp(BuildContext context, VoucherCubit cubit) {
                       Expanded(
                           child: InputItem(
                             title: AppText.titleExpiredDate.text,
-                            hintText: cubit.voucherAppModel!.expiredDate,
+                            hintText: cubit.parseDate(cubit.voucherAppModel!.expiredDate),
                             enabled: false,
                           )),
                       SizedBox(width: Resizable.padding(context, 15)),
@@ -134,7 +134,6 @@ void alertInfoVoucherApp(BuildContext context, VoucherCubit cubit) {
                                   Navigator.pop(context);
                                   waitingDialog(context);
                                   await cubit.updateVoucherApp(
-                                      conUser.text,
                                       cubit.noteValue,
                                       cubit.voucherAppModel!.voucherCode
                                       );

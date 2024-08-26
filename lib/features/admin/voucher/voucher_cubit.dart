@@ -26,12 +26,14 @@ class VoucherCubit extends Cubit<int> {
   DateTime get expiredVoucherCourseDate => DateTimeCubit.startDay;
   DateTime get expiredVoucherAppDate => DateTimeCubitV2.day;
 
+  String createDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
+
+
   bool isVoucherCourse = true;
 
   String qrCode = '';
   int numVoucher = 0;
   bool isDownload = false;
-  String createDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
 
   TextEditingController conUser = TextEditingController();
   TextEditingController conCode = TextEditingController();
@@ -55,11 +57,10 @@ class VoucherCubit extends Cubit<int> {
   //info voucher app
   String numMonths = "2";
   String numDevices = "3";
-  String dateExpired = DateFormat('dd/MM/yyyy').format(
-      DateTime(
-          DateTime.now().year,
-          DateTime.now().month + 1,
-          DateTime.now().day));
+  int dateExpired = DateTime(
+      DateTime.now().year,
+      DateTime.now().month + 1,
+      DateTime.now().day).millisecondsSinceEpoch;
 
   List<VoucherAppModel> listSearchVoucherApp = [];
 
@@ -279,7 +280,7 @@ class VoucherCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-  update(String newDate){
+  update(int newDate){
     dateExpired = newDate;
     emit(state+1);
   }
@@ -317,9 +318,19 @@ class VoucherCubit extends Cubit<int> {
     emit(state + 1);
   }
 
+  String parseDate(int dateFromMilli) {
+
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(dateFromMilli);
+
+    DateFormat dateFormat = DateFormat("dd/MM/yyyy");
+    String formattedDate = dateFormat.format(date);
+
+    return formattedDate;
+  }
+
   isActiveVoucherApp() {
-    if (voucherAppModel!.usedUserCode.isEmpty) {
-      if(isExpired(voucherAppModel!.expiredDate)) {
+    if (voucherAppModel!.usedData.isEmpty) {
+      if(isExpired(parseDate(voucherAppModel!.expiredDate))) {
         return false;
       } else {
         return true;
@@ -330,24 +341,24 @@ class VoucherCubit extends Cubit<int> {
   }
 
   String convertUsedCode(){
-    if(voucherAppModel!.usedUserCode.isEmpty) return "";
+    if(voucherAppModel!.usedData.isEmpty) return "";
 
-    String list = voucherAppModel!.usedUserCode.first;
+    String list = "";
 
-    for(var e in voucherAppModel!.usedUserCode){
-      list = "$list, $e";
+    for(var e in voucherAppModel!.usedData){
+      if(voucherAppModel!.usedData.indexOf(e) == 0){
+        list = e[''];
+      }else{
+        list = "$list, ${e['user']}";
+      }
+
     }
 
     return list;
   }
 
-  updateVoucherApp(String usedUserCode, String noted, String voucherCode) async {
-    
-    List<String> listUserCode = usedUserCode.split(", ");
-    
-    
-    
+  updateVoucherApp( String noted, String voucherCode) async {
     await FireBaseProvider.instance
-        .updateVoucherApp(listUserCode, noted, voucherCode);
+        .updateVoucherApp( noted, voucherCode);
   }
 }

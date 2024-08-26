@@ -200,11 +200,10 @@ class InputDateVoucherApp extends StatelessWidget {
                                         DateTimeCubitV2.day = v.value;
                                         BlocProvider.of<DateTimeCubitV2>(c)
                                             .selectedDate(v.value);
-                                        cubit.update(DateFormat('dd/MM/yyyy').format(
-                                            DateTime(
-                                                v.value.year,
-                                                v.value.month,
-                                                v.value.day)));
+                                        cubit.update(DateTime(
+                                            v.value.year,
+                                            v.value.month,
+                                            v.value.day).millisecondsSinceEpoch);
                                         Navigator.pop(context);
                                       },
                                       selectionMode:

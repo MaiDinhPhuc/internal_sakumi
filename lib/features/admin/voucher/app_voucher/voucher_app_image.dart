@@ -8,7 +8,6 @@ import 'package:internal_sakumi/model/voucher_app_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 
-
 class VoucherAppImage extends StatelessWidget {
   final VoucherCubit cubit;
   final _globalKey = GlobalKey();
@@ -25,54 +24,51 @@ class VoucherAppImage extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius:
-                  BorderRadius.circular(Resizable.padding(context, 10)),
+                      BorderRadius.circular(Resizable.padding(context, 10)),
                   border: Border.all(
                       color: const Color(0xff757575),
                       width: Resizable.size(context, 0.5))),
               padding: EdgeInsets.all(Resizable.padding(context, 15)),
               child: Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xfff5f5f5),
-                  borderRadius:
-                  BorderRadius.circular(Resizable.padding(context, 15)),
-                ),
-                padding: EdgeInsets.all(Resizable.padding(context, 10)),
-                child: RepaintBoundary(
-                  key: _globalKey,
-                  child: Column(
-                    children: [
-                      Expanded(
-                          flex: 1,
-                          child: Container()),
-                      Expanded(
-                          flex: 7,
-                          child: Container(
-                        padding: EdgeInsets.all(Resizable.padding(context, 5)),
-                        color: primaryColor.shade300,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Expanded(
-                                flex: 54,
-                                child: Container(
-                                  color: Colors.white,
-                                  child: Image.asset('assets/images/img_voucher_app.png'),
-                                )),
-                            Expanded(
-                                flex: 2,
-                                child: Container()),
-                            Expanded(
-                                flex: 110, child: VoucherAppInfoView(cubit)),
-                          ],
-                        ),
-                      )),
-                      Expanded(
-                          flex: 1,
-                          child: Container()),
-                    ],
+                  decoration: BoxDecoration(
+                    color: const Color(0xfff5f5f5),
+                    borderRadius:
+                        BorderRadius.circular(Resizable.padding(context, 15)),
                   ),
-                )
-              ),
+                  padding: EdgeInsets.all(Resizable.padding(context, 10)),
+                  child: RepaintBoundary(
+                    key: _globalKey,
+                    child: Column(
+                      children: [
+                        Expanded(flex: 1, child: Container()),
+                        Expanded(
+                            flex: 7,
+                            child: Container(
+                              padding:
+                                  EdgeInsets.all(Resizable.padding(context, 5)),
+                              color: primaryColor.shade300,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Expanded(
+                                      flex: 54,
+                                      child: Container(
+                                        color: Colors.white,
+                                        child: Image.asset(
+                                            'assets/images/img_voucher_app.png'),
+                                      )),
+                                  Expanded(flex: 2, child: Container()),
+                                  Expanded(
+                                      flex: 110,
+                                      child: VoucherAppInfoView(cubit)),
+                                ],
+                              ),
+                            )),
+                        Expanded(flex: 1, child: Container()),
+                      ],
+                    ),
+                  )),
             )),
         Expanded(
             flex: 1,
@@ -87,13 +83,15 @@ class VoucherAppImage extends StatelessWidget {
                           VoucherAppModel(
                             id: cubit.numVoucher,
                             recipientCode: cubit.conUser.text,
-                            usedUserCode: [],
+                            usedData: [],
                             voucherCode: cubit.qrCode,
-                            createDate: cubit.createDate,
-                            usedDate: [],
-                            expiredDate:cubit.dateExpired,
+                            createDate: DateTime.now().millisecondsSinceEpoch,
+                            limit: int.parse(cubit.numDevices),
+                            expiredDate: cubit.dateExpired,
                             noted: cubit.conNote.text,
-                            price: priceVND('${256000 * (int.parse(cubit.numMonths))}'),
+                            price: priceVND(
+                                '${256000 * (int.parse(cubit.numMonths))}'),
+                            usingTime: int.parse(cubit.numMonths),
                           ));
                     },
                     title: AppText.btnCreateVoucher.text.toUpperCase()),
@@ -102,8 +100,8 @@ class VoucherAppImage extends StatelessWidget {
                     isActive: cubit.isDownload,
                     onPressed: () async {
                       RenderRepaintBoundary boundary =
-                      _globalKey.currentContext!.findRenderObject()
-                      as RenderRepaintBoundary;
+                          _globalKey.currentContext!.findRenderObject()
+                              as RenderRepaintBoundary;
                       await cubit.downloadVoucherCourse(boundary, context);
                     },
                     title: AppText.btnDownloadImage.text.toUpperCase())

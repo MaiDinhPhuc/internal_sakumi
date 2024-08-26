@@ -224,7 +224,7 @@ class VoucherCourseSearchList extends StatelessWidget {
                                                     fontSize: Resizable.font(
                                                         context, 17))),
                                             TextSpan(
-                                                text: model.expiredDate,
+                                                text: cubit.parseDate(model.expiredDate),
                                                 style: TextStyle(
                                                     color:
                                                     const Color(0xffE33F64),
@@ -244,14 +244,14 @@ class VoucherCourseSearchList extends StatelessWidget {
                                       maxHeight: Resizable.size(context, 20)),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(1000),
-                                      color: model.usedDate.isEmpty
-                                          ? cubit.isExpired(model.expiredDate)
+                                      color: model.usedData.isEmpty
+                                          ? cubit.isExpired(cubit.parseDate(model.expiredDate))
                                           ? const Color(0xffb71c1c)
                                           : const Color(0xff33691E)
                                           : const Color(0xffF57F17)),
                                   child: Text(
-                                    model.usedDate.isEmpty
-                                        ? cubit.isExpired(model.expiredDate)
+                                    model.usedData.isEmpty
+                                        ? cubit.isExpired(cubit.parseDate(model.expiredDate))
                                         ? AppText.txtExpired.text
                                         : AppText.txtNew.text
                                         : AppText.txtUsed.text,

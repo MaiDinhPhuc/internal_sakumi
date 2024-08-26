@@ -2418,10 +2418,10 @@ class FireStoreDb {
         .set({
       'id': model.id,
       'recipient_code': model.recipientCode,
-      'used_user_code': model.usedUserCode,
+      'used_data': model.usedData,
       'voucher_code': model.voucherCode,
       'create_date': model.createDate,
-      'used_date': model.usedDate,
+      'limit': model.limit,
       'expired_date': model.expiredDate,
       'noted': model.noted,
       'price': model.price,
@@ -2448,19 +2448,16 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<void> updateVoucherApp(List<String> listUserCode, String noted,
+  Future<void> updateVoucherApp( String noted,
       String voucherCode) async {
     await db.collection("voucher_app").doc("app_voucher_$voucherCode").update({
-      'used_user_code': listUserCode,
       'noted': noted,
     });
   }
 
-  Future<void> updateVoucherCourse(String usedUserCode, String noted,
-      String voucherCode, String dateTime) async {
+  Future<void> updateVoucherCourse( String noted,
+      String voucherCode) async {
     await db.collection("voucher").doc("sakumi_voucher_$voucherCode").update({
-      'used_date': dateTime,
-      'used_user_code': usedUserCode,
       'noted': noted,
     });
   }

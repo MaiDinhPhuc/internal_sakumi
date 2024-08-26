@@ -2228,14 +2228,14 @@ class FireBaseProvider extends NetworkProvider {
   Future<void> updateVoucherCourse(String usedUserCode, String noted,
       String voucherCode, String date) async {
     await FireStoreDb.instance
-        .updateVoucherCourse(usedUserCode, noted, voucherCode, date);
+        .updateVoucherCourse( noted, voucherCode);
   }
 
   @override
-  Future<void> updateVoucherApp(List<String> listUserCode, String noted,
+  Future<void> updateVoucherApp( String noted,
       String voucherCode) async {
     await FireStoreDb.instance
-        .updateVoucherApp(listUserCode, noted, voucherCode);
+        .updateVoucherApp( noted, voucherCode);
   }
 
 
