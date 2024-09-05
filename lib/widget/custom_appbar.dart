@@ -20,6 +20,7 @@ class MasterAppbar extends StatelessWidget {
       AppText.titleManageFeedBack.text,
       AppText.txtManageBanner.text,
       AppText.txtManageCourseSuggest.text,
+      "GiftCode"
     ];
     return Container(
       padding: EdgeInsets.only(
@@ -110,6 +111,11 @@ class MasterAppbar extends StatelessWidget {
                                             case 5:
                                               await Functions.goPage(
                                                   '${Routes.master}/manageCourseSuggest',
+                                                  context);
+                                              break;
+                                            case 6:
+                                              await Functions.goPage(
+                                                  '${Routes.master}/giftCode',
                                                   context);
                                               break;
                                           }

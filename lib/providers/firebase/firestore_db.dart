@@ -72,6 +72,18 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getEnableGiftCode() async {
+    final snapshot =
+    await db.collection("admin").where("id", isEqualTo: 1000).get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getEnableGiftCode ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    // debugPrint("==========>get db from \"teacher\" : ${snapshot.docs.length}");
+
+    return snapshot;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getTeacherClassById(
       int id) async {
     final snapshot = await db
@@ -714,6 +726,17 @@ class FireStoreDb {
       'status': newStatus,
     });
     debugPrint("==========>update db for \"feedbacks\"");
+  }
+
+  Future<void> updateGiftEnable(
+      bool newStatus) async {
+    await db
+        .collection('admin')
+        .doc("enable_gift")
+        .update({
+      'enable': newStatus,
+    });
+    debugPrint("==========>update db for \"enable_gift\"");
   }
 
   Future<void> updateAdviseStatus(

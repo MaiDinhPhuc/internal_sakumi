@@ -26,3 +26,20 @@ class AdminModel {
         status: data['status']);
   }
 }
+
+class EnableGiftModel {
+  final bool enable;
+  final int id;
+
+  const EnableGiftModel(
+      {required this.enable,
+        required this.id});
+
+  factory EnableGiftModel.fromSnapshot(
+      DocumentSnapshot<Map<String, dynamic>> document) {
+    final data = document.data()!;
+    return EnableGiftModel(
+        enable: data["enable"],
+        id: data["id"]);
+  }
+}

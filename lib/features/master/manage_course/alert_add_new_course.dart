@@ -199,4 +199,9 @@ class SwitcherCubit extends Cubit<bool> {
   update() {
     emit(!state);
   }
+
+  loadGiftEnable()async{
+    bool check =await FireBaseProvider.instance.getEnableGiftCode();
+    emit(check);
+  }
 }

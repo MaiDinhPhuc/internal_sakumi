@@ -29,6 +29,7 @@ import 'package:internal_sakumi/screens/login_screen.dart';
 import 'package:internal_sakumi/screens/master/detail_answer_teacher_survey_screen.dart';
 import 'package:internal_sakumi/screens/master/detail_student_survey_screen.dart';
 import 'package:internal_sakumi/screens/master/detail_teacher_survey_screen.dart';
+import 'package:internal_sakumi/screens/master/gift_code_tab.dart';
 import 'package:internal_sakumi/screens/master/manage_banner_tab.dart';
 import 'package:internal_sakumi/screens/master/manage_course_suggest_tab.dart';
 import 'package:internal_sakumi/screens/master/manage_teacher_feed_back_tab.dart';
@@ -94,6 +95,9 @@ class Routes {
         transitionType: TransitionType.fadeIn);
     router.define('$master/manageBanner',
         handler: manageBanner,
+        transitionType: TransitionType.fadeIn);
+    router.define('$master/giftCode',
+        handler: giftCode,
         transitionType: TransitionType.fadeIn);
     router.define('$master/manageCourseSuggest',
         handler: manageCourseSuggest,
@@ -207,6 +211,11 @@ var manageBanner =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return ManageBannerTab();
 });
+var giftCode =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return GiftCodeTab();
+});
+
 var manageCourseSuggest =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return ManageCourseSuggestTab();
