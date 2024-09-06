@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/Material.dart';
+import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/banner_model.dart';
 import 'package:internal_sakumi/model/banner_option.dart';
 import 'package:internal_sakumi/model/bill_model.dart';
@@ -72,9 +73,9 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getEnableGiftCode() async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getEnableGiftCode(int id) async {
     final snapshot =
-    await db.collection("admin").where("id", isEqualTo: 1000).get();
+    await db.collection("admin").where("id", isEqualTo: id).get();
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getEnableGiftCode ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
@@ -735,6 +736,31 @@ class FireStoreDb {
         .doc("enable_gift")
         .update({
       'enable': newStatus,
+    });
+    debugPrint("==========>update db for \"enable_gift\"");
+  }
+
+  Future<void> updateSuperSaleEnable(
+      bool newStatus) async {
+    await db
+        .collection('admin')
+        .doc("super_sale")
+        .update({
+      'enable': newStatus,
+    });
+    debugPrint("==========>update db for \"enable_gift\"");
+  }
+
+  Future<void> updateSuperSaleInfo(
+      EnableGiftModel value) async {
+    await db
+        .collection('admin')
+        .doc("super_sale")
+        .update({
+      'enable': value.enable,
+      'title': value.title,
+      'des': value.des,
+      'banner': value.banner
     });
     debugPrint("==========>update db for \"enable_gift\"");
   }

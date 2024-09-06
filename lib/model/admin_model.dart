@@ -30,16 +30,23 @@ class AdminModel {
 class EnableGiftModel {
   final bool enable;
   final int id;
+  final String title, des, banner;
 
   const EnableGiftModel(
       {required this.enable,
-        required this.id});
+      required this.id,
+      required this.title,
+      required this.des,
+      required this.banner});
 
   factory EnableGiftModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
     return EnableGiftModel(
         enable: data["enable"],
-        id: data["id"]);
+        id: data["id"],
+        title: data['title'] ?? "",
+        des: data['des'] ?? "",
+        banner: data['banner'] ?? "");
   }
 }

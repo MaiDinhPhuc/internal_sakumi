@@ -233,12 +233,12 @@ class FireBaseProvider extends NetworkProvider {
     return teacher;
   }
 
-  Future<bool> getEnableGiftCode() async {
-    final check = (await FireStoreDb.instance.getEnableGiftCode())
+  Future<EnableGiftModel> getEnableInAdmin(int id) async {
+    final gift = (await FireStoreDb.instance.getEnableGiftCode(id))
         .docs
         .map((e) => EnableGiftModel.fromSnapshot(e))
-        .single.enable;
-    return check;
+        .single;
+    return gift;
   }
 
   @override
