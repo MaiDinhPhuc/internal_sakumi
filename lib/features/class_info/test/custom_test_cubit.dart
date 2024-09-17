@@ -128,7 +128,7 @@ class CustomTestCubit extends Cubit<int> {
         enable: true,
         duration: 0,
         isCustom: true,
-        childTestId: testInfo['test_id']));
+        childTestId: testInfo['test_id'], analysis: 0));
     await DataProvider.updateCustomTest(listTestCubit.classModel!.courseId,listTestCubit.classModel!.classId, listTestCubit.listTest!);
   }
 

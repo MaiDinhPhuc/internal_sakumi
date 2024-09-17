@@ -5,8 +5,8 @@ import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class TestModel {
   final String title, description;
-  final int id, courseId, difficulty, duration, childTestId;
-  final bool enable,isCustom;
+  final int id, courseId, difficulty, duration, childTestId, analysis;
+  final bool enable, isCustom;
 
   const TestModel(
       {required this.id,
@@ -14,7 +14,11 @@ class TestModel {
       required this.difficulty,
       required this.courseId,
       required this.description,
-      required this.enable, required this.duration, required this.isCustom, required this.childTestId});
+      required this.enable,
+      required this.duration,
+      required this.isCustom,
+      required this.childTestId,
+      required this.analysis});
 
   static Future<bool> check(String jsonData) async {
     final data = json.decode(jsonData);
@@ -32,14 +36,15 @@ class TestModel {
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
     return TestModel(
-      id: data["id"],
-      title: data["title"] ?? "",
-      difficulty: data['difficulty'] ?? 0,
-      courseId: data["course_id"] ?? 0,
-      description: data['description'] ?? "",
-      enable: data['enable'] ?? true,
-      duration: data['duration'] ?? 0,
-      isCustom: false, childTestId: 0
-    );
+        id: data["id"],
+        title: data["title"] ?? "",
+        difficulty: data['difficulty'] ?? 0,
+        courseId: data["course_id"] ?? 0,
+        description: data['description'] ?? "",
+        enable: data['enable'] ?? true,
+        duration: data['duration'] ?? 0,
+        isCustom: false,
+        childTestId: 0,
+        analysis: data['analysis'] ?? 0);
   }
 }

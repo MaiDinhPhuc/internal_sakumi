@@ -729,38 +729,21 @@ class FireStoreDb {
     debugPrint("==========>update db for \"feedbacks\"");
   }
 
-  Future<void> updateGiftEnable(
-      bool newStatus) async {
-    await db
-        .collection('admin')
-        .doc("enable_gift")
-        .update({
-      'enable': newStatus,
-    });
-    debugPrint("==========>update db for \"enable_gift\"");
-  }
-
-  Future<void> updateSuperSaleEnable(
-      bool newStatus) async {
-    await db
-        .collection('admin')
-        .doc("super_sale")
-        .update({
-      'enable': newStatus,
-    });
-    debugPrint("==========>update db for \"enable_gift\"");
-  }
-
   Future<void> updateSuperSaleInfo(
       EnableGiftModel value) async {
     await db
         .collection('admin')
         .doc("super_sale")
         .update({
-      'enable': value.enable,
+      'enableIOS': value.enableIOS,
+      'enableAndroid': value.enableAndroid,
+      'enable_gift': value.enableGift,
       'title': value.title,
       'des': value.des,
-      'banner': value.banner
+      'banner1': value.banner1,
+      'banner2': value.banner2,
+      'banner3': value.banner3,
+      'type':value.type
     });
     debugPrint("==========>update db for \"enable_gift\"");
   }
@@ -1139,7 +1122,8 @@ class FireStoreDb {
       "id": model.id,
       "title": model.title,
       "enable": model.enable,
-      "duration": model.duration
+      "duration": model.duration,
+      'analysis':model.analysis
     });
     debugPrint("==========> add db for \"test\"");
   }
@@ -1155,7 +1139,8 @@ class FireStoreDb {
       "id": model.id,
       "title": model.title,
       "enable": model.enable,
-      "duration": model.duration
+      "duration": model.duration,
+      'analysis':model.analysis
     });
     debugPrint("==========> update db from \"lessons\"");
   }
@@ -1210,7 +1195,6 @@ class FireStoreDb {
         .collection("lesson_result")
         .doc("lesson_${lessonId}_class_$classId")
         .get();
-    // debugPrint("==========>get db from \"lesson_result\" : 1");
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> checkLessonResult $lessonId $classId ${temp.exists} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 

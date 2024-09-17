@@ -11,8 +11,8 @@ import 'package:internal_sakumi/model/test_result_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
-class GradingCubitV2 extends Cubit<int>{
-  GradingCubitV2(this.classId):super(0){
+class GradingCubitV2 extends Cubit<int> {
+  GradingCubitV2(this.classId) : super(0) {
     loadData();
   }
 
@@ -34,11 +34,11 @@ class GradingCubitV2 extends Cubit<int>{
   bool isBTVN = true;
   bool isNotGrading = true;
 
-  loadData()async{
+  loadData() async {
     classModel = await FireBaseProvider.instance.getClassById(classId);
 
     loading = true;
-    emit(state+1);
+    emit(state + 1);
 
     await DataProvider.stdClassByClassId(classId, loadStudentClass);
 
@@ -46,16 +46,18 @@ class GradingCubitV2 extends Cubit<int>{
 
     await DataProvider.lessonResultByClassId(classId, loadLessonResult);
 
-    if(classModel!.customLessons.isEmpty){
-      await DataProvider.lessonByCourseId(classModel!.courseId, loadLessonInClass);
-    }else{
-      await DataProvider.lessonByCourseAndClassId(classModel!.courseId,classModel!.classId, loadLessonInClass);
+    if (classModel!.customLessons.isEmpty) {
+      await DataProvider.lessonByCourseId(
+          classModel!.courseId, loadLessonInClass);
+    } else {
+      await DataProvider.lessonByCourseAndClassId(
+          classModel!.courseId, classModel!.classId, loadLessonInClass);
 
       var lessonId = lessons!.map((e) => e.lessonId).toList();
 
-      if(classModel!.customLessons.isNotEmpty){
-        for(var i in classModel!.customLessons){
-          if(!lessonId.contains(i['custom_lesson_id'])){
+      if (classModel!.customLessons.isNotEmpty) {
+        for (var i in classModel!.customLessons) {
+          if (!lessonId.contains(i['custom_lesson_id'])) {
             lessons!.add(LessonModel(
                 lessonId: i['custom_lesson_id'],
                 courseId: -1,
@@ -79,47 +81,44 @@ class GradingCubitV2 extends Cubit<int>{
       }
     }
 
-
-
-    if(classModel!.customTests.isEmpty){
+    if (classModel!.customTests.isEmpty) {
       await DataProvider.testByCourseId(classModel!.courseId, loadTestInClass);
-
-    }else{
-      await DataProvider.testByCourseAndClassId(classModel!.courseId,classId, loadTestInClass);
+    } else {
+      await DataProvider.testByCourseAndClassId(
+          classModel!.courseId, classId, loadTestInClass);
 
       var testId = tests!.map((e) => e.id).toList();
 
-      if(classModel!.customTests.isNotEmpty){
-        for(var i in classModel!.customTests){
-          if(!testId.contains(i['custom_test_id'])){
-
-            var test = await FireBaseProvider.instance.getTestByTestId(i['test_id']);
+      if (classModel!.customTests.isNotEmpty) {
+        for (var i in classModel!.customTests) {
+          if (!testId.contains(i['custom_test_id'])) {
+            var test =
+                await FireBaseProvider.instance.getTestByTestId(i['test_id']);
 
             tests!.add(TestModel(
                 courseId: i['course_id'],
                 description: test.description,
                 title: test.title,
-                isCustom: true, id: i['custom_test_id'], difficulty: 0, enable: true, duration: 0, childTestId: i['test_id']));
+                isCustom: true,
+                id: i['custom_test_id'],
+                difficulty: 0,
+                enable: true,
+                duration: 0,
+                childTestId: i['test_id'],
+                analysis: 0));
           }
         }
       }
     }
 
-
     await DataProvider.testResultByClassId(classId, loadTestResultInClass);
 
     await DataProvider.stdTestByClassId(classId, loadStdTestInClass);
 
-
-
-    List<int> listLessonId =
-    listLessonResult!.map((e) => e.lessonId).toList();
-    lessons = lessons!
-        .where((e) => listLessonId.contains(e.lessonId))
-        .toList();
+    List<int> listLessonId = listLessonResult!.map((e) => e.lessonId).toList();
+    lessons = lessons!.where((e) => listLessonId.contains(e.lessonId)).toList();
     List<int> listTestId = listTestResult!.map((e) => e.testId).toList();
-    tests =
-        tests!.where((e) => listTestId.contains(e.id)).toList();
+    tests = tests!.where((e) => listTestId.contains(e.id)).toList();
     List<String> listStatus = [
       "Remove",
       "Dropped",
@@ -128,17 +127,18 @@ class GradingCubitV2 extends Cubit<int>{
       "Moved"
     ];
 
-    var listStdClass =  this.listStdClass!
+    var listStdClass = this
+        .listStdClass!
         .where((e) => !listStatus.contains(e.classStatus))
         .toList();
     var listStdIds = listStdClass.map((e) => e.userId).toList();
-    for(var i in listStdIds){
+    for (var i in listStdIds) {
       DataProvider.studentById(i, loadStudentInfo);
     }
 
     loading = false;
 
-    emit(state+1);
+    emit(state + 1);
   }
 
   loadStudentClass(Object studentClass) {
@@ -147,8 +147,8 @@ class GradingCubitV2 extends Cubit<int>{
 
   loadStudentInfo(Object student) {
     students.add(student as StudentModel);
-    if(students.length == listStdClass!.length){
-      emit(state+1);
+    if (students.length == listStdClass!.length) {
+      emit(state + 1);
     }
   }
 
@@ -273,7 +273,7 @@ class GradingCubitV2 extends Cubit<int>{
       return -2;
     }
 
-    if(lesson.isCustom){
+    if (lesson.isCustom) {
       return getHwCustomPoint(stdId, lesson.lessonId);
     }
     return stdLesson.first.hw;
@@ -283,18 +283,21 @@ class GradingCubitV2 extends Cubit<int>{
     emit(state + 2);
   }
 
-  double getHwCustomPoint(int stdId, int lessonId){
-    List<StudentLessonModel> stdLesson = listStudentLessons!.where((e) => e.studentId == stdId && e.lessonId == lessonId).toList();
+  double getHwCustomPoint(int stdId, int lessonId) {
+    List<StudentLessonModel> stdLesson = listStudentLessons!
+        .where((e) => e.studentId == stdId && e.lessonId == lessonId)
+        .toList();
 
-    if(stdLesson.isEmpty){
+    if (stdLesson.isEmpty) {
       return -2;
     }
     List<dynamic> listHws = stdLesson.first.hws.map((e) => e['hw']).toList();
 
-    if(listHws.every((e) => e == -2)){
+    if (listHws.every((e) => e == -2)) {
       return -2;
-    }else if(listHws.every((e) => e > 0)){
-      return listHws.reduce((value, element) => value + element) / listHws.length;
+    } else if (listHws.every((e) => e > 0)) {
+      return listHws.reduce((value, element) => value + element) /
+          listHws.length;
     }
     return -1;
   }
@@ -303,16 +306,16 @@ class GradingCubitV2 extends Cubit<int>{
     int temp = 0;
     var stdIds = students.map((e) => e.userId).toList();
 
-    var listStudentLesson =
-    listStudentLessons!.where((e) => stdIds.contains(e.studentId) && e.lessonId == lesson.lessonId);
+    var listStudentLesson = listStudentLessons!.where(
+        (e) => stdIds.contains(e.studentId) && e.lessonId == lesson.lessonId);
 
     if (type == 1) {
       for (var i in listStudentLesson) {
-        if(lesson.isCustom){
-          if (getHwCustomPoint(i.studentId,i.lessonId) != -2) {
+        if (lesson.isCustom) {
+          if (getHwCustomPoint(i.studentId, i.lessonId) != -2) {
             temp++;
           }
-        }else{
+        } else {
           if (i.hw != -2) {
             temp++;
           }
@@ -320,11 +323,11 @@ class GradingCubitV2 extends Cubit<int>{
       }
     } else {
       for (var i in listStudentLesson) {
-        if(lesson.isCustom){
-          if (getHwCustomPoint(i.studentId,i.lessonId) > -1) {
+        if (lesson.isCustom) {
+          if (getHwCustomPoint(i.studentId, i.lessonId) > -1) {
             temp++;
           }
-        }else{
+        } else {
           if (i.hw > -1) {
             temp++;
           }
@@ -339,7 +342,7 @@ class GradingCubitV2 extends Cubit<int>{
     var stdIds = students.map((e) => e.userId).toList();
 
     var listStudentTest =
-    listStudentTests!.where((e) => stdIds.contains(e.studentId));
+        listStudentTests!.where((e) => stdIds.contains(e.studentId));
     if (type == 1) {
       for (var i in listStudentTest) {
         if (i.score != -2 && i.testID == testId) {
@@ -361,15 +364,13 @@ class GradingCubitV2 extends Cubit<int>{
     List<LessonModel> list = [];
     if (isNotGrading) {
       for (var i in lessons!) {
-        if (getBTVNResultCount(i, 1) !=
-            getBTVNResultCount(i, 0)) {
+        if (getBTVNResultCount(i, 1) != getBTVNResultCount(i, 0)) {
           list.add(i);
         }
       }
     } else {
       for (var i in lessons!) {
-        if (getBTVNResultCount(i, 1) ==
-            getBTVNResultCount(i, 0)) {
+        if (getBTVNResultCount(i, 1) == getBTVNResultCount(i, 0)) {
           list.add(i);
         }
       }

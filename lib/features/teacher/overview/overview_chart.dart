@@ -18,7 +18,7 @@ class OverviewChart extends StatelessWidget {
       height: Resizable.size(context, 50),
       // width: Resizable.size(context, 100),
       child: SfCartesianChart(
-          primaryXAxis: NumericAxis(
+          primaryXAxis: const NumericAxis(
             minimum: 1,
             isVisible: false,
           ),

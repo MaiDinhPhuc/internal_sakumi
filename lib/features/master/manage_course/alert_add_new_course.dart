@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,9 +5,7 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/CRUD/create.dart';
 import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_field.dart';
-import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
-import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
@@ -199,16 +196,10 @@ void alertAddNewCourse(BuildContext context, CourseModel? courseModel,
 class SwitcherCubit extends Cubit<bool> {
   SwitcherCubit(bool value) : super(value);
 
-  EnableGiftModel? gift;
-
 
   update() {
     emit(!state);
   }
 
-  loadGiftEnable()async{
-    gift =await FireBaseProvider.instance.getEnableInAdmin(1000);
-    emit(gift!.enable);
-  }
 
 }

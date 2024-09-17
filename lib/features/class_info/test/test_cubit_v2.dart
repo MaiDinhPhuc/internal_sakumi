@@ -8,8 +8,8 @@ import 'package:internal_sakumi/model/test_result_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
-class TestCubitV2 extends Cubit<int>{
-  TestCubitV2(this.classId):super(0){
+class TestCubitV2 extends Cubit<int> {
+  TestCubitV2(this.classId) : super(0) {
     loadData();
   }
 
@@ -21,14 +21,13 @@ class TestCubitV2 extends Cubit<int>{
   List<StudentTestModel>? stdTests;
   List<StudentClassModel>? listStdClass;
 
-  loadData()async{
-
+  loadData() async {
     await loadClass(classId);
 
     await DataProvider.stdClassByClassId(classId, loadStudentClass);
 
     var listStdId = listStdClass!.map((e) => e.userId).toList();
-    for(var i in listStdId){
+    for (var i in listStdId) {
       DataProvider.studentById(i, loadStudentInfo);
     }
 
@@ -36,47 +35,52 @@ class TestCubitV2 extends Cubit<int>{
 
     await DataProvider.stdTestByClassId(classId, loadStdTest);
 
-
-    if(classModel!.customTests.isEmpty){
+    if (classModel!.customTests.isEmpty) {
       await DataProvider.testByCourseId(classModel!.courseId, loadTest);
-
-    }else{
-      await DataProvider.testByCourseAndClassId(classModel!.courseId,classId, loadTest);
+    } else {
+      await DataProvider.testByCourseAndClassId(
+          classModel!.courseId, classId, loadTest);
 
       var testId = listTest!.map((e) => e.id).toList();
 
-      if(classModel!.customTests.isNotEmpty){
-        for(var i in classModel!.customTests){
-          if(!testId.contains(i['custom_test_id'])){
-
-            var test = await FireBaseProvider.instance.getTestByTestId(i['test_id']);
+      if (classModel!.customTests.isNotEmpty) {
+        for (var i in classModel!.customTests) {
+          if (!testId.contains(i['custom_test_id'])) {
+            var test =
+                await FireBaseProvider.instance.getTestByTestId(i['test_id']);
 
             listTest!.add(TestModel(
                 courseId: i['course_id'],
                 description: test.description,
                 title: test.title,
-                isCustom: true, id: i['custom_test_id'], difficulty: 0, enable: true, duration: 0, childTestId: i['test_id']));
+                isCustom: true,
+                id: i['custom_test_id'],
+                difficulty: 0,
+                enable: true,
+                duration: 0,
+                childTestId: i['test_id'],
+                analysis: 0));
           }
         }
       }
     }
-    emit(state+1);
+    emit(state + 1);
   }
 
-  updateClass(ClassModel newClass){
+  updateClass(ClassModel newClass) {
     classModel = newClass;
-    emit(state+1);
+    emit(state + 1);
   }
 
-  removeTest(TestModel test){
+  removeTest(TestModel test) {
     listTest!.remove(test);
-    emit(state+1);
+    emit(state + 1);
   }
 
-  updateListTestResult(TestResultModel testResult){
+  updateListTestResult(TestResultModel testResult) {
     listTestResult!.add(testResult);
-    DataProvider.updateTestResult(classId,listTestResult!);
-    emit(state+1);
+    DataProvider.updateTestResult(classId, listTestResult!);
+    emit(state + 1);
   }
 
   loadTest(Object test) {
@@ -89,12 +93,14 @@ class TestCubitV2 extends Cubit<int>{
     emit(state + 1);
   }
 
-  sortTest(){
+  sortTest() {
     var listId = listTestResult!.map((e) => e.testId).toList();
 
-    List<TestModel> listTemp1 = List.of(listTest!).where((e) => listId.contains(e.id)).toList();
+    List<TestModel> listTemp1 =
+        List.of(listTest!).where((e) => listId.contains(e.id)).toList();
 
-    List<TestModel> listTemp2 = List.of(listTest!).where((e) => !listId.contains(e.id)).toList();
+    List<TestModel> listTemp2 =
+        List.of(listTest!).where((e) => !listId.contains(e.id)).toList();
 
     listTest = listTemp1;
 
@@ -117,10 +123,8 @@ class TestCubitV2 extends Cubit<int>{
     students.add(student as StudentModel);
   }
 
-
-  loadClass(int classId)async {
+  loadClass(int classId) async {
     classModel = await FireBaseProvider.instance.getClassById(classId);
-    emit(state+1);
+    emit(state + 1);
   }
-
 }
