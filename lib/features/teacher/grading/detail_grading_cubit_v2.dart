@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
@@ -14,6 +15,7 @@ import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
 
 import '../../../services/custom_firebase_firestore.dart';
+import 'detail_grading_cubit.dart';
 import 'detail_grading_view.dart';
 
 class DetailGradingCubitV2 extends Cubit<int> {
@@ -37,6 +39,15 @@ class DetailGradingCubitV2 extends Cubit<int> {
   List<StudentTestModel>? stdTests;
 
   bool isAll = true;
+  int analysis = 1;
+
+  List<RadarEntry> getDataChart(){
+    List<RadarEntry> dataChart = [];
+    if(analysis == 1 && gradingType == "test"){
+      dataChart = AnalysisTestUtils.createChartData(listQuestions!, listAnswer!);
+    }
+    return dataChart;
+  }
 
   initCustom(String type) async {
     if (type == "type=test") {
@@ -54,7 +65,7 @@ class DetailGradingCubitV2 extends Cubit<int> {
     courseModel = data!.courseModel;
     token = courseModel!.btvnToken;
     listAnswer = data!.listAnswer;
-
+    analysis = data!.analysis;
     if (listAnswer!.isEmpty) {
       emit(0);
     } else {

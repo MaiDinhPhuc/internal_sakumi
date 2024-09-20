@@ -1443,10 +1443,13 @@ class FireBaseProvider extends NetworkProvider {
     CourseModel courseModel =
         await FireBaseProvider.instance.getCourseById(classModel.courseId);
     String token = courseModel.btvnToken;
+    int analysis = 0;
     List<QuestionModel> listQuestions = [];
     if (type == "type=test") {
       listQuestions = await FireBaseProvider.instance.getQuestionByUrl(
           AppConfigs.getDataUrl("test_$parentId.json", token));
+      var test = await FireBaseProvider.instance.getTestByTestId(parentId);
+      analysis = test.analysis;
     } else {
       listQuestions = await FireBaseProvider.instance.getQuestionByUrl(
           AppConfigs.getDataUrl("btvn_$parentId.json", token));
@@ -1502,7 +1505,7 @@ class FireBaseProvider extends NetworkProvider {
           listStudent: [],
           courseModel: courseModel,
           listStudentId: [],
-          listState: []);
+          listState: [], analysis: analysis);
     }
 
     List<int> listStudentId = [];
@@ -1526,7 +1529,7 @@ class FireBaseProvider extends NetworkProvider {
         listStudent: listStudent,
         courseModel: courseModel,
         listStudentId: listStudentId,
-        listState: []);
+        listState: [], analysis: analysis);
   }
 
   @override
@@ -1534,6 +1537,9 @@ class FireBaseProvider extends NetworkProvider {
       int classId, int childId, int parentId, String type) async {
     ClassModel classModel =
         await FireBaseProvider.instance.getClassById(classId);
+
+
+    int analysis = 0;
 
     CourseModel? course;
 
@@ -1544,6 +1550,7 @@ class FireBaseProvider extends NetworkProvider {
       CourseModel courseModel =
           await FireBaseProvider.instance.getCourseById(testModel.courseId);
       course = courseModel;
+      analysis = testModel.analysis;
       String token = courseModel.btvnToken;
       listQuestions = await FireBaseProvider.instance
           .getQuestionByUrl(AppConfigs.getDataUrl("test_$childId.json", token));
@@ -1613,7 +1620,7 @@ class FireBaseProvider extends NetworkProvider {
           listStudent: [],
           courseModel: course,
           listStudentId: [],
-          listState: []);
+          listState: [], analysis: analysis);
     }
 
     List<int> listStudentId = [];
@@ -1637,7 +1644,7 @@ class FireBaseProvider extends NetworkProvider {
         listStudent: listStudent,
         courseModel: course,
         listStudentId: listStudentId,
-        listState: []);
+        listState: [], analysis: analysis);
   }
 
   @override
