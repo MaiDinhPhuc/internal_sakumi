@@ -10,6 +10,7 @@ import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 class ClassOverViewCubitV2 extends Cubit<int> {
   ClassOverViewCubitV2(this.classId) : super(0) {
@@ -90,11 +91,11 @@ class ClassOverViewCubitV2 extends Cubit<int> {
 
   loadData() async {
 
-    await DataProvider.classByClassId(classId, loadClass);
+    await loadClass(classId);
 
-    DataProvider.stdClassByClassId(classId, loadStudentClass);
+    await DataProvider.stdClassByClassId(classId, loadStudentClass);
 
-    DataProvider.stdLessonByClassId(classId, loadStdLesson);
+    await DataProvider.stdLessonByClassId(classId, loadStdLesson);
 
     await DataProvider.stdTestByClassId(classId, loadStdTest);
 
@@ -131,11 +132,7 @@ class ClassOverViewCubitV2 extends Cubit<int> {
       }
     }
 
-
-
-    DataProvider.lessonResultByClassId(classId, loadLessonResult);
-
-    await Future.delayed(const Duration(milliseconds: 500));
+    await DataProvider.lessonResultByClassId(classId, loadLessonResult);
 
     var listStdId = listStdClass!.map((e) => e.userId).toList();
     students = [];
@@ -435,8 +432,8 @@ class ClassOverViewCubitV2 extends Cubit<int> {
   }
 
 
-  loadClass(Object classModel) {
-    this.classModel = classModel as ClassModel;
+  loadClass(int classId)async {
+    classModel = await FireBaseProvider.instance.getClassById(classId);
     emit(state+1);
   }
 }

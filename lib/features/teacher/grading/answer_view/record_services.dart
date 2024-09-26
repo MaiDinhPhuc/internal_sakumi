@@ -1,7 +1,9 @@
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:microphone/microphone.dart';
+import 'package:flutter/Material.dart';
+
 import 'package:http/http.dart' as http;
-// import 'package:record/record.dart';
+import 'package:record/record.dart';
+
 class RecordService {
   RecordService._privateConstructor();
 
@@ -9,49 +11,50 @@ class RecordService {
 
   static RecordService get instance => _instance;
 
-  MicrophoneRecorder? _recorder;
-  //AudioRecorder? _recorder;
+  AudioRecorder? _recorder;
 
-  //Future<AudioRecorder> newRecorder()  async {
-  Future<MicrophoneRecorder> newRecorder()  async {
-   // _recorder = AudioRecorder();
-    _recorder = MicrophoneRecorder();
+  AudioRecorder newRecorder() {
+    if (_recorder != null) {
+      _recorder!.cancel();
+      _recorder = null;
+    }
 
-    await _recorder!.init();
+    _recorder = AudioRecorder();
+
     return _recorder!;
   }
 
-  dispose(){
-    if(_recorder != null){
+  dispose() {
+    if (_recorder != null) {
       _recorder!.dispose();
     }
   }
 
-  start()async{
-    var recorder = await newRecorder();
-    await recorder.start();
-    //var record = await newRecorder();
-    // if (await record.hasPermission()) {
-    //   // Start recording to file
-    //   await record.start(const RecordConfig(), path: '');
-    // }
+  start() async {
+    var recorder = newRecorder();
+    if (await recorder.hasPermission()) {
+      await recorder
+          .start(const RecordConfig(encoder: AudioEncoder.wav),
+          path: "record_file.wav")
+          .onError((_, __) {
+        debugPrint('error when record');
+      }).whenComplete(() {
+        debugPrint('success');
+      });
+    }
 
   }
 
-  Future<String> stop()async {
-      await _recorder!.stop();
-     // return '';
-//_recorder!.
-     final recordingUrl = _recorder!.value.recording!.url;
-     http.Response response = await http.get(
-         Uri.parse(recordingUrl)
-     );
-     final now = DateTime.now().microsecondsSinceEpoch;
-     final ref = FirebaseStorage.instance.ref().child('grading_result_record/$now');
-     await ref.putData(response.bodyBytes, SettableMetadata(contentType: 'audio/mpeg'));
-     var link = await ref.getDownloadURL();
-     return link;
+  Future<String> stop() async {
+    String? recordingUrl =
+        await _recorder!.stop();
+    http.Response response = await http.get(Uri.parse(recordingUrl!));
+    final now = DateTime.now().microsecondsSinceEpoch;
+    final ref =
+        FirebaseStorage.instance.ref().child('grading_result_record/$now');
+    await ref.putData(
+        response.bodyBytes, SettableMetadata(contentType: 'audio/mpeg'));
+    var link = await ref.getDownloadURL();
+    return link;
   }
-
-
 }

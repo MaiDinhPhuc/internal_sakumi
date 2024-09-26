@@ -20,7 +20,7 @@ class ManageGeneralCubit extends Cubit<int> {
   int selector = -1;
 
   final TextEditingController searchTextController = TextEditingController();
-  List<bool> listStateClassStatus = [true, true, false, false];
+  List<bool> listStateClassStatus = [true, true, false, false, false];
   List<bool> listClassType = [true, true];
   bool canAdd = true;
 
@@ -43,6 +43,7 @@ class ManageGeneralCubit extends Cubit<int> {
     "Viewer",
     "ReNew",
     "UpSale",
+    "SuperUpSale",
     "Moved",
     "Retained",
     "Dropped",
@@ -53,6 +54,7 @@ class ManageGeneralCubit extends Cubit<int> {
   List<String> listClassStatusMenu = [
     "Preparing",
     "InProgress",
+    "Paused",
     "Completed",
     "Cancel"
   ];

@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/admin/voucher/social_info_view.dart';
-import 'package:internal_sakumi/features/admin/voucher/voucher_info_view.dart';
+import 'package:internal_sakumi/features/admin/voucher/course_voucher/social_info_view.dart';
+import 'package:internal_sakumi/features/admin/voucher/course_voucher/voucher_course_info_view.dart';
 import 'package:internal_sakumi/features/admin/voucher/voucher_cubit.dart';
-import 'package:internal_sakumi/model/voucher_model.dart';
+import 'package:internal_sakumi/model/voucher_course_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:intl/intl.dart';
 
-class VoucherImage extends StatelessWidget {
+class VoucherCourseImage extends StatelessWidget {
   final VoucherCubit cubit;
   final _globalKey = GlobalKey();
-  VoucherImage(this.cubit, {Key? key}) : super(key: key);
+  VoucherCourseImage(this.cubit, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class VoucherImage extends StatelessWidget {
                               children: [
                                 Expanded(flex: 1, child: SocialInfoView()),
                                 Expanded(
-                                    flex: 7, child: VoucherInfoView(cubit)),
+                                    flex: 7, child: VoucherCourseInfoView(cubit)),
                                 Expanded(
                                     flex: 1,
                                     child: Stack(
@@ -87,9 +87,9 @@ class VoucherImage extends StatelessWidget {
                 SubmitButton(
                     isActive: !cubit.isDownload,
                     onPressed: () async {
-                      await cubit.createNewVoucher(
+                      await cubit.createNewVoucherCourse(
                           context,
-                          VoucherModel(
+                          VoucherCourseModel(
                             id: cubit.numVoucher,
                             recipientCode: cubit.conUser.text,
                             usedUserCode: '',
@@ -98,13 +98,13 @@ class VoucherImage extends StatelessWidget {
                             usedDate: '',
                             expiredDate:
                                 DateFormat('dd/MM/yyyy').format(DateTime(
-                              cubit.expiredDate.year,
-                              cubit.expiredDate.month +
-                                  (cubit.isVoucher ? 3 : 0),
-                              cubit.expiredDate.day,
+                              cubit.expiredVoucherCourseDate.year,
+                              cubit.expiredVoucherCourseDate.month +
+                                  (cubit.isVoucherCourse ? 3 : 0),
+                              cubit.expiredVoucherCourseDate.day,
                             )),
                             noted: cubit.conNote.text,
-                            price: cubit.priceVoucher,
+                            price: cubit.priceVoucherCourse,
                             type: cubit.courseVoucher,
                             isFullCourse: cubit.isFullCourse,
                           ));
@@ -117,7 +117,7 @@ class VoucherImage extends StatelessWidget {
                       RenderRepaintBoundary boundary =
                           _globalKey.currentContext!.findRenderObject()
                               as RenderRepaintBoundary;
-                      await cubit.downloadVoucher(boundary, context);
+                      await cubit.downloadVoucherCourse(boundary, context);
                     },
                     title: AppText.btnDownloadImage.text.toUpperCase())
               ],

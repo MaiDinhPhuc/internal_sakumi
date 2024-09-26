@@ -2,20 +2,20 @@ import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class ReportStatusItem extends StatelessWidget {
-  final String status;
-  const ReportStatusItem(this.status, {Key? key}) : super(key: key);
+  final String status, type;
+  const ReportStatusItem(this.status,this.type,  {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
             constraints: BoxConstraints(minWidth: Resizable.size(context, 80)),
             padding:
-                EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
+                EdgeInsets.all ( Resizable.padding(context, 5)),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(1000),
                 color: getColor(status)),
             child: Text(
-              status,
+              "$type: $status",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: Resizable.font(context, 12),
@@ -35,6 +35,45 @@ class ReportStatusItem extends StatelessWidget {
       case 'Chưa tốt':
         return const Color(0xffF57F17);
       case 'Tệ':
+        return const Color(0xffB71C1C);
+      default:
+        return const Color(0xff33691E);
+    }
+  }
+}
+
+class ReportRangeItem extends StatelessWidget {
+  final String range, type;
+  const ReportRangeItem(this.range,this.type, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: BoxConstraints(minWidth: Resizable.size(context, 80)),
+      padding:
+      EdgeInsets.all( Resizable.padding(context, 5)),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(1000),
+          color: getColor(range)),
+      child: Text(
+        "$type: $range",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            fontSize: Resizable.font(context, 12),
+            fontWeight: FontWeight.w800,
+            color: Colors.white),
+      ),
+    )
+    ;
+  }
+
+  static Color getColor(String s) {
+    switch (s) {
+      case 'Bình thường':
+        return const Color(0xff33691E);
+      case 'Gợi ý':
+        return const Color(0xffF57F17);
+      case 'Quan trọng':
         return const Color(0xffB71C1C);
       default:
         return const Color(0xff33691E);

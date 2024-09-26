@@ -167,7 +167,7 @@ class TeacherProfileCubit extends Cubit<int> {
   void changeAvatar(BuildContext context, Uint8List img) async {
 
     final url =
-        await FireBaseProvider.instance.uploadImageAndGetUrl(img, 'teacher_avatar');
+        await FireBaseProvider.instance.uploadImageAndGetUrl(img, 'teacher_avatar','teacher_avatar');
     debugPrint('==============>url: $url');
     profileTeacher = profileTeacher!.copyWith(url: url);
     Update.updateTeacherProfile(profileTeacher!);

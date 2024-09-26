@@ -1,9 +1,5 @@
-import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/features/teacher/grading/sound/sound_cubit.dart';
-import 'package:video_player/video_player.dart';
-
-
-
+import 'package:flutter_sound/flutter_sound.dart';
 class SoundService {
   SoundService._privateConstructor();
 
@@ -11,94 +7,82 @@ class SoundService {
 
   static SoundService get instance => _instance;
 
-  VideoPlayerController? _player;
+  FlutterSoundPlayer? _player;
 
-  Future<VideoPlayerController> newPlayer(String url, String type) async {
-
+  bool checkExist() {
     if (_player != null) {
-      if (_player!.value.isPlaying) {
-        _player!.pause();
-      }
-      _player!.dispose();
-    }
-
-
-    if(type == "network"){
-      _player = VideoPlayerController.networkUrl(
-        Uri.parse(url),
-        videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
-      );
-      await _player!.initialize();
-    }else{
-      _player = VideoPlayerController.asset(
-        url,
-        videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
-      );
-      await _player!.initialize();
-    }
-
-    return _player!;
-  }
-
-  VideoPlayerController getPlayer(){
-    return _player!;
-  }
-
-  dispose(){
-    if(_player != null){
-      _player!.dispose();
-    }
-  }
-
-  play(){
-    if(_player != null){
-      _player!.play();
-    }
-  }
-
-  seek(Duration position){
-    if(_player != null){
-      _player!.seekTo(position);
-    }
-  }
-
-  bool isPause(){
-    if(_player!.value.isPlaying == false){
       return true;
     }
     return false;
   }
 
+  Future<FlutterSoundPlayer> newPlayer(String url, String type) async {
+
+    if (_player != null) {
+      if (_player!.isPlaying) {
+        await _player!.pausePlayer();
+        await _player!.closePlayer();
+      }
+    }
+    _player = null;
+    _player = FlutterSoundPlayer();
+    return _player!;
+  }
+
+  FlutterSoundPlayer? getPlayer() {
+    return _player;
+  }
+
+  dispose() {
+    if (_player != null) {
+      _player!.closePlayer();
+    }
+  }
+
+  seek(Duration position) async {
+    if (_player != null) {
+      await _player!.seekToPlayer(position);
+    }
+  }
+
+  bool isPause() {
+    return !_player!.isPlaying;
+  }
+
+  resume(SoundCubit soundCubit) async {
+    await _player!.resumePlayer();
+    await soundCubit.change(soundCubit.currentPosition);
+  }
+
   pause(SoundCubit soundCubit) async {
-    if(_player != null){
-      _player!.pause();
+    if (_player != null) {
+      _player!.pausePlayer();
     }
     soundCubit.currentPosition = soundCubit.state;
 
     await soundCubit.pause();
   }
 
-
-
   playSound(String sound, SoundCubit soundCubit, String type) async {
     var player = await newPlayer(sound, type);
 
     await soundCubit.loading();
+
     await soundCubit.changeActive(type, sound);
 
-    player.play();
+    await player.openPlayer();
 
-
-
-    player.addListener(() {
-      soundCubit.change(player.value.position.inMilliseconds.toDouble());
-      if(player.value.duration == player.value.position && player.value.position.inMilliseconds.toDouble() != 0){
-        soundCubit.change(soundCubit.duration);
-        soundCubit.reStart();
-        debugPrint("===========>completed");
-        player.dispose();
-      }
+    player.startPlayer(fromURI: sound,codec: Codec.defaultCodec, whenFinished: (){
+      soundCubit.reStart();
+      player.closePlayer();
+      _player = null;
+    }).whenComplete(()async{
+      await player.setSubscriptionDuration(const Duration(milliseconds: 100));
+      player.onProgress!.listen((e) {
+        soundCubit.duration = e.duration.inMilliseconds.toDouble();
+        soundCubit.change(e.position.inMilliseconds.toDouble());
+      });
     });
-  }
 
+  }
 }

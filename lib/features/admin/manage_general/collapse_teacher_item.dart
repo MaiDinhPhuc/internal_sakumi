@@ -2,10 +2,16 @@ import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/small_avt.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
+import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/utils/functions.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 class CollapseTeacherItem extends StatelessWidget {
-  const CollapseTeacherItem({super.key, required this.teacher, required this.onPress, required this.state});
+  const CollapseTeacherItem(
+      {super.key,
+      required this.teacher,
+      required this.onPress,
+      required this.state});
   final TeacherModel teacher;
   final Function() onPress;
   final int state;
@@ -14,48 +20,64 @@ class CollapseTeacherItem extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: [
-            SmallAvatar(teacher.url),
-            SizedBox(width: Resizable.padding(context, 20)),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        Expanded(
+            flex: 5,
+            child: Row(
               children: [
-                Text(teacher.name,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: Resizable.font(context, 16),
-                        color: Colors.black)),
-                SizedBox(height: Resizable.padding(context, 3)),
-                Text(teacher.teacherCode,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: Resizable.font(context, 13),
-                        color: const Color(0xff757575))),
-                SizedBox(height: Resizable.padding(context, 3)),
-                Text(teacher.email,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: Resizable.font(context, 13),
-                        color: const Color(0xff757575)))
+                InkWell(
+                    onTap: () async {
+                      await Functions.goPage(
+                          "${Routes.admin}/teacherInfo/teacher=${teacher.userId}",
+                          context);
+                    },
+                    child: SmallAvatar(teacher.url)),
+                SizedBox(width: Resizable.padding(context, 20)),
+                SizedBox(
+                    width: Resizable.size(context, 120),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(teacher.name,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: Resizable.font(context, 16),
+                                color: Colors.black)),
+                        SizedBox(height: Resizable.padding(context, 3)),
+                        Text(teacher.teacherCode,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: Resizable.font(context, 13),
+                                color: const Color(0xff757575))),
+                        SizedBox(height: Resizable.padding(context, 3)),
+                        Text(teacher.email,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: Resizable.font(context, 13),
+                                color: const Color(0xff757575)))
+                      ],
+                    ))
               ],
-            )
-          ],
-        ),
-        Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-          Text(AppText.textDetail.text,
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: Resizable.font(context, 18))),
-          IconButton(
-              onPressed: onPress,
-              splashRadius: Resizable.size(context, 10),
-              icon: Icon(
-                state % 2 == 1
-                    ? Icons.keyboard_arrow_up
-                    : Icons.keyboard_arrow_down,
-              ))
-        ])
+            )),
+        Expanded(
+            flex: 2,
+            child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              Text(AppText.textDetail.text,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: Resizable.font(context, 18))),
+              IconButton(
+                  onPressed: onPress,
+                  splashRadius: Resizable.size(context, 10),
+                  icon: Icon(
+                    state % 2 == 1
+                        ? Icons.keyboard_arrow_up
+                        : Icons.keyboard_arrow_down,
+                  ))
+            ]))
       ],
     );
   }

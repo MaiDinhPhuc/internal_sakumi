@@ -43,7 +43,7 @@ dependencies:
   auto_size_text: ^3.0.0
   percent_indicator: ^4.2.3
   firebase_storage: ^11.2.1
-  dropdown_button2: ^1.9.2
+  dropdown_button2: ^2.3.9
   screenshot: ^2.1.0
   intl: ^0.18.1
   fluro: ^2.0.5
@@ -52,29 +52,32 @@ dependencies:
   d_chart: ^2.3.0
   image_network: ^2.5.4+1
   dotted_border: ^2.0.0+3
-  syncfusion_flutter_datepicker: ^22.2.8
+  syncfusion_flutter_datepicker: ^26.2.5
   url_launcher: ^6.1.12
   image_picker_web: ^3.1.1
-  video_player: ^2.7.0
+
   url_strategy: ^0.2.0
   dio: ^5.2.1+1
-  microphone: ^0.1.0
+
   avatar_glow: ^2.0.2
-  syncfusion_flutter_charts: ^22.2.12
-  file_picker: ^5.5.0
+  syncfusion_flutter_charts: ^26.2.5+1
   shimmer: ^3.0.0
 
   googleapis: ^11.4.0
-  http: ^0.13.4
+  http: ^1.2.0
   google_sign_in: ^5.4.0
   google_sign_in_web: ^0.10.0
   qr_flutter: ^4.1.0
   searchfield: ^0.8.9
   timezone: ^0.9.2
-  record: ^5.0.5
+  record: ^5.1.2
   flutter_colorpicker: ^1.0.3
   drop_down_search_field: ^1.0.0
-  internet_file: ^1.2.0
+  flutter_sound: ^9.2.13
+  pdf: ^3.11.0
+  file_picker: ^8.0.7
+  fl_chart: ^0.69.0
+
 
 
 dev_dependencies:
@@ -127,6 +130,11 @@ flutter:
           weight: 700
         - asset: assets/fonts/Montserrat-Black.ttf
           weight: 900
+    - family: Times-New-Roman
+      fonts:
+        - asset: assets/fonts/times.ttf
+        - asset: assets/fonts/times_new_roman_bold.ttf
+          weight: 500
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

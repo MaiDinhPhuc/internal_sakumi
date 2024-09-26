@@ -33,9 +33,9 @@ class TeacherInfoCubit extends Cubit<int> {
   List<String> listStatus = [
     'Preparing',
     'InProgress',
+    'Paused',
     'Completed',
-    'Cancel',
-    'Remove'
+    'Cancel'
   ];
 
   List<bool> status = [true, true, false, false, false];
@@ -43,9 +43,9 @@ class TeacherInfoCubit extends Cubit<int> {
   List<String> listStatusSub = [
     'Mới tạo',
     'Đang học',
+    'Tạm dừng',
     'Hoàn thành',
-    'Huỷ',
-    'Xoá'
+    'Huỷ'
   ];
 
   List<String> listStatusV2 = ['Preparing', 'InProgress', 'Completed'];

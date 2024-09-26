@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/Material.dart';
+import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/model/banner_model.dart';
 import 'package:internal_sakumi/model/banner_option.dart';
 import 'package:internal_sakumi/model/bill_model.dart';
@@ -30,7 +31,8 @@ import 'package:internal_sakumi/model/teacher_survey_answer_model.dart';
 import 'package:internal_sakumi/model/teacher_survey_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
-import 'package:internal_sakumi/model/voucher_model.dart';
+import 'package:internal_sakumi/model/voucher_app_model.dart';
+import 'package:internal_sakumi/model/voucher_course_model.dart';
 import 'package:internal_sakumi/providers/api/api_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/browser.dart';
@@ -65,6 +67,18 @@ class FireStoreDb {
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTeacherById $id ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    // debugPrint("==========>get db from \"teacher\" : ${snapshot.docs.length}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getEnableGiftCode(int id) async {
+    final snapshot =
+    await db.collection("admin").where("id", isEqualTo: id).get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getEnableGiftCode ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     // debugPrint("==========>get db from \"teacher\" : ${snapshot.docs.length}");
 
@@ -715,6 +729,36 @@ class FireStoreDb {
     debugPrint("==========>update db for \"feedbacks\"");
   }
 
+  Future<void> updateSuperSaleInfo(
+      EnableGiftModel value) async {
+    await db
+        .collection('admin')
+        .doc("super_sale")
+        .update({
+      'enableIOS': value.enableIOS,
+      'enableAndroid': value.enableAndroid,
+      'enable_gift': value.enableGift,
+      'title': value.title,
+      'des': value.des,
+      'banner1': value.banner1,
+      'banner2': value.banner2,
+      'banner3': value.banner3,
+      'type':value.type
+    });
+    debugPrint("==========>update db for \"enable_gift\"");
+  }
+
+  Future<void> updateAdviseStatus(
+     int date, String newStatus) async {
+    await db
+        .collection('advise')
+        .doc("advise_$date")
+        .update({
+      'status': newStatus,
+    });
+    debugPrint("==========>update db for \"advise\"");
+  }
+
   Future<void> updateFeedBackNote(
       int classId, int date, List<dynamic> listNote) async {
     await db
@@ -1016,8 +1060,9 @@ class FireStoreDb {
       'role': model.role,
       'status': model.status,
       'user_id': model.userId,
+      'files': model.files
     });
-    debugPrint("==========> add db for \"bill\"");
+    debugPrint("==========> add db for \"feedback\"");
   }
 
   Future<void> updateBill(BillModel model) async {
@@ -1077,7 +1122,8 @@ class FireStoreDb {
       "id": model.id,
       "title": model.title,
       "enable": model.enable,
-      "duration": model.duration
+      "duration": model.duration,
+      'analysis':model.analysis
     });
     debugPrint("==========> add db for \"test\"");
   }
@@ -1093,7 +1139,8 @@ class FireStoreDb {
       "id": model.id,
       "title": model.title,
       "enable": model.enable,
-      "duration": model.duration
+      "duration": model.duration,
+      'analysis':model.analysis
     });
     debugPrint("==========> update db from \"lessons\"");
   }
@@ -1148,7 +1195,6 @@ class FireStoreDb {
         .collection("lesson_result")
         .doc("lesson_${lessonId}_class_$classId")
         .get();
-    // debugPrint("==========>get db from \"lesson_result\" : 1");
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> checkLessonResult $lessonId $classId ${temp.exists} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
@@ -1214,6 +1260,19 @@ class FireStoreDb {
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListTestByCourseId $courseId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getTestByTestId(
+      int testId) async {
+    final snapshot = await db
+        .collection("test")
+        .where("id", isEqualTo: testId)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTestByTestId $testId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -1685,7 +1744,7 @@ class FireStoreDb {
         .where(Filter.and(
             Filter("end_time", isGreaterThanOrEqualTo: startDate),
             Filter("end_time", isLessThanOrEqualTo: endDate),
-            Filter("class_status", whereIn: ['Completed', 'Cancel']),
+            Filter("class_status", whereIn: ['Completed', 'Cancel','Paused']),
             Filter("informal", isEqualTo: false)))
         .get();
 
@@ -1799,6 +1858,20 @@ class FireStoreDb {
         .collection("feedbacks")
         .where('status', isEqualTo: status)
         .where('role', isEqualTo: role)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListFeedBack ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getListAdvise(
+      String status, List<String> type) async {
+    final snapshot = await db
+        .collection("advise")
+        .where('status', isEqualTo: status)
+        .where('type', whereIn: type)
         .get();
 
     debugPrint(
@@ -2250,7 +2323,8 @@ class FireStoreDb {
       'custom_lesson': model.customLessons,
       'informal': model.informal,
       'is_sub_class': model.isSubClass,
-      'sub_class_id': model.subClassId
+      'sub_class_id': model.subClassId,
+      'custom_test': model.customTests
     });
     debugPrint("==========>update db for \"class_${model.classId}_course_${model.courseId}\"");
   }
@@ -2307,16 +2381,25 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getVoucher(String docs) async {
+  Future<DocumentSnapshot<Map<String, dynamic>>> getVoucherCourse(String docs) async {
     final temp = await db.collection("voucher").doc(docs).get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getVoucher $docs ${temp.exists} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getVoucherCourse $docs ${temp.exists} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return temp;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getListSearchVoucher(
+  Future<DocumentSnapshot<Map<String, dynamic>>> getVoucherApp(String docs) async {
+    final temp = await db.collection("voucher_app").doc(docs).get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getVoucherApp $docs ${temp.exists} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return temp;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getListSearchVoucherCourse(
       String text, String type) async {
     final snapshot = await db
         .collection("voucher")
@@ -2325,11 +2408,24 @@ class FireStoreDb {
         .get();
 
     debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListSearchVoucher ${snapshot.size}");
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListSearchVoucherCourse ${snapshot.size}");
     return snapshot;
   }
 
-  Future<void> addVoucher(VoucherModel model) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getListSearchVoucherApp(
+      String text, String type) async {
+    final snapshot = await db
+        .collection("voucher_app")
+        .where(type,
+        isGreaterThanOrEqualTo: text, isLessThanOrEqualTo: "$text\uf7ff")
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getListSearchVoucherApp ${snapshot.size}");
+    return snapshot;
+  }
+
+  Future<void> addVoucherCourse(VoucherCourseModel model) async {
     await db
         .collection("voucher")
         .doc("sakumi_voucher_${model.voucherCode}")
@@ -2348,7 +2444,24 @@ class FireStoreDb {
     });
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getVoucherByVoucherCode(
+  Future<void> addVoucherApp(VoucherAppModel model) async {
+    await db
+        .collection("voucher_app")
+        .doc("app_voucher_${model.voucherCode}")
+        .set({
+      'id': model.id,
+      'recipient_code': model.recipientCode,
+      'used_data': model.usedData,
+      'voucher_code': model.voucherCode,
+      'create_date': model.createDate,
+      'limit': model.limit,
+      'expired_date': model.expiredDate,
+      'noted': model.noted,
+      'price': model.price,
+    });
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getVoucherCourseByVoucherCode(
       String code) async {
     final snapshot = await db
         .collection("voucher")
@@ -2358,11 +2471,26 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<void> updateVoucher(String usedUserCode, String noted,
-      String voucherCode, String dateTime) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getVoucherAppByVoucherCode(
+      String code) async {
+    final snapshot = await db
+        .collection("voucher_app")
+        .where("voucher_code", isEqualTo: code)
+        .get();
+
+    return snapshot;
+  }
+
+  Future<void> updateVoucherApp( String noted,
+      String voucherCode) async {
+    await db.collection("voucher_app").doc("app_voucher_$voucherCode").update({
+      'noted': noted,
+    });
+  }
+
+  Future<void> updateVoucherCourse( String noted,
+      String voucherCode) async {
     await db.collection("voucher").doc("sakumi_voucher_$voucherCode").update({
-      'used_date': dateTime,
-      'used_user_code': usedUserCode,
       'noted': noted,
     });
   }
@@ -2493,7 +2621,6 @@ class FireStoreDb {
         .set(manageTagModel.toJson(), SetOptions(merge: true))
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
-      print(error);
       value = false;
     });
     return value;
@@ -2555,7 +2682,6 @@ class FireStoreDb {
         .set(banner.toJson(), SetOptions(merge: true))
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
-      print(error);
       value = false;
     });
     return value;
@@ -2600,7 +2726,6 @@ class FireStoreDb {
         .set(bannerOption.toJson(), SetOptions(merge: true))
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
-      print(error);
       value = false;
     });
     return value;
@@ -2647,7 +2772,6 @@ class FireStoreDb {
         .set(cs.toJson(), SetOptions(merge: true))
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
-      print(error);
       value = false;
     });
     return value;
@@ -2687,7 +2811,6 @@ class FireStoreDb {
         .set(csOption.toJson(), SetOptions(merge: true))
         .whenComplete(() => value = true)
         .onError((error, stackTrace) {
-      print(error);
       value = false;
     });
     return value;

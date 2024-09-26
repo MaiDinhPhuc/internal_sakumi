@@ -8,6 +8,7 @@ import 'package:internal_sakumi/features/master/manage_teacher_survey/manage_tea
 import 'package:internal_sakumi/model/survey_model.dart';
 import 'package:internal_sakumi/model/teacher_survey_model.dart';
 import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/utils/functions.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'confirm_delete_survey.dart';
@@ -60,12 +61,10 @@ class StudentSurveyItem extends StatelessWidget {
                   ),
                   itemBuilder: (context) => [
                     PopupMenuItem(
-                      onTap: () {
-                        //Navigator.pop(context);
-                        Navigator.pushNamed(context,
-                            '${Routes.master}/manageStudentSurvey/id=${surveyModel.id}');
-                        // Navigator.pushNamed(context,
-                        //     '${Routes.master}/manageSurvey/id=${surveyModel.id}');
+                      onTap: ()async {
+                        await Functions.goPage(
+                            '${Routes.master}/manageStudentSurvey/id=${surveyModel.id}',
+                            context);
                       },
                       padding: EdgeInsets.zero,
                       child: Center(
@@ -151,12 +150,10 @@ class TeacherSurveyEditItem extends StatelessWidget {
                   ),
                   itemBuilder: (context) => [
                     PopupMenuItem(
-                      onTap: () {
-                        //Navigator.pop(context);
-                        Navigator.pushNamed(context,
-                            '${Routes.master}/manageTeacherSurvey/id=${surveyModel.id}');
-                        // Navigator.pushNamed(context,
-                        //     '${Routes.master}/manageSurvey/id=${surveyModel.id}');
+                      onTap: ()async {
+                        await Functions.goPage(
+                            '${Routes.master}/manageTeacherSurvey/id=${surveyModel.id}',
+                            context);
                       },
                       padding: EdgeInsets.zero,
                       child: Center(
@@ -266,12 +263,11 @@ class TeacherSurveyItem extends StatelessWidget {
                   itemBuilder: (context) => [
                     if (teacherSurveyModel.status == 'done')
                       PopupMenuItem(
-                        onTap: () {
+                        onTap: ()async {
                           Navigator.pop(context);
-                          Navigator.pushNamed(context,
-                              '${Routes.master}/survey=${teacherSurveyModel.surveyId}/teacher=${teacherSurveyModel.teacherId}/date=${teacherSurveyModel.dateAssign}');
-                          // Navigator.pushNamed(context,
-                          //     '${Routes.master}/manageSurvey/id=${surveyModel.id}');
+                          await Functions.goPage(
+                              '${Routes.master}/survey=${teacherSurveyModel.surveyId}/teacher=${teacherSurveyModel.teacherId}/date=${teacherSurveyModel.dateAssign}',
+                              context);
                         },
                         padding: EdgeInsets.zero,
                         child: Center(

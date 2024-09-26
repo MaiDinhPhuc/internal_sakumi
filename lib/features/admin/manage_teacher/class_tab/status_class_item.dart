@@ -67,6 +67,8 @@ class StatusTeacherClass extends StatelessWidget {
       case 'Completed':
       case 'Preparing':
         return const Color(0xff757575);
+      case 'Paused':
+        return const Color(0xffF57F17);
       default:
         return const Color(0xff33691e);
     }
@@ -82,6 +84,8 @@ class StatusTeacherClass extends StatelessWidget {
         return "dropped";
       case 'Completed':
         return "check";
+      case 'Paused':
+        return "retained";
       default:
         return "in_progress";
     }

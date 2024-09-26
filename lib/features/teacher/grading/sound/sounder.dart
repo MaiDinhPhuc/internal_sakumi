@@ -15,7 +15,7 @@ class Sounder extends StatelessWidget {
   final int type;
   final String soundType;
   final int index;
-  const Sounder(this.sound, this.soundType,this.index,
+  const Sounder(this.sound, this.soundType, this.index,
       {Key? key,
       this.size = 18,
       this.elevation = 2,
@@ -29,7 +29,7 @@ class Sounder extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       key: Key(sound),
-      width: MediaQuery.of(context).size.width*0.24,
+      width: MediaQuery.of(context).size.width * 0.24,
       height: Resizable.size(context, 25),
       decoration: BoxDecoration(
         color: primaryColor,
@@ -53,21 +53,23 @@ class Sounder extends StatelessWidget {
                             ? Icon(Icons.volume_up,
                                 color: Colors.white,
                                 size: Resizable.size(context, size))
-                            : SoundService.instance.isPause() == true && soundCubit.activeFilePath == sound
-                                ? Icon(Icons.play_arrow_rounded,
-                                    color: Colors.white,
-                                    size: Resizable.size(context, size))
-                                : p == 0 && soundCubit.activeFilePath == sound
-                                    ? SizedBox(
-                                        height: Resizable.size(context, size),
-                                        width: Resizable.size(context, size),
-                                        child: const Center(
-                                          child: CircularProgressIndicator(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      )
-                                    : SoundService.instance.isPause() == false && soundCubit.activeFilePath == sound
+                            : p == 0 && soundCubit.activeFilePath == sound
+                                ? SizedBox(
+                                    height: Resizable.size(context, size),
+                                    width: Resizable.size(context, size),
+                                    child: const Center(
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  )
+                                : p == -1
+                                    ? Icon(Icons.play_arrow_rounded,
+                                        color: Colors.white,
+                                        size: Resizable.size(context, size))
+                                    : SoundService.instance.isPause() ==
+                                                false &&
+                                            soundCubit.activeFilePath == sound
                                         ? Icon(Icons.pause,
                                             color: Colors.white,
                                             size: Resizable.size(context, size))
@@ -80,40 +82,22 @@ class Sounder extends StatelessWidget {
                         SoundService.instance
                             .playSound(sound, soundCubit, soundType);
                       }
-                      if (SoundService.instance.isPause() == true && soundCubit.activeFilePath == sound) {
-                        SoundService.instance.play();
-                      } else if (SoundService.instance.isPause() == false && soundCubit.activeFilePath == sound) {
+                      if (SoundService.instance.isPause() == true &&
+                          soundCubit.activeFilePath == sound) {
+                        SoundService.instance.resume(soundCubit);
+                      } else if (SoundService.instance.isPause() == false &&
+                          soundCubit.activeFilePath == sound) {
                         SoundService.instance.pause(soundCubit);
                       }
                     }),
-                (soundCubit.activeFilePath != sound )
-                    ? Text(soundType == "network"?' File thu âm ${index + 1}':' File âm thanh ${index + 1}',
+                Text(
+                    soundType == "network"
+                        ? ' File thu âm ${index + 1}'
+                        : ' File âm thanh ${index + 1}',
                     style: TextStyle(
                         fontSize: Resizable.font(context, 16),
                         fontWeight: FontWeight.w800,
                         color: Colors.white))
-                    : SizedBox(
-                  width: MediaQuery.of(context).size.width*0.205,
-                  child: Slider(
-                      key: Key("${soundCubit.duration}"),
-                      activeColor: Colors.white,
-                      inactiveColor: Colors.grey.shade100,
-                      thumbColor: Colors.white,
-                      min: -2,
-                      max: SoundService.instance.getPlayer().value.duration.inMilliseconds.toDouble(),
-                      value: p == 0
-                          ? -2
-                          : p == -1
-                          ? soundCubit.currentPosition
-                          : p,
-                      onChangeEnd: (value)async{
-                        final position = Duration(milliseconds: value.toInt());
-                        await SoundService.instance.seek(position);
-                      },
-                      onChanged: (value) async {
-
-                      }),
-                ),
               ],
             );
           }),

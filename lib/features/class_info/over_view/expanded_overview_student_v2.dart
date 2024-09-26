@@ -27,7 +27,7 @@ class ExpandedOverViewStudentV2 extends StatelessWidget {
         Container(
           height: Resizable.size(context, 0.5),
           width: double.maxFinite,
-          color: const Color(0xffE0E0E0),
+          color: grey2,
         ),
         SizedBox(height: Resizable.size(context, 20)),
         if (studentCubit.stdLessons!.isNotEmpty)

@@ -6,6 +6,7 @@ import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/schedule_model.dart';
+import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
@@ -29,6 +30,8 @@ class ScheduleTabCubit extends Cubit<int> {
 
   List<ScheduleModel>? listCyclicSchedule;
   List<ScheduleModel>? listSingleSchedule;
+
+  List<TeacherClassModel>? listTeacherClass;
 
   List<DateTime> listDate = [];
 
@@ -78,12 +81,17 @@ class ScheduleTabCubit extends Cubit<int> {
 
     listDate.add(endDate!);
 
+    listTeacherClass = await FireBaseProvider.instance.getTeacherClassById(teacherId!);
+
     emit(state + 1);
 
     await getSchedule();
   }
 
   getSchedule() async {
+
+    listClassId = listTeacherClass!.map((e)=>e.classId).toList();
+
     listLessonResult = await FireBaseProvider.instance.getLessonResultWithDateAndTeacherId(
         startDate!.millisecondsSinceEpoch,
         endDate!.millisecondsSinceEpoch,
@@ -116,7 +124,7 @@ class ScheduleTabCubit extends Cubit<int> {
     }
 
     for (var i in listClassId) {
-      DataProvider.classByClassId(i, loadClass);
+      await loadClass(i);
     }
 
     isLoadingSchedule = false;
@@ -381,7 +389,7 @@ class ScheduleTabCubit extends Cubit<int> {
     }
 
     for (var i in listCyclicSchedule!) {
-      if (i.calendar[dayIndex] != "" &&
+      if (i.calendar[dayIndex] != "" && i.startDate <= date.millisecondsSinceEpoch && i.endDate >= date.millisecondsSinceEpoch  &&
           checkExistResult(index, i.classId) == false &&
           listSingleSchedule!
               .where((e) =>
@@ -389,14 +397,29 @@ class ScheduleTabCubit extends Cubit<int> {
               e.classId == i.classId)
               .toList()
               .isEmpty) {
-        list.add(i);
+        var listClassId = listClass.map((e) => e.classId).toList();
+        if(listClassId.contains(i.classId)){
+          list.add(i);
+        }
+      }
+      if (i.calendar[dayIndex] != "" &&
+          checkExistResult(index, i.classId) == false &&
+          i.status == "cancel" &&
+          list.contains(i) == false) {
+        var listClassId = listClass.map((e) => e.classId).toList();
+        if(listClassId.contains(i.classId)){
+          list.add(i);
+        }
       }
     }
 
     for (var i in listSingleSchedule!) {
       if (i.date == date.millisecondsSinceEpoch &&
           checkExistResult(index, i.classId) == false) {
-        list.add(i);
+        var listClassId = listClass.map((e) => e.classId).toList();
+        if(listClassId.contains(i.classId)){
+          list.add(i);
+        }
       }
     }
 
@@ -480,13 +503,13 @@ class ScheduleTabCubit extends Cubit<int> {
     this.teacher = teacher as TeacherModel;
   }
 
-  loadClass(Object classModel) {
-    var classModelTemp = classModel as ClassModel;
-    if(listClass.contains(classModelTemp) == false){
-      listClass.add(classModelTemp);
-    }
-    if(listClass.length == listClassId.length){
-      emit(state+1);
+  loadClass(int classId) async {
+    var listClassId = listClass.map((e)=>e.classId).toList();
+    if(listClassId.contains(classId) == false){
+      var classModelTemp = await FireBaseProvider.instance.getClassById(classId);
+      if(classModelTemp.classStatus != "Completed"){
+        listClass.add(classModelTemp);
+      }
     }
   }
 }

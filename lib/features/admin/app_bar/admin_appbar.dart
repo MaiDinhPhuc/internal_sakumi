@@ -3,6 +3,7 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/navigation/navigation.dart';
 import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/utils/functions.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'admin_appbar_item.dart';
@@ -14,32 +15,27 @@ class AdminAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(
-          bottom: Resizable.padding(context, 5)),
-      padding: EdgeInsets.symmetric(
-          vertical: Resizable.padding(context, 10)),
-      decoration: const BoxDecoration(color: Colors.white,
-          boxShadow: [
-        BoxShadow(offset: Offset(0, 1), color: Colors.grey)
-      ]
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ... buttonAdminList
-              .map((e) => AdminAppBarItem(
-            title: e.button,
-            color: index == e.id
-                ? primaryColor
-                : Colors.transparent,
-            id: e.id,
-          ))
-              .toList(),
-          const LogOutButton()
-        ],)
-    );
+        margin: EdgeInsets.only(bottom: Resizable.padding(context, 5)),
+        padding: EdgeInsets.symmetric(vertical: Resizable.padding(context, 10)),
+        decoration: const BoxDecoration(
+            color: Colors.white,
+            boxShadow: [BoxShadow(offset: Offset(0, 1), color: Colors.grey)]),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ...buttonAdminList
+                .map((e) => AdminAppBarItem(
+                      title: e.button,
+                      color: index == e.id ? primaryColor : Colors.transparent,
+                      id: e.id,
+                    ))
+                .toList(),
+            const LogOutButton()
+          ],
+        ));
   }
 }
+
 List<NavigationModel> buttonAdminList = [
   NavigationModel(0, AppText.titleHome.text),
   NavigationModel(1, AppText.txtClass.text),
@@ -50,7 +46,7 @@ List<NavigationModel> buttonAdminList = [
   NavigationModel(5, AppText.txtTool.text),
   NavigationModel(6, AppText.txtVoucher.text),
   NavigationModel(7, AppText.txtTeacher.text),
-  // NavigationModel(9, AppText.txtStudent.text),
+  NavigationModel(9, AppText.txtAdvise.text),
 ];
 
 class DetailAppBar extends StatelessWidget {
@@ -63,34 +59,32 @@ class DetailAppBar extends StatelessWidget {
           left: Resizable.padding(context, 100),
           right: Resizable.padding(context, 100),
           top: Resizable.padding(context, 10)),
-      decoration: const BoxDecoration(color: Colors.white, boxShadow: [
-        BoxShadow(offset: Offset(0, 1), color: Colors.grey)
-      ]),
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          boxShadow: [BoxShadow(offset: Offset(0, 1), color: Colors.grey)]),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
             height: 30,
-            margin: EdgeInsets.only(
-                left: Resizable.padding(context, 20)),
+            margin: EdgeInsets.only(left: Resizable.padding(context, 20)),
             child: Stack(
               alignment: Alignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.arrow_back_ios_new_rounded , color: primaryColor.shade500,),
-                      SizedBox(
-                          width: Resizable.padding(
-                              context, 5)),
+                      Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: primaryColor.shade500,
+                      ),
+                      SizedBox(width: Resizable.padding(context, 5)),
                       Text(AppText.txtBack.text,
                           style: TextStyle(
                               color: greyColor.shade600,
-                              fontWeight:
-                              FontWeight.w700,
+                              fontWeight: FontWeight.w700,
                               fontSize: 16)),
                     ],
                   ),
@@ -99,19 +93,23 @@ class DetailAppBar extends StatelessWidget {
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      borderRadius:
-                      BorderRadius.circular(100),
+                      borderRadius: BorderRadius.circular(100),
                       overlayColor:
-                      MaterialStateProperty.all(
-                          primaryColor
-                              .withAlpha(30)),
-                      onTap: ()  {
-                        Navigator.pop(context);
+                          WidgetStateProperty.all(primaryColor.withAlpha(30)),
+                      onTap: () async {
+                        if (await Functions.checkPreviousPageEmpty()) {
+                          if (context.mounted) {
+                            Functions.goPage(
+                                '${Routes.admin}/searchGeneral', context);
+                          }
+                        } else {
+                          if (context.mounted) {
+                            Functions.goPreviousPage(context);
+                          }
+                        }
                       },
                       child: Container(
-                        margin:
-                        const EdgeInsets.symmetric(
-                            horizontal: 2),
+                        margin: const EdgeInsets.symmetric(horizontal: 2),
                       ),
                     ),
                   ),

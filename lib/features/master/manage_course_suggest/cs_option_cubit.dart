@@ -15,9 +15,16 @@ class CSOptionCubit extends Cubit<int> {
 
   CSOption? csTag;
   CSOption? csCourse;
+  bool favorite = false;
+
+  update(){
+    favorite = !favorite;
+    emit(state+1);
+  }
 
   load() async {
     if(courseSuggest != null) {
+      favorite = courseSuggest!.favorite;
       csTag = await FireBaseProvider.instance.getCSOptionByIdAndType(courseSuggest!.id, 1);
       csCourse = await FireBaseProvider.instance.getCSOptionByIdAndType(courseSuggest!.id, 2);
 

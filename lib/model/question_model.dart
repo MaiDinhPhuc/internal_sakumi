@@ -96,7 +96,7 @@ class QuestionModel {
       d: json['d']??"",
       answer: json['answer']??"",
       question: json['question']??"",
-      skill: json['skill_id']??0,
+      skill: json['skill']??0,
       image: json['image']??"",
       sound: json['sound']??"",
       video: json['video']??"",

@@ -24,6 +24,7 @@ enum AppText {
   textLessonsIsEmpty,
   textChooseCourse,
   txtChooseLesson,
+  txtChooseTest,
   titleSkill,
   titleListening,
   titleKanji,
@@ -597,15 +598,61 @@ enum AppText {
   txtSubmitSuccess,
   txtConfirmSubmitTeacherSurvey,
   txtConfirmDeleteCustomLesson,
+  txtPleaseChooseTest,
+  txtConfirmDeleteCustomTest,
   txtManageBanner,
   txtListBanner,
   btnAddBanner,
   txtAddBanner,
   txtUpdateSuccess,
-  txtAddSuccess, txtShortDescription, txtHtml, btnUpdateBanner, txtImageBanner, txtUploadImage, txtPleaseInputImage, txtBannerOption, txtAtLeast1CourseChoosen, txtConfirmDeleteBanner, txtManageCourseSuggest, txtListCS, txtAddCourseSuggest, txtCSOption, txtConfirmDeleteCS
+  txtAddSuccess,
+  txtShortDescription,
+  txtHtml,
+  btnUpdateBanner,
+  txtImageBanner,
+  txtUploadImage,
+  txtPleaseInputImage,
+  txtBannerOption,
+  txtAtLeast1CourseChoosen,
+  txtConfirmDeleteBanner,
+  txtManageCourseSuggest,
+  txtListCS,
+  txtAddCourseSuggest,
+  txtCSOption,
+  txtConfirmDeleteCS,
+  txtAdvise,
+  txtListAdvise,
+  txtAdviseCourse,
+  txtAdviseBanner,
+  txtAdviseRequest,
+  txtAdviseEmpty,
+  txtCreatePDFFile,
+  txtAll,
+  txtRange,
+  txtApp,
+  txtNumMonths,
+  txtNumDevices,
+  txtAddFiles,
+  txtFiles
 }
 
 Map<AppText, String> texts = {
+  AppText.txtFiles: 'Tệp đính kèm',
+  AppText.txtAddFiles: '+ Thêm Files',
+  AppText.txtNumDevices: 'Số thiết bị tối đa',
+  AppText.txtNumMonths: 'Số tháng miễn phí',
+  AppText.txtApp: 'Ứng dụng',
+  AppText.txtRange: 'Mức độ',
+  AppText.txtAll: 'Tất cả',
+  AppText.txtCreatePDFFile: 'Xuất File',
+  AppText.txtAdviseEmpty: 'Chưa có yêu cầu tư vấn',
+  AppText.txtAdviseRequest: 'Yêu cầu tư vấn',
+  AppText.txtAdviseCourse: 'Yêu cầu tư vấn khoá học',
+  AppText.txtAdviseBanner: 'Yêu cầu tư vấn banner',
+  AppText.txtListAdvise: 'Danh sách yêu cầu tư vấn',
+  AppText.txtAdvise: 'Tư vấn',
+  AppText.txtConfirmDeleteCustomTest: 'Xác nhận xóa bài kiểm tra custom??',
+  AppText.txtPleaseChooseTest: 'Vui lòng chọn bài kiểm tra!',
   AppText.txtConfirmDeleteCustomLesson: 'Xác nhận xóa bài học custom??',
   AppText.txtConfirmSubmitTeacherSurvey:
       'SS xác nhận nộp bài khảo sát?? Lưu ý bài khảo sát đã nộp sẽ không được làm lại!',
@@ -1035,6 +1082,7 @@ Map<AppText, String> texts = {
   AppText.textLessons: 'Danh sách bài học',
   AppText.textLessonsIsEmpty: 'Đang cập nhật bài học, vui lòng thử lại sau!',
   AppText.textChooseCourse: 'Chọn khóa học',
+  AppText.txtChooseTest: 'Chọn bài kiểm tra',
   AppText.txtChooseLesson: 'Chọn bài học',
   AppText.titleSkill: 'Luyện kỹ năng',
   AppText.titleListening: 'Luyện nghe',
@@ -1222,7 +1270,7 @@ Map<AppText, String> texts = {
   AppText.txtAddTag: 'thêm tag',
   AppText.txtTagChoosen: 'Tag đã chọn',
   AppText.txtAtLeast1TagChoosen: 'Ít nhất 1 tag được chọn',
-  AppText.txtTagManager: 'Tag Quản lý',
+  AppText.txtTagManager: 'Tag Quản Lý',
   AppText.txtManageTag: 'QUẢN LÝ TAG',
   AppText.txtPleaseInputTagCode: 'Vui lòng nhập mã tag',
   AppText.txtPleaseInputTagName: 'Vui lòng nhập tên tag',
@@ -1321,6 +1369,10 @@ String vietnameseSubText(String text) {
       return "Bỏ cọc";
     case "Force":
       return "Bắt buộc lên kỳ";
+    case 'SuperUpSale':
+      return "Lên Khoá";
+    case 'Paused':
+      return "Tạm Dừng";
     default:
       return "error";
   }

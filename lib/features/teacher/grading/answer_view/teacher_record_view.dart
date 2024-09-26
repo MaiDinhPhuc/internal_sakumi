@@ -58,24 +58,20 @@ class TeacherSounder extends StatelessWidget {
                                 ? Icon(Icons.volume_up,
                                     color: Colors.white,
                                     size: Resizable.size(context, size))
-                                : SoundService.instance.isPause() == true &&
-                                        soundCubit.activeFilePath == sound
-                                    ? Icon(Icons.play_arrow_rounded,
-                                        color: Colors.white,
-                                        size: Resizable.size(context, size))
-                                    : p == 0 &&
-                                            soundCubit.activeFilePath == sound
-                                        ? SizedBox(
-                                            height:
-                                                Resizable.size(context, size),
-                                            width:
-                                                Resizable.size(context, size),
-                                            child: const Center(
-                                              child: CircularProgressIndicator(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          )
+                                : p == 0 && soundCubit.activeFilePath == sound
+                                    ? SizedBox(
+                                        height: Resizable.size(context, size),
+                                        width: Resizable.size(context, size),
+                                        child: const Center(
+                                          child: CircularProgressIndicator(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      )
+                                    : p == -1
+                                        ? Icon(Icons.play_arrow_rounded,
+                                            color: Colors.white,
+                                            size: Resizable.size(context, size))
                                         : SoundService.instance.isPause() ==
                                                     false &&
                                                 soundCubit.activeFilePath ==
@@ -95,7 +91,7 @@ class TeacherSounder extends StatelessWidget {
                           }
                           if (SoundService.instance.isPause() == true &&
                               soundCubit.activeFilePath == sound) {
-                            SoundService.instance.play();
+                            SoundService.instance.resume(soundCubit);
                           } else if (SoundService.instance.isPause() == false &&
                               soundCubit.activeFilePath == sound) {
                             SoundService.instance.pause(soundCubit);

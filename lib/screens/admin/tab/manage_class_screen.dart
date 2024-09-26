@@ -5,16 +5,17 @@ import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/app_bar/admin_appbar.dart';
 import 'package:internal_sakumi/features/admin/manage_bills/add_bill_button.dart';
 import 'package:internal_sakumi/features/admin/manage_browse_download/manage_browse_download_cubit.dart';
-import 'package:internal_sakumi/features/admin_v2/manage_class_v2/class_cubit_v2.dart';
-import 'package:internal_sakumi/features/admin_v2/manage_class_v2/class_item_v2.dart';
-import 'package:internal_sakumi/features/admin_v2/manage_class_v2/filter_class_status_v2.dart';
-import 'package:internal_sakumi/features/admin_v2/manage_class_v2/filter_class_type_v2.dart';
-import 'package:internal_sakumi/features/admin_v2/manage_class_v2/filter_course_level_v2.dart';
-import 'package:internal_sakumi/features/admin_v2/manage_class_v2/filter_course_type_v2.dart';
+import 'package:internal_sakumi/features/admin/manage_class/class_cubit_v2.dart';
+import 'package:internal_sakumi/features/admin/manage_class/class_item_v2.dart';
+import 'package:internal_sakumi/features/admin/manage_class/filter_class_status_v2.dart';
+import 'package:internal_sakumi/features/admin/manage_class/filter_class_type_v2.dart';
+import 'package:internal_sakumi/features/admin/manage_class/filter_course_level_v2.dart';
+import 'package:internal_sakumi/features/admin/manage_class/filter_course_type_v2.dart';
 import 'package:internal_sakumi/features/teacher/list_class/class_item_row_layout.dart';
 import 'package:internal_sakumi/features/teacher/teacher_home/class_item_shimmer.dart';
 import 'package:internal_sakumi/providers/cache/filter_admin_provider.dart';
 import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/utils/functions.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:shimmer/shimmer.dart';
@@ -82,8 +83,9 @@ class ManageClassScreenV2 extends StatelessWidget {
                               SizedBox(width: Resizable.padding(context, 10)),
                               AddButton(
                                 onTap: () async {
-                                  Navigator.pushNamed(context,
-                                      '${Routes.admin}/${Routes.manageGeneral}');
+                                  await Functions.goPage(
+                                      '${Routes.admin}/${Routes.manageGeneral}',
+                                      context);
                                 },
                                 title: AppText.btnManageClass.text,
                               ),

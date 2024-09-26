@@ -10,7 +10,7 @@ class SocialInfoModel {
   SocialInfoModel(this.image, this.name, this.link);
 }
 
-class VoucherModel {
+class VoucherCourseModel {
   final int id;
   final String recipientCode,
       usedUserCode,
@@ -23,7 +23,7 @@ class VoucherModel {
       type;
   final bool isFullCourse;
 
-  const VoucherModel(
+  const VoucherCourseModel(
       {required this.id,
       required this.recipientCode,
       required this.usedUserCode,
@@ -35,10 +35,10 @@ class VoucherModel {
       required this.price,
       required this.type, required this.isFullCourse});
 
-  factory VoucherModel.fromSnapshot(
+  factory VoucherCourseModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
-    return VoucherModel(
+    return VoucherCourseModel(
       id: data["id"],
       recipientCode: data['recipient_code'] ?? '',
       usedUserCode: data['used_user_code'] ?? '',

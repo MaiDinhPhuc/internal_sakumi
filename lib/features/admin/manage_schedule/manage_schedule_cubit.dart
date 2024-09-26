@@ -66,6 +66,9 @@ class ManageScheduleCubit extends Cubit<int> {
 
   bool isLoadingSchedule = false;
 
+  bool isChooseTeacher = false;
+  bool isChooseClass = false;
+
   loadDate() {
     DateTime dateTime = DateTime(now.year, now.month, now.day, 0, 0, 0);
 
@@ -129,6 +132,7 @@ class ManageScheduleCubit extends Cubit<int> {
   chooseClass(String className, int classId) async {
     this.classId = classId;
     classSearch.text = className;
+    isChooseClass = true;
   }
 
   bool checkExistResult(int index, int classId) {
@@ -166,7 +170,8 @@ class ManageScheduleCubit extends Cubit<int> {
       for (var i in listTeacherId) {
         DataProvider.teacherById(i, loadTeacher);
       }
-      await DataProvider.classByClassId(schedule.classId, loadClass);
+      await loadClass(schedule.classId);
+      //await DataProvider.classByClassId(schedule.classId, loadClass);
       emit(state + 1);
     }
   }
@@ -183,7 +188,8 @@ class ManageScheduleCubit extends Cubit<int> {
         for (var i in listTeacherId) {
           DataProvider.teacherById(i, loadTeacher);
         }
-        await DataProvider.classByClassId(schedule.classId, loadClass);
+        await loadClass(schedule.classId);
+        //await DataProvider.classByClassId(schedule.classId, loadClass);
         emit(state + 1);
       }
     }
@@ -258,7 +264,9 @@ class ManageScheduleCubit extends Cubit<int> {
     }
 
     for (var i in listCyclicSchedule!) {
-      if (i.calendar[dayIndex] != "" && i.startDate <= date.millisecondsSinceEpoch && i.endDate >= date.millisecondsSinceEpoch  &&
+      if (i.calendar[dayIndex] != "" &&
+          i.startDate <= date.millisecondsSinceEpoch &&
+          i.endDate >= date.millisecondsSinceEpoch &&
           checkExistResult(index, i.classId) == false &&
           listSingleSchedule!
               .where((e) =>
@@ -266,20 +274,29 @@ class ManageScheduleCubit extends Cubit<int> {
                   e.classId == i.classId)
               .toList()
               .isEmpty) {
-        list.add(i);
+        var listClassId = listClass.map((e) => e.classId).toList();
+        if(listClassId.contains(i.classId)){
+          list.add(i);
+        }
       }
       if (i.calendar[dayIndex] != "" &&
           checkExistResult(index, i.classId) == false &&
           i.status == "cancel" &&
           list.contains(i) == false) {
-        list.add(i);
+        var listClassId = listClass.map((e) => e.classId).toList();
+        if(listClassId.contains(i.classId)){
+          list.add(i);
+        }
       }
     }
 
     for (var i in listSingleSchedule!) {
       if (i.date == date.millisecondsSinceEpoch &&
           checkExistResult(index, i.classId) == false) {
-        list.add(i);
+        var listClassId = listClass.map((e) => e.classId).toList();
+        if(listClassId.contains(i.classId)){
+          list.add(i);
+        }
       }
     }
 
@@ -514,7 +531,7 @@ class ManageScheduleCubit extends Cubit<int> {
     }
 
     for (var i in listClassId) {
-      DataProvider.classByClassId(i, loadClass);
+      await loadClass(i);
     }
 
     for (var i in listTeacherId) {
@@ -526,6 +543,7 @@ class ManageScheduleCubit extends Cubit<int> {
   }
 
   searchClass(String newValue) {
+    isChooseClass = false;
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 50), () {
       classSearchValue = newValue;
@@ -534,6 +552,7 @@ class ManageScheduleCubit extends Cubit<int> {
   }
 
   searchTeacher(String newValue) {
+    isChooseTeacher = false;
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 50), () {
       teacherSearchValue = newValue;
@@ -544,15 +563,17 @@ class ManageScheduleCubit extends Cubit<int> {
   chooseTeacher(String teacher, int userId) {
     teacherId = userId;
     teacherSearch.text = teacher;
+    isChooseTeacher = true;
   }
 
-  loadClass(Object classModel) {
-    var classModelTemp = classModel as ClassModel;
-    if (listClass.contains(classModelTemp) == false) {
-      listClass.add(classModelTemp);
-    }
-    if (listClass.length == listClassId.length) {
-      emit(state + 1);
+  loadClass(int classId) async {
+    var listClassId = listClass.map((e) => e.classId).toList();
+    if (listClassId.contains(classId) == false) {
+      var classModelTemp =
+          await FireBaseProvider.instance.getClassById(classId);
+      if(classModelTemp.classStatus != "Completed"){
+        listClass.add(classModelTemp);
+      }
     }
   }
 

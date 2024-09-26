@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/search/general_tags/object_tag_item.dart';
-import 'package:internal_sakumi/features/admin/search/general_tags/tag_filter_cubit.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
+import 'package:internal_sakumi/utils/functions.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import '../../../../model/manage_tag_model.dart';
@@ -32,7 +32,6 @@ class _StudentTagListViewState extends State<StudentTagListView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    print('build again');
     final manageCubit = context.read<ListManageTagsCubit>();
     return BlocProvider.value(
       value: widget.studentTagCubit..load(),
@@ -53,8 +52,10 @@ class _StudentTagListViewState extends State<StudentTagListView>
               children: [
                 ...widget.studentTagCubit.listStudentTags.map((e) => ObjectTagItem(
                     onTap: () async {
-                      await Navigator.pushNamed(context,
-                          "${Routes.admin}/studentInfo/student=${e.studentModel.userId}");
+                      await Functions.goPage(
+                          "${Routes.admin}/studentInfo/student=${e.studentModel.userId}",
+                          context);
+
                       manageCubit.update();
                     },
                     notes: e.notes,

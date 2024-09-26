@@ -21,7 +21,7 @@ class DetailAnswerTeacherSurveyScreen extends StatelessWidget {
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CustomAppbar( s: 2),
+                const MasterAppbar( s: 2),
                 Expanded(
                     child: BlocBuilder<DetailAnswerTeacherSurveyCubit, int>(
                         builder: (c, s) {

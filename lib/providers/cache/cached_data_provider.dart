@@ -1,6 +1,7 @@
 import 'package:internal_sakumi/model/bill_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/model/course_model.dart';
+import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/student_class_log.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
@@ -8,6 +9,7 @@ import 'package:internal_sakumi/model/student_lesson_model.dart';
 import 'package:internal_sakumi/model/student_model.dart';
 import 'package:internal_sakumi/model/student_test_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
+import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firestore_db.dart';
@@ -36,6 +38,7 @@ class DataProvider {
     List<int> listTypeQuery = listType!.map((e) => type(e)).toList();
     List<String> listStatusQuery =
         listStatus!.map((e) => statusAdmin(e)).toList();
+    print(listStatusQuery);
     if (lastItem != null) {
       var listClass = await FireBaseProvider.instance.getMoreClassWithFilter(
           listStatusQuery, listTypeQuery, lastItem.classId, listCourseId);
@@ -46,7 +49,11 @@ class DataProvider {
   }
 
   static Future<List<BillModel>> billStatistic(
-      Map<StatisticFilter, List> filter, int admin, List<int> listCourseId, int startDay, int endDay) async {
+      Map<StatisticFilter, List> filter,
+      int admin,
+      List<int> listCourseId,
+      int startDay,
+      int endDay) async {
     List? listType = filter[StatisticFilter.type];
     List<int> listTypeQuery = listType!.map((e) => type(e)).toList();
 
@@ -55,21 +62,30 @@ class DataProvider {
   }
 
   static Future<List<StudentClassLogModel>> studentClassLogStatistic(
-      Map<StatisticFilter, List> filter, int admin, List<int> listCourseId, int startDay, int endDay) async {
+      Map<StatisticFilter, List> filter,
+      int admin,
+      List<int> listCourseId,
+      int startDay,
+      int endDay) async {
     List? listType = filter[StatisticFilter.type];
     List<int> listTypeQuery = listType!.map((e) => type(e)).toList();
 
-    return await FireBaseProvider.instance
-        .getListStudentClassLogInStatistic(listTypeQuery, listCourseId, startDay, endDay);
+    return await FireBaseProvider.instance.getListStudentClassLogInStatistic(
+        listTypeQuery, listCourseId, startDay, endDay);
   }
 
   static Future<List<ClassModel>> classStatistic(
-      Map<StatisticFilter, List> filter, int admin, List<int> listCourseId, int startDay, int endDay, int columType) async {
+      Map<StatisticFilter, List> filter,
+      int admin,
+      List<int> listCourseId,
+      int startDay,
+      int endDay,
+      int columType) async {
     List? listType = filter[StatisticFilter.type];
     List<int> listTypeQuery = listType!.map((e) => type(e)).toList();
 
-    return await FireBaseProvider.instance
-        .getListClassInStatistic(listTypeQuery, listCourseId, startDay, endDay, columType);
+    return await FireBaseProvider.instance.getListClassInStatistic(
+        listTypeQuery, listCourseId, startDay, endDay, columType);
   }
 
   static Future<List<ClassModel>> classListTeacher(
@@ -112,6 +128,8 @@ class DataProvider {
         return "InProgress";
       case FilterClassStatus.cancel:
         return "Cancel";
+      case FilterClassStatus.paused:
+        return "Paused";
     }
   }
 
@@ -148,7 +166,9 @@ class DataProvider {
   static void updateLessonResult(
       int classId, List<LessonResultModel> lessonResults) {
     var key = 'lessonResult_$classId';
-    cached[key]!.data = lessonResults;
+    if (cached[key] != null) {
+      cached[key]!.data = lessonResults;
+    }
   }
 
   static Future<void> lessonResultByClassId(
@@ -171,7 +191,9 @@ class DataProvider {
 
   static void updateStdClass(int classId, List<StudentClassModel> stdClass) {
     var key = 'stdClass_$classId';
-    cached[key]!.data = stdClass;
+    if (cached[key] != null) {
+      cached[key]!.data = stdClass;
+    }
   }
 
   static Future<void> stdClassByClassId(
@@ -194,7 +216,9 @@ class DataProvider {
 
   static void updateTestResult(int classId, List<TestResultModel> testResults) {
     var key = 'testResult_$classId';
-    cached[key]!.data = testResults;
+    if (cached[key] != null) {
+      cached[key]!.data = testResults;
+    }
   }
 
   static Future<void> testResultByClassId(
@@ -217,7 +241,9 @@ class DataProvider {
 
   static void updateStudentTest(int classId, List<StudentTestModel> stdTests) {
     var key = 'stdTest_$classId';
-    cached[key]!.data = stdTests;
+    if (cached[key] != null) {
+      cached[key]!.data = stdTests;
+    }
   }
 
   static Future<void> stdTestByClassId(
@@ -256,27 +282,55 @@ class DataProvider {
     }
   }
 
-  // static Future<void> classById(
-  //     int classId, Function(Object) onLoaded) async {
-  //   var key = 'class_$classId';
-  //   if (cached[key] == null) {
-  //     cached[key] = CacheObject(DateTime.now(), callbacks: [onLoaded]);
-  //     cached[key]!.data =
-  //     await FireBaseProvider.instance.getClassById(classId);
-  //     for (var element in cached[key]!.callbacks) {
-  //       element.call(cached[key]!.data!);
-  //     }
-  //     cached[key]!.callbacks = [];
-  //   } else if (cached[key]!.data == null) {
-  //     cached[key]!.callbacks.add(onLoaded);
-  //   } else {
-  //     onLoaded.call(cached[key]!.data!);
-  //   }
-  // }
+  static Future<void> customTests(
+      int courseId, Function(Object) onLoaded) async {
+    var key = 'custom_test_$courseId';
+    if (cached[key] == null) {
+      cached[key] = CacheObject(DateTime.now(), callbacks: [onLoaded]);
+      cached[key]!.data =
+          await FireBaseProvider.instance.getListTestByCourseId(courseId);
+      for (var element in cached[key]!.callbacks) {
+        element.call(cached[key]!.data!);
+      }
+      cached[key]!.callbacks = [];
+    } else if (cached[key]!.data == null) {
+      cached[key]!.callbacks.add(onLoaded);
+    } else {
+      onLoaded.call(cached[key]!.data!);
+    }
+  }
+
+  static Future<void> testByCourseAndClassId(
+      int courseId, int classId, Function(Object) onLoaded) async {
+    var key = 'test_${courseId}_class_$classId';
+    if (cached[key] == null) {
+      cached[key] = CacheObject(DateTime.now(), callbacks: [onLoaded]);
+      cached[key]!.data =
+          await FireBaseProvider.instance.getListTestByCourseId(courseId);
+      for (var element in cached[key]!.callbacks) {
+        element.call(cached[key]!.data!);
+      }
+      cached[key]!.callbacks = [];
+    } else if (cached[key]!.data == null) {
+      cached[key]!.callbacks.add(onLoaded);
+    } else {
+      onLoaded.call(cached[key]!.data!);
+    }
+  }
+
+  static Future<void> updateCustomTest(
+      int courseId, int classId, List<TestModel> listTest) async {
+    var key = 'test_${courseId}_class_$classId';
+    if (cached[key] != null) {
+      cached[key]!.data = listTest;
+    }
+  }
 
   static void updateTeacherInfo(int id, TeacherModel teacher) {
     var key = 'teacher_$id';
-    cached[key]!.data = teacher;
+    if (cached[key] != null) {
+      cached[key]!.data = teacher;
+    }
   }
 
   static Future<void> teacherById(int id, Function(Object) onLoaded) async {
@@ -313,7 +367,9 @@ class DataProvider {
 
   static void updateStudentInfo(int id, StudentModel student) {
     var key = 'student_$id';
-    cached[key]!.data = student;
+    if (cached[key] != null) {
+      cached[key]!.data = student;
+    }
   }
 
   static Future<void> userById(int id, Function(Object) onLoaded) async {
@@ -329,6 +385,14 @@ class DataProvider {
       cached[key]!.callbacks.add(onLoaded);
     } else {
       onLoaded.call(cached[key]!.data!);
+    }
+  }
+
+
+  static void updateLessonByCourseAndClassId( int courseId, int classId,List<LessonModel> listLesson) {
+    var key = 'lessons_${classId}_$courseId';
+    if (cached[key] != null) {
+      cached[key]!.data = listLesson;
     }
   }
 
@@ -368,23 +432,30 @@ class DataProvider {
     }
   }
 
-  static Future<void> classByClassId(
-      int classId, Function(Object) onLoaded) async {
-    var key = 'class_$classId';
-    if (cached[key] == null) {
-      cached[key] = CacheObject(DateTime.now(), callbacks: [onLoaded]);
-      cached[key]!.data =
-      await FireBaseProvider.instance.getClassById(classId);
-      for (var element in cached[key]!.callbacks) {
-        element.call(cached[key]!.data!);
-      }
-      cached[key]!.callbacks = [];
-    } else if (cached[key]!.data == null) {
-      cached[key]!.callbacks.add(onLoaded);
-    } else {
-      onLoaded.call(cached[key]!.data!);
-    }
-  }
+  // static Future<void> updateClassByClassId(ClassModel classModel) async {
+  //   var key = 'class_${classModel.classId}';
+  //
+  //   if (cached[key] != null) {
+  //     cached[key]!.data = classModel;
+  //   }
+  // }
+
+  // static Future<void> classByClassId(
+  //     int classId, Function(Object) onLoaded) async {
+  //   var key = 'class_$classId';
+  //   if (cached[key] == null) {
+  //     cached[key] = CacheObject(DateTime.now(), callbacks: [onLoaded]);
+  //     cached[key]!.data = await FireBaseProvider.instance.getClassById(classId);
+  //     for (var element in cached[key]!.callbacks) {
+  //       element.call(cached[key]!.data!);
+  //     }
+  //     cached[key]!.callbacks = [];
+  //   } else if (cached[key]!.data == null) {
+  //     cached[key]!.callbacks.add(onLoaded);
+  //   } else {
+  //     onLoaded.call(cached[key]!.data!);
+  //   }
+  // }
 
   static Future<void> customLessons(
       int courseId, Function(Object) onLoaded) async {
@@ -407,19 +478,22 @@ class DataProvider {
   static void updateStdLesson(
       int classId, List<StudentLessonModel> stdLessons) {
     var key = 'stdLessons_$classId';
-
-    cached[key]!.data = stdLessons;
+    if(cached[key] != null){
+      cached[key]!.data = stdLessons;
+    }
   }
 
   static void addNewStdLesson(int classId, StudentLessonModel stdLessons) {
     var key = 'stdLessons_$classId';
+    if(cached[key] != null){
+      List<StudentLessonModel> list =
+      cached[key]!.data as List<StudentLessonModel>;
 
-    List<StudentLessonModel> list =
-        cached[key]!.data as List<StudentLessonModel>;
+      list.add(stdLessons);
 
-    list.add(stdLessons);
+      cached[key]!.data = list;
+    }
 
-    cached[key]!.data = list;
   }
 
   static Future<void> stdLessonByClassId(

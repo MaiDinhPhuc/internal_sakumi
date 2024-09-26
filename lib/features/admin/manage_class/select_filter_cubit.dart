@@ -11,6 +11,7 @@ class SelectFilterCubit extends Cubit<int> {
   List<FilterClassStatus> listStatusAdmin = [
     FilterClassStatus.preparing,
     FilterClassStatus.studying,
+    FilterClassStatus.paused,
     FilterClassStatus.completed,
     FilterClassStatus.cancel
   ];
@@ -319,9 +320,12 @@ class SelectFilterCubit extends Cubit<int> {
       filter.add(FilterClassStatus.studying);
     }
     if (listSelect[2] == true) {
-      filter.add(FilterClassStatus.completed);
+      filter.add(FilterClassStatus.paused);
     }
     if (listSelect[3] == true) {
+      filter.add(FilterClassStatus.completed);
+    }
+    if (listSelect[4] == true) {
       filter.add(FilterClassStatus.cancel);
     }
     return filter;

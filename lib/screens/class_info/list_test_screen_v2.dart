@@ -1,6 +1,8 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/admin/manage_bills/add_bill_button.dart';
+import 'package:internal_sakumi/features/class_info/test/add_custom_test_dialog.dart';
 import 'package:internal_sakumi/features/class_info/test/test_cubit_v2.dart';
 import 'package:internal_sakumi/features/class_info/test/test_item_v2.dart';
 import 'package:internal_sakumi/features/footer/footer_view.dart';
@@ -35,107 +37,147 @@ class ListTestScreenV2 extends StatelessWidget {
                                 child: const CircularProgressIndicator())))
                     : Expanded(
                         child: SingleChildScrollView(
-                        child: Padding(padding: EdgeInsets.symmetric(horizontal: Resizable.padding(context, 70)),child: Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.symmetric(
-                                  vertical: Resizable.padding(context, 20)),
-                              child: Text(
-                                  '${AppText.txtClassCode.text} ${cubit.classModel!.classCode}',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: Resizable.font(context, 30))),
-                            ),
-                            cubit.listTest == null
-                                ? Shimmer.fromColors(
-                              baseColor: Colors.grey[300]!,
-                              highlightColor: Colors.grey[100]!,
-                              child: Column(
-                                children: [
-                                  ...shimmerList.map((e) => const ItemShimmer())
-                                ],
-                              ),
-                            )
-                                : Column(
+                        child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: Resizable.padding(context, 70)),
+                            child: Column(
                               children: [
-                                if (cubit.listTest!.isNotEmpty)
-                                  Container(
-                                      padding: EdgeInsets.only(
-                                          right: Resizable.padding(
-                                              context, 20),
-                                          left: Resizable.padding(
-                                              context, 10)),
-                                      margin: EdgeInsets.only(bottom: Resizable.padding(context, 10)),
-                                      child: TestItemRowLayout(
-                                        test: Text(AppText.txtTest.text,
+                                Row(
+                                    mainAxisAlignment:role == 'teacher'?MainAxisAlignment.center :
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.symmetric(
+                                            vertical: Resizable.padding(context, 20)),
+                                        child: Text(
+                                            '${AppText.txtClassCode.text} ${cubit.classModel!.classCode}',
                                             style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.w600,
-                                                color: const Color(
-                                                    0xff757575),
-                                                fontSize: Resizable.font(
-                                                    context, 17))),
-                                        name: Padding(
-                                            padding: EdgeInsets.only(
-                                                left: Resizable.padding(
-                                                    context, 5)),
-                                            child: Text(
-                                                AppText.titleSubject.text,
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                    FontWeight.w600,
-                                                    color: const Color(
-                                                        0xff757575),
-                                                    fontSize:
-                                                    Resizable.font(
-                                                        context,
-                                                        17)))),
-                                        submit: Text(
-                                            AppText
-                                                .txtRateOfSubmitTest.text,
-                                            style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.w600,
-                                                color: const Color(
-                                                    0xff757575),
-                                                fontSize: Resizable.font(
-                                                    context, 17))),
-                                        mark: Text(
-                                            AppText.txtAveragePoint.text,
-                                            style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.w600,
-                                                color: const Color(
-                                                    0xff757575),
-                                                fontSize: Resizable.font(
-                                                    context, 17))),
-                                        status: Text(
-                                            AppText.titleStatus.text,
-                                            style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.w600,
-                                                color: const Color(
-                                                    0xff757575),
-                                                fontSize: Resizable.font(
-                                                    context, 17))),
-                                        dropdown: Container(),
-                                      )),
-                                if (cubit.listTest!.isEmpty)
-                                  Center(
-                                    child:
-                                    Text(AppText.txtTestEmpty.text),
-                                  ),
-                                if (cubit.listTest!.isNotEmpty)
-                                  ...cubit.listTest!
-                                      .map((e) => TestItemV2(
-                                      cubit: cubit,
-                                      role: role,
-                                      test: e))
-                                      .toList()
+                                                fontWeight: FontWeight.w800,
+                                                fontSize:
+                                                Resizable.font(context, 30))),
+                                      ),
+                                      if(role != 'teacher')
+                                        AddButton(
+                                        onTap: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) =>
+                                                  AddCustomTestDialog(
+                                                      cubit,
+                                                      classModel: cubit
+                                                          .classModel!));
+                                        },
+                                        title: AppText
+                                            .btnAddNewTest.text,
+                                      )
+                                    ]),
+                                cubit.listTest == null
+                                    ? Shimmer.fromColors(
+                                        baseColor: Colors.grey[300]!,
+                                        highlightColor: Colors.grey[100]!,
+                                        child: Column(
+                                          children: [
+                                            ...shimmerList
+                                                .map((e) => const ItemShimmer())
+                                          ],
+                                        ),
+                                      )
+                                    : Column(
+                                        children: [
+                                          if (cubit.listTest!.isNotEmpty)
+                                            Container(
+                                                padding: EdgeInsets.only(
+                                                    right: Resizable.padding(
+                                                        context, 20),
+                                                    left: Resizable.padding(
+                                                        context, 10)),
+                                                margin: EdgeInsets.only(
+                                                    bottom: Resizable.padding(
+                                                        context, 10)),
+                                                child: TestItemRowLayout(
+                                                  test: Text(
+                                                      AppText.txtTest.text,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: const Color(
+                                                              0xff757575),
+                                                          fontSize:
+                                                              Resizable.font(
+                                                                  context,
+                                                                  17))),
+                                                  name: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left:
+                                                              Resizable.padding(
+                                                                  context, 5)),
+                                                      child: Text(
+                                                          AppText.titleSubject
+                                                              .text,
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              color: const Color(
+                                                                  0xff757575),
+                                                              fontSize:
+                                                                  Resizable.font(
+                                                                      context,
+                                                                      17)))),
+                                                  submit: Text(
+                                                      AppText
+                                                          .txtRateOfSubmitTest
+                                                          .text,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: const Color(
+                                                              0xff757575),
+                                                          fontSize:
+                                                              Resizable.font(
+                                                                  context,
+                                                                  17))),
+                                                  mark: Text(
+                                                      AppText
+                                                          .txtAveragePoint.text,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: const Color(
+                                                              0xff757575),
+                                                          fontSize:
+                                                              Resizable.font(
+                                                                  context,
+                                                                  17))),
+                                                  status: Text(
+                                                      AppText.titleStatus.text,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: const Color(
+                                                              0xff757575),
+                                                          fontSize:
+                                                              Resizable.font(
+                                                                  context,
+                                                                  17))),
+                                                  dropdown: Container(),
+                                                )),
+                                          if (cubit.listTest!.isEmpty)
+                                            Center(
+                                              child: Text(
+                                                  AppText.txtTestEmpty.text),
+                                            ),
+                                          if (cubit.listTest!.isNotEmpty)
+                                            ...cubit.listTest!
+                                                .map((e) => TestItemV2(
+                                                    cubit: cubit,
+                                                    role: role,
+                                                    test: e))
+                                                .toList()
+                                        ],
+                                      )
                               ],
-                            )
-                          ],
-                        )),
+                            )),
                       ));
               }),
           if (role == 'teacher') FooterView()

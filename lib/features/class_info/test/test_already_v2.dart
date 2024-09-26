@@ -12,15 +12,17 @@ import 'expand_test_v2.dart';
 
 class TestAlreadyV2 extends StatelessWidget {
   const TestAlreadyV2(
-      {super.key, required this.detailCubit, required this.role, required this.index});
+      {super.key,
+      required this.detailCubit,
+      required this.role,
+      required this.index});
   final DetailTestV2 detailCubit;
   final String role;
   final int index;
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(
-          vertical: Resizable.padding(context, 5)),
+      margin: EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
       child: BlocProvider(
           create: (context) => DropdownCubit(),
           child: BlocBuilder<DropdownCubit, int>(
@@ -41,12 +43,14 @@ class TestAlreadyV2 extends StatelessWidget {
                             BorderRadius.circular(Resizable.size(context, 5))),
                     child: AnimatedCrossFade(
                         firstChild: CollapseTestV2(
-                          detailCubit: detailCubit, index: index,
+                          detailCubit: detailCubit,
+                          index: index,
                         ),
                         secondChild: Column(
                           children: [
                             CollapseTestV2(
-                              detailCubit: detailCubit, index: index,
+                              detailCubit: detailCubit,
+                              index: index,
                             ),
                             ExpandTestV2(detailCubit: detailCubit)
                           ],
@@ -61,8 +65,13 @@ class TestAlreadyV2 extends StatelessWidget {
                     color: Colors.transparent,
                     child: InkWell(
                         onTap: () async {
-                          await Navigator.pushNamed(context,
-                              "${Routes.teacher}/grading/class=${detailCubit.cubit.classId}/type=test/parent=${detailCubit.testModel.id}");
+                          if (detailCubit.testModel.isCustom) {
+                            await Navigator.pushNamed(c,
+                                "/teacher/grading/class=${detailCubit.cubit.classId}/type=test/customTest=${detailCubit.testModel.id}/test=${detailCubit.testModel.childTestId}");
+                          } else {
+                            await Navigator.pushNamed(context,
+                                "${Routes.teacher}/grading/class=${detailCubit.cubit.classId}/type=test/parent=${detailCubit.testModel.id}");
+                          }
                         },
                         borderRadius:
                             BorderRadius.circular(Resizable.size(context, 5))),

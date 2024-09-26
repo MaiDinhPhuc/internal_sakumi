@@ -26,7 +26,7 @@ import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
 import 'package:internal_sakumi/model/test_result_model.dart';
 import 'package:internal_sakumi/model/user_model.dart';
-import 'package:internal_sakumi/model/voucher_model.dart';
+import 'package:internal_sakumi/model/voucher_course_model.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
 
 import '../model/group_tag_model.dart';
@@ -42,16 +42,16 @@ abstract class NetworkProvider {
 
   Future<bool> changePassword(String email, String oldPass, String newPass);
 
-  Future<String> uploadImageAndGetUrl(Uint8List data, String folder);
+  Future<String> uploadImageAndGetUrl(Uint8List data, String folder, String fileName);
 
   Future<int> getCountWithCondition(
       String tableName, String field, dynamic condition);
 
   Future<UserModel> getUser(String email);
 
-  Future<List<VoucherModel>> searchVoucher(String text, String type);
+  Future<List<VoucherCourseModel>> searchVoucherCourse(String text, String type);
 
-  Future<void> updateVoucher(
+  Future<void> updateVoucherCourse(
       String usedUserCode, String noted, String voucherCode, String date);
 
   Future<List<LessonResultModel>> getLessonsResultsByListClassIds(
@@ -164,7 +164,7 @@ abstract class NetworkProvider {
       List<int> ids, List<String> listStatus);
 
   Future<DetailGradingDataModel> getDataForDetailGradingCustom(
-      int classId, int lessonId, int customLessonId, String type);
+      int classId, int childId, int parentId, String type);
 
   Future<List<AnswerModel>> getListCustomAnswer(
       int lessonId, int classId, int customLessonId);
@@ -210,11 +210,11 @@ abstract class NetworkProvider {
 
   Future<void> updateCourseInfo(CourseModel courseModel);
 
-  Future<bool> checkExistVoucher(String voucherCode);
+  Future<bool> checkExistVoucherCourse(String voucherCode);
 
-  Future<VoucherModel> getVoucherByVoucherCode(String code);
+  Future<VoucherCourseModel> getVoucherCourseByVoucherCode(String code);
 
-  Future<void> addNewVoucher(VoucherModel model);
+  Future<void> addNewVoucherCourse(VoucherCourseModel model);
 
   Future<List<FeedBackModel>> getListFeedBack(String status, String role);
 

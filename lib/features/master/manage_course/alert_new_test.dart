@@ -27,10 +27,13 @@ void alertAddNewTest(BuildContext context, TestModel? testModel, bool isEdit,
       text: testModel == null ? "" : testModel.difficulty.toString());
   TextEditingController desCon = TextEditingController(
       text: testModel == null ? "" : testModel.description);
+  TextEditingController analysisCon = TextEditingController(
+      text: testModel == null ? "" : testModel.analysis.toString());
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  final ChooseTestTimeCubit chooseTimeCubit = ChooseTestTimeCubit()..loadTime(testModel == null ? 0 : testModel.duration);
+  final ChooseTestTimeCubit chooseTimeCubit = ChooseTestTimeCubit()
+    ..loadTime(testModel == null ? 0 : testModel.duration);
 
   showDialog(
       context: context,
@@ -67,40 +70,39 @@ void alertAddNewTest(BuildContext context, TestModel? testModel, bool isEdit,
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                            InputItem(
-                                onChange: (String? value) {
-                                  debugPrint(value);
-                                },
-                                controller: titleCon,
-                                title: AppText.txtTitle.text,
-                                isExpand: true),
-                            Input2Field(
-                                title1: AppText.txtCourseId.text,
-                                title2: AppText.txtTestId.text,
-                                con1: courseIdCon,
-                                con2: idCon,
-                                enable: isEdit ? false : true),
-                            InputItem(
-                                onChange: (String? value) {
-                                  debugPrint(desCon.text);
-                                },
-                                controller: difficultCon,
-                                title: AppText.txtDifficult.text,
-                                isExpand: false),
-                            InputItem(
-                                onChange: (String? value) {
-                                  debugPrint(desCon.text);
-                                },
-                                controller: desCon,
-                                title: AppText.txtDescription.text,
-                                isExpand: true),
-                            Text(AppText.txtTestTime.text,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: Resizable.font(context, 18),
-                                    color: const Color(0xff757575))),
-                            ChooseTestTime(chooseTimeCubit)
-                          ])),
+                                InputItem(
+                                    onChange: (String? value) {
+                                      debugPrint(value);
+                                    },
+                                    controller: titleCon,
+                                    title: AppText.txtTitle.text,
+                                    isExpand: true),
+                                Input2Field(
+                                    title1: AppText.txtCourseId.text,
+                                    title2: AppText.txtTestId.text,
+                                    con1: courseIdCon,
+                                    con2: idCon,
+                                    enable: isEdit ? false : true),
+                                Input2Field(
+                                    title1: AppText.txtDifficult.text,
+                                    title2: 'Analysis',
+                                    con1: difficultCon,
+                                    con2: analysisCon,
+                                    enable: isEdit ? false : true),
+                                InputItem(
+                                    onChange: (String? value) {
+                                      debugPrint(desCon.text);
+                                    },
+                                    controller: desCon,
+                                    title: AppText.txtDescription.text,
+                                    isExpand: true),
+                                Text(AppText.txtTestTime.text,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: Resizable.font(context, 18),
+                                        color: const Color(0xff757575))),
+                                ChooseTestTime(chooseTimeCubit)
+                              ])),
                       Expanded(
                           flex: 1,
                           child: Container(
@@ -153,7 +155,13 @@ void alertAddNewTest(BuildContext context, TestModel? testModel, bool isEdit,
                                                     title: titleCon.text,
                                                     difficulty: int.parse(
                                                         difficultCon.text),
-                                                    enable: true, duration: chooseTimeCubit.convertTime()));
+                                                    enable: true,
+                                                    duration: chooseTimeCubit
+                                                        .convertTime(),
+                                                    isCustom: false,
+                                                    childTestId: 0,
+                                                    analysis: int.parse(
+                                                        analysisCon.text)));
                                             if (context.mounted) {
                                               Navigator.pop(context);
                                               if (check == true) {
@@ -176,7 +184,13 @@ void alertAddNewTest(BuildContext context, TestModel? testModel, bool isEdit,
                                                 title: titleCon.text,
                                                 difficulty: int.parse(
                                                     difficultCon.text),
-                                                enable: testModel!.enable, duration: chooseTimeCubit.convertTime()));
+                                                enable: testModel!.enable,
+                                                duration: chooseTimeCubit
+                                                    .convertTime(),
+                                                isCustom: false,
+                                                childTestId: 0,
+                                                analysis: int.parse(
+                                                    analysisCon.text)));
                                             if (context.mounted) {
                                               Navigator.pop(context);
                                               cubit.loadTestInCourse(

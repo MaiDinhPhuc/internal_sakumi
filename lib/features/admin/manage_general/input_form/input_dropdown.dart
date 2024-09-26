@@ -15,7 +15,9 @@ class InputDropdownV2 extends StatelessWidget {
       required this.hint,
       required this.items,
       this.errorText,
-      this.height = 36, this.isCircleBorder = false, this.disableHint = "",
+      this.height = 36,
+      this.isCircleBorder = false,
+      this.disableHint = "",
       Key? key})
       : super(key: key);
 
@@ -24,16 +26,16 @@ class InputDropdownV2 extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
       child: DropdownButtonFormField2<String>(
-        disabledHint: Container(
-            alignment: Alignment.centerLeft,
-            height: Resizable.size(context, 50),
-            child: Text(
-              disableHint,
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: Resizable.font(context, 18),
-                  color: const Color(0xff757575)),
-            )),
+          disabledHint: Container(
+              alignment: Alignment.centerLeft,
+              height: Resizable.size(context, 50),
+              child: Text(
+                disableHint,
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: Resizable.font(context, 18),
+                    color: const Color(0xff757575)),
+              )),
           isExpanded: true,
           decoration: InputDecoration(
             isDense: true,
@@ -44,34 +46,38 @@ class InputDropdownV2 extends StatelessWidget {
               borderSide: BorderSide(
                   color: const Color(0xffE0E0E0),
                   width: Resizable.size(context, 0.5)),
-              borderRadius:
-                  BorderRadius.circular(Resizable.padding(context, isCircleBorder ? 1000 : 5)),
+              borderRadius: BorderRadius.circular(
+                  Resizable.padding(context, isCircleBorder ? 1000 : 5)),
             ),
             border: OutlineInputBorder(
-                borderRadius:
-                    BorderRadius.circular(Resizable.padding(context, isCircleBorder ? 1000 : 5)),
+                borderRadius: BorderRadius.circular(
+                    Resizable.padding(context, isCircleBorder ? 1000 : 5)),
                 borderSide: BorderSide(
                     color: const Color(0xffE0E0E0),
                     width: Resizable.size(context, 0.5))),
           ),
-          buttonOverlayColor: MaterialStateProperty.all(Colors.transparent),
-          dropdownElevation: Resizable.size(context, 5).toInt(),
-          dropdownDecoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black.withOpacity(0.25),
-                    blurRadius: Resizable.size(context, 4),
-                    offset: Offset(0, Resizable.size(context, 4)))
-              ],
-              border: Border.all(color: Colors.black),
-              borderRadius: BorderRadius.circular(5)),
-          icon: Padding(
-            padding: EdgeInsets.only(right: Resizable.padding(context, 10)),
-            child: const Icon(Icons.keyboard_arrow_down),
+          buttonStyleData: ButtonStyleData(
+              overlayColor: MaterialStateProperty.all(Colors.transparent),
+              padding:
+              EdgeInsets.symmetric(vertical: Resizable.size(context, 5)),
+              height: Resizable.size(context, height.toDouble())),
+          dropdownStyleData: DropdownStyleData(
+              elevation: Resizable.size(context, 5).toInt(),
+              decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.25),
+                        blurRadius: Resizable.size(context, 4),
+                        offset: Offset(0, Resizable.size(context, 4)))
+                  ],
+                  border: Border.all(color: Colors.black),
+                  borderRadius: BorderRadius.circular(5))),
+          iconStyleData: IconStyleData(
+            icon: Padding(
+              padding: EdgeInsets.only(right: Resizable.padding(context, 10)),
+              child: const Icon(Icons.keyboard_arrow_down),
+            ),
           ),
-          buttonPadding: EdgeInsets.symmetric(
-              vertical: Resizable.size(context, 5),
-              horizontal: Resizable.padding(context, 0)),
           hint: Container(
               alignment: Alignment.centerLeft,
               height: Resizable.size(context, 40),
@@ -84,7 +90,6 @@ class InputDropdownV2 extends StatelessWidget {
                     fontSize: Resizable.font(context, 18),
                     color: const Color(0xff757575)),
               )),
-          buttonHeight: Resizable.size(context, height.toDouble()),
           items: items
               .map((item) => DropdownMenuItem<String>(
                     value: item,
@@ -106,6 +111,7 @@ class InputDropdownV2 extends StatelessWidget {
     );
   }
 }
+
 class InputDropdown extends StatelessWidget {
   final List<String> items;
   final String hint;
@@ -115,11 +121,12 @@ class InputDropdown extends StatelessWidget {
   final bool isCircleBorder;
   const InputDropdown(
       {required this.onChanged,
-        required this.hint,
-        required this.items,
-        this.errorText,
-        this.height = 36, this.isCircleBorder = false,
-        Key? key})
+      required this.hint,
+      required this.items,
+      this.errorText,
+      this.height = 36,
+      this.isCircleBorder = false,
+      Key? key})
       : super(key: key);
 
   @override
@@ -137,39 +144,43 @@ class InputDropdown extends StatelessWidget {
               borderSide: BorderSide(
                   color: const Color(0xffE0E0E0),
                   width: Resizable.size(context, 0.5)),
-              borderRadius:
-              BorderRadius.circular(Resizable.padding(context, isCircleBorder ? 1000 : 5)),
+              borderRadius: BorderRadius.circular(
+                  Resizable.padding(context, isCircleBorder ? 1000 : 5)),
             ),
             border: OutlineInputBorder(
-                borderRadius:
-                BorderRadius.circular(Resizable.padding(context, isCircleBorder ? 1000 : 5)),
+                borderRadius: BorderRadius.circular(
+                    Resizable.padding(context, isCircleBorder ? 1000 : 5)),
                 borderSide: BorderSide(
                     color: const Color(0xffE0E0E0),
                     width: Resizable.size(context, 0.5))),
           ),
-          buttonOverlayColor: MaterialStateProperty.all(Colors.transparent),
-          dropdownElevation: Resizable.size(context, 5).toInt(),
-          dropdownDecoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black.withOpacity(0.25),
-                    blurRadius: Resizable.size(context, 4),
-                    offset: Offset(0, Resizable.size(context, 4)))
-              ],
-              border: Border.all(color: Colors.black),
-              borderRadius: BorderRadius.circular(5)),
-          icon: Padding(
-            padding: EdgeInsets.only(right: Resizable.padding(context, 10)),
-            child: const Icon(Icons.keyboard_arrow_down),
+          buttonStyleData: ButtonStyleData(
+              overlayColor: MaterialStateProperty.all(Colors.transparent),
+              padding:
+                  EdgeInsets.symmetric(vertical: Resizable.size(context, 5)),
+              height: Resizable.size(context, height.toDouble())),
+          dropdownStyleData: DropdownStyleData(
+              elevation: Resizable.size(context, 5).toInt(),
+              decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.25),
+                        blurRadius: Resizable.size(context, 4),
+                        offset: Offset(0, Resizable.size(context, 4)))
+                  ],
+                  border: Border.all(color: Colors.black),
+                  borderRadius: BorderRadius.circular(5))),
+          iconStyleData: IconStyleData(
+            icon: Padding(
+              padding: EdgeInsets.only(right: Resizable.padding(context, 10)),
+              child: const Icon(Icons.keyboard_arrow_down),
+            ),
           ),
-          buttonPadding: EdgeInsets.symmetric(
-              vertical: Resizable.size(context, 5),
-              horizontal: Resizable.padding(context, 0)),
           hint: Container(
               alignment: Alignment.centerLeft,
               height: Resizable.size(context, height.toDouble()),
               padding:
-              EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
+                  EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
               child: Text(
                 hint,
                 style: TextStyle(
@@ -177,17 +188,16 @@ class InputDropdown extends StatelessWidget {
                     fontSize: Resizable.font(context, height > 35 ? 18 : 14),
                     color: const Color(0xff757575)),
               )),
-          buttonHeight: Resizable.size(context, height.toDouble()),
           items: items
               .map((item) => DropdownMenuItem<String>(
-            value: item,
-            child: Text(
-              item,
-              style: const TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ))
+                    value: item,
+                    child: Text(
+                      item,
+                      style: const TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                  ))
               .toList(),
           validator: (value) {
             if (value == null && !items.contains(hint)) {

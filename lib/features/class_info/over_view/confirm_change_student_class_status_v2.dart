@@ -17,16 +17,15 @@ import 'package:internal_sakumi/widget/waiting_dialog.dart';
 import '../../../services/custom_firebase_firestore.dart';
 import 'class_overview_cubit_v2.dart';
 
-class ConfirmChangeStudentClassStatusV2 extends StatelessWidget {
-  const ConfirmChangeStudentClassStatusV2(
-      this.newStatus, this.studentClassModel, this.student, this.popupCubit,
-      {Key? key, required this.cubit})
+class ConfirmChangeStudentClassStatus extends StatelessWidget {
+  const ConfirmChangeStudentClassStatus(
+      this.newStatus, this.studentClassModel, this.student,
+      {Key? key, required this.onTap})
       : super(key: key);
   final String newStatus;
   final StudentClassModel studentClassModel;
   final StudentModel student;
-  final MenuPopupCubit popupCubit;
-  final ClassOverViewCubitV2 cubit;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -54,60 +53,7 @@ class ConfirmChangeStudentClassStatusV2 extends StatelessWidget {
             foreColor: Colors.black,
             text: AppText.txtBack.text),
         CustomButton(
-            onPress: () async {
-              CustomFirebaseFireStore.database
-                  .collection('student_class')
-                  .doc(
-                      'student_${student.userId}_class_${studentClassModel.classId}')
-                  .update({'class_status': newStatus, "last_time_change": DateTime.now().millisecondsSinceEpoch}).whenComplete(() async {
-                if (newStatus == "Remove") {
-                  List<StudentClassModel> list = [];
-
-                  for (var i in cubit.listStdClass!) {
-                    if (i.userId != student.userId) {
-                      list.add(i);
-                    }
-                  }
-
-                  DataProvider.updateStdClass(
-                      studentClassModel.classId, list);
-                  Navigator.pop(context);
-                  waitingDialog(context);
-                } else {
-                  var classModel = await FireBaseProvider.instance.getClassById(studentClassModel.classId);
-                  Create.addNewLog(StudentClassLogModel(
-                      id: DateTime.now().millisecondsSinceEpoch,
-                      classId: studentClassModel.classId,
-                      courseId: classModel.courseId,
-                      from: studentClassModel.status,
-                      to: newStatus,
-                      userId: studentClassModel.userId,
-                      classType: classModel.classType));
-                  List<StudentClassModel> list = [];
-
-                  for (var i in cubit.listStdClass!) {
-                    if (i.userId != student.userId) {
-                      list.add(i);
-                    } else {
-                      list.add(StudentClassModel(
-                          id: studentClassModel.id,
-                          classId: studentClassModel.classId,
-                          activeStatus: studentClassModel.activeStatus,
-                          learningStatus: studentClassModel.learningStatus,
-                          moveTo: studentClassModel.moveTo,
-                          userId: studentClassModel.userId,
-                          classStatus: newStatus,
-                          date: studentClassModel.date, timeChange: studentClassModel.timeChange));
-                    }
-                  }
-                  DataProvider.updateStdClass(
-                      studentClassModel.classId, list);
-                  cubit.update();
-                  popupCubit.update();
-                }
-                Navigator.pop(context);
-              });
-            },
+            onPress: onTap,
             bgColor: primaryColor.shade500,
             foreColor: Colors.white,
             text: AppText.txtAgree.text),

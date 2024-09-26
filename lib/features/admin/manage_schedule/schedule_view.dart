@@ -112,7 +112,7 @@ class ScheduleView extends StatelessWidget {
                           itemBuilder: (context, suggestion) {
                             var data = suggestion.data();
 
-                            if (cubit.teacherController.text.isEmpty) {
+                            if (cubit.teacherController.text.isEmpty || cubit.isChooseTeacher ) {
                               return Container();
                             }
 
@@ -128,7 +128,7 @@ class ScheduleView extends StatelessWidget {
                                     .toString()
                                     .toLowerCase()
                                     .contains(cubit.teacherSearchValue.toLowerCase())) {
-                              return ItemSearchV2(
+                              return ItemSearch(
                                 type: AppText.txtTeacher.text,
                                 isLast: false,
                                 url: data["url"] ?? "",
@@ -210,7 +210,7 @@ class ScheduleView extends StatelessWidget {
                         itemBuilder: (context, suggestion) {
                           var data = suggestion.data();
 
-                          if (cubit.classController.text.isEmpty) {
+                          if (cubit.classController.text.isEmpty || cubit.isChooseClass) {
                             return Container();
                           }
                           if (data["class_code"]
@@ -218,7 +218,7 @@ class ScheduleView extends StatelessWidget {
                               .toLowerCase()
                               .contains(cubit.classSearchValue.toLowerCase()) &&
                               data["is_sub_class"] == false) {
-                            return ItemSearchV2(
+                            return ItemSearch(
                               type: AppText.txtClass.text,
                               isLast: false,
                               classStatus: data["class_status"],

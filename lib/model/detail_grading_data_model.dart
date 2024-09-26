@@ -13,6 +13,7 @@ class DetailGradingDataModel {
   CourseModel courseModel;
   List<int> listStudentId;
   List<bool> listState;
+  int analysis;
 
   DetailGradingDataModel(
       {required this.classModel,
@@ -21,7 +22,7 @@ class DetailGradingDataModel {
       required this.listStudent,
       required this.courseModel,
       required this.listStudentId,
-      required this.listState});
+      required this.listState, required this.analysis});
 
   factory DetailGradingDataModel.fromData(
       List<QuestionModel> listQuestions,
@@ -30,7 +31,7 @@ class DetailGradingDataModel {
       ClassModel classModel,
       CourseModel courseModel,
       List<int> listStudentId,
-      List<bool> listState) {
+      List<bool> listState, int analysis) {
     return DetailGradingDataModel(
         classModel: classModel,
         listQuestions: listQuestions,
@@ -38,6 +39,6 @@ class DetailGradingDataModel {
         listStudent: listStudent,
         courseModel: courseModel,
         listStudentId: listStudentId,
-        listState: listState);
+        listState: listState, analysis: analysis);
   }
 }

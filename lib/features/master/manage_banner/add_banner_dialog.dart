@@ -226,7 +226,7 @@ class _AddBannerDialogState extends State<AddBannerDialog> {
 
       addCubit.setSubmitStatus(SubmitStatus.loading);
       final url =
-      await FireBaseProvider.instance.uploadImageAndGetUrl(addCubit.imgData!, 'banner');
+      await FireBaseProvider.instance.uploadImageAndGetUrl(addCubit.imgData!, 'banner', 'banner');
       debugPrint('==============>url: $url');
       banner = BannerModel(
           id: DateTime.now().millisecondsSinceEpoch,
@@ -254,7 +254,7 @@ class _AddBannerDialogState extends State<AddBannerDialog> {
       String url = '';
       if(addCubit.imgData != null) {
         url =
-        await FireBaseProvider.instance.uploadImageAndGetUrl(addCubit.imgData!, 'banner');
+        await FireBaseProvider.instance.uploadImageAndGetUrl(addCubit.imgData!, 'banner', 'banner');
       }
       banner = widget.bannerModel!.copyWith(
         title: titleCon.text,

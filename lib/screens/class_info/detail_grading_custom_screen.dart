@@ -7,6 +7,7 @@ import 'package:internal_sakumi/features/teacher/grading/detail_grading_view.dar
 import 'package:internal_sakumi/features/teacher/grading/header_grading.dart';
 import 'package:internal_sakumi/features/teacher/grading/list_question_item.dart';
 import 'package:internal_sakumi/features/teacher/app_bar/class_appbar.dart';
+import 'package:internal_sakumi/features/teacher/grading/radar_test_chart.dart';
 import 'package:internal_sakumi/features/teacher/grading/sound/sound_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
@@ -33,7 +34,7 @@ class DetailGradingCustomScreen extends StatelessWidget {
           ),
           Expanded(
               child: BlocBuilder<DetailGradingCubitV2, int>(
-                  bloc: cubit..initCustom(),
+                  bloc: cubit..initCustom(type),
                   builder: (c, s) {
                     return s == -1
                         ? Transform.scale(
@@ -71,28 +72,39 @@ class DetailGradingCustomScreen extends StatelessWidget {
                                               children: [
                                                 HeaderGradingV2(cubit: cubit),
                                                 Expanded(
-                                                    child: Container(
-                                                  margin: EdgeInsets.only(
-                                                      bottom: Resizable.padding(
-                                                          context, 5),
-                                                      right: Resizable.padding(
-                                                          context, 10)),
-                                                  padding: EdgeInsets.all(
-                                                      Resizable.padding(
-                                                          context, 5)),
-                                                  decoration: BoxDecoration(
-                                                      color: lightGreyColor,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              Resizable.size(
-                                                                  context, 5))),
-                                                  child: DetailGradingViewV2(
-                                                    cubit,
-                                                    questionSoundCubit,
-                                                    checkActiveCubit:
-                                                        checkActiveCubit,
-                                                  ),
-                                                ))
+                                                    child: SingleChildScrollView(
+                                                      child: Column(
+                                                        children: [
+                                                          if(cubit.analysis != 0)
+                                                            SizedBox(
+                                                                height: Resizable.size(
+                                                                    context, 250),
+                                                                child: AnalyticsTestChart(data: cubit.getDataChart())),
+                                                          Container(
+                                                            margin: EdgeInsets.only(
+                                                                bottom: Resizable.padding(
+                                                                    context, 5),
+                                                                right: Resizable.padding(
+                                                                    context, 10)),
+                                                            padding: EdgeInsets.all(
+                                                                Resizable.padding(
+                                                                    context, 5)),
+                                                            decoration: BoxDecoration(
+                                                                color: lightGreyColor,
+                                                                borderRadius:
+                                                                BorderRadius.circular(
+                                                                    Resizable.size(
+                                                                        context, 5))),
+                                                            child: DetailGradingViewV2(
+                                                              cubit,
+                                                              questionSoundCubit,
+                                                              checkActiveCubit:
+                                                              checkActiveCubit,
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ))
                                               ],
                                             ))
                                       ],

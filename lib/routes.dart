@@ -7,7 +7,7 @@ import 'package:internal_sakumi/screens/admin/tab/manage_bill_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_feedbacks_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_schedule_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_statistics_screen.dart';
-import 'package:internal_sakumi/screens/admin/tab/manage_student_screen.dart';
+import 'package:internal_sakumi/screens/admin/tab/manage_advises_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_survey_tab.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_teacher_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/search_general_screen.dart';
@@ -29,6 +29,7 @@ import 'package:internal_sakumi/screens/login_screen.dart';
 import 'package:internal_sakumi/screens/master/detail_answer_teacher_survey_screen.dart';
 import 'package:internal_sakumi/screens/master/detail_student_survey_screen.dart';
 import 'package:internal_sakumi/screens/master/detail_teacher_survey_screen.dart';
+import 'package:internal_sakumi/screens/master/gift_code_tab.dart';
 import 'package:internal_sakumi/screens/master/manage_banner_tab.dart';
 import 'package:internal_sakumi/screens/master/manage_course_suggest_tab.dart';
 import 'package:internal_sakumi/screens/master/manage_teacher_feed_back_tab.dart';
@@ -95,6 +96,9 @@ class Routes {
     router.define('$master/manageBanner',
         handler: manageBanner,
         transitionType: TransitionType.fadeIn);
+    router.define('$master/giftCode',
+        handler: giftCode,
+        transitionType: TransitionType.fadeIn);
     router.define('$master/manageCourseSuggest',
         handler: manageCourseSuggest,
         transitionType: TransitionType.fadeIn);
@@ -116,7 +120,7 @@ class Routes {
         handler: manageBillsHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/manageTeachers',
         handler: manageTeacherHandler, transitionType: TransitionType.fadeIn);
-    router.define('$admin/manageStudents',
+    router.define('$admin/manageAdvises',
         handler: manageStudentHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/manageStatistics',
         handler: manageStatisticsHandler,
@@ -207,6 +211,11 @@ var manageBanner =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return ManageBannerTab();
 });
+var giftCode =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return GiftCodeTab();
+});
+
 var manageCourseSuggest =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return ManageCourseSuggestTab();
@@ -255,7 +264,7 @@ var manageTeacherHandler =
 });
 var manageStudentHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return const ManageStudentScreen();
+  return ManageAdvisesScreen();
 });
 var manageStatisticsHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
@@ -271,7 +280,7 @@ var toolsHandler =
 });
 var voucherHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  return const VoucherScreen();
+  return VoucherScreen();
 });
 var studentInfoHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {

@@ -1,5 +1,5 @@
 import 'package:flutter/Material.dart';
-import 'package:image_network/image_network.dart';
+import 'dart:html' as html;
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/profile/report_tab/report_status_item.dart';
@@ -75,7 +75,9 @@ class ReportItem extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    ReportStatusItem(reportModel.status),
+                    ReportRangeItem(reportModel.range, "Mức độ biên bản "),
+                    SizedBox(width: Resizable.padding(context, 5)),
+                    ReportStatusItem(reportModel.status, "Trạng thái cuộc họp "),
                     if (role == 'admin')
                       SizedBox(
                         height: Resizable.size(context, 15),
@@ -137,38 +139,43 @@ class ReportItem extends StatelessWidget {
               ],
             ),
             const Divider(thickness: 1),
-            Text(reportModel.content,
+            SelectableText(reportModel.content,
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Colors.black,
                     fontSize: Resizable.font(context, 20))),
-            if (reportModel.images.isNotEmpty)
+            if (reportModel.files.isNotEmpty)
               SizedBox(
-                  height: Resizable.size(context, 250),
+                  height: Resizable.size(context, 50),
                   child: ListView.builder(
-                    itemCount: reportModel.images.length,
+                    itemCount: reportModel.files.length,
                     scrollDirection: Axis.horizontal,
                     padding: EdgeInsets.symmetric(
                         vertical: Resizable.padding(context, 5)),
                     itemBuilder: (_, i) => Padding(
                         padding: EdgeInsets.only(
                             right: Resizable.padding(context, 10)),
-                        child: ClipRRect(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                                Resizable.size(context, 10)),
+                            border: Border.all(
+                              width: 1,
+                            ),
+                          ),
                           key: Key(reportModel.id.toString()),
-                          borderRadius: BorderRadius.circular(
-                              Resizable.size(context, 10)),
-                          child: cubit.checkIsUrl(reportModel.images[i])
-                              ? Image.network(
-                                  fit: BoxFit.fill,
-                                  '${reportModel.images[i]}',
-                                  height: Resizable.size(context, 250),
-                                  width: Resizable.size(context, 200),
-                                  errorBuilder: (_, __, ___) => Container(),
-                                )
-                              : Image.memory(reportModel.images[i],
-                                  height: Resizable.size(context, 250),
-                                  width: Resizable.size(context, 200),
-                                  fit: BoxFit.fill),
+                          child: TextButton(
+                            onPressed: () {
+                              html.AnchorElement anchorElement = html.AnchorElement(href: reportModel.files[i]['db']);
+                              anchorElement.download = reportModel.files[i]['db'];
+                              anchorElement.click();
+                            },
+                            child: Text(reportModel.files[i]['file_name'],
+                                style: TextStyle(
+                                    fontSize: Resizable.padding(context, 14),
+                                    color: primaryColor,
+                                    fontWeight: FontWeight.w500)),
+                          ),
                         )),
                   ))
           ],

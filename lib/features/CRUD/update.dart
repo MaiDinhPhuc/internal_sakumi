@@ -11,6 +11,7 @@ import 'package:internal_sakumi/model/teacher_class_model.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/model/teacher_survey_model.dart';
 import 'package:internal_sakumi/model/test_model.dart';
+import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 
 import '../../services/custom_firebase_firestore.dart';
@@ -34,8 +35,9 @@ class Update  {
     });
   }
 
-  static updateClassInfo(ClassModel model) {
-    FireBaseProvider.instance.updateClassInfo(model);
+  static updateClassInfo(ClassModel model) async {
+    await FireBaseProvider.instance.updateClassInfo(model);
+    //await DataProvider.updateClassByClassId(model);
   }
 
   static updateAttendance(

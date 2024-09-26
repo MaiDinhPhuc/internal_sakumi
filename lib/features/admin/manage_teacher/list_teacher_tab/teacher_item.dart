@@ -7,6 +7,7 @@ import 'package:internal_sakumi/features/admin/manage_teacher/list_teacher_tab/t
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_cubit.dart';
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/utils/functions.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/card_item.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
@@ -36,8 +37,9 @@ class TeacherItem extends StatelessWidget {
                     cubit: cubit,
                   ),
                   onTap: () async {
-                    await Navigator.pushNamed(context,
-                        "${Routes.admin}/teacherInfo/teacher=${teacherModel.userId}");
+                    await Functions.goPage(
+                        "${Routes.admin}/teacherInfo/teacher=${teacherModel.userId}",
+                        context);
                   },
                   onPressed: () {
                     BlocProvider.of<DropdownCubit>(c).update();
@@ -181,8 +183,9 @@ class TeacherItem extends StatelessWidget {
                     ],
                   ),
                   onTap: () async {
-                    await Navigator.pushNamed(context,
-                        "${Routes.admin}/teacherInfo/teacher=${teacherModel.userId}");
+                    await Functions.goPage(
+                        "${Routes.admin}/teacherInfo/teacher=${teacherModel.userId}",
+                        context);
                   },
                   onPressed: () => BlocProvider.of<DropdownCubit>(c).update(),
                   widgetStatus: Container()),

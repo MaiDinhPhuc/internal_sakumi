@@ -92,27 +92,31 @@ class LessonWaitingViewV2 extends StatelessWidget {
                     Update.updateTeacherNote(
                         std.userId, cubit.listNoteForEachStudent[index],cubit.lessonId, cubit.classId);
 
-                    var stdLesson = cubit.stdLessons!.firstWhere((e) =>
+                    var stdLesson = cubit.stdLessons!.where((e) =>
                         e.studentId == std.userId &&
-                        e.lessonId == cubit.lessonId);
+                        e.lessonId == cubit.lessonId).toList();
 
-                    cubit.updateStudentLesson(
-                        std.userId,
-                        StudentLessonModel(
-                            grammar: stdLesson.grammar,
-                            hw: stdLesson.hw,
-                            id: stdLesson.id,
-                            classId: stdLesson.classId,
-                            kanji: stdLesson.kanji,
-                            lessonId: stdLesson.lessonId,
-                            listening: stdLesson.listening,
-                            studentId: stdLesson.studentId,
-                            timekeeping: stdLesson.timekeeping,
-                            vocabulary: stdLesson.vocabulary,
-                            teacherNote: cubit.listNoteForEachStudent[index],
-                            supportNote: stdLesson.supportNote,
-                            time: {},
-                            hws: stdLesson.hws));
+                    if(stdLesson.isNotEmpty){
+                      cubit.updateStudentLesson(
+                          std.userId,
+                          StudentLessonModel(
+                              grammar: stdLesson.first.grammar,
+                              hw: stdLesson.first.hw,
+                              id: stdLesson.first.id,
+                              classId: stdLesson.first.classId,
+                              kanji: stdLesson.first.kanji,
+                              lessonId: stdLesson.first.lessonId,
+                              listening: stdLesson.first.listening,
+                              studentId: stdLesson.first.studentId,
+                              timekeeping: stdLesson.first.timekeeping,
+                              vocabulary: stdLesson.first.vocabulary,
+                              teacherNote: cubit.listNoteForEachStudent[index],
+                              supportNote: stdLesson.first.supportNote,
+                              time: {},
+                              hws: stdLesson.first.hws));
+                    }
+
+
                   }
                   Update.updateLessonStatus(cubit.lessonId, cubit.classId, 'Complete');
                   cubit.updateStatus('Complete');

@@ -1,8 +1,11 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/app_bar/admin_appbar.dart';
 import 'package:internal_sakumi/features/admin/manage_student/info_student_view.dart';
-import 'package:internal_sakumi/features/admin/manage_student/list_student_class_view.dart';
+import 'package:internal_sakumi/features/admin/manage_student/manage_std_bill_view.dart';
+import 'package:internal_sakumi/features/admin/manage_student/manage_std_class_view.dart';
+import 'package:internal_sakumi/features/admin/manage_student/manage_std_tab_view.dart';
 import 'package:internal_sakumi/features/admin/manage_student/student_info_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
@@ -41,7 +44,15 @@ class StudentInfoScreen extends StatelessWidget {
                                     cubit: cubit)),
                             Expanded(
                                 flex: 9,
-                                child: ListStudentClassView(cubit: cubit))
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ManageStdTabView( cubit: cubit),
+                                    cubit.tab == AppText.titleManageClass.text
+                                        ? ManageStdClassView(cubit: cubit)
+                                        : ManageStdBillView(cubit: cubit)
+                                  ],
+                                ))
                           ],
                         ),
                       ),

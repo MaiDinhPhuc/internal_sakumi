@@ -28,6 +28,7 @@ class StudentClassModel {
         return const Color(0xffF57F17);
       case 'Retained':
       case 'UpSale':
+      case 'SuperUpSale':
         return const Color(0xffE65100);
       case 'ReNew':
       case 'Dropped':
@@ -77,6 +78,7 @@ class StudentClassModel {
       case 'Viewer':
         return 'viewer';
       case 'UpSale':
+      case 'SuperUpSale':
       case "Force":
         return 'up_sale';
       case 'ReNew':

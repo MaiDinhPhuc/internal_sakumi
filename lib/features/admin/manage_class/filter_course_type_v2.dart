@@ -2,15 +2,15 @@ import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/admin_v2/manage_class_v2/select_filter_cubit.dart';
+import 'package:internal_sakumi/features/admin/manage_class/select_filter_cubit.dart';
 import 'package:internal_sakumi/providers/cache/filter_admin_provider.dart';
 import 'package:internal_sakumi/screens/class_info/detail_grading_screen_v2.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'class_cubit_v2.dart';
 
-class FilterTypeAdminV2 extends StatelessWidget {
-  FilterTypeAdminV2(this.cubit, {super.key, required this.classCubit})
+class FilterCourseTypeAdminV2 extends StatelessWidget {
+  FilterCourseTypeAdminV2(this.cubit, {super.key, required this.classCubit})
       : selectCubit = SelectFilterCubit();
   final AdminClassFilterCubit cubit;
   final SelectFilterCubit selectCubit;
@@ -19,9 +19,9 @@ class FilterTypeAdminV2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SelectFilterCubit, int>(
         bloc: selectCubit
-          ..loadType(cubit.filter[AdminFilter.type] == null
-              ? [FilterClassType.group]
-              : cubit.filter[AdminFilter.type]!),
+          ..loadCourse(cubit.filter[AdminFilter.course] == null
+              ? [FilterClassCourse.general]
+              : cubit.filter[AdminFilter.course]!),
         builder: (c, s) {
           return Container(
               constraints: BoxConstraints(
@@ -38,15 +38,15 @@ class FilterTypeAdminV2 extends StatelessWidget {
                       onCanceled: () {
                         classCubit.isLastPage = false;
                         cubit.update(
-                            AdminFilter.type, selectCubit.convertType());
+                            AdminFilter.course, selectCubit.convertCourse());
                       },
                       itemBuilder: (context) => [
-                            ...selectCubit.listType.map((e) => PopupMenuItem(
+                            ...selectCubit.listCourse.map((e) => PopupMenuItem(
                                 padding: EdgeInsets.zero,
                                 child: BlocProvider(
                                     create: (c) => CheckBoxFilterCubit(
                                         selectCubit.listSelect[
-                                            selectCubit.listType.indexOf(e)]),
+                                            selectCubit.listCourse.indexOf(e)]),
                                     child:
                                         BlocBuilder<CheckBoxFilterCubit, bool>(
                                             builder: (cc, state) {
@@ -57,12 +57,12 @@ class FilterTypeAdminV2 extends StatelessWidget {
                                         value: state,
                                         onChanged: (newValue) {
                                           selectCubit.listSelect[selectCubit
-                                              .listType
+                                              .listCourse
                                               .indexOf(e)] = newValue!;
                                           if (selectCubit.listSelect.every(
                                               (element) => element == false)) {
                                             selectCubit.listSelect[selectCubit
-                                                .listType
+                                                .listCourse
                                                 .indexOf(e)] = !newValue;
                                           } else {
                                             BlocProvider.of<
@@ -87,13 +87,13 @@ class FilterTypeAdminV2 extends StatelessWidget {
                             border: Border.all(color: greyColor.shade100),
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(1000)),
-                        child:  Row(
+                        child:Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Expanded(
                                 flex: 3,
                                 child: Padding(padding: EdgeInsets.only(left: Resizable.size(context, 15)),child: Center(
-                                    child: Text(AppText.txtClassType.text,
+                                    child: Text(AppText.txtCourse.text,
                                         style: TextStyle(
                                             fontSize:
                                             Resizable.font(context, 18),
@@ -110,3 +110,5 @@ class FilterTypeAdminV2 extends StatelessWidget {
         });
   }
 }
+
+

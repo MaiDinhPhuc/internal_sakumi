@@ -4,7 +4,7 @@ import 'package:flutter/Material.dart';
 class ClassModel {
   final int classId, courseId, classType, endTime, startTime, subClassId;
   final String description, note, classCode, classStatus, link;
-  List<dynamic> customLessons;
+  List<dynamic> customLessons, customTests;
   final bool informal, isSubClass;
 
   Color getColor() {
@@ -16,6 +16,8 @@ class ClassModel {
       case 'Completed':
       case 'Preparing':
         return const Color(0xff757575);
+      case 'Paused':
+        return const Color(0xffF57F17);
       default:
         return const Color(0xff33691e);
     }
@@ -48,6 +50,8 @@ class ClassModel {
         return "dropped";
       case 'Completed':
         return "check";
+      case 'Paused':
+        return "retained";
       default:
         return "in_progress";
     }
@@ -67,7 +71,7 @@ class ClassModel {
       required this.customLessons,
       required this.informal,
       required this.isSubClass,
-      required this.subClassId});
+      required this.subClassId, required this.customTests});
   factory ClassModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
@@ -85,6 +89,6 @@ class ClassModel {
         customLessons: data['custom_lesson'] ?? [],
         informal: data['informal'] ?? false,
         isSubClass: data['is_sub_class'] ?? false,
-        subClassId: data['sub_class_id'] ?? 0);
+        subClassId: data['sub_class_id'] ?? 0, customTests: data['custom_test']?? []);
   }
 }

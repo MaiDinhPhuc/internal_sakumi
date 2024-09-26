@@ -24,7 +24,7 @@ class CustomLessonCubit extends Cubit<int> {
 
   List<CourseModel>? courses;
   List<LessonModel> lessons = [];
-  int count = 1;
+
 
   loadData() async {
     courses = (await FireBaseProvider.instance.getAllCourseEnable())
@@ -101,14 +101,24 @@ class CustomLessonCubit extends Cubit<int> {
     emit(state + 1);
   }
 
+  check(int index){
+
+    if(listLessonInfo[index]['courseId'] == -1 && listLessonInfo[index]['lessonId'] == null) return true;
+
+    if(listLessonInfo[index]['courseId'] == -1 || listLessonInfo[index]['lessonId'] == null) return false;
+
+    return true;
+  }
+
   delete(int index) {
-    listLessonInfo.remove(listLessonInfo[index]);
-    count--;
+
+    if(listLessonInfo.isNotEmpty && check(index)){
+      listLessonInfo.remove(listLessonInfo[index]);
+    }
     emit(state + 1);
   }
 
   addNewCourse() {
-    count++;
     listLessonInfo.add({"courseId": -1});
     emit(state + 1);
   }
@@ -131,22 +141,25 @@ class CustomLessonCubit extends Cubit<int> {
       "lessons_info": list
     });
 
+    ClassModel newClass = ClassModel(
+        classId: classModel.classId,
+        courseId: classModel.courseId,
+        description: classModel.description,
+        endTime: classModel.endTime,
+        startTime: classModel.startTime,
+        note: classModel.note,
+        classCode: classModel.classCode,
+        classStatus: classModel.classStatus,
+        classType: classModel.classType,
+        link: classModel.link,
+        customLessons: listCustomLesson,
+        informal: classModel.informal,
+        isSubClass: classModel.isSubClass,
+        subClassId: classModel.subClassId, customTests: classModel.customTests);
+
     Update
-        .updateClassInfo(ClassModel(
-            classId: classModel.classId,
-            courseId: classModel.courseId,
-            description: classModel.description,
-            endTime: classModel.endTime,
-            startTime: classModel.startTime,
-            note: classModel.note,
-            classCode: classModel.classCode,
-            classStatus: classModel.classStatus,
-            classType: classModel.classType,
-            link: classModel.link,
-            customLessons: listCustomLesson,
-            informal: classModel.informal,
-            isSubClass: classModel.isSubClass,
-            subClassId: classModel.subClassId));
+        .updateClassInfo(newClass);
+    listLessonCubit.updateClass(newClass);
     listLessonCubit.addNewLesson(LessonModel(
         lessonId: millisecondsSinceEpoch,
         courseId: -1,
@@ -199,7 +212,7 @@ class CustomLessonCubit extends Cubit<int> {
             customLessons: listCustomLesson,
             informal: classModel.informal,
             isSubClass: classModel.isSubClass,
-            subClassId: classModel.subClassId))
+            subClassId: classModel.subClassId, customTests: classModel.customTests))
         .whenComplete(() {
       subCourseCubit.addNewLesson(LessonModel(
           lessonId: millisecondsSinceEpoch,

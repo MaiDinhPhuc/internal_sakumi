@@ -21,20 +21,12 @@ class HeaderGrading extends StatelessWidget {
       children: [
         Expanded(
             flex: 6,
-            child: Padding(
-                padding: EdgeInsets.only(
-                  top: Resizable.padding(context, 10),
-                ),
-                child: Text(AppText.titleGrading.text.toUpperCase(),
-                    style: TextStyle(
-                        fontSize: Resizable.font(context, 20),
-                        fontWeight: FontWeight.w700,
-                        color: greyColor.shade500)))),
+            child: Container()),
         Expanded(
             flex: 2,
             child: Padding(
                 padding: EdgeInsets.symmetric(
-                    vertical: Resizable.padding(context, 20),
+                    vertical: Resizable.padding(context, 10),
                   horizontal: Resizable.padding(context, 5),
                 ),
                 child: ElevatedButton(
@@ -46,12 +38,12 @@ class HeaderGrading extends StatelessWidget {
                     });
                   },
                   style: ButtonStyle(
-                      shadowColor: MaterialStateProperty.all(
+                      shadowColor: WidgetStateProperty.all(
                           primaryColor ),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      shape: WidgetStateProperty.all(RoundedRectangleBorder(
                           borderRadius:
                           BorderRadius.circular(Resizable.padding(context, 1000)))),
-                      backgroundColor: MaterialStateProperty.all(
+                      backgroundColor: WidgetStateProperty.all(
                           primaryColor )),
                   child: Text("Hoàn thành",
                       style: TextStyle(
@@ -64,7 +56,7 @@ class HeaderGrading extends StatelessWidget {
             flex: 2,
             child: Padding(
                 padding: EdgeInsets.symmetric(
-                  vertical: Resizable.padding(context, 20),
+                  vertical: Resizable.padding(context, 10),
                   horizontal: Resizable.padding(context, 5),
                 ),
                 child: ElevatedButton(
@@ -73,12 +65,12 @@ class HeaderGrading extends StatelessWidget {
                     cubit.init(type);
                   },
                   style: ButtonStyle(
-                      shadowColor: MaterialStateProperty.all(
+                      shadowColor: WidgetStateProperty.all(
                           primaryColor ),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      shape: WidgetStateProperty.all(RoundedRectangleBorder(
                           borderRadius:
                           BorderRadius.circular(Resizable.padding(context, 1000)))),
-                      backgroundColor: MaterialStateProperty.all(
+                      backgroundColor: WidgetStateProperty.all(
                        primaryColor )),
                   child: Text("Reload",
                       style: TextStyle(
@@ -223,15 +215,7 @@ class HeaderGradingV2 extends StatelessWidget {
       children: [
         Expanded(
             flex: 6,
-            child: Padding(
-                padding: EdgeInsets.only(
-                  top: Resizable.padding(context, 10),
-                ),
-                child: Text(AppText.titleGrading.text.toUpperCase(),
-                    style: TextStyle(
-                        fontSize: Resizable.font(context, 20),
-                        fontWeight: FontWeight.w700,
-                        color: greyColor.shade500)))),
+            child: Container()),
         Expanded(
             flex: 2,
             child: Padding(
@@ -247,12 +231,12 @@ class HeaderGradingV2 extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   style: ButtonStyle(
-                      shadowColor: MaterialStateProperty.all(
+                      shadowColor: WidgetStateProperty.all(
                           primaryColor ),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      shape: WidgetStateProperty.all(RoundedRectangleBorder(
                           borderRadius:
                           BorderRadius.circular(Resizable.padding(context, 1000)))),
-                      backgroundColor: MaterialStateProperty.all(
+                      backgroundColor: WidgetStateProperty.all(
                           primaryColor )),
                   child: Text("Hoàn thành",
                       style: TextStyle(

@@ -5,6 +5,7 @@ import 'package:internal_sakumi/features/master/manage_course/add_new_lesson_but
 import 'package:internal_sakumi/model/survey_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/utils/functions.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
@@ -116,8 +117,9 @@ void alertAddNewStudentSurvey(BuildContext context, ManageStudentSurveyCubit cub
                                         Navigator.pop(context);
                                         Navigator.pop(context);
                                         cubit.addNewSurvey(survey);
-                                        Navigator.pushNamed(context,
-                                            '${Routes.master}/manageStudentSurvey/id=$millisecondsSinceEpoch');
+                                        await Functions.goPage(
+                                            '${Routes.master}/manageStudentSurvey/id=$millisecondsSinceEpoch',
+                                            context);
                                       }
                                     } else {
                                       print('Form is invalid');

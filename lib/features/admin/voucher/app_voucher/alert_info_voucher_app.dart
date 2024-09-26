@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_dropdown.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_field.dart';
@@ -8,9 +7,8 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
-import 'package:intl/intl.dart';
 
-void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
+void alertInfoVoucherApp(BuildContext context, VoucherCubit cubit) {
   final TextEditingController conUser = TextEditingController();
 
   var items = [AppText.txtNew.text, AppText.txtUsed.text];
@@ -29,7 +27,7 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                   Container(
                     alignment: Alignment.topLeft,
                     margin:
-                        EdgeInsets.only(bottom: Resizable.padding(context, 10)),
+                    EdgeInsets.only(bottom: Resizable.padding(context, 10)),
                     child: Text(
                       AppText.titleInfoVoucher.text.toUpperCase(),
                       style: TextStyle(
@@ -39,46 +37,13 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                   ),
                   InputItem(
                     title: AppText.titleVoucherCode.text,
-                    hintText: cubit.voucherModel!.voucherCode,
+                    hintText: cubit.voucherAppModel!.voucherCode,
                     enabled: false,
                   ),
                   InputItem(
                       title: AppText.titleDiscount.text,
-                      hintText: cubit.voucherModel!.price,
+                      hintText: cubit.voucherAppModel!.price,
                       enabled: false),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(
-                          child: InputItem(
-                              title: AppText.titleApplyCourse.text,
-                              enabled: false,
-                              hintText: cubit.voucherModel!.type)),
-                      SizedBox(width: Resizable.padding(context, 15)),
-                      Expanded(
-                          child: Row(
-                        children: [
-                          InkWell(
-                              child: cubit.isFullCourse
-                                  ? const Icon(
-                                      Icons.check_box,
-                                      color: grey2,
-                                    )
-                                  : const Icon(Icons.check_box_outline_blank,
-                                      color: grey2)),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: Resizable.padding(context, 2)),
-                            child: Text(AppText.txtFullCourse.text,
-                                style: TextStyle(
-                                    color: const Color(0xff757575),
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: Resizable.font(context, 18))),
-                          )
-                        ],
-                      ))
-                    ],
-                  ),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -86,13 +51,13 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                           child: InputItem(
                               title: AppText.txtRecipientCode.text,
                               enabled: false,
-                              hintText: cubit.voucherModel!.recipientCode)),
+                              hintText: cubit.voucherAppModel!.recipientCode)),
                       SizedBox(width: Resizable.padding(context, 15)),
                       Expanded(
                         child: InputItem(
                           title: AppText.titleUserId.text,
-                          hintText: cubit.voucherModel!.usedUserCode,
-                          enabled: cubit.isActive(),
+                          hintText: cubit.convertUsedCode(),
+                          enabled: cubit.isActiveVoucherApp(),
                           controller: conUser,
                         ),
                       )
@@ -103,44 +68,44 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                     children: [
                       Expanded(
                           child: InputItem(
-                        title: AppText.titleExpiredDate.text,
-                        hintText: cubit.voucherModel!.expiredDate,
-                        enabled: false,
-                      )),
+                            title: AppText.titleExpiredDate.text,
+                            hintText: cubit.parseDate(cubit.voucherAppModel!.expiredDate),
+                            enabled: false,
+                          )),
                       SizedBox(width: Resizable.padding(context, 15)),
                       Expanded(
                           child: Padding(
-                        padding: EdgeInsets.only(
-                            bottom: Resizable.padding(context, 5)),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(AppText.titleStatus.text,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: Resizable.font(context, 18),
-                                    color: const Color(0xff757575))),
-                            InputDropdown(
-                                onChanged: (v) =>
-                                    cubit.selectStatus(v.toString()),
-                                hint: items.first,
-                                items: items),
-                          ],
-                        ),
-                      )),
+                            padding: EdgeInsets.only(
+                                bottom: Resizable.padding(context, 5)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(AppText.titleStatus.text,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: Resizable.font(context, 18),
+                                        color: const Color(0xff757575))),
+                                InputDropdown(
+                                    onChanged: (v) =>
+                                        cubit.selectStatus(v.toString()),
+                                    hint: items.first,
+                                    items: items),
+                              ],
+                            ),
+                          )),
                     ],
                   ),
                   InputItem(
                       title: AppText.txtNote.text,
-                      enabled: cubit.isActive(),
-                      initialValue: cubit.voucherModel!.noted,
+                      enabled: cubit.isActiveVoucherApp(),
+                      initialValue: cubit.voucherAppModel!.noted,
                       onChange: (v) {
                         cubit.updateNote(v);
                       },
                       isExpand: true),
                   Container(
                     margin:
-                        EdgeInsets.only(top: Resizable.padding(context, 10)),
+                    EdgeInsets.only(top: Resizable.padding(context, 10)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -157,14 +122,10 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                           constraints: BoxConstraints(
                               minWidth: Resizable.size(context, 100)),
                           child: SubmitButton(
-                              isActive: cubit.isActive(),
+                              isActive: cubit.isActiveVoucherApp(),
                               onPressed: () async {
-                                String date =
-                                    cubit.status != AppText.txtNew.text
-                                        ? DateFormat('dd/MM/yyyy')
-                                            .format(DateTime.now())
-                                        : '';
-                                if (date.isNotEmpty && conUser.text.isEmpty) {
+
+                                if (conUser.text.isEmpty) {
                                   if (context.mounted) {
                                     notificationDialog(context,
                                         AppText.txtPleaseInputStudentCode.text);
@@ -172,11 +133,10 @@ void alertInfoVoucher(BuildContext context, VoucherCubit cubit) {
                                 } else {
                                   Navigator.pop(context);
                                   waitingDialog(context);
-                                  await cubit.updateVoucher(
-                                      conUser.text,
-                                      cubit.initialValue,
-                                      cubit.voucherModel!.voucherCode,
-                                      date);
+                                  await cubit.updateVoucherApp(
+                                      cubit.noteValue,
+                                      cubit.voucherAppModel!.voucherCode
+                                      );
                                   if (context.mounted) {
                                     Navigator.pop(context);
                                     notificationDialog(

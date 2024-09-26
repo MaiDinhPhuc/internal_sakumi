@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/Material.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/answer_model.dart';
 import 'package:internal_sakumi/model/class_model.dart';
@@ -35,9 +35,35 @@ class DetailGradingCubit extends Cubit<int> {
   String gradingType = "";
   List<StudentLessonModel>? stdLessons;
   List<StudentTestModel>? stdTests;
+  bool isAll = true;
+  int analysis = 1;
 
   loading(){
     emit(-1);
+  }
+
+  update(){
+
+    List<int> listQuestionId = getListQuestion().map((e)=>e.id).toList();
+
+    if(!listQuestionId.contains(now)){
+      now = getListQuestion().first.id;
+    }
+
+    emit(state+1);
+  }
+
+  List<QuestionModel> getListQuestion(){
+    if(isAll) return listQuestions!;
+    return listQuestions!.where((e)=>!checkGrading(e.id)).toList();
+  }
+
+  List<RadarEntry> getDataChart(){
+    List<RadarEntry> dataChart = [];
+    if(analysis == 1 && gradingType == "test"){
+      dataChart = AnalysisTestUtils.createChartData(listQuestions!, listAnswer!);
+    }
+    return dataChart;
   }
 
   init(String type) async {
@@ -56,6 +82,7 @@ class DetailGradingCubit extends Cubit<int> {
     courseModel = data!.courseModel;
     token = courseModel!.btvnToken;
     listAnswer = data!.listAnswer;
+    analysis = data!.analysis;
 
     if (listAnswer!.isEmpty) {
       emit(0);
@@ -114,10 +141,30 @@ class DetailGradingCubit extends Cubit<int> {
     emit(questionId);
   }
 
-  List<AnswerModel> get answers => listAnswer!
+  List<AnswerModel> get answers => isAll? listAnswer!
       .where((answer) =>
           answer.questionId == now && listStudentId!.contains(answer.studentId))
+      .toList() :listAnswer!
+      .where((answer) =>
+  answer.questionId == now && listStudentId!.contains(answer.studentId) && answer.score == -1)
       .toList();
+
+  bool checkGrading(int questionId){
+
+    bool check = false;
+
+    int count = 0;
+    for (var j in getAnswerById(questionId)) {
+      if (j.newScore != -1) {
+        count++;
+      }
+    }
+    if (count == getAnswerById(questionId).length) {
+      check = true;
+    }
+
+    return check;
+  }
 
   bool checkDone(bool isFirst) {
     if (isFirst) {
@@ -156,9 +203,7 @@ class DetailGradingCubit extends Cubit<int> {
       double total = 0;
       for (var j in listAnswer!) {
         if (i.userId == j.studentId) {
-          if (j.newScore == -1) {
-            temp = temp;
-          } else {
+          if (j.newScore != -1) {
             temp = temp + j.newScore;
             total++;
           }
@@ -223,7 +268,7 @@ class DetailGradingCubit extends Cubit<int> {
             list.add(j);
           } else {
             final url = await FireBaseProvider.instance
-                .uploadImageAndGetUrl(j, 'teacher_note_for_student');
+                .uploadImageAndGetUrl(j, 'teacher_note_for_student','teacher_note_for_student');
             list.add(url);
           }
         }
@@ -232,9 +277,7 @@ class DetailGradingCubit extends Cubit<int> {
     }
 
     for (var i in answers) {
-      debugPrint(
-          "student_${i.studentId}_homework_question_${i.questionId}_lesson_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}");
-      CustomFirebaseFireStore.database
+        CustomFirebaseFireStore.database
           .collection('answer')
           .doc(type == "test"
               ? 'student_${i.studentId}_test_question_${i.questionId}_class_${TextUtils.getName(position: 1)}'
@@ -268,9 +311,7 @@ class DetailGradingCubit extends Cubit<int> {
         double temp = 0;
         for (var j in listAnswer!) {
           if (i.userId == j.studentId) {
-            if (j.newScore == -1) {
-              temp = temp;
-            } else {
+            if (j.newScore != -1) {
               temp = temp + j.newScore;
             }
           }
@@ -324,4 +365,63 @@ class DetailGradingCubit extends Cubit<int> {
       }
     }
   }
+}
+
+class AnalysisTestUtils {
+  static List<RadarEntry> createChartData(
+      List<QuestionModel> questions, List<AnswerModel> answers) {
+    Map<int, AnalysisTestModel> maps = {};
+    for (var item in answers) {
+      final ques = questions.where((e) => e.id == item.questionId).firstOrNull;
+
+
+      if (ques != null &&
+          ques.skill >= 1 &&
+          ques.skill <= 8 &&
+          item.score > -1) {
+
+
+        var res = maps[ques.skill];
+        var isRight = item.score >= -1;
+        if (res == null) {
+          maps[ques.skill] = AnalysisTestModel(isRight ? 1 : 0, 1);
+        } else {
+          maps[ques.skill] = res.copyWith(
+              right: isRight ? (res.right) + 1 : res.right, max: res.max + 1);
+        }
+      }
+    }
+
+    List<RadarEntry> data = [];
+    for(int i = 1; i<= 8; i++) {
+      var res = maps[i];
+      if(res == null) {
+        data.add(const RadarEntry(value: 0));
+      }
+      else {
+        data.add( RadarEntry(value: res.radarValue.toDouble()));
+      }
+    }
+
+    if (kDebugMode) {
+      print(data);
+    }
+    return data;
+  }
+}
+
+class AnalysisTestModel {
+  final int right;
+  final int max;
+
+  AnalysisTestModel(this.right, this.max);
+
+  AnalysisTestModel copyWith({int? right, int? max}) {
+    return AnalysisTestModel(
+      right ?? this.right, // Nếu right là null, giữ nguyên giá trị cũ
+      max ?? this.max, // Nếu max là null, giữ nguyên giá trị cũ
+    );
+  }
+
+  int get radarValue => max == 0 ? 0 : ((right / max) * 10).toInt();
 }

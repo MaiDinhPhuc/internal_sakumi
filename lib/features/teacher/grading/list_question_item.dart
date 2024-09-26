@@ -1,4 +1,5 @@
 import 'package:flutter/Material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/grading/question_option.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -7,9 +8,14 @@ import 'package:internal_sakumi/widget/title_widget.dart';
 import 'detail_grading_cubit.dart';
 import 'detail_grading_cubit_v2.dart';
 import 'detail_grading_view.dart';
+import 'drop_down_grading_widget.dart';
 
 class ListQuestionItem extends StatelessWidget {
-  const ListQuestionItem({super.key, required this.cubit, required this.s, required this.checkActiveCubit});
+  const ListQuestionItem(
+      {super.key,
+      required this.cubit,
+      required this.s,
+      required this.checkActiveCubit});
   final DetailGradingCubit cubit;
   final int s;
   final CheckActiveCubit checkActiveCubit;
@@ -19,20 +25,60 @@ class ListQuestionItem extends StatelessWidget {
       padding: EdgeInsets.only(left: Resizable.padding(context, 20)),
       child: cubit.listAnswer == null
           ? Transform.scale(
-        scale: 0.75,
-        child: const CircularProgressIndicator(),
-      )
+              scale: 0.75,
+              child: const CircularProgressIndicator(),
+            )
           : Column(
         children: [
-          TitleWidget(AppText.titleQuestion.text.toUpperCase()),
+          Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: Resizable.padding(context, 10)),
+              child: Row(
+                children: [
+                  Expanded(
+                      flex: 4,
+                      child: TitleWidget(
+                          AppText.titleQuestion.text.toUpperCase())),
+                  Expanded(flex: 6, child: Container()),
+                  Expanded(
+                      flex: 6,
+                      child: BlocProvider(
+                        create: (context) =>
+                            DropdownGradingCubit(AppText.txtAll.text),
+                        child:
+                        BlocBuilder<DropdownGradingCubit, String>(
+                          builder: (cc, state) {
+                            return DropDownGrading(
+                                items: [
+                                  AppText.txtAll.text,
+                                  AppText.textNotMarked.text,
+                                ],
+                                onChanged: (item) {
+                                  if (item == AppText.txtAll.text) {
+                                    cubit.isAll = true;
+                                  } else if (item ==
+                                      AppText.textNotMarked.text) {
+                                    cubit.isAll = false;
+                                  }
+                                  BlocProvider.of<DropdownGradingCubit>(
+                                      cc)
+                                      .change(item!);
+                                  cubit.update();
+                                },
+                                value: state);
+                          },
+                        ),
+                      ))
+                ],
+              )),
           Expanded(
               child: Container(
-                margin:
-                EdgeInsets.only(bottom: Resizable.padding(context, 5)),
+                margin: EdgeInsets.symmetric(
+                    vertical: Resizable.padding(context, 5)),
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      ...(cubit.listQuestions!)
+                      ...(cubit.getListQuestion())
                           .map((e) => IntrinsicHeight(
                         child: QuestionOptionItem(
                           s,
@@ -43,10 +89,10 @@ class ListQuestionItem extends StatelessWidget {
                             cubit.change(e.id);
                             checkActiveCubit.changeActive(false);
                           },
-                          isDone: cubit.listState![
-                          cubit.listQuestions!.indexOf(e)],
+                          isDone: cubit.checkGrading(e.id),
                         ),
-                      )).toList(),
+                      ))
+                          .toList(),
                     ],
                   ),
                 ),
@@ -58,7 +104,11 @@ class ListQuestionItem extends StatelessWidget {
 }
 
 class ListQuestionItemV2 extends StatelessWidget {
-  const ListQuestionItemV2({super.key, required this.cubit, required this.s, required this.checkActiveCubit});
+  const ListQuestionItemV2(
+      {super.key,
+      required this.cubit,
+      required this.s,
+      required this.checkActiveCubit});
   final DetailGradingCubitV2 cubit;
   final int s;
   final CheckActiveCubit checkActiveCubit;
@@ -68,20 +118,60 @@ class ListQuestionItemV2 extends StatelessWidget {
       padding: EdgeInsets.only(left: Resizable.padding(context, 20)),
       child: cubit.listAnswer == null
           ? Transform.scale(
-        scale: 0.75,
-        child: const CircularProgressIndicator(),
-      )
+              scale: 0.75,
+              child: const CircularProgressIndicator(),
+            )
           : Column(
         children: [
-          TitleWidget(AppText.titleQuestion.text.toUpperCase()),
+          Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: Resizable.padding(context, 10)),
+              child: Row(
+                children: [
+                  Expanded(
+                      flex: 4,
+                      child: TitleWidget(
+                          AppText.titleQuestion.text.toUpperCase())),
+                  Expanded(flex: 6, child: Container()),
+                  Expanded(
+                      flex: 6,
+                      child: BlocProvider(
+                        create: (context) =>
+                            DropdownGradingCubit(AppText.txtAll.text),
+                        child:
+                        BlocBuilder<DropdownGradingCubit, String>(
+                          builder: (cc, state) {
+                            return DropDownGrading(
+                                items: [
+                                  AppText.txtAll.text,
+                                  AppText.textNotMarked.text,
+                                ],
+                                onChanged: (item) {
+                                  if (item == AppText.txtAll.text) {
+                                    cubit.isAll = true;
+                                  } else if (item ==
+                                      AppText.textNotMarked.text) {
+                                    cubit.isAll = false;
+                                  }
+                                  BlocProvider.of<DropdownGradingCubit>(
+                                      cc)
+                                      .change(item!);
+                                  cubit.update();
+                                },
+                                value: state);
+                          },
+                        ),
+                      ))
+                ],
+              )),
           Expanded(
               child: Container(
-                margin:
-                EdgeInsets.only(bottom: Resizable.padding(context, 5)),
+                margin: EdgeInsets.symmetric(
+                    vertical: Resizable.padding(context, 5)),
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      ...(cubit.listQuestions!)
+                      ...(cubit.getListQuestion())
                           .map((e) => IntrinsicHeight(
                         child: QuestionOptionItem(
                           s,
@@ -92,10 +182,10 @@ class ListQuestionItemV2 extends StatelessWidget {
                             cubit.change(e.id);
                             checkActiveCubit.changeActive(false);
                           },
-                          isDone: cubit.listState![
-                          cubit.listQuestions!.indexOf(e)],
+                          isDone: cubit.checkGrading(e.id),
                         ),
-                      )).toList(),
+                      ))
+                          .toList(),
                     ],
                   ),
                 ),

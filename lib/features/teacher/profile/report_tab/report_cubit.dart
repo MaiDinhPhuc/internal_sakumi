@@ -70,15 +70,18 @@ class ReportCubit extends Cubit<int> {
 
     type = 'class';
 
-    DataProvider.classByClassId(classId, loadClass);
+    await loadClass(classId);
+
+    //DataProvider.classByClassId(classId, loadClass);
     listReport = await FireBaseProvider.instance.getReportByClassId(classId);
 
     isLoading = false;
     emit(state + 1);
   }
 
-  loadClass(Object classModel) {
-    this.classModel = classModel as ClassModel;
+
+  loadClass(int classId)async {
+    classModel = await FireBaseProvider.instance.getClassById(classId);
   }
 
   List<ReportModel> getListReport() {
@@ -95,15 +98,6 @@ class ReportCubit extends Cubit<int> {
             e.id < endDate!.millisecondsSinceEpoch &&
             e.id > startDate!.millisecondsSinceEpoch && e.delete == false)
         .toList();
-  }
-
-  bool checkIsUrl(value) {
-    if (value is String) {
-      return true;
-    } else if (value is Uint8List) {
-      return false;
-    }
-    return true;
   }
 
   setDateTime(DateTime startDate, DateTime endDate){

@@ -135,7 +135,7 @@ class Calculator{
     double upNumber = 0;
     int temp = 0;
     for (var i in stdClasses) {
-      if (i.classStatus == "UpSale" || i.classStatus == "Force") {
+      if (i.classStatus == "UpSale" || i.classStatus == "Force" || i.classStatus == "SuperUpSale") {
         upNumber++;
       }
       if ((i.classStatus != "Remove" &&

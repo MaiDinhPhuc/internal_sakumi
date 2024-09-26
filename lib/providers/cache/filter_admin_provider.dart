@@ -66,7 +66,7 @@ extension FilterClassLevelEx on FilterClassLevel {
   }
 }
 
-enum FilterClassStatus { preparing, completed, studying, cancel }
+enum FilterClassStatus { preparing, completed,paused, studying, cancel }
 
 extension FilterClassStatusEx on FilterClassStatus {
   String get status {
@@ -79,6 +79,8 @@ extension FilterClassStatusEx on FilterClassStatus {
         return "InProgress";
       case FilterClassStatus.cancel:
         return "Cancel";
+      case FilterClassStatus.paused:
+        return "Paused";
     }
   }
 
@@ -92,6 +94,8 @@ extension FilterClassStatusEx on FilterClassStatus {
         return "Đang học";
       case FilterClassStatus.cancel:
         return "Huỷ";
+      case FilterClassStatus.paused:
+        return "Tạm dừng";
     }
   }
 }
@@ -215,6 +219,9 @@ class AdminClassFilterCubit extends Cubit<int> {
           break;
         case "Huỷ":
           listStatus.add(FilterClassStatus.cancel);
+          break;
+        case "Tạm dừng":
+          listStatus.add(FilterClassStatus.paused);
           break;
       }
     }

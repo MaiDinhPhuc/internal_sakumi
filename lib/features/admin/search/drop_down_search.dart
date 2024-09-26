@@ -12,17 +12,24 @@ class DropDownSearch extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: DropdownButton2(
-        icon: const Icon(Icons.keyboard_arrow_down),
-        buttonPadding: EdgeInsets.symmetric(
-            vertical: Resizable.size(context, 10),
-            horizontal: Resizable.padding(context, 15)),
-        dropdownElevation: 0,
-          buttonDecoration:BoxDecoration(
-              borderRadius: BorderRadius.circular(10)),
-        dropdownDecoration: BoxDecoration(
-            border: Border.all(color: Colors.black),
-            borderRadius: BorderRadius.circular(10)),
-        itemHeight: Resizable.size(context, 25),
+        menuItemStyleData: MenuItemStyleData(
+          height: Resizable.size(context, 25)
+        ),
+        iconStyleData:const IconStyleData(
+          icon:  Icon(Icons.keyboard_arrow_down)
+        ),
+        buttonStyleData: ButtonStyleData(
+          padding: EdgeInsets.symmetric(
+        vertical: Resizable.size(context, 10),
+        horizontal: Resizable.padding(context, 10)),
+          width: double.maxFinite
+        ),
+        dropdownStyleData: DropdownStyleData(
+          decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                borderRadius: BorderRadius.circular(10),
+          )
+        ),
         items: items
             .map((item) => DropdownMenuItem<String>(
             value: item,
@@ -36,8 +43,6 @@ class DropDownSearch extends StatelessWidget {
             .toList(),
         value: value,
         onChanged: onChanged,
-        //buttonHeight: Resizable.size(context, 20),
-        buttonWidth: double.maxFinite,
       ),
     );
   }

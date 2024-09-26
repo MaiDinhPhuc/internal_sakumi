@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
@@ -68,7 +67,7 @@ class ConfirmChangeClassStatusV2 extends StatelessWidget {
                       classType: classModel.classType,
                       link: classModel.link,
                       customLessons: classModel.customLessons,
-                      informal: classModel.informal, isSubClass: classModel.isSubClass, subClassId: classModel.subClassId));
+                      informal: classModel.informal, isSubClass: classModel.isSubClass, subClassId: classModel.subClassId, customTests: classModel.customTests));
                   popupCubit.update();
                   Navigator.pop(context);
                 });
@@ -90,7 +89,7 @@ class ConfirmChangeClassStatusV2 extends StatelessWidget {
                       classType: classModel.classType,
                       link: classModel.link,
                       customLessons: classModel.customLessons,
-                      informal: classModel.informal, isSubClass: classModel.isSubClass, subClassId: classModel.subClassId));
+                      informal: classModel.informal, isSubClass: classModel.isSubClass, subClassId: classModel.subClassId, customTests: classModel.customTests));
                   popupCubit.update();
                   Navigator.pop(context);
                 });

@@ -1,27 +1,26 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/teacher/profile/teacher_profile/log_out_dialog.dart';
 import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/utils/functions.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 
-class CustomAppbar extends StatelessWidget {
+class MasterAppbar extends StatelessWidget {
   final int s;
 
-  const CustomAppbar({Key? key, required this.s})
-      : super(key: key);
-  
+  const MasterAppbar({Key? key, required this.s}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    var buttonList =  [
-    AppText.txtManageCourse.text,
-    AppText.txtStudentSurvey.text,
-    AppText.txtTeacherSurvey.text,
-    AppText.titleManageFeedBack.text,
-    AppText.txtManageBanner.text,
-    AppText.txtManageCourseSuggest.text,
+    var buttonList = [
+      AppText.txtManageCourse.text,
+      AppText.txtStudentSurvey.text,
+      AppText.txtTeacherSurvey.text,
+      AppText.titleManageFeedBack.text,
+      AppText.txtManageBanner.text,
+      AppText.txtManageCourseSuggest.text,
+      "GiftCode"
     ];
     return Container(
       padding: EdgeInsets.only(
@@ -56,13 +55,12 @@ class CustomAppbar extends StatelessWidget {
                                             Resizable.padding(context, 10)),
                                     child: Text(e,
                                         style: TextStyle(
-                                            color: s ==
-                                                    buttonList.indexOf(e)
+                                            color: s == buttonList.indexOf(e)
                                                 ? Colors.black
                                                 : const Color(0xff757575),
                                             fontWeight: FontWeight.w900,
-                                            fontSize: Resizable.font(
-                                                context, 16))),
+                                            fontSize:
+                                                Resizable.font(context, 16))),
                                   ),
                                   Positioned.fill(
                                     child: Container(
@@ -83,31 +81,42 @@ class CustomAppbar extends StatelessWidget {
                                       child: InkWell(
                                         borderRadius:
                                             BorderRadius.circular(100),
-                                        overlayColor: MaterialStateProperty.all(
+                                        overlayColor: WidgetStateProperty.all(
                                             primaryColor.withAlpha(30)),
-                                        onTap: () {
+                                        onTap: () async{
                                           switch (buttonList.indexOf(e)) {
                                             case 0:
-                                              Navigator.pushNamed(context,
-                                                  '${Routes.master}/manageCourse');
+                                              await Functions.goPage(
+                                                  '${Routes.master}/manageCourse',
+                                                  context);
                                               break;
                                             case 1:
-                                              Navigator.pushNamed(context,
-                                                  '${Routes.master}/manageStudentSurvey');
+                                              await Functions.goPage(
+                                                  '${Routes.master}/manageStudentSurvey',
+                                                  context);
                                               break;
                                             case 2:
-                                              Navigator.pushNamed(context,
-                                                  '${Routes.master}/manageTeacherSurvey');
+                                              await Functions.goPage(
+                                                  '${Routes.master}/manageTeacherSurvey',
+                                                  context);
                                               break;
                                             case 3:
-                                              Navigator.pushNamed(context,
-                                                  '${Routes.master}/manageTeacherFeedBack');
+                                              await Functions.goPage(
+                                                  '${Routes.master}/manageTeacherFeedBack',
+                                                  context);
                                             case 4:
-                                              Navigator.pushNamed(context,
-                                                  '${Routes.master}/manageBanner');
+                                              await Functions.goPage(
+                                                  '${Routes.master}/manageBanner',
+                                                  context);
                                             case 5:
-                                              Navigator.pushNamed(context,
-                                                  '${Routes.master}/manageCourseSuggest');
+                                              await Functions.goPage(
+                                                  '${Routes.master}/manageCourseSuggest',
+                                                  context);
+                                              break;
+                                            case 6:
+                                              await Functions.goPage(
+                                                  '${Routes.master}/giftCode',
+                                                  context);
                                               break;
                                           }
                                         },
@@ -128,7 +137,7 @@ class CustomAppbar extends StatelessWidget {
         Container(
           height: 30,
           alignment: Alignment.centerRight,
-          margin:  EdgeInsets.only(right: Resizable.padding(context, 10)),
+          margin: EdgeInsets.only(right: Resizable.padding(context, 10)),
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -155,8 +164,8 @@ class CustomAppbar extends StatelessWidget {
                   color: Colors.transparent,
                   child: InkWell(
                     borderRadius: BorderRadius.circular(100),
-                    overlayColor: MaterialStateProperty.all(
-                        primaryColor.withAlpha(30)),
+                    overlayColor:
+                        WidgetStateProperty.all(primaryColor.withAlpha(30)),
                     onTap: () {
                       showDialog(
                           context: context,

@@ -6,14 +6,15 @@ import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_
 import 'package:internal_sakumi/features/teacher/overview/overview_chart.dart';
 import 'package:internal_sakumi/model/student_class_model.dart';
 import 'package:internal_sakumi/routes.dart';
+import 'package:internal_sakumi/utils/functions.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/circle_progress.dart';
 
 import 'class_overview_cubit_v2.dart';
 import 'icon_tool_tip_v2.dart';
 
-class CollapseOverviewStudentV2 extends StatelessWidget {
-  const CollapseOverviewStudentV2(
+class CollapseOverviewStudent extends StatelessWidget {
+  const CollapseOverviewStudent(
       {Key? key,
       required this.role,
       required this.stdClass,
@@ -30,17 +31,16 @@ class CollapseOverviewStudentV2 extends StatelessWidget {
           right: Resizable.padding(context, 15),
         ),
         child: OverviewItemRowLayout(
-            icon: IconToolTipV2(role: role, cubit: cubit, stdClass: stdClass, studentCubit: studentCubit),
+            icon: IconToolTip(role: role, cubit: cubit, stdClass: stdClass, studentCubit: studentCubit),
             name: Material(
                 color: Colors.transparent,
                 child: InkWell(
               borderRadius: BorderRadius.circular(100),
               overlayColor:
-              MaterialStateProperty.all(primaryColor.withAlpha(30)),
+              WidgetStateProperty.all(primaryColor.withAlpha(30)),
               onTap: ()async{
                 if(studentCubit.studentModel != null && role == "admin"){
-                  await Navigator.pushNamed(context,
-                      "${Routes.admin}/studentInfo/student=${studentCubit.studentModel!.userId}");
+                  await Functions.goPage("${Routes.admin}/studentInfo/student=${studentCubit.studentModel!.userId}", context);
                 }
               },
               child: Padding(

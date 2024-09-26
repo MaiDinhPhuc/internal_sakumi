@@ -66,7 +66,7 @@ class CourseModel {
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
     return CourseModel(
-        dataToken: data['data_token'] ?? "",
+        dataToken: data['data_token'] ?? "_",
         courseId: data['course_id'],
         description: data['description'] ?? "",
         lessonCount: data['lesson_count'],

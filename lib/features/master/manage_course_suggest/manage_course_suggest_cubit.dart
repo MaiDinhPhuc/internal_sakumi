@@ -37,6 +37,13 @@ class ManageCourseSuggestCubit extends Cubit<int> {
     courseSuggests.sort((a,b) => a.idCourse.compareTo(b.idCourse));
   }
 
+  updateFavorite()async{
+    CourseSuggestModel model = CourseSuggestModel(id: courseSuggests[csIndex].id, idCourse: courseSuggests[csIndex].idCourse, favorite: !courseSuggests[csIndex].favorite);
+    await FireBaseProvider.instance.addCourseSuggest(model);
+    courseSuggests[csIndex] = model;
+    //emit(state+1);
+  }
+
   Future<bool> updateCourses(List<CourseModel> data) async {
     var temp = [...data];
 
@@ -48,7 +55,7 @@ class ManageCourseSuggestCubit extends Cubit<int> {
     }
     temp.removeWhere((element) => courseSuggests.map((e) => e.idCourse).contains(element.courseId));
     for (var i in temp) {
-      var cs = CourseSuggestModel(id: DateTime.now().millisecondsSinceEpoch, idCourse: i.courseId);
+      var cs = CourseSuggestModel(id: DateTime.now().millisecondsSinceEpoch, idCourse: i.courseId, favorite: false);
       courseSuggests.add(cs);
       await FireBaseProvider.instance.addCourseSuggest(cs);
     }
