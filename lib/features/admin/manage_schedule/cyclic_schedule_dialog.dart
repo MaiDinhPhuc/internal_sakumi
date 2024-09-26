@@ -99,40 +99,42 @@ class CyclicScheduleDialog extends StatelessWidget {
                                                 AppText.txtNoChooseClass.text);
                                           } else {
                                             waitingDialog(context);
-                                            await addCubit.checkSchedule();
-                                            if (addCubit.checkExistSchedule) {
+                                            if (context.mounted) {
+                                              Navigator.pop(context);
+                                              await addCubit
+                                                  .addNewCyclicSchedule(
+                                                  cubit);
+                                              await cubit.getSchedule();
                                               if (context.mounted) {
                                                 Navigator.pop(context);
-                                                await addCubit
-                                                    .addNewCyclicSchedule(
-                                                        cubit);
-                                                if (context.mounted) {
-                                                  Navigator.pop(context);
-                                                  if (schedule != null) {
-                                                    notificationDialog(
-                                                        context,
-                                                        AppText
-                                                            .txtUpdateScheduleDone
-                                                            .text);
-                                                  } else {
-                                                    notificationDialog(
-                                                        context,
-                                                        AppText.txtAddScheduleDone
-                                                            .text);
-                                                  }
-
+                                                if (schedule != null) {
+                                                  notificationDialog(
+                                                      context,
+                                                      AppText
+                                                          .txtUpdateScheduleDone
+                                                          .text);
+                                                } else {
+                                                  notificationDialog(
+                                                      context,
+                                                      AppText.txtAddScheduleDone
+                                                          .text);
                                                 }
-                                              }
-                                            } else {
-                                              if (context.mounted) {
-                                                Navigator.pop(context);
-                                                notificationDialog(
-                                                    context,
-                                                    AppText
-                                                        .txtScheduleExist
-                                                        .text);
+
                                               }
                                             }
+                                            // await addCubit.checkSchedule();
+                                            // if (addCubit.checkExistSchedule) {
+                                            //
+                                            // } else {
+                                            //   if (context.mounted) {
+                                            //     Navigator.pop(context);
+                                            //     notificationDialog(
+                                            //         context,
+                                            //         AppText
+                                            //             .txtScheduleExist
+                                            //             .text);
+                                            //   }
+                                            // }
                                           }
                                         },
                                         title: schedule == null ?AppText.btnAdd.text : AppText.txtUpdate.text),

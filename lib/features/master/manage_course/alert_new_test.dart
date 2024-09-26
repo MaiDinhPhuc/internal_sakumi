@@ -88,7 +88,7 @@ void alertAddNewTest(BuildContext context, TestModel? testModel, bool isEdit,
                                     title2: 'Analysis',
                                     con1: difficultCon,
                                     con2: analysisCon,
-                                    enable: isEdit ? false : true),
+                                    enable: true),
                                 InputItem(
                                     onChange: (String? value) {
                                       debugPrint(desCon.text);

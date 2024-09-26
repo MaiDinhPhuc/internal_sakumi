@@ -5,6 +5,7 @@ import 'package:internal_sakumi/features/admin/manage_teacher/teacher_info/teach
 import 'package:internal_sakumi/model/teacher_model.dart';
 import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:internal_sakumi/widget/dialog_button.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
@@ -45,9 +46,8 @@ class InfoTeacherView extends StatelessWidget {
                     errorBuilder: (_, __, ___) => Container(),
                   ),
                 ),
-
           Padding(
-            padding:  EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               vertical: Resizable.padding(context, 10),
               horizontal: Resizable.padding(context, 20),
             ),
@@ -59,29 +59,43 @@ class InfoTeacherView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              SubmitButton(
-                onPressed: () async {
-                  waitingDialog(context);
-                  var teacherModel = TeacherModel(
-                      name: cubit.name,
-                      url: cubit.teacher!.url,
-                      note: cubit.note,
-                      userId: cubit.teacher!.userId,
-                      phone: cubit.phone,
-                      status: cubit.teacherStatus,
-                      teacherCode: cubit.teacherCode,
-                      schedule: cubit.teacher!.schedule, email: cubit.teacher!.email);
-                  Update.updateTeacherProfile(teacherModel);
-                  // await FireBaseProvider.instance
-                  //     .updateProfileTeacher(TextUtils.getName(), teacherModel);
-                  DataProvider.updateTeacherInfo(
-                      cubit.teacher!.userId, teacherModel);
-                  Navigator.pop(context);
-                  notificationDialog(
-                      context, AppText.txtUpdateTeacherDone.text);
-                },
-                title: AppText.txtUpdate.text,
-              )
+              Expanded(
+                  flex: 4,
+                  child: ResetPassButton(AppText.txtReloadPass.text,
+                      onPressed: () {
+                    waitingDialog(context);
+                    cubit.resetPassword();
+                    Navigator.pop(context);
+                    notificationDialog(
+                        context, AppText.txtSendReloadPassDone.text);
+                  })),
+              Expanded(flex: 1, child: Container()),
+              Expanded(
+                  flex: 4,
+                  child: SubmitButton(
+                    onPressed: () async {
+                      waitingDialog(context);
+                      var teacherModel = TeacherModel(
+                          name: cubit.name,
+                          url: cubit.teacher!.url,
+                          note: cubit.note,
+                          userId: cubit.teacher!.userId,
+                          phone: cubit.phone,
+                          status: cubit.teacherStatus,
+                          teacherCode: cubit.teacherCode,
+                          schedule: cubit.teacher!.schedule,
+                          email: cubit.teacher!.email);
+                      Update.updateTeacherProfile(teacherModel);
+                      // await FireBaseProvider.instance
+                      //     .updateProfileTeacher(TextUtils.getName(), teacherModel);
+                      DataProvider.updateTeacherInfo(
+                          cubit.teacher!.userId, teacherModel);
+                      Navigator.pop(context);
+                      notificationDialog(
+                          context, AppText.txtUpdateTeacherDone.text);
+                    },
+                    title: AppText.txtUpdate.text,
+                  ))
             ],
           )
         ],

@@ -7,6 +7,7 @@ import 'package:internal_sakumi/features/teacher/profile/report_tab/report_cubit
 import 'package:internal_sakumi/utils/resizable.dart';
 
 import 'date_filter_report.dart';
+import 'filter_report_range.dart';
 import 'filter_report_status.dart';
 
 class ListReportInProfileView extends StatelessWidget {
@@ -43,8 +44,19 @@ class ListReportInProfileView extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      DateFilterReport(cubit: cubit),
-                      FilterReportStatus(cubit: cubit)
+                      Expanded(
+                          flex: 2,
+                          child: DateFilterReport(cubit: cubit)),
+                      Expanded(
+                          flex: 3,
+                          child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          FilterReportRange(cubit: cubit),
+                          SizedBox(width: Resizable.size(context, 5)),
+                          FilterReportStatus(cubit: cubit)
+                        ],
+                      ))
                     ],
                   ),
                 ),

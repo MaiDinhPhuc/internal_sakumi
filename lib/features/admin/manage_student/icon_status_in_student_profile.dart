@@ -78,77 +78,78 @@ class IconStatusInStudentProfile extends StatelessWidget {
                                                     .millisecondsSinceEpoch
                                               }).whenComplete(() async {
                                                 var list = await FireBaseProvider.instance.getStudentClassInClass(stdClass.classId);
-                                                if (e == "Remove") {
+                                                var classModel =
+                                                await FireBaseProvider
+                                                    .instance
+                                                    .getClassById(
+                                                    stdClass
+                                                        .classId);
+                                                Create.addNewLog(
+                                                    StudentClassLogModel(
+                                                        id: DateTime
+                                                            .now()
+                                                            .millisecondsSinceEpoch,
+                                                        classId: stdClass
+                                                            .classId,
+                                                        courseId:
+                                                        classModel
+                                                            .courseId,
+                                                        from: stdClass
+                                                            .status,
+                                                        to: e,
+                                                        userId: stdClass
+                                                            .userId,
+                                                        classType:
+                                                        classModel
+                                                            .classType));
 
-                                                  list.removeWhere((e)=>e.userId == std.userId);
-
-                                                  DataProvider
-                                                      .updateStdClass(
-                                                      stdClass
-                                                          .classId,
-                                                      list);
-
-                                                  cubit.removeStdClass(stdClass);
-
-                                                  if(context.mounted){
-                                                    Navigator.pop(context);
-                                                    waitingDialog(context);
-                                                  }
-                                                } else {
-                                                  var classModel =
-                                                  await FireBaseProvider
-                                                      .instance
-                                                      .getClassById(
-                                                      stdClass
-                                                          .classId);
-                                                  Create.addNewLog(
-                                                      StudentClassLogModel(
-                                                          id: DateTime
-                                                              .now()
-                                                              .millisecondsSinceEpoch,
-                                                          classId: stdClass
-                                                              .classId,
-                                                          courseId:
-                                                          classModel
-                                                              .courseId,
-                                                          from: stdClass
-                                                              .status,
-                                                          to: e,
-                                                          userId: stdClass
-                                                              .userId,
-                                                          classType:
-                                                          classModel
-                                                              .classType));
-
-                                                  list.removeWhere((e)=>e.userId == std.userId);
-                                                  var newStdClass = StudentClassModel(
-                                                      id: stdClass.id,
-                                                      classId: stdClass
-                                                          .classId,
-                                                      activeStatus:
-                                                      stdClass
-                                                          .activeStatus,
-                                                      learningStatus:
-                                                      stdClass
-                                                          .learningStatus,
-                                                      moveTo: stdClass
-                                                          .moveTo,
-                                                      userId: stdClass
-                                                          .userId,
-                                                      classStatus: e,
-                                                      date: stdClass
-                                                          .date,
-                                                      timeChange: stdClass
-                                                          .timeChange);
-                                                  list.add(newStdClass);
-                                                  DataProvider
-                                                      .updateStdClass(
-                                                      stdClass
-                                                          .classId,
-                                                      list);
-                                                  cubit.updateStdClass(stdClass.classId,newStdClass );
-                                                  popupCubit.update();
-                                                }
+                                                list.removeWhere((e)=>e.userId == std.userId);
+                                                var newStdClass = StudentClassModel(
+                                                    id: stdClass.id,
+                                                    classId: stdClass
+                                                        .classId,
+                                                    activeStatus:
+                                                    stdClass
+                                                        .activeStatus,
+                                                    learningStatus:
+                                                    stdClass
+                                                        .learningStatus,
+                                                    moveTo: stdClass
+                                                        .moveTo,
+                                                    userId: stdClass
+                                                        .userId,
+                                                    classStatus: e,
+                                                    date: stdClass
+                                                        .date,
+                                                    timeChange: stdClass
+                                                        .timeChange);
+                                                list.add(newStdClass);
+                                                DataProvider
+                                                    .updateStdClass(
+                                                    stdClass
+                                                        .classId,
+                                                    list);
+                                                cubit.updateStdClass(stdClass.classId,newStdClass );
+                                                popupCubit.update();
+                                                // if (e == "Remove") {
+                                                //
+                                                //   list.removeWhere((e)=>e.userId == std.userId);
+                                                //
+                                                //   DataProvider
+                                                //       .updateStdClass(
+                                                //       stdClass
+                                                //           .classId,
+                                                //       list);
+                                                //
+                                                //   cubit.removeStdClass(stdClass);
+                                                //
+                                                //   if(context.mounted){
+                                                //     Navigator.pop(context);
+                                                //     waitingDialog(context);
+                                                //   }
+                                                // } else {
+                                                //
+                                                // }
                                                 if(context.mounted){
                                                   Navigator.pop(context);
                                                 }

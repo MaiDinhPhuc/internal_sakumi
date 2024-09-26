@@ -41,8 +41,8 @@ class DetailGradingCubitV2 extends Cubit<int> {
   bool isAll = true;
   int analysis = 1;
 
-  List<RadarEntry> getDataChart(){
-    List<RadarEntry> dataChart = [];
+  List<RadarEntryCustom> getDataChart(){
+    List<RadarEntryCustom> dataChart = [];
     if(analysis == 1 && gradingType == "test"){
       dataChart = AnalysisTestUtils.createChartData(listQuestions!, listAnswer!);
     }

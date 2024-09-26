@@ -3,6 +3,7 @@ import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/features/teacher/grading/sound/sound_cubit.dart';
 import 'package:internal_sakumi/features/teacher/grading/sound/sounder.dart';
+import 'package:internal_sakumi/features/teacher/grading/split_text_question.dart';
 import 'package:internal_sakumi/model/question_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
@@ -22,7 +23,6 @@ class QuestionView extends StatelessWidget {
   final DetailGradingCubit cubit;
   @override
   Widget build(BuildContext context) {
-    String question = questionModel.convertQuestion;
     return Column(
         key: Key("${questionModel.id}"),
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,13 +34,12 @@ class QuestionView extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 17)),
             )),
-          if (question != "")
-            Text(
-              question,
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: Resizable.font(context, 17)),
-            ),
+          if (questionModel.question != "")
+            SplitTextCustom(
+                text: questionModel.question,
+                phoneticSize: Resizable.font(context, 24),
+                kanjiFW: FontWeight.w700,
+                kanjiSize: Resizable.font(context, 24)),
           if (questionModel.paragraph != "")
             Text(
               questionModel.paragraph ,
@@ -170,7 +169,6 @@ class QuestionViewV2 extends StatelessWidget {
   final DetailGradingCubitV2 cubit;
   @override
   Widget build(BuildContext context) {
-    String question = questionModel.convertQuestion;
     return Column(
         key: Key("${questionModel.id}"),
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,13 +180,12 @@ class QuestionViewV2 extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                   fontSize: Resizable.font(context, 17)),
             )),
-          if (question != "")
-            Text(
-              question,
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: Resizable.font(context, 17)),
-            ),
+          if (questionModel.question != "")
+            SplitTextCustom(
+                text: questionModel.question,
+                phoneticSize: Resizable.font(context, 24),
+                kanjiFW: FontWeight.w700,
+                kanjiSize: Resizable.font(context, 24)),
           if (questionModel.paragraph != "")
             Text(
               questionModel.paragraph ,
@@ -295,3 +292,5 @@ class QuestionViewV2 extends StatelessWidget {
         ]);
   }
 }
+
+

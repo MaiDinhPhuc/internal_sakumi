@@ -90,6 +90,7 @@ class FireStoreDb {
     final snapshot = await db
         .collection("teacher_class")
         .where("user_id", isEqualTo: id)
+        .where('class_status',isNotEqualTo: "Remove" )
         .get();
 
     debugPrint(

@@ -58,8 +58,8 @@ class DetailGradingCubit extends Cubit<int> {
     return listQuestions!.where((e)=>!checkGrading(e.id)).toList();
   }
 
-  List<RadarEntry> getDataChart(){
-    List<RadarEntry> dataChart = [];
+  List<RadarEntryCustom> getDataChart(){
+    List<RadarEntryCustom> dataChart = [];
     if(analysis == 1 && gradingType == "test"){
       dataChart = AnalysisTestUtils.createChartData(listQuestions!, listAnswer!);
     }
@@ -367,49 +367,6 @@ class DetailGradingCubit extends Cubit<int> {
   }
 }
 
-class AnalysisTestUtils {
-  static List<RadarEntry> createChartData(
-      List<QuestionModel> questions, List<AnswerModel> answers) {
-    Map<int, AnalysisTestModel> maps = {};
-    for (var item in answers) {
-      final ques = questions.where((e) => e.id == item.questionId).firstOrNull;
-
-
-      if (ques != null &&
-          ques.skill >= 1 &&
-          ques.skill <= 8 &&
-          item.score > -1) {
-
-
-        var res = maps[ques.skill];
-        var isRight = item.score >= -1;
-        if (res == null) {
-          maps[ques.skill] = AnalysisTestModel(isRight ? 1 : 0, 1);
-        } else {
-          maps[ques.skill] = res.copyWith(
-              right: isRight ? (res.right) + 1 : res.right, max: res.max + 1);
-        }
-      }
-    }
-
-    List<RadarEntry> data = [];
-    for(int i = 1; i<= 8; i++) {
-      var res = maps[i];
-      if(res == null) {
-        data.add(const RadarEntry(value: 0));
-      }
-      else {
-        data.add( RadarEntry(value: res.radarValue.toDouble()));
-      }
-    }
-
-    if (kDebugMode) {
-      print(data);
-    }
-    return data;
-  }
-}
-
 class AnalysisTestModel {
   final int right;
   final int max;
@@ -423,5 +380,76 @@ class AnalysisTestModel {
     );
   }
 
-  int get radarValue => max == 0 ? 0 : ((right / max) * 10).toInt();
+  double get radarValue => max == 0 ? 0 : ((right / max) * 10).toDouble();
+}
+
+class AnalysisTestUtils {
+  static List<RadarEntryCustom> createChartData(
+      List<QuestionModel> questions, List<AnswerModel> answers) {
+    Map<int, AnalysisTestModel> maps = {};
+    for (var item in answers) {
+      final ques = questions.where((e) => e.id == item.questionId).firstOrNull;
+
+
+      if (ques != null &&
+          ques.skill >= 1 &&
+          ques.skill <= 8 &&
+          item.score > -1) {
+
+
+        var res = maps[ques.skill];
+        var isRight = item.score >= 5;
+        if (res == null) {
+          maps[ques.skill] = AnalysisTestModel(isRight ? 1 : 0, 1);
+        } else {
+          maps[ques.skill] = res.copyWith(
+              right: isRight ? (res.right) + 1 : res.right, max: res.max + 1);
+        }
+      }
+    }
+
+    List<RadarEntryCustom> data = [];
+    for(int i = 1; i<= 8; i++) {
+      var res = maps[i];
+      if(res != null) {
+        data.add(RadarEntryCustom(i - 1, RadarEntry(value: res.radarValue)));
+      }
+    }
+
+    print(data);
+    return data;
+  }
+}
+
+
+class RadarEntryCustom {
+  final int index;
+  final RadarEntry entry;
+
+  RadarEntryCustom(this.index, this.entry);
+
+  String get title {
+    switch (index) {
+      case 0:
+        return "Từ vựng"; // Vocabulary
+      case 1:
+        return "Ngữ pháp"; // Grammar
+      case 2:
+        return "Kanji"; // Kanji
+      case 3:
+        return "Nghe"; // Listening
+      case 4:
+        return 'Kaiwa'; // Kaiwa (Conversation)
+      case 5:
+        return "Đọc"; // Reading
+      case 6:
+        return "Bảng chữ"; // Alphabet
+      case 7:
+        return 'JLPT'; // JLPT
+      default:
+        return 'Unknown';
+    }
+
+  }
+
 }
