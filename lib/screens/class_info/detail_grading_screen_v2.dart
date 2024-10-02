@@ -14,6 +14,7 @@ import 'package:internal_sakumi/features/teacher/grading/sound/sound_cubit.dart'
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_cubit.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/utils/text_utils.dart';
+import 'package:internal_sakumi/widget/circle_progress.dart';
 
 class DetailGradingScreen extends StatelessWidget {
   final String type;
@@ -126,11 +127,56 @@ class DetailGradingScreen extends StatelessWidget {
                                                                           },
                                                                           state: state,
                                                                         ),
-                                                                        if(cubit.analysis != 0)
-                                                                          SizedBox(
-                                                                              height: Resizable.size(
-                                                                                  context, 200),
-                                                                              child: AnalyticsTestChart(data: cubit.getDataChart())),
+                                                                        Row(
+                                                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                          children: [
+                                                                            Column(
+                                                                              children: [
+                                                                                SizedBox(
+                                                                                  height: Resizable.size(context, 80),
+                                                                                  child: CircleProgress(
+                                                                                    title: '${(cubit.submitPercent*100).toStringAsFixed(0)}%',
+                                                                                    lineWidth: Resizable.size(context, 5),
+                                                                                    percent: cubit.submitPercent,
+                                                                                    radius: Resizable.size(context, 30),
+                                                                                    fontSize: Resizable.font(context, 20),
+                                                                                  ),
+                                                                                ),
+                                                                                Text(AppText.txtRateOfSubmitTest.text,
+                                                                                    style: TextStyle(
+                                                                                        fontWeight: FontWeight.w700,
+                                                                                        color: Colors.black,
+                                                                                        fontSize: Resizable.font(context, 24)))
+                                                                              ],
+                                                                            ),
+                                                                            Column(
+                                                                              children: [
+                                                                                SizedBox(
+                                                                                  height: Resizable.size(context, 80),
+                                                                                  child: CircleProgress(
+                                                                                    title: cubit.getAveragePoint().toStringAsFixed(1).toString(),
+                                                                                    lineWidth: Resizable.size(context, 5),
+                                                                                    percent: cubit.getAveragePoint()/10,
+                                                                                    radius: Resizable.size(context, 30),
+                                                                                    fontSize: Resizable.font(context, 20),
+                                                                                  ),
+                                                                                ),
+                                                                                Text(AppText.txtAveragePoint.text,
+                                                                                    style: TextStyle(
+                                                                                        fontWeight: FontWeight.w700,
+                                                                                        color: Colors.black,
+                                                                                        fontSize: Resizable.font(context, 24)))
+                                                                              ],
+                                                                            ),
+                                                                            if(cubit.analysis != 0)
+                                                                              SizedBox(
+                                                                                  height: Resizable.size(
+                                                                                      context, 200),
+                                                                                  width: Resizable.size(
+                                                                                      context, 200),
+                                                                                  child: AnalyticsTestChart(data: cubit.getDataChart())),
+                                                                          ],
+                                                                        )
                                                                       ],
                                                                     ),
                                                                     crossFadeState: state % 2 == 1

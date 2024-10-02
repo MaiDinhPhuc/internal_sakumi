@@ -38,6 +38,8 @@ class DetailGradingCubit extends Cubit<int> {
   bool isAll = true;
   int analysis = 1;
 
+  double submitPercent = 0;
+
   loading(){
     emit(-1);
   }
@@ -87,6 +89,7 @@ class DetailGradingCubit extends Cubit<int> {
     if (listAnswer!.isEmpty) {
       emit(0);
     } else {
+      await loadPercent();
       listState = data!.listState;
       listStudentId = data!.listStudentId;
       listStudent = data!.listStudent;
@@ -110,6 +113,29 @@ class DetailGradingCubit extends Cubit<int> {
 
   loadStdLesson(Object stdLessons) {
     this.stdLessons = stdLessons as List<StudentLessonModel>;
+  }
+
+  loadPercent()async{
+    var stdClass = await FireBaseProvider.instance.getStudentClassInClass(int.parse(TextUtils.getName(position: 1)));
+    var stdLesson = [];
+    var stdTest = [];
+    if(gradingType == "test"){
+      stdTest = await FireBaseProvider.instance.getStudentTestInTest( int.parse(TextUtils.getName(position: 1)),
+        int.parse(TextUtils.getName()));
+      if(stdClass.isEmpty){
+        submitPercent = 0;
+      }else{
+        submitPercent = stdTest.length / stdClass.length;
+      }
+    }else{
+      stdLesson = await FireBaseProvider.instance.getStudentLessonInLesson(int.parse(TextUtils.getName(position: 1)),
+          int.parse(TextUtils.getName()));
+      if(stdClass.isEmpty){
+        submitPercent = 0;
+      }else{
+        submitPercent = stdLesson.length / stdClass.length;
+      }
+    }
   }
 
   String getStudentName(AnswerModel answerModel) {
@@ -139,6 +165,16 @@ class DetailGradingCubit extends Cubit<int> {
   updateAfterGrading(int questionId) async {
     now = questionId;
     emit(questionId);
+  }
+
+  getAveragePoint(){
+    var list = answers;
+    double sum = 0;
+    for(var i in list){
+      sum = sum + i.newScore;
+    }
+    if(list.isEmpty) return 0;
+    return sum/list.length;
   }
 
   List<AnswerModel> get answers => isAll? listAnswer!
@@ -184,6 +220,20 @@ class DetailGradingCubit extends Cubit<int> {
     }
     bool isDone = listState!.every((element) => element == true);
     return isDone;
+  }
+
+  double getCorrectPercent(int questionId){
+    var listAnswer = getAnswerById(questionId);
+    int count  = 0;
+    for(var i in listAnswer){
+      if(i.newScore >= 5){
+        count++;
+      }
+    }
+
+    if(count == 0 || listAnswer.isEmpty) return 0;
+
+    return count/listAnswer.length;
   }
 
   List<AnswerModel> getAnswerById(int questionId) {
@@ -415,8 +465,6 @@ class AnalysisTestUtils {
         data.add(RadarEntryCustom(i - 1, RadarEntry(value: res.radarValue)));
       }
     }
-
-    print(data);
     return data;
   }
 }

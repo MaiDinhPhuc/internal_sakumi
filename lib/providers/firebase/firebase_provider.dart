@@ -867,6 +867,20 @@ class FireBaseProvider extends NetworkProvider {
         .toList();
   }
 
+  Future<List<StudentTestModel>> getStudentTestInTest(int classId, int testId) async {
+    return (await FireStoreDb.instance.getStudentTestInTest(classId, testId))
+        .docs
+        .map((e) => StudentTestModel.fromSnapshot(e))
+        .toList();
+  }
+
+  Future<List<StudentLessonModel>> getStudentLessonInLesson(int classId, int lessonId) async {
+    return (await FireStoreDb.instance.getStudentLessonInLesson(classId, lessonId))
+        .docs
+        .map((e) => StudentLessonModel.fromSnapshot(e))
+        .toList();
+  }
+
   @override
   Future<List<TestResultModel>> getListTestResult(int classId) async {
     List<TestResultModel> list =
@@ -1312,6 +1326,8 @@ class FireBaseProvider extends NetworkProvider {
 
     return list;
   }
+
+
 
   @override
   Future<List<CourseModel>> getCourseByListId(List<int> listCourseIds) async {

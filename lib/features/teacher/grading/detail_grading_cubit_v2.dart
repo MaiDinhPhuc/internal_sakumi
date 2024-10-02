@@ -40,6 +40,17 @@ class DetailGradingCubitV2 extends Cubit<int> {
 
   bool isAll = true;
   int analysis = 1;
+  double submitPercent = 0;
+
+  getAveragePoint(){
+    var list = answers;
+    double sum = 0;
+    for(var i in list){
+      sum = sum + i.newScore;
+    }
+    if(list.isEmpty) return 0;
+    return sum/list.length;
+  }
 
   List<RadarEntryCustom> getDataChart(){
     List<RadarEntryCustom> dataChart = [];
@@ -73,6 +84,7 @@ class DetailGradingCubitV2 extends Cubit<int> {
       listStudentId = data!.listStudentId;
       listStudent = data!.listStudent;
       checkDone(true);
+      await loadPercent();
       if (listQuestions!.isNotEmpty) {
         now = listQuestions!.first.id;
         emit(listQuestions!.first.id);
@@ -82,6 +94,29 @@ class DetailGradingCubitV2 extends Cubit<int> {
         await DataProvider.stdTestByClassId(classModel!.classId, loadStdTest);
       } else {
         emit(0);
+      }
+    }
+  }
+
+  loadPercent()async{
+    var stdClass = await FireBaseProvider.instance.getStudentClassInClass(int.parse(TextUtils.getName(position: 1)));
+    var stdLesson = [];
+    var stdTest = [];
+    if(gradingType == "test"){
+      stdTest = await FireBaseProvider.instance.getStudentTestInTest( int.parse(TextUtils.getName(position: 1)),
+          int.parse(TextUtils.getName()));
+      if(stdClass.isEmpty){
+        submitPercent = 0;
+      }else{
+        submitPercent = stdTest.length / stdClass.length;
+      }
+    }else{
+      stdLesson = await FireBaseProvider.instance.getStudentLessonInLesson(int.parse(TextUtils.getName(position: 1)),
+          int.parse(TextUtils.getName()));
+      if(stdClass.isEmpty){
+        submitPercent = 0;
+      }else{
+        submitPercent = stdLesson.length / stdClass.length;
       }
     }
   }
@@ -184,6 +219,20 @@ class DetailGradingCubitV2 extends Cubit<int> {
     }
     bool isDone = listState!.every((element) => element == true);
     return isDone;
+  }
+
+  double getCorrectPercent(int questionId){
+    var listAnswer = getAnswerById(questionId);
+    int count  = 0;
+    for(var i in listAnswer){
+      if(i.newScore >= 5){
+        count++;
+      }
+    }
+
+    if(count == 0 || listAnswer.isEmpty) return 0;
+
+    return count/listAnswer.length;
   }
 
   List<AnswerModel> getAnswerById(int questionId) {

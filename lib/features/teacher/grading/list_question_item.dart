@@ -89,7 +89,7 @@ class ListQuestionItem extends StatelessWidget {
                             cubit.change(e.id);
                             checkActiveCubit.changeActive(false);
                           },
-                          isDone: cubit.checkGrading(e.id),
+                          isDone: cubit.checkGrading(e.id), percent: cubit.getCorrectPercent(e.id),
                         ),
                       ))
                           .toList(),
@@ -182,7 +182,7 @@ class ListQuestionItemV2 extends StatelessWidget {
                             cubit.change(e.id);
                             checkActiveCubit.changeActive(false);
                           },
-                          isDone: cubit.checkGrading(e.id),
+                          isDone: cubit.checkGrading(e.id), percent: cubit.getCorrectPercent(e.id),
                         ),
                       ))
                           .toList(),
