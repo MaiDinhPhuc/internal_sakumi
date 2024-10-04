@@ -173,7 +173,7 @@ class DetailGradingCubit extends Cubit<int> {
     for(var i in list){
       sum = sum + i.newScore;
     }
-    if(list.isEmpty) return 0;
+    if(list.isEmpty || sum < 0) return 0;
     return sum/list.length;
   }
 
@@ -458,11 +458,16 @@ class AnalysisTestUtils {
       }
     }
 
+    List<int> listType = questions.map((e)=>e.skill).toSet().toList();
+
     List<RadarEntryCustom> data = [];
     for(int i = 1; i<= 8; i++) {
       var res = maps[i];
       if(res != null) {
         data.add(RadarEntryCustom(i - 1, RadarEntry(value: res.radarValue)));
+      }
+      if(res == null && listType.contains(i)){
+        data.add(RadarEntryCustom(i - 1,const RadarEntry(value: 0)));
       }
     }
     return data;

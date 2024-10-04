@@ -1510,7 +1510,6 @@ class FireBaseProvider extends NetworkProvider {
 
     List<AnswerModel> listAnswer =
         (await FireBaseProvider.instance.getListAnswer(parentId, classId))
-            .where((e) => listStdId.contains(e.studentId))
             .toList();
 
     if (listAnswer.isEmpty) {
