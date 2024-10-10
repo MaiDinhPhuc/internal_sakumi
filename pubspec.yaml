@@ -76,7 +76,8 @@ dependencies:
   flutter_sound: ^9.2.13
   pdf: ^3.11.0
   file_picker: ^8.0.7
-  fl_chart: ^0.69.0
+  fl_chart:
+    path: fl_chart
 
 
 

@@ -127,10 +127,14 @@ class DetailGradingScreen extends StatelessWidget {
                                                                           },
                                                                           state: state,
                                                                         ),
-                                                                        Row(
+                                                                        SizedBox(
+                                                                            height:  Resizable.size(
+                                                                                context, cubit.analysis != 0 ? 230 : 150),
+                                                                            child: Row(
                                                                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                                           children: [
                                                                             Column(
+                                                                              mainAxisAlignment: MainAxisAlignment.center,
                                                                               children: [
                                                                                 SizedBox(
                                                                                   height: Resizable.size(context, 80),
@@ -150,11 +154,12 @@ class DetailGradingScreen extends StatelessWidget {
                                                                               ],
                                                                             ),
                                                                             Column(
+                                                                              mainAxisAlignment: MainAxisAlignment.center,
                                                                               children: [
                                                                                 SizedBox(
                                                                                   height: Resizable.size(context, 80),
                                                                                   child: CircleProgress(
-                                                                                    title: cubit.getAveragePoint().toStringAsFixed(1).toString(),
+                                                                                    title: cubit.getAveragePoint().toStringAsFixed(2).toString(),
                                                                                     lineWidth: Resizable.size(context, 5),
                                                                                     percent: cubit.getAveragePoint()/10,
                                                                                     radius: Resizable.size(context, 30),
@@ -169,14 +174,14 @@ class DetailGradingScreen extends StatelessWidget {
                                                                               ],
                                                                             ),
                                                                             if(cubit.analysis != 0)
-                                                                              SizedBox(
-                                                                                  height: Resizable.size(
-                                                                                      context, 200),
-                                                                                  width: Resizable.size(
-                                                                                      context, 200),
-                                                                                  child: AnalyticsTestChart(data: cubit.getDataChart())),
+                                                                            SizedBox(
+                                                                                height: Resizable.size(
+                                                                                    context, 200),
+                                                                                width: Resizable.size(
+                                                                                    context, 200),
+                                                                                child: AnalyticsTestChart(data: cubit.getDataChart())),
                                                                           ],
-                                                                        )
+                                                                        )),
                                                                       ],
                                                                     ),
                                                                     crossFadeState: state % 2 == 1

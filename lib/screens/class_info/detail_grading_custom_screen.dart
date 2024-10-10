@@ -135,56 +135,62 @@ class DetailGradingCustomScreen extends StatelessWidget {
                                                                                 },
                                                                                 state: state,
                                                                               ),
-                                                                              Row(
-                                                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                                                children: [
-                                                                                  Column(
-                                                                                    children: [
-                                                                                      SizedBox(
-                                                                                        height: Resizable.size(context, 80),
-                                                                                        child: CircleProgress(
-                                                                                          title: '${cubit.submitPercent*100}%',
-                                                                                          lineWidth: Resizable.size(context, 5),
-                                                                                          percent: cubit.submitPercent,
-                                                                                          radius: Resizable.size(context, 30),
-                                                                                          fontSize: Resizable.font(context, 20),
-                                                                                        ),
-                                                                                      ),
-                                                                                      Text(AppText.txtRateOfSubmitTest.text,
-                                                                                          style: TextStyle(
-                                                                                              fontWeight: FontWeight.w700,
-                                                                                              color: Colors.black,
-                                                                                              fontSize: Resizable.font(context, 24)))
-                                                                                    ],
-                                                                                  ),
-                                                                                  Column(
-                                                                                    children: [
-                                                                                      SizedBox(
-                                                                                        height: Resizable.size(context, 80),
-                                                                                        child: CircleProgress(
-                                                                                          title: cubit.getAveragePoint().toStringAsFixed(1).toString(),
-                                                                                          lineWidth: Resizable.size(context, 5),
-                                                                                          percent: cubit.getAveragePoint()/10,
-                                                                                          radius: Resizable.size(context, 30),
-                                                                                          fontSize: Resizable.font(context, 20),
-                                                                                        ),
-                                                                                      ),
-                                                                                      Text(AppText.txtAveragePoint.text,
-                                                                                          style: TextStyle(
-                                                                                              fontWeight: FontWeight.w700,
-                                                                                              color: Colors.black,
-                                                                                              fontSize: Resizable.font(context, 24)))
-                                                                                    ],
-                                                                                  ),
-                                                                                  if(cubit.analysis != 0)
-                                                                                    SizedBox(
-                                                                                        height: Resizable.size(
-                                                                                            context, 200),
-                                                                                        width: Resizable.size(
-                                                                                            context, 200),
-                                                                                        child: AnalyticsTestChart(data: cubit.getDataChart())),
-                                                                                ],
-                                                                              )
+                                                                             SizedBox(
+                                                                               height: Resizable.size(
+                                                                                   context, cubit.analysis != 0 ? 230 : 150),
+                                                                               child: Row(
+                                                                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                                 children: [
+                                                                                   Column(
+                                                                                     mainAxisAlignment: MainAxisAlignment.center,
+                                                                                     children: [
+                                                                                       SizedBox(
+                                                                                         height: Resizable.size(context, 80),
+                                                                                         child: CircleProgress(
+                                                                                           title: '${cubit.submitPercent*100}%',
+                                                                                           lineWidth: Resizable.size(context, 5),
+                                                                                           percent: cubit.submitPercent,
+                                                                                           radius: Resizable.size(context, 30),
+                                                                                           fontSize: Resizable.font(context, 20),
+                                                                                         ),
+                                                                                       ),
+                                                                                       Text(AppText.txtRateOfSubmitTest.text,
+                                                                                           style: TextStyle(
+                                                                                               fontWeight: FontWeight.w700,
+                                                                                               color: Colors.black,
+                                                                                               fontSize: Resizable.font(context, 24)))
+                                                                                     ],
+                                                                                   ),
+                                                                                   Column(
+                                                                                     mainAxisAlignment: MainAxisAlignment.center,
+                                                                                     children: [
+                                                                                       SizedBox(
+                                                                                         height: Resizable.size(context, 80),
+                                                                                         child: CircleProgress(
+                                                                                           title: cubit.getAveragePoint().toStringAsFixed(2).toString(),
+                                                                                           lineWidth: Resizable.size(context, 5),
+                                                                                           percent: cubit.getAveragePoint()/10,
+                                                                                           radius: Resizable.size(context, 30),
+                                                                                           fontSize: Resizable.font(context, 20),
+                                                                                         ),
+                                                                                       ),
+                                                                                       Text(AppText.txtAveragePoint.text,
+                                                                                           style: TextStyle(
+                                                                                               fontWeight: FontWeight.w700,
+                                                                                               color: Colors.black,
+                                                                                               fontSize: Resizable.font(context, 24)))
+                                                                                     ],
+                                                                                   ),
+                                                                                   if(cubit.analysis != 0)
+                                                                                     SizedBox(
+                                                                                         height: Resizable.size(
+                                                                                             context, 200),
+                                                                                         width: Resizable.size(
+                                                                                             context, 200),
+                                                                                         child: AnalyticsTestChart(data: cubit.getDataChart())),
+                                                                                 ],
+                                                                               ),
+                                                                             )
                                                                               // if (cubit.analysis != 0)
                                                                               //   SizedBox(height: Resizable.size(context, 200), child: AnalyticsTestChart(data: cubit.getDataChart())),
                                                                             ],

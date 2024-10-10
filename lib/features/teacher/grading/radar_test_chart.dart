@@ -20,29 +20,44 @@ class AnalyticsTestChart extends StatelessWidget {
               borderColor: Colors.red,
               entryRadius: 3.0,
             ),
+            RadarDataSet(
+              dataEntries: data.map((e) => const RadarEntry(value: 10),).toList(),
+              fillColor: Colors.transparent,
+              borderColor: Colors.transparent,
+            ),
+            RadarDataSet(
+              dataEntries: [
+                ...data.map((e) => const RadarEntry(value: 0),).toList(),
+
+              ],
+              fillColor: Colors.transparent,
+              borderColor: Colors.transparent,
+
+            ),
           ],
           radarBackgroundColor: Colors.transparent,
           borderData: FlBorderData(show: false),
           radarBorderData: const BorderSide(color: Colors.grey),
-          titlePositionPercentageOffset: 0.045,
-          titleTextStyle: TextStyle(
-              fontSize: Resizable.font(context, 15),
-              color: const Color(0xff565656),
-              fontWeight: FontWeight.bold),
+
+          titlePositionPercentageOffset: 0.05,
+          titleTextStyle: TextStyle(fontSize: Resizable.font(context, 15), color: subTitleColor, fontWeight: FontWeight.bold),
           getTitle: (index, _) {
             var temp = data[index].entry.value;
             var number = '';
-            if (temp == temp.toInt()) {
+            if(temp == temp.toInt()) {
               number = '\n${temp.toInt()}';
-            } else {
+            }
+            else {
               number = '\n${temp.toStringAsFixed(1)}';
             }
             return RadarChartTitle(text: data[index].title + number);
           },
           tickCount: 2,
+
           ticksTextStyle: const TextStyle(color: Colors.grey, fontSize: 0),
           tickBorderData: BorderSide(color: Colors.grey, width: 1),
           gridBorderData: BorderSide(color: Colors.grey, width: 1),
+
           radarShape: RadarShape.polygon,
         ),
       ),

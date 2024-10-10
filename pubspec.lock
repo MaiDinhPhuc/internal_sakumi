@@ -324,10 +324,9 @@ packages:
   fl_chart:
     dependency: "direct main"
     description:
-      name: fl_chart
-      sha256: "94307bef3a324a0d329d3ab77b2f0c6e5ed739185ffc029ed28c0f9b019ea7ef"
-      url: "https://pub.dev"
-    source: hosted
+      path: fl_chart
+      relative: true
+    source: path
     version: "0.69.0"
   fluro:
     dependency: "direct main"

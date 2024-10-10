@@ -168,7 +168,7 @@ class DetailGradingCubit extends Cubit<int> {
   }
 
   getAveragePoint(){
-    var list = answers;
+    var list = listAnswer!.where((e)=>e.score != -1).toList();
     double sum = 0;
     for(var i in list){
       sum = sum + i.newScore;
@@ -430,12 +430,13 @@ class AnalysisTestModel {
     );
   }
 
-  double get radarValue => max == 0 ? 0 : ((right / max) * 10).toDouble();
+  double get radarValue => max == 0 ? 0 : ((right / max) * 10).roundToDouble();
 }
 
 class AnalysisTestUtils {
   static List<RadarEntryCustom> createChartData(
       List<QuestionModel> questions, List<AnswerModel> answers) {
+
     Map<int, AnalysisTestModel> maps = {};
     for (var item in answers) {
       final ques = questions.where((e) => e.id == item.questionId).firstOrNull;
@@ -458,16 +459,21 @@ class AnalysisTestUtils {
       }
     }
 
-    List<int> listType = questions.map((e)=>e.skill).toSet().toList();
-
     List<RadarEntryCustom> data = [];
     for(int i = 1; i<= 8; i++) {
       var res = maps[i];
       if(res != null) {
         data.add(RadarEntryCustom(i - 1, RadarEntry(value: res.radarValue)));
       }
-      if(res == null && listType.contains(i)){
-        data.add(RadarEntryCustom(i - 1,const RadarEntry(value: 0)));
+    }
+
+    if(data.length < 3) {
+      for(int i = 1; i<= 8; i++) {
+        var res = maps[i];
+        if(res == null) {
+          data.add(RadarEntryCustom(i - 1, const RadarEntry(value: 0)));
+          if(data.length == 3) break;
+        }
       }
     }
     return data;

@@ -179,7 +179,7 @@ class FireBaseProvider extends NetworkProvider {
     sharedPreferences.setString(PrefKeyConfigs.email, '');
     sharedPreferences.setString(PrefKeyConfigs.role, '');
     sharedPreferences.setString(PrefKeyConfigs.logoutYet, 'true');
-    sharedPreferences.setStringList(PrefKeyConfigs.routes,[]);
+    sharedPreferences.setStringList(PrefKeyConfigs.routes, []);
     Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
   }
 
@@ -219,9 +219,10 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<String> uploadImageAndGetUrl(Uint8List data, String folder, String fileName) async {
+  Future<String> uploadImageAndGetUrl(
+      Uint8List data, String folder, String fileName) async {
     return await FirebaseAuthentication.instance
-        .uploadFileAndGetUrl(data, folder,fileName);
+        .uploadFileAndGetUrl(data, folder, fileName);
   }
 
   @override
@@ -867,15 +868,18 @@ class FireBaseProvider extends NetworkProvider {
         .toList();
   }
 
-  Future<List<StudentTestModel>> getStudentTestInTest(int classId, int testId) async {
+  Future<List<StudentTestModel>> getStudentTestInTest(
+      int classId, int testId) async {
     return (await FireStoreDb.instance.getStudentTestInTest(classId, testId))
         .docs
         .map((e) => StudentTestModel.fromSnapshot(e))
         .toList();
   }
 
-  Future<List<StudentLessonModel>> getStudentLessonInLesson(int classId, int lessonId) async {
-    return (await FireStoreDb.instance.getStudentLessonInLesson(classId, lessonId))
+  Future<List<StudentLessonModel>> getStudentLessonInLesson(
+      int classId, int lessonId) async {
+    return (await FireStoreDb.instance
+            .getStudentLessonInLesson(classId, lessonId))
         .docs
         .map((e) => StudentLessonModel.fromSnapshot(e))
         .toList();
@@ -1327,8 +1331,6 @@ class FireBaseProvider extends NetworkProvider {
     return list;
   }
 
-
-
   @override
   Future<List<CourseModel>> getCourseByListId(List<int> listCourseIds) async {
     if (listCourseIds.isEmpty) {
@@ -1520,7 +1522,8 @@ class FireBaseProvider extends NetworkProvider {
           listStudent: [],
           courseModel: courseModel,
           listStudentId: [],
-          listState: [], analysis: analysis);
+          listState: [],
+          analysis: analysis);
     }
 
     List<int> listStudentId = [];
@@ -1544,7 +1547,8 @@ class FireBaseProvider extends NetworkProvider {
         listStudent: listStudent,
         courseModel: courseModel,
         listStudentId: listStudentId,
-        listState: [], analysis: analysis);
+        listState: [],
+        analysis: analysis);
   }
 
   @override
@@ -1552,7 +1556,6 @@ class FireBaseProvider extends NetworkProvider {
       int classId, int childId, int parentId, String type) async {
     ClassModel classModel =
         await FireBaseProvider.instance.getClassById(classId);
-
 
     int analysis = 0;
 
@@ -1617,14 +1620,11 @@ class FireBaseProvider extends NetworkProvider {
       }
     }
 
-
     List<AnswerModel> listAnswer = type == "type=test"
         ? (await FireBaseProvider.instance.getListAnswer(parentId, classId))
-            .where((e) => listStdId.contains(e.studentId))
             .toList()
         : (await FireBaseProvider.instance
                 .getListCustomAnswer(childId, classId, parentId))
-            .where((e) => listStdId.contains(e.studentId))
             .toList();
 
     if (listAnswer.isEmpty) {
@@ -1635,7 +1635,8 @@ class FireBaseProvider extends NetworkProvider {
           listStudent: [],
           courseModel: course,
           listStudentId: [],
-          listState: [], analysis: analysis);
+          listState: [],
+          analysis: analysis);
     }
 
     List<int> listStudentId = [];
@@ -1659,7 +1660,8 @@ class FireBaseProvider extends NetworkProvider {
         listStudent: listStudent,
         courseModel: course,
         listStudentId: listStudentId,
-        listState: [], analysis: analysis);
+        listState: [],
+        analysis: analysis);
   }
 
   @override
@@ -2120,10 +2122,10 @@ class FireBaseProvider extends NetworkProvider {
   Future<List<AdviseModel>> getListAdvise(
       String status, List<String> type) async {
     final getListAdvise =
-    (await FireStoreDb.instance.getListAdvise(status, type))
-        .docs
-        .map((e) => AdviseModel.fromSnapshot(e))
-        .toList();
+        (await FireStoreDb.instance.getListAdvise(status, type))
+            .docs
+            .map((e) => AdviseModel.fromSnapshot(e))
+            .toList();
     return getListAdvise;
   }
 
@@ -2150,7 +2152,7 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<bool> checkExistVoucherApp(String voucherCode) async {
     final temp =
-    await FireStoreDb.instance.getVoucherApp("app_voucher_$voucherCode");
+        await FireStoreDb.instance.getVoucherApp("app_voucher_$voucherCode");
 
     if (temp.exists) {
       return true;
@@ -2160,8 +2162,8 @@ class FireBaseProvider extends NetworkProvider {
 
   @override
   Future<bool> checkExistVoucherCourse(String voucherCode) async {
-    final temp =
-        await FireStoreDb.instance.getVoucherCourse("sakumi_voucher_$voucherCode");
+    final temp = await FireStoreDb.instance
+        .getVoucherCourse("sakumi_voucher_$voucherCode");
 
     if (temp.exists) {
       return true;
@@ -2188,12 +2190,14 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<VoucherCourseModel>> searchVoucherCourse(String text, String type) async {
+  Future<List<VoucherCourseModel>> searchVoucherCourse(
+      String text, String type) async {
     debugPrint('==========> search voucher000 $text');
-    final list = (await FireStoreDb.instance.getListSearchVoucherCourse(text, type))
-        .docs
-        .map((e) => VoucherCourseModel.fromSnapshot(e))
-        .toList();
+    final list =
+        (await FireStoreDb.instance.getListSearchVoucherCourse(text, type))
+            .docs
+            .map((e) => VoucherCourseModel.fromSnapshot(e))
+            .toList();
 
     debugPrint('==========> search voucher ${list.length}');
 
@@ -2201,12 +2205,14 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   @override
-  Future<List<VoucherAppModel>> searchVoucherApp(String text, String type) async {
+  Future<List<VoucherAppModel>> searchVoucherApp(
+      String text, String type) async {
     debugPrint('==========> search voucher000 $text');
-    final list = (await FireStoreDb.instance.getListSearchVoucherApp(text, type))
-        .docs
-        .map((e) => VoucherAppModel.fromSnapshot(e))
-        .toList();
+    final list =
+        (await FireStoreDb.instance.getListSearchVoucherApp(text, type))
+            .docs
+            .map((e) => VoucherAppModel.fromSnapshot(e))
+            .toList();
 
     debugPrint('==========> search voucher ${list.length}');
 
@@ -2257,18 +2263,13 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<void> updateVoucherCourse(String usedUserCode, String noted,
       String voucherCode, String date) async {
-    await FireStoreDb.instance
-        .updateVoucherCourse( noted, voucherCode);
+    await FireStoreDb.instance.updateVoucherCourse(noted, voucherCode);
   }
 
   @override
-  Future<void> updateVoucherApp( String noted,
-      String voucherCode) async {
-    await FireStoreDb.instance
-        .updateVoucherApp( noted, voucherCode);
+  Future<void> updateVoucherApp(String noted, String voucherCode) async {
+    await FireStoreDb.instance.updateVoucherApp(noted, voucherCode);
   }
-
-
 
   @override
   Future<List<ClassModel>> getAllClassInProgress() async {
@@ -2580,8 +2581,7 @@ class FireBaseProvider extends NetworkProvider {
     return list;
   }
 
-
-  Future<bool> addBanner(BannerModel banner)  async {
+  Future<bool> addBanner(BannerModel banner) async {
     return await FireStoreDb.instance.addBanner(banner);
   }
 
@@ -2593,10 +2593,10 @@ class FireBaseProvider extends NetworkProvider {
     return list;
   }
 
-
   Future<BannerOption?> getBannerOptionByIdAndType(int ownId, int type) async {
     try {
-      return (await FireStoreDb.instance.getBannerOptionByIdAndType(ownId, type))
+      return (await FireStoreDb.instance
+              .getBannerOptionByIdAndType(ownId, type))
           .docs
           .map((e) => BannerOption.fromSnapshot(e))
           .single;
@@ -2612,9 +2612,11 @@ class FireBaseProvider extends NetworkProvider {
   Future<bool> deleteBannerOption(String doc) async {
     return await FireStoreDb.instance.deleteBannerOption(doc);
   }
+
   Future<bool> deleteBanner(String doc) async {
     return await FireStoreDb.instance.deleteBanner(doc);
   }
+
   Future<List<CourseSuggestModel>> getCourseSuggests() async {
     final list = (await FireStoreDb.instance.getCourseSuggests())
         .docs
@@ -2623,10 +2625,10 @@ class FireBaseProvider extends NetworkProvider {
     return list;
   }
 
-
   Future<bool> addCourseSuggest(CourseSuggestModel cs) async {
     return await FireStoreDb.instance.addCourseSuggest(cs);
   }
+
   Future<bool> deleteCourseSuggest(CourseSuggestModel cs) async {
     return await FireStoreDb.instance.deleteCourseSuggest(cs);
   }
@@ -2641,13 +2643,12 @@ class FireBaseProvider extends NetworkProvider {
       return null;
     }
   }
-  Future<bool>  addCSOption(CSOption csOption) async {
+
+  Future<bool> addCSOption(CSOption csOption) async {
     return await FireStoreDb.instance.addCSOption(csOption);
   }
-
 
   Future<bool> deleteCSOption(String s) async {
     return await FireStoreDb.instance.deleteCSOption(s);
   }
-
 }

@@ -43,7 +43,7 @@ class DetailGradingCubitV2 extends Cubit<int> {
   double submitPercent = 0;
 
   getAveragePoint(){
-    var list = answers;
+    var list = listAnswer!.where((e)=>e.score != -1).toList();
     double sum = 0;
     for(var i in list){
       sum = sum + i.newScore;
