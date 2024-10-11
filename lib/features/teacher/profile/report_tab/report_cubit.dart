@@ -29,11 +29,13 @@ class ReportCubit extends Cubit<int> {
   List<bool> status = [true, true, true, true];
   List<String> listStatus = ['Tốt', 'Bình thường', 'Chưa tốt', 'Tệ'];
 
+  List<bool> range = [true, true, true];
+  List<String> listRange = ['Quan trọng', 'Bình thường', 'Gợi ý'];
+
   bool isLoading = true;
   int? userId;
   ClassModel? classModel;
   String type = "teacher";
-
 
   update() {
     emit(state + 1);
@@ -79,8 +81,7 @@ class ReportCubit extends Cubit<int> {
     emit(state + 1);
   }
 
-
-  loadClass(int classId)async {
+  loadClass(int classId) async {
     classModel = await FireBaseProvider.instance.getClassById(classId);
   }
 
@@ -92,19 +93,28 @@ class ReportCubit extends Cubit<int> {
       }
     }
 
+    List<String> listRange = [];
+    for (int i = 0; i < range.length; i++) {
+      if (range[i]) {
+        listRange.add(this.listRange[i]);
+      }
+    }
+
     return listReport!
         .where((e) =>
             listStatus.contains(e.status) &&
+            listRange.contains(e.range) &&
             e.id < endDate!.millisecondsSinceEpoch &&
-            e.id > startDate!.millisecondsSinceEpoch && e.delete == false)
+            e.id > startDate!.millisecondsSinceEpoch &&
+            e.delete == false)
         .toList();
   }
 
-  setDateTime(DateTime startDate, DateTime endDate){
+  setDateTime(DateTime startDate, DateTime endDate) {
     this.startDate = startDate;
     this.endDate = endDate;
     changeDate = true;
-    emit(state+1);
+    emit(state + 1);
   }
 
   String parseDate(String dateTimeString) {
@@ -116,39 +126,39 @@ class ReportCubit extends Cubit<int> {
     return formattedDate;
   }
 
-  clearDate(){
+  clearDate() {
     DateTime now = DateTime.now();
     DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
     DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 1);
     startDate = firstDayOfMonth;
     endDate = lastDayOfMonth;
     changeDate = false;
-    emit(state+1);
+    emit(state + 1);
   }
 
-  addNewReport(ReportModel newReport){
+  addNewReport(ReportModel newReport) {
     listReport!.add(newReport);
-    emit(state+1);
+    emit(state + 1);
   }
 
-  updateReport(ReportModel newReport){
-    var index = listReport!.indexOf(listReport!.firstWhere((e) => e.id == newReport.id));
+  updateReport(ReportModel newReport) {
+    var index = listReport!
+        .indexOf(listReport!.firstWhere((e) => e.id == newReport.id));
     listReport![index] = newReport;
-    emit(state+1);
+    emit(state + 1);
   }
 
   removeReport(int id) async {
     var index = listReport!.indexOf(listReport!.firstWhere((e) => e.id == id));
     listReport!.remove(listReport![index]);
-    emit(state+1);
-    await  CustomFirebaseFireStore.database.collection('reports').doc('report_$id').update({
-      'delete': true
-    });
+    emit(state + 1);
+    await CustomFirebaseFireStore.database
+        .collection('reports')
+        .doc('report_$id')
+        .update({'delete': true});
   }
 
-  String convertDate(int time){
-
-
+  String convertDate(int time) {
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(time);
 
     DateFormat formattedDate = DateFormat('HH:mm:ss - dd/MM/yyyy');

@@ -3,17 +3,19 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/model/question_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class QuestionOptionItem extends StatelessWidget {
   const QuestionOptionItem(this.id, this.index, this.now,
       {super.key,
       required this.questionModel,
       required this.onTap,
-      required this.isDone});
+      required this.isDone, required this.percent});
   final int id, index, now;
   final QuestionModel questionModel;
   final Function() onTap;
   final bool isDone;
+  final double percent;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -56,9 +58,35 @@ class QuestionOptionItem extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.check_circle,
-                                  color:
-                                      isDone ? greenColor : greyColor.shade500),
+                              CircularPercentIndicator(
+                                  radius:  Resizable.size(context, 12),
+                                  lineWidth: Resizable.size(context, 3),
+                                  animation: true,
+                                  animationDuration: 2500,
+                                  percent: percent,
+                                  center: Card(
+                                    // margin: EdgeInsets.all(Resizable.padding(context, 5)),
+                                    // elevation: Resizable.size(context, 10),
+                                    shadowColor: Colors.transparent,
+                                    color: Colors.transparent,
+                                    shape: const CircleBorder(),
+                                    child: Center(
+                                        child: Icon(Icons.check_circle,
+                                            color:
+                                            isDone ? greenColor : greyColor.shade500)),
+                                  ),
+                                  circularStrokeCap: CircularStrokeCap.round,
+                                  rotateLinearGradient: true,
+                                  linearGradient: LinearGradient(colors: [
+                                    primaryColor.withOpacity(0.4),
+                                    primaryColor.withOpacity(0.5),
+                                    primaryColor.withOpacity(0.6),
+                                    primaryColor.withOpacity(0.7),
+                                    primaryColor.withOpacity(0.8),
+                                    primaryColor.withOpacity(0.9),
+                                    primaryColor,
+                                  ]),
+                                  backgroundColor: greyColor.shade100),
                               SizedBox(width: Resizable.padding(context, 5)),
                               Text(
                                 "${AppText.textQuestionNumber.text}${index + 1}",

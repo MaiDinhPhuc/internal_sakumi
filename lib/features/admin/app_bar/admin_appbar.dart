@@ -47,6 +47,7 @@ List<NavigationModel> buttonAdminList = [
   NavigationModel(6, AppText.txtVoucher.text),
   NavigationModel(7, AppText.txtTeacher.text),
   NavigationModel(9, AppText.txtAdvise.text),
+  NavigationModel(10, AppText.txtProcedure.text),
 ];
 
 class DetailAppBar extends StatelessWidget {

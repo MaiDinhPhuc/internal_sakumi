@@ -633,10 +633,12 @@ enum AppText {
   txtNumMonths,
   txtNumDevices,
   txtAddFiles,
-  txtFiles
+  txtFiles,
+  txtProcedure
 }
 
 Map<AppText, String> texts = {
+  AppText.txtProcedure: 'Quy trình',
   AppText.txtFiles: 'Tệp đính kèm',
   AppText.txtAddFiles: '+ Thêm Files',
   AppText.txtNumDevices: 'Số thiết bị tối đa',
@@ -881,7 +883,7 @@ Map<AppText, String> texts = {
   AppText.txtListStudentClass: 'DANH SÁCH LỚP CỦA HỌC VIÊN',
   AppText.txtUpdateTeacherDone: 'Cập nhật Sensei thành công!',
   AppText.txtSendReloadPassDone:
-      'Đã gửi mail cho học viên. Vui lòng thông báo cho học viên check mail để cập nhật mật khẩu mới!',
+      'Đã gửi mail cho tài khoản cần hỗ trợ. Vui lòng thông báo cho người dùng check mail để cập nhật mật khẩu mới!',
   AppText.txtReloadPass: 'Cập nhật mật khẩu',
   AppText.txtUpdateStudentDone: 'Cập nhật học sinh thành công!',
   AppText.txtNoteSpForTeacher: 'Ghi chú của team Support cho Sensei',

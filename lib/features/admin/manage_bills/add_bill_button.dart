@@ -10,6 +10,7 @@ class AddButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      borderRadius: BorderRadius.all(Radius.circular(Resizable.size(context, 10))),
       onTap: onTap,
       child: Container(
         width: Resizable.size(context, 130),
@@ -23,7 +24,7 @@ class AddButton extends StatelessWidget {
               strokeAlign: BorderSide.strokeAlignOutside,
               color: Color(0xFFDADADA),
             ),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(Resizable.size(context, 10)),
           ),
           shadows: const [
             BoxShadow(

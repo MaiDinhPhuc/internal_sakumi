@@ -97,6 +97,7 @@ class SingleScheduleDialog extends StatelessWidget {
                                                   await addCubit
                                                       .addNewSingleSchedule(
                                                       cubit);
+                                                  await cubit.getSchedule();
                                                   if (context.mounted) {
                                                     Navigator.pop(context);
                                                     if (schedule != null) {
@@ -232,6 +233,7 @@ class ChangeTeacherScheduleDialog extends StatelessWidget {
 
                                                   await FireBaseProvider.instance.addNewSchedule(newSchedule);
                                                   await cubit.addSchedule(newSchedule);
+                                                  await cubit.getSchedule();
                                                   if (context.mounted) {
                                                     Navigator.pop(context);
                                                     if (schedule != null) {

@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
 import 'package:internal_sakumi/model/class_model.dart';
@@ -155,5 +157,15 @@ class TeacherInfoCubit extends Cubit<int> {
 
   changeName(String newValue) {
     name = newValue;
+  }
+
+
+  resetPassword() async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: user!.email);
+      debugPrint('Password reset email sent successfully.');
+    } catch (e) {
+      debugPrint('Error sending password reset email: $e');
+    }
   }
 }

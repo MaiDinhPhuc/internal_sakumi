@@ -5,6 +5,7 @@ import 'package:internal_sakumi/screens/admin/manage_general_screen.dart';
 import 'package:internal_sakumi/screens/admin/student_info_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_bill_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_feedbacks_screen.dart';
+import 'package:internal_sakumi/screens/admin/tab/manage_procedure_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_schedule_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_statistics_screen.dart';
 import 'package:internal_sakumi/screens/admin/tab/manage_advises_screen.dart';
@@ -106,6 +107,8 @@ class Routes {
         handler: manageGeneralHandler, transitionType: TransitionType.fadeIn);
     router.define('$admin/manageSchedule',
         handler: manageScheduleHandler, transitionType: TransitionType.fadeIn);
+    router.define('$admin/manageProcedure',
+        handler: manageProcedureHandler, transitionType: TransitionType.fadeIn);
     router.define('$teacher/profile',
         handler: profileTeacherHandler, transitionType: TransitionType.fadeIn);
     router.define('$teacher/:surveyId',
@@ -239,6 +242,11 @@ var manageGeneralHandler =
 var manageScheduleHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return ManageScheduleScreen();
+});
+
+var manageProcedureHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return ManageProcedureScreen();
 });
 
 var searchScreenHandler =

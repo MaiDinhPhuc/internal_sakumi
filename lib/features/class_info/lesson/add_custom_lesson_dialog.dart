@@ -68,8 +68,13 @@ class AddCustomLessonDialog extends StatelessWidget {
                               minWidth: Resizable.size(context, 100)),
                           child: SubmitButton(
                               onPressed: () {
-                                cubit.updateClass(listLessonCubit);
-                                Navigator.pop(context);
+                                if(cubit.titleCon.text.isEmpty){
+                                  notificationDialog(context, "Tiêu đề không được trống!");
+                                }else{
+                                  cubit.updateClass(listLessonCubit);
+                                  Navigator.pop(context);
+                                }
+
                               }, title: AppText.btnAdd.text),
                         ),
                       ],

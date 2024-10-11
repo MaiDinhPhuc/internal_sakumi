@@ -75,6 +75,9 @@ class AdminAppBarItem extends StatelessWidget {
                     case 9:
                       await Functions.goPage('${Routes.admin}/manageAdvises', context);
                       break;
+                    case 10:
+                      await Functions.goPage('${Routes.admin}/manageProcedure', context);
+                      break;
                   }
                 },
                 child: Container(

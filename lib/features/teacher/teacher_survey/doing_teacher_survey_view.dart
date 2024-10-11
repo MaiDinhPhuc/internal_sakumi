@@ -73,7 +73,7 @@ class DoingTeacherSurveyView extends StatelessWidget {
                                                 horizontal:
                                                     Resizable.padding(context, 30)))),
                                     child: Text(
-                                        AppText.btnSubmit.text.toUpperCase(),
+                                        "Gửi khảo sát".toUpperCase(),
                                         style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             fontSize:

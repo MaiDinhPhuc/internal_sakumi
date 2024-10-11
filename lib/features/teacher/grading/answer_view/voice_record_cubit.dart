@@ -16,7 +16,9 @@ class VoiceRecordCubit extends Cubit<List<dynamic>>{
 
   record(BuildContext context ,AnswerModel answerModel,CheckActiveCubit checkActiveCubit,DetailGradingCubit cubit) async {
     RecordService.instance.start();
+
     showDialog(
+        barrierDismissible:false,
         context: context,
         builder: (context) =>  RecordDialog(stop: () async {
           Navigator.of(context).pop();
@@ -37,14 +39,15 @@ class VoiceRecordCubit extends Cubit<List<dynamic>>{
           }
           var newList = answerModel.listRecordUrl;
           emit([...newList]);
-        }));
+        }, ques: cubit.getQuestion(),));
   }
 
   recordV2(BuildContext context ,AnswerModel answerModel,CheckActiveCubit checkActiveCubit,DetailGradingCubitV2 cubit) async {
     RecordService.instance.start();
     showDialog(
+        barrierDismissible:false,
         context: context,
-        builder: (context) =>  RecordDialog(stop: () async {
+        builder: (context) =>  RecordDialog(ques: cubit.getQuestion(),stop: () async {
           Navigator.of(context).pop();
           var link = await RecordService.instance.stop();
           await RecordService.instance.dispose();
@@ -102,8 +105,9 @@ class VoiceRecordCubit extends Cubit<List<dynamic>>{
     }
     RecordService.instance.start();
     showDialog(
+        barrierDismissible:false,
         context: context,
-        builder: (context) =>  RecordDialog(stop: () async {
+        builder: (context) =>  RecordDialog(ques: cubit.getQuestion(),stop: () async {
           Navigator.of(context).pop();
           var link = await RecordService.instance.stop();
           await RecordService.instance.dispose();
@@ -134,7 +138,7 @@ class VoiceRecordCubit extends Cubit<List<dynamic>>{
     RecordService.instance.start();
     showDialog(
         context: context,
-        builder: (context) =>  RecordDialog(stop: () async {
+        builder: (context) =>  RecordDialog(ques: cubit.getQuestion(),stop: () async {
           Navigator.of(context).pop();
           var link = await RecordService.instance.stop();
           await RecordService.instance.dispose();

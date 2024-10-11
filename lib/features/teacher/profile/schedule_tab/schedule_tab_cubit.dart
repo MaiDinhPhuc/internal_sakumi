@@ -123,9 +123,11 @@ class ScheduleTabCubit extends Cubit<int> {
       }
     }
 
-    for (var i in listClassId) {
-      await loadClass(i);
-    }
+    listClass = await FireBaseProvider.instance.getListClassByListIdV2(listClassId);
+    //
+    // for (var i in listClassId) {
+    //   await loadClass(i);
+    // }
 
     isLoadingSchedule = false;
     emit(state + 1);
@@ -503,13 +505,16 @@ class ScheduleTabCubit extends Cubit<int> {
     this.teacher = teacher as TeacherModel;
   }
 
-  loadClass(int classId) async {
-    var listClassId = listClass.map((e)=>e.classId).toList();
-    if(listClassId.contains(classId) == false){
-      var classModelTemp = await FireBaseProvider.instance.getClassById(classId);
-      if(classModelTemp.classStatus != "Completed"){
-        listClass.add(classModelTemp);
-      }
-    }
-  }
+  // loadClass(int classId) async {
+  //
+  //
+  //
+  //   var listClassId = listClass.map((e)=>e.classId).toList();
+  //   if(listClassId.contains(classId) == false){
+  //     var classModelTemp = await FireBaseProvider.instance.getClassById(classId);
+  //     if(classModelTemp.classStatus != "Completed"){
+  //       listClass.add(classModelTemp);
+  //     }
+  //   }
+  // }
 }
