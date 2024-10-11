@@ -633,10 +633,12 @@ enum AppText {
   txtNumMonths,
   txtNumDevices,
   txtAddFiles,
-  txtFiles
+  txtFiles,
+  txtProcedure
 }
 
 Map<AppText, String> texts = {
+  AppText.txtProcedure: 'Quy trình',
   AppText.txtFiles: 'Tệp đính kèm',
   AppText.txtAddFiles: '+ Thêm Files',
   AppText.txtNumDevices: 'Số thiết bị tối đa',

@@ -25,6 +25,8 @@ import 'package:internal_sakumi/model/group_tag_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/manage_tag_model.dart';
+import 'package:internal_sakumi/model/procedure_item_model.dart';
+import 'package:internal_sakumi/model/procedure_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
 import 'package:internal_sakumi/model/report_model.dart';
 import 'package:internal_sakumi/model/schedule_model.dart';
@@ -266,6 +268,53 @@ class FireBaseProvider extends NetworkProvider {
     }
 
     return lessons;
+  }
+
+  Future<List<ProcedureItemModel>> getAllProcedureItem(String type) async {
+    final lessons = (await FireStoreDb.instance.getAllProcedureItem(type))
+        .docs
+        .map((e) => ProcedureItemModel.fromSnapshot(e))
+        .toList();
+    return lessons;
+  }
+
+  Future<List<ProcedureItemModel>> getProcedureItemByIDs(List<dynamic> ids) async {
+    if (ids.isEmpty) {
+      return [];
+    }
+    if (ids.length <= 10) {
+      return (await FireStoreDb.instance.getProcedureItemByIDs(ids))
+          .docs
+          .map((e) => ProcedureItemModel.fromSnapshot(e))
+          .toList();
+    }
+
+    List<List<dynamic>> subLists = [];
+    for (int i = 0; i < ids.length; i += 10) {
+      List<dynamic> subList =
+      ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
+      subLists.add(subList);
+    }
+
+    List<ProcedureItemModel> list = [];
+
+    List<Future<QuerySnapshot<Map<String, dynamic>>>> tempX = [];
+
+    for (int i = 0; i < subLists.length; i++) {
+      tempX.add(FireStoreDb.instance.getProcedureItemByIDs(subLists[i]));
+    }
+    List<QuerySnapshot<Map<String, dynamic>>> responses =
+    await Future.wait(tempX);
+
+    list = responses.fold(
+        [],
+            (pre, res) => [
+          ...pre,
+          ...res.docs
+              .map((e) => ProcedureItemModel.fromSnapshot(e))
+              .toList()
+        ]);
+    return list;
   }
 
   @override
@@ -572,6 +621,15 @@ class FireBaseProvider extends NetworkProvider {
         .toList();
   }
 
+  Future<List<ProcedureModel>> getAllProcedure() async {
+    return (await FireStoreDb.instance.getAllProcedure())
+        .docs
+        .map((e) => ProcedureModel.fromSnapshot(e))
+        .toList();
+  }
+
+
+
   @override
   Future<List<SurveyModel>> getAllTeacherSurvey() async {
     return (await FireStoreDb.instance.getAllTeacherSurvey())
@@ -822,6 +880,14 @@ class FireBaseProvider extends NetworkProvider {
   @override
   Future<void> updateProfileTeacher(TeacherModel model) async {
     await FireStoreDb.instance.updateProfileTeacher(model);
+  }
+
+  Future<void> addNewProcedure(ProcedureModel model) async {
+    await FireStoreDb.instance.addNewProcedure(model);
+  }
+
+  Future<void> addNewProcedureItem(ProcedureItemModel model) async {
+    await FireStoreDb.instance.addNewProcedureItem(model);
   }
 
   @override

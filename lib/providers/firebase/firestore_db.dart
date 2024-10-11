@@ -15,6 +15,8 @@ import 'package:internal_sakumi/model/group_tag_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/manage_tag_model.dart';
+import 'package:internal_sakumi/model/procedure_item_model.dart';
+import 'package:internal_sakumi/model/procedure_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
 import 'package:internal_sakumi/model/response_model.dart';
 import 'package:internal_sakumi/model/schedule_model.dart';
@@ -75,7 +77,7 @@ class FireStoreDb {
 
   Future<QuerySnapshot<Map<String, dynamic>>> getEnableGiftCode(int id) async {
     final snapshot =
-    await db.collection("admin").where("id", isEqualTo: id).get();
+        await db.collection("admin").where("id", isEqualTo: id).get();
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getEnableGiftCode ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
@@ -90,7 +92,7 @@ class FireStoreDb {
     final snapshot = await db
         .collection("teacher_class")
         .where("user_id", isEqualTo: id)
-        .where('class_status',isNotEqualTo: "Remove" )
+        .where('class_status', isNotEqualTo: "Remove")
         .get();
 
     debugPrint(
@@ -400,6 +402,16 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllProcedure() async {
+    final snapshot =
+        await db.collection('procedure').where("status", isEqualTo: true).get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllProcedure ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getTeacherSurvey() async {
     final snapshot = await db
         .collection('teacher_survey')
@@ -414,7 +426,8 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getTeacherSurveyByTeacherId(int teacherId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getTeacherSurveyByTeacherId(
+      int teacherId) async {
     final snapshot = await db
         .collection('teacher_survey')
         .where('status', isEqualTo: 'waiting')
@@ -429,7 +442,8 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getTeacherSurveyByTeacherAndSurveyId(int teacherId, int surveyId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>>
+      getTeacherSurveyByTeacherAndSurveyId(int teacherId, int surveyId) async {
     final snapshot = await db
         .collection('teacher_survey')
         .where('status', isEqualTo: 'waiting')
@@ -445,7 +459,9 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getTeacherSurveyAnswerByTeacherAndSurveyId(int teacherId, int surveyId, int date) async {
+  Future<QuerySnapshot<Map<String, dynamic>>>
+      getTeacherSurveyAnswerByTeacherAndSurveyId(
+          int teacherId, int surveyId, int date) async {
     final snapshot = await db
         .collection('teacher_survey_answer')
         .where('date_assign', isEqualTo: date)
@@ -730,12 +746,8 @@ class FireStoreDb {
     debugPrint("==========>update db for \"feedbacks\"");
   }
 
-  Future<void> updateSuperSaleInfo(
-      EnableGiftModel value) async {
-    await db
-        .collection('admin')
-        .doc("super_sale")
-        .update({
+  Future<void> updateSuperSaleInfo(EnableGiftModel value) async {
+    await db.collection('admin').doc("super_sale").update({
       'enableIOS': value.enableIOS,
       'enableAndroid': value.enableAndroid,
       'enable_gift': value.enableGift,
@@ -744,17 +756,13 @@ class FireStoreDb {
       'banner1': value.banner1,
       'banner2': value.banner2,
       'banner3': value.banner3,
-      'type':value.type
+      'type': value.type
     });
     debugPrint("==========>update db for \"enable_gift\"");
   }
 
-  Future<void> updateAdviseStatus(
-     int date, String newStatus) async {
-    await db
-        .collection('advise')
-        .doc("advise_$date")
-        .update({
+  Future<void> updateAdviseStatus(int date, String newStatus) async {
+    await db.collection('advise').doc("advise_$date").update({
       'status': newStatus,
     });
     debugPrint("==========>update db for \"advise\"");
@@ -1124,7 +1132,7 @@ class FireStoreDb {
       "title": model.title,
       "enable": model.enable,
       "duration": model.duration,
-      'analysis':model.analysis
+      'analysis': model.analysis
     });
     debugPrint("==========> add db for \"test\"");
   }
@@ -1141,7 +1149,7 @@ class FireStoreDb {
       "title": model.title,
       "enable": model.enable,
       "duration": model.duration,
-      'analysis':model.analysis
+      'analysis': model.analysis
     });
     debugPrint("==========> update db from \"lessons\"");
   }
@@ -1237,6 +1245,34 @@ class FireStoreDb {
     debugPrint("==========>update db for \"teacher\"");
   }
 
+  Future<void> addNewProcedure(ProcedureModel model) async {
+    await db.collection('procedure').doc("procedure_${model.id}").set({
+      'id': model.id,
+      'title': model.title,
+      'type': model.type,
+      'des': model.des,
+      'items': model.items,
+      'status': model.status
+    });
+    debugPrint("==========>update db for \"procedure\"");
+  }
+
+  Future<void> addNewProcedureItem(ProcedureItemModel model) async {
+    await db
+        .collection('procedure_item')
+        .doc("procedure_item_${model.id}")
+        .set({
+      'id': model.id,
+      'title': model.title,
+      'type': model.type,
+      'des': model.des,
+      'files': model.files,
+      'content': model.content,
+      'status': model.status
+    });
+    debugPrint("==========>update db for \"procedure_item\"");
+  }
+
   Future<void> updateProfileStudent(StudentModel model) async {
     await db.collection('students').doc("student_user_${model.userId}").update({
       'name': model.name,
@@ -1267,10 +1303,8 @@ class FireStoreDb {
 
   Future<QuerySnapshot<Map<String, dynamic>>> getTestByTestId(
       int testId) async {
-    final snapshot = await db
-        .collection("test")
-        .where("id", isEqualTo: testId)
-        .get();
+    final snapshot =
+        await db.collection("test").where("id", isEqualTo: testId).get();
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTestByTestId $testId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
@@ -1767,7 +1801,7 @@ class FireStoreDb {
         .where(Filter.and(
             Filter("end_time", isGreaterThanOrEqualTo: startDate),
             Filter("end_time", isLessThanOrEqualTo: endDate),
-            Filter("class_status", whereIn: ['Completed', 'Cancel','Paused']),
+            Filter("class_status", whereIn: ['Completed', 'Cancel', 'Paused']),
             Filter("informal", isEqualTo: false)))
         .get();
 
@@ -2123,7 +2157,8 @@ class FireStoreDb {
   Future<void> submitTeacherSurvey(TeacherSurveyAnswerModel model) async {
     await db
         .collection("teacher_survey_answer")
-        .doc("teacher_${model.teacherId}_survey_${model.surveyId}_dateAssign_${model.dateAssign}")
+        .doc(
+            "teacher_${model.teacherId}_survey_${model.surveyId}_dateAssign_${model.dateAssign}")
         .set({
       'date_assign': model.dateAssign,
       'id': model.id,
@@ -2349,7 +2384,8 @@ class FireStoreDb {
       'sub_class_id': model.subClassId,
       'custom_test': model.customTests
     });
-    debugPrint("==========>update db for \"class_${model.classId}_course_${model.courseId}\"");
+    debugPrint(
+        "==========>update db for \"class_${model.classId}_course_${model.courseId}\"");
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getAllStudentInFoInClass(
@@ -2374,6 +2410,32 @@ class FireStoreDb {
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getLessonsByListLessonId $ids ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getProcedureItemByIDs(
+      List<dynamic> ids) async {
+    final snapshot =
+        await db.collection("procedure_item").where("id", whereIn: ids).get();
+    // debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getProcedureItemByIDs $ids ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllProcedureItem(
+      String type) async {
+    final snapshot = await db
+        .collection("procedure_item")
+        .where("type", isEqualTo: type)
+        .where("status", isEqualTo: true)
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllProcedureItem $type ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -2404,7 +2466,8 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getVoucherCourse(String docs) async {
+  Future<DocumentSnapshot<Map<String, dynamic>>> getVoucherCourse(
+      String docs) async {
     final temp = await db.collection("voucher").doc(docs).get();
 
     debugPrint(
@@ -2413,7 +2476,8 @@ class FireStoreDb {
     return temp;
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getVoucherApp(String docs) async {
+  Future<DocumentSnapshot<Map<String, dynamic>>> getVoucherApp(
+      String docs) async {
     final temp = await db.collection("voucher_app").doc(docs).get();
 
     debugPrint(
@@ -2440,7 +2504,7 @@ class FireStoreDb {
     final snapshot = await db
         .collection("voucher_app")
         .where(type,
-        isGreaterThanOrEqualTo: text, isLessThanOrEqualTo: "$text\uf7ff")
+            isGreaterThanOrEqualTo: text, isLessThanOrEqualTo: "$text\uf7ff")
         .get();
 
     debugPrint(
@@ -2504,15 +2568,13 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<void> updateVoucherApp( String noted,
-      String voucherCode) async {
+  Future<void> updateVoucherApp(String noted, String voucherCode) async {
     await db.collection("voucher_app").doc("app_voucher_$voucherCode").update({
       'noted': noted,
     });
   }
 
-  Future<void> updateVoucherCourse( String noted,
-      String voucherCode) async {
+  Future<void> updateVoucherCourse(String noted, String voucherCode) async {
     await db.collection("voucher").doc("sakumi_voucher_$voucherCode").update({
       'noted': noted,
     });
@@ -2718,15 +2780,20 @@ class FireStoreDb {
 
     return snapshot;
   }
-  Future<QuerySnapshot<Map<String, dynamic>>> getBannerOptionsById(int id) async {
-    final snapshot =
-    await db.collection('banner_options').where('banner_id', isEqualTo: id).get();
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getBannerOptionsById(
+      int id) async {
+    final snapshot = await db
+        .collection('banner_options')
+        .where('banner_id', isEqualTo: id)
+        .get();
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTagById $id ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getBannerOptionByIdAndType(
       int ownId, int type) async {
     final snapshot = await db
@@ -2741,7 +2808,7 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<bool> addBannerOption(BannerOption bannerOption)  async {
+  Future<bool> addBannerOption(BannerOption bannerOption) async {
     bool value = true;
     await db
         .collection("banner_options")
@@ -2766,7 +2833,8 @@ class FireStoreDb {
     });
     return value;
   }
-  Future<bool> deleteBanner(String doc)  async {
+
+  Future<bool> deleteBanner(String doc) async {
     bool value = true;
     await db
         .collection("manage_banners")
@@ -2778,6 +2846,7 @@ class FireStoreDb {
     });
     return value;
   }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getCourseSuggests() async {
     final snapshot = await db.collection("manage_course_suggests").get();
 
@@ -2787,7 +2856,7 @@ class FireStoreDb {
     return snapshot;
   }
 
-  Future<bool> addCourseSuggest(CourseSuggestModel cs)  async {
+  Future<bool> addCourseSuggest(CourseSuggestModel cs) async {
     bool value = true;
     await db
         .collection("manage_course_suggests")
@@ -2799,7 +2868,8 @@ class FireStoreDb {
     });
     return value;
   }
-  Future<bool>  deleteCourseSuggest(CourseSuggestModel cs)  async {
+
+  Future<bool> deleteCourseSuggest(CourseSuggestModel cs) async {
     bool value = true;
     await db
         .collection("manage_course_suggests")
@@ -2811,7 +2881,6 @@ class FireStoreDb {
     });
     return value;
   }
-
 
   Future<QuerySnapshot<Map<String, dynamic>>> getCSOptionByIdAndType(
       int ownId, int type) async {
@@ -2826,7 +2895,8 @@ class FireStoreDb {
 
     return snapshot;
   }
-  Future<bool> addCSOption(CSOption csOption)  async {
+
+  Future<bool> addCSOption(CSOption csOption) async {
     bool value = true;
     await db
         .collection("course_suggest_options")
@@ -2839,8 +2909,7 @@ class FireStoreDb {
     return value;
   }
 
-
-  Future<bool> deleteCSOption(String s)  async {
+  Future<bool> deleteCSOption(String s) async {
     bool value = true;
     await db
         .collection("course_suggest_options")
