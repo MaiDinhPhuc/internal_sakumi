@@ -19,7 +19,7 @@ import 'manage_course_cubit.dart';
 
 class ManageListCourse extends StatelessWidget {
   final ManageCourseCubit cubit;
-  const ManageListCourse(this.cubit, {Key? key}) : super(key: key);
+  const ManageListCourse(this.cubit, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -87,8 +87,7 @@ class ManageListCourse extends StatelessWidget {
                                            context, 20))))
                               ],
                             )))),
-          )
-              .toList(),
+          ),
           Padding(
               padding: EdgeInsets.only(
                   right: Resizable.padding(context, 10)),

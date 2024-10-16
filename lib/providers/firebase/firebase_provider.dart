@@ -25,6 +25,7 @@ import 'package:internal_sakumi/model/group_tag_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/manage_tag_model.dart';
+import 'package:internal_sakumi/model/procedure_class_model.dart';
 import 'package:internal_sakumi/model/procedure_item_model.dart';
 import 'package:internal_sakumi/model/procedure_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
@@ -271,11 +272,35 @@ class FireBaseProvider extends NetworkProvider {
   }
 
   Future<List<ProcedureItemModel>> getAllProcedureItem(String type) async {
-    final lessons = (await FireStoreDb.instance.getAllProcedureItem(type))
+    final list = (await FireStoreDb.instance.getAllProcedureItem(type))
         .docs
         .map((e) => ProcedureItemModel.fromSnapshot(e))
         .toList();
-    return lessons;
+    return list;
+  }
+
+  Future<ProcedureModel> getProcedure(int id) async {
+    final item = (await FireStoreDb.instance.getProcedure(id))
+        .docs
+        .map((e) => ProcedureModel.fromSnapshot(e))
+        .single;
+    return item;
+  }
+
+  Future<List<ProcedureClassModel>> getAllProcedureClass(int classId) async {
+    final list = (await FireStoreDb.instance.getAllProcedureClass(classId))
+        .docs
+        .map((e) => ProcedureClassModel.fromSnapshot(e))
+        .toList();
+    return list;
+  }
+
+  Future<List<ProcedureClassModel>> getAllProcedureClassByProcedureId(int procedureId) async {
+    final list = (await FireStoreDb.instance.getAllProcedureClassByProcedureId(procedureId))
+        .docs
+        .map((e) => ProcedureClassModel.fromSnapshot(e))
+        .toList();
+    return list;
   }
 
   Future<List<ProcedureItemModel>> getProcedureItemByIDs(List<dynamic> ids) async {
@@ -888,6 +913,10 @@ class FireBaseProvider extends NetworkProvider {
 
   Future<void> addNewProcedureItem(ProcedureItemModel model) async {
     await FireStoreDb.instance.addNewProcedureItem(model);
+  }
+
+  Future<void> addNewProcedureClass(ProcedureClassModel model) async {
+    await FireStoreDb.instance.addNewProcedureClass(model);
   }
 
   @override

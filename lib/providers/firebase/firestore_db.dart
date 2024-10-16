@@ -15,6 +15,7 @@ import 'package:internal_sakumi/model/group_tag_model.dart';
 import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/manage_tag_model.dart';
+import 'package:internal_sakumi/model/procedure_class_model.dart';
 import 'package:internal_sakumi/model/procedure_item_model.dart';
 import 'package:internal_sakumi/model/procedure_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
@@ -394,20 +395,15 @@ class FireStoreDb {
         .where('type', isEqualTo: 'student')
         .get();
 
-    debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllStudentSurvey ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
-
-    // debugPrint("==========>get db from \"student_lesson\" : ${snapshot.docs.length}");
-
     return snapshot;
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getAllProcedure() async {
-    final snapshot =
-        await db.collection('procedure').where("status", isEqualTo: true).get();
-
-    debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllProcedure ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+    final snapshot = await db
+        .collection('procedure')
+        .where("status", isEqualTo: true)
+        .where("isCustom", isEqualTo: false)
+        .get();
 
     return snapshot;
   }
@@ -1252,7 +1248,8 @@ class FireStoreDb {
       'type': model.type,
       'des': model.des,
       'items': model.items,
-      'status': model.status
+      'status': model.status,
+      'isCustom': model.isCustom
     });
     debugPrint("==========>update db for \"procedure\"");
   }
@@ -1268,9 +1265,24 @@ class FireStoreDb {
       'des': model.des,
       'files': model.files,
       'content': model.content,
-      'status': model.status
+      'status': model.status,
+      'isProgress': model.isProgress
     });
     debugPrint("==========>update db for \"procedure_item\"");
+  }
+
+  Future<void> addNewProcedureClass(ProcedureClassModel model) async {
+    await db
+        .collection('procedure_class')
+        .doc("procedure_class_${model.id}")
+        .set({
+      'id': model.id,
+      'procedureId': model.procedureId,
+      'type': model.type,
+      'info': model.info,
+      'classId': model.classId
+    });
+    debugPrint("==========>update db for \"procedure_class\"");
   }
 
   Future<void> updateProfileStudent(StudentModel model) async {
@@ -2420,8 +2432,6 @@ class FireStoreDb {
         await db.collection("procedure_item").where("id", whereIn: ids).get();
     // debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
 
-    debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getProcedureItemByIDs $ids ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
 
     return snapshot;
   }
@@ -2434,8 +2444,39 @@ class FireStoreDb {
         .where("status", isEqualTo: true)
         .get();
 
-    debugPrint(
-        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllProcedureItem $type ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getProcedure(
+      int id) async {
+    final snapshot = await db
+        .collection("procedure")
+        .where("id", isEqualTo: id)
+        .get();
+
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllProcedureClass(
+      int classId) async {
+    final snapshot = await db
+        .collection("procedure_class")
+        .where("classId", isEqualTo: classId)
+        .get();
+
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllProcedureClassByProcedureId(
+      int procedureId) async {
+    final snapshot = await db
+        .collection("procedure_class")
+        .where("procedureId", isEqualTo: procedureId)
+        .get();
+
 
     return snapshot;
   }
@@ -2545,6 +2586,7 @@ class FireStoreDb {
       'expired_date': model.expiredDate,
       'noted': model.noted,
       'price': model.price,
+      'month_value': model.month
     });
   }
 

@@ -4,7 +4,7 @@ class ProcedureItemModel {
   final int id;
   final String title, des, content, type;
   final List files;
-  final bool status;
+  final bool status, isProgress;
 
   ProcedureItemModel(
       {required this.id,
@@ -13,7 +13,8 @@ class ProcedureItemModel {
       required this.content,
       required this.files,
       required this.type,
-      required this.status});
+      required this.status,
+      required this.isProgress});
 
   ProcedureItemModel copyWith(
       {int? id,
@@ -22,15 +23,16 @@ class ProcedureItemModel {
       String? content,
       String? type,
       List? files,
-      bool? status}) {
+      bool? status, bool? isProgress}) {
     return ProcedureItemModel(
         id: id ?? this.id,
         files: files ?? this.files,
-        content:content ?? this.content,
+        content: content ?? this.content,
         des: des ?? this.des,
         title: title ?? this.title,
         type: type ?? this.type,
-        status: status ?? this.status);
+        status: status ?? this.status,
+        isProgress: isProgress ?? this.isProgress);
   }
 
   factory ProcedureItemModel.fromSnapshot(
@@ -43,6 +45,7 @@ class ProcedureItemModel {
         des: data['des'] ?? "",
         title: data['title'] ?? "",
         type: data['type'] ?? 'checklist',
-        status: data['status'] ?? true);
+        status: data['status'] ?? true,
+        isProgress: data['isProgress'] ?? false);
   }
 }

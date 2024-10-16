@@ -108,17 +108,12 @@ class ChecklistItemDialog extends StatelessWidget {
                                                               Resizable.padding(
                                                                   context, 5))),
                                                   child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       InputItem(
                                                           enabled: cubit.isEdit,
-                                                          onChange:
-                                                              (String? value) {
-                                                            cubit.updateItem(cubit
-                                                                .procedureNow!
-                                                                .copyWith(
-                                                                    title:
-                                                                        value));
-                                                          },
                                                           controller: cubit
                                                                   .titleConList[
                                                               cubit.index],
@@ -134,6 +129,29 @@ class ChecklistItemDialog extends StatelessWidget {
                                                               .txtDescription
                                                               .text,
                                                           isExpand: true),
+                                                      SizedBox(
+                                                          width: Resizable.size(
+                                                              context, 180),
+                                                          child:
+                                                              CheckboxListTile(
+                                                            controlAffinity:
+                                                                ListTileControlAffinity
+                                                                    .leading,
+                                                            title: Text(
+                                                                "Thanh tiến trình",
+                                                                style: TextStyle(
+                                                                    fontSize: Resizable.font(
+                                                                        context,
+                                                                        20))),
+                                                            value: cubit
+                                                                .checkList[cubit.index],
+                                                            onChanged:
+                                                                (newValue) {
+                                                              if(cubit.isEdit){
+                                                                cubit.checkInProgress(newValue!);
+                                                              }
+                                                            },
+                                                          )),
                                                       Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
@@ -174,14 +192,19 @@ class ChecklistItemDialog extends StatelessWidget {
                                                                           .text,
                                                                       des: cubit
                                                                           .desConList[cubit
-                                                                          .index]
+                                                                              .index]
                                                                           .text,
                                                                       content:
                                                                           '',
                                                                       files: [],
-                                                                      type: 'checklist',
+                                                                      type:
+                                                                          'checklist',
                                                                       status:
-                                                                          true);
+                                                                          true,
+                                                                      isProgress:
+                                                                      cubit
+                                                                          .checkList[cubit
+                                                                          .index]);
 
                                                                   cubit.updateDataToFb(
                                                                       newItem);

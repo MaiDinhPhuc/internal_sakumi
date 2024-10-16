@@ -27,7 +27,7 @@ class ChecklistItemList extends StatelessWidget {
                       content: "",
                       files: [],
                       type: "checklist",
-                      status: true
+                      status: true, isProgress: false
                     );
                     cubit.addItem(newItem);
                   })),

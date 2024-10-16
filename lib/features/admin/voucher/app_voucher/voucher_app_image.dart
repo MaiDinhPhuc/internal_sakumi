@@ -91,7 +91,7 @@ class VoucherAppImage extends StatelessWidget {
                             noted: cubit.conNote.text,
                             price: priceVND(
                                 '${256000 * (int.parse(cubit.numMonths))}'),
-                            usingTime: int.parse(cubit.numMonths),
+                            usingTime: int.parse(cubit.numMonths), month: int.parse(cubit.numMonths),
                           ));
                     },
                     title: AppText.btnCreateVoucher.text.toUpperCase()),

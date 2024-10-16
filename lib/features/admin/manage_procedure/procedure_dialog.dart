@@ -8,6 +8,7 @@ import 'package:internal_sakumi/features/admin/manage_procedure/procedure_dialog
 import 'package:internal_sakumi/features/admin/manage_procedure/procedure_item_in_dialog.dart';
 import 'package:internal_sakumi/features/master/manage_course/add_new_lesson_button.dart';
 import 'package:internal_sakumi/model/procedure_model.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
@@ -116,7 +117,9 @@ class ProcedureDialog extends StatelessWidget {
                                                         .map((e) => e.id)
                                                         .toList(),
                                                     type: cubit.statusNow,
-                                                    status: false);
+                                                    status: false,
+                                                    isCustom: procedureModel!
+                                                        .isCustom);
                                             await cubit
                                                 .removeProcedure(procedure);
                                             if (context.mounted) {
@@ -140,7 +143,7 @@ class ProcedureDialog extends StatelessWidget {
                                               onPressed: () =>
                                                   Navigator.pop(context)),
                                         ),
-                                        AddNewLessonButton(() {
+                                        AddNewLessonButton(() async {
                                           if (titleCon.text.isEmpty) {
                                             notificationDialog(context,
                                                 "Tiêu đề không được trống!");
@@ -158,13 +161,52 @@ class ProcedureDialog extends StatelessWidget {
                                                         .map((e) => e.id)
                                                         .toList(),
                                                     type: cubit.statusNow,
-                                                    status: true);
+                                                    status: true,
+                                                    isCustom: false);
+
+                                            waitingDialog(context);
+
                                             if (procedureModel == null) {
                                               cubit.addProcedure(procedure);
                                             } else {
                                               cubit.updateProcedure(procedure);
+                                              var listChoose = dialogCubit
+                                                  .listChooseItem
+                                                  .map((e) => e.id)
+                                                  .toList();
+                                              var list = await FireBaseProvider
+                                                  .instance
+                                                  .getAllProcedureClassByProcedureId(
+                                                      procedureModel!.id);
+                                              for (var i in list) {
+                                                List<Map> info = [];
+                                                for (var j in i.info) {
+                                                  if(listChoose.contains(j['item_id'])){
+                                                    info.add({
+                                                      'item_id': j['item_id'],
+                                                      'progress': j['progress'],
+                                                      'check': j['check']
+                                                    });
+                                                  }
+                                                }
+                                                var list1 = info.map((e)=>e['item_id']).toList();
+                                                for(var i in listChoose){
+                                                  if(list1.contains(i)== false){
+                                                    info.add({
+                                                      'item_id': i,
+                                                      'progress': 0,
+                                                      'check': false
+                                                    });
+                                                  }
+                                                }
+                                                await FireBaseProvider.instance.addNewProcedureClass(i.copyWith(info: info));
+                                              }
                                             }
-                                            Navigator.of(context).pop();
+                                            if(context.mounted){
+                                              Navigator.of(context).pop();
+                                              Navigator.of(context).pop();
+                                            }
+
                                           }
                                         }, procedureModel != null)
                                       ],

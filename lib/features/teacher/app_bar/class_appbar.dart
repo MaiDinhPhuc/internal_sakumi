@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_network/image_network.dart';
 import 'package:internal_sakumi/configs/app_configs.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
@@ -22,11 +21,10 @@ class HeaderTeacher extends StatelessWidget {
   final String classId, role;
 
   const HeaderTeacher(
-      {Key? key,
+      {super.key,
       required this.index,
       required this.classId,
-      required this.role})
-      : super(key: key);
+      required this.role});
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +72,7 @@ class HeaderTeacher extends StatelessWidget {
                                           id: e.id,
                                           classId: classId,
                                         ))
-                                    .toList()
+
                               ],
                             ))
                       ]),
@@ -131,7 +129,7 @@ class HeaderTeacher extends StatelessWidget {
                                         key: Key(s.url),
                                         s.url.isEmpty
                                             ? AppConfigs.defaultImage
-                                            : '${s.url}',
+                                            : s.url,
                                         height: Resizable.size(context, 30),
                                         width: Resizable.size(context, 30),
                                         errorBuilder: (_, __, ___) => Container(),
@@ -162,6 +160,7 @@ List<NavigationModel> buttonAdminList = [
   NavigationModel(3, AppText.txtSurvey.text),
   NavigationModel(4, AppText.txtSubCourse.text),
   NavigationModel(5, AppText.txtReport.text),
+  NavigationModel(6, AppText.txtProcedure.text),
 ];
 
 class NameCubit extends Cubit<String?> {

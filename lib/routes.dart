@@ -23,6 +23,7 @@ import 'package:internal_sakumi/screens/class_info/detail_lesson_v2.dart';
 import 'package:internal_sakumi/screens/class_info/grading_screen_v2.dart';
 import 'package:internal_sakumi/screens/class_info/list_lesson_screen_v2.dart';
 import 'package:internal_sakumi/screens/class_info/list_test_screen_v2.dart';
+import 'package:internal_sakumi/screens/class_info/procedure_screen.dart';
 import 'package:internal_sakumi/screens/class_info/report_screen.dart';
 import 'package:internal_sakumi/screens/class_info/sub_course_screen.dart';
 import 'package:internal_sakumi/screens/empty_screen.dart';
@@ -146,6 +147,8 @@ class Routes {
         transitionType: TransitionType.fadeIn);
     router.define('/:role/overview/:classId',
         handler: overViewHandler, transitionType: TransitionType.fadeIn);
+    router.define('/:role/procedure/:classId',
+        handler: procedureHandler, transitionType: TransitionType.fadeIn);
     router.define('/:role/grading/:classId',
         handler: gradingHandler, transitionType: TransitionType.fadeIn);
     router.define('/:role/subCourse/:classId',
@@ -320,6 +323,11 @@ var subCourseHandler =
 var testHandler =
     Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   return ListTestScreenV2(role: params['role'][0]);
+});
+
+var procedureHandler =
+Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  return ClassProcedureScreen(role: params['role'][0]);
 });
 
 var reportHandler =
