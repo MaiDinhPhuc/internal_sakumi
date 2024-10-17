@@ -128,7 +128,7 @@ class ListTabProfileTeacher extends StatelessWidget {
                                 )
                               : null,
                           child: Center(
-                              child: Text(AppText.titleOverView.text,
+                              child: Text("${AppText.titleOverView.text}&${AppText.txtProcedure.text}",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: cubit.tabType == 'overview'

@@ -206,7 +206,7 @@ class ListLessonScreenV2 extends StatelessWidget {
                                                           cubit: cubit,
                                                           role: role,
                                                           lesson: e))
-                                                      .toList()
+
                                                 ],
                                               )))
                               ],

@@ -2,6 +2,7 @@ import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
+import 'package:internal_sakumi/features/admin/manage_bills/add_bill_button.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
 import 'package:internal_sakumi/features/class_info/procedure_class/check_procedure_dialog.dart';
 import 'package:internal_sakumi/features/class_info/procedure_class/create_custom_procedure_dialog.dart';
@@ -29,52 +30,101 @@ class ClassProcedureScreen extends StatelessWidget {
           HeaderTeacher(index: 6, classId: TextUtils.getName(), role: role),
           Expanded(
               flex: 10,
-              child: SingleChildScrollView(
-                  child: Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: Resizable.padding(context, 70)),
-                child: Column(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.symmetric(
-                          vertical: Resizable.padding(context, 15)),
-                      child: Text(AppText.txtProcedure.text.toUpperCase(),
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w800,
-                              fontSize: Resizable.font(context, 30))),
-                    ),
-                    BlocProvider(
-                        create: (context) =>
-                            ProcedureClassCubit(int.parse(TextUtils.getName()))
-                              ..init(),
-                        child: BlocBuilder<ProcedureClassCubit, int>(
-                            builder: (c, _) {
-                          var cubit = BlocProvider.of<ProcedureClassCubit>(c);
-                          return Column(
-                            children: [
-                              Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: Resizable.padding(context, 10)),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Expanded(flex: 5, child: Container()),
-                                      Expanded(
-                                          flex: 1,
-                                          child: DropDownGrading(
-                                              items: const [
-                                                "Checklist",
-                                                "Meeting"
-                                              ],
-                                              onChanged: (item) async {
-                                                cubit.filter(item!);
-                                              },
-                                              value: cubit.filterState))
-                                    ],
-                                  )),
-                              cubit.listProcedureClass == null
-                                  ? Shimmer.fromColors(
+              child: BlocProvider(
+                  create: (context) =>
+                  ProcedureClassCubit(int.parse(TextUtils.getName()))
+                    ..init(),
+                child:BlocBuilder<ProcedureClassCubit, int>(
+                    builder: (c, _) {
+                      var cubit = BlocProvider.of<ProcedureClassCubit>(c);
+                      return SingleChildScrollView(
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: Resizable.padding(context, 70)),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: Resizable.padding(context, 15)),
+                                      child: Text(AppText.txtProcedure.text.toUpperCase(),
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: Resizable.font(context, 30))),
+                                    ),
+                                    if(role == "admin")
+                                      Row(
+                                        children: [
+                                          AddButton(
+                                            onTap: () {
+                                              selectionDialog(
+                                                  context,
+                                                  "Chọn từ list",
+                                                  "Tạo custom", () {
+                                                Navigator.of(context).pop();
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (_) =>
+                                                        CheckProcedureDialog(
+                                                          type: 'checklist',
+                                                          procedureClassCubit:
+                                                          cubit,
+                                                        ));
+                                              }, () {
+                                                Navigator.of(context).pop();
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (_) =>
+                                                        CreateCustomProcedureDialog(
+                                                          procedureClassCubit:
+                                                          cubit, type: 'checklist',
+                                                        ));
+                                              });
+                                            },
+                                            title: "+ Checklist",
+                                          ),
+                                          SizedBox(
+                                              width: Resizable.padding(
+                                                  context, 5)),
+                                          AddButton(
+                                            onTap: () {
+                                              selectionDialog(
+                                                  context,
+                                                  "Chọn từ list",
+                                                  "Tạo custom", () {
+                                                Navigator.of(context).pop();
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (_) =>
+                                                        CheckProcedureDialog(
+                                                          type: 'meeting',
+                                                          procedureClassCubit:
+                                                          cubit,
+                                                        ));
+                                              }, () {
+                                                Navigator.of(context).pop();
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (_) =>
+                                                        CreateCustomProcedureDialog(
+                                                          procedureClassCubit:
+                                                          cubit, type: 'meeting',
+                                                        ));
+                                              });
+                                            },
+                                            title: "+ Meeting",
+                                          ),
+                                        ],
+                                      )
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    cubit.listProcedureClass == null
+                                        ? Shimmer.fromColors(
                                       baseColor: Colors.grey[300]!,
                                       highlightColor: Colors.grey[100]!,
                                       child: SingleChildScrollView(
@@ -85,142 +135,30 @@ class ClassProcedureScreen extends StatelessWidget {
                                           child: Column(
                                             children: [
                                               ...shimmerList.map(
-                                                  (e) => const ItemShimmer())
+                                                      (e) => const ItemShimmer())
                                             ],
                                           ),
                                         ),
                                       ),
                                     )
-                                  : cubit.getProcedureClass().isNotEmpty
-                                      ? SingleChildScrollView(
-                                          child: Column(
-                                              key: Key(cubit.statusNow),
-                                              children: [
-                                              Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: Resizable.padding(
-                                                          context, 5)),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      SizedBox(
-                                                          width:
-                                                              Resizable.padding(
-                                                                  context, 15)),
-                                                      Expanded(
-                                                          flex: 10,
-                                                          child: Text(
-                                                              AppText
-                                                                  .txtTitle.text,
-                                                              style: TextStyle(
-                                                                  color: greyColor
-                                                                      .shade600,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700,
-                                                                  fontSize:
-                                                                      Resizable.font(
-                                                                          context,
-                                                                          20)))),
-                                                      Expanded(
-                                                          flex: 20,
-                                                          child: Text(
-                                                              cubit.filterState == "Meeting" ? "" : "Tiến trình",
-                                                              style: TextStyle(
-                                                                  color: greyColor
-                                                                      .shade600,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700,
-                                                                  fontSize:
-                                                                      Resizable.font(
-                                                                          context,
-                                                                          20)))),
-                                                      Expanded(
-                                                          flex: 1,
-                                                          child: Container())
-                                                    ],
-                                                  )),
+                                        : SingleChildScrollView(
+                                        child: Column(
+                                            children: [
                                               ...cubit.getProcedureClass().map(
-                                                  (e) => ProcedureClassItem(
+                                                      (e) => ProcedureClassItem(
                                                       procedureClassModel: e,
-                                                      cubit: cubit, role: role,)),
-                                              if (role == 'admin')
-                                                DottedBorderButton(
-                                                    "+ Thêm quy trình"
-                                                        .toUpperCase(),
-                                                    isManageGeneral: true,
-                                                    onPressed: () async {
-                                                  selectionDialog(
-                                                      context,
-                                                      "Chọn từ list",
-                                                      "Tạo custom", () {
-                                                    Navigator.of(context).pop();
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (_) =>
-                                                            CheckProcedureDialog(
-                                                              type: cubit
-                                                                  .statusNow,
-                                                              procedureClassCubit:
-                                                                  cubit,
-                                                            ));
-                                                  }, () {
-                                                    Navigator.of(context).pop();
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (_) =>
-                                                            CreateCustomProcedureDialog(
-                                                              procedureClassCubit:
-                                                              cubit,
-                                                            ));
-                                                  });
-                                                }),
+                                                      cubit: cubit, role: role, type: e.type)),
                                               SizedBox(
                                                   height: Resizable.size(
                                                       context, 20))
                                             ]))
-                                      : Center(
-                                          child: role == 'admin'
-                                              ? DottedBorderButton(
-                                                  "+ Thêm quy trình"
-                                                      .toUpperCase(),
-                                                  isManageGeneral: true,
-                                                  onPressed: () {
-                                                  selectionDialog(
-                                                      context,
-                                                      "Chọn từ list",
-                                                      "Tạo custom", () {
-                                                    Navigator.of(context).pop();
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (_) =>
-                                                            CheckProcedureDialog(
-                                                              type: cubit
-                                                                  .statusNow,
-                                                              procedureClassCubit:
-                                                                  cubit,
-                                                            ));
-                                                  }, () {
-                                                    Navigator.of(context).pop();
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (_) =>
-                                                            CreateCustomProcedureDialog(
-                                                              procedureClassCubit:
-                                                              cubit,
-                                                            ));
-                                                  });
-                                                })
-                                              : Container())
-                            ],
-                          );
-                        }))
-                  ],
-                ),
-              ))),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ));
+                    }) ,
+              )),
           if (role == 'teacher') FooterView()
         ],
       ),

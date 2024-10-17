@@ -152,6 +152,7 @@ List<NavigationModel> buttonTeacherList = [
   NavigationModel(3, AppText.titleGrading.text),
   NavigationModel(4, AppText.txtSubCourse.text),
   NavigationModel(5, AppText.txtReport.text),
+  NavigationModel(6, AppText.txtProcedure.text),
 ];
 List<NavigationModel> buttonAdminList = [
   NavigationModel(0, AppText.titleOverView.text),

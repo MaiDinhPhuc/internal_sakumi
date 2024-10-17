@@ -20,7 +20,7 @@ class CollapseProcedureClass extends StatelessWidget {
                 child: Text(
                     itemCubit.procedure == null
                         ? ""
-                        : itemCubit.procedure!.title,
+                        : "[${itemCubit.procedureClass.type.toUpperCase()}] ${itemCubit.procedure!.title}",
                     style: TextStyle(
                         overflow: TextOverflow.ellipsis,
                         color: primaryColor,

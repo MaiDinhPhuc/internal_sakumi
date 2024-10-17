@@ -396,7 +396,7 @@ class ClassOverViewCubitV2 extends Cubit<int> {
     double upNumber = 0;
     int temp = 0;
     for (var i in listStdClass!) {
-      if (i.classStatus == "UpSale" || i.classStatus == "Force") {
+      if (i.classStatus == "UpSale" || i.classStatus == "Force" || i.classStatus == "SuperUpSale") {
         upNumber++;
       }
       if ((i.classStatus != "Remove" &&

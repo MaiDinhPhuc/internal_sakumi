@@ -110,7 +110,7 @@ class ClassOverViewScreenV2 extends StatelessWidget {
                                                 cubit: cubit,
                                                 stdClass: e,
                                                 role: role))
-                                            .toList(),
+                                            ,
                                         SizedBox(
                                             height: Resizable.size(context, 50))
                                       ],

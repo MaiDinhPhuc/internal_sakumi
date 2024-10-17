@@ -1280,7 +1280,8 @@ class FireStoreDb {
       'procedureId': model.procedureId,
       'type': model.type,
       'info': model.info,
-      'classId': model.classId
+      'classId': model.classId,
+      'report' : model.report
     });
     debugPrint("==========>update db for \"procedure_class\"");
   }

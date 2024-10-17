@@ -7,27 +7,27 @@ class ProcedureClassCubit extends Cubit<int>{
 
   List<ProcedureClassModel>? listProcedureClass;
 
-  String filterState = "Checklist";
-  String statusNow = 'checklist';
+  // String filterState = "Checklist";
+  // String statusNow = 'checklist';
 
   final int classId;
-
-  filter(String value) {
-    switch (value) {
-      case "Checklist":
-        statusNow = "checklist";
-      case "Meeting":
-        statusNow = "meeting";
-    }
-    filterState = value;
-    emit(state + 1);
-  }
+  //
+  // filter(String value) {
+  //   switch (value) {
+  //     case "Checklist":
+  //       statusNow = "checklist";
+  //     case "Meeting":
+  //       statusNow = "meeting";
+  //   }
+  //   filterState = value;
+  //   emit(state + 1);
+  // }
 
   List<ProcedureClassModel> getProcedureClass() {
 
     if(listProcedureClass == null) return [];
 
-    return listProcedureClass!.where((e)=> e.type == statusNow).toList();
+    return listProcedureClass!;
   }
 
   init()async{

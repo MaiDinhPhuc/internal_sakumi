@@ -13,12 +13,12 @@ class ManageStdTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: cubit.tab == AppText.titleManageClass.text
+      mainAxisAlignment: cubit.tab == AppText.txtTabBill.text
           ? MainAxisAlignment.spaceBetween
           : MainAxisAlignment.start,
       children: [
         Container(
-          width: Resizable.size(context, 300),
+          width: Resizable.size(context, 450),
           height: Resizable.size(context, 40),
           decoration: BoxDecoration(
               color: greyColor.shade100,
@@ -69,7 +69,7 @@ class ManageStdTabView extends StatelessWidget {
                       },
                       child: Container(
                           height: Resizable.size(context, 40),
-                          decoration: cubit.tab != AppText.titleManageClass.text? ShapeDecoration(
+                          decoration: cubit.tab == AppText.txtTabBill.text? ShapeDecoration(
                             color: Colors.white,
                             shape: RoundedRectangleBorder(
                               side: const BorderSide(width: 1, color: Color(0xFF757575)),
@@ -88,17 +88,52 @@ class ManageStdTabView extends StatelessWidget {
                               AppText.txtTabBill.text,
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: cubit.tab != AppText.titleManageClass.text ?Colors.black:greyColor.shade600,
+                                color: cubit.tab == AppText.txtTabBill.text ?Colors.black:greyColor.shade600,
                                 fontSize: Resizable.font(context, 18),
                                 fontWeight: FontWeight.w700,
                               )
                           ))
                       )
                   )),
+              Expanded(
+                  flex: 1,
+                  child: InkWell(
+                      borderRadius: BorderRadius.circular(10),
+                      onTap: (){
+                        cubit.changeTab(AppText.txtProcedure.text);
+                      },
+                      child: Container(
+                          height: Resizable.size(context, 40),
+                          decoration: cubit.tab == AppText.txtProcedure.text? ShapeDecoration(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(width: 1, color: Color(0xFF757575)),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            shadows:const [
+                              BoxShadow(
+                                color: Color(0x3F000000),
+                                blurRadius: 2,
+                                offset: Offset(0, 2),
+                                spreadRadius: 0,
+                              )
+                            ],
+                          ): null,
+                          child: Center(child: Text(
+                              AppText.txtProcedure.text,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: cubit.tab == AppText.txtProcedure.text ?Colors.black:greyColor.shade600,
+                                fontSize: Resizable.font(context, 18),
+                                fontWeight: FontWeight.w700,
+                              )
+                          ))
+                      )
+                  ))
             ],
           ),
         ),
-        if(cubit.tab == AppText.titleManageClass.text)
+        if(cubit.tab == AppText.txtTabBill.text)
           AddButton(
           onTap: () {
             showDialog(

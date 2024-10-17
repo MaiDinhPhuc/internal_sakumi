@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/features/class_info/procedure_class/procedure_class_item_cubit.dart';
 import 'package:internal_sakumi/features/class_info/procedure_class/procedure_class_cubit.dart';
-import 'package:internal_sakumi/features/class_info/procedure_class/procedure_meeting_dialog.dart';
 import 'package:internal_sakumi/features/teacher/lecture/detail_lesson/dropdown_cubit.dart';
 import 'package:internal_sakumi/model/procedure_class_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -16,10 +15,11 @@ class ProcedureClassItem extends StatelessWidget {
       {super.key,
       required this.cubit,
       required this.procedureClassModel,
-      required this.role});
+      required this.role, required this.type});
   final ProcedureClassCubit cubit;
   final ProcedureClassModel procedureClassModel;
   final String role;
+  final String type;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -54,14 +54,14 @@ class ProcedureClassItem extends StatelessWidget {
                         child: AnimatedCrossFade(
                             firstChild: CollapseProcedureClass(
                               itemCubit: itemCubit,
-                              type: cubit.statusNow,
+                              type: type,
                             ),
                             secondChild: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CollapseProcedureClass(
                                   itemCubit: itemCubit,
-                                  type: cubit.statusNow,
+                                  type: type,
                                 ),
                                 ExpandProcedureClass(
                                   cubit: cubit,
@@ -74,28 +74,9 @@ class ProcedureClassItem extends StatelessWidget {
                                 ? CrossFadeState.showSecond
                                 : CrossFadeState.showFirst,
                             duration: const Duration(milliseconds: 100))),
-                    if (cubit.statusNow == "meeting")
-                      Positioned.fill(
-                          child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                            onTap: () async {
-                              showDialog(
-                                  context: context,
-                                  builder: (_) {
-                                    return ProcedureMeetingDialog(
-                                        procedureClassModel:
-                                            procedureClassModel,
-                                        type: "meeting",
-                                        procedureClassCubit: cubit, itemCubit: itemCubit);
-                                  });
-                            },
-                            borderRadius: BorderRadius.circular(
-                                Resizable.size(context, 5))),
-                      )),
                     Container(
                       padding: EdgeInsets.only(
-                          right: Resizable.padding(context, 15),
+                          right: Resizable.padding(context, 10),
                           top: Resizable.padding(context, 2)),
                       child: Row(
                         children: [

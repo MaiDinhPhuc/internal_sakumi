@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/app_bar/admin_appbar.dart';
 import 'package:internal_sakumi/features/admin/manage_student/info_student_view.dart';
+import 'package:internal_sakumi/features/admin/manage_student/manage_procedure_student_view.dart';
 import 'package:internal_sakumi/features/admin/manage_student/manage_std_bill_view.dart';
 import 'package:internal_sakumi/features/admin/manage_student/manage_std_class_view.dart';
 import 'package:internal_sakumi/features/admin/manage_student/manage_std_tab_view.dart';
@@ -39,18 +40,20 @@ class StudentInfoScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
-                                flex: 4,
-                                child: InfoStudentView(
-                                    cubit: cubit)),
+                                flex: 4, child: InfoStudentView(cubit: cubit)),
                             Expanded(
                                 flex: 9,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    ManageStdTabView( cubit: cubit),
+                                    ManageStdTabView(cubit: cubit),
                                     cubit.tab == AppText.titleManageClass.text
                                         ? ManageStdClassView(cubit: cubit)
-                                        : ManageStdBillView(cubit: cubit)
+                                        : cubit.tab ==
+                                                AppText.txtProcedure.text
+                                            ? const ManageProcedureStudentView(
+                                                role: 'admin')
+                                            : ManageStdBillView(cubit: cubit)
                                   ],
                                 ))
                           ],

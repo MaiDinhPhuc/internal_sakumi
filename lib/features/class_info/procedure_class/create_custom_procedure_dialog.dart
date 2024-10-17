@@ -16,9 +16,10 @@ import 'package:internal_sakumi/widget/dialog_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
 class CreateCustomProcedureDialog extends StatelessWidget {
-  CreateCustomProcedureDialog({super.key, required this.procedureClassCubit}) : dialogCubit = ProcedureDialogCubit();
+  CreateCustomProcedureDialog({super.key, required this.procedureClassCubit, required this.type}) : dialogCubit = ProcedureDialogCubit();
   final ProcedureClassCubit procedureClassCubit;
   final ProcedureDialogCubit dialogCubit;
+  final String type;
   @override
   Widget build(BuildContext context) {
     TextEditingController titleCon = TextEditingController(
@@ -26,7 +27,7 @@ class CreateCustomProcedureDialog extends StatelessWidget {
     TextEditingController desCon = TextEditingController(
         text: "");
     return BlocBuilder<ProcedureDialogCubit, int>(
-        bloc: dialogCubit..loadAllItem(procedureClassCubit.statusNow, []),
+        bloc: dialogCubit..loadAllItem(type, []),
         builder: (c, s) {
           return s == 0
               ? const WaitingAlert()
@@ -85,7 +86,7 @@ class CreateCustomProcedureDialog extends StatelessWidget {
                                         builder: (_) {
                                           return CheckItemDialog(
                                               dialogCubit: dialogCubit,
-                                              type: procedureClassCubit.statusNow);
+                                              type: type);
                                         });
                                   })
                             ]))),
@@ -132,7 +133,7 @@ class CreateCustomProcedureDialog extends StatelessWidget {
                                                 .listChooseItem
                                                 .map((e) => e.id)
                                                 .toList(),
-                                            type: procedureClassCubit.statusNow,
+                                            type: type,
                                             status: true,
                                             isCustom: true);
                                         await FireBaseProvider.instance.addNewProcedure(procedure);
@@ -153,8 +154,8 @@ class CreateCustomProcedureDialog extends StatelessWidget {
                                             id: id + 1000,
                                             procedureId: id,
                                             info: info,
-                                            type: procedureClassCubit.statusNow,
-                                            classId: procedureClassCubit.classId);
+                                            type: type,
+                                            classId: procedureClassCubit.classId, report: '');
 
                                         procedureClassCubit.addNewProcedureClass(procedureClass);
 

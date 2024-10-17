@@ -152,7 +152,7 @@ class CheckProcedureDialog extends StatelessWidget {
                                                             i.id,
                                                         info: info,
                                                         type: type,
-                                                        classId: procedureClassCubit.classId);
+                                                        classId: procedureClassCubit.classId, report: "");
 
                                                 procedureClassCubit.addNewProcedureClass(procedureClass);
                                               }

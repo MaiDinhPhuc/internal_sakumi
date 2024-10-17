@@ -1,3 +1,4 @@
+import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/procedure_class_model.dart';
 import 'package:internal_sakumi/model/procedure_item_model.dart';
@@ -17,6 +18,10 @@ class ProcedureClassItemCubit extends Cubit<int>{
 
   bool isConfirm = false;
 
+  bool isSendReport = false;
+
+  TextEditingController textEditingController = TextEditingController();
+
   updateListItem(List<ProcedureItemModel> list){
     listItem = list;
     emit(state+1);
@@ -24,6 +29,7 @@ class ProcedureClassItemCubit extends Cubit<int>{
 
   init()async{
     procedure = await FireBaseProvider.instance.getProcedure(procedureClass.procedureId);
+    textEditingController = TextEditingController(text: procedureClass.report);
     emit(state+1);
     var listItemId = procedureClass.info.map((e)=>e['item_id']).toList();
     listItem = await FireBaseProvider.instance.getProcedureItemByIDs(listItemId);
@@ -48,6 +54,15 @@ class ProcedureClassItemCubit extends Cubit<int>{
       }
     }
     return false;
+  }
+
+  changeIsRp(bool value){
+    isSendReport = value;
+    emit(state+1);
+  }
+
+  setReport(String value){
+    updateValue = updateValue!.copyWith(report: value);
   }
 
   setValueProgress(ProcedureItemModel item, double newValue){
@@ -86,6 +101,7 @@ class ProcedureClassItemCubit extends Cubit<int>{
   updateProcedureClass()async{
     await FireBaseProvider.instance.addNewProcedureClass(updateValue!);
     isConfirm = false;
+    isSendReport = false;
     emit(state+1);
   }
 
