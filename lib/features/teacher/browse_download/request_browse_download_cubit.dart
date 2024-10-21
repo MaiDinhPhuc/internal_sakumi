@@ -96,6 +96,7 @@ class RequestBrowseDownloadCubit extends Cubit<int> {
     html.AnchorElement anchorElement = html.AnchorElement(href: url);
     anchorElement.download = url;
     anchorElement.click();
+    print(url);
   }
 
   bool checkRequest(int lessonId){
@@ -138,7 +139,7 @@ class RequestBrowseDownloadCubit extends Cubit<int> {
 
     String hash = md5.convert(utf8.encode('${lessonModel.courseId} ${lessonModel.lessonId} sakumi2024')).toString();
 
-    String fileToken = '${lessonModel.courseId}_${lessonModel.lessonId}_${hash.substring(10)}';
+    String fileToken = '${lessonModel.courseId}_${lessonModel.lessonId}_${hash.substring(0,10)}';
 
     return AppConfigs.getDownloadUrl(fileToken, list.first.dataToken);
     //return AppConfigs.getDataUrl("", list.first.dataToken) ;

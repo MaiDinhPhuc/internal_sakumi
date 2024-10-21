@@ -234,8 +234,15 @@ class LessonItemCubitV2 extends Cubit<int> {
   List<int> getStudentId() {
     List<int> studentIds = [];
     if(stdClasses == null) return [];
+    List<String> listStatus = [
+      "Remove",
+      "Dropped",
+      "Deposit",
+      "Retained",
+      "Moved"
+    ];
     for (var i in stdClasses!) {
-      if (i.classStatus != "Remove" && i.classStatus != "Viewer") {
+      if (listStatus.contains(i.classStatus) == false) {
         studentIds.add(i.userId);
       }
     }
