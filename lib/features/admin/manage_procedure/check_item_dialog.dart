@@ -73,7 +73,7 @@ class CheckItemDialog extends StatelessWidget {
                                                 BlocProvider.of<CheckBoxCubit>(cc).update(v);
                                               },
                                               title: Text(
-                                                  "${dialogCubit.listAllItem![index].title}\n${dialogCubit.listAllItem![index].des}")),
+                                                  "${dialogCubit.listAllItem![index].title}${dialogCubit.listAllItem![index].des.isEmpty ? "" :"\n${dialogCubit.listAllItem![index].des}"}")),
                                         ))),
                                 SizedBox(height: Resizable.size(context, 50))
                               ],
@@ -181,7 +181,7 @@ class CheckItemMeetingDialog extends StatelessWidget {
                                                   BlocProvider.of<CheckBoxCubit>(cc).update(v);
                                                 },
                                                 title: Text(
-                                                    "${dialogCubit.listAllItem![index].title}\n${dialogCubit.listAllItem![index].des}")),
+                                                    "${dialogCubit.listAllItem![index].title}${dialogCubit.listAllItem![index].des.isEmpty ? "" :"\n${dialogCubit.listAllItem![index].des}"}")),
                                           ))),
                                   SizedBox(height: Resizable.size(context, 50))
                                 ],

@@ -43,43 +43,46 @@ class ManageStdClassView extends StatelessWidget {
                 children: [
                   Container(
                     height: Resizable.size(context, 1),
-                    margin: EdgeInsets.only(
-                        top: Resizable.padding(context, 10)),
+                    margin:
+                        EdgeInsets.only(top: Resizable.padding(context, 10)),
                     color: greyColor.shade300,
                   ),
-                  Padding(padding: EdgeInsets.symmetric(vertical: Resizable.padding(context, 10)),child: ClassItemRowLayoutV2(
-                    widgetClassCode: Text(AppText.txtClassCode.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Resizable.font(context, 17),
-                            color: greyColor.shade600)),
-                    widgetCourse: Text(AppText.txtCourse.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Resizable.font(context, 17),
-                            color: greyColor.shade600)),
-                    widgetLessons: Text(AppText.txtNumberOfLessons.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Resizable.font(context, 17),
-                            color: greyColor.shade600)),
-                    widgetAttendance: Text(AppText.txtAttendance.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Resizable.font(context, 17),
-                            color: greyColor.shade600)),
-                    widgetSubmit: Text(AppText.txtDoHomeworks.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Resizable.font(context, 17),
-                            color: greyColor.shade600)),
-                    widgetEvaluate: Container(),
-                    widgetStatus: Text(AppText.titleStatus.text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Resizable.font(context, 17),
-                            color: greyColor.shade600)),
-                  )),
+                  Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: Resizable.padding(context, 10)),
+                      child: ClassItemRowLayoutV2(
+                        widgetClassCode: Text(AppText.txtClassCode.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetCourse: Text(AppText.txtCourse.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetLessons: Text(AppText.txtNumberOfLessons.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetAttendance: Text(AppText.txtAttendance.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetSubmit: Text(AppText.txtDoHomeworks.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                        widgetEvaluate: Container(),
+                        widgetStatus: Text(AppText.titleStatus.text,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Resizable.font(context, 17),
+                                color: greyColor.shade600)),
+                      )),
                   ...cubit.classes!.map((e) => ItemStudentClass(
                       cubit: cubit,
                       classModel: e,

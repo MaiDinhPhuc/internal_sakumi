@@ -295,15 +295,18 @@ class FireBaseProvider extends NetworkProvider {
     return list;
   }
 
-  Future<List<ProcedureClassModel>> getAllProcedureClassByProcedureId(int procedureId) async {
-    final list = (await FireStoreDb.instance.getAllProcedureClassByProcedureId(procedureId))
+  Future<List<ProcedureClassModel>> getAllProcedureClassByProcedureId(
+      int procedureId) async {
+    final list = (await FireStoreDb.instance
+            .getAllProcedureClassByProcedureId(procedureId))
         .docs
         .map((e) => ProcedureClassModel.fromSnapshot(e))
         .toList();
     return list;
   }
 
-  Future<List<ProcedureItemModel>> getProcedureItemByIDs(List<dynamic> ids) async {
+  Future<List<ProcedureItemModel>> getProcedureItemByIDs(
+      List<dynamic> ids) async {
     if (ids.isEmpty) {
       return [];
     }
@@ -317,7 +320,7 @@ class FireBaseProvider extends NetworkProvider {
     List<List<dynamic>> subLists = [];
     for (int i = 0; i < ids.length; i += 10) {
       List<dynamic> subList =
-      ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
+          ids.sublist(i, i + 10 > ids.length ? ids.length : i + 10);
       subLists.add(subList);
     }
 
@@ -329,16 +332,16 @@ class FireBaseProvider extends NetworkProvider {
       tempX.add(FireStoreDb.instance.getProcedureItemByIDs(subLists[i]));
     }
     List<QuerySnapshot<Map<String, dynamic>>> responses =
-    await Future.wait(tempX);
+        await Future.wait(tempX);
 
     list = responses.fold(
         [],
-            (pre, res) => [
-          ...pre,
-          ...res.docs
-              .map((e) => ProcedureItemModel.fromSnapshot(e))
-              .toList()
-        ]);
+        (pre, res) => [
+              ...pre,
+              ...res.docs
+                  .map((e) => ProcedureItemModel.fromSnapshot(e))
+                  .toList()
+            ]);
     return list;
   }
 
@@ -653,8 +656,6 @@ class FireBaseProvider extends NetworkProvider {
         .toList();
   }
 
-
-
   @override
   Future<List<SurveyModel>> getAllTeacherSurvey() async {
     return (await FireStoreDb.instance.getAllTeacherSurvey())
@@ -813,6 +814,19 @@ class FireBaseProvider extends NetworkProvider {
         .docs
         .map((e) => AnswerModel.fromSnapshot(e))
         .toList();
+  }
+
+  Future<void> updateAllTest() async {
+    final test = (await FireStoreDb.instance.getAllTest())
+        .docs
+        .map((e) => TestModel.fromSnapshot(e))
+        .toList()
+        .where((e) => e.enable == true)
+        .toList();
+    for (var i in test) {
+      await updateTestInfo(i);
+    }
+    print("done");
   }
 
   @override

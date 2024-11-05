@@ -14,9 +14,8 @@ import 'manage_bill_cubit.dart';
 
 class BillDialog extends StatelessWidget {
   BillDialog(
-      {Key? key, required this.isEdit, this.billModel, required this.cubit})
-      : billDialogCubit = BillDialogCubit(billModel, null),
-        super(key: key);
+      {super.key, required this.isEdit, this.billModel, required this.cubit})
+      : billDialogCubit = BillDialogCubit(billModel, null);
 
   final bool isEdit;
   final BillModel? billModel;

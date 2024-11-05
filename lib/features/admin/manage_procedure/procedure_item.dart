@@ -33,6 +33,7 @@ class ProcedureItem extends StatelessWidget {
                       color: primaryColor,
                       fontWeight: FontWeight.w700,
                       fontSize: Resizable.font(context, 20))),
+                  if(procedureModel.des.isNotEmpty)
                   Text(procedureModel.des, style: TextStyle(
                       color:  Colors.black,
                       fontWeight: FontWeight.w500,

@@ -14,8 +14,7 @@ import 'input_in_bill.dart';
 
 class InfoBillView extends StatelessWidget {
   const InfoBillView(
-      {Key? key, required this.billDialogCubit, required this.isEdit})
-      : super(key: key);
+      {super.key, required this.billDialogCubit, required this.isEdit});
   final BillDialogCubit billDialogCubit;
   final bool isEdit;
   @override

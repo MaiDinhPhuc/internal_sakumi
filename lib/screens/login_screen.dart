@@ -192,7 +192,7 @@ class LogInScreen extends StatelessWidget {
                                             fontWeight: FontWeight.w800))
                                   ],
                                 )),
-                            ...List.generate(20, (index) => Container())
+                               ...List.generate(20, (index) => Container())
                           ],
                         )),
                     Expanded(flex: 1, child: Container())

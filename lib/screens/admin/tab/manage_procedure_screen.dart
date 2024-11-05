@@ -75,69 +75,71 @@ class ManageProcedureScreen extends StatelessWidget {
                         child: BlocBuilder<ManageProcedureCubit, int>(
                       bloc: cubit,
                       builder: (c, s) {
-                        return Column(
-                          children: [
-                            Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: Resizable.padding(context, 10)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Expanded(flex: 5, child: Container()),
-                                    Expanded(
-                                        flex: 1,
-                                        child: DropDownGrading(
-                                            items: const [
-                                              "Checklist",
-                                              "Meeting"
-                                            ],
-                                            onChanged: (item) async {
-                                              cubit.filter(item!);
-                                            },
-                                            value: cubit.filterState))
-                                  ],
-                                )),
-                            cubit.listProcedure == null
-                                ? Shimmer.fromColors(
-                                    baseColor: Colors.grey[300]!,
-                                    highlightColor: Colors.grey[100]!,
-                                    child: SingleChildScrollView(
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                            top: Resizable.padding(context, 5)),
-                                        child: Column(
-                                          children: [
-                                            ...shimmerList
-                                                .map((e) => const ItemShimmer())
-                                          ],
-                                        ),
-                                      ),
+                        return SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: Resizable.padding(context, 10)),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Expanded(flex: 5, child: Container()),
+                                      Expanded(
+                                          flex: 1,
+                                          child: DropDownGrading(
+                                              items: const [
+                                                "Checklist",
+                                                "Meeting"
+                                              ],
+                                              onChanged: (item) async {
+                                                cubit.filter(item!);
+                                              },
+                                              value: cubit.filterState))
+                                    ],
+                                  )),
+                              cubit.listProcedure == null
+                                  ? Shimmer.fromColors(
+                                baseColor: Colors.grey[300]!,
+                                highlightColor: Colors.grey[100]!,
+                                child: SingleChildScrollView(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        top: Resizable.padding(context, 5)),
+                                    child: Column(
+                                      children: [
+                                        ...shimmerList
+                                            .map((e) => const ItemShimmer())
+                                      ],
                                     ),
-                                  )
-                                : cubit.getProcedure().isNotEmpty
-                                    ? SingleChildScrollView(
-                                        child: Column(children: [
-                                        ...cubit.getProcedure().map((e) =>
-                                            ProcedureItem(
-                                                procedureModel: e,
-                                                cubit: cubit)),
-                                        DottedBorderButton(
-                                            "+ Thêm quy trình".toUpperCase(),
-                                            isManageGeneral: true,
-                                            onPressed: () async {
+                                  ),
+                                ),
+                              )
+                                  : cubit.getProcedure().isNotEmpty
+                                  ? SingleChildScrollView(
+                                  child: Column(children: [
+                                    ...cubit.getProcedure().map((e) =>
+                                        ProcedureItem(
+                                            procedureModel: e,
+                                            cubit: cubit)),
+                                    DottedBorderButton(
+                                        "+ Thêm quy trình".toUpperCase(),
+                                        isManageGeneral: true,
+                                        onPressed: () async {
                                           showDialog(
                                               context: context,
                                               builder: (_) {
                                                 return ProcedureDialog(
                                                     cubit: cubit);
                                               });
-                                        })
-                                      ]))
-                                    : Center(
-                                        child: DottedBorderButton(
-                                            "+ Thêm quy trình".toUpperCase(),
-                                            isManageGeneral: true,
-                                            onPressed: () async {
+                                        }),
+                                    SizedBox(height: Resizable.size(context, 20))
+                                  ]))
+                                  : Center(
+                                  child: DottedBorderButton(
+                                      "+ Thêm quy trình".toUpperCase(),
+                                      isManageGeneral: true,
+                                      onPressed: () async {
                                         showDialog(
                                             context: context,
                                             builder: (_) {
@@ -145,7 +147,8 @@ class ManageProcedureScreen extends StatelessWidget {
                                                   cubit: cubit);
                                             });
                                       }))
-                          ],
+                            ],
+                          ),
                         );
                       },
                     ))

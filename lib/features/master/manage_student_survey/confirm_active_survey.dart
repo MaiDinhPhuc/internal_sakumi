@@ -10,6 +10,7 @@ class ConfirmActiveSurvey extends StatelessWidget {
       : super(key: key);
   final Function() onActive;
 
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

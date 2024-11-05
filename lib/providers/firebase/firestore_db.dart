@@ -1136,7 +1136,7 @@ class FireStoreDb {
   Future<void> updateTestInfo(TestModel model) async {
     await db
         .collection("test")
-        .doc("test_${model.id}_course_${model.courseId}")
+        .doc("test_${model.id}_course_${model.courseId == 30004 ? 300001 : model.courseId}")
         .update({
       "course_id": model.courseId,
       "description": model.description,
@@ -1281,7 +1281,7 @@ class FireStoreDb {
       'type': model.type,
       'info': model.info,
       'classId': model.classId,
-      'report' : model.report
+      'report': model.report
     });
     debugPrint("==========>update db for \"procedure_class\"");
   }
@@ -1301,6 +1301,18 @@ class FireStoreDb {
     debugPrint("==========>update db for \"students\"");
   }
 
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllTest() async {
+    final snapshot = await db
+        .collection("test")
+        .get();
+
+    debugPrint(
+        "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getAllTest ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
+
+    return snapshot;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getListTestByCourseId(
       int courseId) async {
     final snapshot = await db
@@ -1316,8 +1328,11 @@ class FireStoreDb {
 
   Future<QuerySnapshot<Map<String, dynamic>>> getTestByTestId(
       int testId) async {
-    final snapshot =
-        await db.collection("test").where("id", isEqualTo: testId).get();
+    final snapshot = await db
+        .collection("test")
+        .where("id", isEqualTo: testId)
+        .where("enable", isEqualTo: true)
+        .get();
 
     debugPrint(
         "FireStore CALL >>>>>>>>>>>>>>>>>>> ===========> getTestByTestId $testId ${snapshot.size} - ${DateFormat('hh:mm:ss.mmm').format(DateTime.now())}");
@@ -2433,7 +2448,6 @@ class FireStoreDb {
         await db.collection("procedure_item").where("id", whereIn: ids).get();
     // debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
 
-
     return snapshot;
   }
 
@@ -2445,17 +2459,12 @@ class FireStoreDb {
         .where("status", isEqualTo: true)
         .get();
 
-
     return snapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getProcedure(
-      int id) async {
-    final snapshot = await db
-        .collection("procedure")
-        .where("id", isEqualTo: id)
-        .get();
-
+  Future<QuerySnapshot<Map<String, dynamic>>> getProcedure(int id) async {
+    final snapshot =
+        await db.collection("procedure").where("id", isEqualTo: id).get();
 
     return snapshot;
   }
@@ -2467,7 +2476,6 @@ class FireStoreDb {
         .where("classId", isEqualTo: classId)
         .get();
 
-
     return snapshot;
   }
 
@@ -2477,7 +2485,6 @@ class FireStoreDb {
         .collection("procedure_class")
         .where("procedureId", isEqualTo: procedureId)
         .get();
-
 
     return snapshot;
   }

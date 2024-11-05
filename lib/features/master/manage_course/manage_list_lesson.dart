@@ -35,8 +35,7 @@ class ManageListLesson extends StatelessWidget {
                 : Column(
                     children: [
                       ...(cubit.listLesson!)
-                          .map((e) => LessonItem(e, cubit))
-                          .toList(),
+                          .map((e) => LessonItem(e, cubit)),
                       SizedBox(height: Resizable.padding(context, 5)),
                       if (cubit.listLesson!.isNotEmpty || cubit.canAdd == true)
                         Material(

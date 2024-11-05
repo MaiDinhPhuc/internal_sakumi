@@ -209,7 +209,6 @@ class CustomBackTeacherScreenButton extends StatelessWidget {
                 overlayColor:
                     WidgetStateProperty.all(primaryColor.withAlpha(30)),
                 onTap: () async {
-                  print(await Functions.checkPreviousPageEmpty());
                   if (await Functions.checkPreviousPageEmpty()) {
                     if (context.mounted) {
                       Functions.goPage(

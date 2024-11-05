@@ -99,7 +99,7 @@ class CheckProcedureDialog extends StatelessWidget {
                                                               .update(v);
                                                         },
                                                         title: Text(
-                                                            "${cubit.listProcedure![index].title}\n${cubit.listProcedure![index].des}")),
+                                                            "${cubit.listProcedure![index].title}${cubit.listProcedure![index].des.isEmpty ? "" :"\n${cubit.listProcedure![index].des}"}")),
                                               ))),
                                       SizedBox(
                                           height: Resizable.size(context, 50))

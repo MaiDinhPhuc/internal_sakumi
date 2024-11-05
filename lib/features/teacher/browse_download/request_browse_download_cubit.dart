@@ -9,7 +9,6 @@ import 'package:internal_sakumi/providers/cache/cached_data_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:html' as html;
-import 'dart:js' as js;
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -39,7 +38,7 @@ class RequestBrowseDownloadCubit extends Cubit<int> {
 
     listBrowseDownload = await FireBaseProvider.instance
         .getBrowseDownloadWaitingAndAcceptByClassAndTeacherId(
-            classModel.classId, teacherId!);
+        classModel.classId, teacherId!);
 
     var listCourseId = [classModel.courseId];
 
@@ -94,13 +93,8 @@ class RequestBrowseDownloadCubit extends Cubit<int> {
   }
 
   void downloadFile(String url) {
-
-    var newWindow = js.context.callMethod('open', [url, '_blank']);
-
     html.AnchorElement anchorElement = html.AnchorElement(href: url);
     anchorElement.download = url;
-
-    newWindow.document.body.append(anchorElement);
     anchorElement.click();
     print(url);
   }

@@ -8,6 +8,8 @@ import 'package:internal_sakumi/features/admin/app_bar/admin_appbar.dart';
 import 'package:internal_sakumi/features/admin/search/drop_down_search.dart';
 import 'package:internal_sakumi/features/admin/search/general_tags/tag_filter_view.dart';
 import 'package:internal_sakumi/features/admin/search/search_cubit.dart';
+import 'package:internal_sakumi/model/test_model.dart';
+import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/utils/functions.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -38,6 +40,11 @@ class SearchGeneralScreen extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+
+                  // AddButton(onTap: ()async{
+                  //   await FireBaseProvider.instance.updateAllTest();
+                  // }, title: "hihi"),
+
                   SizedBox(
                     height: Resizable.padding(context, 20),
                   ),
