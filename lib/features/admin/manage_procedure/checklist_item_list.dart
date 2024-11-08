@@ -25,7 +25,7 @@ class ChecklistItemList extends StatelessWidget {
                       title: "New Item",
                       des: "",
                       content: "",
-                      files: [],
+                      group: 0,
                       type: "checklist",
                       status: true, isProgress: false
                     );

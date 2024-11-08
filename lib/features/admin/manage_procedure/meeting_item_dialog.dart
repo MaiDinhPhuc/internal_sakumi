@@ -9,9 +9,11 @@ import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
-
+import 'package:flutter_html/flutter_html.dart';
+import 'dropdown_group_type.dart';
 import 'meeting_item_list.dart';
 import 'meeting_items_cubit.dart';
+import 'dart:html' as html;
 
 class MeetingItemDialog extends StatelessWidget {
   MeetingItemDialog({super.key}) : cubit = MeetingItemsCubit();
@@ -133,6 +135,22 @@ class MeetingItemDialog extends StatelessWidget {
                                                               .txtDescription
                                                               .text,
                                                           isExpand: true),
+                                                      if (cubit.isEdit)
+                                                        DropDownProcedureGroup(
+                                                            items: cubit
+                                                                .listTitleChoose,
+                                                            value: cubit
+                                                                    .listGroupTitle[
+                                                                cubit.index],
+                                                            onChanged: (value) {
+                                                              cubit.updateGroup(
+                                                                  value!);
+                                                            }),
+                                                      if (!cubit.isEdit)
+                                                        DropdownGroupDisable(
+                                                            value: cubit
+                                                                    .listGroupTitle[
+                                                                cubit.index]),
                                                       Container(
                                                         height: Resizable.size(
                                                             context, 340),
@@ -143,34 +161,56 @@ class MeetingItemDialog extends StatelessWidget {
                                                                     .padding(
                                                                         context,
                                                                         5))),
-                                                        child: HtmlEditor(
-                                                          key: Key("${cubit.index
-                                                              .toString()} + ${cubit.isEdit}"),
-                                                          controller:
-                                                              cubit.contentCon[
-                                                                  cubit.index],
-                                                          otherOptions: OtherOptions(
-                                                            height: Resizable.size(
-                                                                context, 340),
-                                                          ),
-                                                          htmlEditorOptions:
-                                                              HtmlEditorOptions(
-                                                                disabled: !cubit.isEdit,
-                                                            hint:
-                                                                'Your text here...',
-                                                            initialText: cubit
-                                                                        .procedureNow ==
-                                                                    null
-                                                                ? ""
-                                                                : cubit
-                                                                    .procedureNow!
-                                                                    .content,
-                                                          ),
-                                                        ),
+                                                        child: cubit.isEdit
+                                                            ? HtmlEditor(
+                                                                key: Key(
+                                                                    "${cubit.index.toString()} + ${cubit.isEdit}"),
+                                                                controller: cubit
+                                                                        .contentCon[
+                                                                    cubit
+                                                                        .index],
+                                                                otherOptions:
+                                                                    OtherOptions(
+                                                                  height: Resizable
+                                                                      .size(
+                                                                          context,
+                                                                          340),
+                                                                ),
+                                                                htmlEditorOptions:
+                                                                    HtmlEditorOptions(
+                                                                  hint:
+                                                                      'Your text here...',
+                                                                  initialText: cubit
+                                                                              .procedureNow ==
+                                                                          null
+                                                                      ? ""
+                                                                      : cubit
+                                                                          .procedureNow!
+                                                                          .content,
+                                                                ),
+                                                              )
+                                                            : SingleChildScrollView(
+                                                                child: Html(
+                                                                    data: cubit.procedureNow ==
+                                                                                null ||
+                                                                            cubit
+                                                                                .procedureNow!.content.isEmpty
+                                                                        ? "Không có nội dung"
+                                                                        : cubit
+                                                                            .procedureNow!
+                                                                            .content,
+                                                                    onLinkTap:
+                                                                        (url, _,
+                                                                            __) {
+                                                                      html.window.open(
+                                                                          url!,
+                                                                          '_blank');
+                                                                    })),
                                                       ),
-                                                      SizedBox(height: Resizable.padding(
-                                                          context,
-                                                          10)),
+                                                      SizedBox(
+                                                          height:
+                                                              Resizable.padding(
+                                                                  context, 10)),
                                                       Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
@@ -198,10 +238,15 @@ class MeetingItemDialog extends StatelessWidget {
                                                                           .openEdit()),
                                                             ),
                                                           SubmitButton(
-                                                              onPressed: () async {
+                                                              onPressed:
+                                                                  () async {
                                                                 if (cubit
                                                                     .isEdit) {
-                                                                  var content = await cubit.contentCon[cubit.index].getText();
+                                                                  var content = await cubit
+                                                                      .contentCon[
+                                                                          cubit
+                                                                              .index]
+                                                                      .getText();
                                                                   ProcedureItemModel newItem = ProcedureItemModel(
                                                                       id: cubit
                                                                           .procedureNow!
@@ -214,12 +259,17 @@ class MeetingItemDialog extends StatelessWidget {
                                                                           .desConList[cubit
                                                                               .index]
                                                                           .text,
-                                                                      content:content,
-                                                                      files: [],
+                                                                      content:
+                                                                          content,
+                                                                      group: cubit.listGroupId[
+                                                                          cubit
+                                                                              .index],
                                                                       type:
                                                                           'meeting',
                                                                       status:
-                                                                          true, isProgress: false);
+                                                                          true,
+                                                                      isProgress:
+                                                                          false);
 
                                                                   cubit.updateDataToFb(
                                                                       newItem);

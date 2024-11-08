@@ -79,6 +79,7 @@ dependencies:
   fl_chart:
     path: fl_chart
   html_editor_enhanced: ^2.6.0
+  flutter_html: ^3.0.0-beta.2
 
 
 

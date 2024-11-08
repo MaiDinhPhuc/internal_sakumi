@@ -5,6 +5,7 @@ import 'package:internal_sakumi/features/admin/app_bar/admin_appbar.dart';
 import 'package:internal_sakumi/features/admin/manage_bills/add_bill_button.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
 import 'package:internal_sakumi/features/admin/manage_procedure/checklist_item_dialog.dart';
+import 'package:internal_sakumi/features/admin/manage_procedure/procedure_group_dialog.dart';
 import 'package:internal_sakumi/features/admin/manage_procedure/manage_procedure_cubit.dart';
 import 'package:internal_sakumi/features/admin/manage_procedure/meeting_item_dialog.dart';
 import 'package:internal_sakumi/features/admin/manage_procedure/procedure_dialog.dart';
@@ -46,6 +47,17 @@ class ManageProcedureScreen extends StatelessWidget {
                         ),
                         Row(
                           children: [
+                            AddButton(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (_) {
+                                      return ProcedureGroupDialog();
+                                    });
+                              },
+                              title: "Group",
+                            ),
+                            SizedBox(width: Resizable.padding(context, 10)),
                             AddButton(
                               onTap: () {
                                 showDialog(

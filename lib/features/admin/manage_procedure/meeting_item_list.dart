@@ -27,7 +27,7 @@ class MeetingItemList extends StatelessWidget {
                         title: "New Item",
                         des: "",
                         content: "",
-                        files: [],
+                        group: 0,
                         type: "meeting",
                         status: true, isProgress: false
                     );

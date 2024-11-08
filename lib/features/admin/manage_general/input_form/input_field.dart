@@ -38,6 +38,7 @@ class InputField extends StatelessWidget {
           return null;
         },
         style: TextStyle(
+            color: Colors.black,
             fontSize: Resizable.font(context, 18), fontWeight: FontWeight.w500),
         controller: controller,
         autofocus: autoFocus,
@@ -87,8 +88,7 @@ class InputItem extends StatelessWidget {
       this.enabled = true,
       this.errorText, this.hintText, this.initialValue,
       this.onChange, this.onValidate,
-      Key? key})
-      : super(key: key);
+      super.key});
 
   @override
   Widget build(BuildContext context) {

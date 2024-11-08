@@ -16,6 +16,7 @@ import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/manage_tag_model.dart';
 import 'package:internal_sakumi/model/procedure_class_model.dart';
+import 'package:internal_sakumi/model/procedure_group_model.dart';
 import 'package:internal_sakumi/model/procedure_item_model.dart';
 import 'package:internal_sakumi/model/procedure_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
@@ -1263,10 +1264,24 @@ class FireStoreDb {
       'title': model.title,
       'type': model.type,
       'des': model.des,
-      'files': model.files,
+      'group': model.group,
       'content': model.content,
       'status': model.status,
       'isProgress': model.isProgress
+    });
+    debugPrint("==========>update db for \"procedure_item\"");
+  }
+
+  Future<void> addNewProcedureGroup(ProcedureGroupModel model) async {
+    await db
+        .collection('procedure_group')
+        .doc("procedure_group_${model.id}")
+        .set({
+      'id': model.id,
+      'title': model.title,
+      'type': model.type,
+      'des': model.des,
+      'status': model.status,
     });
     debugPrint("==========>update db for \"procedure_item\"");
   }
@@ -2456,6 +2471,15 @@ class FireStoreDb {
     final snapshot = await db
         .collection("procedure_item")
         .where("type", isEqualTo: type)
+        .where("status", isEqualTo: true)
+        .get();
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllProcedureGroup() async {
+    final snapshot = await db
+        .collection("procedure_group")
         .where("status", isEqualTo: true)
         .get();
 

@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProcedureItemModel {
-  final int id;
+  final int id,group;
   final String title, des, content, type;
-  final List files;
   final bool status, isProgress;
 
   ProcedureItemModel(
@@ -11,7 +10,7 @@ class ProcedureItemModel {
       required this.title,
       required this.des,
       required this.content,
-      required this.files,
+      required this.group,
       required this.type,
       required this.status,
       required this.isProgress});
@@ -22,11 +21,11 @@ class ProcedureItemModel {
       String? des,
       String? content,
       String? type,
-      List? files,
+      int? group,
       bool? status, bool? isProgress}) {
     return ProcedureItemModel(
         id: id ?? this.id,
-        files: files ?? this.files,
+        group: group ?? this.group,
         content: content ?? this.content,
         des: des ?? this.des,
         title: title ?? this.title,
@@ -40,7 +39,7 @@ class ProcedureItemModel {
     final data = document.data()!;
     return ProcedureItemModel(
         id: data['id'] ?? 0,
-        files: data['files'] ?? [],
+        group: data['group'] ?? 0,
         content: data['content'] ?? "",
         des: data['des'] ?? "",
         title: data['title'] ?? "",

@@ -26,6 +26,7 @@ import 'package:internal_sakumi/model/lesson_model.dart';
 import 'package:internal_sakumi/model/lesson_result_model.dart';
 import 'package:internal_sakumi/model/manage_tag_model.dart';
 import 'package:internal_sakumi/model/procedure_class_model.dart';
+import 'package:internal_sakumi/model/procedure_group_model.dart';
 import 'package:internal_sakumi/model/procedure_item_model.dart';
 import 'package:internal_sakumi/model/procedure_model.dart';
 import 'package:internal_sakumi/model/question_model.dart';
@@ -279,6 +280,14 @@ class FireBaseProvider extends NetworkProvider {
     return list;
   }
 
+  Future<List<ProcedureGroupModel>> getAllProcedureGroup() async {
+    final list = (await FireStoreDb.instance.getAllProcedureGroup())
+        .docs
+        .map((e) => ProcedureGroupModel.fromSnapshot(e))
+        .toList();
+    return list;
+  }
+
   Future<ProcedureModel> getProcedure(int id) async {
     final item = (await FireStoreDb.instance.getProcedure(id))
         .docs
@@ -314,6 +323,7 @@ class FireBaseProvider extends NetworkProvider {
       return (await FireStoreDb.instance.getProcedureItemByIDs(ids))
           .docs
           .map((e) => ProcedureItemModel.fromSnapshot(e))
+          .where((e)=>e.status)
           .toList();
     }
 
@@ -340,7 +350,7 @@ class FireBaseProvider extends NetworkProvider {
               ...pre,
               ...res.docs
                   .map((e) => ProcedureItemModel.fromSnapshot(e))
-                  .toList()
+                  .toList().where((e)=>e.status)
             ]);
     return list;
   }

@@ -2,26 +2,25 @@ import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_field.dart';
-import 'package:internal_sakumi/model/procedure_item_model.dart';
+import 'package:internal_sakumi/features/admin/manage_procedure/procedure_group_cubit.dart';
+import 'package:internal_sakumi/features/admin/manage_procedure/procedure_group_list.dart';
+import 'package:internal_sakumi/model/procedure_group_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/dialog_button.dart';
 import 'package:internal_sakumi/widget/submit_button.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 
-import 'checklist_item_list.dart';
-import 'checklist_items_cubit.dart';
 import 'dropdown_group_type.dart';
 
-class ChecklistItemDialog extends StatelessWidget {
-  ChecklistItemDialog({super.key}) : cubit = CheckListItemsCubit();
+class ProcedureGroupDialog extends StatelessWidget {
+  ProcedureGroupDialog({super.key}) : cubit = GroupProcedureCubit();
 
-  final CheckListItemsCubit cubit;
+  final GroupProcedureCubit cubit;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CheckListItemsCubit, int>(
+    return BlocBuilder<GroupProcedureCubit, int>(
         bloc: cubit..init(),
         builder: (c, s) {
           return s == 0
@@ -47,7 +46,7 @@ class ChecklistItemDialog extends StatelessWidget {
                                       top: Resizable.padding(context, 7)),
                                   alignment: Alignment.topLeft,
                                   child: Text(
-                                    "Checklist Items".toUpperCase(),
+                                    "Group Procedure List".toUpperCase(),
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: Resizable.font(context, 20)),
@@ -71,7 +70,7 @@ class ChecklistItemDialog extends StatelessWidget {
                               children: [
                                 Expanded(
                                     flex: 1,
-                                    child: ChecklistItemList(cubit: cubit)),
+                                    child: ProcedureGroupList(cubit: cubit)),
                                 Expanded(
                                     flex: 2,
                                     child: SingleChildScrollView(
@@ -79,7 +78,7 @@ class ChecklistItemDialog extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          cubit.procedureNow == null
+                                          cubit.groupNow == null
                                               ? Container(
                                                   margin: EdgeInsets.only(
                                                       bottom: Resizable.padding(
@@ -131,42 +130,10 @@ class ChecklistItemDialog extends StatelessWidget {
                                                               .txtDescription
                                                               .text,
                                                           isExpand: true),
-                                                      if (cubit.isEdit)
-                                                        DropDownProcedureGroup(items: cubit.listTitleChoose, value:  cubit
-                                                            .listGroupTitle[
-                                                        cubit.index], onChanged: (value) {
-                                                          cubit.updateGroup(value!);
-                                                        }),
-                                                      if(!cubit.isEdit)
-                                                        DropdownGroupDisable(value: cubit
-                                                            .listGroupTitle[
-                                                        cubit.index]),
-                                                      SizedBox(
-                                                          width: Resizable.size(
-                                                              context, 180),
-                                                          child:
-                                                              CheckboxListTile(
-                                                            controlAffinity:
-                                                                ListTileControlAffinity
-                                                                    .leading,
-                                                            title: Text(
-                                                                "Thanh tiến trình",
-                                                                style: TextStyle(
-                                                                    fontSize: Resizable.font(
-                                                                        context,
-                                                                        20))),
-                                                            value: cubit
-                                                                    .checkList[
-                                                                cubit.index],
-                                                            onChanged:
-                                                                (newValue) {
-                                                              if (cubit
-                                                                  .isEdit) {
-                                                                cubit.checkInProgress(
-                                                                    newValue!);
-                                                              }
-                                                            },
-                                                          )),
+                                                      DropdownGroupDisable(
+                                                              value: cubit
+                                                                      .listType[
+                                                                  cubit.index]),
                                                       Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
@@ -197,31 +164,19 @@ class ChecklistItemDialog extends StatelessWidget {
                                                               onPressed: () {
                                                                 if (cubit
                                                                     .isEdit) {
-                                                                  ProcedureItemModel newItem = ProcedureItemModel(
-                                                                      id: cubit
-                                                                          .procedureNow!
-                                                                          .id,
-                                                                      title: cubit
-                                                                          .titleConList[cubit
-                                                                              .index]
-                                                                          .text,
-                                                                      des: cubit
-                                                                          .desConList[cubit
-                                                                              .index]
-                                                                          .text,
-                                                                      content:
-                                                                          '',
-                                                                      group: cubit
-                                                                          .listGroupId[cubit
-                                                                          .index],
-                                                                      type:
-                                                                          'checklist',
-                                                                      status:
-                                                                          true,
-                                                                      isProgress:
-                                                                          cubit.checkList[
-                                                                              cubit.index]);
-
+                                                                  ProcedureGroupModel
+                                                                      newItem =
+                                                                      ProcedureGroupModel(
+                                                                          id:
+                                                                              cubit.groupNow!.id,
+                                                                          title:
+                                                                              cubit.titleConList[cubit.index].text,
+                                                                          des:
+                                                                          cubit.desConList[cubit.index].text,
+                                                                          type:
+                                                                          cubit.listType[cubit.index],
+                                                                          status:
+                                                                          cubit.groupNow!.status);
                                                                   cubit.updateDataToFb(
                                                                       newItem);
                                                                 } else {

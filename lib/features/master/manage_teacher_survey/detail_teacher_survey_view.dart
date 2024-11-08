@@ -28,36 +28,36 @@ class DetailTeacherSurveyView extends StatelessWidget {
                 TitleWidget(AppText.titleQuestion.text.toUpperCase()),
                 Expanded(
                     child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          if (detailSurveyCubit.surveyModel!.detail.isNotEmpty)
-                            SizedBox(height: Resizable.padding(context, 10)),
-                          ...detailSurveyCubit.surveyModel!.detail
-                              .map((e) => IntrinsicHeight(
-                            child: QuestionTeacherSurveyView(
-                              number: e["id"],
-                              index: detailSurveyCubit.surveyModel!.detail
-                                  .indexOf(e),
-                              detailSurveyCubit: detailSurveyCubit,
-                              active: detailSurveyCubit.surveyModel!.active,
-                            ),
-                          ))
-                              .toList(),
-                          if (detailSurveyCubit.surveyModel!.active == false)
-                            Padding(
-                                padding:
+                  child: Column(
+                    children: [
+                      if (detailSurveyCubit.surveyModel!.detail.isNotEmpty)
+                        SizedBox(height: Resizable.padding(context, 10)),
+                      ...detailSurveyCubit.surveyModel!.detail
+                          .map((e) => IntrinsicHeight(
+                                child: QuestionTeacherSurveyView(
+                                  number: e["id"],
+                                  index: detailSurveyCubit.surveyModel!.detail
+                                      .indexOf(e),
+                                  detailSurveyCubit: detailSurveyCubit,
+                                  active: detailSurveyCubit.surveyModel!.active,
+                                ),
+                              ))
+                          .toList(),
+                      if (detailSurveyCubit.surveyModel!.active == false)
+                        Padding(
+                            padding:
                                 EdgeInsets.all(Resizable.padding(context, 10)),
-                                child: DottedBorderButton(
-                                    AppText.btnAddNewSurveyQuestion.text
-                                        .toUpperCase(),
-                                    isManageGeneral: true, onPressed: () {
-                                  detailSurveyCubit.addNewQuestion();
-                                  cubit
-                                      .updateSurvey(detailSurveyCubit.surveyModel!);
-                                }))
-                        ],
-                      ),
-                    )),
+                            child: DottedBorderButton(
+                                AppText.btnAddNewSurveyQuestion.text
+                                    .toUpperCase(),
+                                isManageGeneral: true, onPressed: () {
+                              detailSurveyCubit.addNewQuestion();
+                              cubit
+                                  .updateSurvey(detailSurveyCubit.surveyModel!);
+                            }))
+                    ],
+                  ),
+                )),
                 if (detailSurveyCubit.surveyModel!.active == false)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -72,7 +72,8 @@ class DetailTeacherSurveyView extends StatelessWidget {
                             child: SubmitButton(
                                 onPressed: () {
                                   detailSurveyCubit.save();
-                                  Update.saveSurvey(detailSurveyCubit.surveyModel!);
+                                  Update.saveSurvey(
+                                      detailSurveyCubit.surveyModel!);
                                   cubit.updateSurvey(
                                       detailSurveyCubit.surveyModel!);
                                   notificationDialog(
@@ -91,21 +92,21 @@ class DetailTeacherSurveyView extends StatelessWidget {
                 TitleWidget(AppText.txtContent.text.toUpperCase()),
                 Expanded(
                     child: Container(
-                      margin: EdgeInsets.only(
-                          top: Resizable.padding(context, 10),
-                          bottom: Resizable.padding(context, 10),
-                          left: Resizable.padding(context, 30),
-                          right: Resizable.padding(context, 15)),
-                      padding: EdgeInsets.all(Resizable.padding(context, 10)),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              width: 0.5, color: const Color(0xffE0E0E0)),
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(Resizable.size(context, 5))),
-                          color: Colors.white),
-                      child: EditTeacherSurveyQuestionView(
-                          detailSurveyCubit: detailSurveyCubit),
-                    ))
+                  margin: EdgeInsets.only(
+                      top: Resizable.padding(context, 10),
+                      bottom: Resizable.padding(context, 10),
+                      left: Resizable.padding(context, 30),
+                      right: Resizable.padding(context, 15)),
+                  padding: EdgeInsets.all(Resizable.padding(context, 10)),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          width: 0.5, color: const Color(0xffE0E0E0)),
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(Resizable.size(context, 5))),
+                      color: Colors.white),
+                  child: EditTeacherSurveyQuestionView(
+                      detailSurveyCubit: detailSurveyCubit),
+                ))
               ],
             ))
       ],
