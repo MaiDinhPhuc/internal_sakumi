@@ -23,6 +23,7 @@ class ProcedureClassItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: Key(procedureClassModel.id.toString()),
       margin: EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
       child: MultiBlocProvider(
           providers: [

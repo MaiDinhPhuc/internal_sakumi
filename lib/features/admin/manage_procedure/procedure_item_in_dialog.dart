@@ -28,12 +28,12 @@ class ProcedureItemInDialog extends StatelessWidget {
               Text(item.title,
                   style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      fontSize: Resizable.size(context, 14), color: primaryColor)),
+                      fontSize: Resizable.size(context, 12), color: primaryColor)),
               SizedBox(width: Resizable.size(context, 5)),
               Text(item.des,
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
-                      fontSize: Resizable.size(context, 12), color: Colors.black)),
+                      fontSize: Resizable.size(context, 10), color: Colors.black)),
               SizedBox(width: Resizable.size(context, 5)),
             ],
           )),

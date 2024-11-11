@@ -1301,6 +1301,14 @@ class FireStoreDb {
     debugPrint("==========>update db for \"procedure_class\"");
   }
 
+  Future<void> deleteProcedureClass(ProcedureClassModel model) async {
+    await db
+        .collection('procedure_class')
+        .doc("procedure_class_${model.id}")
+        .delete();
+    debugPrint("==========>delete db for \"procedure_class\"");
+  }
+
   Future<void> updateProfileStudent(StudentModel model) async {
     await db.collection('students').doc("student_user_${model.userId}").update({
       'name': model.name,
@@ -2461,7 +2469,6 @@ class FireStoreDb {
       List<dynamic> ids) async {
     final snapshot =
         await db.collection("procedure_item").where("id", whereIn: ids).get();
-    // debugPrint("==========>get db from \"lessons\" : ${snapshot.docs.length}");
 
     return snapshot;
   }
@@ -2482,6 +2489,8 @@ class FireStoreDb {
         .collection("procedure_group")
         .where("status", isEqualTo: true)
         .get();
+
+    debugPrint("load All Procedure Group");
 
     return snapshot;
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/Material.dart';
 import 'package:internal_sakumi/configs/prefKey_configs.dart';
+import 'package:internal_sakumi/model/procedure_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:html';
 
@@ -69,6 +70,15 @@ class Functions {
       futures.add(FireBaseProvider.instance.getTagById(item));
     }
     List<TagModel> tags = await Future.wait(futures);
+    return tags;
+  }
+
+  static Future<List<ProcedureModel>> getProcedures(List<int> list) async {
+    List<Future<ProcedureModel>> futures = [];
+    for (var item in list) {
+      futures.add(FireBaseProvider.instance.getProcedure(item));
+    }
+    List<ProcedureModel> tags = await Future.wait(futures);
     return tags;
   }
 }

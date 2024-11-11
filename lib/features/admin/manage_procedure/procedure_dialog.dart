@@ -1,5 +1,6 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/dotted_border_button.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_field.dart';
@@ -29,7 +30,7 @@ class ProcedureDialog extends StatelessWidget {
     TextEditingController desCon = TextEditingController(
         text: procedureModel == null ? "" : procedureModel!.des);
     return BlocBuilder<ProcedureDialogCubit, int>(
-        bloc: dialogCubit..init(procedureModel),
+        bloc: dialogCubit..init(procedureModel, cubit.statusNow),
         builder: (c, s) {
           return s == 0
               ? const WaitingAlert()
@@ -61,39 +62,62 @@ class ProcedureDialog extends StatelessWidget {
                         Expanded(
                             flex: 10,
                             child: SingleChildScrollView(
-                                child: Column(children: [
-                              InputItem(
-                                  onChange: (String? value) {
-                                    debugPrint(value);
-                                  },
-                                  controller: titleCon,
-                                  title: AppText.txtTitle.text,
-                                  isExpand: false),
-                              InputItem(
-                                  onChange: (String? value) {
-                                    debugPrint(value);
-                                  },
-                                  controller: desCon,
-                                  title: AppText.txtDescription.text,
-                                  isExpand: true),
-                              ...dialogCubit.listChooseItem
-                                  .map((e) => ProcedureItemInDialog(
-                                        item: e,
-                                        onRemove: () {
-                                          dialogCubit.removeItem(e);
-                                        },
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                  InputItem(
+                                      onChange: (String? value) {
+                                        debugPrint(value);
+                                      },
+                                      controller: titleCon,
+                                      title: AppText.txtTitle.text,
+                                      isExpand: false),
+                                  InputItem(
+                                      onChange: (String? value) {
+                                        debugPrint(value);
+                                      },
+                                      controller: desCon,
+                                      title: AppText.txtDescription.text,
+                                      isExpand: true),
+                                  ...dialogCubit.listGroupId.map((e) => Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          if (!dialogCubit.listGroupId
+                                              .every((e) => e == 0))
+                                            Text("* ${dialogCubit.getTitle(e)}",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: Resizable.size(
+                                                        context, 14),
+                                                    color: primaryColor)),
+                                          SizedBox(
+                                              height:
+                                                  Resizable.size(context, 5)),
+                                          ...dialogCubit
+                                              .getItemForGroup(e)
+                                              .map((e) => ProcedureItemInDialog(
+                                                    item: e,
+                                                    onRemove: () {
+                                                      dialogCubit.removeItem(e);
+                                                    },
+                                                  )),
+                                        ],
                                       )),
-                              DottedBorderButton("+ thêm item".toUpperCase(),
-                                  isManageGeneral: true, onPressed: () async {
-                                showDialog(
-                                    context: context,
-                                    builder: (_) {
-                                      return CheckItemDialog(
-                                          dialogCubit: dialogCubit,
-                                          type: cubit.statusNow);
-                                    });
-                              })
-                            ]))),
+                                  DottedBorderButton(
+                                      "+ thêm item".toUpperCase(),
+                                      isManageGeneral: true,
+                                      onPressed: () async {
+                                    showDialog(
+                                        context: context,
+                                        builder: (_) {
+                                          return CheckItemDialog(
+                                              dialogCubit: dialogCubit,
+                                              type: cubit.statusNow);
+                                        });
+                                  })
+                                ]))),
                         Expanded(
                             flex: 1,
                             child: Container(
@@ -181,7 +205,8 @@ class ProcedureDialog extends StatelessWidget {
                                               for (var i in list) {
                                                 List<Map> info = [];
                                                 for (var j in i.info) {
-                                                  if(listChoose.contains(j['item_id'])){
+                                                  if (listChoose
+                                                      .contains(j['item_id'])) {
                                                     info.add({
                                                       'item_id': j['item_id'],
                                                       'progress': j['progress'],
@@ -189,9 +214,12 @@ class ProcedureDialog extends StatelessWidget {
                                                     });
                                                   }
                                                 }
-                                                var list1 = info.map((e)=>e['item_id']).toList();
-                                                for(var i in listChoose){
-                                                  if(list1.contains(i)== false){
+                                                var list1 = info
+                                                    .map((e) => e['item_id'])
+                                                    .toList();
+                                                for (var i in listChoose) {
+                                                  if (list1.contains(i) ==
+                                                      false) {
                                                     info.add({
                                                       'item_id': i,
                                                       'progress': 0,
@@ -199,14 +227,15 @@ class ProcedureDialog extends StatelessWidget {
                                                     });
                                                   }
                                                 }
-                                                await FireBaseProvider.instance.addNewProcedureClass(i.copyWith(info: info));
+                                                await FireBaseProvider.instance
+                                                    .addNewProcedureClass(
+                                                        i.copyWith(info: info));
                                               }
                                             }
-                                            if(context.mounted){
+                                            if (context.mounted) {
                                               Navigator.of(context).pop();
                                               Navigator.of(context).pop();
                                             }
-
                                           }
                                         }, procedureModel != null)
                                       ],

@@ -26,14 +26,52 @@ class ExpandProcedureClass extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-                padding: EdgeInsets.only(
-                    top: Resizable.padding(context, 5),
-                    left: Resizable.padding(context, 5)),
-                child: Text(AppText.txtDescription.text,
-                    style: TextStyle(
-                        color: greyColor.shade600,
-                        fontWeight: FontWeight.w700,
-                        fontSize: Resizable.font(context, 18)))),
+                padding:
+                EdgeInsets.all( Resizable.padding(context, 5)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(AppText.txtDescription.text,
+                        style: TextStyle(
+                            color: greyColor.shade600,
+                            fontWeight: FontWeight.w700,
+                            fontSize: Resizable.font(context, 18))),
+                    if (role == "admin")
+                      SizedBox(
+                        height: Resizable.size(context, 15),
+                        child: PopupMenuButton(
+                          padding: EdgeInsets.zero,
+                          splashRadius: Resizable.size(context, 15),
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(
+                              color: Colors
+                                  .black, // Set the desired border color here
+                              width: 0.5,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(Resizable.size(context, 5)),
+                            ),
+                          ),
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                              onTap: () {
+                                cubit.removeProcedureClass(itemCubit.procedureClass);
+                              },
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: Resizable.padding(context, 10)),
+                              child: Center(
+                                  child: Text(AppText.btnRemove.text,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize:
+                                          Resizable.font(context, 20)))),
+                            )
+                          ],
+                          icon: const Icon(Icons.more_vert),
+                        ),
+                      )
+                  ],
+                )),
             NoteWidget(
                 itemCubit.procedure == null ? "" : itemCubit.procedure!.des),
             if (itemCubit.procedureClass.type == 'meeting')
@@ -102,12 +140,12 @@ class ExpandProcedureClass extends StatelessWidget {
         ),
         Container(
           height: Resizable.size(context, 1),
-          margin: EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),
+          margin: EdgeInsets.symmetric(vertical: Resizable.padding(context, 7)),
           color: greyColor.shade300,
         ),
         if (itemCubit.listItem != null)
           Padding(
-              padding: EdgeInsets.only(bottom: Resizable.padding(context, 10)),
+              padding: EdgeInsets.only(bottom: Resizable.padding(context, 0)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -165,7 +203,24 @@ class ExpandProcedureClass extends StatelessWidget {
                 ],
               )),
         if (itemCubit.listItem != null)
-          ...itemCubit.listItem!.map((e) => Container(
+          ...itemCubit.listGroupId.map((e) => Padding(padding: EdgeInsets.symmetric(vertical: Resizable.padding(context, 5)),child: Column(
+            crossAxisAlignment:
+            CrossAxisAlignment.start,
+            children: [
+              if (!itemCubit.listGroupId
+                  .every((e) => e == 0))
+                Text("* ${itemCubit.getTitle(e)}",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: Resizable.size(
+                            context, 14),
+                        color: primaryColor)),
+              SizedBox(
+                  height:
+                  Resizable.size(context, 5)),
+              ...itemCubit
+                  .getItemForGroup(e)
+                  .map((e) => Container(
                 margin: EdgeInsets.only(bottom: Resizable.padding(context, 5)),
                 padding: EdgeInsets.all(Resizable.padding(context, 5)),
                 decoration: BoxDecoration(
@@ -173,7 +228,7 @@ class ExpandProcedureClass extends StatelessWidget {
                         width: Resizable.size(context, 1),
                         color: greyColor.shade100),
                     borderRadius:
-                        BorderRadius.circular(Resizable.size(context, 5))),
+                    BorderRadius.circular(Resizable.size(context, 5))),
                 child: Row(
                   children: [
                     if (e.type == 'checklist')
@@ -190,7 +245,7 @@ class ExpandProcedureClass extends StatelessWidget {
                                 }
                               },
                               child: Icon(itemCubit.checkPercent(e) == 0 ||
-                                      !itemCubit.checkBool(e)
+                                  !itemCubit.checkBool(e)
                                   ? Icons.check_box_outline_blank_rounded
                                   : Icons.check_box))),
                     Expanded(
@@ -224,6 +279,8 @@ class ExpandProcedureClass extends StatelessWidget {
                   ],
                 ),
               )),
+            ],
+          ))),
         if (itemCubit.isConfirm && role == 'admin')
           AddNewLessonButton(() {
             itemCubit.updateProcedureClass();

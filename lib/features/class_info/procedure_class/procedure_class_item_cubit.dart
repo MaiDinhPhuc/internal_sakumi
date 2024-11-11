@@ -1,6 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internal_sakumi/model/procedure_class_model.dart';
+import 'package:internal_sakumi/model/procedure_group_model.dart';
 import 'package:internal_sakumi/model/procedure_item_model.dart';
 import 'package:internal_sakumi/model/procedure_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
@@ -16,6 +17,10 @@ class ProcedureClassItemCubit extends Cubit<int>{
   ProcedureModel? procedure;
   List<ProcedureItemModel>? listItem;
 
+  List<ProcedureGroupModel>? listGroup;
+
+  List<int> listGroupId = [];
+
   bool isConfirm = false;
 
   bool isSendReport = false;
@@ -28,12 +33,35 @@ class ProcedureClassItemCubit extends Cubit<int>{
   }
 
   init()async{
+    listGroup = (await FireBaseProvider.instance.getAllProcedureGroup()).where((e)=>e.type == procedureClass.type).toList();
     procedure = await FireBaseProvider.instance.getProcedure(procedureClass.procedureId);
     textEditingController = TextEditingController(text: procedureClass.report);
     emit(state+1);
     var listItemId = procedureClass.info.map((e)=>e['item_id']).toList();
     listItem = await FireBaseProvider.instance.getProcedureItemByIDs(listItemId);
+    for(var i in listItem!){
+      if(listGroupId.contains(i.group) == false){
+        listGroupId.add(i.group);
+      }
+    }
     emit(state+1);
+  }
+
+  getItemForGroup(int groupId){
+
+    if(listItem == null) return [];
+
+    return listItem!.where((e)=>e.group == groupId).toList();
+  }
+
+  String getTitle(int id){
+    if(id == 0 || listGroup == null) return "KHÔNG CÓ GROUP";
+
+    var temp = listGroup!.where((e)=>e.id == id).firstOrNull;
+
+    if(temp == null) return "KHÔNG CÓ GROUP";
+
+    return temp.title;
   }
 
   double checkPercent(ProcedureItemModel item){
@@ -87,15 +115,20 @@ class ProcedureClassItemCubit extends Cubit<int>{
   }
 
   double getPercentTotal(){
-    if(updateValue == null || updateValue!.info.isEmpty) return 0;
+    if(updateValue == null || updateValue!.info.isEmpty || listItem == null) return 0;
+
+    var listId = listItem!.map((e)=>e.id).toList();
+
+    if(listId.isEmpty) return 0;
+
     int total = 0;
     for(var i in updateValue!.info){
-      if(i['check'] == true){
+      if(i['check'] == true && listId.contains(i['item_id'])){
         total = total + 1;
       }
     }
 
-    return total/updateValue!.info.length;
+    return total/listId.length;
   }
 
   updateProcedureClass()async{

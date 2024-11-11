@@ -52,6 +52,7 @@ import 'package:internal_sakumi/model/voucher_course_model.dart';
 import 'package:internal_sakumi/providers/network_provider.dart';
 import 'package:internal_sakumi/routes.dart';
 import 'package:internal_sakumi/screens/login_screen.dart';
+import 'package:internal_sakumi/utils/functions.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -301,7 +302,25 @@ class FireBaseProvider extends NetworkProvider {
         .docs
         .map((e) => ProcedureClassModel.fromSnapshot(e))
         .toList();
-    return list;
+    
+    var listId = list.map((e)=>e.procedureId).toSet().toList();
+    
+    final listProcedure = (await Functions.getProcedures(listId)).where((e)=>e.status).toList();
+
+    print(listProcedure.map((e)=>e.id));
+    print("========================Procedure");
+
+    var listIds = listProcedure.map((e)=>e.id).toSet().toList();
+
+    List<ProcedureClassModel> finalList = [];
+
+    for(var i in list){
+      if(listIds.contains(i.procedureId)){
+        finalList.add(i);
+      }
+    }
+
+    return finalList;
   }
 
   Future<List<ProcedureClassModel>> getAllProcedureClassByProcedureId(
@@ -665,6 +684,7 @@ class FireBaseProvider extends NetworkProvider {
         .map((e) => ProcedureModel.fromSnapshot(e))
         .toList();
   }
+  
 
   @override
   Future<List<SurveyModel>> getAllTeacherSurvey() async {
