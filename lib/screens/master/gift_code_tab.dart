@@ -8,14 +8,12 @@ import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
 import 'package:internal_sakumi/features/admin/manage_general/input_form/input_field.dart';
 import 'package:internal_sakumi/features/admin/manage_tag/custom_button_v1.dart';
-import 'package:internal_sakumi/features/master/manage_course/alert_add_new_course.dart';
 import 'package:internal_sakumi/model/admin_model.dart';
 import 'package:internal_sakumi/providers/firebase/firebase_provider.dart';
 import 'package:internal_sakumi/providers/firebase/firestore_db.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
 import 'package:internal_sakumi/widget/custom_appbar.dart';
 import 'package:internal_sakumi/widget/waiting_dialog.dart';
-import 'package:internal_sakumi/features/admin/manage_bills/add_bill_button.dart';
 
 class GiftCodeTab extends StatelessWidget {
   const GiftCodeTab({super.key});
@@ -106,7 +104,8 @@ class _GiftAndSuperSaleDialogState extends State<GiftAndSuperSaleDialog> {
   final TextEditingController titleCon = TextEditingController();
   final TextEditingController desCon = TextEditingController();
   final TextEditingController typeCon = TextEditingController();
-  EnableGiftModel? banner;
+  final TextEditingController updateSakumiCon = TextEditingController();
+  final TextEditingController update247Con = TextEditingController();
 
   bool get isEdit => widget.cubit.gift != null;
 
@@ -117,6 +116,8 @@ class _GiftAndSuperSaleDialogState extends State<GiftAndSuperSaleDialog> {
       titleCon.text = widget.cubit.gift!.title;
       desCon.text = widget.cubit.gift!.des;
       typeCon.text = widget.cubit.gift!.type.toString();
+      updateSakumiCon.text = widget.cubit.gift!.forceSakumi.toString();
+      update247Con.text = widget.cubit.gift!.force247.toString();
     }
   }
 
@@ -177,6 +178,20 @@ class _GiftAndSuperSaleDialogState extends State<GiftAndSuperSaleDialog> {
                             SizedBox(
                               height: Resizable.padding(context, 10),
                             ),
+                            InputItem(
+                                title: 'Update Sakumi',
+                                controller: updateSakumiCon,
+                                errorText: AppText.txtPleaseInput.text),
+                            SizedBox(
+                              height: Resizable.padding(context, 10),
+                            ),
+                            InputItem(
+                                title: 'Update 247',
+                                controller: update247Con,
+                                errorText: AppText.txtPleaseInput.text),
+                            SizedBox(
+                              height: Resizable.padding(context, 10),
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
@@ -186,8 +201,7 @@ class _GiftAndSuperSaleDialogState extends State<GiftAndSuperSaleDialog> {
                                         fontSize: Resizable.font(context, 18),
                                         color: const Color(0xff757575))),
                                 Switch(
-                                    value:
-                                    widget.cubit.enableGift,
+                                    value: widget.cubit.enableGift,
                                     activeColor: primaryColor,
                                     onChanged: (bool value) async {
                                       widget.cubit.setEnableGift();
@@ -206,8 +220,7 @@ class _GiftAndSuperSaleDialogState extends State<GiftAndSuperSaleDialog> {
                                         fontSize: Resizable.font(context, 18),
                                         color: const Color(0xff757575))),
                                 Switch(
-                                    value:
-                                    widget.cubit.enableAndroid,
+                                    value: widget.cubit.enableAndroid,
                                     activeColor: primaryColor,
                                     onChanged: (bool value) async {
                                       widget.cubit.setEnableAndroid();
@@ -226,8 +239,7 @@ class _GiftAndSuperSaleDialogState extends State<GiftAndSuperSaleDialog> {
                                         fontSize: Resizable.font(context, 18),
                                         color: const Color(0xff757575))),
                                 Switch(
-                                    value:
-                                    widget.cubit.enableIOS,
+                                    value: widget.cubit.enableIOS,
                                     activeColor: primaryColor,
                                     onChanged: (bool value) async {
                                       widget.cubit.setEnableIOS();
@@ -296,7 +308,11 @@ class _GiftAndSuperSaleDialogState extends State<GiftAndSuperSaleDialog> {
         banner3: cubit.listImg[2],
         enableAndroid: cubit.enableAndroid,
         enableIOS: cubit.enableIOS,
-        type: int.parse(typeCon.text));
+        type: int.parse(typeCon.text),
+        force247:
+            int.tryParse(update247Con.text) ?? widget.cubit.gift!.force247,
+        forceSakumi: int.tryParse(updateSakumiCon.text) ??
+            widget.cubit.gift!.forceSakumi);
 
     await FireStoreDb.instance.updateSuperSaleInfo(superSale);
 

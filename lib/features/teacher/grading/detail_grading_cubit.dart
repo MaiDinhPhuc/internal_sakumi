@@ -46,11 +46,11 @@ class DetailGradingCubit extends Cubit<int> {
 
   update(){
 
-    List<int> listQuestionId = getListQuestion().map((e)=>e.id).toList();
-
-    if(!listQuestionId.contains(now)){
-      now = getListQuestion().first.id;
-    }
+    // List<int> listQuestionId = getListQuestion().map((e)=>e.id).toList();
+    //
+    // if(!listQuestionId.contains(now)){
+    //   now = getListQuestion().first.id;
+    // }
 
     emit(state+1);
   }
@@ -177,12 +177,9 @@ class DetailGradingCubit extends Cubit<int> {
     return sum/list.length;
   }
 
-  List<AnswerModel> get answers => isAll? listAnswer!
+  List<AnswerModel> get answers => listAnswer!
       .where((answer) =>
           answer.questionId == now && listStudentId!.contains(answer.studentId))
-      .toList() :listAnswer!
-      .where((answer) =>
-  answer.questionId == now && listStudentId!.contains(answer.studentId) && answer.score == -1)
       .toList();
 
   bool checkGrading(int questionId){

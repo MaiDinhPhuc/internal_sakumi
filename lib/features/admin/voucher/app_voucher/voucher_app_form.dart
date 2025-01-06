@@ -39,7 +39,7 @@ class VoucherAppForm extends StatelessWidget {
                 onChanged: (v) {
                   cubit.selectMonths(v.toString());
                 },
-                items: const ["1","2","3","6","12"])
+                items: const ["1","2","3","6","12","Trọn đời"])
           ],
         ),
         SizedBox(height: Resizable.size(context, 5)),

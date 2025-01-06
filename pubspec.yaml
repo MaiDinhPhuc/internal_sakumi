@@ -52,7 +52,7 @@ dependencies:
   d_chart: ^2.3.0
   image_network: ^2.5.4+1
   dotted_border: ^2.0.0+3
-  syncfusion_flutter_datepicker: ^26.2.5
+  syncfusion_flutter_datepicker: ^28.1.35
   url_launcher: ^6.1.12
   image_picker_web: ^3.1.1
 
@@ -60,7 +60,7 @@ dependencies:
   dio: ^5.2.1+1
 
   avatar_glow: ^2.0.2
-  syncfusion_flutter_charts: ^26.2.5+1
+  syncfusion_flutter_charts: ^28.1.35
   shimmer: ^3.0.0
 
   googleapis: ^11.4.0

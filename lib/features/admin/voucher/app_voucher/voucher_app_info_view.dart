@@ -33,7 +33,7 @@ class VoucherAppInfoView extends StatelessWidget {
                               children: [
                                 Padding(padding: EdgeInsets.only(top: Resizable.padding(context, 15)),child: Image.asset('assets/images/img_border_app_voucher.png')),
                                 Text(
-                                  'MIỄN PHÍ ${cubit.numMonths} THÁNG',
+                                  cubit.numMonths == "1000" ? "MIỄN PHÍ" :'MIỄN PHÍ ${cubit.numMonths} THÁNG',
                                   style: TextStyle(
                                     fontSize: Resizable.font(context, 42),
                                     fontWeight: FontWeight.bold,
@@ -41,7 +41,7 @@ class VoucherAppInfoView extends StatelessWidget {
                                   ),
                                 ),
                                 Padding(padding:EdgeInsets.only(top: Resizable.padding(context, 25)) ,child: Text(
-                                  '${priceVND('${256000 * (int.parse(cubit.numMonths))}')}Đ',
+                                  cubit.numMonths == "1000" ? "TRỌN ĐỜI" : '${priceVND('${256000 * (int.parse(cubit.numMonths))}')}Đ',
                                   style: TextStyle(
                                     fontSize: Resizable.font(context, 70),
                                     fontWeight: FontWeight.bold,

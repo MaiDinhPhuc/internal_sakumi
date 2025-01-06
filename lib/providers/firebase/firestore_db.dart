@@ -753,7 +753,9 @@ class FireStoreDb {
       'banner1': value.banner1,
       'banner2': value.banner2,
       'banner3': value.banner3,
-      'type': value.type
+      'type': value.type,
+      'force247': value.force247,
+      'forceSakumi': value.forceSakumi
     });
     debugPrint("==========>update db for \"enable_gift\"");
   }

@@ -271,7 +271,12 @@ class VoucherCubit extends Cubit<int> {
   }
 
   selectMonths(String month) {
-    numMonths = month;
+    if(month == "Trọn đời"){
+      numMonths = "1000";
+    }else{
+      numMonths = month;
+    }
+
     emit(state + 1);
   }
 

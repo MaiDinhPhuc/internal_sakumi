@@ -29,12 +29,12 @@ class AdminModel {
 
 class EnableGiftModel {
   final bool enableIOS, enableAndroid, enableGift;
-  final int id, type;
+  final int id, type, force247, forceSakumi;
   final String title, des, banner1, banner2, banner3;
 
   const EnableGiftModel(
       {required this.enableIOS,
-        required this.enableGift,
+      required this.enableGift,
       required this.id,
       required this.title,
       required this.des,
@@ -42,6 +42,8 @@ class EnableGiftModel {
       required this.enableAndroid,
       required this.banner2,
       required this.banner3,
+      required this.force247,
+      required this.forceSakumi,
       required this.type});
 
   factory EnableGiftModel.fromSnapshot(
@@ -56,6 +58,9 @@ class EnableGiftModel {
         banner1: data['banner1'],
         banner2: data['banner2'],
         banner3: data['banner3'],
-        type: data['type'], enableGift: data["enable_gift"]);
+        force247: data['force247'],
+        forceSakumi: data['forceSakumi'],
+        type: data['type'],
+        enableGift: data["enable_gift"]);
   }
 }

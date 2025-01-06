@@ -50,10 +50,11 @@ class CustomLessonCubit extends Cubit<int> {
     LessonModel lesson = lessons
         .where((e) => e.courseId == listLessonInfo[index]["courseId"])
         .toList()
-        .singleWhere((element) => element.title == text);
+        .singleWhere((element) => "${element.title}${" "* lessons.indexOf(element)}" == text);
+
     int lessonId = lesson.lessonId;
     listLessonInfo[index] = {
-      "courseId": listLessonInfo[index],
+      "courseId": listLessonInfo[index]["courseId"],
       "lessonId": lessonId
     };
     emit(state + 1);
@@ -81,12 +82,15 @@ class CustomLessonCubit extends Cubit<int> {
 
   List<String> listLessonTitle(int index) {
     var listLesson = listLessonInfo.map((e) => e["lessonId"]).toList();
-    return lessons
+    
+    var list = lessons
         .where((e) =>
-            e.courseId == listLessonInfo[index]["courseId"] &&
-            !listLesson.contains(e.lessonId))
-        .toList()
-        .map((e) => e.title)
+    e.courseId == listLessonInfo[index]["courseId"] &&
+        !listLesson.contains(e.lessonId))
+        .toList();
+    
+    return list
+        .map((e) => "${e.title}${" "* list.indexOf(e)}")
         .toList();
   }
 
@@ -129,9 +133,11 @@ class CustomLessonCubit extends Cubit<int> {
     List<dynamic> listCustomLesson = classModel.customLessons;
 
     List<Map> list = [];
+
+
     for (var i in listLessonInfo) {
       list.add(
-          {'course_id': i['courseId']['courseId'], 'lesson_id': i['lessonId']});
+          {'course_id': i['courseId'], 'lesson_id': i['lessonId']});
     }
 
     listCustomLesson.add({
@@ -187,7 +193,7 @@ class CustomLessonCubit extends Cubit<int> {
     List<Map> list = [];
     for (var i in listLessonInfo) {
       list.add(
-          {'course_id': i['courseId']['courseId'], 'lesson_id': i['lessonId']});
+          {'course_id': i['courseId'], 'lesson_id': i['lessonId']});
     }
 
     listCustomLesson.add({
