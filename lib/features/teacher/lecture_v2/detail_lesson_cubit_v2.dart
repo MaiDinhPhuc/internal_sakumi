@@ -251,7 +251,7 @@ class DetailLessonCubitV2 extends Cubit<int> {
     }
 
     var listStdLesson =
-        stdLessons!.where((e) => e.lessonId == lessonId).toList();
+        stdLessons!.where((e) => e.lessonId == lessonId && listStdId.contains(e.studentId)).toList();
 
     totalAttendance =
         listStdLesson.fold(0, (pre, e) => e.timekeeping > 0 ? (pre + 1) : pre);

@@ -126,6 +126,13 @@ class FireStoreDb {
     return snapshot;
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllLessons() async {
+    final snapshot =
+    await db.collection("lessons").get();
+
+    return snapshot;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getListTeacherByListId(
       List<int> teacherIds) async {
     final snapshot = await db

@@ -273,6 +273,16 @@ class FireBaseProvider extends NetworkProvider {
     return lessons;
   }
 
+  Future<List<LessonModel>> getAllLesson() async {
+    final lessons = (await FireStoreDb.instance.getAllLessons())
+        .docs
+        .map((e) => LessonModel.fromSnapshot(e))
+        .toList()
+        .where((e) => e.enable == true)
+        .toList();
+    return lessons;
+  }
+
   Future<List<ProcedureItemModel>> getAllProcedureItem(String type) async {
     final list = (await FireStoreDb.instance.getAllProcedureItem(type))
         .docs

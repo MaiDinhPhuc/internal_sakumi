@@ -44,6 +44,8 @@ class LessonTeachingViewV2 extends StatelessWidget {
             cubit.checkNoteStudent();
             debugPrint(
                 '============= totalAttendance ${cubit.totalAttendance}');
+            debugPrint(
+                '============= students ${cubit.students.length}');
           },
         ),
         SizedBox(height: Resizable.size(context, 40)),

@@ -262,15 +262,19 @@ class DetailGradingCubit extends Cubit<int> {
             .collection('student_test')
             .doc(
             'student_${i.userId}_test_${TextUtils.getName()}_class_${TextUtils.getName(position: 1)}')
-            .update({
-          'score': temp == 0 ? -1 : submitScore,
+            .set({
+          'score': total == 0 ? -1 : submitScore,
+          'student_id': i.userId,
+          'test_id':int.parse(TextUtils.getName()),
+          'class_id': int.parse(TextUtils.getName(position: 1))
         });
+
         var index = stdTests!.indexOf(stdTests!.firstWhere((e) =>
         e.studentId == i.userId &&
             e.testID == int.parse(TextUtils.getName())));
         stdTests![index] = StudentTestModel(
             classId: stdTests![index].classId,
-            score: temp == 0 ? -1 : submitScore,
+            score: total == 0 ? -1 : submitScore,
             studentId: stdTests![index].studentId,
             testID: stdTests![index].testID,
             time: stdTests![index].time);

@@ -23,36 +23,29 @@ class CustomLessonCubit extends Cubit<int> {
   List<Map> listLessonInfo = [];
 
   List<CourseModel>? courses;
-  List<LessonModel> lessons = [];
-
+  List<LessonModel>? lessons;
 
   loadData() async {
     courses = (await FireBaseProvider.instance.getAllCourseEnable())
         .where((e) => e.courseId != 999999999)
         .toList();
+    lessons = await FireBaseProvider.instance.getAllLesson();
     emit(state + 1);
   }
 
   chooseCourse(String? text, int index) async {
-    CourseModel course = courses!.singleWhere((element) =>
-        '${element.title} ${element.termName} ${element.code}' == text);
-    int courseId = course.courseId;
+    int courseId = int.parse(text!.split("-")[0]);
 
     if (listLessonInfo.isEmpty) {
-      listLessonInfo.add({"courseId": courseId});
+      listLessonInfo.add({"courseId": courseId, 'lessonId' : null});
     } else {
-      listLessonInfo[index] = {"courseId": courseId};
+      listLessonInfo[index] = {"courseId": courseId, 'lessonId' : null};
     }
-    DataProvider.customLessons(courseId, loadLesson);
+    emit(state+1);
   }
 
   chooseLesson(String? text, int index) async {
-    LessonModel lesson = lessons
-        .where((e) => e.courseId == listLessonInfo[index]["courseId"])
-        .toList()
-        .singleWhere((element) => "${element.title}${" "* lessons.indexOf(element)}" == text);
-
-    int lessonId = lesson.lessonId;
+    int lessonId = int.parse(text!.split("-")[0]);
     listLessonInfo[index] = {
       "courseId": listLessonInfo[index]["courseId"],
       "lessonId": lessonId
@@ -70,39 +63,61 @@ class CustomLessonCubit extends Cubit<int> {
     return AppText.textChooseCourse.text;
   }
 
-  String findLesson(int index) {
-    if (listLessonInfo.isEmpty) return AppText.txtChooseLesson.text;
-    for (var i in lessons) {
-      if (i.lessonId == listLessonInfo[index]["lessonId"]) {
-        return i.title;
+  String? getCourseValue(int index){
+    if(listLessonInfo[index]['courseId'] == -1) return null;
+    for(var i in listCourse()){
+      int courseId = int.parse(i.split("-")[0]);
+      if(listLessonInfo[index]['courseId'] == courseId){
+        return i;
       }
     }
-    return AppText.txtChooseLesson.text;
   }
 
-  List<String> listLessonTitle(int index) {
-    var listLesson = listLessonInfo.map((e) => e["lessonId"]).toList();
-    
-    var list = lessons
-        .where((e) =>
-    e.courseId == listLessonInfo[index]["courseId"] &&
-        !listLesson.contains(e.lessonId))
-        .toList();
-    
-    return list
-        .map((e) => "${e.title}${" "* list.indexOf(e)}")
-        .toList();
-  }
-
-  loadLesson(Object lessons) {
-    List<LessonModel> newList = lessons as List<LessonModel>;
-
-    for (var i in newList) {
-      if (!this.lessons.contains(i)) {
-        this.lessons.add(i);
+  String? getLessonValue(int index){
+    if(listLessonInfo[index]['lessonId'] == null) return null;
+    for(var i in listLesson()[getCourseValue(index)]!){
+      int lessonId = int.parse(i.split("-")[0]);
+      if(listLessonInfo[index]['lessonId'] == lessonId){
+        return i;
       }
     }
-    emit(state + 1);
+  }
+
+  List<String> listCourse(){
+    if(courses == null) return [];
+
+    return List.generate(
+        courses!.length,
+            (index) =>
+        ('${courses![index].courseId}-${courses![index].title} ${courses![index].termName} ${courses![index].code}'))
+        .toList();
+  }
+
+  Map<String, List<String>> listLesson(){
+    if(lessons == null) return {};
+
+    Map<String, List<String>> listLesson = {};
+
+    for(var i in listCourse()){
+      int courseId = int.parse(i.split("-")[0]);
+
+      List<String> lessons = [];
+
+      for(var j in this.lessons!){
+        if(j.courseId == courseId){
+          lessons.add("${j.lessonId}-${j.title}");
+        }
+      }
+
+      var entries = {
+        i: lessons
+      };
+
+      listLesson.addAll(entries);
+    }
+
+    return listLesson;
+
   }
 
   check(int index){
@@ -123,7 +138,7 @@ class CustomLessonCubit extends Cubit<int> {
   }
 
   addNewCourse() {
-    listLessonInfo.add({"courseId": -1});
+    listLessonInfo.add({"courseId": -1, 'lessonId' : null});
     emit(state + 1);
   }
 

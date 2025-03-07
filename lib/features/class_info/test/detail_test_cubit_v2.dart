@@ -87,6 +87,8 @@ class DetailTestV2 extends Cubit<int> {
   double checkSubmitted(int studentId) {
     bool checkExist =
         stdTests!.any((element) => element.studentId == studentId);
+    print("============>1");
+    print(stdTests!.length);
     if (checkExist) {
       StudentTestModel temp =
           stdTests!.firstWhere((element) => element.studentId == studentId);
@@ -122,29 +124,16 @@ class DetailTestV2 extends Cubit<int> {
     if (stdTests!.isEmpty) {
       status = null;
     } else {
-      int submitCount = 0;
-      int checkCount = 0;
-      int notSubmitCount = 0;
-      for (var k in stdTests!) {
-        if (k.score != -2) {
-          submitCount++;
-        }
-        if (k.score > -1) {
-          checkCount++;
-        }
-        if (k.score == -2) {
-          notSubmitCount++;
-        }
-      }
-      if (checkCount == submitCount) {
+      if (!stdTests!.any((item) => item.score == -1)) {
         status = true;
       } else {
         status = false;
       }
-      if (notSubmitCount == stdTests!.length) {
+      if (stdTests!.every((item) => item.score == -2)) {
         status = null;
       }
     }
+
 
     return status;
   }

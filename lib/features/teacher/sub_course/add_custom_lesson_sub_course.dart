@@ -1,9 +1,8 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internal_sakumi/configs/color_configs.dart';
 import 'package:internal_sakumi/configs/text_configs.dart';
-import 'package:internal_sakumi/features/CRUD/update.dart';
 import 'package:internal_sakumi/features/class_info/lesson/custom_lesson_cubit.dart';
-import 'package:internal_sakumi/features/class_info/lesson/info_add_custom_lesson_dialog.dart';
 import 'package:internal_sakumi/features/teacher/sub_course/sub_course_cubit.dart';
 import 'package:internal_sakumi/model/class_model.dart';
 import 'package:internal_sakumi/utils/resizable.dart';
@@ -46,7 +45,110 @@ class AddCustomLessonSubCourseDialog extends StatelessWidget {
                             fontSize: Resizable.font(context, 20)),
                       ),
                     ),
-                    InfoAddCustomLesson(cubit:cubit),
+                    for (int i = 0;
+                    i < cubit.listLessonInfo.length;
+                    i++)
+                      Row(
+                        children: [
+                          Expanded(
+                              flex: 5,
+                              child:Container(
+                                margin:const EdgeInsets.only(right: 5, bottom: 10, top: 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(color: Colors.grey, width: 0.5),
+                                ),
+                                padding: const EdgeInsets.symmetric(horizontal: 12),
+                                child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                      isExpanded: true,
+                                      hint: Text(AppText
+                                          .textChooseCourse
+                                          .text),
+                                      value: cubit
+                                          .getCourseValue(i),
+                                      items: cubit
+                                          .listCourse()
+                                          .map((item) {
+                                        return DropdownMenuItem(
+                                          value: item,
+                                          child: Text(item, overflow: TextOverflow.ellipsis),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        cubit.chooseCourse(
+                                            value, i);
+                                      },
+                                    )
+                                ),
+                              )
+                          ),
+                          Expanded(
+                              flex: 5,
+                              child: Container(
+                                margin:const EdgeInsets.only(right: 5, bottom: 10, top: 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(color: Colors.grey, width: 0.5),
+                                ),
+                                padding: const EdgeInsets.symmetric(horizontal: 12),
+                                child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                      isExpanded: true,
+                                      hint: Text(AppText
+                                          .txtChooseLesson
+                                          .text),
+                                      value: cubit
+                                          .getLessonValue(i),
+                                      items: cubit.getCourseValue(
+                                          i) ==
+                                          null
+                                          ? []
+                                          : cubit
+                                          .listLesson()[cubit
+                                          .getCourseValue(
+                                          i)]!
+                                          .map((item) {
+                                        return DropdownMenuItem(
+                                          value: item,
+                                          child:
+                                          Text(item, overflow: TextOverflow.ellipsis),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        cubit.chooseLesson(
+                                            value, i);
+                                      },
+                                    )
+                                ),
+                              )),
+                          Expanded(
+                              flex: 1,
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                    left: Resizable.padding(context, 5),
+                                    bottom: Resizable.padding(context, 5),
+                                    top: Resizable.padding(context, 5)),
+                                height: Resizable.size(context, 30),
+                                width: Resizable.size(context, 30),
+                                decoration: BoxDecoration(
+                                    color: greyColor.shade50,
+                                    borderRadius: BorderRadius.circular(
+                                        Resizable.size(context, 5))),
+                                child: InkWell(
+                                    borderRadius: BorderRadius.circular(
+                                        Resizable.size(context, 100)),
+                                    onTap: () {
+                                      cubit.delete(i);
+                                    },
+                                    child: Icon(Icons.delete,
+                                        color: greyColor.shade500,
+                                        size: Resizable.size(context, 20))),
+                              ))
+                        ],
+                      ),
                     Container(
                         margin:
                         EdgeInsets.only(top: Resizable.padding(context, 20)),

@@ -287,6 +287,13 @@ class DetailGradingCubitV2 extends Cubit<int> {
 
         List<dynamic> listHws = stdLessons![index].hws;
 
+        if(listHws.isEmpty){
+          listHws.add({
+            'lesson_id' : lessonId,
+            'hw': submitScore
+          });
+        }
+
         for(int i = 0; i<listHws.length; i++){
           if(listHws[i]['lesson_id'] == lessonId){
             listHws[i] = {
@@ -429,6 +436,13 @@ class DetailGradingCubitV2 extends Cubit<int> {
 
           List<dynamic> listHws = stdLessons![index].hws;
 
+          if(listHws.isEmpty){
+            listHws.add({
+              'lesson_id' : lessonId,
+              'hw': submitScore
+            });
+          }
+
           for(int i = 0; i<listHws.length; i++){
             if(listHws[i]['lesson_id'] == lessonId){
               listHws[i] = {
@@ -437,7 +451,6 @@ class DetailGradingCubitV2 extends Cubit<int> {
               };
             }
           }
-
           CustomFirebaseFireStore.database
               .collection('student_lesson')
               .doc(
