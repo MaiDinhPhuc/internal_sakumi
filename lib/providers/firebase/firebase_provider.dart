@@ -991,11 +991,11 @@ class FireBaseProvider extends NetworkProvider {
     return test;
   }
 
-  @override
   Future<TestModel> getTestByTestId(int testId) async {
-    final test = (await FireStoreDb.instance.getTestByTestId(testId))
-        .docs
-        .map((e) => TestModel.fromSnapshot(e))
+    final test = (await FireStoreDb.instance.getTestByTestId(testId)).docs.where((doc) {
+      final enable = doc.data()['enable'];
+      return enable != false; // true hoặc null đều qua
+    }).toList().map((e) => TestModel.fromSnapshot(e))
         .single;
 
     return test;

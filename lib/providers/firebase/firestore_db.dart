@@ -1363,7 +1363,6 @@ class FireStoreDb {
     final snapshot = await db
         .collection("test")
         .where("id", isEqualTo: testId)
-        .where("enable", isEqualTo: true)
         .get();
 
     debugPrint(
